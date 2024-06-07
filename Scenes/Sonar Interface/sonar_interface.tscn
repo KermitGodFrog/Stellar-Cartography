@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://chwm82adl21cm"]
+
+[ext_resource type="Script" path="res://Scenes/Sonar Interface/sonar_interface.gd" id="1_bmylm"]
+
+[node name="sonar_window" type="Window"]
+title = "Sonar"
+position = Vector2i(0, 36)
+size = Vector2i(1000, 1000)
+
+[node name="control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bmylm")
+
+[node name="strength_indicator" type="Label" parent="control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="ping_button" type="Button" parent="control"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0

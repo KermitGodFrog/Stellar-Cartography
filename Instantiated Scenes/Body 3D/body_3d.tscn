@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://bdotk8rm2p7df"]
+
+[ext_resource type="Script" path="res://Instantiated Scenes/Body 3D/body_3d.gd" id="1_bqpsf"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_gsmqo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qi0h7"]
+billboard_keep_scale = true
+grow_amount = 0.889
+
+[node name="body_3d" type="MeshInstance3D" groups=["body_3d"]]
+cast_shadow = 0
+mesh = SubResource("SphereMesh_gsmqo")
+surface_material_override/0 = SubResource("StandardMaterial3D_qi0h7")
+script = ExtResource("1_bqpsf")

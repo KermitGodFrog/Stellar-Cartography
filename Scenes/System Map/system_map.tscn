@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=3 uid="uid://bhroagne3v4wq"]
+
+[ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
+[ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
+[ext_resource type="Theme" uid="uid://dm3fbhtw7qov2" path="res://Scenes/System Map/system_map_HUD_theme.tres" id="3_djc4s"]
+
+[node name="system_window" type="Window"]
+disable_3d = true
+transparent_bg = true
+msaa_2d = 1
+canvas_item_default_texture_filter = 0
+title = "System Map"
+position = Vector2i(0, 36)
+size = Vector2i(1000, 1000)
+min_size = Vector2i(1000, 1000)
+
+[node name="system" type="Node2D" parent="."]
+script = ExtResource("1_nhsfb")
+
+[node name="camera" type="Camera2D" parent="system"]
+script = ExtResource("2_miyro")
+
+[node name="canvas" type="CanvasLayer" parent="system/camera"]
+
+[node name="control" type="Control" parent="system/camera/canvas"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="system_list" type="ItemList" parent="system/camera/canvas/control"]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+theme = ExtResource("3_djc4s")
+allow_search = false
+max_text_lines = 3
+text_overrun_behavior = 4
+
+[connection signal="item_clicked" from="system/camera/canvas/control/system_list" to="system" method="_on_system_list_item_clicked"]
+[connection signal="mouse_entered" from="system/camera/canvas/control/system_list" to="system" method="_on_system_list_mouse_entered"]
+[connection signal="mouse_exited" from="system/camera/canvas/control/system_list" to="system" method="_on_system_list_mouse_exited"]
