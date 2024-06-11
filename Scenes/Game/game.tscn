@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://o18qlgh0vvwn"]
+[gd_scene load_steps=7 format=3 uid="uid://o18qlgh0vvwn"]
 
 [ext_resource type="Script" path="res://Scenes/Game/game.gd" id="1_mtv75"]
 [ext_resource type="PackedScene" uid="uid://bhroagne3v4wq" path="res://Scenes/System Map/system_map.tscn" id="2_jilbx"]
 [ext_resource type="PackedScene" uid="uid://co52u63cyk220" path="res://Scenes/System 3D/system_3d.tscn" id="4_53ki8"]
+[ext_resource type="Script" path="res://Scenes/Game/console_control.gd" id="4_crni4"]
+[ext_resource type="PackedScene" uid="uid://chwm82adl21cm" path="res://Scenes/Sonar Interface/sonar_interface.tscn" id="4_lnw4j"]
+[ext_resource type="Theme" uid="uid://ddc2wfekyxdh0" path="res://Scenes/Game/console_theme.tres" id="5_nc276"]
 
 [node name="game" type="Node"]
 script = ExtResource("1_mtv75")
@@ -10,3 +13,41 @@ script = ExtResource("1_mtv75")
 [node name="system_window" parent="." instance=ExtResource("2_jilbx")]
 
 [node name="system_3d_window" parent="." instance=ExtResource("4_53ki8")]
+
+[node name="sonar_window" parent="." instance=ExtResource("4_lnw4j")]
+
+[node name="console_control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_crni4")
+
+[node name="item_list" type="ItemList" parent="console_control"]
+custom_minimum_size = Vector2(0, 800)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme = ExtResource("5_nc276")
+allow_search = false
+item_count = 1
+item_0/text = "Welcome! Type 'help' for a list of commands."
+item_0/selectable = false
+
+[node name="line_edit" type="LineEdit" parent="console_control"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("5_nc276")
+placeholder_text = "Type here..."
+
+[connection signal="text_submitted" from="console_control/line_edit" to="console_control" method="_on_line_edit_text_submitted"]

@@ -1,12 +1,14 @@
 extends Node3D
 
 signal foundBody(id: int)
+signal addConsoleItem(text: String, bg_color: Color)
 
 var system: starSystemAPI
 var player_position: Vector2
 var target_position: Vector2
 var locked_body_identifier: int
 var body_3d = preload("res://Instantiated Scenes/Body 3D/body_3d.tscn")
+
 @onready var camera_offset = $camera_offset
 @onready var camera = $camera_offset/camera
 @onready var locked_body_label = $camera_offset/camera/canvas_layer/control/locked_body_label
@@ -67,6 +69,7 @@ func _physics_process(delta):
 					var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
 					if detection_scalar < body_detection_range and associated_body.is_known == false:
 						emit_signal("foundBody", child.get_identifier())
+						emit_signal("addConsoleItem", str("DISCOVERED BODY: ", associated_body.display_name), Color.DARK_GREEN)
 	
 	#setting locked_body_label text
 	#var body = system.get_body_from_identifier(locked_body_identifier)
@@ -91,4 +94,9 @@ func spawnBodies():
 			new_body_3d.set_identifier(body.get_identifier())
 			new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"))
 			add_child(new_body_3d)
+	pass
+
+
+func _on_system_3d_window_close_requested():
+	owner.hide()
 	pass

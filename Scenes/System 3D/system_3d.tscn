@@ -30,6 +30,7 @@ canvas_item_default_texture_filter = 0
 title = "Scopes"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
+visible = false
 unresizable = true
 
 [node name="system_3d" type="Node3D" parent="."]
@@ -63,3 +64,5 @@ offset_bottom = 23.0
 
 [node name="world_environment" type="WorldEnvironment" parent="system_3d"]
 environment = SubResource("Environment_wo5s4")
+
+[connection signal="close_requested" from="." to="system_3d" method="_on_system_3d_window_close_requested"]

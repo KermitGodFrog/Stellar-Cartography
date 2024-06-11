@@ -1,5 +1,5 @@
 extends Node2D
-#updates a map and object list based on data it is fed by the game component. updates player position and local camera position 
+#updates a map and object list based on data it is fed by the game component. updates camera position for some reason
 @export var camera_here_tex = preload("res://Graphics/camera_green.png")
 
 signal updatePlayerTargetPosition(pos: Vector2)
@@ -108,4 +108,8 @@ func _on_system_list_mouse_entered():
 
 func _on_system_list_mouse_exited():
 	mouse_over_system_list = false
+	pass
+
+func _on_system_window_close_requested():
+	owner.hide()
 	pass

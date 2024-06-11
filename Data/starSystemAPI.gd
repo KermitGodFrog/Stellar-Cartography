@@ -10,6 +10,8 @@ var bodies: Array[bodyAPI]
 var identifier_count: int = 1
 
 var time: int = 1000
+var post_gen_location_candidates: Array = []
+# ^^^ can be used for multiple passes of additional things, each pass removes used indexes from the array  
 
 func get_identifier():
 	return identifier
@@ -136,7 +138,7 @@ func createRandomWeightedPrimaryHookStar():
 
 func generateRandomWeightedBodies(hook_identifier: int):
 	var hook = get_body_from_identifier(hook_identifier)
-	#var corrected_destination_systems = destination_systems.duplicate() #for jump points!
+	var remaining: Array = []
 	
 	if hook.metadata: if hook.metadata.has("iterations"):
 		if not hook.is_star(): if randf() >= 0.4: return
@@ -193,7 +195,6 @@ func generateRandomWeightedBodies(hook_identifier: int):
 				else: candidates = categories[3]
 				planet_type = global_data.weighted_pick(candidates, "weight")
 				
-				
 				#PICKING PLANET MASS
 				var mass: float
 				var data = planet_classification_data.get(planet_classification)
@@ -225,6 +226,33 @@ func generateRandomWeightedBodies(hook_identifier: int):
 				
 				if generate_sub_bodies:
 					generateRandomWeightedBodies(new_body)
+			else: remaining.append([hook_identifier, i]) #else condition all the way from the choice to even have a planet. !! does not check if asteroid belt was spawned instead !!
+		
+		#APPENDING POTENTIAL WORMHOLE LOCATION CANDIDATES TO GLOBAL VARIABLE
+		if remaining:
+			post_gen_location_candidates.append_array(remaining)
+	pass
+
+func generateRandomWormholes(): #uses variables post_gen_location_candidates, destination_systems
+	for dest_system in destination_systems:
+		var location = post_gen_location_candidates.pick_random()
+		var hook = get_body_from_identifier(location.front())
+		var i = location.back()
+		
+		#whole bunch of stuff borrowed from generateRandomWeightedBodies
+		var new_distance: float = hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * i)
+		var orbit_speed_multiplier: float
+		if hook.orbit_speed > 0: orbit_speed_multiplier = ((hook.orbit_speed * 109.1) + 1)
+		else: orbit_speed_multiplier = 1
+		
+		var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+		var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+		
+		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
+		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
+		
+		addWormhole(identifier_count, str(get_random_wormhole_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), dest_system)
+		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
 func addBody(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, metadata: Dictionary = {}):
@@ -240,6 +268,21 @@ func addBody(id: int, d_name: String, hook_identifier: int, distance: float, orb
 		body.metadata = metadata
 	bodies.append(body)
 	return body.get_identifier()
+
+func addWormhole(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, destination_system: starSystemAPI, metadata: Dictionary = {}):
+	var wormhole = wormholeAPI.new()
+	wormhole.set_identifier(id)
+	identifier_count += 1
+	wormhole.set_display_name(d_name)
+	wormhole.hook_identifier = hook_identifier
+	wormhole.distance = distance
+	wormhole.orbit_speed = orbit_speed
+	wormhole.radius = radius
+	wormhole.destination_system = destination_system
+	if metadata:
+		wormhole.metadata = metadata
+	bodies.append(wormhole)
+	return wormhole.get_identifier()
 
 func addStationaryBody(id: int, d_name: String, hook_identifier, radius: float, metadata: Dictionary = {}):
 	var body = bodyAPI.new()
@@ -309,6 +352,13 @@ func get_bodies_with_metadata_key(metadata_key: String):
 			return_bodies.append(body)
 	return return_bodies
 
+func get_wormholes():
+	var wormholes: Array[wormholeAPI] = []
+	for body in bodies:
+		if body is wormholeAPI:
+			wormholes.append(body)
+	return wormholes
+
 func get_random_star_name():
 	var name_candidates: Array = []
 	var file = FileAccess.open("res://Data/Name Data/star_names.txt", FileAccess.READ)
@@ -338,6 +388,16 @@ func get_random_planet_name():
 func get_random_asteroid_belt_name():
 	var name_candidates: Array = []
 	var file = FileAccess.open("res://Data/Name Data/asteroid_belt_names.txt", FileAccess.READ)
+	while not file.eof_reached():
+		var line = file.get_line()
+		if not line.is_empty():
+			name_candidates.append(line)
+	file.close()
+	return name_candidates.pick_random()
+
+func get_random_wormhole_name():
+	var name_candidates: Array = []
+	var file = FileAccess.open("res://Data/Name Data/wormhole_names.txt", FileAccess.READ)
 	while not file.eof_reached():
 		var line = file.get_line()
 		if not line.is_empty():

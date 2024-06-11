@@ -6,8 +6,9 @@
 title = "Sonar"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 1000)
+visible = false
 
-[node name="control" type="Control" parent="."]
+[node name="sonar_control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,12 +17,26 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bmylm")
 
-[node name="strength_indicator" type="Label" parent="control"]
+[node name="strength_indicator" type="Label" parent="sonar_control"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 
-[node name="ping_button" type="Button" parent="control"]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="flow_container" type="VFlowContainer" parent="sonar_control"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 123.0
+grow_vertical = 2
+
+[node name="ping_length_slider" type="HSlider" parent="sonar_control/flow_container"]
+layout_mode = 2
+min_value = 5.0
+max_value = 90.0
+value = 5.0
+
+[node name="ping_button" type="Button" parent="sonar_control/flow_container"]
+layout_mode = 2
+text = "PING!"
+
+[connection signal="close_requested" from="." to="sonar_control" method="_on_sonar_window_close_requested"]

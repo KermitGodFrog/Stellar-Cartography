@@ -12,6 +12,7 @@ canvas_item_default_texture_filter = 0
 title = "System Map"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 1000)
+visible = false
 min_size = Vector2i(1000, 1000)
 
 [node name="system" type="Node2D" parent="."]
@@ -41,6 +42,7 @@ allow_search = false
 max_text_lines = 3
 text_overrun_behavior = 4
 
+[connection signal="close_requested" from="." to="system" method="_on_system_window_close_requested"]
 [connection signal="item_clicked" from="system/camera/canvas/control/system_list" to="system" method="_on_system_list_item_clicked"]
 [connection signal="mouse_entered" from="system/camera/canvas/control/system_list" to="system" method="_on_system_list_mouse_entered"]
 [connection signal="mouse_exited" from="system/camera/canvas/control/system_list" to="system" method="_on_system_list_mouse_exited"]
