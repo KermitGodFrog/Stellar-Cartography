@@ -7,6 +7,9 @@ var current_star_system: starSystemAPI
 
 var speed: int = 1
 
+var max_jumps: int = 5
+var jumps_remaining: int = 0
+
 func updatePosition(delta):
 	if not position.distance_to(target_position) < speed:
 		position += position.direction_to(target_position) * speed * delta
@@ -16,4 +19,8 @@ func updatePosition(delta):
 
 func setTargetPosition(pos: Vector2):
 	target_position = pos
+	pass
+
+func resetJumpsRemaining():
+	jumps_remaining = max_jumps
 	pass

@@ -89,7 +89,7 @@ func spawnBodies():
 			#remove_child(child)
 			child.queue_free()
 	for body in system.bodies:
-		if body.is_planet() or body.is_star():
+		if body.is_planet() or body.is_star() or body.is_wormhole():
 			var new_body_3d = body_3d.instantiate()
 			new_body_3d.set_identifier(body.get_identifier())
 			new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"))

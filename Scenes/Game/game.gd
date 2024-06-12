@@ -32,13 +32,11 @@ func _ready():
 	world.createPlayer(1) #player params should be set if theres a save file or smthn
 	
 	#new system, under match conditions later if no save file is being loaded
-	#also gotta do something like this once you traverse a jump point to add destination systems idk idk idk idk idk idk
-	var new = _on_create_new_star_system(true)
+	var new = _on_create_new_star_system(false)
 	for i in range(2):
 		_on_create_new_star_system(false, new)
-	
-	#generates random wormholes for the first system, have to generate wormholes for additional systems when traversing the wormhole to their respective system
 	new.generateRandomWormholes()
+	_on_switch_star_system(new)
 	
 	#var system = world.createStarSystem("yooooo")
 	#var hook_star = system.createRandomWeightedPrimaryHookStar()
@@ -58,9 +56,16 @@ func _physics_process(delta):
 	var wormholes = world.player.current_star_system.get_wormholes()
 	for wormhole in wormholes: # ^^^ all wormholes in current star system dont worry 
 		if world.player.position.distance_to(wormhole.position) < (2 * wormhole.radius):
+			print("GAME: (DEBUG) SWITCHING STAR SYSTEMS")
 			var destination = wormhole.destination_system
 			if destination:
+				if not destination.destination_systems:
+					for i in range(2):
+						_on_create_new_star_system(false, destination)
+					destination.generateRandomWormholes()
 				_on_switch_star_system(destination)
+				world.player.position = Vector2.ZERO #resetting player pos
+				world.player.target_position = Vector2.ZERO #resetting player target pos
 	
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_3d.set("player_position", world.player.position)
@@ -76,12 +81,12 @@ func _on_update_target_position(pos: Vector2):
 	print("SYSTEM MAP: UPDATING TARGET POSITION: ", pos)
 	pass
 
-func _on_create_new_star_system(switch_all: bool = false, for_system: starSystemAPI = null):
+func _on_create_new_star_system(force_switch_before_post_gen: bool = false, for_system: starSystemAPI = null):
 	var system = world.createStarSystem("yooooooo")
 	var hook_star = system.createRandomWeightedPrimaryHookStar()
 	system.generateRandomWeightedBodies(hook_star)
 	if for_system: for_system.destination_systems.append(system)
-	if switch_all:
+	if force_switch_before_post_gen:
 		world.player.current_star_system = system
 		system_map.system = system
 		system_3d.system = system
@@ -94,7 +99,6 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	system_map.system = to_system
 	system_3d.system = to_system
 	system_3d.spawnBodies()
-	#what about wormholes? how are we going to deal with wormholes?
 	return to_system
 
 func _on_locked_body_updated(body: bodyAPI):
@@ -110,6 +114,10 @@ func _on_found_body(id: int):
 			body.is_known = true
 	pass
 
+func _on_add_console_item(text: String, bg_color: Color = Color.WHITE):
+	console_control.add_console_item(text, bg_color)
+	pass
+
 func _on_system_map_popup():
 	$system_window.popup()
 	pass
@@ -120,8 +128,4 @@ func _on_system_3d_popup():
 
 func _on_sonar_popup():
 	$sonar_window.popup()
-	pass
-
-func _on_add_console_item(text: String, bg_color: Color = Color.WHITE):
-	console_control.add_console_item(text, bg_color)
 	pass

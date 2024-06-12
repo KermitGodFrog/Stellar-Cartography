@@ -1,20 +1,20 @@
 extends Resource
 class_name bodyAPI
 
-var identifier: int
-var display_name: String
+@export var identifier: int
+@export var display_name: String
 
-var hook_identifier: int #identifier
+@export var hook_identifier: int #identifier
 
-var distance: float #in solar radii
-var orbit_speed: float
-var radius: float
-var metadata: Dictionary = {}
+@export var distance: float #in solar radii
+@export var orbit_speed: float
+@export var radius: float
+@export var metadata: Dictionary = {}
 
 var position: Vector2
 var rotation: float #radians
 
-var is_known: bool = false
+@export var is_known: bool = false
 
 func get_identifier():
 	return identifier
@@ -47,3 +47,6 @@ func is_asteroid_belt():
 		return true
 	else:
 		return false
+
+func is_wormhole():
+	return false #cant be wormhole because script does not extend bodyAPI

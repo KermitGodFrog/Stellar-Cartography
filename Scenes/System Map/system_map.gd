@@ -46,8 +46,11 @@ func _physics_process(delta):
 	system_list.add_item(str(star.display_name + " - ", star.metadata.get("star_type"), " Class Star"))
 	
 	for body in system.bodies:
-		if body.is_known: if body.is_planet():
-			var new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.metadata.get("planet_type"), " Planet"))
+		if body.is_known: if body.is_planet() or body.is_wormhole():
+			var new_item_idx: int
+			if body.is_planet(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.metadata.get("planet_type"), " Planet"))
+			if body.is_wormhole(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Wormhole"))
+			
 			system_list.set_item_metadata(new_item_idx, body.get_identifier())
 			
 			if body.get_identifier() == closest_body_id:
