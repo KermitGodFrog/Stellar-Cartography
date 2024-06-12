@@ -96,24 +96,24 @@ var planet_types = {
 }
 
 var planet_type_data = {
-	"Chthonian": {"color": Color.DARK_RED},
-	"Lava": {"color": Color.RED},
-	"Hycean": {"color": Color.BLUE_VIOLET},
-	"Desert": {"color": Color.DARK_KHAKI},
-	"Ocean": {"color": Color.BLUE},
-	"Earth-like": {"color": Color.GREEN},
-	"Ice": {"color": Color.WHITE},
-	"Silicate": {"color": Color.DARK_GRAY},
-	"Terrestrial": {"color": Color.DARK_SLATE_GRAY},
-	"Carbon": {"color": Color.BLACK},
-	"Fire Dwarf": {"color": Color.LIGHT_CORAL},
-	"Gas Dwarf": {"color": Color.ORANGE},
-	"Ice Dwarf": {"color": Color.DARK_BLUE},
-	"Helium Dwarf": {"color": Color.DARK_ORANGE},
-	"Fire Giant": {"color": Color.DARK_SALMON},
-	"Gas Giant": {"color": Color.CORAL},
-	"Ice Giant": {"color": Color.DARK_SLATE_BLUE},
-	"Helium Giant": {"color": Color.ORANGE_RED}
+	"Chthonian": {"color": Color.DARK_RED, "avg_value": 4000},
+	"Lava": {"color": Color.RED, "avg_value": 3000},
+	"Hycean": {"color": Color.BLUE_VIOLET, "avg_value": 10000},
+	"Desert": {"color": Color.DARK_KHAKI, "avg_value": 10000},
+	"Ocean": {"color": Color.BLUE, "avg_value": 15000},
+	"Earth-like": {"color": Color.GREEN, "avg_value": 15000},
+	"Ice": {"color": Color.WHITE, "avg_value": 2500},
+	"Silicate": {"color": Color.DARK_GRAY, "avg_value": 1000},
+	"Terrestrial": {"color": Color.DARK_SLATE_GRAY, "avg_value": 1000},
+	"Carbon": {"color": Color.BLACK, "avg_value": 2500},
+	"Fire Dwarf": {"color": Color.LIGHT_CORAL, "avg_value": 1000},
+	"Gas Dwarf": {"color": Color.ORANGE, "avg_value": 2000},
+	"Ice Dwarf": {"color": Color.DARK_BLUE, "avg_value": 3000},
+	"Helium Dwarf": {"color": Color.DARK_ORANGE, "avg_value": 4500},
+	"Fire Giant": {"color": Color.DARK_SALMON, "avg_value": 1000},
+	"Gas Giant": {"color": Color.CORAL, "avg_value": 2000},
+	"Ice Giant": {"color": Color.DARK_SLATE_BLUE, "avg_value": 3000},
+	"Helium Giant": {"color": Color.ORANGE_RED, "avg_value": 4500}
 }
 
 var asteroid_belt_classifications = {
@@ -220,8 +220,12 @@ func generateRandomWeightedBodies(hook_identifier: int):
 				#PICKING COLOR
 				var color = planet_type_data.get(planet_type).get("color")
 				
+				#PICKING VALUE
+				var avg_value = planet_type_data.get(planet_type).get("avg_value")
+				var value = global_data.get_randf(avg_value * 0.5, avg_value * 1.5)
+				
 				#SPAWNING PLANET + PLANET MOONS
-				var new_body = addBody(identifier_count, str(get_random_planet_name()), hook_identifier, new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"planet_classification": planet_classification, "planet_type": planet_type, "mass": (mass / 333000), "color": color, "iterations": (hook.metadata.get("iterations") / 2)})
+				var new_body = addBody(identifier_count, str(get_random_planet_name()), hook_identifier, new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"planet_classification": planet_classification, "planet_type": planet_type, "mass": (mass / 333000), "color": color, "value": value, "iterations": (hook.metadata.get("iterations") / 2)})
 				get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
 				
 				if generate_sub_bodies:

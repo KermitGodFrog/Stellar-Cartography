@@ -112,6 +112,7 @@ func _on_found_body(id: int):
 		var body = system.get_body_from_identifier(id)
 		if body:
 			body.is_known = true
+			if body.metadata.has("value"): world.player.current_value += body.metadata.get("value")
 	pass
 
 func _on_add_console_item(text: String, bg_color: Color = Color.WHITE):

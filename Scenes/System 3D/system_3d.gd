@@ -17,6 +17,9 @@ var body_3d = preload("res://Instantiated Scenes/Body 3D/body_3d.tscn")
 var system_scalar: float = 10.0
 var body_detection_range: int = 1000
 
+#for wormholes obv
+var wormhole_shader = preload("res://Scenes/wormhole_shader.gdshader")
+
 func _physics_process(delta):
 	#setting post process
 	
@@ -69,7 +72,8 @@ func _physics_process(delta):
 					var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
 					if detection_scalar < body_detection_range and associated_body.is_known == false:
 						emit_signal("foundBody", child.get_identifier())
-						emit_signal("addConsoleItem", str("DISCOVERED BODY: ", associated_body.display_name), Color.DARK_GREEN)
+						if not associated_body.metadata.has("value"): emit_signal("addConsoleItem", str("DISCOVERED BODY: ", associated_body.display_name), Color.DARK_GREEN)
+						elif associated_body.metadata.has("value"): emit_signal("addConsoleItem", str("DISCOVERED BODY: ", associated_body.display_name, " (est. value ", round(associated_body.metadata.get("value")), "c)"), Color.DARK_GREEN)
 	
 	#setting locked_body_label text
 	#var body = system.get_body_from_identifier(locked_body_identifier)
@@ -92,7 +96,10 @@ func spawnBodies():
 		if body.is_planet() or body.is_star() or body.is_wormhole():
 			var new_body_3d = body_3d.instantiate()
 			new_body_3d.set_identifier(body.get_identifier())
-			new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"))
+			if not body.is_wormhole():
+				new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"))
+			elif body.is_wormhole():
+				new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"), wormhole_shader)
 			add_child(new_body_3d)
 	pass
 
