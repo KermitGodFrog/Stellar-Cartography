@@ -40,3 +40,6 @@ layout_mode = 2
 text = "PING!"
 
 [connection signal="close_requested" from="." to="sonar_control" method="_on_sonar_window_close_requested"]
+[connection signal="mouse_entered" from="sonar_control/flow_container" to="sonar_control" method="_on_flow_container_mouse_entered"]
+[connection signal="mouse_exited" from="sonar_control/flow_container" to="sonar_control" method="_on_flow_container_mouse_exited"]
+[connection signal="pressed" from="sonar_control/flow_container/ping_button" to="sonar_control" method="_on_ping_button_pressed"]

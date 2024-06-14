@@ -4,7 +4,6 @@ extends Node2D
 
 signal updatePlayerTargetPosition(pos: Vector2)
 signal updateTargetPosition(pos: Vector2)
-signal debugCreateNewStarSystem
 signal updatedLockedBody(body: bodyAPI)
 
 var system: starSystemAPI
@@ -26,9 +25,6 @@ func _physics_process(delta):
 	if Input.is_action_pressed("left_mouse") and not mouse_over_system_list:
 		camera_target_position = get_global_mouse_position()
 		emit_signal("updateTargetPosition", get_global_mouse_position())
-	
-	if Input.is_action_just_pressed("action"):
-		emit_signal("debugCreateNewStarSystem")
 	
 	#incredibly out of plcace!!!!!
 	if camera.locked_body:
@@ -73,7 +69,7 @@ func draw_map():
 			draw_circle(body.position, body.radius, body.metadata.get("color"))
 	var size_exponent = pow(camera.zoom.length(), -0.5)
 	
-	draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
+	#draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
 	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, size_exponent)
 	draw_circle(player_position_matrix[0], size_exponent, Color.WHITE)
 	if camera_target_position != Vector2.ZERO:

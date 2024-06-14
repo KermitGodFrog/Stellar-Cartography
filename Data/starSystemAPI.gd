@@ -2,14 +2,15 @@ extends Resource
 class_name starSystemAPI
 
 var identifier: int
-@export var display_name: String
+var display_name: String
 
+var previous_system: starSystemAPI
 var destination_systems: Array[starSystemAPI]
 
-@export var bodies: Array[bodyAPI]
+var bodies: Array[bodyAPI]
 var identifier_count: int = 1
 
-var time: int = 1000
+var time: int = 5000
 var post_gen_location_candidates: Array = []
 # ^^^ can be used for multiple passes of additional things, each pass removes used indexes from the array  
 
@@ -238,7 +239,10 @@ func generateRandomWeightedBodies(hook_identifier: int):
 	pass
 
 func generateRandomWormholes(): #uses variables post_gen_location_candidates, destination_systems
-	for dest_system in destination_systems:
+	var spawn_systems = destination_systems.duplicate()
+	if previous_system:
+		spawn_systems.push_front(previous_system)
+	for dest_system in spawn_systems:
 		var location = post_gen_location_candidates.pick_random()
 		var hook = get_body_from_identifier(location.front())
 		var i = location.back()
@@ -255,7 +259,9 @@ func generateRandomWormholes(): #uses variables post_gen_location_candidates, de
 		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
 		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 		
-		addWormhole(identifier_count, str(get_random_wormhole_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), dest_system, {"color": Color.WEB_PURPLE})
+		var new_wormhole = addWormhole(identifier_count, str(get_random_wormhole_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), dest_system, {"color": Color.WEB_PURPLE})
+		if dest_system == previous_system:
+			get_body_from_identifier(new_wormhole).is_disabled = true
 		#FORCE SETS WORMHOLE COLOUR TO PURPLE!!!!!!!!!!!!
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
@@ -363,6 +369,12 @@ func get_wormholes():
 		if body is wormholeAPI:
 			wormholes.append(body)
 	return wormholes
+
+func get_wormhole_with_destination_system(dest_system: starSystemAPI):
+	for body in bodies:
+		if body.is_wormhole():
+			if body.destination_system == dest_system:
+				return body
 
 func get_random_star_name():
 	var name_candidates: Array = []

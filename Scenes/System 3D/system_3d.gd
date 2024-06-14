@@ -88,7 +88,7 @@ func _physics_process(delta):
 
 func spawnBodies():
 	for child in get_children():
-		if child.is_in_group("body"):
+		if child.is_in_group("body_3d"):
 			call_deferred("remove_child", child)
 			#remove_child(child)
 			child.queue_free()
@@ -103,6 +103,9 @@ func spawnBodies():
 			add_child(new_body_3d)
 	pass
 
+func reset_locked_body():
+	locked_body_identifier = 0
+	pass
 
 func _on_system_3d_window_close_requested():
 	owner.hide()

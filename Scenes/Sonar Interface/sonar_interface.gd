@@ -1,7 +1,11 @@
 extends Control
 
+signal sonarPing(dir: Vector2, length: int)
+
 var ping_direction: Vector2 = Vector2.ZERO
 var ping_length: int
+
+var mouse_over_ui: bool = false
 
 @onready var ping_length_slider = $flow_container/ping_length_slider
 
@@ -10,7 +14,7 @@ func _physics_process(delta):
 	
 	
 	
-	if Input.is_action_pressed("left_mouse"):
+	if Input.is_action_pressed("left_mouse") and not mouse_over_ui:
 		ping_direction = get_screen_centre().direction_to(get_global_mouse_position())
 	queue_redraw()
 	pass
@@ -25,4 +29,42 @@ func get_screen_centre():
 
 func _on_sonar_window_close_requested():
 	owner.hide()
+	pass
+
+func _on_ping_button_pressed():
+	emit_signal("sonarPing", ping_direction, ping_length)
+	pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+func _on_flow_container_mouse_entered():
+	mouse_over_ui = true
+	pass 
+
+
+func _on_flow_container_mouse_exited():
+	mouse_over_ui = false
 	pass

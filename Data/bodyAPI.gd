@@ -1,20 +1,20 @@
 extends Resource
 class_name bodyAPI
 
-@export var identifier: int
-@export var display_name: String
+var identifier: int
+var display_name: String
 
-@export var hook_identifier: int #identifier
+var hook_identifier: int #identifier
 
-@export var distance: float #in solar radii
-@export var orbit_speed: float
-@export var radius: float
-@export var metadata: Dictionary = {}
+var distance: float #in solar radii
+var orbit_speed: float
+var radius: float
+var metadata: Dictionary = {}
 
 var position: Vector2
 var rotation: float #radians
 
-@export var is_known: bool = false
+var is_known: bool = false
 
 func get_identifier():
 	return identifier
