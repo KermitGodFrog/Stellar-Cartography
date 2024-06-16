@@ -1,6 +1,22 @@
-[gd_resource type="Theme" load_steps=4 format=3 uid="uid://dm3fbhtw7qov2"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://dm3fbhtw7qov2"]
 
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="1_17eso"]
+[ext_resource type="Texture2D" uid="uid://ckms0lt6w3rsx" path="res://Graphics/icon_bg_2.png" id="1_gejg4"]
+[ext_resource type="Texture2D" uid="uid://bgmcm7g47id5b" path="res://Graphics/icon_bg_1.png" id="1_qf4go"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w71cu"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3wt8n"]
+content_margin_bottom = 30.0
+texture = ExtResource("1_qf4go")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7ilge"]
+content_margin_bottom = 50.0
+texture = ExtResource("1_qf4go")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ohpad"]
+content_margin_bottom = 45.0
+texture = ExtResource("1_gejg4")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tae8s"]
 content_margin_left = 20.0
@@ -17,6 +33,10 @@ border_color = Color(0.156863, 0.156863, 0.156863, 1)
 [resource]
 default_font = ExtResource("1_17eso")
 default_font_size = 16
+Button/styles/focus = SubResource("StyleBoxEmpty_w71cu")
+Button/styles/hover = SubResource("StyleBoxTexture_3wt8n")
+Button/styles/normal = SubResource("StyleBoxTexture_7ilge")
+Button/styles/pressed = SubResource("StyleBoxTexture_ohpad")
 ItemList/colors/font_color = Color(1, 1, 1, 1)
 ItemList/colors/font_hovered_color = Color(0.560784, 1, 1, 1)
 ItemList/font_sizes/font_size = 16

@@ -9,27 +9,64 @@ signal updatedLockedBody(body: bodyAPI)
 var system: starSystemAPI
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 
+#this fucking atrocity is the result of godots terrible system for detecting if the mouse is above a UI element
 var mouse_over_system_list: bool = false
+var mouse_over_actions_panel: bool = false
+var mouse_over_go_to_button: bool = false
+var mouse_over_orbit_button: bool = false
+var mouse_over_ui: bool = false
 
 var font = preload("res://Graphics/Fonts/comicsans.ttf")
-@onready var system_list = $camera/canvas/control/system_list
+@onready var system_list = $camera/canvas/control/ui_scroll/system_list
 @onready var camera = $camera
 
-#maybe shouldnt be here esc sketchy stuff
 var camera_target_position: Vector2 = Vector2.ZERO
+var follow_body : bodyAPI
+var locked_body : bodyAPI
+var action_body : bodyAPI
+enum ACTION_TYPES {NONE, GO_TO, ORBIT}
+var current_action_type
 
 func _physics_process(delta):
-	if Input.is_action_pressed("right_mouse") and not mouse_over_system_list:
-		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
+	#If body clicked on in system list, follow the body with the camera (follow body).
+	#If body clicked on in system list, actions can itneract with the body (locked body).
+	#If actions pressed, perform on locked body (action body).
+	#If body selected in system list changes, keep the previous action body.
+	#Follow body is replicated to camera.
+	#If camera moves, follow body is removed for camera.
 	
-	if Input.is_action_pressed("left_mouse") and not mouse_over_system_list:
+	#camera_target_position is position for system3d to look at
+	
+	#checking whether the mouse is over UI
+	if mouse_over_system_list or mouse_over_actions_panel or mouse_over_go_to_button or mouse_over_orbit_button: mouse_over_ui = true
+	else: mouse_over_ui = false
+	
+	#moving to the mouse position or moving to action_body in various ways
+	if Input.is_action_pressed("right_mouse") and not mouse_over_ui:
+		locked_body = null
+		action_body = null
+		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
+	elif action_body:
+		match current_action_type:
+			ACTION_TYPES.NONE:
+				pass
+			ACTION_TYPES.GO_TO:
+				#LOCK TO BODIES CENTER WHEN CLOSE ENOUGH!
+				emit_signal("updatePlayerTargetPosition", action_body.position)
+			ACTION_TYPES.ORBIT:
+				#NEED TO IMPLEMENT THIS!!!!!!!!!!!
+				emit_signal("updatePlayerTargetPosition", action_body.position)
+	
+	#changing target position
+	if Input.is_action_pressed("left_mouse") and not mouse_over_ui:
 		camera_target_position = get_global_mouse_position()
 		emit_signal("updateTargetPosition", get_global_mouse_position())
 	
 	#incredibly out of plcace!!!!!
-	if camera.locked_body:
+	if camera.follow_body:
 		camera_target_position = Vector2.ZERO
 	
+	#setting system list and drawing screen
 	system_list.clear()
 	var camera_position_to_bodies: Dictionary = {}
 	for body in system.bodies:
@@ -83,7 +120,19 @@ func _on_system_list_item_clicked(index, _at_position, _mouse_button_index):
 	if index_to_identifier:
 		var body = system.get_body_from_identifier(index_to_identifier)
 		emit_signal("updatedLockedBody", body)
-		camera.locked_body = body
+		locked_body = body
+		follow_body = body
+		camera.follow_body = follow_body
+	pass
+
+func _on_go_to_button_pressed():
+	current_action_type = ACTION_TYPES.GO_TO
+	if locked_body:
+		action_body = locked_body
+	pass
+
+func _on_orbit_button_pressed():
+	current_action_type = ACTION_TYPES.ORBIT
 	pass
 
 
@@ -96,10 +145,9 @@ func _on_system_list_item_clicked(index, _at_position, _mouse_button_index):
 
 
 
-
-
-
-
+func _on_system_window_close_requested():
+	owner.hide()
+	pass
 
 func _on_system_list_mouse_entered():
 	mouse_over_system_list = true
@@ -109,6 +157,26 @@ func _on_system_list_mouse_exited():
 	mouse_over_system_list = false
 	pass
 
-func _on_system_window_close_requested():
-	owner.hide()
+func _on_actions_panel_mouse_entered():
+	mouse_over_actions_panel = true
+	pass
+
+func _on_actions_panel_mouse_exited():
+	mouse_over_actions_panel = false
+	pass
+
+func _on_go_to_button_mouse_entered():
+	mouse_over_go_to_button = true
+	pass
+
+func _on_go_to_button_mouse_exited():
+	mouse_over_go_to_button = false
+	pass
+
+func _on_orbit_button_mouse_entered():
+	mouse_over_orbit_button = true
+	pass
+
+func _on_orbit_button_mouse_exited():
+	mouse_over_orbit_button = false
 	pass

@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=6 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
 [ext_resource type="Theme" uid="uid://dm3fbhtw7qov2" path="res://Scenes/System Map/system_map_HUD_theme.tres" id="3_djc4s"]
+[ext_resource type="Texture2D" uid="uid://7klr1mcpbsc4" path="res://Graphics/go_to_icon.png" id="4_niwjs"]
+[ext_resource type="Texture2D" uid="uid://dn8ug1anbuwpu" path="res://Graphics/orbit_icon.png" id="5_hp0se"]
 
 [node name="system_window" type="Window"]
 disable_3d = true
@@ -12,7 +14,6 @@ canvas_item_default_texture_filter = 0
 title = "System Map"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 1000)
-visible = false
 min_size = Vector2i(1000, 1000)
 
 [node name="system" type="Node2D" parent="."]
@@ -31,18 +32,76 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="system_list" type="ItemList" parent="system/camera/canvas/control"]
-custom_minimum_size = Vector2(450, 0)
+[node name="ui_scroll" type="VBoxContainer" parent="system/camera/canvas/control"]
+custom_minimum_size = Vector2(450, 1000)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
+offset_right = 450.0
 grow_vertical = 2
+
+[node name="system_list" type="ItemList" parent="system/camera/canvas/control/ui_scroll"]
+custom_minimum_size = Vector2(450, 900)
+layout_mode = 2
 theme = ExtResource("3_djc4s")
 allow_search = false
 max_text_lines = 3
 text_overrun_behavior = 4
 
+[node name="actions_panel" type="Panel" parent="system/camera/canvas/control/ui_scroll"]
+custom_minimum_size = Vector2(450, 100)
+layout_mode = 2
+
+[node name="actions_scroll" type="HBoxContainer" parent="system/camera/canvas/control/ui_scroll/actions_panel"]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+alignment = 1
+
+[node name="go_to_button" type="Button" parent="system/camera/canvas/control/ui_scroll/actions_panel/actions_scroll"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+tooltip_text = "Lay in a course to selected body"
+theme = ExtResource("3_djc4s")
+icon = ExtResource("4_niwjs")
+icon_alignment = 1
+expand_icon = true
+
+[node name="orbit_button" type="Button" parent="system/camera/canvas/control/ui_scroll/actions_panel/actions_scroll"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+tooltip_text = "Lay in a course to selected body and orbit"
+theme = ExtResource("3_djc4s")
+icon = ExtResource("5_hp0se")
+icon_alignment = 1
+expand_icon = true
+
+[node name="controls_label" type="Label" parent="system/camera/canvas/control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("3_djc4s")
+text = "LMB: POINT SCOPES
+RMB: LAY IN A COURSE"
+horizontal_alignment = 2
+
 [connection signal="close_requested" from="." to="system" method="_on_system_window_close_requested"]
-[connection signal="item_clicked" from="system/camera/canvas/control/system_list" to="system" method="_on_system_list_item_clicked"]
-[connection signal="mouse_entered" from="system/camera/canvas/control/system_list" to="system" method="_on_system_list_mouse_entered"]
-[connection signal="mouse_exited" from="system/camera/canvas/control/system_list" to="system" method="_on_system_list_mouse_exited"]
+[connection signal="item_clicked" from="system/camera/canvas/control/ui_scroll/system_list" to="system" method="_on_system_list_item_clicked"]
+[connection signal="mouse_entered" from="system/camera/canvas/control/ui_scroll/system_list" to="system" method="_on_system_list_mouse_entered"]
+[connection signal="mouse_exited" from="system/camera/canvas/control/ui_scroll/system_list" to="system" method="_on_system_list_mouse_exited"]
+[connection signal="mouse_entered" from="system/camera/canvas/control/ui_scroll/actions_panel" to="system" method="_on_actions_panel_mouse_entered"]
+[connection signal="mouse_exited" from="system/camera/canvas/control/ui_scroll/actions_panel" to="system" method="_on_actions_panel_mouse_exited"]
+[connection signal="mouse_entered" from="system/camera/canvas/control/ui_scroll/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_mouse_entered"]
+[connection signal="mouse_exited" from="system/camera/canvas/control/ui_scroll/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_mouse_exited"]
+[connection signal="pressed" from="system/camera/canvas/control/ui_scroll/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_pressed"]
+[connection signal="mouse_entered" from="system/camera/canvas/control/ui_scroll/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_mouse_entered"]
+[connection signal="mouse_exited" from="system/camera/canvas/control/ui_scroll/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_mouse_exited"]
+[connection signal="pressed" from="system/camera/canvas/control/ui_scroll/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_pressed"]
