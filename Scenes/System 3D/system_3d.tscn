@@ -1,13 +1,23 @@
-[gd_scene load_steps=9 format=3 uid="uid://co52u63cyk220"]
+[gd_scene load_steps=11 format=3 uid="uid://co52u63cyk220"]
 
 [ext_resource type="Script" path="res://Scenes/System 3D/system_3d.gd" id="1_a351o"]
 [ext_resource type="Shader" path="res://Scenes/pixelate_shader.gdshader" id="2_ra6gs"]
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="3_buwkt"]
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="3_wi6mv"]
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_rgh3c"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e7fqt"]
 shader = ExtResource("2_ra6gs")
 shader_parameter/pixel_size = 16.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ajtlq"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+skew = Vector2(1, 0)
+border_width_left = 20
+border_color = Color(0.258824, 0.258824, 0.258824, 1)
+expand_margin_left = 15.0
+shadow_color = Color(0.207843, 0.207843, 0.207843, 0.6)
+shadow_size = 5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ch2h2"]
 shader = ExtResource("3_buwkt")
@@ -61,6 +71,9 @@ offset_bottom = 40.0
 layout_mode = 1
 offset_right = 40.0
 offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("3_wi6mv")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_ajtlq")
 
 [node name="world_environment" type="WorldEnvironment" parent="system_3d"]
 environment = SubResource("Environment_wo5s4")

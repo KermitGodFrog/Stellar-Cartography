@@ -1,6 +1,7 @@
 // https://godotshaders.com/shader/wormhole/
 shader_type spatial;
-render_mode depth_prepass_alpha, cull_front, specular_schlick_ggx, depth_test_disabled, ensure_correct_normals, shadows_disabled, ambient_light_disabled;
+render_mode depth_prepass_alpha, cull_front, specular_schlick_ggx, ensure_correct_normals, shadows_disabled, ambient_light_disabled;
+//removed depth_test_disabled so it doesnt render through other objects
 
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 

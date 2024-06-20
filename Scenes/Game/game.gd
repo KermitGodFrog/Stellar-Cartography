@@ -42,7 +42,7 @@ func _ready():
 		#_on_switch_star_system(new)
 	
 	createWorld()
-	world.createPlayer(1)
+	world.createPlayer(3)
 	
 	#new game stuff
 	var new = _on_create_new_star_system(false)
@@ -88,8 +88,9 @@ func _physics_process(delta):
 	system_3d.set("player_position", world.player.position)
 	pass
 
-func _on_update_player_target_position(pos: Vector2):
+func _on_update_player_target_position(pos: Vector2, slowdown: bool = true):
 	world.player.target_position = pos
+	world.player.slowdown = slowdown
 	print("SYSTEM MAP: UPDATING PLAYER TARGET POSITION: ", pos)
 	pass
 
@@ -133,15 +134,23 @@ func _on_found_body(id: int):
 		if body:
 			body.is_known = true
 			if body.metadata.has("value"): world.player.current_value += body.metadata.get("value")
+			var sub_bodies = system.get_bodies_with_hook_identifier(id)
+			if sub_bodies:
+				for sub_body in sub_bodies:
+					if sub_body.is_asteroid_belt():
+						sub_body.is_known = true
 	pass
 
 func _on_add_console_item(text: String, bg_color: Color = Color.WHITE):
 	console_control.add_console_item(text, bg_color)
 	pass
 
-func _on_sonar_ping(dir: Vector2, length: int):
+func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	print("SONAR INTERFACE (DEBUG): PINGING")
+	system_map._on_sonar_ping(ping_width, ping_length, ping_direction)
 	pass
+
+
 
 func _on_system_map_popup():
 	$system_window.popup()

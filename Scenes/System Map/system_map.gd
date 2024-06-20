@@ -9,7 +9,7 @@ signal updatedLockedBody(body: bodyAPI)
 var system: starSystemAPI
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 
-#this fucking atrocity is the result of godots terrible system for detecting if the mouse is above a UI element
+#this atrocity is the result of godots terrible system for detecting if the mouse is above a UI element
 var mouse_over_system_list: bool = false
 var mouse_over_actions_panel: bool = false
 var mouse_over_go_to_button: bool = false
@@ -27,7 +27,15 @@ var action_body : bodyAPI
 enum ACTION_TYPES {NONE, GO_TO, ORBIT}
 var current_action_type
 
+var rotation_hint: float #used for orbiting mechanics
+
+#to dispaly data from sonar interface
+var SONAR_PINGS: Array[pingDisplayHelperAPI]
+var SONAR_POLYGON: PackedVector2Array
+var SONAR_POLYGON_DISPLAY_TIME: float = 0
+
 func _physics_process(delta):
+	rotation_hint += delta
 	#If body clicked on in system list, follow the body with the camera (follow body).
 	#If body clicked on in system list, actions can itneract with the body (locked body).
 	#If actions pressed, perform on locked body (action body).
@@ -42,7 +50,7 @@ func _physics_process(delta):
 	else: mouse_over_ui = false
 	
 	#moving to the mouse position or moving to action_body in various ways
-	if Input.is_action_pressed("right_mouse") and not mouse_over_ui:
+	if Input.is_action_pressed("right_mouse") and owner.has_focus() and not mouse_over_ui:
 		locked_body = null
 		action_body = null
 		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
@@ -51,14 +59,15 @@ func _physics_process(delta):
 			ACTION_TYPES.NONE:
 				pass
 			ACTION_TYPES.GO_TO:
-				#LOCK TO BODIES CENTER WHEN CLOSE ENOUGH!
-				emit_signal("updatePlayerTargetPosition", action_body.position)
+				emit_signal("updatePlayerTargetPosition", action_body.position, false)
 			ACTION_TYPES.ORBIT:
-				#NEED TO IMPLEMENT THIS!!!!!!!!!!!
-				emit_signal("updatePlayerTargetPosition", action_body.position)
+				var dir = Vector2.UP.rotated(rotation_hint)
+				var pos = action_body.position
+				pos = pos + (dir * (3 * action_body.radius))
+				emit_signal("updatePlayerTargetPosition", pos, false)
 	
 	#changing target position
-	if Input.is_action_pressed("left_mouse") and not mouse_over_ui:
+	if Input.is_action_pressed("left_mouse") and owner.has_focus() and not mouse_over_ui:
 		camera_target_position = get_global_mouse_position()
 		emit_signal("updateTargetPosition", get_global_mouse_position())
 	
@@ -90,17 +99,35 @@ func _physics_process(delta):
 				system_list.set_item_custom_bg_color(new_item_idx, Color.WEB_GRAY)
 			else:
 				system_list.set_item_custom_bg_color(new_item_idx, Color.DARK_SLATE_GRAY)
+	
+	#updating sonar ping visualization time values & sonar polygon display time
+	SONAR_POLYGON_DISPLAY_TIME = maxi(0, SONAR_POLYGON_DISPLAY_TIME - delta)
+	if SONAR_PINGS:
+		for ping in SONAR_PINGS:
+			ping.updateTime(delta)
+			if ping.time == 0:
+				SONAR_PINGS.erase(ping)
+	
 	queue_redraw()
 	pass
 
 func _draw():
+	draw_sonar()
 	draw_map()
+	pass
+
+func draw_sonar():
+	if SONAR_POLYGON_DISPLAY_TIME != 0 and SONAR_POLYGON:
+		draw_colored_polygon(SONAR_POLYGON, Color.DARK_GRAY)
+	for ping in SONAR_PINGS:
+		ping.updateDisplay()
+		draw_circle(ping.position, ping.current_radius, ping.current_color)
 	pass
 
 func draw_map():
 	var asteroid_belts = system.get_bodies_with_metadata_key("asteroid_belt_classification") #not EXACTLY proper but yknow
 	if asteroid_belts: for belt in asteroid_belts:
-		draw_arc(belt.position, belt.radius, -10, TAU, 50, belt.metadata.get("color"), belt.metadata.get("width"), false)
+		if belt.is_known: draw_arc(belt.position, belt.radius, -10, TAU, 50, belt.metadata.get("color"), belt.metadata.get("width"), false)
 	for body in system.bodies:
 		if not body.is_asteroid_belt() and body.is_known:
 			draw_circle(body.position, body.radius, body.metadata.get("color"))
@@ -132,12 +159,37 @@ func _on_go_to_button_pressed():
 	pass
 
 func _on_orbit_button_pressed():
+	#not sure who will have jurisdiction
 	current_action_type = ACTION_TYPES.ORBIT
+	if locked_body:
+		action_body = locked_body
 	pass
 
-
-
-
+func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
+	ping_length = remap(ping_width, 5, 90, 300, 100)
+	var line = player_position_matrix[0] + ping_direction * ping_length
+	
+	var a = player_position_matrix[0]
+	var b = line + Vector2(0,ping_width).rotated(player_position_matrix[0].angle_to_point(line))
+	var c = line + Vector2(0,-ping_width).rotated(player_position_matrix[0].angle_to_point(line))
+	var points: PackedVector2Array = [a,b,c]
+	
+	SONAR_POLYGON = points
+	SONAR_POLYGON_DISPLAY_TIME = 50
+	
+	for body in system.bodies:
+		if Geometry2D.is_point_in_polygon(body.position, points):
+			var ping = load("res://Data/Ping Display Helpers/normal.tres").duplicate(true)
+			ping.position = body.position
+			ping.resetTime()
+			SONAR_PINGS.append(ping)
+	
+	for random_ping in global_data.get_randi(0, remap(ping_width, 5, 90, 1, 10)):
+		var ping = load("res://Data/Ping Display Helpers/normal.tres").duplicate(true)
+		ping.position = global_data.random_triangle_point(a,b,c)
+		ping.resetTime()
+		SONAR_PINGS.append(ping)
+	pass
 
 
 

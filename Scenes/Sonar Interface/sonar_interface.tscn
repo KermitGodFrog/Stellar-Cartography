@@ -8,6 +8,14 @@ position = Vector2i(0, 36)
 size = Vector2i(1000, 1000)
 visible = false
 
+[node name="background" type="TextureRect" parent="."]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="sonar_control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -26,10 +34,10 @@ offset_bottom = 23.0
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 123.0
+offset_right = 64.0
 grow_vertical = 2
 
-[node name="ping_length_slider" type="HSlider" parent="sonar_control/flow_container"]
+[node name="ping_width_slider" type="HSlider" parent="sonar_control/flow_container"]
 layout_mode = 2
 min_value = 5.0
 max_value = 90.0
@@ -40,6 +48,6 @@ layout_mode = 2
 text = "PING!"
 
 [connection signal="close_requested" from="." to="sonar_control" method="_on_sonar_window_close_requested"]
-[connection signal="mouse_entered" from="sonar_control/flow_container" to="sonar_control" method="_on_flow_container_mouse_entered"]
-[connection signal="mouse_exited" from="sonar_control/flow_container" to="sonar_control" method="_on_flow_container_mouse_exited"]
+[connection signal="mouse_entered" from="sonar_control/flow_container/ping_button" to="sonar_control" method="_on_ping_button_mouse_entered"]
+[connection signal="mouse_exited" from="sonar_control/flow_container/ping_button" to="sonar_control" method="_on_ping_button_mouse_exited"]
 [connection signal="pressed" from="sonar_control/flow_container/ping_button" to="sonar_control" method="_on_ping_button_pressed"]

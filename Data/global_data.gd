@@ -87,3 +87,6 @@ func convertToRomanNumeral(number: int):
 		return conversion
 	else:
 		return str(number)
+
+func random_triangle_point(a, b, c):
+	return a + sqrt(randf()) * (-a + b + randf() * (c - b))

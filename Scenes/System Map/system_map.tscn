@@ -14,6 +14,7 @@ canvas_item_default_texture_filter = 0
 title = "System Map"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 1000)
+visible = false
 min_size = Vector2i(1000, 1000)
 
 [node name="system" type="Node2D" parent="."]

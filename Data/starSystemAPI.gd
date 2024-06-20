@@ -10,7 +10,7 @@ var destination_systems: Array[starSystemAPI]
 var bodies: Array[bodyAPI]
 var identifier_count: int = 1
 
-var time: int = 5000
+var time: int = 1000
 var post_gen_location_candidates: Array = []
 # ^^^ can be used for multiple passes of additional things, each pass removes used indexes from the array  
 
@@ -124,6 +124,7 @@ var asteroid_belt_classifications = {
 }
 
 func createRandomWeightedPrimaryHookStar():
+	randomize()
 	var star_type = global_data.weighted_pick(star_types, "weight")
 	var data = star_data.get(star_type)
 	
@@ -138,6 +139,7 @@ func createRandomWeightedPrimaryHookStar():
 	return new_body
 
 func generateRandomWeightedBodies(hook_identifier: int):
+	randomize()
 	var hook = get_body_from_identifier(hook_identifier)
 	var remaining: Array = []
 	
@@ -159,7 +161,9 @@ func generateRandomWeightedBodies(hook_identifier: int):
 				var belt_width = global_data.get_randf(hook.radius * 71, hook.radius * 645) #in solar radii. for reference, asteroid belt in the sol system is 215 solar radii
 				if new_distance > belt_width:
 					var belt_classification = global_data.weighted_pick(asteroid_belt_classifications, "weight")
-					addStationaryBody(identifier_count, str(get_random_asteroid_belt_name()), hook_identifier, new_distance, {"asteroid_belt_classification": belt_classification, "mass": (global_data.get_randf(pow(10, -1.3) / 333000, pow(10, 0.22) / 333000)), "width": belt_width, "color": Color(0.111765, 0.111765, 0.111765, 1), "iterations": (hook.metadata.get("iterations") / 2)})
+					var new_belt = addStationaryBody(identifier_count, str(get_random_asteroid_belt_name()), hook_identifier, new_distance, {"asteroid_belt_classification": belt_classification, "mass": (global_data.get_randf(pow(10, -1.3) / 333000, pow(10, 0.22) / 333000)), "width": belt_width, "color": Color(0.111765, 0.111765, 0.111765, 1), "iterations": (hook.metadata.get("iterations") / 2)})
+					if hook.is_star():
+						get_body_from_identifier(new_belt).is_known = true
 					continue
 			
 			#PICKING PLANET CLASSIFICATION + DECIDING WHETHER TO SPAWN MOONS
@@ -239,6 +243,7 @@ func generateRandomWeightedBodies(hook_identifier: int):
 	pass
 
 func generateRandomWormholes(): #uses variables post_gen_location_candidates, destination_systems
+	randomize()
 	var spawn_systems = destination_systems.duplicate()
 	if previous_system:
 		spawn_systems.push_front(previous_system)
