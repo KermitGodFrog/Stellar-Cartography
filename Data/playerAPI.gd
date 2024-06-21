@@ -7,11 +7,22 @@ var slowdown: bool = true
 var current_star_system: starSystemAPI
 
 var speed: int = 1
-var balance: float = 0
-var current_value: float = 0
+var balance: int = 0
+var current_value: int = 0
 
 var max_jumps: int = 5
 var jumps_remaining: int = 0
+
+func get_jumps_remaining():
+	return jumps_remaining
+
+func get_max_jumps():
+	return max_jumps
+
+func set_max_jumps(value: int):
+	max_jumps = value
+	pass
+
 
 func updatePosition(delta):
 	match slowdown:

@@ -227,7 +227,7 @@ func generateRandomWeightedBodies(hook_identifier: int):
 				
 				#PICKING VALUE
 				var avg_value = planet_type_data.get(planet_type).get("avg_value")
-				var value = global_data.get_randf(avg_value * 0.5, avg_value * 1.5)
+				var value = round(global_data.get_randf(avg_value * 0.5, avg_value * 1.5))
 				
 				#SPAWNING PLANET + PLANET MOONS
 				var new_body = addBody(identifier_count, str(get_random_planet_name()), hook_identifier, new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"planet_classification": planet_classification, "planet_type": planet_type, "mass": (mass / 333000), "color": color, "value": value, "iterations": (hook.metadata.get("iterations") / 2)})
@@ -269,6 +269,24 @@ func generateRandomWormholes(): #uses variables post_gen_location_candidates, de
 			get_body_from_identifier(new_wormhole).is_disabled = true
 		#FORCE SETS WORMHOLE COLOUR TO PURPLE!!!!!!!!!!!!
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
+	pass
+
+func generateRandomWeightedSettlements():
+	for station in global_data.get_randi(2, 5):
+		var location = post_gen_location_candidates.pick_random()
+		var hook = get_body_from_identifier(location.front())
+		var i = location.back()
+		
+		#whole bunch of stuff borrowed from generateRandomWeightedBodies
+		var new_distance: float = hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * i)
+		var orbit_speed_multiplier: float
+		if hook.orbit_speed > 0: orbit_speed_multiplier = ((hook.orbit_speed * 109.1) + 1)
+		else: orbit_speed_multiplier = 1
+		
+		var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+		var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+		
+		#NOT FINISHED!!!!! FINISH THIS!!!!!!!!!!!!!!!
 	pass
 
 func addBody(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, metadata: Dictionary = {}):

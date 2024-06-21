@@ -6,6 +6,7 @@ extends Control
 signal systemMapPopup
 signal system3DPopup
 signal sonarPopup
+signal barycenterPopup
 
 func add_console_item(text: String, bg_color: Color = Color.WHITE):
 	var new_item = item_list.add_item(text, null, false)
@@ -40,3 +41,7 @@ func cmd_scopes():
 func cmd_sonar():
 	emit_signal("sonarPopup")
 	return str("Opening sonar.")
+
+func cmd_barycenter():
+	emit_signal("barycenterPopup")
+	return str("Opening barycenter visualizer.")
