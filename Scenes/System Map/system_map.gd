@@ -6,6 +6,8 @@ signal updatePlayerTargetPosition(pos: Vector2)
 signal updateTargetPosition(pos: Vector2)
 signal updatedLockedBody(body: bodyAPI)
 
+signal DEBUG_REVEAL_ALL_WORMHOLES
+
 var system: starSystemAPI
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 
@@ -71,6 +73,9 @@ func _physics_process(delta):
 		camera_target_position = get_global_mouse_position()
 		emit_signal("updateTargetPosition", get_global_mouse_position())
 	
+	if Input.is_action_just_pressed("the B"): #DEBUG!!!!!!!!!!!!!!!!!
+		emit_signal("DEBUG_REVEAL_ALL_WORMHOLES")
+	
 	#incredibly out of plcace!!!!!
 	if camera.follow_body:
 		camera_target_position = Vector2.ZERO
@@ -88,10 +93,11 @@ func _physics_process(delta):
 	system_list.add_item(str(star.display_name + " - ", star.metadata.get("star_type"), " Class Star"))
 	
 	for body in system.bodies:
-		if body.is_known: if body.is_planet() or body.is_wormhole():
+		if body.is_known: if (body.is_planet() or body.is_wormhole() or body.is_station()):
 			var new_item_idx: int
 			if body.is_planet(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.metadata.get("planet_type"), " Planet"))
 			if body.is_wormhole(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Wormhole"))
+			if body.is_station(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.stringify_station_classification(), " Outpost"))
 			
 			system_list.set_item_metadata(new_item_idx, body.get_identifier())
 			
@@ -129,10 +135,12 @@ func draw_map():
 	if asteroid_belts: for belt in asteroid_belts:
 		if belt.is_known: draw_arc(belt.position, belt.radius, -10, TAU, 50, belt.metadata.get("color"), belt.metadata.get("width"), false)
 	for body in system.bodies:
-		if not (body.is_asteroid_belt() and body.is_station()) and body.is_known:
+		if not (body.is_asteroid_belt() or body.is_station()) and body.is_known:
 			draw_circle(body.position, body.radius, body.metadata.get("color"))
-	var size_exponent = pow(camera.zoom.length(), -0.5)
+	for body in system.get_stations(): #TEMP!!!!!
+		draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
 	
+	var size_exponent = pow(camera.zoom.length(), -0.5)
 	#draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
 	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, size_exponent)
 	draw_circle(player_position_matrix[0], size_exponent, Color.WHITE)

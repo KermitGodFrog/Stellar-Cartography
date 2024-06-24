@@ -6,6 +6,7 @@ var world: worldAPI
 @onready var system_3d = $system_3d_window/system_3d
 @onready var sonar = $sonar_window/sonar_control
 @onready var barycenter_visualizer = $barycenter_visualizer_window/barycenter_control
+@onready var station_ui = $station_window/station_control
 @onready var console_control = $console_control
 
 var is_paused: bool = false
@@ -18,11 +19,15 @@ func _ready():
 	system_map.connect("updatePlayerTargetPosition", _on_update_player_target_position)
 	system_map.connect("updateTargetPosition", _on_update_target_position)
 	system_map.connect("updatedLockedBody", _on_locked_body_updated)
+	system_map.connect("DEBUG_REVEAL_ALL_WORMHOLES", _ON_DEBUG_REVEAL_ALL_WORMHOLES)
 	
 	system_3d.connect("foundBody", _on_found_body)
 	system_3d.connect("addConsoleItem", _on_add_console_item)
 	
 	sonar.connect("sonarPing", _on_sonar_ping)
+	
+	station_ui.connect("sellExplorationData", _on_sell_exploration_data)
+	station_ui.connect("undockFromStation", _on_undock_from_station)
 	
 	console_control.connect("systemMapPopup", _on_system_map_popup)
 	console_control.connect("system3DPopup", _on_system_3d_popup)
@@ -58,7 +63,7 @@ func _ready():
 	pass
 
 func _physics_process(delta):
-	print(world.player.get_jumps_remaining())
+	#CORE GAME LOGIC \/\/\/\/\/
 	if not is_paused:
 		#updating positions of everyhthing for API's
 		world.player.updatePosition(delta)
@@ -66,11 +71,20 @@ func _physics_process(delta):
 		if current_bodies:
 			for body in current_bodies:
 				world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
-				
-				
-				#TEMP
-				if body.is_station():
-					print("YOOOO")
+		
+		#checking to see if the player is orbiting or following a body and whether it can do actions, and doing actions if yes
+		#if current_bodies:
+			#for body in current_bodies:
+				#checking to see if player is following body
+				#if world.player.target_position == body.position:
+					#if world.player.position.distance_to(body.position) <= (body.radius * 3.0):
+						#print("FOLLOWING BODY!!!!!")
+						#if system_map.action_body:
+							#var interaction_body = system_map.action_body
+							#if interaction_body.is_station():
+								#is_paused = true
+								#station_ui.station = interaction_body
+								#_on_station_popup()
 		
 		#switching system if close enough to wormhole  (dont thinkj anything else can have jusrisdiction - no API other than the player should be aware of the player)
 		var wormholes = world.player.current_star_system.get_wormholes()
@@ -95,12 +109,34 @@ func _physics_process(delta):
 					#setting whether the new system is a civilized system or not
 					world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
 					if world.player.get_jumps_remaining() == 0:
-						destination.generateRandomWeightedStations()
+						destination.generateRandomStations()
 						world.player.resetJumpsRemaining()
+						for body in destination.bodies:
+							body.is_known = true
+					
 					
 					world.player.position = destination_position
 					
 					_on_switch_star_system(destination)
+		
+		var stations = world.player.current_star_system.get_stations()
+		for station in stations:
+			if world.player.position.distance_to(station.position) < (20.0 * station.radius) and ($interaction_cooldown.is_stopped() and not is_paused):
+				print("INTERACTING WITH STATION!!!")
+				is_paused = true
+				station_ui.station = station
+				station_ui.player_current_value = world.player.current_value
+				station_ui.player_balance = world.player.balance
+				_on_station_popup()
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		#updating positions of everyhthing for windows
 		system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
@@ -171,6 +207,28 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	system_map._on_sonar_ping(ping_width, ping_length, ping_direction)
 	pass
 
+func _on_sell_exploration_data(sell_percentage_of_market_price: int):
+	var multiplier = sell_percentage_of_market_price / 100
+	var sell_for = world.player.current_value * multiplier
+	world.player.balance += sell_for
+	world.player.current_value = 0
+	station_ui.player_balance = world.player.balance
+	pass
+
+func _on_undock_from_station(from_station: stationAPI):
+	is_paused = false
+	$station_window.hide()
+	$interaction_cooldown.start()
+	pass
+
+
+
+func _ON_DEBUG_REVEAL_ALL_WORMHOLES():
+	for body in world.player.current_star_system.bodies:
+		if body.is_wormhole():
+			body.is_known = true
+	pass
+
 
 
 func _on_system_map_popup():
@@ -187,3 +245,8 @@ func _on_sonar_popup():
 
 func _on_barycenter_popup():
 	$barycenter_visualizer_window.popup()
+	pass
+
+func _on_station_popup():
+	$station_window.popup()
+	pass

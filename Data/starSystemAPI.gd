@@ -123,12 +123,6 @@ var asteroid_belt_classifications = {
 	"Carbonaceous": {"name": "Carbonaceous", "weight": 0.3}
 }
 
-var station_classifications = {
-	"Standard": {"name": "Standard", "weight": 0.5},
-	"Trade": {"name": "Trade", "weight": 0.25},
-	"Military": {"name": "Military", "weight": 0.25}
-}
-
 func createRandomWeightedPrimaryHookStar():
 	randomize()
 	var star_type = global_data.weighted_pick(star_types, "weight")
@@ -277,7 +271,7 @@ func generateRandomWormholes(): #uses variables post_gen_location_candidates, de
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
-func generateRandomWeightedStations():
+func generateRandomStations():
 	for station in global_data.get_randi(2, 5):
 		var location = post_gen_location_candidates.pick_random()
 		var hook = get_body_from_identifier(location.front())
@@ -295,7 +289,8 @@ func generateRandomWeightedStations():
 		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
 		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 		
-		var station_classification = global_data.weighted_pick(station_classifications, "weight")
+		var station_classification = stationAPI.STATION_CLASSIFICATIONS.values().pick_random()
+		print(station_classification)
 		var percentage_markup = global_data.get_randi(50, 200)
 		
 		var new_station = addStation(identifier_count, str(get_random_station_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), station_classification, percentage_markup)
@@ -341,13 +336,7 @@ func addStation(id: int, d_name: String, hook_identifier: int, distance: float, 
 	station.distance = distance
 	station.orbit_speed = orbit_speed
 	station.radius = radius
-	match station_classification:
-		"Standard":
-			station.station_classification = station.STATION_CLASSIFICATIONS.STANDARD
-		"Trade":
-			station.station_classification = station.STATION_CLASSIFICATIONS.TRADE
-		"Military":
-			station.station_classification = station.STATION_CLASSIFICATIONS.MILITARY
+	station.station_classification = station_classification
 	station.sell_percentage_of_market_price = sell_percentage_of_market_price
 	if metadata:
 		station.metadata = metadata
@@ -429,11 +418,29 @@ func get_wormholes():
 			wormholes.append(body)
 	return wormholes
 
+func get_stations():
+	var stations: Array[stationAPI] = []
+	for body in bodies:
+		if body is stationAPI:
+			stations.append(body)
+	return stations
+
 func get_wormhole_with_destination_system(dest_system: starSystemAPI):
 	for body in bodies:
 		if body.is_wormhole():
 			if body.destination_system == dest_system:
 				return body
+
+func is_civilized():
+	for body in bodies:
+		if body is stationAPI:
+			return true
+	return false
+
+
+
+
+#CONSOLIDATE ALL THESE INTO ONE FUNCTION AT SOME POINT \/\/\/\/
 
 func get_random_star_name():
 	var name_candidates: Array = []
@@ -500,4 +507,3 @@ func get_random_flair():
 			flair_candidates.append(line)
 	flair_file.close()
 	return flair_candidates.pick_random()
-

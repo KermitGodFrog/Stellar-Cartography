@@ -28,7 +28,7 @@ func _on_line_edit_text_submitted(new_text):
 	pass
 
 func cmd_help():
-	return str("List of possible commands: ", "system_map, ", "scopes, ", "sonar ")
+	return str("List of possible commands: ", "balance, ", "value, ", "jumps_remaining, ", "system_map, ", "scopes, ", "sonar ", "barycenter ")
 
 func cmd_system_map():
 	emit_signal("systemMapPopup")
@@ -45,3 +45,12 @@ func cmd_sonar():
 func cmd_barycenter():
 	emit_signal("barycenterPopup")
 	return str("Opening barycenter visualizer.")
+
+func cmd_balance():
+	return str(owner.world.player.balance)
+
+func cmd_value():
+	return str(owner.world.player.current_value)
+
+func cmd_jumps_remaining():
+	return str(owner.world.player.jumps_remaining)

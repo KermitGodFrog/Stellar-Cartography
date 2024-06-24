@@ -3,7 +3,6 @@ class_name playerAPI
 
 var position: Vector2 = Vector2.ZERO
 var target_position: Vector2 = Vector2.ZERO
-var target_body: bodyAPI
 var slowdown: bool = true
 var current_star_system: starSystemAPI
 

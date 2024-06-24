@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtbagvxj5to3"]
+
+[ext_resource type="Script" path="res://Scenes/Station UI/station_ui.gd" id="1_8gqs2"]
+
+[node name="station_window" type="Window"]
+title = "Station Access"
+position = Vector2i(0, 36)
+size = Vector2i(1000, 500)
+visible = false
+
+[node name="station_control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8gqs2")
+
+[node name="sell_data_button" type="Button" parent="station_control"]
+custom_minimum_size = Vector2(100, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -102.0
+offset_top = -27.0
+offset_right = 102.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "SELL EXPLORATION DATA
+24242409 (75%)"
+
+[node name="undock_button" type="Button" parent="station_control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -39.0
+offset_top = -31.0
+offset_right = 39.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "UNDOCK"
+
+[node name="balance_label" type="Label" parent="station_control"]
+layout_mode = 1
+offset_right = 40.0
+offset_bottom = 23.0
+text = "BALANCE"
+
+[connection signal="pressed" from="station_control/sell_data_button" to="station_control" method="_on_sell_data_button_pressed"]
+[connection signal="pressed" from="station_control/undock_button" to="station_control" method="_on_undock_button_pressed"]

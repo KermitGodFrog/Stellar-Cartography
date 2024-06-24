@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://o18qlgh0vvwn"]
+[gd_scene load_steps=9 format=3 uid="uid://o18qlgh0vvwn"]
 
 [ext_resource type="Script" path="res://Scenes/Game/game.gd" id="1_mtv75"]
 [ext_resource type="PackedScene" uid="uid://bhroagne3v4wq" path="res://Scenes/System Map/system_map.tscn" id="2_jilbx"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://chwm82adl21cm" path="res://Scenes/Sonar Interface/sonar_interface.tscn" id="4_lnw4j"]
 [ext_resource type="Theme" uid="uid://ddc2wfekyxdh0" path="res://Scenes/Game/console_theme.tres" id="5_nc276"]
 [ext_resource type="PackedScene" uid="uid://oqkfuasvgtj6" path="res://Scenes/Barycenter Visualizer/barycenter_visualizer.tscn" id="5_wmjnw"]
+[ext_resource type="PackedScene" uid="uid://dtbagvxj5to3" path="res://Scenes/Station UI/station_ui.tscn" id="6_g2s4t"]
 
 [node name="game" type="Node"]
 script = ExtResource("1_mtv75")
@@ -18,6 +19,8 @@ script = ExtResource("1_mtv75")
 [node name="sonar_window" parent="." instance=ExtResource("4_lnw4j")]
 
 [node name="barycenter_visualizer_window" parent="." instance=ExtResource("5_wmjnw")]
+
+[node name="station_window" parent="." instance=ExtResource("6_g2s4t")]
 
 [node name="console_control" type="Control" parent="."]
 layout_mode = 3
@@ -52,5 +55,9 @@ grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("5_nc276")
 placeholder_text = "Type here..."
+
+[node name="interaction_cooldown" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
 
 [connection signal="text_submitted" from="console_control/line_edit" to="console_control" method="_on_line_edit_text_submitted"]
