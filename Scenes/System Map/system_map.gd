@@ -184,7 +184,7 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 			ping.resetTime()
 			SONAR_PINGS.append(ping)
 	
-	for random_ping in global_data.get_randi(0, remap(ping_width, 5, 90, 1, 10)):
+	for random_ping in round(global_data.get_randi(0, remap(ping_width, 5, 90, 0, 2))):
 		var ping = load("res://Data/Ping Display Helpers/normal.tres").duplicate(true)
 		ping.position = global_data.random_triangle_point(a,b,c)
 		ping.resetTime()

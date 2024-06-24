@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://o18qlgh0vvwn"]
+[gd_scene load_steps=8 format=3 uid="uid://o18qlgh0vvwn"]
 
 [ext_resource type="Script" path="res://Scenes/Game/game.gd" id="1_mtv75"]
 [ext_resource type="PackedScene" uid="uid://bhroagne3v4wq" path="res://Scenes/System Map/system_map.tscn" id="2_jilbx"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Scenes/Game/console_control.gd" id="4_crni4"]
 [ext_resource type="PackedScene" uid="uid://chwm82adl21cm" path="res://Scenes/Sonar Interface/sonar_interface.tscn" id="4_lnw4j"]
 [ext_resource type="Theme" uid="uid://ddc2wfekyxdh0" path="res://Scenes/Game/console_theme.tres" id="5_nc276"]
+[ext_resource type="PackedScene" uid="uid://oqkfuasvgtj6" path="res://Scenes/Barycenter Visualizer/barycenter_visualizer.tscn" id="5_wmjnw"]
 
 [node name="game" type="Node"]
 script = ExtResource("1_mtv75")
@@ -15,6 +16,8 @@ script = ExtResource("1_mtv75")
 [node name="system_3d_window" parent="." instance=ExtResource("4_53ki8")]
 
 [node name="sonar_window" parent="." instance=ExtResource("4_lnw4j")]
+
+[node name="barycenter_visualizer_window" parent="." instance=ExtResource("5_wmjnw")]
 
 [node name="console_control" type="Control" parent="."]
 layout_mode = 3

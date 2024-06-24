@@ -5,6 +5,7 @@ var world: worldAPI
 @onready var system_map = $system_window/system
 @onready var system_3d = $system_3d_window/system_3d
 @onready var sonar = $sonar_window/sonar_control
+@onready var barycenter_visualizer = $barycenter_visualizer_window/barycenter_control
 @onready var console_control = $console_control
 
 func createWorld():
@@ -24,6 +25,7 @@ func _ready():
 	console_control.connect("systemMapPopup", _on_system_map_popup)
 	console_control.connect("system3DPopup", _on_system_3d_popup)
 	console_control.connect("sonarPopup", _on_sonar_popup)
+	console_control.connect("barycenterPopup", _on_barycenter_popup)
 	
 	#var error = game_data.loadWorld()
 	#if error is worldAPI:
@@ -43,6 +45,7 @@ func _ready():
 	
 	createWorld()
 	world.createPlayer(3)
+	world.player.resetJumpsRemaining()
 	
 	#new game stuff
 	var new = _on_create_new_star_system(false)
@@ -80,7 +83,14 @@ func _physics_process(delta):
 					destination_position = destination_wormhole.position
 					destination_wormhole.is_known = true
 				
+				#setting whether the new system is a civilized system or not
+				world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
+				if world.player.get_jumps_remaining() == 0:
+					destination.generateRandomSettlements()
+					world.player.resetJumpsRemaining()
+				
 				world.player.position = destination_position
+				
 				_on_switch_star_system(destination)
 	
 	#updating positions of everyhthing for windows
@@ -100,7 +110,7 @@ func _on_update_target_position(pos: Vector2):
 	pass
 
 func _on_create_new_star_system(force_switch_before_post_gen: bool = false, for_system: starSystemAPI = null):
-	var system = world.createStarSystem("yooooooo")
+	var system = world.createStarSystem("random")
 	var hook_star = system.createRandomWeightedPrimaryHookStar()
 	system.generateRandomWeightedBodies(hook_star)
 	if for_system:
@@ -118,6 +128,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	world.player.current_star_system = to_system
 	system_map.system = to_system
 	system_3d.system = to_system
+	barycenter_visualizer.system = to_system
 	system_3d.spawnBodies()
 	system_3d.reset_locked_body()
 	return to_system
@@ -125,6 +136,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 func _on_locked_body_updated(body: bodyAPI):
 	system_3d.set("locked_body_identifier", body.get_identifier())
 	system_3d.set("target_position", Vector2.ZERO)
+	barycenter_visualizer.set("locked_body_identifier", body.get_identifier())
 	pass
 
 func _on_found_body(id: int):
@@ -163,3 +175,6 @@ func _on_system_3d_popup():
 func _on_sonar_popup():
 	$sonar_window.popup()
 	pass
+
+func _on_barycenter_popup():
+	$barycenter_visualizer_window.popup()
