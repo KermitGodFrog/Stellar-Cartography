@@ -129,7 +129,7 @@ func draw_map():
 	if asteroid_belts: for belt in asteroid_belts:
 		if belt.is_known: draw_arc(belt.position, belt.radius, -10, TAU, 50, belt.metadata.get("color"), belt.metadata.get("width"), false)
 	for body in system.bodies:
-		if not body.is_asteroid_belt() and body.is_known:
+		if not (body.is_asteroid_belt() and body.is_station()) and body.is_known:
 			draw_circle(body.position, body.radius, body.metadata.get("color"))
 	var size_exponent = pow(camera.zoom.length(), -0.5)
 	
@@ -184,7 +184,7 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 			ping.resetTime()
 			SONAR_PINGS.append(ping)
 	
-	for random_ping in round(global_data.get_randi(0, remap(ping_width, 5, 90, 0, 2))):
+	for random_ping in global_data.get_randi(0, remap(ping_width, 5, 90, 0, 10)):
 		var ping = load("res://Data/Ping Display Helpers/normal.tres").duplicate(true)
 		ping.position = global_data.random_triangle_point(a,b,c)
 		ping.resetTime()

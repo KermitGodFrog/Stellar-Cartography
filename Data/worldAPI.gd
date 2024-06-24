@@ -20,9 +20,10 @@ func removeStarSystem(id: int):
 			break
 	pass
 
-func createPlayer(speed: int):
+func createPlayer(speed: int, max_jumps: int):
 	var new_player = playerAPI.new()
 	new_player.speed = speed
+	new_player.max_jumps = max_jumps
 	player = new_player
 	return new_player
 

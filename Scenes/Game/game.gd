@@ -8,6 +8,8 @@ var world: worldAPI
 @onready var barycenter_visualizer = $barycenter_visualizer_window/barycenter_control
 @onready var console_control = $console_control
 
+var is_paused: bool = false
+
 func createWorld():
 	world = worldAPI.new()
 	pass
@@ -44,7 +46,7 @@ func _ready():
 		#_on_switch_star_system(new)
 	
 	createWorld()
-	world.createPlayer(3)
+	world.createPlayer(3, 2)
 	world.player.resetJumpsRemaining()
 	
 	#new game stuff
@@ -56,46 +58,53 @@ func _ready():
 	pass
 
 func _physics_process(delta):
-	#updating positions of everyhthing for API's
-	world.player.updatePosition(delta)
-	var current_bodies = world.player.current_star_system.bodies
-	if current_bodies:
-		for body in current_bodies:
-			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
-	
-	#switching system if close enough to wormhole  (dont thinkj anything else can have jusrisdiction - no API other than the player should be aware of the player)
-	var wormholes = world.player.current_star_system.get_wormholes()
-	for wormhole in wormholes: # ^^^ all wormholes in current star system dont worry 
-		if world.player.position.distance_to(wormhole.position) < (20.0 * wormhole.radius) and not wormhole.is_disabled:
-			print("GAME: (DEBUG) SWITCHING STAR SYSTEMS")
-			var destination = wormhole.destination_system
-			if destination:
-				#spawning new wormholes in destination system if nonexistent
-				if not destination.destination_systems:
-					for i in range(2):
-						_on_create_new_star_system(false, destination)
-					destination.generateRandomWormholes()
+	print(world.player.get_jumps_remaining())
+	if not is_paused:
+		#updating positions of everyhthing for API's
+		world.player.updatePosition(delta)
+		var current_bodies = world.player.current_star_system.bodies
+		if current_bodies:
+			for body in current_bodies:
+				world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
 				
-				var destination_position: Vector2 = Vector2.ZERO
-				var destination_wormhole = destination.get_wormhole_with_destination_system(world.player.current_star_system)
-				if destination_wormhole:
-					destination.updateBodyPosition(destination_wormhole.get_identifier(), delta) #REQURIED SO WORMHOLE HAVE A POSITION OTHER THAN 0,0
-					destination_position = destination_wormhole.position
-					destination_wormhole.is_known = true
 				
-				#setting whether the new system is a civilized system or not
-				world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
-				if world.player.get_jumps_remaining() == 0:
-					destination.generateRandomSettlements()
-					world.player.resetJumpsRemaining()
-				
-				world.player.position = destination_position
-				
-				_on_switch_star_system(destination)
-	
-	#updating positions of everyhthing for windows
-	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
-	system_3d.set("player_position", world.player.position)
+				#TEMP
+				if body.is_station():
+					print("YOOOO")
+		
+		#switching system if close enough to wormhole  (dont thinkj anything else can have jusrisdiction - no API other than the player should be aware of the player)
+		var wormholes = world.player.current_star_system.get_wormholes()
+		for wormhole in wormholes: # ^^^ all wormholes in current star system dont worry 
+			if world.player.position.distance_to(wormhole.position) < (20.0 * wormhole.radius) and not wormhole.is_disabled:
+				print("GAME: (DEBUG) SWITCHING STAR SYSTEMS")
+				var destination = wormhole.destination_system
+				if destination:
+					#spawning new wormholes in destination system if nonexistent
+					if not destination.destination_systems:
+						for i in range(2):
+							_on_create_new_star_system(false, destination)
+						destination.generateRandomWormholes()
+					
+					var destination_position: Vector2 = Vector2.ZERO
+					var destination_wormhole = destination.get_wormhole_with_destination_system(world.player.current_star_system)
+					if destination_wormhole:
+						destination.updateBodyPosition(destination_wormhole.get_identifier(), delta) #REQURIED SO WORMHOLE HAVE A POSITION OTHER THAN 0,0
+						destination_position = destination_wormhole.position
+						destination_wormhole.is_known = true
+					
+					#setting whether the new system is a civilized system or not
+					world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
+					if world.player.get_jumps_remaining() == 0:
+						destination.generateRandomWeightedStations()
+						world.player.resetJumpsRemaining()
+					
+					world.player.position = destination_position
+					
+					_on_switch_star_system(destination)
+		
+		#updating positions of everyhthing for windows
+		system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
+		system_3d.set("player_position", world.player.position)
 	pass
 
 func _on_update_player_target_position(pos: Vector2, slowdown: bool = true):

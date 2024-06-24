@@ -20,14 +20,15 @@ func _physics_process(delta):
 		for body in system.bodies:
 			if body.is_planet() or body.is_star():
 				var locked_body = system.get_body_from_identifier(locked_body_identifier)
-				var dir = locked_body.position.direction_to(body.position)
-				var dist = locked_body.position.distance_to(body.position)
-				var mass = body.metadata.get("mass")
-				
-				var magnitude: float = (dist * mass)
-				var closest_point = get_closest_point_to_direction(dir)
-				
-				points[closest_point] = 1.0 + magnitude
+				if locked_body:
+					var dir = locked_body.position.direction_to(body.position)
+					var dist = locked_body.position.distance_to(body.position)
+					var mass = body.metadata.get("mass")
+					
+					var magnitude: float = (dist * mass)
+					var closest_point = get_closest_point_to_direction(dir)
+					
+					points[closest_point] = 1.0 + magnitude
 	
 	
 	queue_redraw()

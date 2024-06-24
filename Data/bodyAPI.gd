@@ -50,3 +50,9 @@ func is_asteroid_belt():
 
 func is_wormhole():
 	return false #cant be wormhole because script does not extend bodyAPI
+
+func is_anomaly():
+	return false
+
+func is_station():
+	return false

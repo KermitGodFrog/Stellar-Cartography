@@ -123,6 +123,12 @@ var asteroid_belt_classifications = {
 	"Carbonaceous": {"name": "Carbonaceous", "weight": 0.3}
 }
 
+var station_classifications = {
+	"Standard": {"name": "Standard", "weight": 0.5},
+	"Trade": {"name": "Trade", "weight": 0.25},
+	"Military": {"name": "Military", "weight": 0.25}
+}
+
 func createRandomWeightedPrimaryHookStar():
 	randomize()
 	var star_type = global_data.weighted_pick(star_types, "weight")
@@ -271,7 +277,7 @@ func generateRandomWormholes(): #uses variables post_gen_location_candidates, de
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
-func generateRandomWeightedSettlements():
+func generateRandomWeightedStations():
 	for station in global_data.get_randi(2, 5):
 		var location = post_gen_location_candidates.pick_random()
 		var hook = get_body_from_identifier(location.front())
@@ -286,7 +292,15 @@ func generateRandomWeightedSettlements():
 		var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
 		var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
 		
-		#NOT FINISHED!!!!! FINISH THIS!!!!!!!!!!!!!!!
+		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
+		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
+		
+		var station_classification = global_data.weighted_pick(station_classifications, "weight")
+		var percentage_markup = global_data.get_randi(50, 200)
+		
+		var new_station = addStation(identifier_count, str(get_random_station_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), station_classification, percentage_markup)
+		
+		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
 func addBody(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, metadata: Dictionary = {}):
@@ -317,6 +331,28 @@ func addWormhole(id: int, d_name: String, hook_identifier: int, distance: float,
 		wormhole.metadata = metadata
 	bodies.append(wormhole)
 	return wormhole.get_identifier()
+
+func addStation(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, station_classification, sell_percentage_of_market_price, metadata: Dictionary = {}):
+	var station = stationAPI.new()
+	station.set_identifier(id)
+	identifier_count += 1
+	station.set_display_name(d_name)
+	station.hook_identifier = hook_identifier
+	station.distance = distance
+	station.orbit_speed = orbit_speed
+	station.radius = radius
+	match station_classification:
+		"Standard":
+			station.station_classification = station.STATION_CLASSIFICATIONS.STANDARD
+		"Trade":
+			station.station_classification = station.STATION_CLASSIFICATIONS.TRADE
+		"Military":
+			station.station_classification = station.STATION_CLASSIFICATIONS.MILITARY
+	station.sell_percentage_of_market_price = sell_percentage_of_market_price
+	if metadata:
+		station.metadata = metadata
+	bodies.append(station)
+	return station.get_identifier()
 
 func addStationaryBody(id: int, d_name: String, hook_identifier, radius: float, metadata: Dictionary = {}):
 	var body = bodyAPI.new()
@@ -445,6 +481,16 @@ func get_random_wormhole_name():
 	file.close()
 	return name_candidates.pick_random()
 
+func get_random_station_name():
+	var name_candidates: Array = []
+	var file = FileAccess.open("res://Data/Name Data/station_names.txt", FileAccess.READ)
+	while not file.eof_reached():
+		var line = file.get_line()
+		if not line.is_empty():
+			name_candidates.append(line)
+	file.close()
+	return name_candidates.pick_random()
+
 func get_random_flair():
 	var flair_candidates: Array = []
 	var flair_file = FileAccess.open("res://Data/Name Data/name_flair.txt", FileAccess.READ)
@@ -454,3 +500,4 @@ func get_random_flair():
 			flair_candidates.append(line)
 	flair_file.close()
 	return flair_candidates.pick_random()
+
