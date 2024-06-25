@@ -9,12 +9,15 @@ func set_identifier(new_identifier: int):
 	identifier = new_identifier
 	pass
 
-func initialize(radius: float, color: Color, overlay_shader_resource = null):
+func initialize(radius: float, color: Color, emission_multiplier: float, overlay_shader_resource = null):
 	set("radius", radius)
 	set("height", radius * 2)
 	var material = StandardMaterial3D.new()
 	material.albedo_color = color
-	material.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	#material.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	material.emission_enabled = true
+	material.emission = color
+	material.emission_energy_multiplier = emission_multiplier
 	if overlay_shader_resource != null:
 		var shader = ShaderMaterial.new()
 		shader.set_shader(overlay_shader_resource)

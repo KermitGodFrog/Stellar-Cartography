@@ -30,10 +30,13 @@ sky_material = SubResource("ShaderMaterial_ch2h2")
 background_mode = 2
 background_energy_multiplier = 0.75
 sky = SubResource("Sky_4kfpl")
+ambient_light_source = 1
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.0
 reflected_light_source = 1
-adjustment_enabled = true
+tonemap_mode = 2
+tonemap_exposure = 2.0
 
 [node name="system_3d_window" type="Window"]
 canvas_item_default_texture_filter = 0
@@ -77,5 +80,8 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_ajtlq")
 
 [node name="world_environment" type="WorldEnvironment" parent="system_3d"]
 environment = SubResource("Environment_wo5s4")
+
+[node name="star_omni_light" type="OmniLight3D" parent="system_3d"]
+omni_range = 4096.0
 
 [connection signal="close_requested" from="." to="system_3d" method="_on_system_3d_window_close_requested"]

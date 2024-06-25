@@ -13,6 +13,7 @@ var body_3d = preload("res://Instantiated Scenes/Body 3D/body_3d.tscn")
 @onready var camera = $camera_offset/camera
 @onready var locked_body_label = $camera_offset/camera/canvas_layer/control/locked_body_label
 @onready var post_process = $camera_offset/camera/canvas_layer/post_process
+@onready var star_omni_light = $star_omni_light
 
 var system_scalar: float = 10.0
 var body_detection_range: int = 1000
@@ -94,10 +95,14 @@ func spawnBodies():
 		if body.is_planet() or body.is_star() or body.is_wormhole():
 			var new_body_3d = body_3d.instantiate()
 			new_body_3d.set_identifier(body.get_identifier())
-			if not body.is_wormhole():
-				new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"))
+			if body.is_planet():
+				new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"), 0.25)
+			elif body.is_star():
+				new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"), 1.0)
+				star_omni_light.light_color = body.metadata.get("color")
+				star_omni_light.light_size = body.radius
 			elif body.is_wormhole():
-				new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"), wormhole_shader)
+				new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"), 0.75, wormhole_shader)
 			add_child(new_body_3d)
 	pass
 
