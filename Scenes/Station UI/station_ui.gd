@@ -12,7 +12,7 @@ signal undockFromStation(from_station: stationAPI)
 
 func _physics_process(delta):
 	if station:
-		sell_data_button.set_text(str("SELL EXPLORATION DATA\n", player_current_value, "c (", station.sell_percentage_of_market_price, ")"))
+		sell_data_button.set_text(str("SELL EXPLORATION DATA\n", player_current_value, "c\n(", station.sell_percentage_of_market_price, "% OF MARKET PRICE)"))
 		balance_label.set_text(str("BALANCE: ", player_balance))
 	pass
 

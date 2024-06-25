@@ -114,8 +114,20 @@ func _physics_process(delta):
 						for body in destination.bodies:
 							body.is_known = true
 					
-					
 					world.player.position = destination_position
+					
+					#no idea if anything below this point actually works so be careful \/\/\/\/
+					
+					#removing other possible systems to traverse from previous system
+					for w in wormholes:
+						if w != wormhole: #if the wormhole is not the current wormhole being traversed
+							if w.destination_system: world.removeStarSystem(w.destination_system.get_identifier())
+					
+					#removing all other systems when leaving a civilized system (need to know about all the systems when in a civilized system in case i want to add the ability to look over exploration data while at a station)
+					if world.player.current_star_system.is_civilized():
+						var exclude_systems = destination.destination_systems.duplicate()
+						exclude_systems.append(destination)
+						world.remove_systems_excluding_systems(exclude_systems)
 					
 					_on_switch_star_system(destination)
 		
@@ -128,15 +140,6 @@ func _physics_process(delta):
 				station_ui.player_current_value = world.player.current_value
 				station_ui.player_balance = world.player.balance
 				_on_station_popup()
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		#updating positions of everyhthing for windows
 		system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
@@ -219,6 +222,9 @@ func _on_undock_from_station(from_station: stationAPI):
 	is_paused = false
 	$station_window.hide()
 	$interaction_cooldown.start()
+	#DOESNT WORK \/\/\/\/\/
+	system_map.action_body = from_station
+	system_map.current_action_type = system_map.ACTION_TYPES.ORBIT
 	pass
 
 
