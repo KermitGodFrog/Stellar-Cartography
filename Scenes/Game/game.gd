@@ -212,7 +212,7 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	pass
 
 func _on_sell_exploration_data(sell_percentage_of_market_price: int):
-	var multiplier = sell_percentage_of_market_price / 100
+	var multiplier = sell_percentage_of_market_price / 100.0
 	var sell_for = world.player.current_value * multiplier
 	world.player.balance += sell_for
 	world.player.current_value = 0

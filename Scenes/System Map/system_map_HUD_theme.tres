@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=10 format=3 uid="uid://dm3fbhtw7qov2"]
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://dm3fbhtw7qov2"]
 
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="1_17eso"]
 [ext_resource type="Texture2D" uid="uid://ckms0lt6w3rsx" path="res://Graphics/icon_bg_2.png" id="1_gejg4"]
@@ -30,6 +30,11 @@ bg_color = Color(0.180392, 0.180392, 0.180392, 0.415686)
 border_width_left = 20
 border_color = Color(0.156863, 0.156863, 0.156863, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uu20k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1iwfw"]
+bg_color = Color(0.466667, 0.466667, 0.466667, 1)
+
 [resource]
 default_font = ExtResource("1_17eso")
 default_font_size = 16
@@ -42,3 +47,13 @@ ItemList/colors/font_hovered_color = Color(0.560784, 1, 1, 1)
 ItemList/font_sizes/font_size = 16
 ItemList/styles/focus = SubResource("StyleBoxFlat_tae8s")
 ItemList/styles/panel = SubResource("StyleBoxFlat_3vqaw")
+TabContainer/colors/font_selected_color = Color(0.95, 0.95, 0.95, 1)
+TabContainer/colors/font_unselected_color = Color(0.7, 0.7, 0.7, 1)
+TabContainer/constants/side_margin = 20
+TabContainer/styles/panel = null
+TabContainer/styles/tab_disabled = null
+TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_uu20k")
+TabContainer/styles/tab_hovered = null
+TabContainer/styles/tab_selected = null
+TabContainer/styles/tab_unselected = null
+TabContainer/styles/tabbar_background = SubResource("StyleBoxFlat_1iwfw")

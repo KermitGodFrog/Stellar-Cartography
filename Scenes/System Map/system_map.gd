@@ -19,7 +19,9 @@ var mouse_over_orbit_button: bool = false
 var mouse_over_ui: bool = false
 
 var font = preload("res://Graphics/Fonts/comicsans.ttf")
-@onready var system_list = $camera/canvas/control/ui_scroll/system_list
+@onready var system_list = $camera/canvas/control/tabs/OVERVIEW/system_list
+@onready var follow_body_label = $camera/canvas/control/tabs/INFO/follow_body_label
+@onready var body_attributes_list = $camera/canvas/control/tabs/INFO/body_attributes_list
 @onready var camera = $camera
 
 var camera_target_position: Vector2 = Vector2.ZERO
@@ -116,6 +118,14 @@ func _physics_process(delta):
 			ping.updateTime(delta)
 			if ping.time == 0:
 				SONAR_PINGS.erase(ping)
+	
+	#INFOR TAB!!!!!!! \/\/\\/\/
+	if follow_body: follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
+	else: follow_body_label.set_text(">>> LOCK BODY")
+	body_attributes_list.clear()
+	if follow_body: for entry in follow_body.metadata:
+		body_attributes_list.add_item(str(entry, " : ", follow_body.metadata.get(entry)), null, false) # must be restricted, maybe compile an exclude list somewhere
+	
 	
 	queue_redraw()
 	pass

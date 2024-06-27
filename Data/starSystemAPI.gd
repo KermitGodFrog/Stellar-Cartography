@@ -293,7 +293,7 @@ func generateRandomStations():
 		print(station_classification)
 		var percentage_markup = global_data.get_randi(50, 200)
 		
-		var new_station = addStation(identifier_count, str(get_random_station_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), station_classification, percentage_markup)
+		addStation(identifier_count, str(get_random_station_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), station_classification, percentage_markup)
 		
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass

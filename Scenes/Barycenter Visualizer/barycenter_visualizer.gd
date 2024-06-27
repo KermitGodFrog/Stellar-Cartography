@@ -7,7 +7,7 @@ var point_count: int = 20
 var radius: int = 50
 var points: Dictionary = {}
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	points.clear()
 	for i in point_count:
 		var theta = (360 / point_count - 1) * i

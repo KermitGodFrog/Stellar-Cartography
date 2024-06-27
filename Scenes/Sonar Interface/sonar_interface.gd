@@ -11,7 +11,7 @@ var mouse_over_ui: bool = false
 
 @onready var ping_width_slider = $flow_container/ping_width_slider
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if mouse_over_ping_button: mouse_over_ui = true
 	else: mouse_over_ui = false
 	

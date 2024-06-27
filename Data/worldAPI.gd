@@ -36,14 +36,14 @@ func get_system_from_identifier(id: int):
 	return get_system
 
 func get_systems_excluding_system(exclude_system: starSystemAPI):
-	var return_systems: Array[starSystemAPI]
+	var return_systems: Array[starSystemAPI] = []
 	for system in star_systems:
 		if system != exclude_system:
 			return_systems.append(system)
 	return return_systems
 
 func remove_systems_excluding_systems(exclude_systems: Array[starSystemAPI]):
-	var remove_systems: Array[starSystemAPI]
+	var remove_systems: Array[starSystemAPI] = []
 	for system in star_systems:
 		var is_in_exclude_systems: bool = false
 		for exclude_system in exclude_systems:

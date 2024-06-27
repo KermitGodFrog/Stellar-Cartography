@@ -21,7 +21,7 @@ var body_detection_range: int = 1000
 #for wormholes obv
 var wormhole_shader = preload("res://Scenes/wormhole_shader.gdshader")
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	#setting post process
 	
 	var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)
