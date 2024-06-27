@@ -129,6 +129,19 @@ custom_minimum_size = Vector2(450, 900)
 layout_mode = 2
 theme = ExtResource("3_djc4s")
 
+[node name="utilities_container" type="VBoxContainer" parent="system/camera/canvas/control"]
+custom_minimum_size = Vector2(450, 500)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+
 [connection signal="close_requested" from="." to="system" method="_on_system_window_close_requested"]
 [connection signal="item_clicked" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_clicked"]
 [connection signal="mouse_entered" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_mouse_entered"]
