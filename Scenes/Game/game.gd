@@ -20,6 +20,7 @@ func _ready():
 	system_map.connect("updateTargetPosition", _on_update_target_position)
 	system_map.connect("updatedLockedBody", _on_locked_body_updated)
 	system_map.connect("DEBUG_REVEAL_ALL_WORMHOLES", _ON_DEBUG_REVEAL_ALL_WORMHOLES)
+	system_map.connect("DEBUG_REVEAL_ALL_BODIES", _ON_DEBUG_REVEAL_ALL_BODIES)
 	
 	system_3d.connect("foundBody", _on_found_body)
 	system_3d.connect("addConsoleItem", _on_add_console_item)
@@ -233,6 +234,11 @@ func _ON_DEBUG_REVEAL_ALL_WORMHOLES():
 	for body in world.player.current_star_system.bodies:
 		if body.is_wormhole():
 			body.is_known = true
+	pass
+
+func _ON_DEBUG_REVEAL_ALL_BODIES():
+	for body in world.player.current_star_system.bodies:
+		body.is_known = true
 	pass
 
 

@@ -1,12 +1,12 @@
 extends Node2D
 #updates a map and object list based on data it is fed by the game component. updates camera position for some reason
-@export var camera_here_tex = preload("res://Graphics/camera_green.png")
 
 signal updatePlayerTargetPosition(pos: Vector2)
 signal updateTargetPosition(pos: Vector2)
 signal updatedLockedBody(body: bodyAPI)
 
 signal DEBUG_REVEAL_ALL_WORMHOLES
+signal DEBUG_REVEAL_ALL_BODIES
 
 var system: starSystemAPI
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
@@ -65,7 +65,7 @@ func _physics_process(delta):
 			ACTION_TYPES.ORBIT:
 				var dir = Vector2.UP.rotated(rotation_hint)
 				var pos = action_body.position
-				pos = pos + (dir * (3 * action_body.radius))
+				pos = pos + (dir * ((3 * action_body.radius) + 1.0))
 				emit_signal("updatePlayerTargetPosition", pos, false)
 	
 	#changing target position
@@ -75,6 +75,9 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("the B"): #DEBUG!!!!!!!!!!!!!!!!!
 		emit_signal("DEBUG_REVEAL_ALL_WORMHOLES")
+	
+	if Input.is_action_just_pressed("the N"): #DEBUG!!!!!!!!!!!!!!!!!
+		emit_signal("DEBUG_REVEAL_ALL_BODIES")
 	
 	#incredibly out of plcace!!!!!
 	if camera.follow_body:

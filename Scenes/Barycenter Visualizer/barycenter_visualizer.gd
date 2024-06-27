@@ -18,7 +18,7 @@ func _physics_process(delta):
 	
 	if locked_body_identifier:
 		for body in system.bodies:
-			if body.is_planet() or body.is_star():
+			if (body.is_planet() or body.is_star()) and body.get_identifier() != locked_body_identifier:
 				var locked_body = system.get_body_from_identifier(locked_body_identifier)
 				if locked_body:
 					var dir = locked_body.position.direction_to(body.position)
@@ -26,24 +26,25 @@ func _physics_process(delta):
 					var mass = body.metadata.get("mass")
 					
 					var magnitude: float = (dist * mass)
+					
 					var closest_point = get_closest_point_to_direction(dir)
 					
 					points[closest_point] = 1.0 + magnitude
-	
-	
 	queue_redraw()
 	pass
 
 func get_closest_point_to_direction(dir: Vector2):
 	var distance_dict: Dictionary = {}
 	for point in points:
-		distance_dict[point] = point.distance_to(dir * radius)
-	distance_dict.values().sort()
-	var closest_point = distance_dict.find_key(distance_dict.values().front())
+		distance_dict[point] = point.distance_to((dir * radius) + get_screen_centre())
+	var sorted_values = distance_dict.values().duplicate()
+	sorted_values.sort()
+	var closest_point = distance_dict.find_key(sorted_values.front())
 	return closest_point
 
 func _draw():
 	for point in points:
+		draw_line(point, (point + get_screen_centre().direction_to(point) * (radius / 2)), Color.DARK_RED, 10.0)
 		draw_circle(point, points.get(point), Color.RED)
 	pass
 

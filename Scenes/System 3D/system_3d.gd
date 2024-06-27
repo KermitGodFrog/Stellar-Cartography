@@ -96,13 +96,13 @@ func spawnBodies():
 			var new_body_3d = body_3d.instantiate()
 			new_body_3d.set_identifier(body.get_identifier())
 			if body.is_planet():
-				new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"), 0.25)
+				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().metadata.get("color"), body.metadata.get("color"), 0.25)
 			elif body.is_star():
-				new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"), 1.0)
+				new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"), body.metadata.get("color"), 1.0)
 				star_omni_light.light_color = body.metadata.get("color")
 				star_omni_light.light_size = body.radius
 			elif body.is_wormhole():
-				new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"), 0.75, wormhole_shader)
+				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().metadata.get("color"), body.metadata.get("color"), 0.75, wormhole_shader)
 			add_child(new_body_3d)
 	pass
 
