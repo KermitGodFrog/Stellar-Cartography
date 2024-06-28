@@ -13,6 +13,9 @@ var current_value: int = 0
 var max_jumps: int = 5
 var jumps_remaining: int = 0
 
+enum UPGRADE_ID {ADVANCED_SCANNING}
+var unlocked_upgrades: Array[UPGRADE_ID] = []
+
 func get_jumps_remaining():
 	return jumps_remaining
 
@@ -22,6 +25,7 @@ func get_max_jumps():
 func set_max_jumps(value: int):
 	max_jumps = value
 	pass
+
 
 func updatePosition(delta):
 	match slowdown:
@@ -41,6 +45,7 @@ func setTargetPosition(pos: Vector2):
 	target_position = pos
 	pass
 
+
 func resetJumpsRemaining():
 	jumps_remaining = max_jumps
 	pass
@@ -51,4 +56,35 @@ func removeJumpsRemaining(amount: int):
 
 func addJumpsRemaining(amount: int):
 	jumps_remaining = mini(max_jumps, jumps_remaining + amount)
+	pass
+
+
+func unlockUpgrade(upgrade_idx: UPGRADE_ID):
+	if not unlocked_upgrades.has(upgrade_idx):
+		unlocked_upgrades.append(upgrade_idx)
+		return upgrade_idx
+	return -1
+
+func lockUpgrade(upgrade_idx: UPGRADE_ID):
+	if unlocked_upgrades.has(upgrade_idx):
+		unlocked_upgrades.erase(upgrade_idx)
+		return upgrade_idx
+	return -1
+
+func get_unlocked_upgrades():
+	return unlocked_upgrades
+
+func get_upgrade_unlocked_state(upgrade_idx: UPGRADE_ID):
+	if unlocked_upgrades.has(upgrade_idx):
+		return true
+	else:
+		return false
+
+
+func increaseBalance(amount: int):
+	balance += amount
+	pass
+
+func decreaseBalance(amount: int):
+	balance = maxi(0, balance - amount)
 	pass

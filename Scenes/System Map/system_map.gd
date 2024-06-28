@@ -23,6 +23,7 @@ var font = preload("res://Graphics/Fonts/comicsans.ttf")
 @onready var follow_body_label = $camera/canvas/control/tabs/INFO/follow_body_label
 @onready var body_attributes_list = $camera/canvas/control/tabs/INFO/body_attributes_list
 @onready var camera = $camera
+@onready var movement_lock_timer = $movement_lock_timer
 
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body : bodyAPI
@@ -54,7 +55,7 @@ func _physics_process(delta):
 	else: mouse_over_ui = false
 	
 	#moving to the mouse position or moving to action_body in various ways
-	if Input.is_action_pressed("right_mouse") and owner.has_focus() and not mouse_over_ui:
+	if Input.is_action_pressed("right_mouse") and owner.has_focus() and (not mouse_over_ui) and movement_lock_timer.is_stopped():
 		locked_body = null
 		action_body = null
 		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
@@ -71,14 +72,14 @@ func _physics_process(delta):
 				emit_signal("updatePlayerTargetPosition", pos, false)
 	
 	#changing target position
-	if Input.is_action_pressed("left_mouse") and owner.has_focus() and not mouse_over_ui:
+	if Input.is_action_pressed("left_mouse") and owner.has_focus() and (not mouse_over_ui) and movement_lock_timer.is_stopped():
 		camera_target_position = get_global_mouse_position()
 		emit_signal("updateTargetPosition", get_global_mouse_position())
 	
-	if Input.is_action_just_pressed("the B"): #DEBUG!!!!!!!!!!!!!!!!!
+	if Input.is_action_just_pressed("the B") and owner.has_focus(): #DEBUG!!!!!!!!!!!!!!!!!
 		emit_signal("DEBUG_REVEAL_ALL_WORMHOLES")
 	
-	if Input.is_action_just_pressed("the N"): #DEBUG!!!!!!!!!!!!!!!!!
+	if Input.is_action_just_pressed("the N") and owner.has_focus(): #DEBUG!!!!!!!!!!!!!!!!!
 		emit_signal("DEBUG_REVEAL_ALL_BODIES")
 	
 	#incredibly out of plcace!!!!!
@@ -121,7 +122,7 @@ func _physics_process(delta):
 	
 	#INFOR TAB!!!!!!! \/\/\\/\/
 	if follow_body: follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
-	else: follow_body_label.set_text(">>> LOCK BODY")
+	else: follow_body_label.set_text(">>> LOCK BODY FOR INFO")
 	body_attributes_list.clear()
 	if follow_body: for entry in follow_body.metadata:
 		body_attributes_list.add_item(str(entry, " : ", follow_body.metadata.get(entry)), null, false) # must be restricted, maybe compile an exclude list somewhere
@@ -213,9 +214,14 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 		#SONAR_PINGS.append(ping)
 	pass
 
+func _on_start_movement_lock_timer():
+	if movement_lock_timer.is_stopped():
+		movement_lock_timer.start()
+		locked_body = null
+		action_body = null
+	pass
 
-
-
+ 
 
 
 

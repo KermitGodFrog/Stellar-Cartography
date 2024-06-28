@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=8 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
 [ext_resource type="Theme" uid="uid://dm3fbhtw7qov2" path="res://Scenes/System Map/system_map_HUD_theme.tres" id="3_djc4s"]
+[ext_resource type="Script" path="res://Scenes/System Map/ui_tabs.gd" id="4_27qwa"]
 [ext_resource type="Texture2D" uid="uid://7klr1mcpbsc4" path="res://Graphics/go_to_icon.png" id="4_niwjs"]
 [ext_resource type="Texture2D" uid="uid://dn8ug1anbuwpu" path="res://Graphics/orbit_icon.png" id="5_hp0se"]
 
@@ -21,10 +22,15 @@ canvas_item_default_texture_filter = 0
 title = "System Map"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 1000)
+visible = false
 min_size = Vector2i(1000, 1000)
 
 [node name="system" type="Node2D" parent="."]
 script = ExtResource("1_nhsfb")
+
+[node name="movement_lock_timer" type="Timer" parent="system"]
+wait_time = 5.0
+one_shot = true
 
 [node name="camera" type="Camera2D" parent="system"]
 script = ExtResource("2_miyro")
@@ -51,11 +57,14 @@ offset_top = -47.0
 grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("3_djc4s")
-text = "LMB: POINT SCOPES
-RMB: LAY IN A COURSE"
+text = "WASD: MOVE
+Q&E: ZOOM IN/OUT
+LMB: POINT SCOPES
+RMB: LAY IN A COURSE
+"
 horizontal_alignment = 2
 
-[node name="tabs" type="TabContainer" parent="system/camera/canvas/control"]
+[node name="tabs" type="TabContainer" parent="system/camera/canvas/control" groups=["FOLLOW_UPGRADE_STATE"]]
 custom_minimum_size = Vector2(450, 1000)
 layout_mode = 1
 anchors_preset = 9
@@ -63,6 +72,26 @@ anchor_bottom = 1.0
 grow_vertical = 2
 theme = ExtResource("3_djc4s")
 tab_alignment = 2
+current_tab = 1
+script = ExtResource("4_27qwa")
+
+[node name="WARNING" type="ColorRect" parent="system/camera/canvas/control/tabs"]
+visible = false
+custom_minimum_size = Vector2(450, 950)
+layout_mode = 2
+color = Color(0.184314, 0.14902, 0.156863, 1)
+
+[node name="warning_label" type="Label" parent="system/camera/canvas/control/tabs/WARNING"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "UNAVAILABLE : Install proprietary 'advanced scanning' software at your nearest Evil & Co or subsidiary vendor."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="OVERVIEW" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
 custom_minimum_size = Vector2(450, 950)
@@ -121,6 +150,7 @@ theme = ExtResource("3_djc4s")
 theme_override_colors/font_color = Color(0.87451, 1, 0.862745, 1)
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_ee55b")
+text = "CBCBCBCBCB"
 vertical_alignment = 1
 clip_text = true
 
@@ -128,21 +158,12 @@ clip_text = true
 custom_minimum_size = Vector2(450, 900)
 layout_mode = 2
 theme = ExtResource("3_djc4s")
-
-[node name="utilities_container" type="VBoxContainer" parent="system/camera/canvas/control"]
-custom_minimum_size = Vector2(450, 500)
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -40.0
-grow_horizontal = 0
-grow_vertical = 0
+item_count = 1
+item_0/text = "glug glug"
 
 [connection signal="close_requested" from="." to="system" method="_on_system_window_close_requested"]
+[connection signal="tab_button_pressed" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_button_pressed"]
+[connection signal="tab_clicked" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_clicked"]
 [connection signal="item_clicked" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_clicked"]
 [connection signal="mouse_entered" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_mouse_entered"]
 [connection signal="mouse_exited" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_mouse_exited"]

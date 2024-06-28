@@ -29,6 +29,7 @@ func _ready():
 	
 	station_ui.connect("sellExplorationData", _on_sell_exploration_data)
 	station_ui.connect("undockFromStation", _on_undock_from_station)
+	station_ui.connect("upgradeShip", _on_upgrade_ship)
 	
 	console_control.connect("systemMapPopup", _on_system_map_popup)
 	console_control.connect("system3DPopup", _on_system_3d_popup)
@@ -106,6 +107,7 @@ func _physics_process(delta):
 						destination.updateBodyPosition(destination_wormhole.get_identifier(), delta) #REQURIED SO WORMHOLE HAVE A POSITION OTHER THAN 0,0
 						destination_position = destination_wormhole.position
 						destination_wormhole.is_known = true
+						system_3d.locked_body_identifier = destination_wormhole.get_identifier()
 					
 					#setting whether the new system is a civilized system or not
 					world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
@@ -116,6 +118,8 @@ func _physics_process(delta):
 							body.is_known = true
 					
 					world.player.position = destination_position
+					world.player.target_position = world.player.position
+					system_map._on_start_movement_lock_timer()
 					
 					#no idea if anything below this point actually works so be careful \/\/\/\/
 					
@@ -212,20 +216,44 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	pass
 
 func _on_sell_exploration_data(sell_percentage_of_market_price: int):
+	print("STATION_UI (DEBUG): SELLING EXPLORATION DATA")
 	var multiplier = sell_percentage_of_market_price / 100.0
 	var sell_for = world.player.current_value * multiplier
-	world.player.balance += sell_for
+	world.player.increaseBalance(sell_for)
 	world.player.current_value = 0
 	station_ui.player_balance = world.player.balance
 	pass
 
+func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
+	print("STATION_UI (DEBUG): UPGRADING SHIP")
+	if world.player.balance >= cost and (world.player.get_upgrade_unlocked_state(upgrade_idx) != true):
+		world.player.decreaseBalance(cost)
+		_on_unlock_upgrade(upgrade_idx)
+	pass
+
 func _on_undock_from_station(from_station: stationAPI):
+	print("STATION_UI (DEBUG): UNDOCKING FROM STATION")
 	is_paused = false
 	$station_window.hide()
 	$interaction_cooldown.start()
 	#DOESNT WORK \/\/\/\/\/
 	system_map.action_body = from_station
 	system_map.current_action_type = system_map.ACTION_TYPES.ORBIT
+	pass
+
+func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
+	var unlock = world.player.unlockUpgrade(upgrade_idx)
+	_on_upgrade_state_change(unlock, true)
+	pass
+
+func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
+	var lock = world.player.lockUpgrade(upgrade_idx)
+	_on_upgrade_state_change(lock, false)
+	pass
+
+func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
+	print("GAME (DEBUG): UPGRADE STATE CHANGED: ", upgrade_idx, " ", state)
+	get_tree().call_group("FOLLOW_UPGRADE_STATE", "_on_upgrade_state_change", upgrade_idx, state)
 	pass
 
 
