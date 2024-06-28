@@ -50,3 +50,7 @@ func _draw():
 
 func get_screen_centre():
 	return (get_viewport_rect().size / 2)
+
+func _on_barycenter_visualizer_window_close_requested():
+	owner.hide()
+	pass

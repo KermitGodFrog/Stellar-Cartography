@@ -13,3 +13,5 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_tynt4")
+
+[connection signal="close_requested" from="." to="barycenter_control" method="_on_barycenter_visualizer_window_close_requested"]
