@@ -147,10 +147,14 @@ func draw_sonar():
 func draw_map():
 	var asteroid_belts = system.get_bodies_with_metadata_key("asteroid_belt_classification") #not EXACTLY proper but yknow
 	if asteroid_belts: for belt in asteroid_belts:
-		if belt.is_known: draw_arc(belt.position, belt.radius, -10, TAU, 50, belt.metadata.get("color"), belt.metadata.get("width"), false)
+		if belt.is_known: draw_arc(belt.position, belt.radius, -TAU, TAU, 50, belt.metadata.get("color"), belt.metadata.get("width"), false)
 	for body in system.bodies:
 		if not (body.is_asteroid_belt() or body.is_station()) and body.is_known:
-			draw_circle(body.position, body.radius, body.metadata.get("color"))
+			if camera.zoom.length() < system.get_first_star().radius * 100.0:
+				if system.get_body_from_identifier(body.hook_identifier):
+					draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -TAU, TAU, 30, Color(0, 0, 25, 0.2), 0.2, false)
+				draw_circle(body.position, pow(camera.zoom.length(), -0.5) * 2.5, body.metadata.get("color"))
+			else: draw_circle(body.position, body.radius, body.metadata.get("color"))
 	for body in system.get_stations(): #TEMP!!!!!
 		draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
 	

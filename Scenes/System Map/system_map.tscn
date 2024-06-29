@@ -101,6 +101,7 @@ theme = ExtResource("3_djc4s")
 [node name="system_list" type="ItemList" parent="system/camera/canvas/control/tabs/OVERVIEW"]
 custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("3_djc4s")
 allow_search = false
 max_text_lines = 3
