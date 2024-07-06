@@ -14,10 +14,8 @@ script = ExtResource("1_mtv75")
 [node name="system_window" parent="." instance=ExtResource("2_jilbx")]
 
 [node name="system_3d_window" parent="." instance=ExtResource("4_53ki8")]
-visible = true
 
 [node name="sonar_window" parent="." instance=ExtResource("4_lnw4j")]
-visible = true
 
 [node name="barycenter_visualizer_window" parent="." instance=ExtResource("5_wmjnw")]
 

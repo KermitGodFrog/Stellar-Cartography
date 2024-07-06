@@ -8,7 +8,6 @@ var world: worldAPI
 @onready var barycenter_visualizer = $barycenter_visualizer_window/barycenter_control
 @onready var audio_visualizer = $audio_visualizer_window/audio_control
 @onready var station_ui = $station_window/station_control
-#@onready var console_control = $console_control
 
 var is_paused: bool = false
 
