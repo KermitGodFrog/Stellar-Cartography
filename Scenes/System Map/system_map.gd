@@ -6,6 +6,11 @@ signal updateTargetPosition(pos: Vector2)
 signal updatedLockedBody(body: bodyAPI)
 signal lockedBodyDepreciated
 
+signal system3DPopup
+signal sonarPopup
+signal barycenterPopup
+signal audioVisualizerPopup
+
 signal DEBUG_REVEAL_ALL_WORMHOLES
 signal DEBUG_REVEAL_ALL_BODIES
 
@@ -23,11 +28,11 @@ var mouse_over_ui: bool = false
 
 var has_focus: bool = false
 
+@onready var camera = $camera
+@onready var movement_lock_timer = $movement_lock_timer
 @onready var system_list = $camera/canvas/control/tabs/OVERVIEW/system_list
 @onready var follow_body_label = $camera/canvas/control/tabs/INFO/follow_body_label
 @onready var body_attributes_list = $camera/canvas/control/tabs/INFO/body_attributes_list
-@onready var camera = $camera
-@onready var movement_lock_timer = $movement_lock_timer
 @onready var orbit_button = $camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button
 @onready var go_to_button = $camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button
 @onready var picker_label = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_label
@@ -50,7 +55,6 @@ var SONAR_POLYGON: PackedVector2Array
 var SONAR_POLYGON_DISPLAY_TIME: float = 0
 
 func _physics_process(delta):
-	print_debug(has_focus)
 	rotation_hint += delta
 	#If body clicked on in system list, follow the body with the camera (follow body).
 	#If body clicked on in system list, actions can itneract with the body (locked body).
@@ -326,4 +330,21 @@ func _on_stop_button_mouse_entered():
 
 func _on_stop_button_mouse_exited():
 	mouse_over_stop_button = false
+	pass
+
+
+func _on_scopes_button_pressed():
+	emit_signal("system3DPopup")
+	pass 
+
+func _on_sonar_button_pressed():
+	emit_signal("sonarPopup")
+	pass 
+
+func _on_barycenter_button_pressed():
+	emit_signal("barycenterPopup")
+	pass 
+
+func _on_audio_visualizer_button_pressed():
+	emit_signal("audioVisualizerPopup")
 	pass
