@@ -13,6 +13,7 @@ var system: starSystemAPI
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 
 #this atrocity is the result of godots terrible system for detecting if the mouse is above a UI element
+#should change to:  get_viewport().gui_get_focus_owner()
 var mouse_over_system_list: bool = false
 var mouse_over_actions_panel: bool = false
 var mouse_over_go_to_button: bool = false
@@ -20,7 +21,8 @@ var mouse_over_orbit_button: bool = false
 var mouse_over_stop_button: bool = false
 var mouse_over_ui: bool = false
 
-var font = preload("res://Graphics/Fonts/comicsans.ttf")
+var has_focus: bool = false
+
 @onready var system_list = $camera/canvas/control/tabs/OVERVIEW/system_list
 @onready var follow_body_label = $camera/canvas/control/tabs/INFO/follow_body_label
 @onready var body_attributes_list = $camera/canvas/control/tabs/INFO/body_attributes_list
@@ -48,6 +50,7 @@ var SONAR_POLYGON: PackedVector2Array
 var SONAR_POLYGON_DISPLAY_TIME: float = 0
 
 func _physics_process(delta):
+	print_debug(has_focus)
 	rotation_hint += delta
 	#If body clicked on in system list, follow the body with the camera (follow body).
 	#If body clicked on in system list, actions can itneract with the body (locked body).
@@ -63,7 +66,7 @@ func _physics_process(delta):
 	else: mouse_over_ui = false
 	
 	#moving to the mouse position or moving to action_body in various ways
-	if Input.is_action_pressed("right_mouse") and owner.has_focus() and (not mouse_over_ui) and movement_lock_timer.is_stopped():
+	if Input.is_action_pressed("right_mouse") and has_focus and (not mouse_over_ui) and movement_lock_timer.is_stopped():
 		locked_body = null
 		action_body = null
 		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
@@ -80,20 +83,22 @@ func _physics_process(delta):
 				emit_signal("updatePlayerTargetPosition", pos, false)
 	
 	#changing target position
-	if Input.is_action_pressed("left_mouse") and owner.has_focus() and (not mouse_over_ui) and movement_lock_timer.is_stopped():
+	if Input.is_action_pressed("left_mouse") and has_focus and (not mouse_over_ui) and movement_lock_timer.is_stopped():
 		camera_target_position = get_global_mouse_position()
 		emit_signal("updateTargetPosition", get_global_mouse_position())
 		emit_signal("lockedBodyDepreciated")
 	
-	if Input.is_action_just_pressed("the B") and owner.has_focus(): #DEBUG!!!!!!!!!!!!!!!!!
+	if Input.is_action_just_pressed("the B") and has_focus: #DEBUG!!!!!!!!!!!!!!!!!
 		emit_signal("DEBUG_REVEAL_ALL_WORMHOLES")
 	
-	if Input.is_action_just_pressed("the N") and owner.has_focus(): #DEBUG!!!!!!!!!!!!!!!!!
+	if Input.is_action_just_pressed("the N") and has_focus: #DEBUG!!!!!!!!!!!!!!!!!
 		emit_signal("DEBUG_REVEAL_ALL_BODIES")
 	
 	#incredibly out of plcace!!!!!
 	if camera.follow_body:
 		camera_target_position = Vector2.ZERO
+	#SETTING CAMERA FOCUS
+	camera.system_has_focus = has_focus
 	
 	#disabling certain movement buttons when no locked body
 	if not locked_body:
@@ -282,10 +287,6 @@ func _on_picker_button_item_selected(index):
 
 
 
-
-func _on_system_window_close_requested():
-	owner.hide()
-	pass
 
 func _on_system_list_mouse_entered():
 	mouse_over_system_list = true

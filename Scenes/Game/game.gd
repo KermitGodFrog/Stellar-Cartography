@@ -8,7 +8,7 @@ var world: worldAPI
 @onready var barycenter_visualizer = $barycenter_visualizer_window/barycenter_control
 @onready var audio_visualizer = $audio_visualizer_window/audio_control
 @onready var station_ui = $station_window/station_control
-@onready var console_control = $console_control
+#@onready var console_control = $console_control
 
 var is_paused: bool = false
 
@@ -33,10 +33,10 @@ func _ready():
 	station_ui.connect("undockFromStation", _on_undock_from_station)
 	station_ui.connect("upgradeShip", _on_upgrade_ship)
 	
-	console_control.connect("systemMapPopup", _on_system_map_popup)
-	console_control.connect("system3DPopup", _on_system_3d_popup)
-	console_control.connect("sonarPopup", _on_sonar_popup)
-	console_control.connect("barycenterPopup", _on_barycenter_popup)
+	#console_control.connect("systemMapPopup", _on_system_map_popup)
+	#console_control.connect("system3DPopup", _on_system_3d_popup)
+	#console_control.connect("sonarPopup", _on_sonar_popup)
+	#console_control.connect("barycenterPopup", _on_barycenter_popup)
 	
 	#var error = game_data.loadWorld()
 	#if error is worldAPI:
@@ -153,6 +153,9 @@ func _physics_process(delta):
 		#updating positions of everyhthing for windows
 		system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 		system_3d.set("player_position", world.player.position)
+		#SETTING WHETHER SYSTEM MAP HAS FOCUS OR NOT (SINCE ITS A NODE IT CANNOT USE HAS_FOCUS() DIRECTLY!)
+		if $system_3d_window.has_focus() or $sonar_window.has_focus() or $barycenter_visualizer_window.has_focus() or $audio_visualizer_window.has_focus() or $station_window.has_focus(): system_map.has_focus = false
+		else: system_map.has_focus = true
 	pass
 
 func _on_update_player_target_position(pos: Vector2, slowdown: bool = true):
@@ -218,7 +221,7 @@ func _on_found_body(id: int):
 	pass
 
 func _on_add_console_item(text: String, bg_color: Color = Color.WHITE):
-	console_control.add_console_item(text, bg_color)
+	#console_control.add_console_item(text, bg_color)
 	pass
 
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
