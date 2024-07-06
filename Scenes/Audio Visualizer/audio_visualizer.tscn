@@ -1,8 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://bwlfi3x5r51fo"]
+[gd_scene load_steps=6 format=3 uid="uid://bwlfi3x5r51fo"]
 
 [ext_resource type="Script" path="res://Scenes/Audio Visualizer/audio_visualizer.gd" id="1_fs2yq"]
+[ext_resource type="AudioStream" uid="uid://b0mftg24fipnp" path="res://Sound/chimes.wav" id="2_wgufx"]
+[ext_resource type="AudioStream" uid="uid://cuqfn1a6g6g0e" path="res://Sound/pops.wav" id="3_7knfx"]
+[ext_resource type="AudioStream" uid="uid://c5bcwxp1is83n" path="res://Sound/pulses.wav" id="4_00en7"]
+[ext_resource type="AudioStream" uid="uid://dd3hsfa1u5ktm" path="res://Sound/storm.wav" id="5_fsbvl"]
 
 [node name="audio_visualizer_window" type="Window"]
+title = "Audio Visualizer"
+position = Vector2i(0, 36)
+size = Vector2i(600, 400)
 
 [node name="audio_control" type="Control" parent="."]
 layout_mode = 3
@@ -10,3 +17,24 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_fs2yq")
+
+[node name="chimes" type="AudioStreamPlayer" parent="audio_control"]
+stream = ExtResource("2_wgufx")
+bus = &"Planetary SFX"
+
+[node name="pops" type="AudioStreamPlayer" parent="audio_control"]
+stream = ExtResource("3_7knfx")
+bus = &"Planetary SFX"
+
+[node name="pulses" type="AudioStreamPlayer" parent="audio_control"]
+stream = ExtResource("4_00en7")
+bus = &"Planetary SFX"
+
+[node name="storm" type="AudioStreamPlayer" parent="audio_control"]
+stream = ExtResource("5_fsbvl")
+bus = &"Planetary SFX"
+
+[node name="custom" type="AudioStreamPlayer" parent="audio_control"]
+bus = &"Planetary SFX"
+
+[connection signal="close_requested" from="." to="audio_control" method="_on_audio_visualizer_window_close_requested"]

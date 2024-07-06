@@ -6,6 +6,7 @@ var world: worldAPI
 @onready var system_3d = $system_3d_window/system_3d
 @onready var sonar = $sonar_window/sonar_control
 @onready var barycenter_visualizer = $barycenter_visualizer_window/barycenter_control
+@onready var audio_visualizer = $audio_visualizer_window/audio_control
 @onready var station_ui = $station_window/station_control
 @onready var console_control = $console_control
 
@@ -194,10 +195,12 @@ func _on_locked_body_updated(body: bodyAPI):
 	system_3d.set("label_locked_body_identifier", body.get_identifier())
 	system_3d.set("target_position", Vector2.ZERO)
 	barycenter_visualizer.set("locked_body_identifier", body.get_identifier())
+	audio_visualizer._on_locked_body_updated(body)
 	pass
 
 func _on_locked_body_depreciated():
 	system_3d.set("label_locked_body_identifier", 0)
+	audio_visualizer._on_locked_body_depreciated()
 	pass
 
 func _on_found_body(id: int):
