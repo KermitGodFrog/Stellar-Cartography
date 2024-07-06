@@ -26,15 +26,7 @@ bg_color = Color(0.211765, 0.211765, 0.211765, 0.415686)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5sqdb"]
 bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
 
-[node name="system_window" type="Window"]
-disable_3d = true
-transparent_bg = true
-msaa_2d = 1
-canvas_item_default_texture_filter = 0
-title = "System Map"
-position = Vector2i(0, 36)
-size = Vector2i(1000, 1000)
-min_size = Vector2i(1000, 1000)
+[node name="system_window" type="Node"]
 
 [node name="system" type="Node2D" parent="."]
 script = ExtResource("1_nhsfb")
@@ -75,7 +67,7 @@ offset_right = 450.0
 grow_vertical = 2
 theme = ExtResource("3_djc4s")
 tab_alignment = 2
-current_tab = 2
+current_tab = 1
 script = ExtResource("4_27qwa")
 
 [node name="WARNING" type="ColorRect" parent="system/camera/canvas/control/tabs"]
@@ -97,7 +89,6 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="OVERVIEW" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
-visible = false
 custom_minimum_size = Vector2(450, 950)
 layout_mode = 2
 theme = ExtResource("3_djc4s")
@@ -152,6 +143,7 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="INFO" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
+visible = false
 custom_minimum_size = Vector2(450, 950)
 layout_mode = 2
 theme = ExtResource("3_djc4s")
@@ -226,24 +218,65 @@ popup/item_2/id = 2
 
 [node name="controls_label" type="Label" parent="system/camera/canvas/control"]
 layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -188.0
+offset_bottom = 97.0
+grow_horizontal = 0
+theme = ExtResource("3_djc4s")
+text = "RMB: LAY IN A COURSE
+LMB: POINT SCOPES
+Q&E: ZOOM IN/OUT
+WASD: MOVE
+"
+horizontal_alignment = 2
+
+[node name="apps_panel" type="Panel" parent="system/camera/canvas/control"]
+custom_minimum_size = Vector2(100, 200)
+layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -188.0
-offset_top = -97.0
+offset_left = -40.0
+offset_top = -40.0
 grow_horizontal = 0
 grow_vertical = 0
-theme = ExtResource("3_djc4s")
-text = "WASD: MOVE
-Q&E: ZOOM IN/OUT
-LMB: POINT SCOPES
-RMB: LAY IN A COURSE
-"
-horizontal_alignment = 2
 
-[connection signal="close_requested" from="." to="system" method="_on_system_window_close_requested"]
+[node name="apps_margin" type="MarginContainer" parent="system/camera/canvas/control/apps_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="apps_scroll" type="VBoxContainer" parent="system/camera/canvas/control/apps_panel/apps_margin"]
+layout_mode = 2
+alignment = 2
+
+[node name="scopes_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
+layout_mode = 2
+text = "SCOPES"
+
+[node name="sonar_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
+layout_mode = 2
+text = "SONAR"
+
+[node name="barycenter_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
+layout_mode = 2
+text = "BARY"
+
+[node name="audio_visualizer_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
+layout_mode = 2
+text = "AUDIO"
+
 [connection signal="tab_button_pressed" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_button_pressed"]
 [connection signal="tab_clicked" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_clicked"]
 [connection signal="item_clicked" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_clicked"]
@@ -261,3 +294,7 @@ horizontal_alignment = 2
 [connection signal="mouse_exited" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_mouse_exited"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]
 [connection signal="item_selected" from="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button" to="system" method="_on_picker_button_item_selected"]
+[connection signal="pressed" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/scopes_button" to="system" method="_on_scopes_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/sonar_button" to="system" method="_on_sonar_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/barycenter_button" to="system" method="_on_barycenter_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_pressed"]

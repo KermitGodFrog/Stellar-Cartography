@@ -6,6 +6,11 @@ signal updateTargetPosition(pos: Vector2)
 signal updatedLockedBody(body: bodyAPI)
 signal lockedBodyDepreciated
 
+signal system3DPopup
+signal sonarPopup
+signal barycenterPopup
+signal audioVisualizerPopup
+
 signal DEBUG_REVEAL_ALL_WORMHOLES
 signal DEBUG_REVEAL_ALL_BODIES
 
@@ -13,6 +18,7 @@ var system: starSystemAPI
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 
 #this atrocity is the result of godots terrible system for detecting if the mouse is above a UI element
+#should change to:  get_viewport().gui_get_focus_owner()
 var mouse_over_system_list: bool = false
 var mouse_over_actions_panel: bool = false
 var mouse_over_go_to_button: bool = false
@@ -20,12 +26,13 @@ var mouse_over_orbit_button: bool = false
 var mouse_over_stop_button: bool = false
 var mouse_over_ui: bool = false
 
-var font = preload("res://Graphics/Fonts/comicsans.ttf")
+var has_focus: bool = false
+
+@onready var camera = $camera
+@onready var movement_lock_timer = $movement_lock_timer
 @onready var system_list = $camera/canvas/control/tabs/OVERVIEW/system_list
 @onready var follow_body_label = $camera/canvas/control/tabs/INFO/follow_body_label
 @onready var body_attributes_list = $camera/canvas/control/tabs/INFO/body_attributes_list
-@onready var camera = $camera
-@onready var movement_lock_timer = $movement_lock_timer
 @onready var orbit_button = $camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button
 @onready var go_to_button = $camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button
 @onready var picker_label = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_label
@@ -63,7 +70,7 @@ func _physics_process(delta):
 	else: mouse_over_ui = false
 	
 	#moving to the mouse position or moving to action_body in various ways
-	if Input.is_action_pressed("right_mouse") and owner.has_focus() and (not mouse_over_ui) and movement_lock_timer.is_stopped():
+	if Input.is_action_pressed("right_mouse") and has_focus and (not mouse_over_ui) and movement_lock_timer.is_stopped():
 		locked_body = null
 		action_body = null
 		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
@@ -80,20 +87,22 @@ func _physics_process(delta):
 				emit_signal("updatePlayerTargetPosition", pos, false)
 	
 	#changing target position
-	if Input.is_action_pressed("left_mouse") and owner.has_focus() and (not mouse_over_ui) and movement_lock_timer.is_stopped():
+	if Input.is_action_pressed("left_mouse") and has_focus and (not mouse_over_ui) and movement_lock_timer.is_stopped():
 		camera_target_position = get_global_mouse_position()
 		emit_signal("updateTargetPosition", get_global_mouse_position())
 		emit_signal("lockedBodyDepreciated")
 	
-	if Input.is_action_just_pressed("the B") and owner.has_focus(): #DEBUG!!!!!!!!!!!!!!!!!
+	if Input.is_action_just_pressed("the B") and has_focus: #DEBUG!!!!!!!!!!!!!!!!!
 		emit_signal("DEBUG_REVEAL_ALL_WORMHOLES")
 	
-	if Input.is_action_just_pressed("the N") and owner.has_focus(): #DEBUG!!!!!!!!!!!!!!!!!
+	if Input.is_action_just_pressed("the N") and has_focus: #DEBUG!!!!!!!!!!!!!!!!!
 		emit_signal("DEBUG_REVEAL_ALL_BODIES")
 	
 	#incredibly out of plcace!!!!!
 	if camera.follow_body:
 		camera_target_position = Vector2.ZERO
+	#SETTING CAMERA FOCUS
+	camera.system_has_focus = has_focus
 	
 	#disabling certain movement buttons when no locked body
 	if not locked_body:
@@ -283,10 +292,6 @@ func _on_picker_button_item_selected(index):
 
 
 
-func _on_system_window_close_requested():
-	owner.hide()
-	pass
-
 func _on_system_list_mouse_entered():
 	mouse_over_system_list = true
 	pass
@@ -325,4 +330,21 @@ func _on_stop_button_mouse_entered():
 
 func _on_stop_button_mouse_exited():
 	mouse_over_stop_button = false
+	pass
+
+
+func _on_scopes_button_pressed():
+	emit_signal("system3DPopup")
+	pass 
+
+func _on_sonar_button_pressed():
+	emit_signal("sonarPopup")
+	pass 
+
+func _on_barycenter_button_pressed():
+	emit_signal("barycenterPopup")
+	pass 
+
+func _on_audio_visualizer_button_pressed():
+	emit_signal("audioVisualizerPopup")
 	pass
