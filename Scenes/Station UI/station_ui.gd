@@ -36,3 +36,8 @@ func _on_unlock_advanced_scanning_button_pressed():
 	if station: 
 		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.ADVANCED_SCANNING, 20000)
 	pass
+
+func _on_unlock_audio_visualizer_pressed():
+	if station:
+		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.AUDIO_VISUALIZER, 30000)
+	pass

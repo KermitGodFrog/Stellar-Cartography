@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://chwm82adl21cm"]
+[gd_scene load_steps=3 format=3 uid="uid://chwm82adl21cm"]
 
 [ext_resource type="Script" path="res://Scenes/Sonar Interface/sonar_interface.gd" id="1_bmylm"]
+[ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://Scenes/window_theme.tres" id="1_rjt1s"]
 
 [node name="sonar_window" type="Window"]
 title = "Sonar"
@@ -8,6 +9,7 @@ position = Vector2i(0, 36)
 size = Vector2i(500, 500)
 visible = false
 unresizable = true
+theme = ExtResource("1_rjt1s")
 
 [node name="background" type="TextureRect" parent="."]
 texture_filter = 1

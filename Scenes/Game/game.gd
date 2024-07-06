@@ -56,6 +56,7 @@ func _ready():
 	createWorld()
 	world.createPlayer(3, 2)
 	world.player.resetJumpsRemaining()
+	world.player.balance = 30000
 	
 	#new game stuff
 	var new = _on_create_new_star_system(false)
@@ -219,7 +220,7 @@ func _on_found_body(id: int):
 						sub_body.is_known = true
 	pass
 
-func _on_add_console_item(text: String, bg_color: Color = Color.WHITE):
+func _on_add_console_item(text: String, bg_color: Color = Color.WHITE): #called via systtem 3d
 	pass
 
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):

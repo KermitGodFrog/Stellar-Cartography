@@ -13,8 +13,11 @@ var current_value: int = 0
 var max_jumps: int = 5
 var jumps_remaining: int = 0
 
-enum UPGRADE_ID {ADVANCED_SCANNING}
+enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER}
 var unlocked_upgrades: Array[UPGRADE_ID] = []
+
+var saved_planetary_sfx: Array = []
+
 
 func get_jumps_remaining():
 	return jumps_remaining

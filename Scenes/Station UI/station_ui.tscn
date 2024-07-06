@@ -54,16 +54,25 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "BALANCE"
 
-[node name="unlock_advanced_scanning_button" type="Button" parent="station_control"]
+[node name="upgrade_container" type="VBoxContainer" parent="station_control"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -311.0
-offset_bottom = 31.0
+offset_left = -321.0
+offset_bottom = 40.0
 grow_horizontal = 0
+
+[node name="unlock_advanced_scanning_button" type="Button" parent="station_control/upgrade_container"]
+layout_mode = 2
 text = "UNLOCK ADVANCED SCANNING (20000c)"
+
+[node name="unlock_audio_visualizer" type="Button" parent="station_control/upgrade_container"]
+layout_mode = 2
+text = "UNLOCK AUDIO VISUALIZER (30000c)
+(ADVANCED SCANNING REQUIRED)"
 
 [connection signal="pressed" from="station_control/sell_data_button" to="station_control" method="_on_sell_data_button_pressed"]
 [connection signal="pressed" from="station_control/undock_button" to="station_control" method="_on_undock_button_pressed"]
-[connection signal="pressed" from="station_control/unlock_advanced_scanning_button" to="station_control" method="_on_unlock_advanced_scanning_button_pressed"]
+[connection signal="pressed" from="station_control/upgrade_container/unlock_advanced_scanning_button" to="station_control" method="_on_unlock_advanced_scanning_button_pressed"]
+[connection signal="pressed" from="station_control/upgrade_container/unlock_audio_visualizer" to="station_control" method="_on_unlock_audio_visualizer_pressed"]

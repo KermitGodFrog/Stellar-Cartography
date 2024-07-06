@@ -1,7 +1,18 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://br33hy3pgvm14"]
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://br33hy3pgvm14"]
 
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="1_itdfk"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="2_finwo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8tini"]
+bg_color = Color(0, 0, 0, 1)
+skew = Vector2(-0.15, 0)
+border_color = Color(0.0862745, 0.109804, 0.2, 1)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+expand_margin_top = 1.0
+expand_margin_right = 15.0
+expand_margin_bottom = 1.0
+shadow_size = 2
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gvbf4"]
 
@@ -47,7 +58,7 @@ bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
 default_font = ExtResource("2_finwo")
 default_font_size = 16
 Button/fonts/font = ExtResource("1_itdfk")
-Button/styles/disabled = null
+Button/styles/disabled = SubResource("StyleBoxFlat_8tini")
 Button/styles/focus = SubResource("StyleBoxEmpty_gvbf4")
 Button/styles/hover = SubResource("StyleBoxFlat_3bll3")
 Button/styles/normal = SubResource("StyleBoxFlat_wkppo")

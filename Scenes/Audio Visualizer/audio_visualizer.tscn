@@ -1,6 +1,7 @@
-[gd_scene load_steps=18 format=3 uid="uid://bwlfi3x5r51fo"]
+[gd_scene load_steps=19 format=3 uid="uid://bwlfi3x5r51fo"]
 
 [ext_resource type="Script" path="res://Scenes/Audio Visualizer/audio_visualizer.gd" id="1_fs2yq"]
+[ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://Scenes/window_theme.tres" id="1_hiiey"]
 [ext_resource type="Theme" uid="uid://dm3fbhtw7qov2" path="res://Scenes/System Map/system_map_HUD_theme.tres" id="2_ecg40"]
 [ext_resource type="AudioStream" uid="uid://b0mftg24fipnp" path="res://Sound/chimes.wav" id="2_wgufx"]
 [ext_resource type="AudioStream" uid="uid://cuqfn1a6g6g0e" path="res://Sound/pops.wav" id="3_7knfx"]
@@ -34,7 +35,9 @@ bg_color = Color(0.109804, 0.109804, 0.211765, 0.415686)
 title = "Audio Visualizer"
 position = Vector2i(0, 36)
 size = Vector2i(600, 400)
+visible = false
 unresizable = true
+theme = ExtResource("1_hiiey")
 
 [node name="audio_control" type="Control" parent="."]
 layout_mode = 3

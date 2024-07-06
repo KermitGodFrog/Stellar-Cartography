@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=19 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -10,6 +10,7 @@
 [ext_resource type="Theme" uid="uid://br33hy3pgvm14" path="res://Scenes/System Map/system_map_APPS_theme.tres" id="8_a7cgy"]
 [ext_resource type="Texture2D" uid="uid://by3kiv6a2b0ef" path="res://Graphics/scopes_icon.png" id="8_jefec"]
 [ext_resource type="Texture2D" uid="uid://btt2br45f8t21" path="res://Graphics/sonar_icon.png" id="9_4nwtv"]
+[ext_resource type="Script" path="res://Scenes/System Map/ui_apps_scroll.gd" id="9_pw1kh"]
 [ext_resource type="Texture2D" uid="uid://dmbeihbgpfdbj" path="res://Graphics/barycenter_icon.png" id="10_ih8qm"]
 [ext_resource type="Texture2D" uid="uid://csvtv1sy2k3ns" path="res://Graphics/audio_visualizer_icon.png" id="11_lvg8y"]
 
@@ -263,9 +264,10 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="apps_scroll" type="VBoxContainer" parent="system/camera/canvas/control/apps_panel/apps_margin"]
+[node name="apps_scroll" type="VBoxContainer" parent="system/camera/canvas/control/apps_panel/apps_margin" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
 alignment = 1
+script = ExtResource("9_pw1kh")
 
 [node name="scopes_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
 layout_mode = 2
@@ -292,6 +294,7 @@ clip_text = true
 icon_alignment = 2
 
 [node name="audio_visualizer_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
+visible = false
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
 text = "AUD"
