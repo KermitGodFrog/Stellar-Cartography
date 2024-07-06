@@ -4,6 +4,7 @@ extends Node2D
 signal updatePlayerTargetPosition(pos: Vector2)
 signal updateTargetPosition(pos: Vector2)
 signal updatedLockedBody(body: bodyAPI)
+signal lockedBodyDepreciated
 
 signal DEBUG_REVEAL_ALL_WORMHOLES
 signal DEBUG_REVEAL_ALL_BODIES
@@ -16,6 +17,7 @@ var mouse_over_system_list: bool = false
 var mouse_over_actions_panel: bool = false
 var mouse_over_go_to_button: bool = false
 var mouse_over_orbit_button: bool = false
+var mouse_over_stop_button: bool = false
 var mouse_over_ui: bool = false
 
 var font = preload("res://Graphics/Fonts/comicsans.ttf")
@@ -24,6 +26,10 @@ var font = preload("res://Graphics/Fonts/comicsans.ttf")
 @onready var body_attributes_list = $camera/canvas/control/tabs/INFO/body_attributes_list
 @onready var camera = $camera
 @onready var movement_lock_timer = $movement_lock_timer
+@onready var orbit_button = $camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button
+@onready var go_to_button = $camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button
+@onready var picker_label = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_label
+@onready var picker_button = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
 
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body : bodyAPI
@@ -33,6 +39,8 @@ enum ACTION_TYPES {NONE, GO_TO, ORBIT}
 var current_action_type
 
 var rotation_hint: float #used for orbiting mechanics
+var orbit_line_opacity_hint: float = 0.0
+var body_size_multiplier_hint: float = 0.0
 
 #to dispaly data from sonar interface
 var SONAR_PINGS: Array[pingDisplayHelperAPI]
@@ -51,7 +59,7 @@ func _physics_process(delta):
 	#camera_target_position is position for system3d to look at
 	
 	#checking whether the mouse is over UI
-	if mouse_over_system_list or mouse_over_actions_panel or mouse_over_go_to_button or mouse_over_orbit_button: mouse_over_ui = true
+	if mouse_over_system_list or mouse_over_actions_panel or mouse_over_go_to_button or mouse_over_orbit_button or mouse_over_stop_button: mouse_over_ui = true
 	else: mouse_over_ui = false
 	
 	#moving to the mouse position or moving to action_body in various ways
@@ -75,6 +83,7 @@ func _physics_process(delta):
 	if Input.is_action_pressed("left_mouse") and owner.has_focus() and (not mouse_over_ui) and movement_lock_timer.is_stopped():
 		camera_target_position = get_global_mouse_position()
 		emit_signal("updateTargetPosition", get_global_mouse_position())
+		emit_signal("lockedBodyDepreciated")
 	
 	if Input.is_action_just_pressed("the B") and owner.has_focus(): #DEBUG!!!!!!!!!!!!!!!!!
 		emit_signal("DEBUG_REVEAL_ALL_WORMHOLES")
@@ -86,6 +95,14 @@ func _physics_process(delta):
 	if camera.follow_body:
 		camera_target_position = Vector2.ZERO
 	
+	#disabling certain movement buttons when no locked body
+	if not locked_body:
+		orbit_button.set("disabled", true)
+		go_to_button.set("disabled", true)
+	else:
+		orbit_button.set("disabled", false)
+		go_to_button.set("disabled", false)
+	
 	#setting system list and drawing screen
 	system_list.clear()
 	var camera_position_to_bodies: Dictionary = {}
@@ -96,7 +113,8 @@ func _physics_process(delta):
 	var closest_body_id = camera_position_to_bodies.find_key(sorted_values.front())
 	
 	var star = system.get_first_star()
-	system_list.add_item(str(star.display_name + " - ", star.metadata.get("star_type"), " Class Star"))
+	var star_item_idx = system_list.add_item(str(star.display_name + " - ", star.metadata.get("star_type"), " Class Star"))
+	system_list.set_item_metadata(star_item_idx, star.get_identifier())
 	
 	for body in system.bodies:
 		if body.is_known: if (body.is_planet() or body.is_wormhole() or body.is_station()):
@@ -127,13 +145,30 @@ func _physics_process(delta):
 	if follow_body: for entry in follow_body.metadata:
 		body_attributes_list.add_item(str(entry, " : ", follow_body.metadata.get(entry)), null, false) # must be restricted, maybe compile an exclude list somewhere
 	
+	#PICKER UTILITY \/\/\/\/\/
+	if follow_body: if follow_body.is_planet() and follow_body.get_current_variation():
+		var data_for_planet_type = system.planet_type_data.get(follow_body.metadata.get("planet_type"))
+		var variation_class = data_for_planet_type.get("variation_class")
+		if variation_class:
+			picker_label.set_text(str(variation_class.to_upper(), ":").replace("_", " "))
+			if follow_body.get_guessed_variation() != null:
+				picker_button.select(follow_body.get_guessed_variation())
+			else: picker_button.select(-1)
+			picker_label.show()
+			picker_button.show()
+		else:
+			picker_label.hide()
+			picker_button.hide()
+	else:
+		picker_label.hide()
+		picker_button.hide()
 	
 	queue_redraw()
 	pass
 
 func _draw():
-	draw_sonar()
 	draw_map()
+	draw_sonar()
 	pass
 
 func draw_sonar():
@@ -147,14 +182,20 @@ func draw_sonar():
 func draw_map():
 	var asteroid_belts = system.get_bodies_with_metadata_key("asteroid_belt_classification") #not EXACTLY proper but yknow
 	if asteroid_belts: for belt in asteroid_belts:
-		if belt.is_known: draw_arc(belt.position, belt.radius, -TAU, TAU, 50, belt.metadata.get("color"), belt.metadata.get("width"), false)
+		if belt.is_known: draw_arc(belt.position, belt.radius, -10, TAU, 50, belt.metadata.get("color"), belt.metadata.get("width"), false)
+	
 	for body in system.bodies:
 		if not (body.is_asteroid_belt() or body.is_station()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
+				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
+				body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
 				if system.get_body_from_identifier(body.hook_identifier):
-					draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -TAU, TAU, 30, Color(0, 0, 25, 0.2), 0.2, false)
-				draw_circle(body.position, pow(camera.zoom.length(), -0.5) * 2.5, body.metadata.get("color"))
-			else: draw_circle(body.position, body.radius, body.metadata.get("color"))
+					draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -TAU, TAU, 30, Color(0, 0, 50, orbit_line_opacity_hint), 0.2, false)
+				draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
+			else:
+				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.0, 0.05)
+				body_size_multiplier_hint = lerp(body_size_multiplier_hint, body.radius, 0.05)
+				draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
 	for body in system.get_stations(): #TEMP!!!!!
 		draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
 	
@@ -191,6 +232,12 @@ func _on_orbit_button_pressed():
 		action_body = locked_body
 	pass
 
+func _on_stop_button_pressed():
+	locked_body = null
+	action_body = null
+	emit_signal("updatePlayerTargetPosition", player_position_matrix[0])
+	pass
+
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	ping_length = remap(ping_width, 5, 90, 300, 100)
 	var line = player_position_matrix[0] + ping_direction * ping_length
@@ -225,7 +272,14 @@ func _on_start_movement_lock_timer():
 		action_body = null
 	pass
 
- 
+func _on_picker_button_item_selected(index):
+	if follow_body:
+		follow_body.guessed_variation = index
+	pass
+
+
+
+
 
 
 
@@ -263,4 +317,12 @@ func _on_orbit_button_mouse_entered():
 
 func _on_orbit_button_mouse_exited():
 	mouse_over_orbit_button = false
+	pass
+
+func _on_stop_button_mouse_entered():
+	mouse_over_stop_button = true
+	pass
+
+func _on_stop_button_mouse_exited():
+	mouse_over_stop_button = false
 	pass

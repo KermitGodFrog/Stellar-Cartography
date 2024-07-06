@@ -19,6 +19,7 @@ func _ready():
 	system_map.connect("updatePlayerTargetPosition", _on_update_player_target_position)
 	system_map.connect("updateTargetPosition", _on_update_target_position)
 	system_map.connect("updatedLockedBody", _on_locked_body_updated)
+	system_map.connect("lockedBodyDepreciated", _on_locked_body_depreciated)
 	system_map.connect("DEBUG_REVEAL_ALL_WORMHOLES", _ON_DEBUG_REVEAL_ALL_WORMHOLES)
 	system_map.connect("DEBUG_REVEAL_ALL_BODIES", _ON_DEBUG_REVEAL_ALL_BODIES)
 	
@@ -62,6 +63,8 @@ func _ready():
 		_on_create_new_star_system(false, new)
 	new.generateRandomWormholes()
 	_on_switch_star_system(new)
+	
+	#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING) #TEMP!!!!!!!!!!
 	pass
 
 func _physics_process(delta):
@@ -188,8 +191,13 @@ func _on_switch_star_system(to_system: starSystemAPI):
 
 func _on_locked_body_updated(body: bodyAPI):
 	system_3d.set("locked_body_identifier", body.get_identifier())
+	system_3d.set("label_locked_body_identifier", body.get_identifier())
 	system_3d.set("target_position", Vector2.ZERO)
 	barycenter_visualizer.set("locked_body_identifier", body.get_identifier())
+	pass
+
+func _on_locked_body_depreciated():
+	system_3d.set("label_locked_body_identifier", 0)
 	pass
 
 func _on_found_body(id: int):
@@ -219,6 +227,14 @@ func _on_sell_exploration_data(sell_percentage_of_market_price: int):
 	print("STATION_UI (DEBUG): SELLING EXPLORATION DATA")
 	var multiplier = sell_percentage_of_market_price / 100.0
 	var sell_for = world.player.current_value * multiplier
+	#NEED TO ADD MONEY FOR GUESSING CORRECT PLANET VARIATIONS!!!!
+	
+	for s in world.star_systems: for b in s.bodies:
+		if b.guessed_variation and b.current_variation:
+			if b.guessed_variation == b.current_variation:
+				var value = b.metadata.get("value")
+				if value: sell_for += value #2x planet payout for guessing correct planet variation
+	
 	world.player.increaseBalance(sell_for)
 	world.player.current_value = 0
 	station_ui.player_balance = world.player.balance

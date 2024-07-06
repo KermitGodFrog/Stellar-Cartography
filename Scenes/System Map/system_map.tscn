@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=13 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Scenes/System Map/ui_tabs.gd" id="4_27qwa"]
 [ext_resource type="Texture2D" uid="uid://7klr1mcpbsc4" path="res://Graphics/go_to_icon.png" id="4_niwjs"]
 [ext_resource type="Texture2D" uid="uid://dn8ug1anbuwpu" path="res://Graphics/orbit_icon.png" id="5_hp0se"]
+[ext_resource type="Texture2D" uid="uid://dsyfc4m1nq34w" path="res://Graphics/stop_icon.png" id="7_bacyf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ee55b"]
 content_margin_left = 25.0
@@ -13,6 +14,17 @@ bg_color = Color(0.180392, 0.180392, 0.180392, 0.415686)
 border_width_left = 20
 border_color = Color(0.156863, 0.156863, 0.156863, 1)
 corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhsj4"]
+bg_color = Color(0.109804, 0.109804, 0.211765, 0.415686)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ufej3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w1mgb"]
+bg_color = Color(0.211765, 0.211765, 0.211765, 0.415686)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5sqdb"]
+bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
 
 [node name="system_window" type="Window"]
 disable_3d = true
@@ -22,7 +34,6 @@ canvas_item_default_texture_filter = 0
 title = "System Map"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 1000)
-visible = false
 min_size = Vector2i(1000, 1000)
 
 [node name="system" type="Node2D" parent="."]
@@ -45,34 +56,26 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="controls_label" type="Label" parent="system/camera/canvas/control"]
+[node name="post_process" type="ColorRect" parent="system/camera/canvas/control"]
+visible = false
+texture_filter = 1
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -188.0
-offset_top = -47.0
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("3_djc4s")
-text = "WASD: MOVE
-Q&E: ZOOM IN/OUT
-LMB: POINT SCOPES
-RMB: LAY IN A COURSE
-"
-horizontal_alignment = 2
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="tabs" type="TabContainer" parent="system/camera/canvas/control" groups=["FOLLOW_UPGRADE_STATE"]]
 custom_minimum_size = Vector2(450, 1000)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
+offset_right = 450.0
 grow_vertical = 2
 theme = ExtResource("3_djc4s")
 tab_alignment = 2
-current_tab = 1
+current_tab = 2
 script = ExtResource("4_27qwa")
 
 [node name="WARNING" type="ColorRect" parent="system/camera/canvas/control/tabs"]
@@ -94,6 +97,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="OVERVIEW" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
+visible = false
 custom_minimum_size = Vector2(450, 950)
 layout_mode = 2
 theme = ExtResource("3_djc4s")
@@ -138,8 +142,16 @@ icon = ExtResource("5_hp0se")
 icon_alignment = 1
 expand_icon = true
 
+[node name="stop_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+tooltip_text = "Stop the ship and/or cancel the course to the selected body"
+theme = ExtResource("3_djc4s")
+icon = ExtResource("7_bacyf")
+icon_alignment = 1
+expand_icon = true
+
 [node name="INFO" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
-visible = false
 custom_minimum_size = Vector2(450, 950)
 layout_mode = 2
 theme = ExtResource("3_djc4s")
@@ -156,11 +168,80 @@ vertical_alignment = 1
 clip_text = true
 
 [node name="body_attributes_list" type="ItemList" parent="system/camera/canvas/control/tabs/INFO"]
-custom_minimum_size = Vector2(450, 900)
+custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("3_djc4s")
 item_count = 1
 item_0/text = "glug glug"
+
+[node name="picker_header" type="Label" parent="system/camera/canvas/control/tabs/INFO"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_hhsj4")
+text = "- ADDITIONAL OBSERVATIONS -"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="picker_panel" type="Panel" parent="system/camera/canvas/control/tabs/INFO"]
+custom_minimum_size = Vector2(450, 200)
+layout_mode = 2
+
+[node name="picker_margin" type="MarginContainer" parent="system/camera/canvas/control/tabs/INFO/picker_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="picker_scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin"]
+layout_mode = 2
+
+[node name="picker_label" type="Label" parent="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll"]
+visible = false
+layout_mode = 2
+text = "VARIATION:"
+vertical_alignment = 1
+
+[node name="picker_button" type="OptionButton" parent="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll"]
+visible = false
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ufej3")
+theme_override_styles/normal = SubResource("StyleBoxFlat_w1mgb")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5sqdb")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_w1mgb")
+item_count = 3
+fit_to_longest_item = false
+popup/item_0/text = "LOW"
+popup/item_0/id = 0
+popup/item_1/text = "MEDIUM"
+popup/item_1/id = 1
+popup/item_2/text = "HIGH"
+popup/item_2/id = 2
+
+[node name="controls_label" type="Label" parent="system/camera/canvas/control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -188.0
+offset_top = -97.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("3_djc4s")
+text = "WASD: MOVE
+Q&E: ZOOM IN/OUT
+LMB: POINT SCOPES
+RMB: LAY IN A COURSE
+"
+horizontal_alignment = 2
 
 [connection signal="close_requested" from="." to="system" method="_on_system_window_close_requested"]
 [connection signal="tab_button_pressed" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_button_pressed"]
@@ -176,3 +257,7 @@ item_0/text = "glug glug"
 [connection signal="mouse_entered" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_mouse_entered"]
 [connection signal="mouse_exited" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_mouse_exited"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_pressed"]
+[connection signal="mouse_entered" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_mouse_entered"]
+[connection signal="mouse_exited" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_mouse_exited"]
+[connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]
+[connection signal="item_selected" from="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button" to="system" method="_on_picker_button_item_selected"]

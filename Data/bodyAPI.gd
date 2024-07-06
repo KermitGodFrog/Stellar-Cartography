@@ -16,6 +16,10 @@ var rotation: float #radians
 
 var is_known: bool = false
 
+enum VARIATIONS {LOW, MEDIUM, HIGH}
+var current_variation
+var guessed_variation
+
 func get_identifier():
 	return identifier
 
@@ -28,6 +32,16 @@ func get_display_name():
 
 func set_display_name(new_display_name: String):
 	display_name = new_display_name
+	pass
+
+func get_current_variation():
+	return current_variation
+
+func get_guessed_variation():
+	return guessed_variation
+
+func set_current_variation(new_variation: VARIATIONS):
+	current_variation = new_variation
 	pass
 
 func is_star():

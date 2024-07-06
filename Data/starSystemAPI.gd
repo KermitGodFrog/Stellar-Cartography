@@ -97,24 +97,24 @@ var planet_types = {
 }
 
 var planet_type_data = {
-	"Chthonian": {"color": Color.DARK_RED, "avg_value": 4000},
-	"Lava": {"color": Color.RED, "avg_value": 3000},
-	"Hycean": {"color": Color.BLUE_VIOLET, "avg_value": 10000},
-	"Desert": {"color": Color.DARK_KHAKI, "avg_value": 10000},
-	"Ocean": {"color": Color.BLUE, "avg_value": 15000},
-	"Earth-like": {"color": Color.GREEN, "avg_value": 15000},
-	"Ice": {"color": Color.WHITE, "avg_value": 2500},
-	"Silicate": {"color": Color.DARK_GRAY, "avg_value": 1000},
-	"Terrestrial": {"color": Color.DARK_SLATE_GRAY, "avg_value": 1000},
-	"Carbon": {"color": Color.BLACK, "avg_value": 2500},
+	"Chthonian": {"color": Color.DARK_RED, "avg_value": 4000, "variation_class": "density"},
+	"Lava": {"color": Color.RED, "avg_value": 3000, "variation_class": "geological_activity"},
+	"Hycean": {"color": Color.BLUE_VIOLET, "avg_value": 10000, "variation_class": "atmospheric_hydrogen_content"},
+	"Desert": {"color": Color.DARK_KHAKI, "avg_value": 10000, "variation_class": "humidity"},
+	"Ocean": {"color": Color.BLUE, "avg_value": 15000, "variation_class": "average_water_depth"},
+	"Earth-like": {"color": Color.GREEN, "avg_value": 15000, "variation_class": "cloud_cover"},
+	"Ice": {"color": Color.WHITE, "avg_value": 2500, "variation_class": "surface_reflectivity"},
+	"Silicate": {"color": Color.DARK_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude"},
+	"Terrestrial": {"color": Color.DARK_SLATE_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude"},
+	"Carbon": {"color": Color.BLACK, "avg_value": 2500, "variation_class": "carbon_oxygen_difference"},
 	"Fire Dwarf": {"color": Color.LIGHT_CORAL, "avg_value": 1000},
 	"Gas Dwarf": {"color": Color.ORANGE, "avg_value": 2000},
-	"Ice Dwarf": {"color": Color.DARK_BLUE, "avg_value": 3000},
-	"Helium Dwarf": {"color": Color.DARK_ORANGE, "avg_value": 4500},
+	"Ice Dwarf": {"color": Color.DARK_BLUE, "avg_value": 3000, "variation_class": "volatile_content"},
+	"Helium Dwarf": {"color": Color.DARK_ORANGE, "avg_value": 4500, "variation_class": "noble_gas_content"},
 	"Fire Giant": {"color": Color.DARK_SALMON, "avg_value": 1000},
 	"Gas Giant": {"color": Color.CORAL, "avg_value": 2000},
-	"Ice Giant": {"color": Color.DARK_SLATE_BLUE, "avg_value": 3000},
-	"Helium Giant": {"color": Color.ORANGE_RED, "avg_value": 4500}
+	"Ice Giant": {"color": Color.DARK_SLATE_BLUE, "avg_value": 3000, "variation_class": "volatile_content"},
+	"Helium Giant": {"color": Color.ORANGE_RED, "avg_value": 4500, "variation_class": "noble_gas_content"}
 }
 
 var asteroid_belt_classifications = {
@@ -221,6 +221,10 @@ func generateRandomWeightedBodies(hook_identifier: int):
 				
 				var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
 				var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+				#CHANCE FOR THE BODY TO ORBIT RETROGRADE:
+				if randf() >= 0.95:
+					minimum_speed = -minimum_speed
+					maximum_speed = -maximum_speed
 				
 				#PICKING COLOR
 				var color = planet_type_data.get(planet_type).get("color")
@@ -238,8 +242,7 @@ func generateRandomWeightedBodies(hook_identifier: int):
 			else: remaining.append([hook_identifier, i]) #else condition all the way from the choice to even have a planet. !! does not check if asteroid belt was spawned instead !!
 		
 		#APPENDING POTENTIAL WORMHOLE LOCATION CANDIDATES TO GLOBAL VARIABLE
-		if remaining:
-			post_gen_location_candidates.append_array(remaining)
+		if remaining: post_gen_location_candidates.append_array(remaining)
 	pass
 
 func generateRandomWormholes(): #uses variables post_gen_location_candidates, destination_systems
@@ -298,6 +301,9 @@ func generateRandomStations():
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
+func generateRandomWeightedAnomalies():
+	pass
+
 func addBody(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, metadata: Dictionary = {}):
 	var body = bodyAPI.new()
 	body.set_identifier(id)
@@ -309,6 +315,7 @@ func addBody(id: int, d_name: String, hook_identifier: int, distance: float, orb
 	body.radius = radius
 	if metadata:
 		body.metadata = metadata
+	body.current_variation = bodyAPI.VARIATIONS.values().pick_random()
 	bodies.append(body)
 	return body.get_identifier()
 
@@ -353,6 +360,7 @@ func addStationaryBody(id: int, d_name: String, hook_identifier, radius: float, 
 	body.radius = radius
 	if metadata:
 		body.metadata = metadata
+	body.current_variation = bodyAPI.VARIATIONS.values().pick_random()
 	bodies.append(body)
 	return body.get_identifier()
 

@@ -7,6 +7,8 @@ var system: starSystemAPI
 var player_position: Vector2
 var target_position: Vector2
 var locked_body_identifier: int
+var label_locked_body_identifier: int
+
 var body_3d = preload("res://Instantiated Scenes/Body 3D/body_3d.tscn")
 
 @onready var camera_offset = $camera_offset
@@ -78,11 +80,11 @@ func _physics_process(_delta):
 	
 	#this is broked because when you unlock a body by moving the camera target pos, the locked_body_identifier variable on this script remains the same - thereofore, it always displays that you are locked to a body
 	#setting locked_body_label text
-	#var body = system.get_body_from_identifier(locked_body_identifier)
-	#if body: 
-		#locked_body_label.set_text(str("LOCKED: ", body.display_name.capitalize()))
-	#else:
-		#locked_body_label.set_text("")
+	var body = system.get_body_from_identifier(label_locked_body_identifier)
+	if body: 
+		locked_body_label.set_text(str("LOCKED: ", body.display_name.capitalize()))
+	else:
+		locked_body_label.set_text("")
 	pass
 
 func spawnBodies():
@@ -108,6 +110,7 @@ func spawnBodies():
 
 func reset_locked_body():
 	locked_body_identifier = 0
+	label_locked_body_identifier = 0
 	pass
 
 func _on_system_3d_window_close_requested():
