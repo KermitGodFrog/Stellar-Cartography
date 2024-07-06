@@ -6,6 +6,7 @@
 title = "Barycenter Visualizer"
 size = Vector2i(500, 500)
 visible = false
+unresizable = true
 
 [node name="barycenter_control" type="Control" parent="."]
 layout_mode = 3

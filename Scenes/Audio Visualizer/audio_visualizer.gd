@@ -5,6 +5,7 @@ extends Control
 @onready var pulses = $pulses
 @onready var storm = $storm
 @onready var custom = $custom
+@onready var visualizer_bg = $ui_container/visualizer_bg
 
 var current_audio_matrix: Array = [] #CONTINUOUSLY UPDATED!!!
 var locked_body_audio_matrix: Array = [] #used for button to reset back to locked body audio
@@ -26,13 +27,51 @@ var planet_type_audio_data = {
 	"Carbon": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
 	"Fire Dwarf": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
 	"Gas Dwarf": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Ice Dwarf": {LOW_VAR: [-80,10,0,-20], MED_VAR: [-80,5,0,-10], HIGH_VAR: [-80,0,0,10]},
+	"Ice Dwarf": {LOW_VAR: [-80,0,-80,-12], MED_VAR: [-80,-6,-80,-6], HIGH_VAR: [-80,-12,-80,0]},
 	"Helium Dwarf": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
 	"Fire Giant": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
 	"Gas Giant": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
 	"Ice Giant": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
 	"Helium Giant": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]}
 }
+
+#VISUALIZER STUFF \/\/\/\/\/
+const VU_COUNT = 16
+const FREQ_MAX = 11050.0
+var WIDTH: int = 600
+var HEIGHT: int = 100
+const MIN_DB = 60
+var spectrum
+
+func _ready():
+	spectrum = AudioServer.get_bus_effect_instance(AudioServer.get_bus_index("Planetary SFX"), 0)
+	pass
+
+func _physics_process(delta):
+	if custom.get_stream(): current_audio_matrix = [chimes.volume_db, pops.volume_db, pulses.volume_db, storm.volume_db, custom.get_stream(), custom.volume_db]
+	else: current_audio_matrix = [chimes.volume_db, pops.volume_db, pulses.volume_db, storm.volume_db]
+	
+	if owner.is_visible(): AudioServer.set_bus_mute(AudioServer.get_bus_index("Planetary SFX"), false)
+	else: AudioServer.set_bus_mute(AudioServer.get_bus_index("Planetary SFX"), true)
+	
+	#visualizer stuff
+	WIDTH = owner.size.x
+	HEIGHT = owner.size.y / 4
+	queue_redraw()
+	pass
+
+func _draw():
+	var w = WIDTH / VU_COUNT
+	var prev_hz = 0
+	for i in range(1, VU_COUNT+1):
+		var hz = i * FREQ_MAX / VU_COUNT;
+		var magnitude: float = spectrum.get_magnitude_for_frequency_range(prev_hz, hz).length()
+		var energy = clamp((MIN_DB + linear_to_db(magnitude)) / MIN_DB, 0, 1)
+		var height = energy * HEIGHT
+		draw_rect(Rect2(w * i-w, HEIGHT - height, w, height), Color.WHITE)
+		prev_hz = hz
+	pass
+
 
 func initialize(chimes_db: float, pops_db: float, pulses_db: float, storm_db: float, custom_audio_stream = null, custom_db = null):
 	var pairs = [[chimes, chimes_db], [pops, pops_db], [storm, storm_db]]
@@ -70,10 +109,11 @@ func _on_locked_body_depreciated():
 	locked_body_audio_matrix.clear()
 	pass
 
-func _physics_process(delta):
-	if custom.get_stream(): current_audio_matrix = [chimes.volume_db, pops.volume_db, pulses.volume_db, storm.volume_db, custom.get_stream(), custom.volume_db]
-	else: current_audio_matrix = [chimes.volume_db, pops.volume_db, pulses.volume_db, storm.volume_db]
-	pass
+
+
+
+
+
 
 func _on_audio_visualizer_window_close_requested():
 	owner.hide()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=18 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -7,6 +7,11 @@
 [ext_resource type="Texture2D" uid="uid://7klr1mcpbsc4" path="res://Graphics/go_to_icon.png" id="4_niwjs"]
 [ext_resource type="Texture2D" uid="uid://dn8ug1anbuwpu" path="res://Graphics/orbit_icon.png" id="5_hp0se"]
 [ext_resource type="Texture2D" uid="uid://dsyfc4m1nq34w" path="res://Graphics/stop_icon.png" id="7_bacyf"]
+[ext_resource type="Theme" uid="uid://br33hy3pgvm14" path="res://Scenes/System Map/system_map_APPS_theme.tres" id="8_a7cgy"]
+[ext_resource type="Texture2D" uid="uid://by3kiv6a2b0ef" path="res://Graphics/scopes_icon.png" id="8_jefec"]
+[ext_resource type="Texture2D" uid="uid://btt2br45f8t21" path="res://Graphics/sonar_icon.png" id="9_4nwtv"]
+[ext_resource type="Texture2D" uid="uid://dmbeihbgpfdbj" path="res://Graphics/barycenter_icon.png" id="10_ih8qm"]
+[ext_resource type="Texture2D" uid="uid://csvtv1sy2k3ns" path="res://Graphics/audio_visualizer_icon.png" id="11_lvg8y"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ee55b"]
 content_margin_left = 25.0
@@ -244,6 +249,7 @@ offset_left = -40.0
 offset_top = -40.0
 grow_horizontal = 0
 grow_vertical = 0
+theme = ExtResource("8_a7cgy")
 
 [node name="apps_margin" type="MarginContainer" parent="system/camera/canvas/control/apps_panel"]
 layout_mode = 1
@@ -259,23 +265,39 @@ theme_override_constants/margin_bottom = 10
 
 [node name="apps_scroll" type="VBoxContainer" parent="system/camera/canvas/control/apps_panel/apps_margin"]
 layout_mode = 2
-alignment = 2
+alignment = 1
 
 [node name="scopes_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
 layout_mode = 2
-text = "SCOPES"
+theme = ExtResource("8_a7cgy")
+text = "SCO"
+icon = ExtResource("8_jefec")
+clip_text = true
+icon_alignment = 2
 
 [node name="sonar_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
 layout_mode = 2
-text = "SONAR"
+theme = ExtResource("8_a7cgy")
+text = "SON"
+icon = ExtResource("9_4nwtv")
+clip_text = true
+icon_alignment = 2
 
 [node name="barycenter_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
 layout_mode = 2
-text = "BARY"
+theme = ExtResource("8_a7cgy")
+text = "BAR"
+icon = ExtResource("10_ih8qm")
+clip_text = true
+icon_alignment = 2
 
 [node name="audio_visualizer_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
 layout_mode = 2
-text = "AUDIO"
+theme = ExtResource("8_a7cgy")
+text = "AUD"
+icon = ExtResource("11_lvg8y")
+clip_text = true
+icon_alignment = 2
 
 [connection signal="tab_button_pressed" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_button_pressed"]
 [connection signal="tab_clicked" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_clicked"]

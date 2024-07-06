@@ -1,15 +1,40 @@
-[gd_scene load_steps=6 format=3 uid="uid://bwlfi3x5r51fo"]
+[gd_scene load_steps=18 format=3 uid="uid://bwlfi3x5r51fo"]
 
 [ext_resource type="Script" path="res://Scenes/Audio Visualizer/audio_visualizer.gd" id="1_fs2yq"]
+[ext_resource type="Theme" uid="uid://dm3fbhtw7qov2" path="res://Scenes/System Map/system_map_HUD_theme.tres" id="2_ecg40"]
 [ext_resource type="AudioStream" uid="uid://b0mftg24fipnp" path="res://Sound/chimes.wav" id="2_wgufx"]
 [ext_resource type="AudioStream" uid="uid://cuqfn1a6g6g0e" path="res://Sound/pops.wav" id="3_7knfx"]
 [ext_resource type="AudioStream" uid="uid://c5bcwxp1is83n" path="res://Sound/pulses.wav" id="4_00en7"]
 [ext_resource type="AudioStream" uid="uid://dd3hsfa1u5ktm" path="res://Sound/storm.wav" id="5_fsbvl"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_befsn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_48ski"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mys3x"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qkmwc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yscah"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r0g17"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sjidh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ave51"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gqlwt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2lnqy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g5asp"]
+bg_color = Color(0.109804, 0.109804, 0.211765, 0.415686)
+
 [node name="audio_visualizer_window" type="Window"]
 title = "Audio Visualizer"
 position = Vector2i(0, 36)
 size = Vector2i(600, 400)
+unresizable = true
 
 [node name="audio_control" type="Control" parent="."]
 layout_mode = 3
@@ -17,6 +42,54 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_fs2yq")
+
+[node name="ui_container" type="VBoxContainer" parent="audio_control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 560.0
+offset_bottom = 86.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_ecg40")
+
+[node name="visualizer_bg" type="Panel" parent="audio_control/ui_container"]
+custom_minimum_size = Vector2(600, 100)
+layout_mode = 2
+
+[node name="visualizer_controls" type="HBoxContainer" parent="audio_control/ui_container"]
+layout_mode = 2
+
+[node name="dead_space" type="ColorRect" parent="audio_control/ui_container/visualizer_controls"]
+visible = false
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="reset_to_locked_button" type="Button" parent="audio_control/ui_container/visualizer_controls"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_befsn")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_48ski")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_mys3x")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkmwc")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_yscah")
+text = "RESET TO LOCKED BODY"
+
+[node name="clear_button" type="Button" parent="audio_control/ui_container/visualizer_controls"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_r0g17")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sjidh")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ave51")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_gqlwt")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_2lnqy")
+text = "CLEAR"
+
+[node name="saved_sounds_label" type="Label" parent="audio_control/ui_container"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_g5asp")
+text = "- SAVED -"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="chimes" type="AudioStreamPlayer" parent="audio_control"]
 stream = ExtResource("2_wgufx")
