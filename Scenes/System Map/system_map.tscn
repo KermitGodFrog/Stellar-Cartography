@@ -65,7 +65,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="tabs" type="TabContainer" parent="system/camera/canvas/control" groups=["FOLLOW_UPGRADE_STATE"]]
-custom_minimum_size = Vector2(450, 1000)
+custom_minimum_size = Vector2(450, 900)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -78,7 +78,7 @@ script = ExtResource("4_27qwa")
 
 [node name="WARNING" type="ColorRect" parent="system/camera/canvas/control/tabs"]
 visible = false
-custom_minimum_size = Vector2(450, 950)
+custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
 color = Color(0.184314, 0.14902, 0.156863, 1)
 
@@ -95,12 +95,12 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="OVERVIEW" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
-custom_minimum_size = Vector2(450, 950)
+custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
 theme = ExtResource("3_djc4s")
 
 [node name="system_list" type="ItemList" parent="system/camera/canvas/control/tabs/OVERVIEW"]
-custom_minimum_size = Vector2(450, 850)
+custom_minimum_size = Vector2(450, 750)
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("3_djc4s")
@@ -150,7 +150,7 @@ expand_icon = true
 
 [node name="INFO" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
 visible = false
-custom_minimum_size = Vector2(450, 950)
+custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
 theme = ExtResource("3_djc4s")
 

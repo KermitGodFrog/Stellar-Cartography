@@ -199,7 +199,7 @@ func draw_map():
 				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
 				if system.get_body_from_identifier(body.hook_identifier):
-					draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -TAU, TAU, 30, Color(0, 0, 50, orbit_line_opacity_hint), 0.2, false)
+					draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -TAU, TAU, 30, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint), 1.0, false)
 				draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
 			else:
 				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.0, 0.05)

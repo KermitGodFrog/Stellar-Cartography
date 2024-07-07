@@ -56,7 +56,7 @@ func _ready():
 	createWorld()
 	world.createPlayer(3, 2)
 	world.player.resetJumpsRemaining()
-	world.player.balance = 30000
+	world.player.balance = 30000 #TEMP!!!!!!!!!!
 	
 	#new game stuff
 	var new = _on_create_new_star_system(false)
@@ -65,7 +65,7 @@ func _ready():
 	new.generateRandomWormholes()
 	_on_switch_star_system(new)
 	
-	#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING) #TEMP!!!!!!!!!!
+	_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING) #TEMP!!!!!!!!!!
 	pass
 
 func _physics_process(delta):

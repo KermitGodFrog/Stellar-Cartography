@@ -268,6 +268,7 @@ func generateRandomWormholes(): #uses variables post_gen_location_candidates, de
 		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 		
 		var new_wormhole = addWormhole(identifier_count, str(get_random_wormhole_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), dest_system, {"color": Color.WEB_PURPLE})
+		get_body_from_identifier(new_wormhole).rotation = deg_to_rad(global_data.get_randf(0,360))
 		if dest_system == previous_system:
 			get_body_from_identifier(new_wormhole).is_disabled = true
 		#FORCE SETS WORMHOLE COLOUR TO PURPLE!!!!!!!!!!!!
@@ -296,7 +297,8 @@ func generateRandomStations():
 		print(station_classification)
 		var percentage_markup = global_data.get_randi(50, 200)
 		
-		addStation(identifier_count, str(get_random_station_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), station_classification, percentage_markup)
+		var new_station = addStation(identifier_count, str(get_random_station_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), station_classification, percentage_markup)
+		get_body_from_identifier(new_station).rotation = deg_to_rad(global_data.get_randf(0,360))
 		
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
