@@ -7,6 +7,8 @@ signal saveAudioProfile(audio_profile: audioProfileHelper)
 @onready var download = load("res://Graphics/download_icon.png")
 
 func initialize(helpers: Array[audioProfileHelper]):
+	clear()
+	
 	for helper in helpers:
 		add_item(helper.body.display_name, null, false)
 		if helper.get_variation_class():
@@ -32,9 +34,10 @@ func variation_to_string(variation: bodyAPI.VARIATIONS):
 		_:
 			return ""
 
-
 func _on_item_clicked(index, at_position, mouse_button_index):
 	if mouse_button_index == MOUSE_BUTTON_LEFT:
+		set_item_disabled(index, true)
+		set_item_custom_bg_color(index, Color.GREEN)
 		var metadata = get_item_metadata(index)
 		if metadata:
 			emit_signal("saveAudioProfile", metadata)

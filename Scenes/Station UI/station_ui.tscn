@@ -9,7 +9,6 @@ process_mode = 2
 title = "Station Access"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 500)
-visible = false
 always_on_top = true
 
 [node name="station_control" type="Control" parent="."]
@@ -79,6 +78,7 @@ text = "UNLOCK AUDIO VISUALIZER (30000c)
 
 [node name="save_audio_profiles_control" type="Control" parent="station_control"]
 visible = false
+top_level = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
