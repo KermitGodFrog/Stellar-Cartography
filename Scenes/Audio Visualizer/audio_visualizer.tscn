@@ -90,7 +90,7 @@ text = "CLEAR"
 [node name="saved_sounds_label" type="Label" parent="audio_control/ui_container"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_g5asp")
-text = "- SAVED -"
+text = "- SAVED AUDIO PROFILES -"
 horizontal_alignment = 1
 vertical_alignment = 1
 

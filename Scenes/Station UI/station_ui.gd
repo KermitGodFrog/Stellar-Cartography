@@ -5,12 +5,24 @@ var station: stationAPI
 var player_current_value: int
 var player_balance: int
 
+#FOR AUDIO VISUALIZER \/\/\/\/\/
+var audio_profile_helpers: Array[audioProfileHelper] = []
+var saved_audio_profile_helpers: Array[audioProfileHelper] = []
+
 signal sellExplorationData(sell_percentage_of_market_price: int)
 signal upgradeShip(upgrade_idx: playerAPI.UPGRADE_ID, cost: int)
 signal undockFromStation(from_station: stationAPI)
 
 @onready var sell_data_button = $sell_data_button
 @onready var balance_label = $balance_label
+@onready var save_audio_profiles_control = $save_audio_profiles_control
+@onready var observed_bodies_list = $save_audio_profiles_control/margin/panel/panel_margin/vertical/observed_bodies_list
+
+var has_sold_previously: bool = false
+
+func _ready():
+	observed_bodies_list.connect("saveAudioProfile", _on_audio_profile_saved)
+	pass
 
 func _physics_process(_delta):
 	if station:
@@ -19,18 +31,28 @@ func _physics_process(_delta):
 	pass
 
 func _on_sell_data_button_pressed():
-	if station: emit_signal("sellExplorationData", station.sell_percentage_of_market_price)
+	if station and not has_sold_previously:
+		has_sold_previously = true
+		emit_signal("sellExplorationData", station.sell_percentage_of_market_price)
+		if audio_profile_helpers:
+			observed_bodies_list.initialize(audio_profile_helpers)
+			save_audio_profiles_control.show()
 	pass
 
 func _on_undock_button_pressed():
+	audio_profile_helpers = []
 	if station: emit_signal("undockFromStation", station)
 	else: emit_signal("undockFromStation", null)
 	get_tree().paused = false
 	pass
 
+func _on_audio_profile_saved(audio_profile: audioProfileHelper):
+	saved_audio_profile_helpers.append(audio_profile)
+	pass
 
-
-
+func _on_finished_button_pressed():
+	save_audio_profiles_control.hide()
+	pass 
 
 
 
@@ -43,3 +65,4 @@ func _on_unlock_audio_visualizer_pressed():
 	if station:
 		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.AUDIO_VISUALIZER, 30000)
 	pass
+

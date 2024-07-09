@@ -117,6 +117,30 @@ var planet_type_data = {
 	"Helium Giant": {"color": Color.ORANGE_RED, "avg_value": 4500, "variation_class": "noble_gas_content"}
 }
 
+var LOW_VAR = bodyAPI.VARIATIONS.LOW
+var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
+var HIGH_VAR = bodyAPI.VARIATIONS.HIGH
+var planet_type_audio_data = {
+	"Chthonian": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Lava": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Hycean": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Desert": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Ocean": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Earth-like": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Ice": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Silicate": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Terrestrial": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Carbon": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Fire Dwarf": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Gas Dwarf": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Ice Dwarf": {LOW_VAR: [-80,0,-80,-12], MED_VAR: [-80,-6,-80,-6], HIGH_VAR: [-80,-12,-80,0]},
+	"Helium Dwarf": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Fire Giant": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Gas Giant": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Ice Giant": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
+	"Helium Giant": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]}
+}
+
 var asteroid_belt_classifications = {
 	"Silicate": {"name": "Silicate", "weight": 0.3},
 	"Metal-rich": {"name": "Metal-rich", "weight": 0.3},

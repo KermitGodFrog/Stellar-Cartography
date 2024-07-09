@@ -61,6 +61,9 @@ func _ready():
 		_on_create_new_star_system(false, new)
 	new.generateRandomWormholes()
 	_on_switch_star_system(new)
+	
+	_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+	_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 	pass
 
 func _physics_process(delta):
@@ -141,6 +144,18 @@ func _physics_process(delta):
 			station_ui.station = station
 			station_ui.player_current_value = world.player.current_value
 			station_ui.player_balance = world.player.balance
+			
+			var audio_profile_helpers = []
+			for s in world.star_systems:
+				for b in s.bodies:
+					if (b.get_current_variation() and b.get_guessed_variation()) and b.is_planet():
+						var helper = audioProfileHelper.new()
+						var audio_profile = s.planet_type_audio_data.get(b.metadata.get("planet_type")).get(b.get_guessed_variation())
+						helper.audio_profile = audio_profile
+						helper.body = b
+						audio_profile_helpers.append(helper)
+			station_ui.audio_profile_helpers.append_array(audio_profile_helpers)
+			
 			_on_station_popup()
 	
 	#updating positions of everyhthing for windows
@@ -252,6 +267,10 @@ func _on_undock_from_station(from_station: stationAPI):
 	if from_station:
 		system_map.action_body = from_station
 		system_map.current_action_type = system_map.ACTION_TYPES.ORBIT
+	
+	if station_ui.saved_audio_profile_helpers:
+		world.player.saved_audio_profile_helpers.append(station_ui.saved_audio_profile_helpers)
+		station_ui.saved_audio_profile_helpers.clear()
 	pass
 
 func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):

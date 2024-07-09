@@ -16,7 +16,7 @@ var jumps_remaining: int = 0
 enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER}
 var unlocked_upgrades: Array[UPGRADE_ID] = []
 
-var saved_planetary_sfx: Array = []
+var saved_audio_profile_helpers: Array[audioProfileHelper] = []
 
 
 func get_jumps_remaining():
@@ -31,6 +31,7 @@ func set_max_jumps(value: int):
 
 
 func updatePosition(delta):
+	print_debug(saved_audio_profile_helpers)
 	match slowdown:
 		true:
 			if not position.distance_to(target_position) < speed:

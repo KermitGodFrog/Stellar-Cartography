@@ -14,27 +14,6 @@ var LOW_VAR = bodyAPI.VARIATIONS.LOW
 var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
 var HIGH_VAR = bodyAPI.VARIATIONS.HIGH
 
-var planet_type_audio_data = {
-	"Chthonian": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Lava": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Hycean": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Desert": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Ocean": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Earth-like": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Ice": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Silicate": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Terrestrial": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Carbon": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Fire Dwarf": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Gas Dwarf": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Ice Dwarf": {LOW_VAR: [-80,0,-80,-12], MED_VAR: [-80,-6,-80,-6], HIGH_VAR: [-80,-12,-80,0]},
-	"Helium Dwarf": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Fire Giant": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Gas Giant": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Ice Giant": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]},
-	"Helium Giant": {LOW_VAR: [0,0,0,0], MED_VAR: [0,0,0,0], HIGH_VAR: [0,0,0,0]}
-}
-
 #VISUALIZER STUFF \/\/\/\/\/
 const VU_COUNT = 16
 const FREQ_MAX = 11050.0
@@ -92,7 +71,8 @@ func deactivate():
 
 func _on_locked_body_updated(body: bodyAPI):
 	if body.is_planet() and body.get_current_variation():
-		var audio_variations = planet_type_audio_data.get(body.metadata.get("planet_type"))
+		var audio_variations = starSystemAPI.new().planet_type_audio_data.get(body.metadata.get("planet_type"))
+		#starSystemAPI.new() ??????
 		var audio_matrix = audio_variations.get(body.get_current_variation())
 		
 		if audio_matrix.size() == 4:
