@@ -39,10 +39,6 @@ func _physics_process(delta):
 	if owner.is_visible(): AudioServer.set_bus_mute(AudioServer.get_bus_index("Planetary SFX"), false)
 	else: AudioServer.set_bus_mute(AudioServer.get_bus_index("Planetary SFX"), true)
 	
-	if locked_body_audio_profile == current_audio_profile:
-		recording_label.show()
-	else: recording_label.hide()
-	
 	#visualizer stuff
 	WIDTH = owner.size.x
 	HEIGHT = owner.size.y / 4
@@ -102,14 +98,19 @@ func _on_locked_body_updated(body: bodyAPI):
 		helper.audio_profile = audio_profile
 		_on_play_audio_profile_helper(helper)
 		locked_body_audio_profile = audio_profile
+		
+		recording_label.show()
 	else:
 		deactivate()
 	pass
 
 func _on_locked_body_depreciated():
+	print_debug("locked body depreciated")
 	if locked_body_audio_profile == current_audio_profile:
 		deactivate()
 	locked_body_audio_profile.clear()
+	
+	recording_label.hide()
 	pass
 
 func _on_clear_button_pressed():

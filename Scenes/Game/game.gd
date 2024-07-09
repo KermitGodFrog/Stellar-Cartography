@@ -153,19 +153,13 @@ func _physics_process(delta):
 			for s in world.star_systems:
 				if s != world.player.current_star_system:
 					for b in s.bodies:
-						print(b.get_current_variation())
-						print(b.get_guessed_variation())
 						if (b.get_current_variation() != null and b.get_guessed_variation() != null) and b.is_planet():
-							print("YEAH!!!!")
 							var helper = audioProfileHelper.new()
 							var audio_profile = s.planet_type_audio_data.get(b.metadata.get("planet_type")).get(b.get_guessed_variation())
-							print(audio_profile)
 							helper.audio_profile = audio_profile
 							helper.body = b
 							audio_profile_helpers.append(helper)
-							print(helper)
 			station_ui.audio_profile_helpers.append_array(audio_profile_helpers)
-			
 			_on_station_popup()
 	
 	#updating positions of everyhthing for windows
