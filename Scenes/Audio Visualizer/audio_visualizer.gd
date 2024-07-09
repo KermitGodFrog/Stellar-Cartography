@@ -26,7 +26,7 @@ const MIN_DB = 60
 var spectrum
 
 func _ready():
-	saved_audio_profiles_list.connect("playSavedAudioProfile", _on_play_audio_profile)
+	saved_audio_profiles_list.connect("saveAudioProfileHelper", _on_play_audio_profile_helper) #saveAudioProfileHelper because it inherits from class that uses that
 	spectrum = AudioServer.get_bus_effect_instance(AudioServer.get_bus_index("Planetary SFX"), 0)
 	pass
 
@@ -35,6 +35,7 @@ func _on_popup():
 	pass
 
 func _physics_process(delta):
+	print_debug("CURRENT AUDIO PROFILE + LOCKED BODY AUDIO PROFILE: ", current_audio_profile, " ", locked_body_audio_profile)
 	if custom.get_stream(): current_audio_profile = [chimes.volume_db, pops.volume_db, pulses.volume_db, storm.volume_db, custom.get_stream(), custom.volume_db]
 	else: current_audio_profile = [chimes.volume_db, pops.volume_db, pulses.volume_db, storm.volume_db]
 	
@@ -47,7 +48,7 @@ func _physics_process(delta):
 	queue_redraw()
 	pass
 
-func _on_play_audio_profile(helper: audioProfileHelper):
+func _on_play_audio_profile_helper(helper: audioProfileHelper):
 	var audio_profile = helper.audio_profile
 	if audio_profile.size() == 4:
 		initialize(audio_profile[0], audio_profile[1], audio_profile[2], audio_profile[3])
@@ -92,7 +93,7 @@ func _on_locked_body_updated(body: bodyAPI):
 		var helper = audioProfileHelper.new()
 		helper.body = body
 		helper.audio_profile = audio_profile
-		_on_play_audio_profile(helper)
+		_on_play_audio_profile_helper(helper)
 		locked_body_audio_profile = audio_profile
 	pass
 
@@ -102,12 +103,14 @@ func _on_locked_body_depreciated():
 	locked_body_audio_profile.clear()
 	pass
 
-
-
-
-
-
-
 func _on_audio_visualizer_window_close_requested():
 	owner.hide()
+	pass
+
+func _on_reset_to_locked_button_pressed():
+	current_audio_profile = locked_body_audio_profile
+	pass
+
+func _on_clear_button_pressed():
+	current_audio_profile = []
 	pass

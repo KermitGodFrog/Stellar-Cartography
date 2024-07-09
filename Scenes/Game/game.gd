@@ -127,6 +127,7 @@ func _physics_process(delta):
 				#removing other possible systems to traverse from previous system
 				for w in wormholes:
 					if w != wormhole: #if the wormhole is not the current wormhole being traversed
+						print(w, " is not ", wormhole)
 						if w.destination_system: world.removeStarSystem(w.destination_system.get_identifier())
 				
 				#removing all other systems when leaving a civilized system (need to know about all the systems when in a civilized system in case i want to add the ability to look over exploration data while at a station)
@@ -147,18 +148,19 @@ func _physics_process(delta):
 			
 			var audio_profile_helpers = []
 			for s in world.star_systems:
-				for b in s.bodies:
-					print(b.get_current_variation())
-					print(b.get_guessed_variation())
-					if (b.get_current_variation() != null and b.get_guessed_variation() != null) and b.is_planet():
-						print("YEAH!!!!")
-						var helper = audioProfileHelper.new()
-						var audio_profile = s.planet_type_audio_data.get(b.metadata.get("planet_type")).get(b.get_guessed_variation())
-						print(audio_profile)
-						helper.audio_profile = audio_profile
-						helper.body = b
-						audio_profile_helpers.append(helper)
-						print(helper)
+				if s != world.player.current_star_system:
+					for b in s.bodies:
+						print(b.get_current_variation())
+						print(b.get_guessed_variation())
+						if (b.get_current_variation() != null and b.get_guessed_variation() != null) and b.is_planet():
+							print("YEAH!!!!")
+							var helper = audioProfileHelper.new()
+							var audio_profile = s.planet_type_audio_data.get(b.metadata.get("planet_type")).get(b.get_guessed_variation())
+							print(audio_profile)
+							helper.audio_profile = audio_profile
+							helper.body = b
+							audio_profile_helpers.append(helper)
+							print(helper)
 			station_ui.audio_profile_helpers.append_array(audio_profile_helpers)
 			
 			_on_station_popup()

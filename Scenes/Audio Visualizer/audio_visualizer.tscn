@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bwlfi3x5r51fo"]
+[gd_scene load_steps=22 format=3 uid="uid://bwlfi3x5r51fo"]
 
 [ext_resource type="Script" path="res://Scenes/Audio Visualizer/audio_visualizer.gd" id="1_fs2yq"]
 [ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://Scenes/window_theme.tres" id="1_hiiey"]
@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://Scenes/Audio Visualizer/saved_audio_profiles_list.gd" id="4_c818x"]
 [ext_resource type="AudioStream" uid="uid://dd3hsfa1u5ktm" path="res://Sound/storm.wav" id="5_fsbvl"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_befsn"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_028ku"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_48ski"]
 
@@ -18,6 +18,11 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qkmwc"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yscah"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_u8sa0"]
+color = Color(1, 1, 1, 1)
+thickness = 3
+vertical = true
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r0g17"]
 
@@ -32,6 +37,8 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g5asp"]
 bg_color = Color(0.109804, 0.109804, 0.211765, 0.415686)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hnmpn"]
+
 [node name="audio_visualizer_window" type="Window"]
 title = "Audio Visualizer"
 position = Vector2i(0, 36)
@@ -41,9 +48,11 @@ theme = ExtResource("1_hiiey")
 
 [node name="audio_control" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_fs2yq")
 
 [node name="ui_container" type="VBoxContainer" parent="audio_control"]
@@ -51,32 +60,30 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 560.0
-offset_bottom = 86.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_ecg40")
 
 [node name="visualizer_bg" type="Panel" parent="audio_control/ui_container"]
-custom_minimum_size = Vector2(600, 100)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 
 [node name="visualizer_controls" type="HBoxContainer" parent="audio_control/ui_container"]
 layout_mode = 2
 
-[node name="dead_space" type="ColorRect" parent="audio_control/ui_container/visualizer_controls"]
-visible = false
-custom_minimum_size = Vector2(500, 0)
-layout_mode = 2
-
 [node name="reset_to_locked_button" type="Button" parent="audio_control/ui_container/visualizer_controls"]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_befsn")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_028ku")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_48ski")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_mys3x")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkmwc")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_yscah")
 text = "RESET TO LOCKED BODY"
+
+[node name="separator" type="VSeparator" parent="audio_control/ui_container/visualizer_controls"]
+layout_mode = 2
+theme_override_constants/separation = 20
+theme_override_styles/separator = SubResource("StyleBoxLine_u8sa0")
 
 [node name="clear_button" type="Button" parent="audio_control/ui_container/visualizer_controls"]
 layout_mode = 2
@@ -87,8 +94,14 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_gqlwt")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_2lnqy")
 text = "CLEAR"
 
-[node name="saved_audio_profiles_label" type="Label" parent="audio_control/ui_container"]
+[node name="label_container" type="HBoxContainer" parent="audio_control/ui_container"]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
+alignment = 1
+
+[node name="saved_audio_profiles_label" type="Label" parent="audio_control/ui_container/label_container"]
+layout_mode = 2
+size_flags_vertical = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_g5asp")
 text = "- SAVED AUDIO PROFILES -"
 horizontal_alignment = 1
@@ -96,6 +109,8 @@ vertical_alignment = 1
 
 [node name="saved_audio_profiles_list" type="ItemList" parent="audio_control/ui_container"]
 layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_hnmpn")
 max_columns = 4
 script = ExtResource("4_c818x")
 
@@ -119,4 +134,6 @@ bus = &"Planetary SFX"
 bus = &"Planetary SFX"
 
 [connection signal="close_requested" from="." to="audio_control" method="_on_audio_visualizer_window_close_requested"]
+[connection signal="pressed" from="audio_control/ui_container/visualizer_controls/reset_to_locked_button" to="audio_control" method="_on_reset_to_locked_button_pressed"]
+[connection signal="pressed" from="audio_control/ui_container/visualizer_controls/clear_button" to="audio_control" method="_on_clear_button_pressed"]
 [connection signal="item_clicked" from="audio_control/ui_container/saved_audio_profiles_list" to="audio_control/ui_container/saved_audio_profiles_list" method="_on_item_clicked"]

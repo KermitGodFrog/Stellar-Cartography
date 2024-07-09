@@ -21,7 +21,7 @@ signal undockFromStation(from_station: stationAPI)
 var has_sold_previously: bool = false
 
 func _ready():
-	observed_bodies_list.connect("saveAudioProfile", _on_audio_profile_saved)
+	observed_bodies_list.connect("saveAudioProfileHelper", _on_audio_profile_helper_saved)
 	pass
 
 func _physics_process(_delta):
@@ -46,7 +46,7 @@ func _on_undock_button_pressed():
 	get_tree().paused = false
 	pass
 
-func _on_audio_profile_saved(helper: audioProfileHelper):
+func _on_audio_profile_helper_saved(helper: audioProfileHelper):
 	saved_audio_profile_helpers.append(helper)
 	pass
 
