@@ -108,7 +108,7 @@ func _physics_process(delta):
 					destination.updateBodyPosition(destination_wormhole.get_identifier(), delta) #REQURIED SO WORMHOLE HAVE A POSITION OTHER THAN 0,0
 					destination_position = destination_wormhole.position
 					destination_wormhole.is_known = true
-					system_3d.locked_body_identifier = destination_wormhole.get_identifier()
+					#system_3d.locked_body_identifier = destination_wormhole.get_identifier() #diesnt seem to work?!
 				
 				#setting whether the new system is a civilized system or not
 				world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
@@ -127,14 +127,17 @@ func _physics_process(delta):
 				#removing other possible systems to traverse from previous system
 				for w in wormholes:
 					if w != wormhole: #if the wormhole is not the current wormhole being traversed
-						print(w, " is not ", wormhole)
-						if w.destination_system: world.removeStarSystem(w.destination_system.get_identifier())
+						if w.destination_system:
+							if w.destination_system != world.player.previous_star_system:
+								world.removeStarSystem(w.destination_system.get_identifier())
 				
 				#removing all other systems when leaving a civilized system (need to know about all the systems when in a civilized system in case i want to add the ability to look over exploration data while at a station)
 				if world.player.current_star_system.is_civilized():
 					var exclude_systems = destination.destination_systems.duplicate()
 					exclude_systems.append(destination)
 					world.remove_systems_excluding_systems(exclude_systems)
+				
+				world.player.previous_star_system = world.player.current_star_system
 				
 				_on_switch_star_system(destination)
 	

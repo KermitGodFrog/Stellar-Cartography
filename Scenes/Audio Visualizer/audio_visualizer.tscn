@@ -68,6 +68,16 @@ theme = ExtResource("2_ecg40")
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 
+[node name="recording_label" type="Label" parent="audio_control/ui_container/visualizer_bg"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 22.0
+grow_horizontal = 0
+text = "REC"
+
 [node name="visualizer_controls" type="HBoxContainer" parent="audio_control/ui_container"]
 layout_mode = 2
 

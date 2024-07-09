@@ -5,6 +5,7 @@ var position: Vector2 = Vector2.ZERO
 var target_position: Vector2 = Vector2.ZERO
 var slowdown: bool = true
 var current_star_system: starSystemAPI
+var previous_star_system: starSystemAPI
 
 var speed: int = 1
 var balance: int = 0
