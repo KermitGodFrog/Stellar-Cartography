@@ -16,7 +16,7 @@ signal undockFromStation(from_station: stationAPI)
 @onready var sell_data_button = $sell_data_button
 @onready var balance_label = $balance_label
 @onready var save_audio_profiles_control = $save_audio_profiles_control
-@onready var observed_bodies_list = $save_audio_profiles_control/margin/panel/panel_margin/vertical/observed_bodies_list
+@onready var observed_bodies_list = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list
 
 var has_sold_previously: bool = false
 
@@ -46,8 +46,8 @@ func _on_undock_button_pressed():
 	get_tree().paused = false
 	pass
 
-func _on_audio_profile_saved(audio_profile: audioProfileHelper):
-	saved_audio_profile_helpers.append(audio_profile)
+func _on_audio_profile_saved(helper: audioProfileHelper):
+	saved_audio_profile_helpers.append(helper)
 	pass
 
 func _on_finished_button_pressed():

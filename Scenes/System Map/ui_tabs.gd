@@ -16,5 +16,5 @@ func _on_tab_clicked(tab):
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 	if upgrade_idx == playerAPI.UPGRADE_ID.ADVANCED_SCANNING:
 		display_warning = !state
-		print("DISPLAY WARNING: ", !display_warning)
+		print_debug("DISPLAY WARNING: ", !display_warning)
 	pass

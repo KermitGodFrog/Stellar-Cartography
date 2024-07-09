@@ -148,12 +148,17 @@ func _physics_process(delta):
 			var audio_profile_helpers = []
 			for s in world.star_systems:
 				for b in s.bodies:
-					if (b.get_current_variation() and b.get_guessed_variation()) and b.is_planet():
+					print(b.get_current_variation())
+					print(b.get_guessed_variation())
+					if (b.get_current_variation() != null and b.get_guessed_variation() != null) and b.is_planet():
+						print("YEAH!!!!")
 						var helper = audioProfileHelper.new()
 						var audio_profile = s.planet_type_audio_data.get(b.metadata.get("planet_type")).get(b.get_guessed_variation())
+						print(audio_profile)
 						helper.audio_profile = audio_profile
 						helper.body = b
 						audio_profile_helpers.append(helper)
+						print(helper)
 			station_ui.audio_profile_helpers.append_array(audio_profile_helpers)
 			
 			_on_station_popup()
@@ -269,7 +274,7 @@ func _on_undock_from_station(from_station: stationAPI):
 		system_map.current_action_type = system_map.ACTION_TYPES.ORBIT
 	
 	if station_ui.saved_audio_profile_helpers:
-		world.player.saved_audio_profile_helpers.append(station_ui.saved_audio_profile_helpers)
+		world.player.saved_audio_profile_helpers.append_array(station_ui.saved_audio_profile_helpers)
 		station_ui.saved_audio_profile_helpers.clear()
 	pass
 
@@ -316,6 +321,8 @@ func _on_barycenter_popup():
 	pass
 
 func _on_audio_visualizer_popup():
+	audio_visualizer.saved_audio_profile_helpers = world.player.saved_audio_profile_helpers
+	audio_visualizer._on_popup()
 	$audio_visualizer_window.popup()
 	pass
 

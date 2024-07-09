@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dtbagvxj5to3"]
+[gd_scene load_steps=5 format=3 uid="uid://dtbagvxj5to3"]
 
 [ext_resource type="Script" path="res://Scenes/Station UI/station_ui.gd" id="1_8gqs2"]
 [ext_resource type="Theme" uid="uid://cyxa5wd6un7de" path="res://Scenes/Station UI/station_ui_MAIN_theme.tres" id="1_20lhg"]
+[ext_resource type="Script" path="res://Scenes/Station UI/ui_save_audio_profiles_scroll.gd" id="3_b7unw"]
 [ext_resource type="Script" path="res://Scenes/Station UI/observed_bodies_list.gd" id="4_ng3on"]
 
 [node name="station_window" type="Window"]
@@ -9,6 +10,7 @@ process_mode = 2
 title = "Station Access"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 500)
+visible = false
 always_on_top = true
 
 [node name="station_control" type="Control" parent="."]
@@ -113,18 +115,37 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="vertical" type="VBoxContainer" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin"]
+[node name="save_audio_profiles_scroll" type="VBoxContainer" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin" groups=["FOLLOW_UPGRADE_STATE"]]
 custom_minimum_size = Vector2(880, 400)
 layout_mode = 2
+script = ExtResource("3_b7unw")
 
-[node name="info_label" type="Label" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/vertical"]
+[node name="info_label" type="Label" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
 custom_minimum_size = Vector2(880, 0)
 layout_mode = 2
 text = "The wider astronomical community on (STATION NAME) has analyzed the legitimacy of additional observations you have inferred on unknown bodies during your travels."
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="observed_bodies_list" type="ItemList" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/vertical"]
+[node name="WARNING" type="ColorRect" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
+layout_mode = 2
+size_flags_vertical = 3
+color = Color(0.184314, 0.14902, 0.156863, 1)
+
+[node name="warning_label" type="Label" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/WARNING"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "UNAVAILABLE : Install proprietary 'audio visualizer' software at your nearest Evil & Co or subsidiary vendor."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="observed_bodies_list" type="ItemList" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
+visible = false
 custom_minimum_size = Vector2(880, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -132,7 +153,7 @@ max_columns = 4
 icon_mode = 0
 script = ExtResource("4_ng3on")
 
-[node name="finished_button" type="Button" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/vertical"]
+[node name="finished_button" type="Button" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
 custom_minimum_size = Vector2(880, 0)
 layout_mode = 2
 text = "FINISHED"
@@ -141,5 +162,5 @@ text = "FINISHED"
 [connection signal="pressed" from="station_control/undock_button" to="station_control" method="_on_undock_button_pressed"]
 [connection signal="pressed" from="station_control/upgrade_container/unlock_advanced_scanning_button" to="station_control" method="_on_unlock_advanced_scanning_button_pressed"]
 [connection signal="pressed" from="station_control/upgrade_container/unlock_audio_visualizer" to="station_control" method="_on_unlock_audio_visualizer_pressed"]
-[connection signal="item_clicked" from="station_control/save_audio_profiles_control/margin/panel/panel_margin/vertical/observed_bodies_list" to="station_control/save_audio_profiles_control/margin/panel/panel_margin/vertical/observed_bodies_list" method="_on_item_clicked"]
-[connection signal="pressed" from="station_control/save_audio_profiles_control/margin/panel/panel_margin/vertical/finished_button" to="station_control" method="_on_finished_button_pressed"]
+[connection signal="item_clicked" from="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list" to="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list" method="_on_item_clicked"]
+[connection signal="pressed" from="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/finished_button" to="station_control" method="_on_finished_button_pressed"]

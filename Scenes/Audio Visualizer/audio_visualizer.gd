@@ -6,9 +6,12 @@ extends Control
 @onready var storm = $storm
 @onready var custom = $custom
 @onready var visualizer_bg = $ui_container/visualizer_bg
+@onready var saved_audio_profiles_list = $ui_container/saved_audio_profiles_list
 
-var current_audio_matrix: Array = [] #CONTINUOUSLY UPDATED!!!
-var locked_body_audio_matrix: Array = [] #used for button to reset back to locked body audio
+var current_audio_profile: Array = [] #CONTINUOUSLY UPDATED!!!
+var locked_body_audio_profile: Array = [] #used for button to reset back to locked body audio
+
+var saved_audio_profile_helpers: Array[audioProfileHelper] = []
 
 var LOW_VAR = bodyAPI.VARIATIONS.LOW
 var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
@@ -23,12 +26,17 @@ const MIN_DB = 60
 var spectrum
 
 func _ready():
+	saved_audio_profiles_list.connect("playSavedAudioProfile", _on_play_audio_profile)
 	spectrum = AudioServer.get_bus_effect_instance(AudioServer.get_bus_index("Planetary SFX"), 0)
 	pass
 
+func _on_popup():
+	saved_audio_profiles_list.initialize(saved_audio_profile_helpers)
+	pass
+
 func _physics_process(delta):
-	if custom.get_stream(): current_audio_matrix = [chimes.volume_db, pops.volume_db, pulses.volume_db, storm.volume_db, custom.get_stream(), custom.volume_db]
-	else: current_audio_matrix = [chimes.volume_db, pops.volume_db, pulses.volume_db, storm.volume_db]
+	if custom.get_stream(): current_audio_profile = [chimes.volume_db, pops.volume_db, pulses.volume_db, storm.volume_db, custom.get_stream(), custom.volume_db]
+	else: current_audio_profile = [chimes.volume_db, pops.volume_db, pulses.volume_db, storm.volume_db]
 	
 	if owner.is_visible(): AudioServer.set_bus_mute(AudioServer.get_bus_index("Planetary SFX"), false)
 	else: AudioServer.set_bus_mute(AudioServer.get_bus_index("Planetary SFX"), true)
@@ -37,6 +45,14 @@ func _physics_process(delta):
 	WIDTH = owner.size.x
 	HEIGHT = owner.size.y / 4
 	queue_redraw()
+	pass
+
+func _on_play_audio_profile(helper: audioProfileHelper):
+	var audio_profile = helper.audio_profile
+	if audio_profile.size() == 4:
+		initialize(audio_profile[0], audio_profile[1], audio_profile[2], audio_profile[3])
+	elif audio_profile.size() > 4:
+		initialize(audio_profile[0], audio_profile[1], audio_profile[2], audio_profile[3], audio_profile[4], audio_profile[5])
 	pass
 
 func _draw():
@@ -50,7 +66,6 @@ func _draw():
 		draw_rect(Rect2(w * i-w, HEIGHT - height, w, height), Color.WHITE)
 		prev_hz = hz
 	pass
-
 
 func initialize(chimes_db: float, pops_db: float, pulses_db: float, storm_db: float, custom_audio_stream = null, custom_db = null):
 	var pairs = [[chimes, chimes_db], [pops, pops_db], [storm, storm_db]]
@@ -73,20 +88,18 @@ func _on_locked_body_updated(body: bodyAPI):
 	if body.is_planet() and body.get_current_variation():
 		var audio_variations = starSystemAPI.new().planet_type_audio_data.get(body.metadata.get("planet_type"))
 		#starSystemAPI.new() ??????
-		var audio_matrix = audio_variations.get(body.get_current_variation())
-		
-		if audio_matrix.size() == 4:
-			initialize(audio_matrix[0], audio_matrix[1], audio_matrix[2], audio_matrix[3])
-		elif audio_matrix.size() > 4:
-			initialize(audio_matrix[0], audio_matrix[1], audio_matrix[2], audio_matrix[3], audio_matrix[4], audio_matrix[5])
-		
-		locked_body_audio_matrix = audio_matrix
+		var audio_profile = audio_variations.get(body.get_current_variation())
+		var helper = audioProfileHelper.new()
+		helper.body = body
+		helper.audio_profile = audio_profile
+		_on_play_audio_profile(helper)
+		locked_body_audio_profile = audio_profile
 	pass
 
 func _on_locked_body_depreciated():
-	if locked_body_audio_matrix == current_audio_matrix:
+	if locked_body_audio_profile == current_audio_profile:
 		deactivate()
-	locked_body_audio_matrix.clear()
+	locked_body_audio_profile.clear()
 	pass
 
 

@@ -1,10 +1,14 @@
 extends ItemList
 
-signal saveAudioProfile(audio_profile: audioProfileHelper)
+signal saveAudioProfile(helper: audioProfileHelper)
 
 @onready var confirmed = load("res://Graphics/Misc/confirm.png")
 @onready var denied = load("res://Graphics/Misc/denied.png")
-@onready var download = load("res://Graphics/download_icon.png")
+@onready var icon = load("res://Graphics/download_icon.png")
+
+func set_icon(resource):
+	icon = resource
+	pass
 
 func initialize(helpers: Array[audioProfileHelper]):
 	clear()
@@ -12,15 +16,15 @@ func initialize(helpers: Array[audioProfileHelper]):
 	for helper in helpers:
 		add_item(helper.body.display_name, null, false)
 		if helper.get_variation_class():
-			add_item(str(variation_to_string(helper.body.get_guessed_variation()), " ", helper.get_variation_class()), null, false)
+			add_item(str(variation_to_string(helper.body.get_guessed_variation()), " ", helper.get_variation_class().to_upper().replace("_", " ")), null, false)
 		else:
 			add_item(variation_to_string(helper.body.get_guessed_variation()), null, false)
 		
 		if helper.is_guessed_variation_correct(): add_item("", confirmed, false)
 		if not helper.is_guessed_variation_correct(): add_item("", denied, false)
 		
-		var download_item = add_item("", download, true)
-		set_item_metadata(download_item, helper)
+		var item = add_item("", icon, true)
+		set_item_metadata(item, helper)
 	pass
 
 func variation_to_string(variation: bodyAPI.VARIATIONS):
@@ -36,9 +40,9 @@ func variation_to_string(variation: bodyAPI.VARIATIONS):
 
 func _on_item_clicked(index, at_position, mouse_button_index):
 	if mouse_button_index == MOUSE_BUTTON_LEFT:
-		set_item_disabled(index, true)
-		set_item_custom_bg_color(index, Color.GREEN)
 		var metadata = get_item_metadata(index)
 		if metadata:
+			set_item_disabled(index, true)
+			set_item_custom_bg_color(index, Color.GREEN)
 			emit_signal("saveAudioProfile", metadata)
 	pass

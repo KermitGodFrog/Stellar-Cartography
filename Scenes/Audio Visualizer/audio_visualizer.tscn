@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bwlfi3x5r51fo"]
+[gd_scene load_steps=20 format=3 uid="uid://bwlfi3x5r51fo"]
 
 [ext_resource type="Script" path="res://Scenes/Audio Visualizer/audio_visualizer.gd" id="1_fs2yq"]
 [ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://Scenes/window_theme.tres" id="1_hiiey"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://b0mftg24fipnp" path="res://Sound/chimes.wav" id="2_wgufx"]
 [ext_resource type="AudioStream" uid="uid://cuqfn1a6g6g0e" path="res://Sound/pops.wav" id="3_7knfx"]
 [ext_resource type="AudioStream" uid="uid://c5bcwxp1is83n" path="res://Sound/pulses.wav" id="4_00en7"]
+[ext_resource type="Script" path="res://Scenes/Audio Visualizer/saved_audio_profiles_list.gd" id="4_c818x"]
 [ext_resource type="AudioStream" uid="uid://dd3hsfa1u5ktm" path="res://Sound/storm.wav" id="5_fsbvl"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_befsn"]
@@ -35,7 +36,6 @@ bg_color = Color(0.109804, 0.109804, 0.211765, 0.415686)
 title = "Audio Visualizer"
 position = Vector2i(0, 36)
 size = Vector2i(600, 400)
-visible = false
 unresizable = true
 theme = ExtResource("1_hiiey")
 
@@ -87,12 +87,17 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_gqlwt")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_2lnqy")
 text = "CLEAR"
 
-[node name="saved_sounds_label" type="Label" parent="audio_control/ui_container"]
+[node name="saved_audio_profiles_label" type="Label" parent="audio_control/ui_container"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_g5asp")
 text = "- SAVED AUDIO PROFILES -"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="saved_audio_profiles_list" type="ItemList" parent="audio_control/ui_container"]
+layout_mode = 2
+max_columns = 4
+script = ExtResource("4_c818x")
 
 [node name="chimes" type="AudioStreamPlayer" parent="audio_control"]
 stream = ExtResource("2_wgufx")
@@ -114,3 +119,4 @@ bus = &"Planetary SFX"
 bus = &"Planetary SFX"
 
 [connection signal="close_requested" from="." to="audio_control" method="_on_audio_visualizer_window_close_requested"]
+[connection signal="item_clicked" from="audio_control/ui_container/saved_audio_profiles_list" to="audio_control/ui_container/saved_audio_profiles_list" method="_on_item_clicked"]

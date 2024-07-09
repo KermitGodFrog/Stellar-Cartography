@@ -31,7 +31,6 @@ func set_max_jumps(value: int):
 
 
 func updatePosition(delta):
-	print_debug(saved_audio_profile_helpers)
 	match slowdown:
 		true:
 			if not position.distance_to(target_position) < speed:

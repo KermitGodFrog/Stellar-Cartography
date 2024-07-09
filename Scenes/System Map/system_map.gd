@@ -155,16 +155,17 @@ func _physics_process(delta):
 		body_attributes_list.add_item(str(entry, " : ", follow_body.metadata.get(entry)), null, false) # must be restricted, maybe compile an exclude list somewhere
 	
 	#PICKER UTILITY \/\/\/\/\/
-	if follow_body: if follow_body.is_planet() and follow_body.get_current_variation():
+	if follow_body: if follow_body.is_planet() and follow_body.get_current_variation() != null:
 		var data_for_planet_type = system.planet_type_data.get(follow_body.metadata.get("planet_type"))
 		var variation_class = data_for_planet_type.get("variation_class")
-		if variation_class:
+		print_debug(variation_class)
+		if variation_class != null:
+			picker_label.show()
+			picker_button.show()
 			picker_label.set_text(str(variation_class.to_upper(), ":").replace("_", " "))
 			if follow_body.get_guessed_variation() != null:
 				picker_button.select(follow_body.get_guessed_variation())
 			else: picker_button.select(-1)
-			picker_label.show()
-			picker_button.show()
 		else:
 			picker_label.hide()
 			picker_button.hide()
