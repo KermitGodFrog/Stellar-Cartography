@@ -24,6 +24,8 @@ func _on_sell_data_button_pressed():
 
 func _on_undock_button_pressed():
 	if station: emit_signal("undockFromStation", station)
+	else: emit_signal("undockFromStation", null)
+	get_tree().paused = false
 	pass
 
 

@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bwlfi3x5r51fo" path="res://Scenes/Audio Visualizer/audio_visualizer.tscn" id="7_uparo"]
 
 [node name="game" type="Node"]
+process_mode = 1
 script = ExtResource("1_mtv75")
 
 [node name="system_window" parent="." instance=ExtResource("2_jilbx")]
@@ -20,7 +21,6 @@ script = ExtResource("1_mtv75")
 [node name="barycenter_visualizer_window" parent="." instance=ExtResource("5_wmjnw")]
 
 [node name="audio_visualizer_window" parent="." instance=ExtResource("7_uparo")]
-visible = false
 
 [node name="station_window" parent="." instance=ExtResource("6_g2s4t")]
 
