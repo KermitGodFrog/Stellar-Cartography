@@ -1,10 +1,13 @@
-extends "res://Scenes/Station UI/observed_bodies_list.gd"
+extends ItemList
 
-@onready var play_icon = load("res://Graphics/play_icon.png")
+signal playAudioProfileHelper(helper: audioProfileHelper)
+signal deleteSavedAudioProfileHelper(helper: audioProfileHelper)
 
-func _ready():
-	set_icon(play_icon)
-	pass
+@onready var confirmed = load("res://Graphics/Misc/confirm_no_shadow.png")
+@onready var denied = load("res://Graphics/Misc/denied.png")
+@onready var icon = load("res://Graphics/play_icon.png")
+
+enum METADATA_TYPE {PLAY, DELETE}
 
 func initialize(helpers: Array[audioProfileHelper]):
 	clear()
@@ -12,20 +15,44 @@ func initialize(helpers: Array[audioProfileHelper]):
 	for helper in helpers:
 		add_item(helper.body.display_name, null, false)
 		if helper.get_variation_class():
-			add_item(str(variation_to_string(helper.body.get_guessed_variation()), " ", helper.get_variation_class().to_upper().replace("_", " ")), null, false)
+			match helper.is_guessed_variation_correct():
+				true:
+					add_item(str(variation_to_string(helper.body.get_guessed_variation()), " ", helper.get_variation_class().to_upper().replace("_", " ")), confirmed, false)
+				false:
+					add_item(str(variation_to_string(helper.body.get_guessed_variation()), " ", helper.get_variation_class().to_upper().replace("_", " ")), denied, false)
 		else:
-			add_item(variation_to_string(helper.body.get_guessed_variation()), null, false)
+			match helper.is_guessed_variation_correct():
+				true:
+					add_item(variation_to_string(helper.body.get_guessed_variation()), confirmed, false)
+				false:
+					add_item(variation_to_string(helper.body.get_guessed_variation()), denied, false)
 		
-		if helper.is_guessed_variation_correct(): add_item("", confirmed, false)
-		if not helper.is_guessed_variation_correct(): add_item("", denied, false)
+		var play_item = add_item("PLAY", icon, true)
+		set_item_metadata(play_item, [helper, METADATA_TYPE.PLAY])
 		
-		var item = add_item("", icon, true)
-		set_item_metadata(item, helper)
+		var delete_item = add_item("DELETE", denied, true)
+		set_item_metadata(delete_item, [helper, METADATA_TYPE.DELETE])
+		
 	pass
+
+func variation_to_string(variation: bodyAPI.VARIATIONS):
+	match variation:
+		bodyAPI.VARIATIONS.LOW:
+			return "LOW"
+		bodyAPI.VARIATIONS.MEDIUM:
+			return "MEDIUM"
+		bodyAPI.VARIATIONS.HIGH:
+			return "HIGH"
+		_:
+			return ""
 
 func _on_item_clicked(index, at_position, mouse_button_index):
 	if mouse_button_index == MOUSE_BUTTON_LEFT:
 		var metadata = get_item_metadata(index)
 		if metadata:
-			emit_signal("saveAudioProfileHelper", metadata)
+			match metadata.back():
+				METADATA_TYPE.PLAY:
+					emit_signal("playAudioProfileHelper", metadata.front())
+				METADATA_TYPE.DELETE:
+					emit_signal("deleteSavedAudioProfileHelper", metadata.front())
 	pass

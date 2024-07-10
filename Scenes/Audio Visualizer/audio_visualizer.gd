@@ -1,5 +1,7 @@
 extends Control
 
+signal deleteSavedAudioProfileHelper(helper: audioProfileHelper)
+
 @onready var chimes = $chimes
 @onready var pops = $pops
 @onready var pulses = $pulses
@@ -25,7 +27,8 @@ const MIN_DB = 60
 var spectrum
 
 func _ready():
-	saved_audio_profiles_list.connect("saveAudioProfileHelper", _on_play_audio_profile_helper) #saveAudioProfileHelper because it inherits from class that uses that
+	saved_audio_profiles_list.connect("playAudioProfileHelper", _on_play_audio_profile_helper)
+	saved_audio_profiles_list.connect("deleteSavedAudioProfileHelper", _on_delete_saved_audio_profile_helper)
 	spectrum = AudioServer.get_bus_effect_instance(AudioServer.get_bus_index("Planetary SFX"), 0)
 	pass
 
@@ -39,8 +42,6 @@ func _physics_process(delta):
 	
 	#display stuff
 	if current_audio_profile_helper: body_name_label.set_text(current_audio_profile_helper.body.display_name)
-	
-	
 	
 	queue_redraw()
 	pass
@@ -83,6 +84,12 @@ func _on_play_audio_profile_helper(helper: audioProfileHelper):
 		initialize(audio_profile[0], audio_profile[1], audio_profile[2], audio_profile[3])
 	elif audio_profile.size() > 4:
 		initialize(audio_profile[0], audio_profile[1], audio_profile[2], audio_profile[3], audio_profile[4], audio_profile[5])
+	pass
+
+func _on_delete_saved_audio_profile_helper(helper: audioProfileHelper):
+	emit_signal("deleteSavedAudioProfileHelper", helper)
+	saved_audio_profile_helpers.erase(helper)
+	_on_popup()
 	pass
 
 func _on_locked_body_updated(body: bodyAPI):

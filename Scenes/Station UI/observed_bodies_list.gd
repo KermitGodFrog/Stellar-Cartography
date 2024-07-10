@@ -6,10 +6,6 @@ signal saveAudioProfileHelper(helper: audioProfileHelper)
 @onready var denied = load("res://Graphics/Misc/denied.png")
 @onready var icon = load("res://Graphics/download_icon.png")
 
-func set_icon(resource):
-	icon = resource
-	pass
-
 func initialize(helpers: Array[audioProfileHelper]):
 	clear()
 	
@@ -36,8 +32,8 @@ func initialize(helpers: Array[audioProfileHelper]):
 		if not helper.is_guessed_variation_correct():
 			add_item("", null, false) #so columns dont get jumbled
 		
-		var item = add_item("DOWNLOAD", icon, true)
-		set_item_metadata(item, helper)
+		var save_item = add_item("SAVE", icon, true)
+		set_item_metadata(save_item, helper)
 	pass
 
 func variation_to_string(variation: bodyAPI.VARIATIONS):

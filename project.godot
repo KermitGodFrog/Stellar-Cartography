@@ -20,6 +20,10 @@ config/icon="res://icon.svg"
 global_data="*res://Data/global_data.gd"
 game_data="*res://Data/game_data.gd"
 
+[debug]
+
+gdscript/warnings/integer_division=0
+
 [display]
 
 window/size/viewport_width=1600

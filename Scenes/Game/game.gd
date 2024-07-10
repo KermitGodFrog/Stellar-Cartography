@@ -30,10 +30,13 @@ func _ready():
 	station_ui.connect("undockFromStation", _on_undock_from_station)
 	station_ui.connect("upgradeShip", _on_upgrade_ship)
 	
+	audio_visualizer.connect("deleteSavedAudioProfileHelper", _on_delete_saved_audio_profile_helper)
+	
 	system_map.connect("system3DPopup", _on_system_3d_popup)
 	system_map.connect("sonarPopup", _on_sonar_popup)
 	system_map.connect("barycenterPopup", _on_barycenter_popup)
 	system_map.connect("audioVisualizerPopup", _on_audio_visualizer_popup)
+	
 	
 	#var error = game_data.loadWorld()
 	#if error is worldAPI:
@@ -284,6 +287,14 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 	get_tree().call_group("FOLLOW_UPGRADE_STATE", "_on_upgrade_state_change", upgrade_idx, state)
 	pass
 
+func _on_delete_saved_audio_profile_helper(helper: audioProfileHelper):
+	if world.player.saved_audio_profile_helpers.find(helper):
+		world.player.saved_audio_profile_helpers.erase(helper)
+	pass
+
+func _on_add_saved_audio_profile_helper(helper: audioProfileHelper):
+	world.player.saved_audio_profile_helpers.append(helper)
+	pass
 
 
 func _ON_DEBUG_REVEAL_ALL_WORMHOLES():
