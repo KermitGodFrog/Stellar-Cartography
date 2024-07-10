@@ -1,16 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://dtbagvxj5to3"]
+[gd_scene load_steps=10 format=3 uid="uid://dtbagvxj5to3"]
 
 [ext_resource type="Script" path="res://Scenes/Station UI/station_ui.gd" id="1_8gqs2"]
 [ext_resource type="Theme" uid="uid://cyxa5wd6un7de" path="res://Scenes/Station UI/station_ui_MAIN_theme.tres" id="1_20lhg"]
 [ext_resource type="Script" path="res://Scenes/Station UI/ui_save_audio_profiles_scroll.gd" id="3_b7unw"]
+[ext_resource type="Theme" uid="uid://pb8t4wekexd8" path="res://Scenes/Station UI/station_ui_SAVE_AUDIO_PROFILES_theme.tres" id="3_bcdrx"]
 [ext_resource type="Script" path="res://Scenes/Station UI/observed_bodies_list.gd" id="4_ng3on"]
+[ext_resource type="Texture2D" uid="uid://c5r5ok7jmth3o" path="res://Graphics/Misc/confirm_no_shadow.png" id="5_nd783"]
+[ext_resource type="Texture2D" uid="uid://c5wk5giq8ua5h" path="res://Graphics/download_icon.png" id="5_oh1b1"]
+[ext_resource type="Texture2D" uid="uid://cudxvqxk513ea" path="res://Graphics/Misc/denied.png" id="7_pt3w3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w52st"]
+content_margin_bottom = 5.0
 
 [node name="station_window" type="Window"]
 process_mode = 2
 title = "Station Access"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 500)
-visible = false
 always_on_top = true
 
 [node name="station_control" type="Control" parent="."]
@@ -79,7 +85,6 @@ text = "UNLOCK AUDIO VISUALIZER (30000c)
 (ADVANCED SCANNING REQUIRED)"
 
 [node name="save_audio_profiles_control" type="Control" parent="station_control"]
-visible = false
 top_level = true
 layout_mode = 1
 anchors_preset = 15
@@ -87,7 +92,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_20lhg")
+theme = ExtResource("3_bcdrx")
+
+[node name="background" type="ColorRect" parent="station_control/save_audio_profiles_control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0901961, 0.0901961, 0.0901961, 0.588235)
 
 [node name="margin" type="MarginContainer" parent="station_control/save_audio_profiles_control"]
 layout_mode = 1
@@ -104,6 +118,8 @@ theme_override_constants/margin_bottom = 50
 [node name="panel" type="Panel" parent="station_control/save_audio_profiles_control/margin"]
 custom_minimum_size = Vector2(880, 400)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="panel_margin" type="MarginContainer" parent="station_control/save_audio_profiles_control/margin/panel"]
 custom_minimum_size = Vector2(880, 400)
@@ -123,6 +139,7 @@ script = ExtResource("3_b7unw")
 [node name="info_label" type="Label" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
 custom_minimum_size = Vector2(880, 0)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_w52st")
 text = "The wider astronomical community on (STATION NAME) has analyzed the legitimacy of additional observations you have inferred on unknown bodies during your travels."
 horizontal_alignment = 1
 autowrap_mode = 2
@@ -143,14 +160,31 @@ size_flags_horizontal = 4
 text = "UNAVAILABLE : Install proprietary 'audio visualizer' software at your nearest Evil & Co or subsidiary vendor."
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="observed_bodies_list" type="ItemList" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
 visible = false
 custom_minimum_size = Vector2(880, 0)
 layout_mode = 2
 size_flags_vertical = 3
+max_text_lines = 2
+item_count = 8
 max_columns = 4
-icon_mode = 0
+same_column_width = true
+item_0/text = "Quane"
+item_0/selectable = false
+item_1/text = "LOW CLOUD COVER"
+item_1/icon = ExtResource("5_nd783")
+item_1/selectable = false
+item_2/text = "(+1000c)"
+item_3/text = "SAVE"
+item_3/icon = ExtResource("5_oh1b1")
+item_4/text = "Eisegesis"
+item_5/text = "HIGH WIND SPEEDS"
+item_5/icon = ExtResource("7_pt3w3")
+item_6/text = ""
+item_7/text = "SAVE"
+item_7/icon = ExtResource("5_oh1b1")
 script = ExtResource("4_ng3on")
 
 [node name="finished_button" type="Button" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]

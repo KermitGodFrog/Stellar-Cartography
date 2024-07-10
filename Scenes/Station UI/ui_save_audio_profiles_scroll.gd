@@ -5,7 +5,7 @@ var display_warning: bool = true
 @onready var observed_bodies_list = $observed_bodies_list
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
-	if upgrade_idx == playerAPI.UPGRADE_ID.ADVANCED_SCANNING:
+	if upgrade_idx == playerAPI.UPGRADE_ID.AUDIO_VISUALIZER:
 		display_warning = !state
 		match display_warning:
 			true:

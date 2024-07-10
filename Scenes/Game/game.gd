@@ -75,20 +75,6 @@ func _physics_process(delta):
 		for body in current_bodies:
 			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
 	
-	#checking to see if the player is orbiting or following a body and whether it can do actions, and doing actions if yes
-	#if current_bodies:
-		#for body in current_bodies:
-			#checking to see if player is following body
-			#if world.player.target_position == body.position:
-				#if world.player.position.distance_to(body.position) <= (body.radius * 3.0):
-					#print("FOLLOWING BODY!!!!!")
-					#if system_map.action_body:
-						#var interaction_body = system_map.action_body
-						#if interaction_body.is_station():
-							#is_paused = true
-							#station_ui.station = interaction_body
-							#_on_station_popup()
-	
 	#switching system if close enough to wormhole  (dont thinkj anything else can have jusrisdiction - no API other than the player should be aware of the player)
 	var wormholes = world.player.current_star_system.get_wormholes()
 	for wormhole in wormholes: # ^^^ all wormholes in current star system dont worry 
@@ -136,6 +122,7 @@ func _physics_process(delta):
 					var exclude_systems = destination.destination_systems.duplicate()
 					exclude_systems.append(destination)
 					world.remove_systems_excluding_systems(exclude_systems)
+					station_ui.has_sold_previously = false #allowing to sell exploration data at station at next civilized system
 				
 				world.player.previous_star_system = world.player.current_star_system
 				
@@ -203,6 +190,9 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	barycenter_visualizer.system = to_system
 	system_3d.spawnBodies()
 	system_3d.reset_locked_body()
+	if audio_visualizer.current_audio_profile_helper:
+		if to_system.bodies.find(audio_visualizer.current_audio_profile_helper.body):
+			audio_visualizer.current_audio_profile_helper = null
 	return to_system
 
 func _on_locked_body_updated(body: bodyAPI):
@@ -224,6 +214,9 @@ func _on_found_body(id: int):
 		if body:
 			body.is_known = true
 			if body.metadata.has("value"): world.player.current_value += body.metadata.get("value")
+			
+			system_map._on_found_body(id)
+			
 			var sub_bodies = system.get_bodies_with_hook_identifier(id)
 			if sub_bodies:
 				for sub_body in sub_bodies:

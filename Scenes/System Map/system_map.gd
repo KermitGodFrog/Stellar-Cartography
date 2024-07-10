@@ -274,6 +274,14 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 		#SONAR_PINGS.append(ping)
 	pass
 
+func _on_found_body(id: int):
+	var body_pos = system.get_body_from_identifier(id).position
+	var ping = load("res://Data/Ping Display Helpers/discovery.tres").duplicate(true)
+	ping.position = body_pos
+	ping.resetTime()
+	SONAR_PINGS.append(ping)
+	pass
+
 func _on_start_movement_lock_timer():
 	if movement_lock_timer.is_stopped():
 		movement_lock_timer.start()

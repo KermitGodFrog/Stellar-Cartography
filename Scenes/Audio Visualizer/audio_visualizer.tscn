@@ -28,6 +28,7 @@ bg_color = Color(0.109804, 0.109804, 0.211765, 0.415686)
 title = "Audio Visualizer"
 position = Vector2i(0, 36)
 size = Vector2i(600, 400)
+visible = false
 unresizable = true
 theme = ExtResource("1_hiiey")
 

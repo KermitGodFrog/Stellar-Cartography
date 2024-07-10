@@ -8,7 +8,7 @@ colors = PackedColorArray(1, 1, 1, 1, 0.529412, 0.529412, 0.529412, 1, 0.470588,
 
 [sub_resource type="Curve" id="Curve_jmr78"]
 max_value = 5.0
-_data = [Vector2(0, 0.05), 0.0, 25.0, 0, 0, Vector2(0.25, 2.5), 0.0, 0.0, 0, 0, Vector2(1, 0.05), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 25.0, 0, 0, Vector2(0.25, 2.5), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [resource]

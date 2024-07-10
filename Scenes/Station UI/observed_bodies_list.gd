@@ -2,7 +2,7 @@ extends ItemList
 
 signal saveAudioProfileHelper(helper: audioProfileHelper)
 
-@onready var confirmed = load("res://Graphics/Misc/confirm.png")
+@onready var confirmed = load("res://Graphics/Misc/confirm_no_shadow.png")
 @onready var denied = load("res://Graphics/Misc/denied.png")
 @onready var icon = load("res://Graphics/download_icon.png")
 
@@ -16,14 +16,27 @@ func initialize(helpers: Array[audioProfileHelper]):
 	for helper in helpers:
 		add_item(helper.body.display_name, null, false)
 		if helper.get_variation_class():
-			add_item(str(variation_to_string(helper.body.get_guessed_variation()), " ", helper.get_variation_class().to_upper().replace("_", " ")), null, false)
+			match helper.is_guessed_variation_correct():
+				true:
+					add_item(str(variation_to_string(helper.body.get_guessed_variation()), " ", helper.get_variation_class().to_upper().replace("_", " ")), confirmed, false)
+				false:
+					add_item(str(variation_to_string(helper.body.get_guessed_variation()), " ", helper.get_variation_class().to_upper().replace("_", " ")), denied, false)
 		else:
-			add_item(variation_to_string(helper.body.get_guessed_variation()), null, false)
+			match helper.is_guessed_variation_correct():
+				true:
+					add_item(variation_to_string(helper.body.get_guessed_variation()), confirmed, false)
+				false:
+					add_item(variation_to_string(helper.body.get_guessed_variation()), denied, false)
 		
-		if helper.is_guessed_variation_correct(): add_item("", confirmed, false)
-		if not helper.is_guessed_variation_correct(): add_item("", denied, false)
+		if helper.is_guessed_variation_correct():
+			var added_value: int
+			var value = helper.body.metadata.get("value")
+			if value: added_value = value
+			add_item(str("(+", added_value, "c)"), null, false)
+		if not helper.is_guessed_variation_correct():
+			add_item("", null, false) #so columns dont get jumbled
 		
-		var item = add_item("", icon, true)
+		var item = add_item("DOWNLOAD", icon, true)
 		set_item_metadata(item, helper)
 	pass
 
@@ -43,6 +56,6 @@ func _on_item_clicked(index, at_position, mouse_button_index):
 		var metadata = get_item_metadata(index)
 		if metadata:
 			set_item_disabled(index, true)
-			set_item_custom_bg_color(index, Color.DARK_OLIVE_GREEN)
+			set_item_custom_bg_color(index, Color(0,30,0))
 			emit_signal("saveAudioProfileHelper", metadata)
 	pass
