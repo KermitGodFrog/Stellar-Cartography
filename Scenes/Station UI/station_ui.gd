@@ -43,6 +43,7 @@ func _on_undock_button_pressed():
 	audio_profile_helpers = []
 	if station: emit_signal("undockFromStation", station)
 	else: emit_signal("undockFromStation", null)
+	has_sold_previously = false
 	get_tree().paused = false
 	pass
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://bwlfi3x5r51fo"]
+[gd_scene load_steps=16 format=3 uid="uid://bwlfi3x5r51fo"]
 
 [ext_resource type="Script" path="res://Scenes/Audio Visualizer/audio_visualizer.gd" id="1_fs2yq"]
 [ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://Scenes/window_theme.tres" id="1_hiiey"]
@@ -8,21 +8,6 @@
 [ext_resource type="AudioStream" uid="uid://c5bcwxp1is83n" path="res://Sound/pulses.wav" id="4_00en7"]
 [ext_resource type="Script" path="res://Scenes/Audio Visualizer/saved_audio_profiles_list.gd" id="4_c818x"]
 [ext_resource type="AudioStream" uid="uid://dd3hsfa1u5ktm" path="res://Sound/storm.wav" id="5_fsbvl"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_028ku"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_48ski"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mys3x"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qkmwc"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yscah"]
-
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_u8sa0"]
-color = Color(1, 1, 1, 1)
-thickness = 3
-vertical = true
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r0g17"]
 
@@ -68,7 +53,7 @@ theme = ExtResource("2_ecg40")
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 
-[node name="recording_label" type="Label" parent="audio_control/ui_container/visualizer_bg"]
+[node name="body_name_label" type="Label" parent="audio_control/ui_container/visualizer_bg"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -76,24 +61,9 @@ anchor_right = 1.0
 offset_left = -40.0
 offset_bottom = 22.0
 grow_horizontal = 0
-text = "REC"
 
 [node name="visualizer_controls" type="HBoxContainer" parent="audio_control/ui_container"]
 layout_mode = 2
-
-[node name="reset_to_locked_button" type="Button" parent="audio_control/ui_container/visualizer_controls"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_028ku")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_48ski")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_mys3x")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkmwc")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_yscah")
-text = "RESET TO LOCKED BODY"
-
-[node name="separator" type="VSeparator" parent="audio_control/ui_container/visualizer_controls"]
-layout_mode = 2
-theme_override_constants/separation = 20
-theme_override_styles/separator = SubResource("StyleBoxLine_u8sa0")
 
 [node name="clear_button" type="Button" parent="audio_control/ui_container/visualizer_controls"]
 layout_mode = 2
@@ -144,6 +114,5 @@ bus = &"Planetary SFX"
 bus = &"Planetary SFX"
 
 [connection signal="close_requested" from="." to="audio_control" method="_on_audio_visualizer_window_close_requested"]
-[connection signal="pressed" from="audio_control/ui_container/visualizer_controls/reset_to_locked_button" to="audio_control" method="_on_reset_to_locked_button_pressed"]
 [connection signal="pressed" from="audio_control/ui_container/visualizer_controls/clear_button" to="audio_control" method="_on_clear_button_pressed"]
 [connection signal="item_clicked" from="audio_control/ui_container/saved_audio_profiles_list" to="audio_control/ui_container/saved_audio_profiles_list" method="_on_item_clicked"]

@@ -215,7 +215,6 @@ func _on_locked_body_updated(body: bodyAPI):
 
 func _on_locked_body_depreciated():
 	system_3d.set("label_locked_body_identifier", 0)
-	audio_visualizer._on_locked_body_depreciated()
 	pass
 
 func _on_found_body(id: int):
