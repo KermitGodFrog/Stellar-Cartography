@@ -1,3 +1,7 @@
-[gd_resource type="Theme" format=3 uid="uid://cyxa5wd6un7de"]
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cyxa5wd6un7de"]
+
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="1_tibto"]
 
 [resource]
+default_font = ExtResource("1_tibto")
+default_font_size = 16

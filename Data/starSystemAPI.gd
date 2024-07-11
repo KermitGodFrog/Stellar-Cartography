@@ -54,7 +54,7 @@ var planet_classifications = {
 	"Jovian": {"name": "Jovian", "weight": 0.15}
 }
 
-var planet_classification_data = { #MASS IS IN EARTH MASSES (DIVIDE BY 333000 FOR SOLAR MASSES), RADIUS IS IN EARTH RADIUS (DIVIDE BY 109.1 FOR SOLAR RADIUS)
+var planet_classification_data = { #MASS IS IN EARTH MASSES (DIVIDE BY 333000 FOR SOLAR MASSES), RADIUS IS IN EARTH RADIUS (DIVIDE BY 109.1 FOR SOLAR RADII)
 	"Terran": {"earth_radius_min": pow(pow(10, -1.3), 0.28), "earth_radius_max": pow(pow(10, 0.22), 0.28),  "earth_mass_min": pow(10, -1.3), "earth_mass_max": pow(10, 0.22)}, 
 	"Neptunian": {"earth_radius_min": pow(pow(10, 0.22), 0.59), "earth_radius_max": pow(pow(10, 2), 0.59), "earth_mass_min": pow(10, 0.22), "earth_mass_max": pow(10, 2)},
 	"Jovian": {"earth_radius_min": pow(pow(10, 2), 0.4), "earth_radius_max": pow(pow(10, 3.5), 0.4), "earth_mass_min": pow(10, 2), "earth_mass_max": pow(10, 3.5)} #?????????????????????????

@@ -18,6 +18,9 @@ signal addSavedAudioProfile(helper: audioProfileHelper)
 @onready var balance_label = $balance_label
 @onready var save_audio_profiles_control = $save_audio_profiles_control
 @onready var observed_bodies_list = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list
+#upgrade buttons
+@onready var unlock_advanced_scanning_button = $upgrade_container/unlock_advanced_scanning_button
+@onready var unlock_audio_visualizer_button = $upgrade_container/unlock_audio_visualizer
 
 var has_sold_previously: bool = false
 
@@ -28,8 +31,11 @@ func _ready():
 func _physics_process(_delta):
 	print_debug(player_saved_audio_profiles_size_matrix)
 	if station:
-		sell_data_button.set_text(str("SELL EXPLORATION DATA\n", player_current_value, "c\n(", station.sell_percentage_of_market_price, "% OF MARKET PRICE)"))
 		balance_label.set_text(str("BALANCE: ", player_balance, "c"))
+		
+		if not has_sold_previously:
+			sell_data_button.set_text(str("SELL EXPLORATION DATA\n", player_current_value, "c\n(", station.sell_percentage_of_market_price, "% OF MARKET PRICE)"))
+		elif has_sold_previously: sell_data_button.set_text("SOLD")
 	pass
 
 func _on_sell_data_button_pressed():
@@ -72,3 +78,20 @@ func _on_unlock_audio_visualizer_pressed():
 		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.AUDIO_VISUALIZER, 30000)
 	pass
 
+func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
+	match upgrade_idx:
+		playerAPI.UPGRADE_ID.ADVANCED_SCANNING:
+			match state:
+				true:
+					unlock_advanced_scanning_button.set_text("ADVANCED SCANNING: UNLOCKED")
+				false:
+					unlock_advanced_scanning_button.set_text("ADVANCED SCANNING: 30000c")
+		playerAPI.UPGRADE_ID.AUDIO_VISUALIZER:
+			match state:
+				true:
+					unlock_audio_visualizer_button.set_text("AUDIO VISUALIZER: UNLOCKED")
+				false:
+					unlock_audio_visualizer_button.set_text("AUDIO VISUALIZER: 20000c (REQ ADVANCED SCANNING)")
+		var error:
+			print(str("STATION UI: ERROR: BUTTON TEXT CHANGE FOR UPGRADE IDX ", error, "NOT CONFIGURED!"))
+	pass

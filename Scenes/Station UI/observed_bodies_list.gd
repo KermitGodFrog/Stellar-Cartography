@@ -52,6 +52,6 @@ func _on_item_clicked(index, at_position, mouse_button_index):
 		var metadata = get_item_metadata(index)
 		if metadata:
 			set_item_disabled(index, true)
-			set_item_custom_bg_color(index, Color(0,30,0))
+			set_item_custom_bg_color(index, Color8(0,30,0))
 			emit_signal("saveAudioProfile", metadata)
 	pass
