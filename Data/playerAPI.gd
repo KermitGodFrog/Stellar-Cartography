@@ -17,8 +17,8 @@ var jumps_remaining: int = 0
 enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER}
 var unlocked_upgrades: Array[UPGRADE_ID] = []
 
-var saved_audio_profile_helpers: Array[audioProfileHelper] = []
-
+var saved_audio_profiles: Array[audioProfileHelper] = []
+var max_saved_audio_profiles: int = 10
 
 func get_jumps_remaining():
 	return jumps_remaining
@@ -91,4 +91,17 @@ func increaseBalance(amount: int):
 
 func decreaseBalance(amount: int):
 	balance = maxi(0, balance - amount)
+	pass
+
+
+func addAudioProfile(helper: audioProfileHelper):
+	#gotta check for whether adding the profile will still keep the array under the max size integer!!!!!
+	if saved_audio_profiles.size() < max_saved_audio_profiles:
+		saved_audio_profiles.append(helper)
+		return saved_audio_profiles.find(helper)
+	return -1
+
+func removeAudioProfile(helper: audioProfileHelper):
+	if saved_audio_profiles.has(helper):
+		saved_audio_profiles.erase(helper)
 	pass

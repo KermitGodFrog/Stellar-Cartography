@@ -6,12 +6,13 @@ var player_current_value: int
 var player_balance: int
 
 #FOR AUDIO VISUALIZER \/\/\/\/\/
-var audio_profile_helpers: Array[audioProfileHelper] = []
-var saved_audio_profile_helpers: Array[audioProfileHelper] = []
+var pending_audio_profiles: Array[audioProfileHelper] = []
+var player_saved_audio_profiles_size_matrix: Array = [] #current, max
 
 signal sellExplorationData(sell_percentage_of_market_price: int)
 signal upgradeShip(upgrade_idx: playerAPI.UPGRADE_ID, cost: int)
 signal undockFromStation(from_station: stationAPI)
+signal addSavedAudioProfile(helper: audioProfileHelper)
 
 @onready var sell_data_button = $sell_data_button
 @onready var balance_label = $balance_label
@@ -21,10 +22,11 @@ signal undockFromStation(from_station: stationAPI)
 var has_sold_previously: bool = false
 
 func _ready():
-	observed_bodies_list.connect("saveAudioProfileHelper", _on_audio_profile_helper_saved)
+	observed_bodies_list.connect("saveAudioProfile", _on_audio_profile_saved)
 	pass
 
 func _physics_process(_delta):
+	print_debug(player_saved_audio_profiles_size_matrix)
 	if station:
 		sell_data_button.set_text(str("SELL EXPLORATION DATA\n", player_current_value, "c\n(", station.sell_percentage_of_market_price, "% OF MARKET PRICE)"))
 		balance_label.set_text(str("BALANCE: ", player_balance, "c"))
@@ -34,20 +36,24 @@ func _on_sell_data_button_pressed():
 	if station and not has_sold_previously:
 		has_sold_previously = true
 		emit_signal("sellExplorationData", station.sell_percentage_of_market_price)
-		if audio_profile_helpers:
-			observed_bodies_list.initialize(audio_profile_helpers)
+		if pending_audio_profiles:
+			observed_bodies_list.initialize(pending_audio_profiles)
 			save_audio_profiles_control.show()
 	pass
 
 func _on_undock_button_pressed():
-	audio_profile_helpers = []
+	pending_audio_profiles = []
 	if station: emit_signal("undockFromStation", station)
 	else: emit_signal("undockFromStation", null)
 	get_tree().paused = false
 	pass
 
-func _on_audio_profile_helper_saved(helper: audioProfileHelper):
-	saved_audio_profile_helpers.append(helper)
+func _on_audio_profile_saved(helper: audioProfileHelper):
+	if player_saved_audio_profiles_size_matrix.front() < player_saved_audio_profiles_size_matrix.back():
+		emit_signal("addSavedAudioProfile", helper)
+	else:
+		#ui elemnts flash and stuff
+		pass
 	pass
 
 func _on_finished_button_pressed():

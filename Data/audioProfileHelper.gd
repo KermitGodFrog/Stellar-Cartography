@@ -1,7 +1,7 @@
 extends Resource
 class_name audioProfileHelper
 
-var audio_profile: Array = [0,0,0,0]
+var mix: Array = [0,0,0,0]
 var body: bodyAPI
 
 #QUICK GET FOR STATION_UI AND AUDIO VISUALIZER \/\/\/\/

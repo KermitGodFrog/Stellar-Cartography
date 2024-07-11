@@ -29,8 +29,9 @@ func _ready():
 	station_ui.connect("sellExplorationData", _on_sell_exploration_data)
 	station_ui.connect("undockFromStation", _on_undock_from_station)
 	station_ui.connect("upgradeShip", _on_upgrade_ship)
+	station_ui.connect("addSavedAudioProfile", _on_add_saved_audio_profile)
 	
-	audio_visualizer.connect("deleteSavedAudioProfileHelper", _on_delete_saved_audio_profile_helper)
+	audio_visualizer.connect("removeSavedAudioProfile", _on_remove_saved_audio_profile)
 	
 	system_map.connect("system3DPopup", _on_system_3d_popup)
 	system_map.connect("sonarPopup", _on_sonar_popup)
@@ -55,7 +56,7 @@ func _ready():
 		#_on_switch_star_system(new)
 	
 	createWorld()
-	world.createPlayer(3, 2)
+	world.createPlayer(3, 2, 10)
 	world.player.resetJumpsRemaining()
 	
 	#new game stuff
@@ -139,22 +140,25 @@ func _physics_process(delta):
 			station_ui.player_current_value = world.player.current_value
 			station_ui.player_balance = world.player.balance
 			
-			var audio_profile_helpers = []
+			#THEY ARENT SAVED YET!
+			var pending_audio_profiles = []
 			for s in world.star_systems:
 				if s != world.player.current_star_system:
 					for b in s.bodies:
 						if (b.get_current_variation() != null and b.get_guessed_variation() != null) and b.is_planet():
 							var helper = audioProfileHelper.new()
-							var audio_profile = s.planet_type_audio_data.get(b.metadata.get("planet_type")).get(b.get_guessed_variation())
-							helper.audio_profile = audio_profile
+							var mix = s.planet_type_audio_data.get(b.metadata.get("planet_type")).get(b.get_guessed_variation())
+							helper.mix = mix
 							helper.body = b
-							audio_profile_helpers.append(helper)
-			station_ui.audio_profile_helpers.append_array(audio_profile_helpers)
+							pending_audio_profiles.append(helper)
+			station_ui.pending_audio_profiles.append_array(pending_audio_profiles)
 			_on_station_popup()
 	
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_3d.set("player_position", world.player.position)
+	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
+	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	#SETTING WHETHER SYSTEM MAP HAS FOCUS OR NOT (SINCE ITS A NODE IT CANNOT USE HAS_FOCUS() DIRECTLY!)
 	if $system_3d_window.has_focus() or $sonar_window.has_focus() or $barycenter_visualizer_window.has_focus() or $audio_visualizer_window.has_focus() or $station_window.has_focus(): system_map.has_focus = false
 	else: system_map.has_focus = true
@@ -187,15 +191,14 @@ func _on_create_new_star_system(force_switch_before_post_gen: bool = false, for_
 	return system
 
 func _on_switch_star_system(to_system: starSystemAPI):
+	if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1:
+		audio_visualizer._on_clear_button_pressed()
 	world.player.current_star_system = to_system
 	system_map.system = to_system
 	system_3d.system = to_system
 	barycenter_visualizer.system = to_system
 	system_3d.spawnBodies()
 	system_3d.reset_locked_body()
-	if audio_visualizer.current_audio_profile_helper:
-		if to_system.bodies.find(audio_visualizer.current_audio_profile_helper.body):
-			audio_visualizer.current_audio_profile_helper = null
 	return to_system
 
 func _on_locked_body_updated(body: bodyAPI):
@@ -228,6 +231,7 @@ func _on_found_body(id: int):
 	pass
 
 func _on_add_console_item(text: String, bg_color: Color = Color.WHITE): #called via systtem 3d
+	print_debug("ADD CONSOLE ITEM CALLED ", text, " ", bg_color)
 	pass
 
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
@@ -266,10 +270,6 @@ func _on_undock_from_station(from_station: stationAPI):
 	if from_station:
 		system_map.action_body = from_station
 		system_map.current_action_type = system_map.ACTION_TYPES.ORBIT
-	
-	if station_ui.saved_audio_profile_helpers:
-		world.player.saved_audio_profile_helpers.append_array(station_ui.saved_audio_profile_helpers)
-		station_ui.saved_audio_profile_helpers.clear()
 	pass
 
 func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
@@ -287,14 +287,14 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 	get_tree().call_group("FOLLOW_UPGRADE_STATE", "_on_upgrade_state_change", upgrade_idx, state)
 	pass
 
-func _on_delete_saved_audio_profile_helper(helper: audioProfileHelper):
-	if world.player.saved_audio_profile_helpers.find(helper):
-		world.player.saved_audio_profile_helpers.erase(helper)
+func _on_remove_saved_audio_profile(helper: audioProfileHelper):
+	world.player.removeAudioProfile(helper)
 	pass
 
-func _on_add_saved_audio_profile_helper(helper: audioProfileHelper):
-	world.player.saved_audio_profile_helpers.append(helper)
+func _on_add_saved_audio_profile(helper: audioProfileHelper):
+	world.player.addAudioProfile(helper)
 	pass
+
 
 
 func _ON_DEBUG_REVEAL_ALL_WORMHOLES():
@@ -323,7 +323,6 @@ func _on_barycenter_popup():
 	pass
 
 func _on_audio_visualizer_popup():
-	audio_visualizer.saved_audio_profile_helpers = world.player.saved_audio_profile_helpers
 	audio_visualizer._on_popup()
 	$audio_visualizer_window.popup()
 	pass

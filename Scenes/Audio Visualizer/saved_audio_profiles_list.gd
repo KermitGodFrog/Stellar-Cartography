@@ -1,7 +1,7 @@
 extends ItemList
 
-signal playAudioProfileHelper(helper: audioProfileHelper)
-signal deleteSavedAudioProfileHelper(helper: audioProfileHelper)
+signal playSavedAudioProfile(helper: audioProfileHelper)
+signal removeSavedAudioProfile(helper: audioProfileHelper)
 
 @onready var confirmed = load("res://Graphics/Misc/confirm_no_shadow.png")
 @onready var denied = load("res://Graphics/Misc/denied.png")
@@ -52,7 +52,7 @@ func _on_item_clicked(index, at_position, mouse_button_index):
 		if metadata:
 			match metadata.back():
 				METADATA_TYPE.PLAY:
-					emit_signal("playAudioProfileHelper", metadata.front())
+					emit_signal("playSavedAudioProfile", metadata.front())
 				METADATA_TYPE.DELETE:
-					emit_signal("deleteSavedAudioProfileHelper", metadata.front())
+					emit_signal("removeSavedAudioProfile", metadata.front())
 	pass

@@ -1,6 +1,6 @@
 extends ItemList
 
-signal saveAudioProfileHelper(helper: audioProfileHelper)
+signal saveAudioProfile(helper: audioProfileHelper)
 
 @onready var confirmed = load("res://Graphics/Misc/confirm_no_shadow.png")
 @onready var denied = load("res://Graphics/Misc/denied.png")
@@ -53,5 +53,5 @@ func _on_item_clicked(index, at_position, mouse_button_index):
 		if metadata:
 			set_item_disabled(index, true)
 			set_item_custom_bg_color(index, Color(0,30,0))
-			emit_signal("saveAudioProfileHelper", metadata)
+			emit_signal("saveAudioProfile", metadata)
 	pass

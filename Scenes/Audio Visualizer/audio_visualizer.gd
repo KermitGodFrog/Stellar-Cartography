@@ -1,6 +1,6 @@
 extends Control
 
-signal deleteSavedAudioProfileHelper(helper: audioProfileHelper)
+signal removeSavedAudioProfile(helper: audioProfileHelper)
 
 @onready var chimes = $chimes
 @onready var pops = $pops
@@ -11,8 +11,8 @@ signal deleteSavedAudioProfileHelper(helper: audioProfileHelper)
 @onready var saved_audio_profiles_list = $ui_container/saved_audio_profiles_list
 @onready var body_name_label = $ui_container/visualizer_bg/body_name_label
 
-var current_audio_profile_helper: audioProfileHelper #CONTINUOUSLY UPDATED!!!
-var saved_audio_profile_helpers: Array[audioProfileHelper] = []
+var current_audio_profile: audioProfileHelper #CONTINUOUSLY UPDATED!!!
+var saved_audio_profiles: Array[audioProfileHelper] = []
 
 var LOW_VAR = bodyAPI.VARIATIONS.LOW
 var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
@@ -27,8 +27,8 @@ const MIN_DB = 60
 var spectrum
 
 func _ready():
-	saved_audio_profiles_list.connect("playAudioProfileHelper", _on_play_audio_profile_helper)
-	saved_audio_profiles_list.connect("deleteSavedAudioProfileHelper", _on_delete_saved_audio_profile_helper)
+	saved_audio_profiles_list.connect("playSavedAudioProfile", _on_play_audio_profile)
+	saved_audio_profiles_list.connect("removeSavedAudioProfile", _on_remove_saved_audio_profile)
 	spectrum = AudioServer.get_bus_effect_instance(AudioServer.get_bus_index("Planetary SFX"), 0)
 	pass
 
@@ -41,7 +41,7 @@ func _physics_process(delta):
 	HEIGHT = owner.size.y / 4
 	
 	#display stuff
-	if current_audio_profile_helper: body_name_label.set_text(current_audio_profile_helper.body.display_name)
+	if current_audio_profile: body_name_label.set_text(current_audio_profile.body.display_name)
 	
 	queue_redraw()
 	pass
@@ -77,43 +77,42 @@ func deactivate():
 	pass
 
 
-func _on_play_audio_profile_helper(helper: audioProfileHelper):
-	current_audio_profile_helper = helper
-	var audio_profile = helper.audio_profile
-	if audio_profile.size() == 4:
-		initialize(audio_profile[0], audio_profile[1], audio_profile[2], audio_profile[3])
-	elif audio_profile.size() > 4:
-		initialize(audio_profile[0], audio_profile[1], audio_profile[2], audio_profile[3], audio_profile[4], audio_profile[5])
+func _on_play_audio_profile(helper: audioProfileHelper):
+	current_audio_profile = helper
+	var mix = helper.mix
+	if mix.size() == 4:
+		initialize(mix[0], mix[1], mix[2], mix[3])
+	elif mix.size() > 4:
+		initialize(mix[0], mix[1], mix[2], mix[3], mix[4], mix[5])
 	pass
 
-func _on_delete_saved_audio_profile_helper(helper: audioProfileHelper):
-	emit_signal("deleteSavedAudioProfileHelper", helper)
-	saved_audio_profile_helpers.erase(helper)
+func _on_remove_saved_audio_profile(helper: audioProfileHelper):
+	emit_signal("removeSavedAudioProfile", helper)
 	_on_popup()
 	pass
 
 func _on_locked_body_updated(body: bodyAPI):
 	if body.is_planet() and body.get_current_variation() != null:
 		var audio_variations = starSystemAPI.new().planet_type_audio_data.get(body.metadata.get("planet_type"))
-		var audio_profile = audio_variations.get(body.get_current_variation())
+		var mix = audio_variations.get(body.get_current_variation())
 		var helper = audioProfileHelper.new()
 		helper.body = body
-		helper.audio_profile = audio_profile
-		_on_play_audio_profile_helper(helper)
+		helper.mix = mix
+		_on_play_audio_profile(helper)
 	else:
-		current_audio_profile_helper = null
+		current_audio_profile = null
 		deactivate()
 		body_name_label.set_text("")
 	pass
 
 func _on_clear_button_pressed():
-	current_audio_profile_helper = null
+	current_audio_profile = null
 	deactivate()
 	body_name_label.set_text("")
 	pass
 
 func _on_popup():
-	saved_audio_profiles_list.initialize(saved_audio_profile_helpers)
+	saved_audio_profiles_list.initialize(saved_audio_profiles)
 	pass
 
 
@@ -121,6 +120,3 @@ func _on_popup():
 func _on_audio_visualizer_window_close_requested():
 	owner.hide()
 	pass
-
-
-

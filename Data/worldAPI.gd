@@ -20,10 +20,11 @@ func removeStarSystem(id: int):
 			break
 	pass
 
-func createPlayer(speed: int, max_jumps: int):
+func createPlayer(speed: int, max_jumps: int, max_saved_audio_profiles: int):
 	var new_player = playerAPI.new()
 	new_player.speed = speed
 	new_player.max_jumps = max_jumps
+	new_player.max_saved_audio_profiles = max_saved_audio_profiles
 	player = new_player
 	return new_player
 

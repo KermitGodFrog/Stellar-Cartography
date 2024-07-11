@@ -319,7 +319,6 @@ func generateRandomStations():
 		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 		
 		var station_classification = stationAPI.STATION_CLASSIFICATIONS.values().pick_random()
-		print(station_classification)
 		var percentage_markup = global_data.get_randi(50, 200)
 		
 		var new_station = addStation(identifier_count, str(get_random_station_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), station_classification, percentage_markup)
