@@ -191,8 +191,9 @@ func _on_create_new_star_system(force_switch_before_post_gen: bool = false, for_
 	return system
 
 func _on_switch_star_system(to_system: starSystemAPI):
-	if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1:
-		audio_visualizer._on_clear_button_pressed()
+	if world.player.current_star_system:
+		if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1:
+			audio_visualizer._on_clear_button_pressed()
 	world.player.current_star_system = to_system
 	system_map.system = to_system
 	system_3d.system = to_system

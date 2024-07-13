@@ -151,8 +151,20 @@ func _physics_process(delta):
 	if follow_body: follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
 	else: follow_body_label.set_text(">>> LOCK BODY FOR INFO")
 	body_attributes_list.clear()
-	if follow_body: for entry in follow_body.metadata:
-		body_attributes_list.add_item(str(entry, " : ", follow_body.metadata.get(entry)), null, false) # must be restricted, maybe compile an exclude list somewhere
+	if follow_body: 
+		#global
+		body_attributes_list.add_item(str("Radius : ", follow_body.radius * 109.1, " (Earth radii)"), null, false)
+		body_attributes_list.add_item(str("Orbital Speed : ", follow_body.orbit_speed), null, false)
+		body_attributes_list.add_item(str("Orbital Distance : ", follow_body.distance), null, false)
+		#metadata
+		var excluding = ["iterations", "color", "value"]
+		for entry in follow_body.metadata:
+			if excluding.find(entry) == -1:
+				var parse: String
+				match entry:
+					"mass": parse = str(follow_body.metadata.get(entry) * 333000, " (Earth masses)")
+					_: parse = str(follow_body.metadata.get(entry))
+				body_attributes_list.add_item(str(entry, " : ", parse), null, false) # must be restricted, maybe compile an exclude list somewhere
 	
 	#PICKER UTILITY \/\/\/\/\/
 	if follow_body: if follow_body.is_planet() and follow_body.get_current_variation() != null:

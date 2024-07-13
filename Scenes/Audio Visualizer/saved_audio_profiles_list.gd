@@ -32,7 +32,6 @@ func initialize(helpers: Array[audioProfileHelper]):
 		
 		var delete_item = add_item("DELETE", denied, true)
 		set_item_metadata(delete_item, [helper, METADATA_TYPE.DELETE])
-		
 	pass
 
 func variation_to_string(variation: bodyAPI.VARIATIONS):
