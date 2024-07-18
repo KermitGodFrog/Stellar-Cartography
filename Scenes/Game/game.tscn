@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://o18qlgh0vvwn"]
+[gd_scene load_steps=9 format=3 uid="uid://o18qlgh0vvwn"]
 
 [ext_resource type="Script" path="res://Scenes/Game/game.gd" id="1_mtv75"]
 [ext_resource type="PackedScene" uid="uid://bhroagne3v4wq" path="res://Scenes/System Map/system_map.tscn" id="2_jilbx"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://oqkfuasvgtj6" path="res://Scenes/Barycenter Visualizer/barycenter_visualizer.tscn" id="5_wmjnw"]
 [ext_resource type="PackedScene" uid="uid://dtbagvxj5to3" path="res://Scenes/Station UI/station_ui.tscn" id="6_g2s4t"]
 [ext_resource type="PackedScene" uid="uid://bwlfi3x5r51fo" path="res://Scenes/Audio Visualizer/audio_visualizer.tscn" id="7_uparo"]
+[ext_resource type="Script" path="res://Data/Dialogue/queryHandler.gd" id="8_ot34g"]
 
 [node name="game" type="Node"]
 process_mode = 1
@@ -27,3 +28,6 @@ script = ExtResource("1_mtv75")
 [node name="interaction_cooldown" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[node name="queryHandler" type="Node" parent="." groups=["queryHandler"]]
+script = ExtResource("8_ot34g")

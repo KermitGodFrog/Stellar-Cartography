@@ -164,7 +164,7 @@ func _physics_process(delta):
 				match entry:
 					"mass": parse = str(follow_body.metadata.get(entry) * 333000, " (Earth masses)")
 					_: parse = str(follow_body.metadata.get(entry))
-				body_attributes_list.add_item(str(entry, " : ", parse), null, false) # must be restricted, maybe compile an exclude list somewhere
+				body_attributes_list.add_item(str(entry, " : ", parse), null, false)
 	
 	#PICKER UTILITY \/\/\/\/\/
 	if follow_body: if follow_body.is_planet() and follow_body.get_current_variation() != null:
@@ -368,3 +368,4 @@ func _on_barycenter_button_pressed():
 func _on_audio_visualizer_button_pressed():
 	emit_signal("audioVisualizerPopup")
 	pass
+

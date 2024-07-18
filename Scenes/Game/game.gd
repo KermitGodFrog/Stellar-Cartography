@@ -1,4 +1,5 @@
 extends Node
+var dialogue_memory: Dictionary
 #Handles most game stuff that is not local to child windows, loads data, saves data, the whole thing. child windows must route data through this to change the world/system/player
 
 var world: worldAPI
@@ -86,6 +87,12 @@ func _physics_process(delta):
 			print("GAME: (DEBUG) SWITCHING STAR SYSTEMS")
 			var destination = wormhole.destination_system
 			if destination:
+				
+				var new_query = responseQuery.new()
+				new_query.add("concept", "onWormholeTraversal")
+				new_query.add("wormholeDestinationStarType", destination.get_first_star().metadata.get("star_type"))
+				get_tree().call_group("queryHandler", "speak", self, new_query)
+				
 				#spawning new wormholes in destination system if nonexistent
 				if not destination.destination_systems:
 					for i in range(2):
@@ -308,6 +315,9 @@ func _ON_DEBUG_REVEAL_ALL_BODIES():
 	for body in world.player.current_star_system.bodies:
 		body.is_known = true
 	pass
+
+
+
 
 
 

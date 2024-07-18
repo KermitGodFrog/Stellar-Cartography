@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="responseRule" load_steps=2 format=3 uid="uid://nflfkxotiyd6"]
+
+[ext_resource type="Script" path="res://Data/Dialogue/rule.gd" id="1_4f3xs"]
+
+[resource]
+script = ExtResource("1_4f3xs")
+criteria = {
+"concept": "onWormholeTraversal"
+}
+apply_facts = {}
+trigger_functions = {}
+trigger_rules = Array[ExtResource("1_4f3xs")]([])

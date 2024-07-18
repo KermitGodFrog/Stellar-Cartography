@@ -99,3 +99,6 @@ static func string_to_vector2(string := "") -> Vector2:
 		var array: Array = new_string.split(", ")
 		return Vector2(int(array[0]), int(array[1]))
 	return Vector2.ZERO
+
+static func get_resource_name(resource: Resource):
+	return resource.resource_path.get_file().trim_suffix('.tres')
