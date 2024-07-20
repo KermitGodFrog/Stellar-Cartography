@@ -17,7 +17,6 @@ process_mode = 2
 title = "Station Access"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 500)
-visible = false
 always_on_top = true
 
 [node name="station_control" type="Control" parent="." groups=["FOLLOW_UPGRADE_STATE"]]
@@ -86,7 +85,6 @@ text = "UNLOCK AUDIO VISUALIZER (30000c)
 (ADVANCED SCANNING REQUIRED)"
 
 [node name="save_audio_profiles_control" type="Control" parent="station_control"]
-visible = false
 top_level = true
 layout_mode = 1
 anchors_preset = 15
@@ -146,7 +144,11 @@ text = "The wider astronomical community on (STATION NAME) has analyzed the legi
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="storage_progress_bar" type="ProgressBar" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
+layout_mode = 2
+
 [node name="WARNING" type="ColorRect" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
+custom_minimum_size = Vector2(880, 0)
 layout_mode = 2
 size_flags_vertical = 3
 color = Color(0.184314, 0.14902, 0.156863, 1)

@@ -10,9 +10,12 @@ signal removeSavedAudioProfile(helper: audioProfileHelper)
 @onready var visualizer_bg = $ui_container/visualizer_bg
 @onready var saved_audio_profiles_list = $ui_container/saved_audio_profiles_list
 @onready var body_name_label = $ui_container/visualizer_bg/body_name_label
+@onready var storage_ratio_label = $ui_container/storage_container/storage_ratio_label
+@onready var storage_progress_bar = $ui_container/storage_container/storage_progress_bar
 
 var current_audio_profile: audioProfileHelper #CONTINUOUSLY UPDATED!!!
 var saved_audio_profiles: Array[audioProfileHelper] = []
+var saved_audio_profiles_size_matrix: Array #for storage label / progress bar
 
 var LOW_VAR = bodyAPI.VARIATIONS.LOW
 var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
@@ -42,6 +45,10 @@ func _physics_process(delta):
 	
 	#display stuff
 	if current_audio_profile: body_name_label.set_text(current_audio_profile.body.display_name)
+	if saved_audio_profiles_size_matrix: 
+		storage_ratio_label.set_text(str("(", saved_audio_profiles_size_matrix.front(), "/", saved_audio_profiles_size_matrix.back(), " PROFILES)"))
+		storage_progress_bar.set_max(saved_audio_profiles_size_matrix.back())
+		storage_progress_bar.set_value(saved_audio_profiles_size_matrix.front())
 	
 	queue_redraw()
 	pass

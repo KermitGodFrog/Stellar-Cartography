@@ -28,6 +28,14 @@ func set_display_name(new_display_name: String):
 	display_name = new_display_name
 	pass
 
+#universal element enums (grouped by equillibrium condensation temperature)
+enum SUPER_REFRACTORY {Re, Os, W, Zr, Hf}
+enum REFRACTORY {Al, Sc, Ca, Ti, Th, Lu, Tb, Dy, Ho, Er, Tm, Ir, Ru, Mo, U, Sm, Nd, La}
+enum MODERATELY_REFRACTORY {Nb, Be, V, Ce, Yb, Pt, Fe, Co, Ni, Pd, Mg, Eu, Si, Cr}
+enum MODERATELY_VOLATILE {Au, P, Li, Sr, Mn, Cu, Ba}
+enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
+enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
+
 var star_types = {
 	"M": {"name": "M", "weight": 0.7645629},
 	"K": {"name": "K", "weight": 0.1213592},

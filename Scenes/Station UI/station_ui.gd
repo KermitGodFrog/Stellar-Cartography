@@ -18,6 +18,7 @@ signal addSavedAudioProfile(helper: audioProfileHelper)
 @onready var balance_label = $balance_label
 @onready var save_audio_profiles_control = $save_audio_profiles_control
 @onready var observed_bodies_list = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list
+@onready var storage_progress_bar = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/storage_progress_bar
 #upgrade buttons
 @onready var unlock_advanced_scanning_button = $upgrade_container/unlock_advanced_scanning_button
 @onready var unlock_audio_visualizer_button = $upgrade_container/unlock_audio_visualizer
@@ -29,13 +30,16 @@ func _ready():
 	pass
 
 func _physics_process(_delta):
-	print_debug(player_saved_audio_profiles_size_matrix)
 	if station:
 		balance_label.set_text(str("BALANCE: ", player_balance, "c"))
 		
 		if not has_sold_previously:
 			sell_data_button.set_text(str("SELL EXPLORATION DATA\n", player_current_value, "c\n(", station.sell_percentage_of_market_price, "% OF MARKET PRICE)"))
 		elif has_sold_previously: sell_data_button.set_text("SOLD")
+	#saved audio profiles control:
+	if player_saved_audio_profiles_size_matrix:
+		storage_progress_bar.set_max(player_saved_audio_profiles_size_matrix.back())
+		storage_progress_bar.set_value(player_saved_audio_profiles_size_matrix.front())
 	pass
 
 func _on_sell_data_button_pressed():

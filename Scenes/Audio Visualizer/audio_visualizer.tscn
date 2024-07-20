@@ -91,6 +91,23 @@ text = "- SAVED AUDIO PROFILES -"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="storage_container" type="HBoxContainer" parent="audio_control/ui_container"]
+layout_mode = 2
+
+[node name="storage_ratio_label" type="Label" parent="audio_control/ui_container/storage_container"]
+layout_mode = 2
+text = "(13/15 PROFILES)"
+
+[node name="storage_progress_bar" type="ProgressBar" parent="audio_control/ui_container/storage_container"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 15.0
+step = 1.0
+value = 13.0
+rounded = true
+fill_mode = 1
+
 [node name="saved_audio_profiles_list" type="ItemList" parent="audio_control/ui_container"]
 layout_mode = 2
 size_flags_vertical = 3

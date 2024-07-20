@@ -39,7 +39,6 @@ func _ready():
 	system_map.connect("barycenterPopup", _on_barycenter_popup)
 	system_map.connect("audioVisualizerPopup", _on_audio_visualizer_popup)
 	
-	
 	#var error = game_data.loadWorld()
 	#if error is worldAPI:
 		#print("SAVE FILE LOADED")
@@ -165,6 +164,7 @@ func _physics_process(delta):
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_3d.set("player_position", world.player.position)
 	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
+	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	#SETTING WHETHER SYSTEM MAP HAS FOCUS OR NOT (SINCE ITS A NODE IT CANNOT USE HAS_FOCUS() DIRECTLY!)
 	if $system_3d_window.has_focus() or $sonar_window.has_focus() or $barycenter_visualizer_window.has_focus() or $audio_visualizer_window.has_focus() or $station_window.has_focus(): system_map.has_focus = false
