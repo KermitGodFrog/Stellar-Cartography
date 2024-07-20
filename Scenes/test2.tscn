@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cycxitd1pn136"]
+
+[ext_resource type="PackedScene" uid="uid://b7nqphwa0ia2y" path="res://Graphics/Meshes/spaceship.tscn" id="1_lfu3u"]
+
+[node name="test2" type="Node3D"]
+
+[node name="spaceship" parent="." instance=ExtResource("1_lfu3u")]

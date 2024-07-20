@@ -10,7 +10,7 @@ func _ready():
 
 func speak(calling: Node, incoming_query: responseQuery):
 	print("QUERY HANDLER: ", calling, " QUERYING ", incoming_query.facts)
-	var ranked_rules: Dictionary
+	var ranked_rules: Dictionary = {}
 	for rule in rules:
 		var matches: int = 0
 		for fact in incoming_query.facts:

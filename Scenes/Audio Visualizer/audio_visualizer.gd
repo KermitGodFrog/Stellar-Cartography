@@ -67,7 +67,7 @@ func _draw():
 
 
 func initialize(chimes_db: float, pops_db: float, pulses_db: float, storm_db: float, custom_audio_stream = null, custom_db = null):
-	var pairs = [[chimes, chimes_db], [pops, pops_db], [storm, storm_db]]
+	var pairs = [[chimes, chimes_db], [pops, pops_db], [pulses, pulses_db], [storm, storm_db]]
 	for sound in pairs:
 		sound.front().set_volume_db(sound.back())
 		sound.front().play(global_data.get_randf(0.0, sound.front().get_stream().get_length()))

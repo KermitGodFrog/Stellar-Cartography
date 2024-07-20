@@ -1,0 +1,137 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://dye3w2bayli24"
+path="res://.godot/imported/spaceship.glb-4101c2b1c94ccd584eac8b27ef98453a.scn"
+
+[deps]
+
+source_file="res://Graphics/Meshes/spaceship.glb"
+dest_files=["res://.godot/imported/spaceship.glb-4101c2b1c94ccd584eac8b27ef98453a.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="spaceship"
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=false
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+import_script/path=""
+_subresources={
+"materials": {
+"@MATERIAL:0": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:1": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:10": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:11": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:12": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:13": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:14": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:15": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:16": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:17": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:18": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:19": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:2": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:20": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:21": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:22": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:23": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:24": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:3": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:4": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:5": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:6": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:7": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:8": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+},
+"@MATERIAL:9": {
+"use_external/enabled": true,
+"use_external/path": "res://Graphics/Meshes/spaceship_shader_material.tres"
+}
+}
+}
+gltf/naming_version=1
+gltf/embedded_image_handling=0

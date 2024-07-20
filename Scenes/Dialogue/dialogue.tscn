@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=3 uid="uid://dsx3815h250gk"]
+
+[ext_resource type="Theme" uid="uid://pb8t4wekexd8" path="res://Scenes/Station UI/station_ui_SAVE_AUDIO_PROFILES_theme.tres" id="1_hwahy"]
+
+[node name="dialogue" type="Node"]
+
+[node name="dialogue_control" type="Control" parent="."]
+top_level = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_hwahy")
+
+[node name="background" type="ColorRect" parent="dialogue_control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0901961, 0.0901961, 0.0901961, 0.588235)
+
+[node name="margin" type="MarginContainer" parent="dialogue_control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="panel" type="Panel" parent="dialogue_control/margin"]
+custom_minimum_size = Vector2(880, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="panel_margin" type="MarginContainer" parent="dialogue_control/margin/panel"]
+custom_minimum_size = Vector2(880, 400)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="content_scroll" type="VBoxContainer" parent="dialogue_control/margin/panel/panel_margin"]
+custom_minimum_size = Vector2(880, 400)
+layout_mode = 2

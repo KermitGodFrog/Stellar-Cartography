@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b68d6d318e6td"]
+
+[ext_resource type="Shader" path="res://Graphics/Meshes/spaceship_shader.gdshader" id="1_a8213"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_a8213")
+shader_parameter/line_color = Color(0, 1, 0, 1)
+shader_parameter/line_width = 0.005
+shader_parameter/line_blur = 0.2
+shader_parameter/line_speed = 0.02
+shader_parameter/straight_lines = true
+shader_parameter/interrupt_width = 0.5
+shader_parameter/interrupt_blur = 0.25
+shader_parameter/interrupt_speed = 0.2
+shader_parameter/glow_color = Color(0.5, 0.75, 1, 1)
+shader_parameter/glow_itensity = 4.5
+shader_parameter/glow_amount = 4.5
+shader_parameter/flickering = 0.55
