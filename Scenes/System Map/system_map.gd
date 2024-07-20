@@ -37,6 +37,7 @@ var has_focus: bool = false
 @onready var go_to_button = $camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button
 @onready var picker_label = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_label
 @onready var picker_button = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
+@onready var console = $camera/canvas/control/console
 
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body : bodyAPI
@@ -306,7 +307,9 @@ func _on_picker_button_item_selected(index):
 		follow_body.guessed_variation = index
 	pass
 
-
+func _on_add_console_item(text: String, bg_color: Color = Color.WHITE, time: int = 500):
+	console.async_add_item(text, bg_color, time)
+	pass
 
 
 

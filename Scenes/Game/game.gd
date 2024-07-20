@@ -238,8 +238,9 @@ func _on_found_body(id: int):
 						sub_body.is_known = true
 	pass
 
-func _on_add_console_item(text: String, bg_color: Color = Color.WHITE): #called via systtem 3d
-	print_debug("ADD CONSOLE ITEM CALLED ", text, " ", bg_color)
+func _on_add_console_item(text: String, bg_color: Color = Color.WHITE, time: int = 500): #called via systtem 3d
+	print_debug("ADD CONSOLE ITEM CALLED ", text, " ", bg_color, " ", time)
+	system_map._on_add_console_item(text, bg_color, time)
 	pass
 
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):

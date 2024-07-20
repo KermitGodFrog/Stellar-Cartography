@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=20 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dsyfc4m1nq34w" path="res://Graphics/stop_icon.png" id="7_bacyf"]
 [ext_resource type="Theme" uid="uid://br33hy3pgvm14" path="res://Scenes/System Map/system_map_APPS_theme.tres" id="8_a7cgy"]
 [ext_resource type="Texture2D" uid="uid://by3kiv6a2b0ef" path="res://Graphics/scopes_icon.png" id="8_jefec"]
+[ext_resource type="Script" path="res://Scenes/System Map/console.gd" id="8_oaj06"]
 [ext_resource type="Texture2D" uid="uid://btt2br45f8t21" path="res://Graphics/sonar_icon.png" id="9_4nwtv"]
 [ext_resource type="Script" path="res://Scenes/System Map/ui_apps_scroll.gd" id="9_pw1kh"]
 [ext_resource type="Texture2D" uid="uid://dmbeihbgpfdbj" path="res://Graphics/barycenter_icon.png" id="10_ih8qm"]
@@ -223,6 +224,7 @@ popup/item_2/text = "HIGH"
 popup/item_2/id = 2
 
 [node name="controls_label" type="Label" parent="system/camera/canvas/control"]
+visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -237,6 +239,17 @@ Q&E: ZOOM IN/OUT
 WASD: MOVE
 "
 horizontal_alignment = 2
+
+[node name="console" type="ItemList" parent="system/camera/canvas/control"]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+script = ExtResource("8_oaj06")
 
 [node name="apps_panel" type="Panel" parent="system/camera/canvas/control"]
 custom_minimum_size = Vector2(100, 200)
