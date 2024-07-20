@@ -23,5 +23,6 @@ func _physics_process(delta):
 				var new_item = add_item(new_item_data[0], null, false)
 				set_item_custom_bg_color(new_item, new_item_data[1])
 				set_item_metadata(new_item, float(new_item_data[2]))
+				set_item_selectable(new_item, false)
 				pending_items.remove_at(0)
 	pass

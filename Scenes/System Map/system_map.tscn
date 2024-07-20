@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=27 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -32,6 +32,20 @@ bg_color = Color(0.211765, 0.211765, 0.211765, 0.415686)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5sqdb"]
 bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lol1i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r4cqc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ua8ob"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_743cv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yl66s"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4umr7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m5crt"]
 
 [node name="system_window" type="Node"]
 
@@ -74,7 +88,7 @@ offset_right = 450.0
 grow_vertical = 2
 theme = ExtResource("3_djc4s")
 tab_alignment = 2
-current_tab = 2
+current_tab = 1
 script = ExtResource("4_27qwa")
 
 [node name="WARNING" type="ColorRect" parent="system/camera/canvas/control/tabs"]
@@ -96,7 +110,6 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="OVERVIEW" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
-visible = false
 custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
 theme = ExtResource("3_djc4s")
@@ -151,6 +164,7 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="INFO" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
+visible = false
 custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
 theme = ExtResource("3_djc4s")
@@ -249,6 +263,18 @@ anchor_right = 1.0
 offset_left = -40.0
 offset_bottom = 40.0
 grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hovered_color = Color(1, 1, 1, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
+theme_override_colors/guide_color = Color(1, 1, 1, 1)
+theme_override_styles/panel = SubResource("StyleBoxEmpty_lol1i")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_r4cqc")
+theme_override_styles/hovered = SubResource("StyleBoxEmpty_ua8ob")
+theme_override_styles/selected = SubResource("StyleBoxEmpty_743cv")
+theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_yl66s")
+theme_override_styles/cursor = SubResource("StyleBoxEmpty_4umr7")
+theme_override_styles/cursor_unfocused = SubResource("StyleBoxEmpty_m5crt")
 script = ExtResource("8_oaj06")
 
 [node name="apps_panel" type="Panel" parent="system/camera/canvas/control"]
