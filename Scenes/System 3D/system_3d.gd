@@ -81,8 +81,11 @@ func _physics_process(_delta):
 	#this is broked because when you unlock a body by moving the camera target pos, the locked_body_identifier variable on this script remains the same - thereofore, it always displays that you are locked to a body
 	#setting locked_body_label text
 	var body = system.get_body_from_identifier(label_locked_body_identifier)
-	if body: 
-		locked_body_label.set_text(str("LOCKED: ", body.display_name.capitalize()))
+	if body:
+		if body.is_known:
+			locked_body_label.set_text(str("LOCKED: ", body.display_name.capitalize()))
+		if body.is_theorised_but_not_known():
+			locked_body_label.set_text("LOCKED: Unknown")
 	else:
 		locked_body_label.set_text("")
 	pass

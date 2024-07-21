@@ -14,6 +14,8 @@ var metadata: Dictionary = {}
 var position: Vector2
 var rotation: float #radians
 
+var pings_to_be_theorised: int = 3
+var is_theorised: bool = false
 var is_known: bool = false
 
 enum VARIATIONS {LOW, MEDIUM, HIGH}
@@ -70,3 +72,13 @@ func is_anomaly():
 
 func is_station():
 	return false
+
+func is_theorised_but_not_known():
+	if is_theorised and is_known:
+		return false
+	elif is_theorised and (not is_known):
+		return true
+	elif (not is_theorised) and is_known:
+		return false #??????????????????
+	else:
+		return false

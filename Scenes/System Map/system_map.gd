@@ -127,6 +127,10 @@ func _physics_process(delta):
 	system_list.set_item_metadata(star_item_idx, star.get_identifier())
 	
 	for body in system.bodies:
+		if body.is_theorised_but_not_known(): if (body.is_planet() or body.is_wormhole() or body.is_station()):
+			var new_item_idx: int
+			new_item_idx = system_list.add_item("???")
+			system_list.set_item_metadata(new_item_idx, body.get_identifier())
 		if body.is_known: if (body.is_planet() or body.is_wormhole() or body.is_station()):
 			var new_item_idx: int
 			if body.is_planet(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.metadata.get("planet_type"), " Planet"))
@@ -149,7 +153,8 @@ func _physics_process(delta):
 				SONAR_PINGS.erase(ping)
 	
 	#INFOR TAB!!!!!!! \/\/\\/\/
-	if follow_body: follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
+	if follow_body and follow_body.is_known: follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
+	elif follow_body and follow_body.is_theorised_but_not_known(): follow_body_label.set_text(">>> UNKNOWN")
 	else: follow_body_label.set_text(">>> LOCK BODY FOR INFO")
 	body_attributes_list.clear()
 	if follow_body: 
@@ -164,6 +169,9 @@ func _physics_process(delta):
 				var parse: String
 				match entry:
 					"mass": parse = str(follow_body.metadata.get(entry) * 333000, " (Earth masses)")
+					"planet_type": 
+						if follow_body.is_known: parse = str(follow_body.metadata.get(entry))
+						else: parse = str("Unknown")
 					_: parse = str(follow_body.metadata.get(entry))
 				body_attributes_list.add_item(str(entry, " : ", parse), null, false)
 	
@@ -171,7 +179,7 @@ func _physics_process(delta):
 	if follow_body: if follow_body.is_planet() and follow_body.get_current_variation() != null:
 		var data_for_planet_type = system.planet_type_data.get(follow_body.metadata.get("planet_type"))
 		var variation_class = data_for_planet_type.get("variation_class")
-		if variation_class != null:
+		if variation_class != null and (follow_body.is_known == true):
 			picker_label.show()
 			picker_button.show()
 			picker_label.set_text(str(variation_class.to_upper(), ":").replace("_", " "))
@@ -274,6 +282,9 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	
 	for body in system.bodies:
 		if Geometry2D.is_point_in_polygon(body.position, points):
+			body.pings_to_be_theorised = maxi(0, body.pings_to_be_theorised - 1)
+			if body.pings_to_be_theorised == 0:
+				body.is_theorised = true #so it says '???' on the overview
 			var ping = load("res://Data/Ping Display Helpers/normal.tres").duplicate(true)
 			ping.position = body.position
 			ping.resetTime()

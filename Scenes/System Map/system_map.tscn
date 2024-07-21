@@ -319,7 +319,7 @@ icon_alignment = 2
 [node name="sonar_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
-text = "SON"
+text = "LID"
 icon = ExtResource("9_4nwtv")
 clip_text = true
 icon_alignment = 2
