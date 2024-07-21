@@ -56,7 +56,7 @@ func _ready():
 		#_on_switch_star_system(new)
 	
 	createWorld()
-	world.createPlayer(3, 2, 10)
+	world.createPlayer(3, 3, 10)
 	world.player.resetJumpsRemaining()
 	
 	#new game stuff
@@ -324,19 +324,23 @@ func _ON_DEBUG_REVEAL_ALL_BODIES():
 
 func _on_system_3d_popup():
 	$system_3d_window.popup()
+	_on_add_console_item("Opening scopes.", Color("353535"), 50)
 	pass
 
 func _on_sonar_popup():
 	$sonar_window.popup()
+	_on_add_console_item("Opening sonar.", Color("353535"), 50)
 	pass
 
 func _on_barycenter_popup():
 	$barycenter_visualizer_window.popup()
+	_on_add_console_item("Opening barycenter visualizer.", Color("353535"), 50)
 	pass
 
 func _on_audio_visualizer_popup():
 	audio_visualizer._on_popup()
 	$audio_visualizer_window.popup()
+	_on_add_console_item("Opening audio visualizer.", Color("353535"), 50)
 	pass
 
 func _on_station_popup():

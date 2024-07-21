@@ -8,11 +8,11 @@ func async_add_item(text: String, bg_color: Color = Color.WHITE, time: int = 500
 	pass
 
 func _physics_process(delta):
+	force_update_list_size()
 	for item in item_count:
 		var metadata = get_item_metadata(item)
 		if metadata: 
 			set_item_metadata(item, maxi(0, metadata - delta))
-			print(metadata)
 			if get_item_metadata(item) == 0: remove_item(item)
 	
 	if item_count < (MAX_ITEM_COUNT + 1):

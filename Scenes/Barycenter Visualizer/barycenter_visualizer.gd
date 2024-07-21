@@ -29,7 +29,7 @@ func _physics_process(_delta):
 					
 					var closest_point = get_closest_point_to_direction(dir)
 					
-					points[closest_point] = 1.0 + magnitude
+					points[closest_point] = 5.0 + magnitude
 	queue_redraw()
 	pass
 

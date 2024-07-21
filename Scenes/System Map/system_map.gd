@@ -226,8 +226,8 @@ func draw_map():
 	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, size_exponent)
 	draw_circle(player_position_matrix[0], size_exponent, Color.WHITE)
 	if camera_target_position != Vector2.ZERO:
-		draw_circle(camera_target_position, size_exponent, Color.LIGHT_SKY_BLUE)
-		draw_circle(camera_target_position, size_exponent * 0.8, Color.WEB_GRAY)
+		draw_circle(camera_target_position, size_exponent * 1.5, Color.LIGHT_SKY_BLUE)
+		draw_line(player_position_matrix[0], player_position_matrix[0] + (player_position_matrix[0].direction_to(camera_target_position) * 100.0), Color.LIGHT_SKY_BLUE, size_exponent)
 	#draw_texture_rect(camera_here_tex, Rect2(Vector2(camera_target_position.x - size_exponent, camera_target_position.y - size_exponent), Vector2(size_exponent,size_exponent)), false)
 	pass
 
