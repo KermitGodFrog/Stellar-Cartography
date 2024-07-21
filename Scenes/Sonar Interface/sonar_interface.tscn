@@ -7,6 +7,7 @@
 title = "LIDAR"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
+visible = false
 unresizable = true
 theme = ExtResource("1_rjt1s")
 

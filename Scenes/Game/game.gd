@@ -66,8 +66,8 @@ func _ready():
 	new.generateRandomWormholes()
 	_on_switch_star_system(new)
 	
-	_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-	_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+	#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+	#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 	pass
 
 func _physics_process(delta):

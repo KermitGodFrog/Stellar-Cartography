@@ -128,10 +128,15 @@ func _physics_process(delta):
 	system_list.set_item_metadata(star_item_idx, star.get_identifier())
 	
 	for body in system.bodies:
+		
+		
 		if body.is_theorised_but_not_known(): if (body.is_planet() or body.is_wormhole() or body.is_station()):
 			var new_item_idx: int
-			new_item_idx = system_list.add_item("???")
+			new_item_idx = system_list.add_item("> ???")
 			system_list.set_item_metadata(new_item_idx, body.get_identifier())
+			if body == follow_body:
+				system_list.set_item_custom_bg_color(new_item_idx, Color.LIGHT_SKY_BLUE)
+			
 		if body.is_known: if (body.is_planet() or body.is_wormhole() or body.is_station()):
 			var new_item_idx: int
 			if body.is_planet(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.metadata.get("planet_type"), " Planet"))
@@ -144,6 +149,13 @@ func _physics_process(delta):
 				system_list.set_item_custom_bg_color(new_item_idx, Color.WEB_GRAY)
 			else:
 				system_list.set_item_custom_bg_color(new_item_idx, Color.DARK_SLATE_GRAY)
+			
+			if body == follow_body:
+				system_list.set_item_custom_bg_color(new_item_idx, Color.LIGHT_SKY_BLUE)
+			
+			if body.is_wormhole(): if body.is_disabled:
+				system_list.set_item_custom_bg_color(new_item_idx, Color.DARK_RED)
+			
 	
 	#updating sonar ping visualization time values & sonar polygon display time
 	SONAR_POLYGON_DISPLAY_TIME = maxi(0, SONAR_POLYGON_DISPLAY_TIME - delta)
@@ -162,7 +174,7 @@ func _physics_process(delta):
 		#global
 		body_attributes_list.add_item(str("Radius : ", follow_body.radius * 109.1, " (Earth radii)"), null, false)
 		body_attributes_list.add_item(str("Orbital Speed : ", follow_body.orbit_speed), null, false)
-		body_attributes_list.add_item(str("Orbital Distance : ", follow_body.distance), null, false)
+		body_attributes_list.add_item(str("Orbital Distance : ", follow_body.distance, " (Solar Radii)"), null, false)
 		#metadata
 		var excluding = ["iterations", "color", "value"]
 		if follow_body.is_known:
@@ -181,7 +193,7 @@ func _physics_process(delta):
 		if variation_class != null and (follow_body.is_known == true):
 			picker_label.show()
 			picker_button.show()
-			picker_label.set_text(str(variation_class.to_upper(), ":").replace("_", " "))
+			picker_label.set_text(str(variation_class.to_upper().replace("_", " "), " (AUDIO VISUALIZER): "))
 			if follow_body.get_guessed_variation() != null:
 				picker_button.select(follow_body.get_guessed_variation())
 			else: picker_button.select(-1)

@@ -224,6 +224,7 @@ vertical_alignment = 1
 visible = false
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
+tooltip_text = "A value which can be reasonably estimated via the audio visualizer."
 theme_override_styles/focus = SubResource("StyleBoxEmpty_ufej3")
 theme_override_styles/normal = SubResource("StyleBoxFlat_w1mgb")
 theme_override_styles/hover = SubResource("StyleBoxFlat_5sqdb")
