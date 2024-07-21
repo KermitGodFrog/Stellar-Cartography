@@ -24,6 +24,7 @@ var mouse_over_actions_panel: bool = false
 var mouse_over_go_to_button: bool = false
 var mouse_over_orbit_button: bool = false
 var mouse_over_stop_button: bool = false
+var mouse_over_tabs: bool = false
 var mouse_over_ui: bool = false
 
 var has_focus: bool = false
@@ -67,7 +68,7 @@ func _physics_process(delta):
 	#camera_target_position is position for system3d to look at
 	
 	#checking whether the mouse is over UI
-	if mouse_over_system_list or mouse_over_actions_panel or mouse_over_go_to_button or mouse_over_orbit_button or mouse_over_stop_button: mouse_over_ui = true
+	if mouse_over_system_list or mouse_over_actions_panel or mouse_over_go_to_button or mouse_over_orbit_button or mouse_over_stop_button or mouse_over_tabs: mouse_over_ui = true
 	else: mouse_over_ui = false
 	
 	#moving to the mouse position or moving to action_body in various ways
@@ -154,7 +155,7 @@ func _physics_process(delta):
 	
 	#INFOR TAB!!!!!!! \/\/\\/\/
 	if follow_body and follow_body.is_known: follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
-	elif follow_body and follow_body.is_theorised_but_not_known(): follow_body_label.set_text(">>> UNKNOWN")
+	elif follow_body and follow_body.is_theorised_but_not_known(): follow_body_label.set_text(">>> Unknown")
 	else: follow_body_label.set_text(">>> LOCK BODY FOR INFO")
 	body_attributes_list.clear()
 	if follow_body: 
@@ -164,16 +165,14 @@ func _physics_process(delta):
 		body_attributes_list.add_item(str("Orbital Distance : ", follow_body.distance), null, false)
 		#metadata
 		var excluding = ["iterations", "color", "value"]
-		for entry in follow_body.metadata:
-			if excluding.find(entry) == -1:
-				var parse: String
-				match entry:
-					"mass": parse = str(follow_body.metadata.get(entry) * 333000, " (Earth masses)")
-					"planet_type": 
-						if follow_body.is_known: parse = str(follow_body.metadata.get(entry))
-						else: parse = str("Unknown")
-					_: parse = str(follow_body.metadata.get(entry))
-				body_attributes_list.add_item(str(entry, " : ", parse), null, false)
+		if follow_body.is_known:
+			for entry in follow_body.metadata:
+				if excluding.find(entry) == -1:
+					var parse: String
+					match entry:
+						"mass": parse = str(follow_body.metadata.get(entry) * 333000, " (Earth masses)")
+						_: parse = str(follow_body.metadata.get(entry))
+					body_attributes_list.add_item(str(entry, " : ", parse), null, false)
 	
 	#PICKER UTILITY \/\/\/\/\/
 	if follow_body: if follow_body.is_planet() and follow_body.get_current_variation() != null:
@@ -366,6 +365,15 @@ func _on_stop_button_mouse_exited():
 	mouse_over_stop_button = false
 	pass
 
+func _on_tabs_mouse_entered():
+	mouse_over_tabs = true
+	pass 
+
+func _on_tabs_mouse_exited():
+	mouse_over_tabs = false
+	pass
+
+
 
 func _on_scopes_button_pressed():
 	emit_signal("system3DPopup")
@@ -382,4 +390,7 @@ func _on_barycenter_button_pressed():
 func _on_audio_visualizer_button_pressed():
 	emit_signal("audioVisualizerPopup")
 	pass
+
+
+
 

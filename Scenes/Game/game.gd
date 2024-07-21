@@ -329,7 +329,7 @@ func _on_system_3d_popup():
 
 func _on_sonar_popup():
 	$sonar_window.popup()
-	_on_add_console_item("Opening sonar.", Color("353535"), 50)
+	_on_add_console_item("Opening LIDAR.", Color("353535"), 50)
 	pass
 
 func _on_barycenter_popup():

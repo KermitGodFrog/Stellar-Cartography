@@ -7,7 +7,6 @@
 title = "LIDAR"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
-visible = false
 unresizable = true
 theme = ExtResource("1_rjt1s")
 
@@ -49,6 +48,22 @@ value = 5.0
 [node name="ping_button" type="Button" parent="sonar_control/flow_container"]
 layout_mode = 2
 text = "PING!"
+
+[node name="ping_cooldown_timer" type="Timer" parent="sonar_control"]
+wait_time = 5.0
+one_shot = true
+
+[node name="cooldown_label" type="Label" parent="sonar_control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "5
+"
+horizontal_alignment = 2
 
 [connection signal="close_requested" from="." to="sonar_control" method="_on_sonar_window_close_requested"]
 [connection signal="mouse_entered" from="sonar_control/flow_container/ping_button" to="sonar_control" method="_on_ping_button_mouse_entered"]

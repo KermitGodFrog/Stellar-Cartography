@@ -10,12 +10,19 @@ var mouse_over_ping_button: bool = false
 var mouse_over_ui: bool = false
 
 @onready var ping_width_slider = $flow_container/ping_width_slider
+@onready var ping_cooldown_timer = $ping_cooldown_timer
+@onready var cooldown_label = $cooldown_label
 
 func _physics_process(_delta):
 	if mouse_over_ping_button: mouse_over_ui = true
 	else: mouse_over_ui = false
 	
 	ping_width = ping_width_slider.value
+	
+	if not ping_cooldown_timer.is_stopped():
+		cooldown_label.set_text(str(round(ping_cooldown_timer.time_left)))
+	else:
+		cooldown_label.set_text("")
 	
 	if Input.is_action_pressed("left_mouse") and owner.has_focus() and not mouse_over_ui:
 		ping_direction = get_screen_centre().direction_to(get_global_mouse_position())
@@ -45,7 +52,9 @@ func _on_sonar_window_close_requested():
 	pass
 
 func _on_ping_button_pressed():
-	emit_signal("sonarPing", ping_width, ping_length, ping_direction)
+	if ping_cooldown_timer.is_stopped():
+		emit_signal("sonarPing", ping_width, ping_length, ping_direction)
+		ping_cooldown_timer.start()
 	pass
 
 
