@@ -1,5 +1,4 @@
 extends Node
-var dialogue_memory: Dictionary
 #Handles most game stuff that is not local to child windows, loads data, saves data, the whole thing. child windows must route data through this to change the world/system/player
 
 var world: worldAPI
@@ -9,6 +8,7 @@ var world: worldAPI
 @onready var barycenter_visualizer = $barycenter_visualizer_window/barycenter_control
 @onready var audio_visualizer = $audio_visualizer_window/audio_control
 @onready var station_ui = $station_window/station_control
+
 
 func createWorld():
 	world = worldAPI.new()
@@ -88,9 +88,8 @@ func _physics_process(delta):
 			if destination:
 				
 				var new_query = responseQuery.new()
-				new_query.add("concept", "onWormholeTraversal")
-				new_query.add("wormholeDestinationStarType", destination.get_first_star().metadata.get("star_type"))
-				get_tree().call_group("queryHandler", "speak", self, new_query)
+				new_query.add("concept", "openDialog")
+				get_tree().call_group("dialogueManager", "speak", self, new_query)
 				
 				#spawning new wormholes in destination system if nonexistent
 				if not destination.destination_systems:
@@ -303,8 +302,6 @@ func _on_remove_saved_audio_profile(helper: audioProfileHelper):
 func _on_add_saved_audio_profile(helper: audioProfileHelper):
 	world.player.addAudioProfile(helper)
 	pass
-
-
 
 func _ON_DEBUG_REVEAL_ALL_WORMHOLES():
 	for body in world.player.current_star_system.bodies:

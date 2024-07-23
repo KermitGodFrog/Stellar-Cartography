@@ -1,0 +1,109 @@
+[gd_scene load_steps=6 format=3 uid="uid://ckd75fjfh7urh"]
+
+[ext_resource type="Script" path="res://Data/Dialogue/dialogueManager.gd" id="1_5bsxl"]
+[ext_resource type="Theme" uid="uid://pb8t4wekexd8" path="res://Scenes/Station UI/station_ui_SAVE_AUDIO_PROFILES_theme.tres" id="2_0grsb"]
+[ext_resource type="Texture2D" uid="uid://dm2bfs2rf8r1a" path="res://Graphics/2k_earth_specular_map.png" id="3_4dyh3"]
+[ext_resource type="Script" path="res://Data/Dialogue/dialogue_control.tres.gd" id="3_rmmx3"]
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_p0l0r"]
+
+[node name="dialogueManager" type="Node" groups=["dialogueManager"]]
+process_mode = 3
+script = ExtResource("1_5bsxl")
+
+[node name="dialogue" type="CanvasLayer" parent="."]
+
+[node name="dialogue_control" type="Control" parent="dialogue" groups=["dialogue"]]
+process_mode = 2
+visible = false
+top_level = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_0grsb")
+script = ExtResource("3_rmmx3")
+
+[node name="background" type="ColorRect" parent="dialogue/dialogue_control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0901961, 0.0901961, 0.0901961, 0.588235)
+
+[node name="margin" type="MarginContainer" parent="dialogue/dialogue_control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="panel" type="Panel" parent="dialogue/dialogue_control/margin"]
+custom_minimum_size = Vector2(1200, 800)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="panel_margin" type="MarginContainer" parent="dialogue/dialogue_control/margin/panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="content_scroll" type="VBoxContainer" parent="dialogue/dialogue_control/margin/panel/panel_margin"]
+layout_mode = 2
+
+[node name="image" type="TextureRect" parent="dialogue/dialogue_control/margin/panel/panel_margin/content_scroll"]
+custom_minimum_size = Vector2(0, 250)
+layout_mode = 2
+texture = ExtResource("3_4dyh3")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="text" type="RichTextLabel" parent="dialogue/dialogue_control/margin/panel/panel_margin/content_scroll"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+bbcode_enabled = true
+text = "
+dgfhfhffhhhdfdfhdhfdfhdfh
+dg
+dg
+dg
+dg
+g
+dgg
+d
+g
+dg
+gd"
+custom_effects = [SubResource("RichTextEffect_p0l0r")]
+
+[node name="flair_label" type="Label" parent="dialogue/dialogue_control/margin/panel/panel_margin/content_scroll"]
+layout_mode = 2
+text = "You decide to ..."
+vertical_alignment = 1
+
+[node name="options" type="ItemList" parent="dialogue/dialogue_control/margin/panel/panel_margin/content_scroll"]
+layout_mode = 2
+auto_height = true
+item_count = 3
+item_0/text = "1) dfdfdfdfdf"
+item_1/text = "2) dfdfdffdfdf"
+item_2/text = "3) fgfgfgfgfgffggf"
+
+[connection signal="item_selected" from="dialogue/dialogue_control/margin/panel/panel_margin/content_scroll/options" to="dialogue/dialogue_control" method="_on_options_item_selected"]

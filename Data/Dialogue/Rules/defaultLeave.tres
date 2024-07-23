@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="responseRule" load_steps=2 format=3 uid="uid://twlh4afrttl3"]
+
+[ext_resource type="Script" path="res://Data/Dialogue/rule.gd" id="1_fs4c5"]
+
+[resource]
+script = ExtResource("1_fs4c5")
+criteria = {
+"concept": "dialogOptionSelected",
+"option": "defaultLeave"
+}
+apply_facts = {}
+trigger_functions = {
+"closeDialog": null
+}
+text = " "
+options = {}

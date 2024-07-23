@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="responseRule" load_steps=2 format=3 uid="uid://cimlamrk35sj1"]
+
+[ext_resource type="Script" path="res://Data/Dialogue/rule.gd" id="1_uakp4"]
+
+[resource]
+script = ExtResource("1_uakp4")
+criteria = {
+"concept": "openDialog"
+}
+apply_facts = {}
+trigger_functions = {
+"openDialog": null
+}
+text = " "
+options = {
+"Leave": "defaultLeave"
+}
