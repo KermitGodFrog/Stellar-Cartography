@@ -128,8 +128,6 @@ func _physics_process(delta):
 	system_list.set_item_metadata(star_item_idx, star.get_identifier())
 	
 	for body in system.bodies:
-		
-		
 		if body.is_theorised_but_not_known(): if (body.is_planet() or body.is_wormhole() or body.is_station()):
 			var new_item_idx: int
 			new_item_idx = system_list.add_item("> ???")
@@ -141,7 +139,7 @@ func _physics_process(delta):
 			var new_item_idx: int
 			if body.is_planet(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.metadata.get("planet_type"), " Planet"))
 			if body.is_wormhole(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Wormhole"))
-			if body.is_station(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.stringify_station_classification(), " Outpost"))
+			if body.is_station(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Station"))
 			
 			system_list.set_item_metadata(new_item_idx, body.get_identifier())
 			

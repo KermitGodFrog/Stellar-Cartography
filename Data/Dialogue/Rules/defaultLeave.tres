@@ -12,5 +12,6 @@ apply_facts = {}
 trigger_functions = {
 "closeDialog": null
 }
+trigger_rules = Array[ExtResource("1_fs4c5")]([])
 text = " "
 options = {}

@@ -89,6 +89,7 @@ func _physics_process(delta):
 				
 				var new_query = responseQuery.new()
 				new_query.add("concept", "openDialog")
+				new_query.add("id", "wormhole")
 				get_tree().call_group("dialogueManager", "speak", self, new_query)
 				
 				#spawning new wormholes in destination system if nonexistent

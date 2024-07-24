@@ -61,9 +61,9 @@ func trigger_rule(calling: Node, rule: responseRule):
 				call(trigger_function)
 	
 	#trigger_rules: \\\\\\\\\\\\\
-	#for trigger_rule in rule.trigger_rules:
-		#if rules.has(trigger_rule):
-			#trigger_rule(calling, trigger_rule)
+	for trigger_rule in rule.trigger_rules:
+		if rules.has(trigger_rule):
+			trigger_rule(calling, trigger_rule)
 	dialogue.initialize(rule.text, rule.options)
 	pass
 

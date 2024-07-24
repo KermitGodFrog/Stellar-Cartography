@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="responseRule" load_steps=2 format=3 uid="uid://bm02jkw8u2k5i"]
+
+[ext_resource type="Script" path="res://Data/Dialogue/rule.gd" id="1_i7x7i"]
+
+[resource]
+script = ExtResource("1_i7x7i")
+criteria = {
+"concept": "dialogOptionSelected",
+"option": "enterWormhole"
+}
+apply_facts = {}
+trigger_functions = {
+"closeDialog": null
+}
+trigger_rules = Array[ExtResource("1_i7x7i")]([])
+text = " "
+options = {}

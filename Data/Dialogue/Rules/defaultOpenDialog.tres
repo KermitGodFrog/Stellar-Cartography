@@ -11,6 +11,7 @@ apply_facts = {}
 trigger_functions = {
 "openDialog": null
 }
+trigger_rules = Array[ExtResource("1_uakp4")]([])
 text = " "
 options = {
 "Leave": "defaultLeave"
