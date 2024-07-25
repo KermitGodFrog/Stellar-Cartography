@@ -1,17 +1,39 @@
 extends Node
 var dialogue_memory: Dictionary
 
+#for populating query data
+var player: playerAPI
+
+
 var rules: Array[responseRule] = []
 
 @onready var dialogue = $dialogue/dialogue_control
 
 func _ready():
-	var rule_paths = global_data.get_all_files("res://Data/Dialogue/Rules", "tres")
-	for r in rule_paths:
+	var rule_path = global_data.get_all_files("res://Data/Dialogue/Rules", "tres")
+	for r in rule_path:
 		rules.append(load(r))
 	pass
 
-func speak(calling: Node, incoming_query: responseQuery):
+func _physics_process(delta):
+	for fact in dialogue_memory:
+		var values = dialogue_memory.get(fact)
+		var expiry_timer = values.back()
+		
+		if not expiry_timer == null:
+			dialogue_memory[fact] = [values.front(), maxi(0, expiry_timer - delta)]
+		
+		if expiry_timer == 0:
+			dialogue_memory.erase(fact)
+	pass
+
+
+
+func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = true):
+	if populate_data:
+		incoming_query.populateWithPlayerData(player)
+		incoming_query.populateWithDialogueMemoryData(dialogue_memory)
+	
 	print("QUERY HANDLER: ", calling, " QUERYING ", incoming_query.facts)
 	var ranked_rules: Dictionary = {}
 	for rule in rules:
@@ -43,7 +65,7 @@ func trigger_rule(calling: Node, rule: responseRule):
 	print("QUERY HANDLER: ", calling, " TRIGGERING RULE ", global_data.get_resource_name(rule))
 	#apply_facts: \\\\\\\\\\\\\
 	for fact in rule.apply_facts:
-		dialogue_memory[fact] = rule.apply_facts.get(fact) #DOES NOT HAVE OPTION FOR EXPIRY TIMER! THIS IS BAD!
+		dialogue_memory[fact] = rule.apply_facts.get(fact)
 		print("QUERY HANDLER: ", calling, " APPLYING FACT ", fact)
 	
 	#trigger_functions: \\\\\\\\\\\\\

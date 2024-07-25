@@ -10,6 +10,7 @@ var locked_body_identifier: int
 var label_locked_body_identifier: int
 
 var body_3d = preload("res://Instantiated Scenes/Body 3D/body_3d.tscn")
+var entity_3d = preload("res://Instantiated Scenes/Body 3D/entity_3d.tscn")
 
 @onready var camera_offset = $camera_offset
 @onready var camera = $camera_offset/camera
@@ -109,6 +110,11 @@ func spawnBodies():
 			elif body.is_wormhole():
 				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().metadata.get("color"), body.metadata.get("color"), 0.75, wormhole_shader)
 			add_child(new_body_3d)
+		if body.is_station() or body.is_anomaly():
+			var new_entity_3d = entity_3d.instantiate()
+			new_entity_3d.set_identifier(body.get_identifier())
+			new_entity_3d.initialize(0.03) #pixel size, can be different for stations/anomalies
+			add_child(new_entity_3d)
 	pass
 
 func reset_locked_body():

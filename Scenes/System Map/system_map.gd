@@ -400,7 +400,3 @@ func _on_barycenter_button_pressed():
 func _on_audio_visualizer_button_pressed():
 	emit_signal("audioVisualizerPopup")
 	pass
-
-
-
-

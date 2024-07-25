@@ -20,6 +20,9 @@ var unlocked_upgrades: Array[UPGRADE_ID] = []
 var saved_audio_profiles: Array[audioProfileHelper] = []
 var max_saved_audio_profiles: int = 10
 
+var characters: Array[characterAPI] = []
+
+
 func get_jumps_remaining():
 	return jumps_remaining
 

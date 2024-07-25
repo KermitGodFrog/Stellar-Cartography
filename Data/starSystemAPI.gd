@@ -308,7 +308,7 @@ func generateRandomWormholes(): #uses variables post_gen_location_candidates, de
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
-func generateRandomStations():
+func generateRandomWeightedStations():
 	for station in global_data.get_randi(2, 5):
 		var location = post_gen_location_candidates.pick_random()
 		var hook = get_body_from_identifier(location.front())
@@ -326,7 +326,11 @@ func generateRandomStations():
 		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
 		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 		
-		var station_classification = stationAPI.STATION_CLASSIFICATIONS.STANDARD
+		
+		
+		#var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications())
+		var station_classification = game_data.STATION_CLASSIFICATIONS.STANDARD
+		
 		var percentage_markup = global_data.get_randi(50, 200)
 		
 		var new_station = addStation(identifier_count, str(get_random_station_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), station_classification, percentage_markup)

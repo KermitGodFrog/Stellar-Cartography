@@ -1,5 +1,45 @@
 extends Node
 
+var distance_index: float = 0.0 #this shouldnt be in playerAPI.gd because its not actually related to the player, its just related to generation, and everything in the game needs to know it so its in game_data.gd
+
+enum STATION_CLASSIFICATIONS {STANDARD, PIRATE, ABANDONED, COVERUP, DEBRIS, ABANDONED_OPERATIONAL, ABANDONED_BACKROOMS, PARTIALLY_SALVAGED, BIRD}
+const STATION_CLASSIFICATION_CURVES = {
+	STATION_CLASSIFICATIONS.STANDARD: preload("res://Data/Spawn Data/Stations/standard.tres"), 
+	STATION_CLASSIFICATIONS.PIRATE: preload("res://Data/Spawn Data/Stations/pirate.tres"), 
+	STATION_CLASSIFICATIONS.ABANDONED: preload("res://Data/Spawn Data/Stations/abandoned.tres"), 
+	STATION_CLASSIFICATIONS.COVERUP: preload("res://Data/Spawn Data/Stations/coverup.tres"), 
+	STATION_CLASSIFICATIONS.DEBRIS: preload("res://Data/Spawn Data/Stations/debris.tres"), 
+	STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL: preload("res://Data/Spawn Data/Stations/abandoned_operational.tres"), 
+	STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS: preload("res://Data/Spawn Data/Stations/abandoned_backrooms.tres"), 
+	STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED: preload("res://Data/Spawn Data/Stations/partially_salvaged.tres"), 
+	STATION_CLASSIFICATIONS.BIRD: preload("res://Data/Spawn Data/Stations/bird.tres")
+}
+
+enum ANOMALY_CLASSIFICATIONS {}
+const ANOMALY_CLASSIFICATION_CURVES = {
+}
+
+
+
+
+
+func get_weighted_station_classifications() -> Dictionary:
+	var weighted: Dictionary = {}
+	for classification in STATION_CLASSIFICATION_CURVES:
+		var curve = STATION_CLASSIFICATION_CURVES.get(classification)
+		var weight = curve.sample(distance_index)
+		weighted[classification] = {"name": classification, "weight": weight}
+	return weighted
+
+func get_weighted_anomaly_classifications() -> Dictionary:
+	var weighted: Dictionary = {}
+	for classification in ANOMALY_CLASSIFICATION_CURVES:
+		var curve = ANOMALY_CLASSIFICATION_CURVES.get(classification)
+		var weight = curve.sample(distance_index)
+		weighted[classification] = {"name": classification, "weight": weight}
+	return weighted
+
+
 func get_closest_body(bodies, pos):
 	if bodies.size() > 0:
 		var distance_to_bodies: Dictionary = {}

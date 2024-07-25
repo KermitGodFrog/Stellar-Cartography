@@ -8,7 +8,7 @@ var world: worldAPI
 @onready var barycenter_visualizer = $barycenter_visualizer_window/barycenter_control
 @onready var audio_visualizer = $audio_visualizer_window/audio_control
 @onready var station_ui = $station_window/station_control
-
+@onready var dialogue_manager = $dialogueManager
 
 func createWorld():
 	world = worldAPI.new()
@@ -109,7 +109,7 @@ func _physics_process(delta):
 				#setting whether the new system is a civilized system or not
 				world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
 				if world.player.get_jumps_remaining() == 0:
-					destination.generateRandomStations()
+					destination.generateRandomWeightedStations()
 					world.player.resetJumpsRemaining()
 					for body in destination.bodies:
 						body.is_known = true
@@ -166,6 +166,9 @@ func _physics_process(delta):
 	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
+	
+	dialogue_manager.set("player", world.player)
+	
 	#SETTING WHETHER SYSTEM MAP HAS FOCUS OR NOT (SINCE ITS A NODE IT CANNOT USE HAS_FOCUS() DIRECTLY!)
 	if $system_3d_window.has_focus() or $sonar_window.has_focus() or $barycenter_visualizer_window.has_focus() or $audio_visualizer_window.has_focus() or $station_window.has_focus(): system_map.has_focus = false
 	else: system_map.has_focus = true
