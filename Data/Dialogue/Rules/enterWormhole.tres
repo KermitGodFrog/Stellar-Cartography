@@ -13,5 +13,7 @@ trigger_functions = {
 "closeDialog": null
 }
 trigger_rules = Array[ExtResource("1_i7x7i")]([])
+query_all_concept = Array[String]([])
+query_best_concept = Array[String]([])
 text = " "
 options = {}

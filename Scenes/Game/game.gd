@@ -59,6 +59,12 @@ func _ready():
 	world.createPlayer(3, 3, 10)
 	world.player.resetJumpsRemaining()
 	
+	#CHARACTERS FOR ROGUELIKE:
+	world.player.first_officer = load("res://Data/Characters/rui.tres")
+	world.player.chief_engineer = load("res://Data/Characters/jiya.tres")
+	world.player.security_officer = load("res://Data/Characters/walker.tres")
+	world.player.medical_officer = load("res://Data/Characters/febris.tres")
+	
 	#new game stuff
 	var new = _on_create_new_star_system(false)
 	for i in range(2):

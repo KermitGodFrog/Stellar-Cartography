@@ -20,7 +20,13 @@ var unlocked_upgrades: Array[UPGRADE_ID] = []
 var saved_audio_profiles: Array[audioProfileHelper] = []
 var max_saved_audio_profiles: int = 10
 
-var characters: Array[characterAPI] = []
+#characters \/\/\/\/\/\/
+var first_officer: characterAPI
+var chief_engineer: characterAPI
+var security_officer: characterAPI
+var medical_officer: characterAPI
+var linguist: characterAPI
+var historian: characterAPI
 
 
 func get_jumps_remaining():
