@@ -79,7 +79,7 @@ func get_rule_matches(rule, incoming_query):
 				match rule.criteria.get(fact).left(1):
 					"<":
 						var number = rule.criteria.get(fact).trim_prefix("<")
-						if float(rule.criteria.get(fact)) < float(number):
+						if float(rule.criteria.get(fact)) < float(number): #will this work>>???
 							matches += 1
 						else: continue
 					">":
@@ -135,11 +135,13 @@ func trigger_rule(calling: Node, rule: responseRule):
 		speak(calling, new_query, true, QUERY_TYPES.BEST)
 	
 	#text & options \\\\\\\\\\\\\
-	dialogue.initialize(rule.text, rule.options)
+	if rule.text: dialogue.add_text(rule.text)
+	if rule.options: dialogue.add_options(rule.options)
 	pass
 
 
 func openDialog():
+	reset()
 	dialogue.show()
 	get_tree().paused = true
 	pass
@@ -147,4 +149,16 @@ func openDialog():
 func closeDialog():
 	dialogue.hide()
 	get_tree().paused = false
+	pass
+
+func resetText():
+	dialogue.reset_text()
+	pass
+
+func resetOptions():
+	dialogue.reset_options()
+	pass
+
+func reset():
+	dialogue.reset()
 	pass
