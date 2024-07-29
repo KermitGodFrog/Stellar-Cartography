@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="responseRule" load_steps=2 format=3 uid="uid://6jomo6t3ip60"]
+
+[ext_resource type="Script" path="res://Data/Dialogue/rule.gd" id="1_554uf"]
+
+[resource]
+script = ExtResource("1_554uf")
+criteria = {
+"concept": "dialogueOptionSelected",
+"option": "requestDocking"
+}
+apply_facts = {}
+trigger_functions = {
+"closeDialog": "DOCK_WITH_STATION"
+}
+trigger_rules = Array[ExtResource("1_554uf")]([])
+query_all_concept = Array[String]([])
+query_best_concept = Array[String]([])
+text = " "
+options = {}

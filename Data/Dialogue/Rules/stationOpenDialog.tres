@@ -9,7 +9,9 @@ criteria = {
 "id": "station"
 }
 apply_facts = {}
-trigger_functions = {}
+trigger_functions = {
+"openDialog": null
+}
 trigger_rules = Array[ExtResource("1_j4rl4")]([])
 query_all_concept = Array[String]([])
 query_best_concept = Array[String]([])

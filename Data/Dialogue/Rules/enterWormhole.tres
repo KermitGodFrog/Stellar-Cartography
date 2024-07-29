@@ -10,7 +10,7 @@ criteria = {
 }
 apply_facts = {}
 trigger_functions = {
-"closeDialog": null
+"closeDialog": "ENTER_WORMHOLE"
 }
 trigger_rules = Array[ExtResource("1_i7x7i")]([])
 query_all_concept = Array[String]([])

@@ -7,14 +7,17 @@ script = ExtResource("1_j634l")
 criteria = {
 "concept": "openDialog",
 "id": "station",
-"station_type": "STANDARD"
+"station_classification": "STANDARD"
 }
 apply_facts = {}
-trigger_functions = {}
+trigger_functions = {
+"openDialog": null
+}
 trigger_rules = Array[ExtResource("1_j634l")]([])
 query_all_concept = Array[String]([])
 query_best_concept = Array[String]([])
 text = " "
 options = {
-"Leave": "defaultLeave"
+"Leave": "defaultLeave",
+"Request Docking": "requestDocking"
 }

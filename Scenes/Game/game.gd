@@ -15,6 +15,7 @@ func createWorld():
 	pass
 
 func _ready():
+	system_map.connect("updatePlayerActionType", _on_update_player_action_type)
 	system_map.connect("updatePlayerTargetPosition", _on_update_player_target_position)
 	system_map.connect("updateTargetPosition", _on_update_target_position)
 	system_map.connect("updatedLockedBody", _on_locked_body_updated)
@@ -65,6 +66,9 @@ func _ready():
 	world.player.security_officer = load("res://Data/Characters/walker.tres")
 	world.player.medical_officer = load("res://Data/Characters/febris.tres")
 	
+	world.player.connect("orbitingBody", _on_player_orbiting_body)
+	world.player.connect("followingBody", _on_player_following_body)
+	
 	#new game stuff
 	var new = _on_create_new_star_system(false)
 	for i in range(2):
@@ -74,11 +78,14 @@ func _ready():
 	
 	#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 	#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+	
+	_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 	pass
 
 func _physics_process(delta):
 	#CORE GAME LOGIC \/\/\/\/\/
 	#updating positions of everyhthing for API's
+	world.player.updateActionBodyState()
 	world.player.updatePosition(delta)
 	var current_bodies = world.player.current_star_system.bodies
 	if current_bodies:
@@ -86,85 +93,84 @@ func _physics_process(delta):
 			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
 	
 	#switching system if close enough to wormhole  (dont thinkj anything else can have jusrisdiction - no API other than the player should be aware of the player)
-	var wormholes = world.player.current_star_system.get_wormholes()
-	for wormhole in wormholes: # ^^^ all wormholes in current star system dont worry 
-		if world.player.position.distance_to(wormhole.position) < (20.0 * wormhole.radius) and not wormhole.is_disabled:
-			print("GAME: (DEBUG) SWITCHING STAR SYSTEMS")
-			var destination = wormhole.destination_system
-			if destination:
+	#var wormholes = world.player.current_star_system.get_wormholes()
+	#for wormhole in wormholes: # ^^^ all wormholes in current star system dont worry 
+		#if world.player.position.distance_to(wormhole.position) < (20.0 * wormhole.radius) and not wormhole.is_disabled:
+			#print("GAME: (DEBUG) SWITCHING STAR SYSTEMS")
+			#var destination = wormhole.destination_system
+			#if destination:
 				
-				var new_query = responseQuery.new()
-				new_query.add("concept", "openDialog")
-				new_query.add("id", "wormhole")
-				get_tree().call_group("dialogueManager", "speak", self, new_query)
+				#var new_query = responseQuery.new()
+				#new_query.add("concept", "openDialog")
+				#new_query.add("id", "wormhole")
+				#get_tree().call_group("dialogueManager", "speak", self, new_query)
 				
 				#spawning new wormholes in destination system if nonexistent
-				if not destination.destination_systems:
-					for i in range(2):
-						_on_create_new_star_system(false, destination)
-					destination.generateRandomWormholes()
+				#if not destination.destination_systems:
+					#for i in range(2):
+						#_on_create_new_star_system(false, destination)
+					#destination.generateRandomWormholes()
 				
-				var destination_position: Vector2 = Vector2.ZERO
-				var destination_wormhole = destination.get_wormhole_with_destination_system(world.player.current_star_system)
-				if destination_wormhole:
-					destination.updateBodyPosition(destination_wormhole.get_identifier(), delta) #REQURIED SO WORMHOLE HAVE A POSITION OTHER THAN 0,0
-					destination_position = destination_wormhole.position
-					destination_wormhole.is_known = true
+				#var destination_position: Vector2 = Vector2.ZERO
+				#var destination_wormhole = destination.get_wormhole_with_destination_system(world.player.current_star_system)
+				#if destination_wormhole:
+					#destination.updateBodyPosition(destination_wormhole.get_identifier(), delta) #REQURIED SO WORMHOLE HAVE A POSITION OTHER THAN 0,0
+					#destination_position = destination_wormhole.position
+					#destination_wormhole.is_known = true
 					#system_3d.locked_body_identifier = destination_wormhole.get_identifier() #diesnt seem to work?!
 				
 				#setting whether the new system is a civilized system or not
-				world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
-				if world.player.get_jumps_remaining() == 0:
-					destination.generateRandomWeightedStations()
-					world.player.resetJumpsRemaining()
-					for body in destination.bodies:
-						body.is_known = true
+				#world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
+				#if world.player.get_jumps_remaining() == 0:
+					#destination.generateRandomWeightedStations()
+					#world.player.resetJumpsRemaining()
+					#for body in destination.bodies:
+						#body.is_known = true
 				
-				world.player.position = destination_position
-				world.player.target_position = world.player.position
-				system_map._on_start_movement_lock_timer()
+				#world.player.position = destination_position
+				#world.player.target_position = world.player.position
+				#system_map._on_start_movement_lock_timer()
 				
 				#no idea if anything below this point actually works so be careful \/\/\/\/
 				
 				#removing other possible systems to traverse from previous system
-				for w in wormholes:
-					if w != wormhole: #if the wormhole is not the current wormhole being traversed
-						if w.destination_system:
-							if w.destination_system != world.player.previous_star_system:
-								world.removeStarSystem(w.destination_system.get_identifier())
+				#for w in wormholes:
+					#if w != wormhole: #if the wormhole is not the current wormhole being traversed
+						#if w.destination_system:
+							#if w.destination_system != world.player.previous_star_system:
+								#world.removeStarSystem(w.destination_system.get_identifier())
 				
 				#removing all other systems when leaving a civilized system (need to know about all the systems when in a civilized system in case i want to add the ability to look over exploration data while at a station)
-				if world.player.current_star_system.is_civilized():
-					var exclude_systems = destination.destination_systems.duplicate()
-					exclude_systems.append(destination)
-					world.remove_systems_excluding_systems(exclude_systems)
-					station_ui.has_sold_previously = false #allowing to sell exploration data at station at next civilized system
+				#if world.player.current_star_system.is_civilized():
+					#var exclude_systems = destination.destination_systems.duplicate()
+					#exclude_systems.append(destination)
+					#world.remove_systems_excluding_systems(exclude_systems)
+					#station_ui.has_sold_previously = false #allowing to sell exploration data at station at next civilized system
 				
-				world.player.previous_star_system = world.player.current_star_system
+				#world.player.previous_star_system = world.player.current_star_system
 				
-				_on_switch_star_system(destination)
+				#_on_switch_star_system(destination)
 	
-	var stations = world.player.current_star_system.get_stations()
-	for station in stations:
-		if world.player.position.distance_to(station.position) < (20.0 * station.radius) and ($interaction_cooldown.is_stopped()):
-			print("INTERACTING WITH STATION!!!")
-			station_ui.station = station
-			station_ui.player_current_value = world.player.current_value
-			station_ui.player_balance = world.player.balance
+	#var stations = world.player.current_star_system.get_stations()
+	#for station in stations:
+		#if world.player.position.distance_to(station.position) < (20.0 * station.radius) and ($interaction_cooldown.is_stopped()):
+			#print("INTERACTING WITH STATION!!!")
+			#station_ui.station = station
+			#station_ui.player_current_value = world.player.current_value
+			#station_ui.player_balance = world.player.balance
 			
-			#THEY ARENT SAVED YET!
-			var pending_audio_profiles = []
-			for s in world.star_systems:
-				if s != world.player.current_star_system:
-					for b in s.bodies:
-						if (b.get_current_variation() != null and b.get_guessed_variation() != null) and b.is_planet():
-							var helper = audioProfileHelper.new()
-							var mix = s.planet_type_audio_data.get(b.metadata.get("planet_type")).get(b.get_guessed_variation())
-							helper.mix = mix
-							helper.body = b
-							pending_audio_profiles.append(helper)
-			station_ui.pending_audio_profiles.append_array(pending_audio_profiles)
-			_on_station_popup()
+			#var pending_audio_profiles = []
+			#for s in world.star_systems:
+				#if s != world.player.current_star_system:
+					#for b in s.bodies:
+						#if (b.get_current_variation() != null and b.get_guessed_variation() != null) and b.is_planet():
+							#var helper = audioProfileHelper.new()
+							#var mix = s.planet_type_audio_data.get(b.metadata.get("planet_type")).get(b.get_guessed_variation())
+							#helper.mix = mix
+							#helper.body = b
+							#pending_audio_profiles.append(helper)
+			#station_ui.pending_audio_profiles.append_array(pending_audio_profiles)
+			#_on_station_popup()
 	
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
@@ -180,9 +186,126 @@ func _physics_process(delta):
 	else: system_map.has_focus = true
 	pass
 
-func _on_update_player_target_position(pos: Vector2, slowdown: bool = true):
+func _on_player_orbiting_body(orbiting_body: bodyAPI):
+	print("ORBITING BODY!!!!!!!")
+	pass
+
+func _on_player_following_body(following_body: bodyAPI):
+	if following_body is wormholeAPI:
+		var following_wormhole = following_body #so its not confusing
+		var wormholes = world.player.current_star_system.get_wormholes()
+		var destination = following_wormhole.destination_system
+		
+		if destination:
+			
+			var new_query = responseQuery.new()
+			new_query.add("concept", "openDialog")
+			new_query.add("id", "wormhole")
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+			
+			var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+			match RETURN_STATE:
+				"ENTER_WORMHOLE":
+					enter_wormhole(following_wormhole, wormholes, destination)
+				_:
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_wormhole)
+	
+	if following_body is stationAPI:
+		var following_station = following_body
+		
+		var new_query = responseQuery.new()
+		new_query.add("concept", "openDialog")
+		new_query.add("id", "station")
+		new_query.add("station_classification", game_data.STATION_CLASSIFICATIONS.find_key(following_station.station_classification))
+		print(game_data.STATION_CLASSIFICATIONS.find_key(following_station.station_classification))
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
+		
+		var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+		match RETURN_STATE:
+			"DOCK_WITH_STATION":
+				dock_with_station(following_station)
+			_:
+				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
+	pass
+
+
+func enter_wormhole(following_wormhole, wormholes, destination):
+	#spawning new wormholes in destination system if nonexistent
+	if not destination.destination_systems:
+		for i in range(2):
+			_on_create_new_star_system(false, destination)
+		destination.generateRandomWormholes()
+	
+	#var destination_position: Vector2 = Vector2.ZERO
+	var destination_wormhole = destination.get_wormhole_with_destination_system(world.player.current_star_system)
+	if destination_wormhole:
+		#destination.updateBodyPosition(destination_wormhole.get_identifier(), delta) #REQURIED SO WORMHOLE HAVE A POSITION OTHER THAN 0,0
+		#destination_position = destination_wormhole.position
+		#_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, destination_wormhole)
+		destination_wormhole.is_known = true
+		#system_3d.locked_body_identifier = destination_wormhole.get_identifier() #diesnt seem to work?!
+	
+	#setting whether the new system is a civilized system or not
+	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
+	if world.player.get_jumps_remaining() == 0:
+		destination.generateRandomWeightedStations()
+		world.player.resetJumpsRemaining()
+		for body in destination.bodies:
+			body.is_known = true
+	
+	#world.player.position = destination_position
+	world.player.target_position = world.player.position
+	system_map._on_start_movement_lock_timer()
+	
+	#no idea if anything below this point actually works so be careful \/\/\/\/
+	
+	#removing other possible systems to traverse from previous system
+	for w in wormholes:
+		if w != following_wormhole: #if the wormhole is not the current wormhole being traversed
+			if w.destination_system:
+				if w.destination_system != world.player.previous_star_system:
+					world.removeStarSystem(w.destination_system.get_identifier())
+	
+	#removing all other systems when leaving a civilized system (need to know about all the systems when in a civilized system in case i want to add the ability to look over exploration data while at a station)
+	if world.player.current_star_system.is_civilized():
+		var exclude_systems = destination.destination_systems.duplicate()
+		exclude_systems.append(destination)
+		world.remove_systems_excluding_systems(exclude_systems)
+		station_ui.has_sold_previously = false #allowing to sell exploration data at station at next civilized system
+	
+	world.player.previous_star_system = world.player.current_star_system
+	_on_switch_star_system(destination)
+	pass
+
+func dock_with_station(following_station):
+	station_ui.station = following_station
+	station_ui.player_current_value = world.player.current_value
+	station_ui.player_balance = world.player.balance
+	
+	var pending_audio_profiles = []
+	for s in world.star_systems:
+		if s != world.player.current_star_system:
+			for b in s.bodies:
+				if (b.get_current_variation() != null and b.get_guessed_variation() != null) and b.is_planet():
+					var helper = audioProfileHelper.new()
+					var mix = s.planet_type_audio_data.get(b.metadata.get("planet_type")).get(b.get_guessed_variation())
+					helper.mix = mix
+					helper.body = b
+					pending_audio_profiles.append(helper)
+	station_ui.pending_audio_profiles.append_array(pending_audio_profiles)
+	
+	_on_station_popup()
+	pass
+
+
+func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
+	world.player.current_action_type = type
+	if action_body != null:
+		world.player.pending_action_body = action_body
+	pass
+
+func _on_update_player_target_position(pos: Vector2):
 	world.player.target_position = pos
-	world.player.slowdown = slowdown
 	print("SYSTEM MAP: UPDATING PLAYER TARGET POSITION: ", pos)
 	pass
 
@@ -285,9 +408,6 @@ func _on_undock_from_station(from_station: stationAPI):
 	print("STATION_UI (DEBUG): UNDOCKING FROM STATION")
 	$station_window.hide()
 	$interaction_cooldown.start()
-	if from_station:
-		system_map.action_body = from_station
-		system_map.current_action_type = system_map.ACTION_TYPES.ORBIT
 	pass
 
 func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):

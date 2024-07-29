@@ -1,4 +1,7 @@
 extends Node
+
+signal onCloseDialog(with_return_state)
+
 var dialogue_memory: Dictionary
 enum QUERY_TYPES {BEST, ALL}
 
@@ -115,7 +118,7 @@ func trigger_rule(calling: Node, rule: responseRule):
 					call(trigger_function, values)
 				else:
 					print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
-					call(trigger_function)
+					call(trigger_function, values)
 			else:
 				call(trigger_function)
 	
@@ -146,9 +149,10 @@ func openDialog():
 	get_tree().paused = true
 	pass
 
-func closeDialog():
+func closeDialog(with_return_state = null):
 	dialogue.hide()
 	get_tree().paused = false
+	emit_signal("onCloseDialog", with_return_state)
 	pass
 
 func resetText():

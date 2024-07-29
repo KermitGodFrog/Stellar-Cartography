@@ -1,9 +1,10 @@
 extends Resource
 class_name playerAPI
 
+signal orbitingBody(body: bodyAPI)
+signal followingBody(body: bodyAPI)
+
 var position: Vector2 = Vector2.ZERO
-var target_position: Vector2 = Vector2.ZERO
-var slowdown: bool = true
 var current_star_system: starSystemAPI
 var previous_star_system: starSystemAPI
 
@@ -28,6 +29,13 @@ var medical_officer: characterAPI
 var linguist: characterAPI
 var historian: characterAPI
 
+#stuff ported from old system_map.gd - no idea how it works so dont ask me hahahahhaah good luck
+var rotation_hint: float #used for orbiting mechanics
+var target_position: Vector2 = Vector2.ZERO
+enum ACTION_TYPES {NONE, GO_TO, ORBIT}
+var current_action_type: ACTION_TYPES = ACTION_TYPES.NONE
+var pending_action_body : bodyAPI
+var action_body : bodyAPI
 
 func get_jumps_remaining():
 	return jumps_remaining
@@ -40,23 +48,83 @@ func set_max_jumps(value: int):
 	pass
 
 
-func updatePosition(delta):
-	match slowdown:
-		true:
-			if not position.distance_to(target_position) < speed:
-				position += position.direction_to(target_position) * speed * delta
-			else:
-				position += position.direction_to(target_position) * position.distance_to(target_position) * delta
-		false:
-			if not position.distance_to(target_position) < (speed * delta):
-				position += position.direction_to(target_position) * speed * delta
-			else:
-				position = target_position
+func updatePosition(delta): #dont ask bro
+	rotation_hint += delta
+	if pending_action_body:
+		match current_action_type:
+			ACTION_TYPES.NONE:
+				if not position.distance_to(target_position) < speed:
+					position += position.direction_to(target_position) * speed * delta
+				else:
+					position += position.direction_to(target_position) * position.distance_to(target_position) * delta
+			ACTION_TYPES.GO_TO:
+				var pos = pending_action_body.position
+				if not position.distance_to(pos) < (pending_action_body.radius):
+					position += position.direction_to(pos) * speed * delta
+				else:
+					position = pos
+				target_position = pos #not actually used for moving, just for drawing where the player is moving to
+			ACTION_TYPES.ORBIT:
+				var dir = Vector2.UP.rotated(rotation_hint)
+				var pos = pending_action_body.position
+				pos = pos + (dir * ((3 * pending_action_body.radius) + 1.0))
+				if not position.distance_to(pos) < (pending_action_body.radius):
+					position += position.direction_to(pos) * speed * delta
+				else:
+					position = pos
+				target_position = pos #not actually used for moving, just for drawing where the player is moving to
+	elif action_body:
+		match current_action_type:
+			ACTION_TYPES.NONE:
+				if not position.distance_to(target_position) < speed:
+					position += position.direction_to(target_position) * speed * delta
+				else:
+					position += position.direction_to(target_position) * position.distance_to(target_position) * delta
+			ACTION_TYPES.GO_TO:
+				var pos = action_body.position
+				position = pos
+				target_position = pos #not actually used for moving, just for drawing where the player is moving to
+			ACTION_TYPES.ORBIT:
+				var dir = Vector2.UP.rotated(rotation_hint)
+				var pos = action_body.position
+				pos = pos + (dir * ((3 * action_body.radius) + 1.0))
+				position = pos
+				target_position = pos #not actually used for moving, just for drawing where the player is moving to
+	if (not pending_action_body) and (not action_body):
+		if not position.distance_to(target_position) < speed:
+			position += position.direction_to(target_position) * speed * delta
+		else:
+			position += position.direction_to(target_position) * position.distance_to(target_position) * delta
 	pass
 
 func setTargetPosition(pos: Vector2):
 	target_position = pos
 	pass
+
+func updateActionBodyState():
+	if pending_action_body:
+		match current_action_type:
+			ACTION_TYPES.NONE:
+				pending_action_body = null
+				action_body = null
+			ACTION_TYPES.GO_TO:
+				var pos = pending_action_body.position
+				if position.distance_to(pos) < (pending_action_body.radius + 1.0):
+					emit_signal("followingBody", pending_action_body)
+					action_body = pending_action_body
+					pending_action_body = null
+			ACTION_TYPES.ORBIT:
+				var dir = Vector2.UP.rotated(rotation_hint)
+				var pos = pending_action_body.position
+				pos = pos + (dir * ((3 * pending_action_body.radius) + 1.0))
+				if position.distance_to(pos) < (pending_action_body.radius + 1.0):
+					emit_signal("orbitingBody", pending_action_body)
+					action_body = pending_action_body
+					pending_action_body = null
+	pass
+
+
+
 
 
 func resetJumpsRemaining():

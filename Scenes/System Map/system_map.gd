@@ -1,6 +1,7 @@
 extends Node2D
 #updates a map and object list based on data it is fed by the game component. updates camera position for some reason
 
+signal updatePlayerActionType(type: playerAPI.ACTION_TYPES, action_body)
 signal updatePlayerTargetPosition(pos: Vector2)
 signal updateTargetPosition(pos: Vector2)
 signal updatedLockedBody(body: bodyAPI)
@@ -44,10 +45,7 @@ var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body : bodyAPI
 var locked_body : bodyAPI
 var action_body : bodyAPI
-enum ACTION_TYPES {NONE, GO_TO, ORBIT}
-var current_action_type
 
-var rotation_hint: float #used for orbiting mechanics
 var orbit_line_opacity_hint: float = 0.0
 var body_size_multiplier_hint: float = 0.0
 
@@ -57,7 +55,6 @@ var SONAR_POLYGON: PackedVector2Array
 var SONAR_POLYGON_DISPLAY_TIME: float = 0
 
 func _physics_process(delta):
-	rotation_hint += delta
 	#If body clicked on in system list, follow the body with the camera (follow body).
 	#If body clicked on in system list, actions can itneract with the body (locked body).
 	#If actions pressed, perform on locked body (action body).
@@ -76,17 +73,7 @@ func _physics_process(delta):
 		locked_body = null
 		action_body = null
 		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
-	elif action_body:
-		match current_action_type:
-			ACTION_TYPES.NONE:
-				pass
-			ACTION_TYPES.GO_TO:
-				emit_signal("updatePlayerTargetPosition", action_body.position, false)
-			ACTION_TYPES.ORBIT:
-				var dir = Vector2.UP.rotated(rotation_hint)
-				var pos = action_body.position
-				pos = pos + (dir * ((3 * action_body.radius) + 1.0))
-				emit_signal("updatePlayerTargetPosition", pos, false)
+		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
 	
 	#changing target position
 	if Input.is_action_pressed("left_mouse") and has_focus and (not mouse_over_ui) and movement_lock_timer.is_stopped():
@@ -259,22 +246,23 @@ func _on_system_list_item_clicked(index, _at_position, _mouse_button_index):
 	pass
 
 func _on_go_to_button_pressed():
-	current_action_type = ACTION_TYPES.GO_TO
 	if locked_body:
 		action_body = locked_body
+		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.GO_TO, action_body)
 	pass
 
 func _on_orbit_button_pressed():
 	#not sure who will have jurisdiction
-	current_action_type = ACTION_TYPES.ORBIT
 	if locked_body:
 		action_body = locked_body
+		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
 	pass
 
 func _on_stop_button_pressed():
 	locked_body = null
 	action_body = null
 	emit_signal("updatePlayerTargetPosition", player_position_matrix[0])
+	emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
 	pass
 
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
