@@ -30,6 +30,8 @@ func populateWithPlayerData(player: playerAPI):
 	pass
 
 func populateWithWorldData():
+	add("randi", randi())
+	add("randf", randf())
 	pass
 
 func populateWithDialogueMemoryData(dialogue_memory: Dictionary):

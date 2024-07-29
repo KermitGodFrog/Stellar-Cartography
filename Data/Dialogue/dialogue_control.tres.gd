@@ -31,12 +31,12 @@ func add_options(new_options: Dictionary):
 	pass
 
 func reset():
-	text.set_text("")
+	text.clear()
 	options.clear()
 	pass
 
 func reset_text():
-	text.set_text("")
+	text.clear()
 	pass
 
 func reset_options():

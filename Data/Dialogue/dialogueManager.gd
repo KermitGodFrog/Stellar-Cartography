@@ -36,6 +36,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 	if populate_data:
 		incoming_query.populateWithPlayerData(player)
 		incoming_query.populateWithDialogueMemoryData(dialogue_memory)
+		incoming_query.populateWithWorldData()
 	
 	print("QUERY HANDLER: ", calling, " QUERYING ", incoming_query.facts)
 	
