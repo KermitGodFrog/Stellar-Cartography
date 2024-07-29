@@ -38,7 +38,7 @@ func _physics_process(_delta):
 			if associated_body:
 				child.position = Vector3(associated_body.position.x * system_scalar, 0, associated_body.position.y * system_scalar)
 				
-				var min_dist = (associated_body.radius * system_scalar) * 1.1
+				var min_dist = ((associated_body.radius * system_scalar) * 1.1) + 1.0
 				if camera_offset.position.distance_to(child.position) < min_dist:
 					camera_offset.position = child.position + (child.position.direction_to(camera_offset.position) * min_dist)
 	

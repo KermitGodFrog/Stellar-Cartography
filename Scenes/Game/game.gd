@@ -228,7 +228,6 @@ func _on_player_following_body(following_body: bodyAPI):
 				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
 	pass
 
-
 func enter_wormhole(following_wormhole, wormholes, destination):
 	#spawning new wormholes in destination system if nonexistent
 	if not destination.destination_systems:
@@ -298,6 +297,9 @@ func dock_with_station(following_station):
 	pass
 
 
+
+
+
 func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
 	world.player.current_action_type = type
 	if action_body != null:
@@ -360,9 +362,7 @@ func _on_found_body(id: int):
 		if body:
 			body.is_known = true
 			if body.metadata.has("value"): world.player.current_value += body.metadata.get("value")
-			
 			system_map._on_found_body(id)
-			
 			var sub_bodies = system.get_bodies_with_hook_identifier(id)
 			if sub_bodies:
 				for sub_body in sub_bodies:
