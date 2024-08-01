@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="responseRule" load_steps=2 format=3 uid="uid://bwiua03a44jcq"]
+
+[ext_resource type="Script" path="res://Data/Dialogue/rule.gd" id="1_27lr3"]
+
+[resource]
+script = ExtResource("1_27lr3")
+criteria = {
+"concept": "addStationFlair",
+"is_station_abandoned": true
+}
+apply_facts = {}
+trigger_functions = {}
+trigger_rules = Array[ExtResource("1_27lr3")]([])
+query_all_concept = Array[String]([])
+query_best_concept = Array[String]([])
+text = " ABANDONED STATION FLAIR"
+options = {}

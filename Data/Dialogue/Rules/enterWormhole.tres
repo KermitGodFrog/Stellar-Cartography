@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_i7x7i")
 criteria = {
-"concept": "dialogOptionSelected",
+"concept": "optionSelected",
 "option": "enterWormhole"
 }
 apply_facts = {}

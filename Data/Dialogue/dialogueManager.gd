@@ -91,6 +91,16 @@ func get_rule_matches(rule, incoming_query):
 						if float(rule.criteria.get(fact)) > float(number):
 							matches += 1
 						else: continue
+					"<=":
+						var number = rule.criteria.get(fact).trim_prefix("<=")
+						if float(rule.criteria.get(fact)) <= float(number):
+							matches += 1
+						else: continue
+					">=":
+						var number = rule.criteria.get(fact).trim_prefix(">=")
+						if float(rule.criteria.get(fact)) >= float(number):
+							matches += 1
+						else: continue
 					_:
 						if rule.criteria.get(fact) == incoming_query.facts.get(fact):
 							matches += 1

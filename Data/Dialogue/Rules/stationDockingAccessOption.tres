@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="responseRule" load_steps=2 format=3 uid="uid://bq7ydlq24gx2e"]
+
+[ext_resource type="Script" path="res://Data/Dialogue/rule.gd" id="1_qrp3b"]
+
+[resource]
+script = ExtResource("1_qrp3b")
+criteria = {
+"concept": "populateStationOptions",
+"is_station_inhabited": true
+}
+apply_facts = {}
+trigger_functions = {}
+trigger_rules = Array[ExtResource("1_qrp3b")]([])
+query_all_concept = Array[String]([])
+query_best_concept = Array[String]([])
+text = " "
+options = {
+"Request Docking Access": "stationDockingAccess"
+}

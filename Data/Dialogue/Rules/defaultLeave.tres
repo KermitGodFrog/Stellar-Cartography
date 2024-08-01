@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_fs4c5")
 criteria = {
-"concept": "dialogOptionSelected",
+"concept": "optionSelected",
 "option": "defaultLeave"
 }
 apply_facts = {}

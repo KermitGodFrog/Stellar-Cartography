@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="responseRule" load_steps=2 format=3 uid="uid://d2na8uoovnrls"]
+
+[ext_resource type="Script" path="res://Data/Dialogue/rule.gd" id="1_i464h"]
+
+[resource]
+script = ExtResource("1_i464h")
+criteria = {
+"concept": "addStationFlair",
+"station_classification": "DEBRIS"
+}
+apply_facts = {}
+trigger_functions = {}
+trigger_rules = Array[ExtResource("1_i464h")]([])
+query_all_concept = Array[String]([])
+query_best_concept = Array[String]([])
+text = "Sensors soon detect an expanding debris field."
+options = {}

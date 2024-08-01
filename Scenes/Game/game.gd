@@ -80,6 +80,18 @@ func _ready():
 	#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 	
 	_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
+	
+	
+	
+	#await get_tree().create_timer(1.0, true).timeout
+	
+	#var new_query = responseQuery.new()
+	#new_query.add("concept", "openDialog")
+	#new_query.add("id", "station")
+	#new_query.add("station_classification", str(game_data.STATION_CLASSIFICATIONS.find_key(game_data.STATION_CLASSIFICATIONS.ABANDONED)))
+	#new_query.add("is_station_abandoned", true)
+	#new_query.add("is_station_inhabited", false)
+	#get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
 func _physics_process(delta):
@@ -132,11 +144,15 @@ func _on_player_following_body(following_body: bodyAPI):
 	if following_body is stationAPI:
 		var following_station = following_body
 		
+		var is_station_abandoned: bool = following_station.station_classification == (game_data.STATION_CLASSIFICATIONS.ABANDONED or game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS or game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL or game_data.STATION_CLASSIFICATIONS.COVERUP or game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED)
+		var is_station_inhabited: bool = following_station.station_classification == (game_data.STATION_CLASSIFICATIONS.STANDARD or game_data.STATION_CLASSIFICATIONS.PIRATE)
+		
 		var new_query = responseQuery.new()
 		new_query.add("concept", "openDialog")
 		new_query.add("id", "station")
-		new_query.add("station_classification", game_data.STATION_CLASSIFICATIONS.find_key(following_station.station_classification))
-		print(game_data.STATION_CLASSIFICATIONS.find_key(following_station.station_classification))
+		new_query.add("station_classification", str(game_data.STATION_CLASSIFICATIONS.find_key(following_station.station_classification)))
+		new_query.add("is_station_abandoned", is_station_abandoned)
+		new_query.add("is_station_inhabited", is_station_inhabited)
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
 		var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
@@ -191,6 +207,7 @@ func enter_wormhole(following_wormhole, wormholes, destination):
 		world.remove_systems_excluding_systems(exclude_systems)
 		station_ui.has_sold_previously = false #allowing to sell exploration data at station at next civilized system
 	
+	if destination_wormhole: world.player.position = destination_wormhole.position
 	world.player.previous_star_system = world.player.current_star_system
 	_on_switch_star_system(destination)
 	pass

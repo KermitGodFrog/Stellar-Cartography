@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="responseRule" load_steps=2 format=3 uid="uid://dnjp604rsu7ho"]
+
+[ext_resource type="Script" path="res://Data/Dialogue/rule.gd" id="1_5dt2n"]
+
+[resource]
+script = ExtResource("1_5dt2n")
+criteria = {
+"concept": "populateStationOptions",
+"is_station_abandoned": true
+}
+apply_facts = {}
+trigger_functions = {}
+trigger_rules = Array[ExtResource("1_5dt2n")]([])
+query_all_concept = Array[String]([])
+query_best_concept = Array[String]([])
+text = " "
+options = {
+"Scout for Salvage": "stationSalvagePreliminary"
+}
