@@ -23,5 +23,11 @@ class_name responseRule
 #just like the GDC - criteria, apply_facts and response (but response is two things like in starsector)
 
 @export_category("Dialogue")
-@export_multiline var text = " "
+@export_multiline var text = ""
 @export var options: Dictionary = {}
+
+
+func is_configured() -> bool:
+	if (not criteria.is_empty()) or (not apply_facts.is_empty()) or (not trigger_functions.is_empty()) or (not trigger_rules.is_empty()) or (not query_all_concept.is_empty()) or (not query_best_concept.is_empty()) or (not text.is_empty()) or (not options.is_empty()):
+		return true
+	else: return false

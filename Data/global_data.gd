@@ -102,3 +102,25 @@ static func string_to_vector2(string := "") -> Vector2:
 
 static func get_resource_name(resource: Resource):
 	return resource.resource_path.get_file().trim_suffix('.tres')
+
+func split_string_multiple_delimeters(s: String, delimeters, allow_empty: bool = true) -> Array:
+	var parts := []
+	var start := 0
+	var i := 0
+	
+	while i < s.length():
+		if s[i] in delimeters:
+			if allow_empty or start < i:
+				parts.push_back(s.substr(start, i - start))
+			start = i + 1
+		i += 1
+	
+	if allow_empty or start < i:
+		parts.push_back(s.substr(start, i - start))
+	return parts
+
+func is_even(x: int):
+	return x % 2 == 0
+
+func is_odd(x: int):
+	return x % 2 != 0

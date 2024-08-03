@@ -144,8 +144,8 @@ func _on_player_following_body(following_body: bodyAPI):
 	if following_body is stationAPI:
 		var following_station = following_body
 		
-		var is_station_abandoned: bool = following_station.station_classification == (game_data.STATION_CLASSIFICATIONS.ABANDONED or game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS or game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL or game_data.STATION_CLASSIFICATIONS.COVERUP or game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED)
-		var is_station_inhabited: bool = following_station.station_classification == (game_data.STATION_CLASSIFICATIONS.STANDARD or game_data.STATION_CLASSIFICATIONS.PIRATE)
+		var is_station_abandoned: bool = following_station.station_classification in [game_data.STATION_CLASSIFICATIONS.ABANDONED, game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS, game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL, game_data.STATION_CLASSIFICATIONS.COVERUP, game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED]
+		var is_station_inhabited: bool = following_station.station_classification in [game_data.STATION_CLASSIFICATIONS.STANDARD, game_data.STATION_CLASSIFICATIONS.PIRATE]
 		
 		var new_query = responseQuery.new()
 		new_query.add("concept", "openDialog")

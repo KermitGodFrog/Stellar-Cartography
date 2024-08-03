@@ -10,13 +10,110 @@ var player: playerAPI
 
 var rules: Array[responseRule] = []
 
+enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, OPTIONS, TEXT}
+
 @onready var dialogue = $dialogue/dialogue_control
 
 func _ready():
-	var rule_path = global_data.get_all_files("res://Data/Dialogue/Rules", "tres")
-	for r in rule_path:
-		rules.append(load(r))
+	var csv_rules = FileAccess.open("res://Data/Dialogue/rules.txt", FileAccess.READ)
+	var current_pointer: POINTERS = POINTERS.RULE
+	var current_line: int = 0
+	var new_rule: responseRule = null
+	
+	while not csv_rules.eof_reached():
+		var line = csv_rules.get_csv_line()
+		current_line += 1
+		if current_line == 1: continue
+		if line.is_empty(): continue
+		
+		for cell in line:
+			match POINTERS.find_key(current_pointer):
+				"RULE":
+					if new_rule != null:
+						if new_rule.is_configured():
+							rules.append(new_rule)
+							print("ADDING NEW RULE: ", new_rule.get_name())
+					new_rule = responseRule.new()
+					new_rule.set_name(cell)
+				"CRITERIA":
+					var dict = convert_to_dictionary(cell)
+					if not dict.is_empty():
+						new_rule.criteria = dict
+				"APPLY_FACTS":
+					var dict = convert_to_dictionary(cell)
+					if not dict.is_empty():
+						new_rule.apply_facts = dict
+				"TRIGGER_FUNCTIONS":
+					var dict = convert_to_dictionary(cell)
+					if not dict.is_empty():
+						new_rule.trigger_functions = dict
+				"TRIGGER_RULES":
+					#DEPRECIATED, NOT ADDING
+					pass
+				"QUERY_ALL_CONCEPT":
+					var array = convert_to_array(cell)
+					if not array.is_empty():
+						new_rule.query_all_concept = array
+				"QUERY_BEST_CONCEPT":
+					var array = convert_to_array(cell)
+					if not array.is_empty():
+						new_rule.query_best_concept = array
+				"OPTIONS":
+					var dict = convert_to_dictionary(cell)
+					if not dict.is_empty():
+						new_rule.options = dict
+				"TEXT":
+					if not cell.is_empty():
+						new_rule.text = cell
+			
+			if POINTERS.values()[current_pointer] == POINTERS.values().back(): current_pointer = POINTERS.values().front()
+			else: current_pointer = POINTERS.values()[current_pointer + 1]
+	
+	csv_rules.close()
 	pass
+
+func convert_to_dictionary(cell : String) -> Dictionary:
+	var parts = global_data.split_string_multiple_delimeters(cell, [",", ":"])
+	var corrected_parts: Array = []
+	for part: String in parts: corrected_parts.append(part.dedent())
+	
+	if global_data.is_even(corrected_parts.size()):
+		var new_dictionary: Dictionary = {}
+		var next_key: int = 0
+		
+		for i in corrected_parts.size():
+			if i == next_key:
+				var value: String = corrected_parts[i + 1]
+				var type_corrected_value = value
+				
+				if value.is_valid_int():
+					type_corrected_value = value.to_int()
+				if value.is_valid_float():
+					type_corrected_value = value.to_float()
+				if value == "null":
+					type_corrected_value = null
+				if value == "true":
+					type_corrected_value = true
+				if value == "false":
+					type_corrected_value = false
+				
+				#no support for >int or >float 
+				
+				new_dictionary[corrected_parts[i]] = type_corrected_value
+				if corrected_parts.size() < (i + 2): break
+				next_key += 2
+		return new_dictionary
+	else: return {}
+
+func convert_to_array(cell : String) -> Array[String]:
+	var parts = cell.split(",", false)
+	var corrected_parts: Array[String] = []
+	for part: String in parts: corrected_parts.append(part.dedent())
+	
+	if not corrected_parts.is_empty():
+		return corrected_parts
+	else: return []
+
 
 func _physics_process(delta):
 	for fact in dialogue_memory:
@@ -49,7 +146,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 				ranked_rules[rule] = matches
 			
 			for rule in ranked_rules: #DEBUG!!!!!!!!!!!!!!!!!!!!!!!
-				print(str(rule.resource_path, " : ", ranked_rules.get(rule)))
+				print(str(rule.get_name(), " : ", ranked_rules.get(rule)))
 			
 			var sorted_values = ranked_rules.duplicate().values()
 			sorted_values.sort() #counts upwards, e.g [0,0,1,1,1,2,2,5]
@@ -113,7 +210,7 @@ func get_rule_matches(rule, incoming_query):
 	return matches
 
 func trigger_rule(calling: Node, rule: responseRule):
-	print("QUERY HANDLER: ", calling, " TRIGGERING RULE ", global_data.get_resource_name(rule))
+	print("QUERY HANDLER: ", calling, " TRIGGERING RULE ", rule.get_name())
 	#apply_facts: \\\\\\\\\\\\\
 	for fact in rule.apply_facts:
 		dialogue_memory[fact] = rule.apply_facts.get(fact)
