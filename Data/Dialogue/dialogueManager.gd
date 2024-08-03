@@ -255,7 +255,7 @@ func trigger_rule(calling: Node, rule: responseRule):
 
 
 func openDialog():
-	reset()
+	clearAll()
 	dialogue.show()
 	get_tree().paused = true
 	pass
@@ -267,14 +267,14 @@ func closeDialog(with_return_state = null):
 	emit_signal("onCloseDialog", with_return_state)
 	pass
 
-func resetText():
-	dialogue.reset_text()
+func clearText():
+	dialogue.clear_text()
 	pass
 
-func resetOptions():
-	dialogue.reset_options()
+func clearOptions():
+	dialogue.clear_options()
 	pass
 
-func reset():
-	dialogue.reset()
+func clearAll():
+	dialogue.clear_all()
 	pass

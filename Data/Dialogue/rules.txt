@@ -7,9 +7,9 @@ enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENT
 ,,,,,,,,
 stationOpenDialog,"concept: openDialog, id: station",,openDialog: null,,populateStationOptions,addStationFlair,Leave:defaultLeave,Your fleet approaches the location of a space station defined in native star charts.
 stationLeave,"concept: optionSelected, option: stationLeave",,closeDialog: null,,,,,
-stationFlairStandard,"concept: addStationFlair, station_classification: STANDARD",,,,,,,
-stationFlairPirate,"concept: addStationFlair, station_classification: PIRATE",,,,,,,
-stationFlairAbandoned,"concept: addStationFlair, is_station_abandoned: true",,,,,,,
+stationFlairStandard,"concept: addStationFlair, station_classification: STANDARD",,,,,,,(STANDARD STATION FLAIR)
+stationFlairPirate,"concept: addStationFlair, station_classification: PIRATE",,,,,,,(PIRATE STATION FLAIR)
+stationFlairAbandoned,"concept: addStationFlair, is_station_abandoned: true",,,,,,,(ABANDONED STATION FLAIR)
 stationFlairDebris,"concept: addStationFlair, station_classification: DEBRIS",,,,,,,Sensors soon detect an expanding debris field.
 ,,,,,,,,
 stationDockingAccessOption,"concept: populateStationOptions, is_station_inhabited: true",,,,,,Request Docking Access: stationDockingAccess,

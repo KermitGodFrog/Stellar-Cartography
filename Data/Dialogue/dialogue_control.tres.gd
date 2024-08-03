@@ -30,16 +30,16 @@ func add_options(new_options: Dictionary):
 		options.set_item_metadata(new_item_idx, new_option_associated_rule)
 	pass
 
-func reset():
+func clear_all():
 	text.clear()
 	options.clear()
 	pass
 
-func reset_text():
+func clear_text():
 	text.clear()
 	pass
 
-func reset_options():
+func clear_options():
 	options.clear()
 	pass
 

@@ -83,15 +83,16 @@ func _ready():
 	
 	
 	
-	#await get_tree().create_timer(1.0, true).timeout
+	await get_tree().create_timer(1.0, true).timeout
 	
-	#var new_query = responseQuery.new()
-	#new_query.add("concept", "openDialog")
-	#new_query.add("id", "station")
-	#new_query.add("station_classification", str(game_data.STATION_CLASSIFICATIONS.find_key(game_data.STATION_CLASSIFICATIONS.ABANDONED)))
-	#new_query.add("is_station_abandoned", true)
-	#new_query.add("is_station_inhabited", false)
-	#get_tree().call_group("dialogueManager", "speak", self, new_query)
+	var new_query = responseQuery.new()
+	new_query.add("concept", "openDialog")
+	new_query.add("id", "station")
+	new_query.add_tree_access("station_classification", str("ABANDONED"))
+	new_query.add_tree_access("is_station_abandoned", true)
+	new_query.add_tree_access("is_station_inhabited", false)
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
 	pass
 
 func _physics_process(delta):
