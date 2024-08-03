@@ -2,14 +2,13 @@ extends Node
 
 signal onCloseDialog(with_return_state)
 
-var dialogue_memory: Dictionary
+var dialogue_memory: Dictionary #memory that is added by any query, and is always accessible indefinitely unless a timeout is specified
+var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
 enum QUERY_TYPES {BEST, ALL}
 
 #for populating query data
 var player: playerAPI
-
 var rules: Array[responseRule] = []
-
 enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, OPTIONS, TEXT}
 
 @onready var dialogue = $dialogue/dialogue_control
@@ -130,9 +129,13 @@ func _physics_process(delta):
 
 
 func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = true, type: QUERY_TYPES = QUERY_TYPES.BEST):
+	if not incoming_query.tree_access_facts.is_empty():
+		tree_access_memory.merge(incoming_query.tree_access_facts, true)
+	
 	if populate_data:
 		incoming_query.populateWithPlayerData(player)
 		incoming_query.populateWithDialogueMemoryData(dialogue_memory)
+		incoming_query.populateWithTreeAccessMemoryData(tree_access_memory)
 		incoming_query.populateWithWorldData()
 	
 	print("QUERY HANDLER: ", calling, " QUERYING ", incoming_query.facts)
@@ -258,6 +261,7 @@ func openDialog():
 	pass
 
 func closeDialog(with_return_state = null):
+	tree_access_memory = {}
 	dialogue.hide()
 	get_tree().paused = false
 	emit_signal("onCloseDialog", with_return_state)

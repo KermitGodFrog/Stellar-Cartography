@@ -2,9 +2,15 @@ extends Resource
 class_name responseQuery
 
 var facts: Dictionary #aka context
+var tree_access_facts: Dictionary
 
 func add(key, value):
 	facts[key] = value
+	pass
+
+func add_tree_access(key, value):
+	add(key, value)
+	tree_access_facts[key] = value
 	pass
 
 func populateWithLocalData():
@@ -39,3 +45,7 @@ func populateWithDialogueMemoryData(dialogue_memory: Dictionary):
 		add(fact, dialogue_memory.get(fact).front())
 	pass
 
+func populateWithTreeAccessMemoryData(tree_access_memory: Dictionary):
+	for fact in tree_access_memory:
+		add(fact, tree_access_memory.get(fact))
+	pass
