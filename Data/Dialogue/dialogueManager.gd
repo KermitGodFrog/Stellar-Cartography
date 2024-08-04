@@ -149,7 +149,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 				ranked_rules[rule] = matches
 			
 			for rule in ranked_rules: #DEBUG!!!!!!!!!!!!!!!!!!!!!!!
-				print(str(rule.get_name(), " : ", ranked_rules.get(rule)))
+				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", ranked_rules.get(rule)))
 			
 			var sorted_values = ranked_rules.duplicate().values()
 			sorted_values.sort() #counts upwards, e.g [0,0,1,1,1,2,2,5]
@@ -170,6 +170,9 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 				if matches == rule.criteria.size():
 					matched_rules.append(rule)
 			
+			for rule in matched_rules: #DEBUG!!!!!!!!!!!!!!!!!!!!!!!
+				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", "ALL"))
+			
 			for matched_rule in matched_rules:
 				trigger_rule(calling, matched_rule)
 			
@@ -182,35 +185,57 @@ func get_rule_matches(rule, incoming_query):
 			if typeof(rule.criteria.get(fact)) == TYPE_STRING:
 				match rule.criteria.get(fact).left(1):
 					"<":
-						var number = rule.criteria.get(fact).trim_prefix("<")
-						if float(rule.criteria.get(fact)) < float(number): #will this work>>???
+						var string_number = rule.criteria.get(fact).trim_prefix("<")
+						var number = convert_string_number(string_number)
+						
+						if rule.criteria.get(fact) < number: #will this work>>???
+							print(str(rule.criteria.get(fact), " ", number))
 							matches += 1
 						else: continue
 					">":
-						var number = rule.criteria.get(fact).trim_prefix(">")
-						if float(rule.criteria.get(fact)) > float(number):
+						var string_number = rule.criteria.get(fact).trim_prefix(">")
+						var number = convert_string_number(string_number)
+						
+						if rule.criteria.get(fact) > number:
+							print(str(rule.criteria.get(fact), " ", number))
 							matches += 1
 						else: continue
 					"<=":
-						var number = rule.criteria.get(fact).trim_prefix("<=")
-						if float(rule.criteria.get(fact)) <= float(number):
+						var string_number = rule.criteria.get(fact).trim_prefix("<=")
+						var number = convert_string_number(string_number)
+						
+						if rule.criteria.get(fact) <= number:
+							print(str(rule.criteria.get(fact), " ", number))
 							matches += 1
 						else: continue
 					">=":
-						var number = rule.criteria.get(fact).trim_prefix(">=")
-						if float(rule.criteria.get(fact)) >= float(number):
+						var string_number = rule.criteria.get(fact).trim_prefix(">=")
+						var number = convert_string_number(string_number)
+						
+						if rule.criteria.get(fact) >= number:
+							print(str(rule.criteria.get(fact), " ", number))
 							matches += 1
 						else: continue
 					_:
 						if rule.criteria.get(fact) == incoming_query.facts.get(fact):
+							print(str(rule.criteria.get(fact), " ", incoming_query.facts.get(fact)))
 							matches += 1
 						else: continue
 			else:
 				if rule.criteria.get(fact) == incoming_query.facts.get(fact):
+					print(str(rule.criteria.get(fact), " ", incoming_query.facts.get(fact)))
 					matches += 1
 				else: continue
 		else: continue
 	return matches
+
+func convert_string_number(string_number: String):
+	if string_number.is_valid_int():
+		return string_number.to_int()
+	elif string_number.is_valid_float():
+		return string_number.to_float()
+	return string_number
+
 
 func trigger_rule(calling: Node, rule: responseRule):
 	print("QUERY HANDLER: ", calling, " TRIGGERING RULE ", rule.get_name())
