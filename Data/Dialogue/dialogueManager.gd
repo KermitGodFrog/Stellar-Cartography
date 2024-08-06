@@ -1,6 +1,7 @@
 extends Node
 
 signal onCloseDialog(with_return_state)
+signal addPlayerValue(amount: int)
 
 var dialogue_memory: Dictionary #memory that is added by any query, and is always accessible indefinitely unless a timeout is specified
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
@@ -171,7 +172,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 					matched_rules.append(rule)
 			
 			for rule in matched_rules: #DEBUG!!!!!!!!!!!!!!!!!!!!!!!
-				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", "ALL"))
+				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", rule.criteria.size(), " (ALL)"))
 			
 			for matched_rule in matched_rules:
 				trigger_rule(calling, matched_rule)
@@ -181,52 +182,12 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 func get_rule_matches(rule, incoming_query):
 	var matches: int = 0
 	for fact in incoming_query.facts:
+		#print(str(rule.criteria.get(fact), " ", incoming_query.facts.get(fact)))
 		if rule.criteria.has(fact):
-			if typeof(rule.criteria.get(fact)) == TYPE_STRING:
-				match rule.criteria.get(fact).left(1):
-					"<":
-						var string_number = rule.criteria.get(fact).trim_prefix("<")
-						var number = convert_string_number(string_number)
-						
-						if rule.criteria.get(fact) < number: #will this work>>???
-							print(str(rule.criteria.get(fact), " ", number))
-							matches += 1
-						else: continue
-					">":
-						var string_number = rule.criteria.get(fact).trim_prefix(">")
-						var number = convert_string_number(string_number)
-						
-						if rule.criteria.get(fact) > number:
-							print(str(rule.criteria.get(fact), " ", number))
-							matches += 1
-						else: continue
-					"<=":
-						var string_number = rule.criteria.get(fact).trim_prefix("<=")
-						var number = convert_string_number(string_number)
-						
-						if rule.criteria.get(fact) <= number:
-							print(str(rule.criteria.get(fact), " ", number))
-							matches += 1
-						else: continue
-					">=":
-						var string_number = rule.criteria.get(fact).trim_prefix(">=")
-						var number = convert_string_number(string_number)
-						
-						if rule.criteria.get(fact) >= number:
-							print(str(rule.criteria.get(fact), " ", number))
-							matches += 1
-						else: continue
-					_:
-						if rule.criteria.get(fact) == incoming_query.facts.get(fact):
-							print(str(rule.criteria.get(fact), " ", incoming_query.facts.get(fact)))
-							matches += 1
-						else: continue
-			else:
-				if rule.criteria.get(fact) == incoming_query.facts.get(fact):
-					print(str(rule.criteria.get(fact), " ", incoming_query.facts.get(fact)))
-					matches += 1
-				else: continue
-		else: continue
+			if rule.criteria.get(fact) == incoming_query.facts.get(fact):
+				matches += 1
+			else: continue
+		else: continue #still doesnt work? what?
 	return matches
 
 func convert_string_number(string_number: String):
@@ -302,4 +263,9 @@ func clearOptions():
 
 func clearAll():
 	dialogue.clear_all()
+	pass
+
+func addValueWithFlair(amount: int):
+	emit_signal("addPlayerValue", amount)
+	dialogue.add_text(str("[color=green] (Gained ", amount, "c in data value) [/color]"))
 	pass

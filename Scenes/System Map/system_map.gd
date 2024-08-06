@@ -41,6 +41,8 @@ var has_focus: bool = false
 @onready var picker_button = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
 @onready var console = $camera/canvas/control/console
 
+@onready var question_mark_icon = preload("res://Graphics/question_mark.png")
+
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body : bodyAPI
 var locked_body : bodyAPI
@@ -141,6 +143,8 @@ func _physics_process(delta):
 			if body.is_wormhole(): if body.is_disabled:
 				system_list.set_item_custom_bg_color(new_item_idx, Color.DARK_RED)
 			
+			if body.is_planet(): if (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
+				system_list.set_item_icon(new_item_idx, question_mark_icon)
 	
 	#updating sonar ping visualization time values & sonar polygon display time
 	SONAR_POLYGON_DISPLAY_TIME = maxi(0, SONAR_POLYGON_DISPLAY_TIME - delta)
@@ -161,7 +165,7 @@ func _physics_process(delta):
 		body_attributes_list.add_item(str("Orbital Speed : ", follow_body.orbit_speed), null, false)
 		body_attributes_list.add_item(str("Orbital Distance : ", follow_body.distance, " (Solar Radii)"), null, false)
 		#metadata
-		var excluding = ["iterations", "color", "value"]
+		var excluding = ["iterations", "color", "value", "has_planetary_anomaly", "is_planetary_anomaly_available"]
 		if follow_body.is_known:
 			for entry in follow_body.metadata:
 				if excluding.find(entry) == -1:

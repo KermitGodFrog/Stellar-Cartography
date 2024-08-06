@@ -20,7 +20,7 @@ func initialize(new_text, new_options):
 	pass
 
 func add_text(new_text: String):
-	text.append_text(str("\n", new_text))
+	text.append_text(str("\n \n", new_text))
 	pass
 
 func add_options(new_options: Dictionary):

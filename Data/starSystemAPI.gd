@@ -266,8 +266,15 @@ func generateRandomWeightedBodies(hook_identifier: int):
 				var avg_value = planet_type_data.get(planet_type).get("avg_value")
 				var value = round(global_data.get_randf(avg_value * 0.5, avg_value * 1.5))
 				
+				#SETTING WHETHER THE BODY HAS A PLANETARY ANOMALY
+				var has_planetary_anomaly: bool = false
+				var is_planetary_anomaly_available: bool = false
+				if randf() >= 0.99: #will likely have to be higher
+					has_planetary_anomaly = true
+					is_planetary_anomaly_available = true
+				
 				#SPAWNING PLANET + PLANET MOONS
-				var new_body = addBody(identifier_count, str(get_random_planet_name()), hook_identifier, new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"planet_classification": planet_classification, "planet_type": planet_type, "mass": (mass / 333000), "color": color, "value": value, "iterations": (hook.metadata.get("iterations") / 2)})
+				var new_body = addBody(identifier_count, str(get_random_planet_name()), hook_identifier, new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"planet_classification": planet_classification, "planet_type": planet_type, "mass": (mass / 333000), "color": color, "value": value, "iterations": (hook.metadata.get("iterations") / 2), "has_planetary_anomaly": has_planetary_anomaly, "is_planetary_anomaly_available": is_planetary_anomaly_available})
 				get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
 				
 				if generate_sub_bodies:

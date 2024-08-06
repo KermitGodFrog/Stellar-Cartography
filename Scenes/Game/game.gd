@@ -40,6 +40,7 @@ func _ready():
 	system_map.connect("barycenterPopup", _on_barycenter_popup)
 	system_map.connect("audioVisualizerPopup", _on_audio_visualizer_popup)
 	
+	dialogue_manager.connect("addPlayerValue", _on_add_player_value)
 	#var error = game_data.loadWorld()
 	#if error is worldAPI:
 		#print("SAVE FILE LOADED")
@@ -76,23 +77,20 @@ func _ready():
 	new.generateRandomWormholes()
 	_on_switch_star_system(new)
 	
-	#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-	#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+	_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+	_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 	
 	_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 	
+	#await get_tree().create_timer(1.0, true).timeout
 	
-	
-	await get_tree().create_timer(1.0, true).timeout
-	
-	var new_query = responseQuery.new()
-	new_query.add("concept", "openDialog")
-	new_query.add("id", "station")
-	new_query.add_tree_access("station_classification", str("ABANDONED"))
-	new_query.add_tree_access("is_station_abandoned", true)
-	new_query.add_tree_access("is_station_inhabited", false)
-	get_tree().call_group("dialogueManager", "speak", self, new_query)
-	
+	#var new_query = responseQuery.new()
+	#new_query.add("concept", "openDialog")
+	#new_query.add("id", "station")
+	#new_query.add_tree_access("station_classification", str("ABANDONED"))
+	#new_query.add_tree_access("is_station_abandoned", true)
+	#new_query.add_tree_access("is_station_inhabited", false)
+	#get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
 func _physics_process(delta):
@@ -162,6 +160,27 @@ func _on_player_following_body(following_body: bodyAPI):
 				dock_with_station(following_station)
 			_:
 				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
+	
+	if following_body.is_planet():
+		var following_planet = following_body
+		if following_planet.metadata.get("has_planetary_anomaly", false) == true:
+			if following_planet.metadata.get("is_planetary_anomaly_available", false) == true:
+				
+				var new_query = responseQuery.new()
+				new_query.add("concept", "randomPAOpenDialog")
+				new_query.add("planet_classification", following_planet.metadata.get("planet_classification"))
+				get_tree().call_group("dialogueManager", "speak", self, new_query)
+				
+				var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+				match RETURN_STATE:
+					"HARD_LEAVE":
+						following_planet.metadata["is_planetary_anomaly_available"] = false
+						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
+					"SOFT_LEAVE":
+						following_planet.metadata["is_planetary_anomaly_available"] = true
+						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
+					_:
+						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
 	pass
 
 func enter_wormhole(following_wormhole, wormholes, destination):
@@ -369,6 +388,12 @@ func _on_remove_saved_audio_profile(helper: audioProfileHelper):
 func _on_add_saved_audio_profile(helper: audioProfileHelper):
 	world.player.addAudioProfile(helper)
 	pass
+
+func _on_add_player_value(amount: int) -> void:
+	world.player.current_value += amount
+	pass
+
+
 
 func _ON_DEBUG_REVEAL_ALL_WORMHOLES():
 	for body in world.player.current_star_system.bodies:

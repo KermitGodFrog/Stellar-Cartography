@@ -38,6 +38,9 @@ func populateWithPlayerData(player: playerAPI):
 func populateWithWorldData():
 	add("randi", randi())
 	add("randf", randf())
+	add("RAND_50%", randf() > 0.5)
+	add("RAND_10%", randf() > 0.9)
+	add("RAND_90%", randf() > 0.1)
 	pass
 
 func populateWithDialogueMemoryData(dialogue_memory: Dictionary):
