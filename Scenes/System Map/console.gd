@@ -4,7 +4,7 @@ var pending_items: Array[Array] = []
 const MAX_ITEM_COUNT: int = 7
 
 func async_add_item(text: String, bg_color: Color = Color.WHITE, time: int = 500):
-	pending_items.push_back([text, bg_color, time])
+	pending_items.append([text, bg_color, time])
 	pass
 
 func _physics_process(delta):

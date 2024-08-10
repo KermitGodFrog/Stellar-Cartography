@@ -26,6 +26,11 @@ var mouse_over_go_to_button: bool = false
 var mouse_over_orbit_button: bool = false
 var mouse_over_stop_button: bool = false
 var mouse_over_tabs: bool = false
+var mouse_over_scopes_button: bool = false
+var mouse_over_sonar_button: bool = false
+var mouse_over_barycenter_button: bool = false
+var mouse_over_audio_visualizer_button: bool = false
+
 var mouse_over_ui: bool = false
 
 var has_focus: bool = false
@@ -40,6 +45,11 @@ var has_focus: bool = false
 @onready var picker_label = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_label
 @onready var picker_button = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
 @onready var console = $camera/canvas/control/console
+
+@onready var scopes_button = $camera/canvas/control/apps_panel/apps_margin/apps_scroll/scopes_button
+@onready var sonar_button = $camera/canvas/control/apps_panel/apps_margin/apps_scroll/sonar_button
+@onready var barycenter_button = $camera/canvas/control/apps_panel/apps_margin/apps_scroll/barycenter_button
+@onready var audio_visualizer_button = $camera/canvas/control/apps_panel/apps_margin/apps_scroll/audio_visualizer_button
 
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
 
@@ -67,7 +77,7 @@ func _physics_process(delta):
 	#camera_target_position is position for system3d to look at
 	
 	#checking whether the mouse is over UI
-	if mouse_over_system_list or mouse_over_actions_panel or mouse_over_go_to_button or mouse_over_orbit_button or mouse_over_stop_button or mouse_over_tabs: mouse_over_ui = true
+	if mouse_over_system_list or mouse_over_actions_panel or mouse_over_go_to_button or mouse_over_orbit_button or mouse_over_stop_button or mouse_over_tabs or mouse_over_scopes_button or mouse_over_sonar_button or mouse_over_barycenter_button or mouse_over_audio_visualizer_button: mouse_over_ui = true
 	else: mouse_over_ui = false
 	
 	#moving to the mouse position or moving to action_body in various ways
@@ -392,3 +402,37 @@ func _on_barycenter_button_pressed():
 func _on_audio_visualizer_button_pressed():
 	emit_signal("audioVisualizerPopup")
 	pass
+
+
+#atrocity
+func _on_scopes_button_mouse_entered():
+	mouse_over_scopes_button = true
+	pass # Replace with function body.
+
+func _on_scopes_button_mouse_exited():
+	mouse_over_scopes_button = false
+	pass # Replace with function body.
+
+func _on_sonar_button_mouse_entered():
+	mouse_over_sonar_button = true
+	pass # Replace with function body.
+
+func _on_sonar_button_mouse_exited():
+	mouse_over_sonar_button = false
+	pass # Replace with function body.
+
+func _on_barycenter_button_mouse_entered():
+	mouse_over_barycenter_button = true
+	pass # Replace with function body.
+
+func _on_barycenter_button_mouse_exited():
+	mouse_over_barycenter_button = false
+	pass # Replace with function body.
+
+func _on_audio_visualizer_button_mouse_entered():
+	mouse_over_audio_visualizer_button = true
+	pass # Replace with function body.
+
+func _on_audio_visualizer_button_mouse_exited():
+	mouse_over_audio_visualizer_button = false
+	pass # Replace with function body.
