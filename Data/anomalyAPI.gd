@@ -1,9 +1,9 @@
 extends bodyAPI
 class_name anomalyAPI
-enum ANOMALY_TYPES {SPACE_WHALE_POD, LAGRANGE_CLOUD}
-var anomaly_type
+var anomaly_classification: int #game data
+
 enum DISCOVERY_TYPES {NORMAL, THERMAL, SONAR}
-var discovery_type
+var discovery_type: int = 0
 
 func is_anomaly():
 	return true

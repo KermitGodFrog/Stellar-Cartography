@@ -347,6 +347,26 @@ func generateRandomWeightedStations():
 	pass
 
 func generateRandomWeightedAnomalies():
+	for anomaly in global_data.get_randi(0, 2):
+		var location = post_gen_location_candidates.pick_random()
+		var hook = get_body_from_identifier(location.front())
+		var i = location.back()
+		
+		var new_distance: float = hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * i)
+		var orbit_speed_multiplier: float
+		if hook.orbit_speed > 0: orbit_speed_multiplier = ((hook.orbit_speed * 109.1) + 1)
+		else: orbit_speed_multiplier = 1
+		
+		var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+		var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+		
+		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
+		
+		var anomaly_classification = global_data.weighted_pick(game_data.get_weighted_anomaly_classifications())
+		
+		
+		#need addAnomaly function
+		
 	pass
 
 func addBody(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, metadata: Dictionary = {}):
