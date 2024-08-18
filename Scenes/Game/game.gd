@@ -173,6 +173,7 @@ func _on_player_following_body(following_body: bodyAPI):
 				var new_query = responseQuery.new()
 				new_query.add("concept", "randomPAOpenDialog")
 				new_query.add("planet_classification", following_planet.metadata.get("planet_classification"))
+				new_query.add_tree_access("planet_name", following_planet.display_name)
 				get_tree().call_group("dialogueManager", "speak", self, new_query)
 				
 				var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
@@ -233,6 +234,7 @@ func enter_wormhole(following_wormhole, wormholes, destination):
 	
 	if destination_wormhole: world.player.position = destination_wormhole.position
 	world.player.previous_star_system = world.player.current_star_system
+	world.player.systems_traversed += 1
 	_on_switch_star_system(destination)
 	pass
 

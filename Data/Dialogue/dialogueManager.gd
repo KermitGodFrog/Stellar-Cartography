@@ -165,7 +165,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			
 		QUERY_TYPES.ALL: #FOR 'QUERY ALL CONCEPT'
 			
-			var matched_rules: Array[responseRule]
+			var matched_rules: Array[responseRule] = []
 			for rule in rules:
 				var matches: int = get_rule_matches(rule, incoming_query)
 				if matches == rule.criteria.size():
@@ -247,9 +247,9 @@ func trigger_rule(calling: Node, rule: responseRule):
 				call(trigger_function)
 	
 	#trigger_rules: \\\\\\\\\\\\\
-	for trigger_rule in rule.trigger_rules:
-		if rules.has(trigger_rule):
-			trigger_rule(calling, trigger_rule)
+	for _trigger_rule in rule.trigger_rules:
+		if rules.has(_trigger_rule):
+			trigger_rule(calling, _trigger_rule)
 	
 	for concept in rule.query_all_concept:
 		var new_query = responseQuery.new()

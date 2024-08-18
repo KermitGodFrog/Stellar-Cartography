@@ -5,6 +5,8 @@ var star_systems: Array[starSystemAPI]
 var player: playerAPI
 var identifier_count: int = 1
 
+var weirdness_index: float = 0
+
 func createStarSystem(d_name: String):
 	var new_system = starSystemAPI.new()
 	new_system.set_identifier(identifier_count)
@@ -27,6 +29,7 @@ func createPlayer(speed: int, max_jumps: int, max_saved_audio_profiles: int):
 	new_player.max_saved_audio_profiles = max_saved_audio_profiles
 	player = new_player
 	return new_player
+
 
 func get_system_from_identifier(id: int):
 	var get_system: starSystemAPI

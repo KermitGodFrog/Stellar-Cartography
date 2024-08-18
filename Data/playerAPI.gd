@@ -14,6 +14,10 @@ var current_value: int = 0
 
 var max_jumps: int = 5
 var jumps_remaining: int = 0
+var systems_traversed: int = 0
+var weirdness_index :
+	get:
+		return remap(systems_traversed, 0, 35, 0.0, 1.0)
 
 enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER}
 var unlocked_upgrades: Array[UPGRADE_ID] = []
