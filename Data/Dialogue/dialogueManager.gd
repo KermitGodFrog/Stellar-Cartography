@@ -184,10 +184,37 @@ func get_rule_matches(rule, incoming_query):
 	for fact in incoming_query.facts:
 		#print(str(rule.criteria.get(fact), " ", incoming_query.facts.get(fact)))
 		if rule.criteria.has(fact):
-			if rule.criteria.get(fact) == incoming_query.facts.get(fact):
-				matches += 1
-			else: continue
-		else: continue #still doesnt work? what?
+			if typeof(rule.criteria.get(fact)) == TYPE_STRING:
+				match rule.criteria.get(fact).left(1):
+					"<":
+						var number = rule.criteria.get(fact).trim_prefix("<")
+						if float(rule.criteria.get(fact)) < float(number): #will this work>>???
+							matches += 1
+						else: continue
+					">":
+						var number = rule.criteria.get(fact).trim_prefix(">")
+						if float(rule.criteria.get(fact)) > float(number):
+							matches += 1
+						else: continue
+					"<=":
+						var number = rule.criteria.get(fact).trim_prefix("<=")
+						if float(rule.criteria.get(fact)) <= float(number):
+							matches += 1
+						else: continue
+					">=":
+						var number = rule.criteria.get(fact).trim_prefix(">=")
+						if float(rule.criteria.get(fact)) >= float(number):
+							matches += 1
+						else: continue
+					_:
+						if rule.criteria.get(fact) == incoming_query.facts.get(fact):
+							matches += 1
+						else: continue
+			else:
+				if rule.criteria.get(fact) == incoming_query.facts.get(fact):
+					matches += 1
+				else: continue
+		else: continue
 	return matches
 
 func convert_string_number(string_number: String):
@@ -239,6 +266,12 @@ func trigger_rule(calling: Node, rule: responseRule):
 	if rule.options: dialogue.add_options(rule.options)
 	pass
 
+func convert_text_with_custom_tags(text: String, query: responseQuery) -> String:
+	if query.get("planet_name"):
+		text.replace("[PLANET_NAME]", query.get("planet_name"))
+	else:
+		text.replace("[PLANET_NAME]", "ERR_NO_PLANET_NAME_IN_QUERY")
+	return text
 
 func openDialog():
 	clearAll()
