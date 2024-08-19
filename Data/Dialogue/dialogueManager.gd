@@ -146,6 +146,8 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			
 			var ranked_rules: Dictionary = {}
 			for rule in rules:
+				incoming_query.facts["randf_EXCLUSIVE"] = randf()
+				incoming_query.facts["randi_EXCLUSIVE"] = randi()
 				var matches: int = get_rule_matches(rule, incoming_query)
 				ranked_rules[rule] = matches
 			
@@ -160,13 +162,18 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			
 			var matched_index = match_candidate_indexes.pick_random()
 			
+			incoming_query.facts.erase("randf_EXCLUSIVE")
+			incoming_query.facts.erase("randi_EXCLUSIVE")
+			
 			var matched_rule = ranked_rules.find_key(sorted_values[matched_index])
-			if matched_rule: trigger_rule(calling, matched_rule)
+			if matched_rule: trigger_rule(calling, matched_rule, incoming_query)
 			
 		QUERY_TYPES.ALL: #FOR 'QUERY ALL CONCEPT'
 			
 			var matched_rules: Array[responseRule] = []
 			for rule in rules:
+				incoming_query.facts["randf_EXCLUSIVE"] = randf()
+				incoming_query.facts["randi_EXCLUSIVE"] = randi()
 				var matches: int = get_rule_matches(rule, incoming_query)
 				if matches == rule.criteria.size():
 					matched_rules.append(rule)
@@ -174,8 +181,11 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			for rule in matched_rules: #DEBUG!!!!!!!!!!!!!!!!!!!!!!!
 				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", rule.criteria.size(), " (ALL)"))
 			
+			incoming_query.facts.erase("randf_EXCLUSIVE")
+			incoming_query.facts.erase("randi_EXCLUSIVE")
+			
 			for matched_rule in matched_rules:
-				trigger_rule(calling, matched_rule)
+				trigger_rule(calling, matched_rule, incoming_query)
 			
 	pass
 
@@ -225,7 +235,7 @@ func convert_string_number(string_number: String):
 	return string_number
 
 
-func trigger_rule(calling: Node, rule: responseRule):
+func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQuery):
 	print("QUERY HANDLER: ", calling, " TRIGGERING RULE ", rule.get_name())
 	#apply_facts: \\\\\\\\\\\\\
 	for fact in rule.apply_facts:
@@ -237,19 +247,23 @@ func trigger_rule(calling: Node, rule: responseRule):
 		if has_method(trigger_function):
 			var values = rule.trigger_functions.get(trigger_function)
 			if values != null: 
-				if typeof(values) == TYPE_ARRAY:
-					print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
-					call(trigger_function, values)
-				else:
-					print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
-					call(trigger_function, values)
+				match typeof(values):
+					TYPE_ARRAY:
+						print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
+						call(trigger_function, values)
+					TYPE_STRING:
+						print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
+						call(trigger_function, convert_value_with_query_key_tags(values, incoming_query))
+					_:
+						print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
+						call(trigger_function, values)
 			else:
 				call(trigger_function)
 	
 	#trigger_rules: \\\\\\\\\\\\\
 	for _trigger_rule in rule.trigger_rules:
 		if rules.has(_trigger_rule):
-			trigger_rule(calling, _trigger_rule)
+			trigger_rule(calling, _trigger_rule, null)
 	
 	for concept in rule.query_all_concept:
 		var new_query = responseQuery.new()
@@ -262,16 +276,28 @@ func trigger_rule(calling: Node, rule: responseRule):
 		speak(calling, new_query, true, QUERY_TYPES.BEST)
 	
 	#text & options \\\\\\\\\\\\\
-	if rule.text: dialogue.add_text(rule.text)
+	if rule.text: dialogue.add_text(convert_text_with_custom_tags(rule.text, incoming_query))
 	if rule.options: dialogue.add_options(rule.options)
 	pass
 
 func convert_text_with_custom_tags(text: String, query: responseQuery) -> String:
-	if query.get("planet_name"):
-		text.replace("[PLANET_NAME]", query.get("planet_name"))
-	else:
-		text.replace("[PLANET_NAME]", "ERR_NO_PLANET_NAME_IN_QUERY")
+	if query:
+		if query.get("planet_name"):
+			text.replace("[PLANET_NAME]", query.get("planet_name"))
+		else:
+			text.replace("[PLANET_NAME]", "ERR_NO_PLANET_NAME_IN_QUERY")
 	return text
+
+func convert_value_with_query_key_tags(value: String, query: responseQuery):
+	if query:
+		if value.begins_with("$"):
+			if query.facts.find_key(value.trim_prefix("$")) != null:
+				return query.facts.get(value.trim_prefix("$"))
+			else:
+				return value
+		else:
+			return value
+	return value 
 
 func openDialog():
 	clearAll()
