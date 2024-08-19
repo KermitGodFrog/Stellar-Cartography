@@ -18,6 +18,7 @@ var systems_traversed: int = 0
 var weirdness_index :
 	get:
 		return remap(systems_traversed, 0, 35, 0.0, 1.0)
+var deterioration: int = 0
 
 enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER}
 var unlocked_upgrades: Array[UPGRADE_ID] = []

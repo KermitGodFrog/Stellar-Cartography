@@ -368,7 +368,7 @@ func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	pass
 
 func _on_undock_from_station(from_station: stationAPI):
-	print("STATION_UI (DEBUG): UNDOCKING FROM STATION")
+	print("STATION_UI (DEBUG): UNDOCKING FROM STATION ", from_station)
 	$station_window.hide()
 	$interaction_cooldown.start()
 	pass

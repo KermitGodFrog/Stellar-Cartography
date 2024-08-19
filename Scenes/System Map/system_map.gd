@@ -51,6 +51,9 @@ var has_focus: bool = false
 @onready var barycenter_button = $camera/canvas/control/apps_panel/apps_margin/apps_scroll/barycenter_button
 @onready var audio_visualizer_button = $camera/canvas/control/apps_panel/apps_margin/apps_scroll/audio_visualizer_button
 
+@onready var ping_sound = $ping
+@onready var bounceback_sound_scene = preload("res://Sound/bounceback.tscn")
+
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
@@ -280,6 +283,8 @@ func _on_stop_button_pressed():
 	pass
 
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
+	ping_sound.play()
+	
 	ping_length = remap(ping_width, 5, 90, 300, 100)
 	var line = player_position_matrix[0] + ping_direction * ping_length
 	
@@ -293,13 +298,7 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	
 	for body in system.bodies:
 		if Geometry2D.is_point_in_polygon(body.position, points):
-			body.pings_to_be_theorised = maxi(0, body.pings_to_be_theorised - 1)
-			if body.pings_to_be_theorised == 0:
-				body.is_theorised = true #so it says '???' on the overview
-			var ping = load("res://Data/Ping Display Helpers/normal.tres").duplicate(true)
-			ping.position = body.position
-			ping.resetTime()
-			SONAR_PINGS.append(ping)
+			async_add_ping(body)
 	
 	#random pings \/\/\/\/
 	#for random_ping in global_data.get_randi(0, remap(ping_width, 5, 90, 0, 10)):
@@ -307,6 +306,24 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 		#ping.position = global_data.random_triangle_point(a,b,c)
 		#ping.resetTime()
 		#SONAR_PINGS.append(ping)
+	pass
+
+func async_add_ping(body: bodyAPI) -> void:
+	await get_tree().create_timer((player_position_matrix[0].distance_to(body.position) / 100)).timeout
+	
+	body.pings_to_be_theorised = maxi(0, body.pings_to_be_theorised - 1)
+	if body.pings_to_be_theorised == 0:
+		body.is_theorised = true #so it says '???' on the overview
+	var ping = load("res://Data/Ping Display Helpers/normal.tres").duplicate(true)
+	ping.position = body.position
+	ping.resetTime()
+	SONAR_PINGS.append(ping)
+	
+	var bounceback_instance = bounceback_sound_scene.instantiate()
+	add_child(bounceback_instance)
+	bounceback_instance.play()
+	await bounceback_instance.finished
+	bounceback_instance.queue_free()
 	pass
 
 func _on_found_body(id: int):
@@ -332,7 +349,6 @@ func _on_picker_button_item_selected(index):
 func _on_add_console_item(text: String, bg_color: Color = Color.WHITE, time: int = 500):
 	console.async_add_item(text, bg_color, time)
 	pass
-
 
 
 

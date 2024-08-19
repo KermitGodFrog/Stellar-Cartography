@@ -1,0 +1,28 @@
+[gd_scene load_steps=8 format=3 uid="uid://dob2j37t3yu6p"]
+
+[ext_resource type="AudioStream" uid="uid://drhvl3nppyvsm" path="res://Sound/SFX/LIDAR/bounceback_1.wav" id="1_2yhg6"]
+[ext_resource type="AudioStream" uid="uid://q86fssra4i0h" path="res://Sound/SFX/LIDAR/bounceback_2.wav" id="2_pep0d"]
+[ext_resource type="AudioStream" uid="uid://dscqbmtxibcen" path="res://Sound/SFX/LIDAR/bounceback_3.wav" id="3_iooy6"]
+[ext_resource type="AudioStream" uid="uid://blnotl3umk5ea" path="res://Sound/SFX/LIDAR/bounceback_4.wav" id="4_07ueg"]
+[ext_resource type="AudioStream" uid="uid://bgl3c5muc6pni" path="res://Sound/SFX/LIDAR/bounceback_5.wav" id="5_gwyoi"]
+[ext_resource type="AudioStream" uid="uid://cnror5gvqlwmh" path="res://Sound/SFX/LIDAR/bounceback_6.wav" id="6_s1sr6"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_aic5i"]
+streams_count = 6
+stream_0/stream = ExtResource("1_2yhg6")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("2_pep0d")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("3_iooy6")
+stream_2/weight = 1.0
+stream_3/stream = ExtResource("4_07ueg")
+stream_3/weight = 1.0
+stream_4/stream = ExtResource("5_gwyoi")
+stream_4/weight = 1.0
+stream_5/stream = ExtResource("6_s1sr6")
+stream_5/weight = 1.0
+
+[node name="bounceback" type="AudioStreamPlayer"]
+stream = SubResource("AudioStreamRandomizer_aic5i")
+volume_db = -6.0
+bus = &"SFX"

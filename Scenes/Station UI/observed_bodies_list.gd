@@ -47,7 +47,7 @@ func variation_to_string(variation: bodyAPI.VARIATIONS):
 		_:
 			return ""
 
-func _on_item_clicked(index, at_position, mouse_button_index):
+func _on_item_clicked(index, _at_position, mouse_button_index):
 	if mouse_button_index == MOUSE_BUTTON_LEFT:
 		var metadata = get_item_metadata(index)
 		if metadata:
