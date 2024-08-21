@@ -26,7 +26,7 @@ var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 @onready var picker_button = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
 @onready var console = $camera/canvas/control/console
 
-@onready var audio_visualizer_button = $camera/canvas/control/apps_panel/apps_margin/apps_scroll/audio_visualizer_button
+@onready var audio_visualizer_button = $camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button
 
 @onready var ping_sound = $ping
 @onready var bounceback_sound_scene = preload("res://Sound/bounceback.tscn")
@@ -56,26 +56,6 @@ func _physics_process(delta):
 	#If camera moves, follow body is removed for camera.
 	
 	#camera_target_position is position for system3d to look at
-	
-	#moving to the mouse position or moving to action_body in various ways
-	#if Input.is_action_pressed("right_mouse") and has_focus and (not mouse_over_ui) and movement_lock_timer.is_stopped():
-		#locked_body = null
-		#action_body = null
-		#emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
-		#emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
-	
-	#changing target position
-	#if Input.is_action_pressed("left_mouse") and has_focus and (not mouse_over_ui) and movement_lock_timer.is_stopped():
-		#camera_target_position = get_global_mouse_position()
-		#emit_signal("updateTargetPosition", get_global_mouse_position())
-		#emit_signal("lockedBodyDepreciated")
-	
-	#if Input.is_action_just_pressed("the B") and has_focus: #DEBUG!!!!!!!!!!!!!!!!!
-		#emit_signal("DEBUG_REVEAL_ALL_WORMHOLES")
-	
-	#if Input.is_action_just_pressed("the N") and has_focus: #DEBUG!!!!!!!!!!!!!!!!!
-		#emit_signal("DEBUG_REVEAL_ALL_BODIES")
-	
 	#incredibly out of plcace!!!!!
 	if camera.follow_body:
 		camera_target_position = Vector2.ZERO
@@ -273,6 +253,7 @@ func _on_stop_button_pressed():
 	emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
 	pass
 
+
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	ping_sound.play()
 	
@@ -316,6 +297,7 @@ func async_add_ping(body: bodyAPI) -> void:
 	await bounceback_instance.finished
 	bounceback_instance.queue_free()
 	pass
+
 
 func _on_found_body(id: int):
 	var body_pos = system.get_body_from_identifier(id).position

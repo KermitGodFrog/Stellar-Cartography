@@ -3,9 +3,9 @@ extends Node
 
 var world: worldAPI
 @onready var system_map = $system_window/system
-@onready var system_3d = $system_window/system/camera/canvas/control/scopes_container/system_3d_window/system_3d
-@onready var sonar = $system_window/system/camera/canvas/control/horizontal/sonar_container/sonar_window/sonar_control
-@onready var barycenter_visualizer = $system_window/system/camera/canvas/control/horizontal/barycenter_container/barycenter_visualizer_window/barycenter_control
+@onready var system_3d = $system_window/system/camera/canvas/control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container/system_3d_window/system_3d
+@onready var sonar = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container/sonar_window/sonar_control
+@onready var barycenter_visualizer = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container/barycenter_visualizer_window/barycenter_control
 @onready var audio_visualizer = $audio_visualizer_window/audio_control
 @onready var station_ui = $station_window/station_control
 @onready var dialogue_manager = $dialogueManager
@@ -35,7 +35,6 @@ func _ready():
 	
 	audio_visualizer.connect("removeSavedAudioProfile", _on_remove_saved_audio_profile)
 	
-	system_map.connect("barycenterPopup", _on_barycenter_popup)
 	system_map.connect("audioVisualizerPopup", _on_audio_visualizer_popup)
 	
 	dialogue_manager.connect("addPlayerValue", _on_add_player_value)

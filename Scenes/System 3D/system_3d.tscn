@@ -1,10 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://co52u63cyk220"]
+[gd_scene load_steps=12 format=3 uid="uid://co52u63cyk220"]
 
 [ext_resource type="Script" path="res://Scenes/System 3D/system_3d.gd" id="1_a351o"]
 [ext_resource type="Shader" path="res://Scenes/pixelate_shader.gdshader" id="2_ra6gs"]
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="3_buwkt"]
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="3_wi6mv"]
-[ext_resource type="Theme" uid="uid://dm3fbhtw7qov2" path="res://Scenes/System Map/system_map_HUD_theme.tres" id="4_606wp"]
 [ext_resource type="Script" path="res://Scenes/System 3D/control.gd" id="4_d6r1b"]
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_rgh3c"]
 
@@ -78,24 +77,6 @@ offset_bottom = 23.0
 theme_override_fonts/font = ExtResource("3_wi6mv")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_ajtlq")
-
-[node name="controls_label" type="Label" parent="system_3d/camera_offset/camera/canvas_layer/control"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -188.0
-offset_top = -22.0
-offset_bottom = 25.0001
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("4_606wp")
-text = "Q&E: ZOOM IN/OUT
-
-"
-horizontal_alignment = 2
 
 [node name="world_environment" type="WorldEnvironment" parent="system_3d"]
 environment = SubResource("Environment_wo5s4")

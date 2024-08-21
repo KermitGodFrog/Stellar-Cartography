@@ -25,7 +25,7 @@ func stop_tracking():
 		var remap: float = remap(aggregrate_vertical_change, -500, 500, 10, 75)
 		print_debug(remap)
 		emit_signal("targetFOVChange", remap)
-		
-		tracking = false
-		aggregrate_vertical_change = 0
+	
+	tracking = false
+	aggregrate_vertical_change = 0
 	pass
