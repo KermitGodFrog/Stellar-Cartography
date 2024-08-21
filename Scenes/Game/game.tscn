@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://o18qlgh0vvwn"]
+[gd_scene load_steps=10 format=3 uid="uid://o18qlgh0vvwn"]
 
 [ext_resource type="Script" path="res://Scenes/Game/game.gd" id="1_mtv75"]
 [ext_resource type="PackedScene" uid="uid://bhroagne3v4wq" path="res://Scenes/System Map/system_map.tscn" id="2_jilbx"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dtbagvxj5to3" path="res://Scenes/Station UI/station_ui.tscn" id="6_g2s4t"]
 [ext_resource type="PackedScene" uid="uid://bwlfi3x5r51fo" path="res://Scenes/Audio Visualizer/audio_visualizer.tscn" id="7_uparo"]
 [ext_resource type="PackedScene" uid="uid://ckd75fjfh7urh" path="res://Data/Dialogue/dialogueManager.tscn" id="8_egtoq"]
+[ext_resource type="PackedScene" uid="uid://p275r5sfhnj5" path="res://Sound/Music/musicHandler.tscn" id="9_gksgf"]
 
 [node name="game" type="Node"]
 process_mode = 1
@@ -30,3 +31,5 @@ wait_time = 2.0
 one_shot = true
 
 [node name="dialogueManager" parent="." instance=ExtResource("8_egtoq")]
+
+[node name="musicHandler" parent="." instance=ExtResource("9_gksgf")]

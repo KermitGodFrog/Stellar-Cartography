@@ -53,6 +53,7 @@ var has_focus: bool = false
 
 @onready var ping_sound = $ping
 @onready var bounceback_sound_scene = preload("res://Sound/bounceback.tscn")
+@onready var discovery_sound_scene = preload("res://Sound/discovery.tscn")
 
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
 
@@ -332,6 +333,12 @@ func _on_found_body(id: int):
 	ping.position = body_pos
 	ping.resetTime()
 	SONAR_PINGS.append(ping)
+	
+	var discovery_instance = discovery_sound_scene.instantiate()
+	add_child(discovery_instance)
+	discovery_instance.play()
+	await discovery_instance.finished
+	discovery_instance.queue_free()
 	pass
 
 func _on_start_movement_lock_timer():

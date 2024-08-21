@@ -92,10 +92,10 @@ func _ready():
 	#new_query.add_tree_access("is_station_inhabited", false)
 	#get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
-	var new_query = responseQuery.new()
-	new_query.add("concept", "randomPAOpenDialog")
-	new_query.add_tree_access("planet_classification", "Terran")
-	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	#var new_query = responseQuery.new()
+	#new_query.add("concept", "randomPAOpenDialog")
+	#new_query.add_tree_access("planet_classification", "Terran")
+	#get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
 func _physics_process(delta):

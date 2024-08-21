@@ -57,7 +57,7 @@ bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jthrs"]
 streams_count = 7
 stream_0/stream = ExtResource("15_gusf2")
-stream_0/weight = 10.0
+stream_0/weight = 3.0
 stream_1/stream = ExtResource("16_7te6b")
 stream_1/weight = 1.0
 stream_2/stream = ExtResource("17_22n0i")
