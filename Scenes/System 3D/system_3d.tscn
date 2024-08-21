@@ -1,11 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://co52u63cyk220"]
+[gd_scene load_steps=12 format=3 uid="uid://co52u63cyk220"]
 
 [ext_resource type="Script" path="res://Scenes/System 3D/system_3d.gd" id="1_a351o"]
-[ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://Scenes/window_theme.tres" id="1_xv7x4"]
 [ext_resource type="Shader" path="res://Scenes/pixelate_shader.gdshader" id="2_ra6gs"]
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="3_buwkt"]
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="3_wi6mv"]
-[ext_resource type="Theme" uid="uid://dm3fbhtw7qov2" path="res://Scenes/System Map/system_map_HUD_theme.tres" id="4_606wp"]
+[ext_resource type="Script" path="res://Scenes/System 3D/control.gd" id="4_d6r1b"]
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_rgh3c"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e7fqt"]
@@ -40,14 +39,9 @@ reflected_light_source = 1
 tonemap_mode = 2
 tonemap_exposure = 2.0
 
-[node name="system_3d_window" type="Window"]
+[node name="system_3d_window" type="SubViewport"]
 canvas_item_default_texture_filter = 0
-title = "Scopes"
-position = Vector2i(0, 36)
-size = Vector2i(500, 500)
-visible = false
-unresizable = true
-theme = ExtResource("1_xv7x4")
+size = Vector2i(300, 300)
 
 [node name="system_3d" type="Node3D" parent="."]
 script = ExtResource("1_a351o")
@@ -74,6 +68,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("4_d6r1b")
 
 [node name="locked_body_label" type="Label" parent="system_3d/camera_offset/camera/canvas_layer/control"]
 layout_mode = 1
@@ -83,28 +78,8 @@ theme_override_fonts/font = ExtResource("3_wi6mv")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_ajtlq")
 
-[node name="controls_label" type="Label" parent="system_3d/camera_offset/camera/canvas_layer/control"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -188.0
-offset_top = -22.0
-offset_bottom = 25.0001
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("4_606wp")
-text = "Q&E: ZOOM IN/OUT
-
-"
-horizontal_alignment = 2
-
 [node name="world_environment" type="WorldEnvironment" parent="system_3d"]
 environment = SubResource("Environment_wo5s4")
 
 [node name="star_omni_light" type="OmniLight3D" parent="system_3d"]
 omni_range = 4096.0
-
-[connection signal="close_requested" from="." to="system_3d" method="_on_system_3d_window_close_requested"]
