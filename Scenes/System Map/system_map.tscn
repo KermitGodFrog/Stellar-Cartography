@@ -95,6 +95,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="post_process" type="ColorRect" parent="system/camera/canvas/control"]
 visible = false
@@ -113,6 +114,7 @@ anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 450.0
 grow_vertical = 2
+mouse_filter = 0
 theme = ExtResource("3_djc4s")
 tab_alignment = 2
 current_tab = 1
@@ -139,6 +141,8 @@ autowrap_mode = 2
 [node name="OVERVIEW" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
 custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
 theme = ExtResource("3_djc4s")
 
 [node name="system_list" type="ItemList" parent="system/camera/canvas/control/tabs/OVERVIEW"]
@@ -194,6 +198,7 @@ expand_icon = true
 visible = false
 custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
+mouse_filter = 0
 theme = ExtResource("3_djc4s")
 
 [node name="follow_body_label" type="Label" parent="system/camera/canvas/control/tabs/INFO"]
@@ -291,10 +296,10 @@ script = ExtResource("8_oaj06")
 [node name="scopes_container" type="SubViewportContainer" parent="system/camera/canvas/control"]
 custom_minimum_size = Vector2(300, 300)
 layout_mode = 0
-offset_left = 1295.0
-offset_top = 359.0
-offset_right = 1595.0
-offset_bottom = 659.0
+offset_left = 1279.0
+offset_top = 288.0
+offset_right = 1579.0
+offset_bottom = 588.0
 
 [node name="system_3d_window" parent="system/camera/canvas/control/scopes_container" instance=ExtResource("11_domud")]
 handle_input_locally = false
@@ -393,23 +398,11 @@ icon_alignment = 2
 stream = SubResource("AudioStreamRandomizer_jthrs")
 bus = &"SFX"
 
-[connection signal="mouse_entered" from="system/camera/canvas/control/tabs" to="system" method="_on_tabs_mouse_entered"]
-[connection signal="mouse_exited" from="system/camera/canvas/control/tabs" to="system" method="_on_tabs_mouse_exited"]
 [connection signal="tab_button_pressed" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_button_pressed"]
 [connection signal="tab_clicked" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_clicked"]
 [connection signal="item_clicked" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_clicked"]
-[connection signal="mouse_entered" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_mouse_entered"]
-[connection signal="mouse_exited" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_mouse_exited"]
-[connection signal="mouse_entered" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel" to="system" method="_on_actions_panel_mouse_entered"]
-[connection signal="mouse_exited" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel" to="system" method="_on_actions_panel_mouse_exited"]
-[connection signal="mouse_entered" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_mouse_entered"]
-[connection signal="mouse_exited" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_mouse_exited"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_pressed"]
-[connection signal="mouse_entered" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_mouse_entered"]
-[connection signal="mouse_exited" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_mouse_exited"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_pressed"]
-[connection signal="mouse_entered" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_mouse_entered"]
-[connection signal="mouse_exited" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_mouse_exited"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]
 [connection signal="item_selected" from="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button" to="system" method="_on_picker_button_item_selected"]
 [connection signal="mouse_entered" from="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll/scopes_button" to="system" method="_on_scopes_button_mouse_entered"]

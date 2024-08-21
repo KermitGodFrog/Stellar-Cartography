@@ -6,17 +6,11 @@ var ping_width: int
 var ping_length: int
 var ping_direction: Vector2 = Vector2.ZERO
 
-var mouse_over_ping_button: bool = false
-var mouse_over_ui: bool = false
-
 @onready var ping_width_slider = $flow_container/ping_width_slider
 @onready var ping_cooldown_timer = $ping_cooldown_timer
 @onready var cooldown_label = $cooldown_label
 
 func _physics_process(_delta):
-	if mouse_over_ping_button: mouse_over_ui = true
-	else: mouse_over_ui = false
-	
 	ping_width = ping_width_slider.value
 	
 	if not ping_cooldown_timer.is_stopped():
@@ -24,9 +18,12 @@ func _physics_process(_delta):
 	else:
 		cooldown_label.set_text("")
 	
-	if Input.is_action_pressed("left_mouse") and not mouse_over_ui:
-		ping_direction = get_screen_centre().direction_to(get_global_mouse_position())
 	queue_redraw()
+	pass
+
+func _gui_input(event):
+	if event.is_action_pressed("left_mouse"):
+		ping_direction = get_screen_centre().direction_to(get_global_mouse_position())
 	pass
 
 func _draw():
@@ -47,43 +44,9 @@ func _draw():
 func get_screen_centre():
 	return (get_viewport_rect().size / 2)
 
-func _on_sonar_window_close_requested():
-	owner.hide()
-	pass
-
 func _on_ping_button_pressed():
 	if ping_cooldown_timer.is_stopped():
 		emit_signal("sonarPing", ping_width, ping_length, ping_direction)
 		ping_cooldown_timer.start()
 	pass
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-func _on_ping_button_mouse_entered():
-	mouse_over_ping_button = true
-	pass
-
-func _on_ping_button_mouse_exited():
-	mouse_over_ping_button = false
-	pass

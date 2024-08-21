@@ -35,8 +35,6 @@ func _ready():
 	
 	audio_visualizer.connect("removeSavedAudioProfile", _on_remove_saved_audio_profile)
 	
-	system_map.connect("system3DPopup", _on_system_3d_popup)
-	system_map.connect("sonarPopup", _on_sonar_popup)
 	system_map.connect("barycenterPopup", _on_barycenter_popup)
 	system_map.connect("audioVisualizerPopup", _on_audio_visualizer_popup)
 	
@@ -114,12 +112,7 @@ func _physics_process(delta):
 	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
-	
 	dialogue_manager.set("player", world.player)
-	
-	#SETTING WHETHER SYSTEM MAP HAS FOCUS OR NOT (SINCE ITS A NODE IT CANNOT USE HAS_FOCUS() DIRECTLY!)
-	if $audio_visualizer_window.has_focus() or $station_window.has_focus(): system_map.has_focus = false
-	else: system_map.has_focus = true
 	pass
 
 func _on_player_orbiting_body(orbiting_body: bodyAPI):
@@ -418,15 +411,8 @@ func _ON_DEBUG_REVEAL_ALL_BODIES():
 
 
 
-func _on_system_3d_popup():
-	$system_3d_window.popup()
-	_on_add_console_item("Opening scopes.", Color("353535"), 50)
-	pass
 
-func _on_sonar_popup():
-	$sonar_window.popup()
-	_on_add_console_item("Opening LIDAR.", Color("353535"), 50)
-	pass
+
 
 func _on_barycenter_popup():
 	$barycenter_visualizer_window.popup()

@@ -12,6 +12,7 @@ var label_locked_body_identifier: int
 var body_3d = preload("res://Instantiated Scenes/Body 3D/body_3d.tscn")
 var entity_3d = preload("res://Instantiated Scenes/Body 3D/entity_3d.tscn")
 
+@onready var control = $camera_offset/camera/canvas_layer/control
 @onready var camera_offset = $camera_offset
 @onready var camera = $camera_offset/camera
 @onready var locked_body_label = $camera_offset/camera/canvas_layer/control/locked_body_label
@@ -20,9 +21,14 @@ var entity_3d = preload("res://Instantiated Scenes/Body 3D/entity_3d.tscn")
 
 var system_scalar: float = 10.0
 var body_detection_range: int = 1000
+var target_fov: float = 75
 
 #for wormholes obv
 var wormhole_shader = preload("res://Scenes/wormhole_shader.gdshader")
+
+func _ready():
+	control.connect("targetFOVChange", _on_target_FOV_change)
+	pass
 
 func _physics_process(_delta):
 	#setting post process
@@ -59,11 +65,9 @@ func _physics_process(_delta):
 		camera.global_transform = camera.global_transform.looking_at(Vector3((target_position.x * system_scalar), 0, (target_position.y * system_scalar)))
 		camera.global_transform = camera.global_transform.orthonormalized()
 	
-	#zooming
-	var zoom_axis = Input.get_axis("zoom_in", "zoom_out")
-	if zoom_axis:
-		if not (zoom_axis == -1 and camera.fov == 10) and not (zoom_axis == 1 and camera.fov == 75):
-			camera.fov += zoom_axis
+	
+	camera.fov = lerp(camera.fov, target_fov, 0.05)
+	
 	
 	#detecting bodies
 	for child in get_children():
@@ -90,6 +94,7 @@ func _physics_process(_delta):
 	else:
 		locked_body_label.set_text("")
 	pass
+
 
 func spawnBodies():
 	for child in get_children():
@@ -122,6 +127,6 @@ func reset_locked_body():
 	label_locked_body_identifier = 0
 	pass
 
-func _on_system_3d_window_close_requested():
-	owner.hide()
+func _on_target_FOV_change(fov: float):
+	target_fov = fov
 	pass

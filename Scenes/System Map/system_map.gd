@@ -7,9 +7,6 @@ signal updateTargetPosition(pos: Vector2)
 signal updatedLockedBody(body: bodyAPI)
 signal lockedBodyDepreciated
 
-signal system3DPopup
-signal sonarPopup
-signal barycenterPopup
 signal audioVisualizerPopup
 
 signal DEBUG_REVEAL_ALL_WORMHOLES
@@ -17,23 +14,6 @@ signal DEBUG_REVEAL_ALL_BODIES
 
 var system: starSystemAPI
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
-
-#this atrocity is the result of godots terrible system for detecting if the mouse is above a UI element
-#should change to:  get_viewport().gui_get_focus_owner()
-var mouse_over_system_list: bool = false
-var mouse_over_actions_panel: bool = false
-var mouse_over_go_to_button: bool = false
-var mouse_over_orbit_button: bool = false
-var mouse_over_stop_button: bool = false
-var mouse_over_tabs: bool = false
-var mouse_over_scopes_button: bool = false
-var mouse_over_sonar_button: bool = false
-var mouse_over_barycenter_button: bool = false
-var mouse_over_audio_visualizer_button: bool = false
-
-var mouse_over_ui: bool = false
-
-var has_focus: bool = false
 
 @onready var camera = $camera
 @onready var movement_lock_timer = $movement_lock_timer
@@ -46,9 +26,6 @@ var has_focus: bool = false
 @onready var picker_button = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
 @onready var console = $camera/canvas/control/console
 
-@onready var scopes_button = $camera/canvas/control/apps_panel/apps_margin/apps_scroll/scopes_button
-@onready var sonar_button = $camera/canvas/control/apps_panel/apps_margin/apps_scroll/sonar_button
-@onready var barycenter_button = $camera/canvas/control/apps_panel/apps_margin/apps_scroll/barycenter_button
 @onready var audio_visualizer_button = $camera/canvas/control/apps_panel/apps_margin/apps_scroll/audio_visualizer_button
 
 @onready var ping_sound = $ping
@@ -80,34 +57,28 @@ func _physics_process(delta):
 	
 	#camera_target_position is position for system3d to look at
 	
-	#checking whether the mouse is over UI
-	if mouse_over_system_list or mouse_over_actions_panel or mouse_over_go_to_button or mouse_over_orbit_button or mouse_over_stop_button or mouse_over_tabs or mouse_over_scopes_button or mouse_over_sonar_button or mouse_over_barycenter_button or mouse_over_audio_visualizer_button: mouse_over_ui = true
-	else: mouse_over_ui = false
-	
 	#moving to the mouse position or moving to action_body in various ways
-	if Input.is_action_pressed("right_mouse") and has_focus and (not mouse_over_ui) and movement_lock_timer.is_stopped():
-		locked_body = null
-		action_body = null
-		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
-		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
+	#if Input.is_action_pressed("right_mouse") and has_focus and (not mouse_over_ui) and movement_lock_timer.is_stopped():
+		#locked_body = null
+		#action_body = null
+		#emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
+		#emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
 	
 	#changing target position
-	if Input.is_action_pressed("left_mouse") and has_focus and (not mouse_over_ui) and movement_lock_timer.is_stopped():
-		camera_target_position = get_global_mouse_position()
-		emit_signal("updateTargetPosition", get_global_mouse_position())
-		emit_signal("lockedBodyDepreciated")
+	#if Input.is_action_pressed("left_mouse") and has_focus and (not mouse_over_ui) and movement_lock_timer.is_stopped():
+		#camera_target_position = get_global_mouse_position()
+		#emit_signal("updateTargetPosition", get_global_mouse_position())
+		#emit_signal("lockedBodyDepreciated")
 	
-	if Input.is_action_just_pressed("the B") and has_focus: #DEBUG!!!!!!!!!!!!!!!!!
-		emit_signal("DEBUG_REVEAL_ALL_WORMHOLES")
+	#if Input.is_action_just_pressed("the B") and has_focus: #DEBUG!!!!!!!!!!!!!!!!!
+		#emit_signal("DEBUG_REVEAL_ALL_WORMHOLES")
 	
-	if Input.is_action_just_pressed("the N") and has_focus: #DEBUG!!!!!!!!!!!!!!!!!
-		emit_signal("DEBUG_REVEAL_ALL_BODIES")
+	#if Input.is_action_just_pressed("the N") and has_focus: #DEBUG!!!!!!!!!!!!!!!!!
+		#emit_signal("DEBUG_REVEAL_ALL_BODIES")
 	
 	#incredibly out of plcace!!!!!
 	if camera.follow_body:
 		camera_target_position = Vector2.ZERO
-	#SETTING CAMERA FOCUS
-	camera.system_has_focus = has_focus
 	
 	#disabling certain movement buttons when no locked body
 	if not locked_body:
@@ -211,9 +182,23 @@ func _physics_process(delta):
 	pass
 
 func _unhandled_input(event):
+	if event.is_action_pressed("right_mouse") and movement_lock_timer.is_stopped():
+		locked_body = null
+		action_body = null
+		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
+		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
+	
+	if event.is_action_pressed("left_mouse") and movement_lock_timer.is_stopped():
+		camera_target_position = get_global_mouse_position()
+		emit_signal("updateTargetPosition", get_global_mouse_position())
+		emit_signal("lockedBodyDepreciated")
+	
+	if event.is_action_pressed("the B"): #DEBUG!!!!!!!!!!!!!!!!!
+		emit_signal("DEBUG_REVEAL_ALL_WORMHOLES")
+	
+	if event.is_action_pressed("the N"): #DEBUG!!!!!!!!!!!!!!!!!
+		emit_signal("DEBUG_REVEAL_ALL_BODIES")
 	pass
-
-
 
 func _draw():
 	draw_map()
@@ -365,102 +350,7 @@ func _on_add_console_item(text: String, bg_color: Color = Color.WHITE, time: int
 
 
 
-func _on_system_list_mouse_entered():
-	mouse_over_system_list = true
-	pass
-
-func _on_system_list_mouse_exited():
-	mouse_over_system_list = false
-	pass
-
-func _on_actions_panel_mouse_entered():
-	mouse_over_actions_panel = true
-	pass
-
-func _on_actions_panel_mouse_exited():
-	mouse_over_actions_panel = false
-	pass
-
-func _on_go_to_button_mouse_entered():
-	mouse_over_go_to_button = true
-	pass
-
-func _on_go_to_button_mouse_exited():
-	mouse_over_go_to_button = false
-	pass
-
-func _on_orbit_button_mouse_entered():
-	mouse_over_orbit_button = true
-	pass
-
-func _on_orbit_button_mouse_exited():
-	mouse_over_orbit_button = false
-	pass
-
-func _on_stop_button_mouse_entered():
-	mouse_over_stop_button = true
-	pass
-
-func _on_stop_button_mouse_exited():
-	mouse_over_stop_button = false
-	pass
-
-func _on_tabs_mouse_entered():
-	mouse_over_tabs = true
-	pass 
-
-func _on_tabs_mouse_exited():
-	mouse_over_tabs = false
-	pass
-
-
-
-func _on_scopes_button_pressed():
-	emit_signal("system3DPopup")
-	pass 
-
-func _on_sonar_button_pressed():
-	emit_signal("sonarPopup")
-	pass 
-
-func _on_barycenter_button_pressed():
-	emit_signal("barycenterPopup")
-	pass 
-
 func _on_audio_visualizer_button_pressed():
 	emit_signal("audioVisualizerPopup")
 	pass
 
-
-#atrocity
-func _on_scopes_button_mouse_entered():
-	mouse_over_scopes_button = true
-	pass # Replace with function body.
-
-func _on_scopes_button_mouse_exited():
-	mouse_over_scopes_button = false
-	pass # Replace with function body.
-
-func _on_sonar_button_mouse_entered():
-	mouse_over_sonar_button = true
-	pass # Replace with function body.
-
-func _on_sonar_button_mouse_exited():
-	mouse_over_sonar_button = false
-	pass # Replace with function body.
-
-func _on_barycenter_button_mouse_entered():
-	mouse_over_barycenter_button = true
-	pass # Replace with function body.
-
-func _on_barycenter_button_mouse_exited():
-	mouse_over_barycenter_button = false
-	pass # Replace with function body.
-
-func _on_audio_visualizer_button_mouse_entered():
-	mouse_over_audio_visualizer_button = true
-	pass # Replace with function body.
-
-func _on_audio_visualizer_button_mouse_exited():
-	mouse_over_audio_visualizer_button = false
-	pass # Replace with function body.
