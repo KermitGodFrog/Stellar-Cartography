@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=38 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -10,9 +10,12 @@
 [ext_resource type="Theme" uid="uid://br33hy3pgvm14" path="res://Scenes/System Map/system_map_APPS_theme.tres" id="8_a7cgy"]
 [ext_resource type="Texture2D" uid="uid://by3kiv6a2b0ef" path="res://Graphics/scopes_icon.png" id="8_jefec"]
 [ext_resource type="Script" path="res://Scenes/System Map/console.gd" id="8_oaj06"]
+[ext_resource type="PackedScene" uid="uid://oqkfuasvgtj6" path="res://Scenes/Barycenter Visualizer/barycenter_visualizer.tscn" id="9_2aiel"]
 [ext_resource type="Texture2D" uid="uid://btt2br45f8t21" path="res://Graphics/sonar_icon.png" id="9_4nwtv"]
 [ext_resource type="Script" path="res://Scenes/System Map/ui_apps_scroll.gd" id="9_pw1kh"]
+[ext_resource type="PackedScene" uid="uid://chwm82adl21cm" path="res://Scenes/Sonar Interface/sonar_interface.tscn" id="10_48t0n"]
 [ext_resource type="Texture2D" uid="uid://dmbeihbgpfdbj" path="res://Graphics/barycenter_icon.png" id="10_ih8qm"]
+[ext_resource type="PackedScene" uid="uid://co52u63cyk220" path="res://Scenes/System 3D/system_3d.tscn" id="11_domud"]
 [ext_resource type="Texture2D" uid="uid://csvtv1sy2k3ns" path="res://Graphics/audio_visualizer_icon.png" id="11_lvg8y"]
 [ext_resource type="AudioStream" uid="uid://cc05rvmmtxsev" path="res://Sound/SFX/LIDAR/scanning_1.wav" id="15_gusf2"]
 [ext_resource type="AudioStream" uid="uid://cus4xdrnkykve" path="res://Sound/SFX/LIDAR/scanning_2.wav" id="16_7te6b"]
@@ -262,23 +265,6 @@ popup/item_1/id = 1
 popup/item_2/text = "HIGH"
 popup/item_2/id = 2
 
-[node name="controls_label" type="Label" parent="system/camera/canvas/control"]
-visible = false
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -188.0
-offset_bottom = 97.0
-grow_horizontal = 0
-theme = ExtResource("3_djc4s")
-text = "RMB: LAY IN A COURSE
-LMB: POINT SCOPES
-Q&E: ZOOM IN/OUT
-WASD: MOVE
-"
-horizontal_alignment = 2
-
 [node name="console" type="ItemList" parent="system/camera/canvas/control"]
 custom_minimum_size = Vector2(500, 200)
 layout_mode = 1
@@ -302,21 +288,58 @@ theme_override_styles/cursor = SubResource("StyleBoxEmpty_4umr7")
 theme_override_styles/cursor_unfocused = SubResource("StyleBoxEmpty_m5crt")
 script = ExtResource("8_oaj06")
 
-[node name="apps_panel" type="Panel" parent="system/camera/canvas/control"]
-custom_minimum_size = Vector2(100, 200)
+[node name="scopes_container" type="SubViewportContainer" parent="system/camera/canvas/control"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 0
+offset_left = 1295.0
+offset_top = 359.0
+offset_right = 1595.0
+offset_bottom = 659.0
+
+[node name="system_3d_window" parent="system/camera/canvas/control/scopes_container" instance=ExtResource("11_domud")]
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="horizontal" type="HBoxContainer" parent="system/camera/canvas/control"]
+custom_minimum_size = Vector2(500, 200)
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -40.0
+offset_left = -516.0
+offset_top = -200.0
 grow_horizontal = 0
 grow_vertical = 0
+
+[node name="barycenter_container" type="SubViewportContainer" parent="system/camera/canvas/control/horizontal"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+
+[node name="barycenter_visualizer_window" parent="system/camera/canvas/control/horizontal/barycenter_container" instance=ExtResource("9_2aiel")]
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="sonar_container" type="SubViewportContainer" parent="system/camera/canvas/control/horizontal"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+
+[node name="sonar_window" parent="system/camera/canvas/control/horizontal/sonar_container" instance=ExtResource("10_48t0n")]
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="separator" type="VSeparator" parent="system/camera/canvas/control/horizontal"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="apps_panel" type="Panel" parent="system/camera/canvas/control/horizontal"]
+custom_minimum_size = Vector2(100, 200)
+layout_mode = 2
 theme = ExtResource("8_a7cgy")
 
-[node name="apps_margin" type="MarginContainer" parent="system/camera/canvas/control/apps_panel"]
+[node name="apps_margin" type="MarginContainer" parent="system/camera/canvas/control/horizontal/apps_panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -328,12 +351,12 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="apps_scroll" type="VBoxContainer" parent="system/camera/canvas/control/apps_panel/apps_margin" groups=["FOLLOW_UPGRADE_STATE"]]
+[node name="apps_scroll" type="VBoxContainer" parent="system/camera/canvas/control/horizontal/apps_panel/apps_margin" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
 alignment = 1
 script = ExtResource("9_pw1kh")
 
-[node name="scopes_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
+[node name="scopes_button" type="Button" parent="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll"]
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
 text = "SCO"
@@ -341,7 +364,7 @@ icon = ExtResource("8_jefec")
 clip_text = true
 icon_alignment = 2
 
-[node name="sonar_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
+[node name="sonar_button" type="Button" parent="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll"]
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
 text = "LID"
@@ -349,7 +372,7 @@ icon = ExtResource("9_4nwtv")
 clip_text = true
 icon_alignment = 2
 
-[node name="barycenter_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
+[node name="barycenter_button" type="Button" parent="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll"]
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
 text = "BAR"
@@ -357,7 +380,7 @@ icon = ExtResource("10_ih8qm")
 clip_text = true
 icon_alignment = 2
 
-[node name="audio_visualizer_button" type="Button" parent="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll"]
+[node name="audio_visualizer_button" type="Button" parent="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll"]
 visible = false
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
@@ -389,15 +412,15 @@ bus = &"SFX"
 [connection signal="mouse_exited" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_mouse_exited"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]
 [connection signal="item_selected" from="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button" to="system" method="_on_picker_button_item_selected"]
-[connection signal="mouse_entered" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/scopes_button" to="system" method="_on_scopes_button_mouse_entered"]
-[connection signal="mouse_exited" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/scopes_button" to="system" method="_on_scopes_button_mouse_exited"]
-[connection signal="pressed" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/scopes_button" to="system" method="_on_scopes_button_pressed"]
-[connection signal="mouse_entered" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/sonar_button" to="system" method="_on_sonar_button_mouse_entered"]
-[connection signal="mouse_exited" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/sonar_button" to="system" method="_on_sonar_button_mouse_exited"]
-[connection signal="pressed" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/sonar_button" to="system" method="_on_sonar_button_pressed"]
-[connection signal="mouse_entered" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/barycenter_button" to="system" method="_on_barycenter_button_mouse_entered"]
-[connection signal="mouse_exited" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/barycenter_button" to="system" method="_on_barycenter_button_mouse_exited"]
-[connection signal="pressed" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/barycenter_button" to="system" method="_on_barycenter_button_pressed"]
-[connection signal="mouse_entered" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_mouse_entered"]
-[connection signal="mouse_exited" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_mouse_exited"]
-[connection signal="pressed" from="system/camera/canvas/control/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_pressed"]
+[connection signal="mouse_entered" from="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll/scopes_button" to="system" method="_on_scopes_button_mouse_entered"]
+[connection signal="mouse_exited" from="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll/scopes_button" to="system" method="_on_scopes_button_mouse_exited"]
+[connection signal="pressed" from="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll/scopes_button" to="system" method="_on_scopes_button_pressed"]
+[connection signal="mouse_entered" from="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll/sonar_button" to="system" method="_on_sonar_button_mouse_entered"]
+[connection signal="mouse_exited" from="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll/sonar_button" to="system" method="_on_sonar_button_mouse_exited"]
+[connection signal="pressed" from="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll/sonar_button" to="system" method="_on_sonar_button_pressed"]
+[connection signal="mouse_entered" from="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll/barycenter_button" to="system" method="_on_barycenter_button_mouse_entered"]
+[connection signal="mouse_exited" from="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll/barycenter_button" to="system" method="_on_barycenter_button_mouse_exited"]
+[connection signal="pressed" from="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll/barycenter_button" to="system" method="_on_barycenter_button_pressed"]
+[connection signal="mouse_entered" from="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_mouse_entered"]
+[connection signal="mouse_exited" from="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_mouse_exited"]
+[connection signal="pressed" from="system/camera/canvas/control/horizontal/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_pressed"]

@@ -1,15 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://chwm82adl21cm"]
+[gd_scene load_steps=2 format=3 uid="uid://chwm82adl21cm"]
 
 [ext_resource type="Script" path="res://Scenes/Sonar Interface/sonar_interface.gd" id="1_bmylm"]
-[ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://Scenes/window_theme.tres" id="1_rjt1s"]
 
-[node name="sonar_window" type="Window"]
-title = "LIDAR"
-position = Vector2i(0, 36)
-size = Vector2i(500, 500)
-visible = false
-unresizable = true
-theme = ExtResource("1_rjt1s")
+[node name="sonar_window" type="SubViewport"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(200, 200)
 
 [node name="background" type="TextureRect" parent="."]
 texture_filter = 1
@@ -66,7 +62,6 @@ text = "5
 "
 horizontal_alignment = 2
 
-[connection signal="close_requested" from="." to="sonar_control" method="_on_sonar_window_close_requested"]
 [connection signal="mouse_entered" from="sonar_control/flow_container/ping_button" to="sonar_control" method="_on_ping_button_mouse_entered"]
 [connection signal="mouse_exited" from="sonar_control/flow_container/ping_button" to="sonar_control" method="_on_ping_button_mouse_exited"]
 [connection signal="pressed" from="sonar_control/flow_container/ping_button" to="sonar_control" method="_on_ping_button_pressed"]

@@ -61,7 +61,7 @@ func _physics_process(_delta):
 	
 	#zooming
 	var zoom_axis = Input.get_axis("zoom_in", "zoom_out")
-	if zoom_axis and owner.has_focus():
+	if zoom_axis:
 		if not (zoom_axis == -1 and camera.fov == 10) and not (zoom_axis == 1 and camera.fov == 75):
 			camera.fov += zoom_axis
 	

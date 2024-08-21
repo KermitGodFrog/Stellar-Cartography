@@ -210,6 +210,11 @@ func _physics_process(delta):
 	queue_redraw()
 	pass
 
+func _unhandled_input(event):
+	pass
+
+
+
 func _draw():
 	draw_map()
 	draw_sonar()

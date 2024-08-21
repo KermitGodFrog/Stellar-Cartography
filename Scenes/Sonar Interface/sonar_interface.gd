@@ -24,7 +24,7 @@ func _physics_process(_delta):
 	else:
 		cooldown_label.set_text("")
 	
-	if Input.is_action_pressed("left_mouse") and owner.has_focus() and not mouse_over_ui:
+	if Input.is_action_pressed("left_mouse") and not mouse_over_ui:
 		ping_direction = get_screen_centre().direction_to(get_global_mouse_position())
 	queue_redraw()
 	pass

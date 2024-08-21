@@ -3,9 +3,9 @@ extends Node
 
 var world: worldAPI
 @onready var system_map = $system_window/system
-@onready var system_3d = $system_3d_window/system_3d
-@onready var sonar = $sonar_window/sonar_control
-@onready var barycenter_visualizer = $barycenter_visualizer_window/barycenter_control
+@onready var system_3d = $system_window/system/camera/canvas/control/scopes_container/system_3d_window/system_3d
+@onready var sonar = $system_window/system/camera/canvas/control/horizontal/sonar_container/sonar_window/sonar_control
+@onready var barycenter_visualizer = $system_window/system/camera/canvas/control/horizontal/barycenter_container/barycenter_visualizer_window/barycenter_control
 @onready var audio_visualizer = $audio_visualizer_window/audio_control
 @onready var station_ui = $station_window/station_control
 @onready var dialogue_manager = $dialogueManager
@@ -118,7 +118,7 @@ func _physics_process(delta):
 	dialogue_manager.set("player", world.player)
 	
 	#SETTING WHETHER SYSTEM MAP HAS FOCUS OR NOT (SINCE ITS A NODE IT CANNOT USE HAS_FOCUS() DIRECTLY!)
-	if $system_3d_window.has_focus() or $sonar_window.has_focus() or $barycenter_visualizer_window.has_focus() or $audio_visualizer_window.has_focus() or $station_window.has_focus(): system_map.has_focus = false
+	if $audio_visualizer_window.has_focus() or $station_window.has_focus(): system_map.has_focus = false
 	else: system_map.has_focus = true
 	pass
 

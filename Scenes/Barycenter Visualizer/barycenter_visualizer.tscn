@@ -1,15 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://oqkfuasvgtj6"]
+[gd_scene load_steps=2 format=3 uid="uid://oqkfuasvgtj6"]
 
-[ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://Scenes/window_theme.tres" id="1_q8gvx"]
 [ext_resource type="Script" path="res://Scenes/Barycenter Visualizer/barycenter_visualizer.gd" id="1_tynt4"]
 
-[node name="barycenter_visualizer_window" type="Window"]
-title = "Barycenter Visualizer"
-position = Vector2i(0, 36)
-size = Vector2i(500, 500)
-visible = false
-unresizable = true
-theme = ExtResource("1_q8gvx")
+[node name="barycenter_visualizer_window" type="SubViewport"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(200, 200)
 
 [node name="barycenter_control" type="Control" parent="."]
 layout_mode = 3
@@ -17,5 +13,3 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_tynt4")
-
-[connection signal="close_requested" from="." to="barycenter_control" method="_on_barycenter_visualizer_window_close_requested"]
