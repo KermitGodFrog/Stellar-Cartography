@@ -38,6 +38,9 @@ func _ready():
 	system_map.connect("audioVisualizerPopup", _on_audio_visualizer_popup)
 	
 	dialogue_manager.connect("addPlayerValue", _on_add_player_value)
+	dialogue_manager.connect("addPlayerHullStress", _on_add_player_hull_stress)
+	dialogue_manager.connect("removePlayerHullStress", _on_remove_player_hull_stress)
+	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
 	#var error = game_data.loadWorld()
 	#if error is worldAPI:
 		#print("SAVE FILE LOADED")
@@ -63,6 +66,9 @@ func _ready():
 	world.player.chief_engineer = load("res://Data/Characters/jiya.tres")
 	world.player.security_officer = load("res://Data/Characters/walker.tres")
 	world.player.medical_officer = load("res://Data/Characters/febris.tres")
+	for character in [world.player.first_officer, world.player.chief_engineer, world.player.security_officer, world.player.medical_officer, world.player.linguist, world.player.historian]:
+		if character:
+			dialogue_manager.character_lookup_dictionary[character.current_occupation] = character.display_name
 	
 	world.player.connect("orbitingBody", _on_player_orbiting_body)
 	world.player.connect("followingBody", _on_player_following_body)
@@ -90,10 +96,10 @@ func _ready():
 	#new_query.add_tree_access("is_station_inhabited", false)
 	#get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
-	#var new_query = responseQuery.new()
-	#new_query.add("concept", "randomPAOpenDialog")
-	#new_query.add_tree_access("planet_classification", "Terran")
-	#get_tree().call_group("dialogueManager", "speak", self, new_query)
+	var new_query = responseQuery.new()
+	new_query.add("concept", "randomPAOpenDialog")
+	new_query.add_tree_access("planet_classification", "Terran")
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
 func _physics_process(delta):
@@ -410,9 +416,31 @@ func _on_add_player_hull_stress(amount: int) -> void:
 	world.player.addHullStress(amount)
 	pass
 
+func _on_remove_player_hull_stress(amount: int) -> void:
+	world.player.removeHullStress(amount)
+	pass
+
 func _on_player_hull_deterioration_changed(new_value: int) -> void:
 	if new_value == 0:
 		_on_player_death()
+	pass
+
+func _on_kill_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> void:
+	match occupation:
+		characterAPI.OCCUPATIONS.FIRST_OFFICER:
+			world.player.first_officer.is_alive = false
+		characterAPI.OCCUPATIONS.CHIEF_ENGINEER:
+			world.player.chief_engineer.is_alive = false
+		characterAPI.OCCUPATIONS.SECURITY_OFFICER:
+			world.player.security_officer.is_alive = false
+		characterAPI.OCCUPATIONS.MEDICAL_OFFICER:
+			world.player.medical_officer.is_alive = false
+		characterAPI.OCCUPATIONS.LINGUIST:
+			world.player.linguist.is_alive = false
+		characterAPI.OCCUPATIONS.HISTORIAN:
+			world.player.historian.is_alive = false
+		_:
+			pass
 	pass
 
 

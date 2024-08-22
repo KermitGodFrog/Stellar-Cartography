@@ -2,6 +2,9 @@ extends Node
 
 signal onCloseDialog(with_return_state)
 signal addPlayerValue(amount: int)
+signal addPlayerHullStress(amount: int)
+signal removePlayerHullStress(amount: int)
+signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
 
 var dialogue_memory: Dictionary #memory that is added by any query, and is always accessible indefinitely unless a timeout is specified
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
@@ -9,6 +12,8 @@ enum QUERY_TYPES {BEST, ALL}
 
 #for populating query data
 var player: playerAPI
+var character_lookup_dictionary: Dictionary = {}
+
 var rules: Array[responseRule] = []
 enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, OPTIONS, TEXT}
 
@@ -326,5 +331,22 @@ func clearAll():
 
 func addValueWithFlair(amount: int):
 	emit_signal("addPlayerValue", amount)
-	dialogue.add_text(str("[color=green] (Gained ", amount, "c in data value) [/color]"))
+	dialogue.add_text(str("[color=green] (Gained ", amount, " nanites in data value) [/color]"))
+	pass
+
+func addHullStressWithFlair(amount: int):
+	emit_signal("addPlayerHullStress", amount)
+	dialogue.add_text(str("[color=red] (Plus ", amount, "% hull stress) [/color]"))
+	pass
+
+func removeHullStressWithFlair(amount: int):
+	emit_signal("removePlayerHullStress", amount)
+	dialogue.add_text(str("[color=green] (Minus ", amount, "% hull stress) [/color]"))
+	pass
+
+func killCharacterWithFlair(occupation: characterAPI.OCCUPATIONS):
+	emit_signal("killCharacterWithOccupation", occupation)
+	print(character_lookup_dictionary)
+	var lookup = character_lookup_dictionary.get(occupation, " ")
+	dialogue.add_text(str("[color=red] (", characterAPI.OCCUPATIONS.find_key(occupation).replace("_", " "), " ", lookup, " is dead) [/color]"))
 	pass
