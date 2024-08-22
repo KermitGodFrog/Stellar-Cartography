@@ -3,6 +3,7 @@ class_name playerAPI
 
 signal orbitingBody(body: bodyAPI)
 signal followingBody(body: bodyAPI)
+signal hullDeteriorationChanged(new_value: int)
 
 var position: Vector2 = Vector2.ZERO
 var current_star_system: starSystemAPI
@@ -18,7 +19,10 @@ var systems_traversed: int = 0
 var weirdness_index :
 	get:
 		return remap(systems_traversed, 0, 35, 0.0, 1.0)
-var deterioration: int = 0
+
+var hull_deterioration: int = 0
+var hull_stress: int = 0
+var morale: int = 100
 
 enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER}
 var unlocked_upgrades: Array[UPGRADE_ID] = []
@@ -186,4 +190,38 @@ func addAudioProfile(helper: audioProfileHelper):
 func removeAudioProfile(helper: audioProfileHelper):
 	if saved_audio_profiles.has(helper):
 		saved_audio_profiles.erase(helper)
+	pass
+
+
+func addHullStress(amount: int):
+	var adjusted = hull_stress + amount
+	if adjusted > 100:
+		addHullDeterioration(amount - 100)
+		hull_stress = mini(100, hull_stress + amount)
+	else:
+		hull_stress = mini(100, hull_stress + amount)
+	pass
+
+func removeHullStress(amount: int):
+	hull_stress = maxi(0, hull_stress - amount)
+	pass
+
+
+func addHullDeterioration(amount: int):
+	hull_deterioration = mini(100, hull_deterioration + amount)
+	emit_signal("hullDeteriorationChanged", hull_deterioration)
+	pass
+
+func removeHullDeterioration(amount: int):
+	hull_deterioration = maxi(0, hull_deterioration - amount)
+	emit_signal("hullDeteriorationChanged", hull_deterioration)
+	pass
+
+
+func addMorale(amount: int):
+	morale = mini(100, morale + amount)
+	pass
+
+func removeMorale(amount: int):
+	morale = maxi(0, morale - amount)
 	pass

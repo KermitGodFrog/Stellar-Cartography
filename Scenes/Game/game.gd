@@ -66,6 +66,7 @@ func _ready():
 	
 	world.player.connect("orbitingBody", _on_player_orbiting_body)
 	world.player.connect("followingBody", _on_player_following_body)
+	world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
 	
 	#new game stuff
 	var new = _on_create_new_star_system(false)
@@ -112,6 +113,11 @@ func _physics_process(delta):
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
+	
+	get_tree().call_group("trackNanites", "receive_tracked_status", world.player.balance)
+	get_tree().call_group("trackHullStress", "receive_tracked_status", str(world.player.hull_stress, "%"))
+	get_tree().call_group("trackHullDeterioration", "receive_tracked_status", str(world.player.hull_deterioration, "%"))
+	get_tree().call_group("trackMorale", "receive_tracked_status", str(world.player.morale, "%"))
 	pass
 
 func _on_player_orbiting_body(orbiting_body: bodyAPI):
@@ -229,6 +235,7 @@ func enter_wormhole(following_wormhole, wormholes, destination):
 	world.player.previous_star_system = world.player.current_star_system
 	world.player.systems_traversed += 1
 	_on_switch_star_system(destination)
+	world.player.removeHullStress(5)
 	pass
 
 func dock_with_station(following_station):
@@ -251,7 +258,9 @@ func dock_with_station(following_station):
 	_on_station_popup()
 	pass
 
-
+func _on_player_death():
+	print("GAME (DEBUG): PLAYER DIED!!!!!!!!!!!")
+	pass
 
 
 
@@ -333,6 +342,11 @@ func _on_add_console_item(text: String, bg_color: Color = Color.WHITE, time: int
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	print("SONAR INTERFACE (DEBUG): PINGING")
 	system_map._on_sonar_ping(ping_width, ping_length, ping_direction)
+	
+	if ping_width > 35:
+		var incurred_hull_stress = round(remap(ping_width, 10, 90, 0, 3))
+		_on_add_player_hull_stress(incurred_hull_stress)
+		#can have multiple results here depending on what upgrades the player has related to the LIDAR
 	pass
 
 func _on_sell_exploration_data(sell_percentage_of_market_price: int):
@@ -390,6 +404,15 @@ func _on_add_saved_audio_profile(helper: audioProfileHelper):
 
 func _on_add_player_value(amount: int) -> void:
 	world.player.current_value += amount
+	pass
+
+func _on_add_player_hull_stress(amount: int) -> void:
+	world.player.addHullStress(amount)
+	pass
+
+func _on_player_hull_deterioration_changed(new_value: int) -> void:
+	if new_value == 0:
+		_on_player_death()
 	pass
 
 

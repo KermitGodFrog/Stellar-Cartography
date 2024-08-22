@@ -25,7 +25,9 @@ func populateWithPlayerData(player: playerAPI):
 	add("player_jumps_remaining", player.jumps_remaining)
 	
 	add("player_weirdness_index", player.weirdness_index)
-	add("player_deterioration", player.deterioration)
+	add("player_hull_deterioration", player.hull_deterioration)
+	add("player_hull_stress", player.hull_stress)
+	add("player_morale", player.morale)
 	
 	for id in player.UPGRADE_ID:
 		if player.unlocked_upgrades.has(player.UPGRADE_ID.get(id)):

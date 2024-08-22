@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=42 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -12,8 +12,13 @@
 [ext_resource type="PackedScene" uid="uid://oqkfuasvgtj6" path="res://Scenes/Barycenter Visualizer/barycenter_visualizer.tscn" id="9_2aiel"]
 [ext_resource type="Script" path="res://Scenes/System Map/ui_apps_scroll.gd" id="9_pw1kh"]
 [ext_resource type="PackedScene" uid="uid://chwm82adl21cm" path="res://Scenes/Sonar Interface/sonar_interface.tscn" id="10_48t0n"]
+[ext_resource type="Texture2D" uid="uid://4r5ju0dq0137" path="res://Graphics/nanites_icon.png" id="10_e6b7x"]
+[ext_resource type="Script" path="res://Scenes/System Map/status_button.gd" id="11_1rwmm"]
+[ext_resource type="Texture2D" uid="uid://dq25m1n2y5upl" path="res://Graphics/hull_stress_icon.png" id="11_1tiv0"]
 [ext_resource type="PackedScene" uid="uid://co52u63cyk220" path="res://Scenes/System 3D/system_3d.tscn" id="11_domud"]
 [ext_resource type="Texture2D" uid="uid://csvtv1sy2k3ns" path="res://Graphics/audio_visualizer_icon.png" id="11_lvg8y"]
+[ext_resource type="Texture2D" uid="uid://cghgcu7ghw8mf" path="res://Graphics/hull_deterioration_icon.png" id="12_3bh3s"]
+[ext_resource type="Texture2D" uid="uid://ce1et15cnh5ao" path="res://Graphics/morale_icon.png" id="13_vaatn"]
 [ext_resource type="AudioStream" uid="uid://cc05rvmmtxsev" path="res://Sound/SFX/LIDAR/scanning_1.wav" id="15_gusf2"]
 [ext_resource type="AudioStream" uid="uid://cus4xdrnkykve" path="res://Sound/SFX/LIDAR/scanning_2.wav" id="16_7te6b"]
 [ext_resource type="AudioStream" uid="uid://bq0ch8l4q26i" path="res://Sound/SFX/LIDAR/scanning_3.wav" id="17_22n0i"]
@@ -53,6 +58,15 @@ bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4umr7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m5crt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gne5x"]
+bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_5218o"]
+color = Color(0.207843, 0.207843, 0.207843, 1)
+grow_begin = 11.0
+grow_end = 11.0
+vertical = true
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jthrs"]
 streams_count = 7
@@ -331,7 +345,7 @@ handle_input_locally = false
 render_target_update_mode = 4
 
 [node name="core_panel_bg" type="ColorRect" parent="system/camera/canvas/control/scopes_snap_scroll"]
-custom_minimum_size = Vector2(560, 235)
+custom_minimum_size = Vector2(710, 235)
 layout_mode = 2
 color = Color(0.180392, 0.180392, 0.180392, 0.415686)
 
@@ -343,6 +357,55 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 2
+
+[node name="status_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gne5x")
+
+[node name="status_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="status_scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin"]
+layout_mode = 2
+alignment = 1
+
+[node name="nanites_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["trackNanites"]]
+layout_mode = 2
+tooltip_text = "Nanites. Universally recognised currency. Can be obtained via trading in exploration data at a space station. "
+text = "50253"
+icon = ExtResource("10_e6b7x")
+script = ExtResource("11_1rwmm")
+
+[node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["trackHullStress"]]
+layout_mode = 2
+tooltip_text = "Hull stress. General starship wear-and-tear. Principally decreases slowly with time or by exchanging nanites at a space station for repairs. Damage over 100% will be transferred to hull deterioration."
+text = "100%"
+icon = ExtResource("11_1tiv0")
+script = ExtResource("11_1rwmm")
+
+[node name="hull_deterioration_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["trackHullDeterioration"]]
+layout_mode = 2
+tooltip_text = "Hull deterioration. Semi-permanent damage to a starship. Repairable only via a costly visit to a dry dock. Catastrophic, and often explosive, ship breakdown occurs at 100%."
+text = "100%"
+icon = ExtResource("12_3bh3s")
+script = ExtResource("11_1rwmm")
+
+[node name="morale_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["trackMorale"]]
+layout_mode = 2
+tooltip_text = "Morale. The willingness of a starships crew to follow their superiors. Depending on circumstance, an uprising may occur at 0%."
+text = "100%"
+icon = ExtResource("13_vaatn")
+script = ExtResource("11_1rwmm")
 
 [node name="core_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll"]
 custom_minimum_size = Vector2(460, 235)
@@ -378,6 +441,7 @@ render_target_update_mode = 4
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 theme_override_constants/separation = 20
+theme_override_styles/separator = SubResource("StyleBoxLine_5218o")
 
 [node name="sonar_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
 custom_minimum_size = Vector2(200, 200)
