@@ -9,6 +9,7 @@ var world: worldAPI
 @onready var audio_visualizer = $audio_visualizer_window/audio_control
 @onready var station_ui = $station_window/station_control
 @onready var dialogue_manager = $dialogueManager
+@onready var journey_map = $journey_map_window/journey_map
 
 func createWorld():
 	world = worldAPI.new()
@@ -96,10 +97,10 @@ func _ready():
 	#new_query.add_tree_access("is_station_inhabited", false)
 	#get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
-	var new_query = responseQuery.new()
-	new_query.add("concept", "randomPAOpenDialog")
-	new_query.add_tree_access("planet_classification", "Terran")
-	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	#var new_query = responseQuery.new()
+	#new_query.add("concept", "randomPAOpenDialog")
+	#new_query.add_tree_access("planet_classification", "Terran")
+	#get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
 func _physics_process(delta):
@@ -311,6 +312,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	barycenter_visualizer.system = to_system
 	system_3d.spawnBodies()
 	system_3d.reset_locked_body()
+	journey_map.add_new_system(world.player.systems_traversed)
 	return to_system
 
 func _on_locked_body_updated(body: bodyAPI):

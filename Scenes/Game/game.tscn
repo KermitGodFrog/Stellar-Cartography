@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://o18qlgh0vvwn"]
+[gd_scene load_steps=8 format=3 uid="uid://o18qlgh0vvwn"]
 
 [ext_resource type="Script" path="res://Scenes/Game/game.gd" id="1_mtv75"]
 [ext_resource type="PackedScene" uid="uid://bhroagne3v4wq" path="res://Scenes/System Map/system_map.tscn" id="2_jilbx"]
+[ext_resource type="PackedScene" uid="uid://dt0crabynqgvv" path="res://Scenes/Journey Map/journey_map.tscn" id="5_4mkmd"]
 [ext_resource type="PackedScene" uid="uid://dtbagvxj5to3" path="res://Scenes/Station UI/station_ui.tscn" id="6_g2s4t"]
 [ext_resource type="PackedScene" uid="uid://bwlfi3x5r51fo" path="res://Scenes/Audio Visualizer/audio_visualizer.tscn" id="7_uparo"]
 [ext_resource type="PackedScene" uid="uid://ckd75fjfh7urh" path="res://Data/Dialogue/dialogueManager.tscn" id="8_egtoq"]
@@ -16,6 +17,8 @@ script = ExtResource("1_mtv75")
 [node name="audio_visualizer_window" parent="." instance=ExtResource("7_uparo")]
 
 [node name="station_window" parent="." instance=ExtResource("6_g2s4t")]
+
+[node name="journey_map_window" parent="." instance=ExtResource("5_4mkmd")]
 
 [node name="interaction_cooldown" type="Timer" parent="."]
 wait_time = 2.0
