@@ -20,6 +20,7 @@ offset_top = -15.5
 offset_right = 91.0
 offset_bottom = 15.5
 grow_vertical = 2
+disabled = true
 text = "CONTINUE"
 
 [node name="new_button" type="Button" parent="."]
