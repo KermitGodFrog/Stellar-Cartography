@@ -9,6 +9,7 @@ disable_3d = true
 title = "Journey Map"
 position = Vector2i(0, 36)
 size = Vector2i(300, 600)
+visible = false
 theme = ExtResource("1_erjbd")
 
 [node name="journey_map" type="Node2D" parent="."]
@@ -17,3 +18,5 @@ script = ExtResource("2_tyl8k")
 [node name="camera" type="Camera2D" parent="journey_map"]
 position_smoothing_enabled = true
 script = ExtResource("3_bcqlh")
+
+[connection signal="close_requested" from="." to="journey_map" method="_on_journey_map_window_close_requested"]

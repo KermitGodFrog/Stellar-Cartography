@@ -37,6 +37,7 @@ func _ready():
 	audio_visualizer.connect("removeSavedAudioProfile", _on_remove_saved_audio_profile)
 	
 	system_map.connect("audioVisualizerPopup", _on_audio_visualizer_popup)
+	system_map.connect("journeyMapPopup", _on_journey_map_popup)
 	
 	dialogue_manager.connect("addPlayerValue", _on_add_player_value)
 	dialogue_manager.connect("addPlayerHullStress", _on_add_player_hull_stress)
@@ -480,4 +481,9 @@ func _on_audio_visualizer_popup():
 func _on_station_popup():
 	$station_window.popup()
 	get_tree().paused = true
+	pass
+
+func _on_journey_map_popup():
+	$journey_map_window.popup()
+	_on_add_console_item("Opening journey map.", Color("353535"), 50)
 	pass

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://chwm82adl21cm"]
+[gd_scene load_steps=3 format=3 uid="uid://chwm82adl21cm"]
 
 [ext_resource type="Script" path="res://Scenes/Sonar Interface/sonar_interface.gd" id="1_bmylm"]
+[ext_resource type="Texture2D" uid="uid://bu4clhu1rmiwq" path="res://Graphics/sonar_64x.png" id="1_t5fig"]
 
 [node name="sonar_window" type="SubViewport"]
 disable_3d = true
@@ -13,6 +14,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("1_t5fig")
+stretch_mode = 3
 
 [node name="sonar_control" type="Control" parent="."]
 layout_mode = 3

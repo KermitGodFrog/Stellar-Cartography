@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=43 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -23,6 +23,7 @@
 [ext_resource type="AudioStream" uid="uid://cus4xdrnkykve" path="res://Sound/SFX/LIDAR/scanning_2.wav" id="16_7te6b"]
 [ext_resource type="AudioStream" uid="uid://bq0ch8l4q26i" path="res://Sound/SFX/LIDAR/scanning_3.wav" id="17_22n0i"]
 [ext_resource type="AudioStream" uid="uid://cltl3b14h1ute" path="res://Sound/SFX/LIDAR/scanning_4.wav" id="18_nal3x"]
+[ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://Graphics/journey_map_icon.png" id="19_36y85"]
 [ext_resource type="AudioStream" uid="uid://bt7cv0shijpxt" path="res://Sound/SFX/LIDAR/scanning_5.wav" id="19_sbqun"]
 [ext_resource type="AudioStream" uid="uid://c4jdky4e86g8i" path="res://Sound/SFX/LIDAR/scanning_6.wav" id="20_0227f"]
 [ext_resource type="AudioStream" uid="uid://vq7vxfvpd4i0" path="res://Sound/SFX/LIDAR/scanning_7.wav" id="21_xegkg"]
@@ -474,6 +475,14 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 script = ExtResource("9_pw1kh")
 
+[node name="journey_map_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
+layout_mode = 2
+theme = ExtResource("8_a7cgy")
+text = "JUR"
+icon = ExtResource("19_36y85")
+clip_text = true
+icon_alignment = 2
+
 [node name="audio_visualizer_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
 visible = false
 layout_mode = 2
@@ -494,6 +503,7 @@ bus = &"SFX"
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]
 [connection signal="item_selected" from="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button" to="system" method="_on_picker_button_item_selected"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/journey_map_button" to="system" method="_on_journey_map_button_pressed"]
 [connection signal="mouse_entered" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_mouse_entered"]
 [connection signal="mouse_exited" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_mouse_exited"]
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_pressed"]

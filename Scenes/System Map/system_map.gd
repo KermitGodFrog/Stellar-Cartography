@@ -8,6 +8,7 @@ signal updatedLockedBody(body: bodyAPI)
 signal lockedBodyDepreciated
 
 signal audioVisualizerPopup
+signal journeyMapPopup
 
 signal DEBUG_REVEAL_ALL_WORMHOLES
 signal DEBUG_REVEAL_ALL_BODIES
@@ -336,3 +337,6 @@ func _on_audio_visualizer_button_pressed():
 	emit_signal("audioVisualizerPopup")
 	pass
 
+func _on_journey_map_button_pressed():
+	emit_signal("journeyMapPopup")
+	pass 
