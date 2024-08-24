@@ -2,7 +2,7 @@ extends Node
 
 func _ready():
 	global_data.change_scene.connect(_change_scene)
-	global_data.change_scene.emit("res://Scenes/Game/game.tscn")
+	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
 	pass
 
 func _change_scene(path_to_scene):

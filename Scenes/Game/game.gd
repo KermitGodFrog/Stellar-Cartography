@@ -11,10 +11,6 @@ var world: worldAPI
 @onready var dialogue_manager = $dialogueManager
 @onready var journey_map = $journey_map_window/journey_map
 
-func createWorld():
-	world = worldAPI.new()
-	pass
-
 func _ready():
 	system_map.connect("updatePlayerActionType", _on_update_player_action_type)
 	system_map.connect("updatePlayerTargetPosition", _on_update_player_target_position)
@@ -43,65 +39,57 @@ func _ready():
 	dialogue_manager.connect("addPlayerHullStress", _on_add_player_hull_stress)
 	dialogue_manager.connect("removePlayerHullStress", _on_remove_player_hull_stress)
 	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
-	#var error = game_data.loadWorld()
-	#if error is worldAPI:
-		#print("SAVE FILE LOADED")
-		#world = error
-	#else:
-		#print("NO SAVE FILE!")
-		#createWorld()
-		#world.createPlayer(1)
-		#
+	
+	world = await game_data.loadWorld()
+	#world = null
+	print(world)
+	if world == null:
+		world = game_data.createWorld()
+		world.createPlayer(3, 3, 10)
+		world.player.resetJumpsRemaining()
+		
+		#CHARACTERS FOR ROGUELIKE:
+		world.player.first_officer = load("res://Data/Characters/rui.tres")
+		world.player.chief_engineer = load("res://Data/Characters/jiya.tres")
+		world.player.security_officer = load("res://Data/Characters/walker.tres")
+		world.player.medical_officer = load("res://Data/Characters/febris.tres")
+		for character in [world.player.first_officer, world.player.chief_engineer, world.player.security_officer, world.player.medical_officer, world.player.linguist, world.player.historian]:
+			if character:
+				dialogue_manager.character_lookup_dictionary[character.current_occupation] = character.display_name
+		
+		world.player.connect("orbitingBody", _on_player_orbiting_body)
+		world.player.connect("followingBody", _on_player_following_body)
+		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+		
 		#new game stuff
-		#var new = _on_create_new_star_system(false)
-		#for i in range(2):
-		#	_on_create_new_star_system(false, new)
-		#new.generateRandomWormholes()
-		#_on_switch_star_system(new)
-	
-	createWorld()
-	world.createPlayer(3, 3, 10)
-	world.player.resetJumpsRemaining()
-	
-	#CHARACTERS FOR ROGUELIKE:
-	world.player.first_officer = load("res://Data/Characters/rui.tres")
-	world.player.chief_engineer = load("res://Data/Characters/jiya.tres")
-	world.player.security_officer = load("res://Data/Characters/walker.tres")
-	world.player.medical_officer = load("res://Data/Characters/febris.tres")
-	for character in [world.player.first_officer, world.player.chief_engineer, world.player.security_officer, world.player.medical_officer, world.player.linguist, world.player.historian]:
-		if character:
-			dialogue_manager.character_lookup_dictionary[character.current_occupation] = character.display_name
-	
-	world.player.connect("orbitingBody", _on_player_orbiting_body)
-	world.player.connect("followingBody", _on_player_following_body)
-	world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
-	
-	#new game stuff
-	var new = _on_create_new_star_system(false)
-	for i in range(2):
-		_on_create_new_star_system(false, new)
-	new.generateRandomWormholes()
-	_on_switch_star_system(new)
-	
-	_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-	_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
-	
-	_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
-	
-	await get_tree().create_timer(1.0, true).timeout
-	
-	#var new_query = responseQuery.new()
-	#new_query.add("concept", "openDialog")
-	#new_query.add("id", "station")
-	#new_query.add_tree_access("station_classification", str("ABANDONED"))
-	#new_query.add_tree_access("is_station_abandoned", true)
-	#new_query.add_tree_access("is_station_inhabited", false)
-	#get_tree().call_group("dialogueManager", "speak", self, new_query)
-	
-	#var new_query = responseQuery.new()
-	#new_query.add("concept", "randomPAOpenDialog")
-	#new_query.add_tree_access("planet_classification", "Terran")
-	#get_tree().call_group("dialogueManager", "speak", self, new_query)
+		var new = _on_create_new_star_system(false)
+		for i in range(2):
+			_on_create_new_star_system(false, new)
+		new.generateRandomWormholes()
+		_on_switch_star_system(new)
+		
+		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
+		
+		#await get_tree().create_timer(1.0, true).timeout
+		
+		#var new_query = responseQuery.new()
+		#new_query.add("concept", "openDialog")
+		#new_query.add("id", "station")
+		#new_query.add_tree_access("station_classification", str("ABANDONED"))
+		#new_query.add_tree_access("is_station_abandoned", true)
+		#new_query.add_tree_access("is_station_inhabited", false)
+		#get_tree().call_group("dialogueManager", "speak", self, new_query)
+		
+		#var new_query = responseQuery.new()
+		#new_query.add("concept", "randomPAOpenDialog")
+		#new_query.add_tree_access("planet_classification", "Terran")
+		#get_tree().call_group("dialogueManager", "speak", self, new_query)
+	else:
+		world.player.connect("orbitingBody", _on_player_orbiting_body)
+		world.player.connect("followingBody", _on_player_following_body)
+		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+		
+		_on_switch_star_system(world.player.current_star_system)
 	pass
 
 func _physics_process(delta):
@@ -126,6 +114,9 @@ func _physics_process(delta):
 	get_tree().call_group("trackHullStress", "receive_tracked_status", str(world.player.hull_stress, "%"))
 	get_tree().call_group("trackHullDeterioration", "receive_tracked_status", str(world.player.hull_deterioration, "%"))
 	get_tree().call_group("trackMorale", "receive_tracked_status", str(world.player.morale, "%"))
+	
+	if Input.is_action_just_pressed("gkooble"):
+		game_data.saveWorld(world)
 	pass
 
 func _on_player_orbiting_body(orbiting_body: bodyAPI):

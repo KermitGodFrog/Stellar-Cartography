@@ -5,8 +5,6 @@ var star_systems: Array[starSystemAPI]
 var player: playerAPI
 var identifier_count: int = 1
 
-var weirdness_index: float = 0
-
 func createStarSystem(d_name: String):
 	var new_system = starSystemAPI.new()
 	new_system.set_identifier(identifier_count)
