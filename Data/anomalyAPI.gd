@@ -1,9 +1,11 @@
 extends bodyAPI
 class_name anomalyAPI
-var anomaly_classification: int #game data
+#any value that is @export is saveable for future play sessions. constants shouldny be saved.
+
+@export var anomaly_classification: int #game data
 
 enum DISCOVERY_TYPES {NORMAL, THERMAL, SONAR}
-var discovery_type: int = 0
+@export var discovery_type: int = 0
 
 func is_anomaly():
 	return true

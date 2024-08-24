@@ -1,26 +1,27 @@
 extends Resource
 class_name bodyAPI
+#any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
-var identifier: int
-var display_name: String
+@export var identifier: int
+@export var display_name: String
 
-var hook_identifier: int #identifier
+@export var hook_identifier: int #identifier
 
-var distance: float #in solar radii
-var orbit_speed: float
-var radius: float
-var metadata: Dictionary = {}
+@export var distance: float #in solar radii
+@export var orbit_speed: float
+@export var radius: float
+@export var metadata: Dictionary = {}
 
-var position: Vector2
-var rotation: float #radians
+@export var position: Vector2
+@export var rotation: float #radians
 
-var pings_to_be_theorised: int = 3
-var is_theorised: bool = false
-var is_known: bool = false
+@export var pings_to_be_theorised: int = 3
+@export var is_theorised: bool = false
+@export var is_known: bool = false
 
 enum VARIATIONS {LOW, MEDIUM, HIGH}
-var current_variation
-var guessed_variation
+@export var current_variation: int 
+@export var guessed_variation: int
 
 func get_identifier():
 	return identifier

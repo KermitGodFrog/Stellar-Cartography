@@ -4,7 +4,7 @@ extends Control
 @onready var new_button = $new_button
 
 func _ready():
-	if ResourceLoader.exists("user://stellar_cartographer_data.tres"):
+	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
 		continue_button.disabled = false
 	pass
 

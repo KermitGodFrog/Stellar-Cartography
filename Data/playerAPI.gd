@@ -1,50 +1,51 @@
 extends Resource
 class_name playerAPI
+#any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
 signal orbitingBody(body: bodyAPI)
 signal followingBody(body: bodyAPI)
 signal hullDeteriorationChanged(new_value: int)
 
-var position: Vector2 = Vector2.ZERO
-var current_star_system: starSystemAPI
-var previous_star_system: starSystemAPI
+@export var position: Vector2 = Vector2.ZERO
+@export var current_star_system: starSystemAPI
+@export var previous_star_system: starSystemAPI
 
-var speed: int = 1
-var balance: int = 0
-var current_value: int = 0
+@export var speed: int = 1
+@export var balance: int = 0
+@export var current_value: int = 0
 
-var max_jumps: int = 5
-var jumps_remaining: int = 0
-var systems_traversed: int = 0
+@export var max_jumps: int = 5
+@export var jumps_remaining: int = 0
+@export var systems_traversed: int = 0
 var weirdness_index :
 	get:
 		return remap(systems_traversed, 0, 35, 0.0, 1.0)
 
-var hull_deterioration: int = 0
-var hull_stress: int = 0
-var morale: int = 100
+@export var hull_deterioration: int = 0
+@export var hull_stress: int = 0
+@export var morale: int = 100
 
 enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER}
-var unlocked_upgrades: Array[UPGRADE_ID] = []
+@export var unlocked_upgrades: Array[UPGRADE_ID] = []
 
-var saved_audio_profiles: Array[audioProfileHelper] = []
-var max_saved_audio_profiles: int = 10
+@export var saved_audio_profiles: Array[audioProfileHelper] = []
+@export var max_saved_audio_profiles: int = 10
 
 #characters \/\/\/\/\/\/
-var first_officer: characterAPI
-var chief_engineer: characterAPI
-var security_officer: characterAPI
-var medical_officer: characterAPI
-var linguist: characterAPI
-var historian: characterAPI
+@export var first_officer: characterAPI
+@export var chief_engineer: characterAPI
+@export var security_officer: characterAPI
+@export var medical_officer: characterAPI
+@export var linguist: characterAPI
+@export var historian: characterAPI
 
 #stuff ported from old system_map.gd - no idea how it works so dont ask me hahahahhaah good luck
 var rotation_hint: float #used for orbiting mechanics
-var target_position: Vector2 = Vector2.ZERO
+@export var target_position: Vector2 = Vector2.ZERO
 enum ACTION_TYPES {NONE, GO_TO, ORBIT}
-var current_action_type: ACTION_TYPES = ACTION_TYPES.NONE
-var pending_action_body : bodyAPI
-var action_body : bodyAPI
+@export var current_action_type: ACTION_TYPES = ACTION_TYPES.NONE
+@export var pending_action_body : bodyAPI
+@export var action_body : bodyAPI
 
 func get_jumps_remaining():
 	return jumps_remaining

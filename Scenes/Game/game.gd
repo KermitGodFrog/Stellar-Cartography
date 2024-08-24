@@ -40,8 +40,8 @@ func _ready():
 	dialogue_manager.connect("removePlayerHullStress", _on_remove_player_hull_stress)
 	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
 	
-	#world = await game_data.loadWorld()
-	world = null
+	world = await game_data.loadWorld()
+	#world = null
 	print(world)
 	if world == null:
 		world = game_data.createWorld()

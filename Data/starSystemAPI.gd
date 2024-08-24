@@ -1,17 +1,18 @@
 extends Resource
 class_name starSystemAPI
+#any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
-var identifier: int
-var display_name: String
+@export var identifier: int
+@export var display_name: String
 
-var previous_system: starSystemAPI
-var destination_systems: Array[starSystemAPI]
+@export var previous_system: starSystemAPI
+@export var destination_systems: Array[starSystemAPI]
 
-var bodies: Array[bodyAPI]
-var identifier_count: int = 1
+@export var bodies: Array[bodyAPI]
+@export var identifier_count: int = 1
 
-var time: int = 1000
-var post_gen_location_candidates: Array = []
+@export var time: int = 1000
+@export var post_gen_location_candidates: Array = []
 # ^^^ can be used for multiple passes of additional things, each pass removes used indexes from the array  
 
 func get_identifier():
