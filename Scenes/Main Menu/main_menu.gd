@@ -10,9 +10,9 @@ func _ready():
 
 
 func _on_continue_button_pressed():
-	global_data.change_scene.emit("res://Scenes/Game/game.tscn")
+	global_data.change_scene.emit("res://Scenes/Game/game.tscn", global_data.GAME_INIT_TYPES.CONTINUE)
 	pass
 
 func _on_new_button_pressed():
-	global_data.change_scene.emit("res://Scenes/Game/game.tscn")
+	global_data.change_scene.emit("res://Scenes/Game/game.tscn", global_data.GAME_INIT_TYPES.NEW)
 	pass 

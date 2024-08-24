@@ -1,6 +1,7 @@
 extends Node
 #Handles most game stuff that is not local to child windows, loads data, saves data, the whole thing. child windows must route data through this to change the world/system/player
 
+var init_type: int = 0 #from global data GAME_INIT_TYPES
 var world: worldAPI
 @onready var system_map = $system_window/system
 @onready var system_3d = $system_window/system/camera/canvas/control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container/system_3d_window/system_3d
@@ -41,9 +42,8 @@ func _ready():
 	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
 	
 	world = await game_data.loadWorld()
-	#world = null
 	print(world)
-	if world == null:
+	if world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
 		world = game_data.createWorld()
 		world.createPlayer(3, 3, 10)
 		world.player.resetJumpsRemaining()
@@ -84,7 +84,11 @@ func _ready():
 		#new_query.add("concept", "randomPAOpenDialog")
 		#new_query.add_tree_access("planet_classification", "Terran")
 		#get_tree().call_group("dialogueManager", "speak", self, new_query)
-	else:
+		
+		
+		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
+		
+	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		world.player.connect("orbitingBody", _on_player_orbiting_body)
 		world.player.connect("followingBody", _on_player_following_body)
 		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)

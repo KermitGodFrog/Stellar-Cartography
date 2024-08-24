@@ -1,5 +1,6 @@
 extends Node
 
+enum GAME_INIT_TYPES {NEW, CONTINUE}
 signal change_scene(path_to_scene)
 
 func get_randi(from: int, to: int):
