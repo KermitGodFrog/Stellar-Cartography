@@ -270,7 +270,7 @@ func generateRandomWeightedBodies(hook_identifier: int):
 				#SETTING WHETHER THE BODY HAS A PLANETARY ANOMALY
 				var has_planetary_anomaly: bool = false
 				var is_planetary_anomaly_available: bool = false
-				if randf() >= 0.975: #will likely have to be higher
+				if randf() >= 0.95: #will likely have to be higher, WAS 0.975 BEFORE
 					has_planetary_anomaly = true
 					is_planetary_anomaly_available = true
 				
