@@ -11,6 +11,7 @@ var world: worldAPI
 @onready var station_ui = $station_window/station_control
 @onready var dialogue_manager = $dialogueManager
 @onready var journey_map = $journey_map_window/journey_map
+@onready var pause_menu = $pauseMenu
 
 func _ready():
 	system_map.connect("updatePlayerActionType", _on_update_player_action_type)
@@ -40,6 +41,11 @@ func _ready():
 	dialogue_manager.connect("addPlayerHullStress", _on_add_player_hull_stress)
 	dialogue_manager.connect("removePlayerHullStress", _on_remove_player_hull_stress)
 	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
+	
+	pause_menu.connect("onClosePauseMenu", _on_close_pause_menu)
+	pause_menu.connect("saveWorld", _on_save_world)
+	pause_menu.connect("saveAndQuit", _on_save_and_quit)
+	
 	
 	world = await game_data.loadWorld()
 	print(world)
@@ -119,8 +125,8 @@ func _physics_process(delta):
 	get_tree().call_group("trackHullDeterioration", "receive_tracked_status", str(world.player.hull_deterioration, "%"))
 	get_tree().call_group("trackMorale", "receive_tracked_status", str(world.player.morale, "%"))
 	
-	if Input.is_action_just_pressed("gkooble"):
-		game_data.saveWorld(world)
+	if Input.is_action_just_pressed("pause"):
+		_on_open_pause_menu()
 	pass
 
 func _on_player_orbiting_body(orbiting_body: bodyAPI):
@@ -440,6 +446,27 @@ func _on_kill_character_with_occupation(occupation: characterAPI.OCCUPATIONS) ->
 		_:
 			pass
 	pass
+
+
+func _on_open_pause_menu():
+	pause_menu.openPauseMenu()
+	pass
+
+func _on_close_pause_menu():
+	if (dialogue_manager.dialogue.visible == true) or (station_ui.get_parent().visible == true): #get parent might not be best practice
+		get_tree().paused = true #repausing the game if other nodes which pause the game are shown. station_ui and dialogue should never be shown at the same time so this is the only edge case.
+	pass
+
+func _on_save_world():
+	game_data.saveWorld(world)
+	pass
+
+func _on_save_and_quit():
+	game_data.saveWorld(world)
+	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
+	pass
+
+
 
 
 
