@@ -39,7 +39,6 @@ func get_weighted_anomaly_classifications() -> Dictionary:
 		weighted[classification] = {"name": classification, "weight": weight}
 	return weighted
 
-
 func get_closest_body(bodies, pos):
 	if bodies.size() > 0:
 		var distance_to_bodies: Dictionary = {}
@@ -51,19 +50,28 @@ func get_closest_body(bodies, pos):
 	else:
 		return null
 
+
 func loadWorld():
 	print("GAME DATA: LOADING WORLD")
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
-		var resource : Resource = load("user://stellar_cartographer_data.res").duplicate(true)
+		#var resource : Resource = load("user://stellar_cartographer_data.res")
+		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_data.res", "", ResourceLoader.CACHE_MODE_IGNORE)
 		return resource
 	return null
 
 func saveWorld(world: worldAPI):
 	print("GAME DATA: SAVING WORLD")
-	var error = ResourceSaver.save(world, "user://stellar_cartographer_data.res")
+	var error = ResourceSaver.save(world, "user://stellar_cartographer_data.res", ResourceSaver.FLAG_REPLACE_SUBRESOURCE_PATHS)
 	print("ERROR CODE: ", error)
 	pass
 
 func createWorld():
 	print("GAME DATA: CREATING WORLD")
 	return worldAPI.new()
+
+func deleteWorld():
+	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
+		print("GAME DATA: DELETING WORLD")
+		var error = DirAccess.remove_absolute("user://stellar_cartographer_data.res")
+		print("ERROR CODE: ", error)
+	pass

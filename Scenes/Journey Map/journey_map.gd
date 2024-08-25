@@ -58,7 +58,11 @@ func add_new_system(_systems_traversed: int):
 	emit_signal("map_updated")
 	pass
 
-
+func generate_up_to_system(_systems_traversed: int):
+	systems_traversed = _systems_traversed
+	for system in _systems_traversed:
+		systems.append(Vector2(global_data.get_randi(-100,100), -(system * 100)))
+	pass
 
 
 

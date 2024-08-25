@@ -3,6 +3,7 @@ extends Node
 
 var init_type: int = 0 #from global data GAME_INIT_TYPES
 var world: worldAPI
+
 @onready var system_map = $system_window/system
 @onready var system_3d = $system_window/system/camera/canvas/control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container/system_3d_window/system_3d
 @onready var sonar = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container/sonar_window/sonar_control
@@ -42,13 +43,11 @@ func _ready():
 	dialogue_manager.connect("removePlayerHullStress", _on_remove_player_hull_stress)
 	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
 	
-	pause_menu.connect("onClosePauseMenu", _on_close_pause_menu)
 	pause_menu.connect("saveWorld", _on_save_world)
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
 	
 	
 	world = await game_data.loadWorld()
-	print(world)
 	if world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
 		world = game_data.createWorld()
 		world.createPlayer(3, 3, 10)
@@ -72,6 +71,11 @@ func _ready():
 		for i in range(2):
 			_on_create_new_star_system(false, new)
 		new.generateRandomWormholes()
+		new.generateRandomWeightedStations()
+		world.player.resetJumpsRemaining()
+		for body in new.bodies:
+			body.is_known = true
+		
 		_on_switch_star_system(new)
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
@@ -98,6 +102,11 @@ func _ready():
 		world.player.connect("orbitingBody", _on_player_orbiting_body)
 		world.player.connect("followingBody", _on_player_following_body)
 		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+		
+		for upgrade in world.player.unlocked_upgrades:
+			_on_upgrade_state_change(upgrade, true)
+		
+		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
 		_on_switch_star_system(world.player.current_star_system)
 	pass
@@ -126,10 +135,10 @@ func _physics_process(delta):
 	get_tree().call_group("trackMorale", "receive_tracked_status", str(world.player.morale, "%"))
 	
 	if Input.is_action_just_pressed("pause"):
-		_on_open_pause_menu()
+		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
 	pass
 
-func _on_player_orbiting_body(orbiting_body: bodyAPI):
+func _on_player_orbiting_body(_orbiting_body: bodyAPI):
 	pass
 
 func _on_player_following_body(following_body: bodyAPI):
@@ -243,8 +252,9 @@ func enter_wormhole(following_wormhole, wormholes, destination):
 	if destination_wormhole: world.player.position = destination_wormhole.position
 	world.player.previous_star_system = world.player.current_star_system
 	world.player.systems_traversed += 1
+	if world.player.systems_traversed == 35: # will need a global variable for how many ssystems until win at some point, customizability would be sick
+		_on_player_win()
 	_on_switch_star_system(destination)
-	world.player.removeHullStress(5)
 	pass
 
 func dock_with_station(following_station):
@@ -269,9 +279,15 @@ func dock_with_station(following_station):
 
 func _on_player_death():
 	print("GAME (DEBUG): PLAYER DIED!!!!!!!!!!!")
+	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
+	game_data.deleteWorld()
 	pass
 
-
+func _on_player_win():
+	print("GAME (DEBUG): PLAYER WON!!!!!!!!!!!!!!")
+	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
+	game_data.deleteWorld()
+	pass
 
 func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
 	world.player.current_action_type = type
@@ -315,6 +331,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	system_3d.spawnBodies()
 	system_3d.reset_locked_body()
 	journey_map.add_new_system(world.player.systems_traversed)
+	world.player.removeHullStress(5)
 	return to_system
 
 func _on_locked_body_updated(body: bodyAPI):
@@ -450,11 +467,6 @@ func _on_kill_character_with_occupation(occupation: characterAPI.OCCUPATIONS) ->
 
 func _on_open_pause_menu():
 	pause_menu.openPauseMenu()
-	pass
-
-func _on_close_pause_menu():
-	if (dialogue_manager.dialogue.visible == true) or (station_ui.get_parent().visible == true): #get parent might not be best practice
-		get_tree().paused = true #repausing the game if other nodes which pause the game are shown. station_ui and dialogue should never be shown at the same time so this is the only edge case.
 	pass
 
 func _on_save_world():
