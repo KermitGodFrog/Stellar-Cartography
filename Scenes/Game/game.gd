@@ -1,6 +1,7 @@
 extends Node
 #Handles most game stuff that is not local to child windows, loads data, saves data, the whole thing. child windows must route data through this to change the world/system/player
 
+var init_type: int = 0 #from global data GAME_INIT_TYPES
 var world: worldAPI
 @onready var system_map = $system_window/system
 @onready var system_3d = $system_window/system/camera/canvas/control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container/system_3d_window/system_3d
@@ -10,10 +11,7 @@ var world: worldAPI
 @onready var station_ui = $station_window/station_control
 @onready var dialogue_manager = $dialogueManager
 @onready var journey_map = $journey_map_window/journey_map
-
-func createWorld():
-	world = worldAPI.new()
-	pass
+@onready var pause_menu = $pauseMenu
 
 func _ready():
 	system_map.connect("updatePlayerActionType", _on_update_player_action_type)
@@ -43,65 +41,65 @@ func _ready():
 	dialogue_manager.connect("addPlayerHullStress", _on_add_player_hull_stress)
 	dialogue_manager.connect("removePlayerHullStress", _on_remove_player_hull_stress)
 	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
-	#var error = game_data.loadWorld()
-	#if error is worldAPI:
-		#print("SAVE FILE LOADED")
-		#world = error
-	#else:
-		#print("NO SAVE FILE!")
-		#createWorld()
-		#world.createPlayer(1)
-		#
+	
+	pause_menu.connect("onClosePauseMenu", _on_close_pause_menu)
+	pause_menu.connect("saveWorld", _on_save_world)
+	pause_menu.connect("saveAndQuit", _on_save_and_quit)
+	
+	
+	world = await game_data.loadWorld()
+	print(world)
+	if world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
+		world = game_data.createWorld()
+		world.createPlayer(3, 3, 10)
+		world.player.resetJumpsRemaining()
+		
+		#CHARACTERS FOR ROGUELIKE:
+		world.player.first_officer = load("res://Data/Characters/rui.tres")
+		world.player.chief_engineer = load("res://Data/Characters/jiya.tres")
+		world.player.security_officer = load("res://Data/Characters/walker.tres")
+		world.player.medical_officer = load("res://Data/Characters/febris.tres")
+		for character in [world.player.first_officer, world.player.chief_engineer, world.player.security_officer, world.player.medical_officer, world.player.linguist, world.player.historian]:
+			if character:
+				dialogue_manager.character_lookup_dictionary[character.current_occupation] = character.display_name
+		
+		world.player.connect("orbitingBody", _on_player_orbiting_body)
+		world.player.connect("followingBody", _on_player_following_body)
+		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+		
 		#new game stuff
-		#var new = _on_create_new_star_system(false)
-		#for i in range(2):
-		#	_on_create_new_star_system(false, new)
-		#new.generateRandomWormholes()
-		#_on_switch_star_system(new)
-	
-	createWorld()
-	world.createPlayer(3, 3, 10)
-	world.player.resetJumpsRemaining()
-	
-	#CHARACTERS FOR ROGUELIKE:
-	world.player.first_officer = load("res://Data/Characters/rui.tres")
-	world.player.chief_engineer = load("res://Data/Characters/jiya.tres")
-	world.player.security_officer = load("res://Data/Characters/walker.tres")
-	world.player.medical_officer = load("res://Data/Characters/febris.tres")
-	for character in [world.player.first_officer, world.player.chief_engineer, world.player.security_officer, world.player.medical_officer, world.player.linguist, world.player.historian]:
-		if character:
-			dialogue_manager.character_lookup_dictionary[character.current_occupation] = character.display_name
-	
-	world.player.connect("orbitingBody", _on_player_orbiting_body)
-	world.player.connect("followingBody", _on_player_following_body)
-	world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
-	
-	#new game stuff
-	var new = _on_create_new_star_system(false)
-	for i in range(2):
-		_on_create_new_star_system(false, new)
-	new.generateRandomWormholes()
-	_on_switch_star_system(new)
-	
-	_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-	_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
-	
-	_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
-	
-	await get_tree().create_timer(1.0, true).timeout
-	
-	#var new_query = responseQuery.new()
-	#new_query.add("concept", "openDialog")
-	#new_query.add("id", "station")
-	#new_query.add_tree_access("station_classification", str("ABANDONED"))
-	#new_query.add_tree_access("is_station_abandoned", true)
-	#new_query.add_tree_access("is_station_inhabited", false)
-	#get_tree().call_group("dialogueManager", "speak", self, new_query)
-	
-	#var new_query = responseQuery.new()
-	#new_query.add("concept", "randomPAOpenDialog")
-	#new_query.add_tree_access("planet_classification", "Terran")
-	#get_tree().call_group("dialogueManager", "speak", self, new_query)
+		var new = _on_create_new_star_system(false)
+		for i in range(2):
+			_on_create_new_star_system(false, new)
+		new.generateRandomWormholes()
+		_on_switch_star_system(new)
+		
+		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
+		
+		#await get_tree().create_timer(1.0, true).timeout
+		
+		#var new_query = responseQuery.new()
+		#new_query.add("concept", "openDialog")
+		#new_query.add("id", "station")
+		#new_query.add_tree_access("station_classification", str("ABANDONED"))
+		#new_query.add_tree_access("is_station_abandoned", true)
+		#new_query.add_tree_access("is_station_inhabited", false)
+		#get_tree().call_group("dialogueManager", "speak", self, new_query)
+		
+		#var new_query = responseQuery.new()
+		#new_query.add("concept", "randomPAOpenDialog")
+		#new_query.add_tree_access("planet_classification", "Terran")
+		#get_tree().call_group("dialogueManager", "speak", self, new_query)
+		
+		
+		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
+		
+	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
+		world.player.connect("orbitingBody", _on_player_orbiting_body)
+		world.player.connect("followingBody", _on_player_following_body)
+		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+		
+		_on_switch_star_system(world.player.current_star_system)
 	pass
 
 func _physics_process(delta):
@@ -126,6 +124,9 @@ func _physics_process(delta):
 	get_tree().call_group("trackHullStress", "receive_tracked_status", str(world.player.hull_stress, "%"))
 	get_tree().call_group("trackHullDeterioration", "receive_tracked_status", str(world.player.hull_deterioration, "%"))
 	get_tree().call_group("trackMorale", "receive_tracked_status", str(world.player.morale, "%"))
+	
+	if Input.is_action_just_pressed("pause"):
+		_on_open_pause_menu()
 	pass
 
 func _on_player_orbiting_body(orbiting_body: bodyAPI):
@@ -445,6 +446,27 @@ func _on_kill_character_with_occupation(occupation: characterAPI.OCCUPATIONS) ->
 		_:
 			pass
 	pass
+
+
+func _on_open_pause_menu():
+	pause_menu.openPauseMenu()
+	pass
+
+func _on_close_pause_menu():
+	if (dialogue_manager.dialogue.visible == true) or (station_ui.get_parent().visible == true): #get parent might not be best practice
+		get_tree().paused = true #repausing the game if other nodes which pause the game are shown. station_ui and dialogue should never be shown at the same time so this is the only edge case.
+	pass
+
+func _on_save_world():
+	game_data.saveWorld(world)
+	pass
+
+func _on_save_and_quit():
+	game_data.saveWorld(world)
+	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
+	pass
+
+
 
 
 

@@ -10,7 +10,7 @@ func set_display_name(new_display_name: String) -> void:
 	display_name = new_display_name
 	pass
 
-var is_alive: bool = true
+@export var is_alive: bool = true
 
 enum GENDERS {M, F, O}
 @export var current_gender: GENDERS

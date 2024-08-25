@@ -1,11 +1,10 @@
 extends Resource
 class_name worldAPI
+#any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
-var star_systems: Array[starSystemAPI]
-var player: playerAPI
-var identifier_count: int = 1
-
-var weirdness_index: float = 0
+@export var star_systems: Array[starSystemAPI]
+@export var player: playerAPI
+@export var identifier_count: int = 1
 
 func createStarSystem(d_name: String):
 	var new_system = starSystemAPI.new()

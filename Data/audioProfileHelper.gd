@@ -1,8 +1,9 @@
 extends Resource
 class_name audioProfileHelper
+#any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
-var mix: Array = [0,0,0,0]
-var body: bodyAPI
+@export var mix: Array = [0,0,0,0]
+@export var body: bodyAPI
 
 #QUICK GET FOR STATION_UI AND AUDIO VISUALIZER \/\/\/\/
 

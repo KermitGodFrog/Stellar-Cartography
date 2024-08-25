@@ -52,14 +52,18 @@ func get_closest_body(bodies, pos):
 		return null
 
 func loadWorld():
-	if not FileAccess.file_exists("user://stellar_cartographer_data.save"):
-		return
-	
-	var save_world = FileAccess.open("user://stellar_cartographer_data.save", FileAccess.READ)
-	var world = save_world.get_var(true)
-	return world
+	print("GAME DATA: LOADING WORLD")
+	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
+		var resource : Resource = load("user://stellar_cartographer_data.res").duplicate(true)
+		return resource
+	return null
 
 func saveWorld(world: worldAPI):
-	var save_world = FileAccess.open("user://stellar_cartographer_data.save", FileAccess.WRITE)
-	save_world.store_var(world, true)
+	print("GAME DATA: SAVING WORLD")
+	var error = ResourceSaver.save(world, "user://stellar_cartographer_data.res")
+	print("ERROR CODE: ", error)
 	pass
+
+func createWorld():
+	print("GAME DATA: CREATING WORLD")
+	return worldAPI.new()
