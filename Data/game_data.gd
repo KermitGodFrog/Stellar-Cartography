@@ -42,11 +42,12 @@ func get_weighted_anomaly_classifications() -> Dictionary:
 func get_closest_body(bodies, pos):
 	if bodies.size() > 0:
 		var distance_to_bodies: Dictionary = {}
-		
 		for body in bodies:
 			distance_to_bodies[body] = pos.distance_to(body.position)
-		distance_to_bodies.values().sort()
-		return distance_to_bodies.find_key(distance_to_bodies.values()[0])
+		
+		var corrected = distance_to_bodies.values()
+		corrected.sort()
+		return distance_to_bodies.find_key(corrected[0])
 	else:
 		return null
 
@@ -59,17 +60,18 @@ func loadWorld():
 		return resource
 	return null
 
-func saveWorld(world: worldAPI):
+func saveWorld(world: worldAPI) -> void:
 	print("GAME DATA: SAVING WORLD")
+	world.take_over_path("user://stellar_cartographer_data.res")
 	var error = ResourceSaver.save(world, "user://stellar_cartographer_data.res", ResourceSaver.FLAG_REPLACE_SUBRESOURCE_PATHS)
 	print("ERROR CODE: ", error)
 	pass
 
-func createWorld():
+func createWorld() -> worldAPI:
 	print("GAME DATA: CREATING WORLD")
 	return worldAPI.new()
 
-func deleteWorld():
+func deleteWorld() -> void:
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
 		print("GAME DATA: DELETING WORLD")
 		var error = DirAccess.remove_absolute("user://stellar_cartographer_data.res")

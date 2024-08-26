@@ -164,12 +164,30 @@ func _physics_process(delta):
 
 func _unhandled_input(event):
 	if event.is_action_pressed("right_mouse") and movement_lock_timer.is_stopped():
+		var closest_body = game_data.get_closest_body(system.bodies, get_global_mouse_position())
+		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)):
+			emit_signal("updatedLockedBody", closest_body)
+			locked_body = closest_body
+			follow_body = closest_body
+			camera.follow_body = closest_body
+			action_body = closest_body
+			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.GO_TO, action_body)
+			return
+		
 		locked_body = null
 		action_body = null
 		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
 		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
 	
 	if event.is_action_pressed("left_mouse") and movement_lock_timer.is_stopped():
+		var closest_body = game_data.get_closest_body(system.bodies, get_global_mouse_position())
+		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)):
+			emit_signal("updatedLockedBody", closest_body)
+			locked_body = closest_body
+			follow_body = closest_body
+			camera.follow_body = closest_body
+			return
+		
 		camera_target_position = get_global_mouse_position()
 		emit_signal("updateTargetPosition", get_global_mouse_position())
 		emit_signal("lockedBodyDepreciated")
