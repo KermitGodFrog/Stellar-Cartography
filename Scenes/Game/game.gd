@@ -83,7 +83,7 @@ func _ready():
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 		
-		#await get_tree().create_timer(1.0, true).timeout
+		await get_tree().create_timer(1.0, true).timeout
 		
 		#var new_query = responseQuery.new()
 		#new_query.add("concept", "openDialog")
@@ -93,10 +93,10 @@ func _ready():
 		#new_query.add_tree_access("is_station_inhabited", false)
 		#get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
-		#var new_query = responseQuery.new()
-		#new_query.add("concept", "randomPAOpenDialog")
-		#new_query.add_tree_access("planet_classification", "Terran")
-		#get_tree().call_group("dialogueManager", "speak", self, new_query)
+		var new_query = responseQuery.new()
+		new_query.add("concept", "randomPAOpenDialog")
+		new_query.add_tree_access("planet_classification", "Neptunian")
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
 		
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!

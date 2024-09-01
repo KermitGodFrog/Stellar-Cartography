@@ -149,8 +149,10 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 	match type:
 		QUERY_TYPES.BEST:
 			
+			var relevant_rules = get_relevant_rules(incoming_query)
+			
 			var ranked_rules: Dictionary = {}
-			for rule in rules:
+			for rule in relevant_rules:
 				incoming_query.facts["randf_EXCLUSIVE"] = randf()
 				incoming_query.facts["randi_EXCLUSIVE"] = randi()
 				var matches: int = get_rule_matches(rule, incoming_query)
@@ -175,8 +177,10 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			
 		QUERY_TYPES.ALL: #FOR 'QUERY ALL CONCEPT'
 			
+			var relevant_rules = get_relevant_rules(incoming_query)
+			
 			var matched_rules: Array[responseRule] = []
-			for rule in rules:
+			for rule in relevant_rules:
 				incoming_query.facts["randf_EXCLUSIVE"] = randf()
 				incoming_query.facts["randi_EXCLUSIVE"] = randi()
 				var matches: int = get_rule_matches(rule, incoming_query)
@@ -231,6 +235,21 @@ func get_rule_matches(rule, incoming_query):
 				else: continue
 		else: continue
 	return matches
+
+func get_relevant_rules(incoming_query: responseQuery) -> Array[responseRule]:
+	var relevant_rules: Array[responseRule] = []
+	if incoming_query.facts.has("concept"):
+		for rule in rules:
+			if rule.criteria.has("concept"):
+				if rule.criteria.get("concept") == incoming_query.facts.get("concept"):
+					relevant_rules.append(rule)
+		if relevant_rules.size() > 0:
+			print_debug("!! ERROR: NO RELEVANT RULES, RETURNING ALL RULES !!")
+			return relevant_rules
+		else:
+			return rules
+	else:
+		return rules
 
 func convert_string_number(string_number: String):
 	if string_number.is_valid_int():
