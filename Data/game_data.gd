@@ -1,6 +1,6 @@
 extends Node
 
-var distance_index: float = 0.0 #this shouldnt be in playerAPI.gd because its not actually related to the player, its just related to generation, and everything in the game needs to know it so its in game_data.gd
+var player_weirdness_index: float = 0.0 
 
 enum STATION_CLASSIFICATIONS {STANDARD, PIRATE, ABANDONED, COVERUP, DEBRIS, ABANDONED_OPERATIONAL, ABANDONED_BACKROOMS, PARTIALLY_SALVAGED, BIRD}
 const STATION_CLASSIFICATION_CURVES = {
@@ -27,16 +27,18 @@ func get_weighted_station_classifications() -> Dictionary:
 	var weighted: Dictionary = {}
 	for classification in STATION_CLASSIFICATION_CURVES:
 		var curve = STATION_CLASSIFICATION_CURVES.get(classification)
-		var weight = curve.sample(distance_index)
+		var weight = curve.sample(player_weirdness_index)
 		weighted[classification] = {"name": classification, "weight": weight}
+	print_debug("STATION CLASSIFICATION WEIGHTINGS : ", weighted)
 	return weighted
 
 func get_weighted_anomaly_classifications() -> Dictionary:
 	var weighted: Dictionary = {}
 	for classification in ANOMALY_CLASSIFICATION_CURVES:
 		var curve = ANOMALY_CLASSIFICATION_CURVES.get(classification)
-		var weight = curve.sample(distance_index)
+		var weight = curve.sample(player_weirdness_index)
 		weighted[classification] = {"name": classification, "weight": weight}
+	print_debug("ANOMALY CLASSIFICATION WEIGHTINGS : ", weighted)
 	return weighted
 
 func get_closest_body(bodies, pos):

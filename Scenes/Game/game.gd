@@ -93,11 +93,18 @@ func _ready():
 		#new_query.add_tree_access("is_station_inhabited", false)
 		#get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
+		#var new_query = responseQuery.new()
+		#new_query.add("concept", "randomPAOpenDialog")
+		#new_query.add_tree_access("planet_classification", "Neptunian")
+		#get_tree().call_group("dialogueManager", "speak", self, new_query)
+		
+		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+		
 		var new_query = responseQuery.new()
-		new_query.add("concept", "randomPAOpenDialog")
-		new_query.add_tree_access("planet_classification", "Neptunian")
+		new_query.add("concept", "playerStart")
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
+		await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 		
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
 		
@@ -132,6 +139,7 @@ func _physics_process(delta):
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
+	game_data.player_weirdness_index = world.player.weirdness_index #really hacky solution which should not have been done this way but im too tired to change the entire game now to accomodate it.
 	
 	get_tree().call_group("trackNanites", "receive_tracked_status", world.player.balance)
 	get_tree().call_group("trackHullStress", "receive_tracked_status", str(world.player.hull_stress, "%"))
@@ -288,12 +296,26 @@ func dock_with_station(following_station):
 
 func _on_player_death():
 	print("GAME (DEBUG): PLAYER DIED!!!!!!!!!!!")
+	
+	var new_query = responseQuery.new()
+	new_query.add("concept", "playerDeath")
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+	
 	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
 	game_data.deleteWorld()
 	pass
 
 func _on_player_win():
 	print("GAME (DEBUG): PLAYER WON!!!!!!!!!!!!!!")
+	
+	var new_query = responseQuery.new()
+	new_query.add("concept", "playerWin")
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+	
 	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
 	game_data.deleteWorld()
 	pass

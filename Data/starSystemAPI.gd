@@ -317,7 +317,7 @@ func generateRandomWormholes(): #uses variables post_gen_location_candidates, de
 	pass
 
 func generateRandomWeightedStations():
-	for station in global_data.get_randi(2, 5):
+	for station in global_data.get_randi(1, 2):
 		var location = post_gen_location_candidates.pick_random()
 		var hook = get_body_from_identifier(location.front())
 		var i = location.back()
@@ -336,8 +336,7 @@ func generateRandomWeightedStations():
 		
 		
 		
-		#var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications())
-		var station_classification = game_data.STATION_CLASSIFICATIONS.STANDARD
+		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
 		
 		var percentage_markup = global_data.get_randi(50, 200)
 		
