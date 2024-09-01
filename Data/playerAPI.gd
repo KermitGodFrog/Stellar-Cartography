@@ -10,7 +10,14 @@ signal hullDeteriorationChanged(new_value: int)
 @export var current_star_system: starSystemAPI
 @export var previous_star_system: starSystemAPI
 
-@export var speed: int = 1
+@export var speed: int = 1 :
+	get:
+		if is_boosting:
+			return speed * 5
+		else:
+			return speed
+var is_boosting: bool = false
+
 @export var balance: int = 0
 @export var current_value: int = 0
 
@@ -182,7 +189,6 @@ func decreaseBalance(amount: int):
 
 
 func addAudioProfile(helper: audioProfileHelper):
-	#gotta check for whether adding the profile will still keep the array under the max size integer!!!!!
 	if saved_audio_profiles.size() < max_saved_audio_profiles:
 		saved_audio_profiles.append(helper)
 		return saved_audio_profiles.find(helper)
@@ -194,35 +200,35 @@ func removeAudioProfile(helper: audioProfileHelper):
 	pass
 
 
-func addHullStress(amount: int):
+func addHullStress(amount: int) -> void:
 	var adjusted = hull_stress + amount
 	if adjusted > 100:
-		addHullDeterioration(amount - 100)
+		addHullDeterioration((hull_stress + amount) - 100)
 		hull_stress = mini(100, hull_stress + amount)
 	else:
 		hull_stress = mini(100, hull_stress + amount)
 	pass
 
-func removeHullStress(amount: int):
+func removeHullStress(amount: int) -> void:
 	hull_stress = maxi(0, hull_stress - amount)
 	pass
 
 
-func addHullDeterioration(amount: int):
+func addHullDeterioration(amount: int) -> void:
 	hull_deterioration = mini(100, hull_deterioration + amount)
 	emit_signal("hullDeteriorationChanged", hull_deterioration)
 	pass
 
-func removeHullDeterioration(amount: int):
+func removeHullDeterioration(amount: int) -> void:
 	hull_deterioration = maxi(0, hull_deterioration - amount)
 	emit_signal("hullDeteriorationChanged", hull_deterioration)
 	pass
 
 
-func addMorale(amount: int):
+func addMorale(amount: int) -> void:
 	morale = mini(100, morale + amount)
 	pass
 
-func removeMorale(amount: int):
+func removeMorale(amount: int) -> void:
 	morale = maxi(0, morale - amount)
 	pass

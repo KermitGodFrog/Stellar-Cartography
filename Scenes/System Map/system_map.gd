@@ -2,6 +2,7 @@ extends Node2D
 #updates a map and object list based on data it is fed by the game component. updates camera position for some reason
 
 signal updatePlayerActionType(type: playerAPI.ACTION_TYPES, action_body)
+signal updatePlayerIsBoosting(is_boosting: bool)
 signal updatePlayerTargetPosition(pos: Vector2)
 signal updateTargetPosition(pos: Vector2)
 signal updatedLockedBody(body: bodyAPI)
@@ -15,6 +16,7 @@ signal DEBUG_REVEAL_ALL_BODIES
 
 var system: starSystemAPI
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
+var player_is_boosting: bool = false
 
 @onready var camera = $camera
 @onready var movement_lock_timer = $movement_lock_timer
@@ -197,6 +199,10 @@ func _unhandled_input(event):
 	
 	if event.is_action_pressed("the N"): #DEBUG!!!!!!!!!!!!!!!!!
 		emit_signal("DEBUG_REVEAL_ALL_BODIES")
+	
+	if event.is_action_pressed("boost"):
+		player_is_boosting = !player_is_boosting
+		emit_signal("updatePlayerIsBoosting", player_is_boosting)
 	pass
 
 func _draw():

@@ -13,10 +13,12 @@ var world: worldAPI
 @onready var dialogue_manager = $dialogueManager
 @onready var journey_map = $journey_map_window/journey_map
 @onready var pause_menu = $pauseMenu
+@onready var tick = $tick
 
 func _ready():
 	system_map.connect("updatePlayerActionType", _on_update_player_action_type)
 	system_map.connect("updatePlayerTargetPosition", _on_update_player_target_position)
+	system_map.connect("updatePlayerIsBoosting", _on_update_player_is_boosting)
 	system_map.connect("updateTargetPosition", _on_update_target_position)
 	system_map.connect("updatedLockedBody", _on_locked_body_updated)
 	system_map.connect("lockedBodyDepreciated", _on_locked_body_depreciated)
@@ -46,6 +48,7 @@ func _ready():
 	pause_menu.connect("saveWorld", _on_save_world)
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
 	
+	tick.connect("timeout", _on_tick)
 	
 	world = await game_data.loadWorld()
 	if world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
@@ -121,6 +124,7 @@ func _physics_process(delta):
 		for body in current_bodies:
 			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
 	
+	
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_3d.set("player_position", world.player.position)
@@ -136,6 +140,11 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("pause"):
 		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
+	pass
+
+func _on_tick(): #every 1 second
+	if world.player.is_boosting and (world.player.target_position != world.player.position):
+		world.player.addHullStress(1)
 	pass
 
 func _on_player_orbiting_body(_orbiting_body: bodyAPI):
@@ -462,6 +471,10 @@ func _on_kill_character_with_occupation(occupation: characterAPI.OCCUPATIONS) ->
 			world.player.historian.is_alive = false
 		_:
 			pass
+	pass
+
+func _on_update_player_is_boosting(is_boosting: bool):
+	world.player.is_boosting = is_boosting
 	pass
 
 

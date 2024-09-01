@@ -15,4 +15,3 @@ func _physics_process(delta):
 		position += input * movement_multiplier * pow(zoom.length(), -0.5) * delta
 		follow_body = null
 	pass
-
