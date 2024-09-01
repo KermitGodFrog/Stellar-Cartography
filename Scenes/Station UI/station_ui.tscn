@@ -17,7 +17,6 @@ process_mode = 2
 title = "Station Access"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 500)
-visible = false
 always_on_top = true
 
 [node name="station_control" type="Control" parent="." groups=["FOLLOW_UPGRADE_STATE"]]
@@ -88,6 +87,25 @@ text = "UNLOCK ADVANCED SCANNING (20000n)"
 layout_mode = 2
 text = "UNLOCK AUDIO VISUALIZER (30000n)
 (ADVANCED SCANNING REQUIRED)"
+
+[node name="repair_container" type="VBoxContainer" parent="station_control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="repair_single" type="Button" parent="station_control/repair_container"]
+layout_mode = 2
+text = "REPAIR 1% (100n)"
+alignment = 0
+
+[node name="repair_all" type="Button" parent="station_control/repair_container"]
+layout_mode = 2
+text = "REPAIR 100% (10000n)"
+alignment = 0
 
 [node name="save_audio_profiles_control" type="Control" parent="station_control"]
 visible = false

@@ -5,6 +5,7 @@ var station: stationAPI
 var player_current_value: int
 var player_balance: int
 
+
 #FOR AUDIO VISUALIZER \/\/\/\/\/
 var pending_audio_profiles: Array[audioProfileHelper] = []
 var player_saved_audio_profiles_size_matrix: Array = [] #current, max

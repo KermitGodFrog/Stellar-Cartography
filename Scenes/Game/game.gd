@@ -362,7 +362,6 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	system_3d.spawnBodies()
 	system_3d.reset_locked_body()
 	journey_map.add_new_system(world.player.systems_traversed)
-	world.player.removeHullStress(5)
 	return to_system
 
 func _on_locked_body_updated(body: bodyAPI):
