@@ -32,7 +32,7 @@ var weirdness_index :
 @export var hull_stress: int = 0
 @export var morale: int = 100
 
-enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER}
+enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER}
 @export var unlocked_upgrades: Array[UPGRADE_ID] = []
 
 @export var saved_audio_profiles: Array[audioProfileHelper] = []

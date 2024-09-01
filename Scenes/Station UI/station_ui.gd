@@ -20,8 +20,9 @@ signal addSavedAudioProfile(helper: audioProfileHelper)
 @onready var observed_bodies_list = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list
 @onready var storage_progress_bar = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/storage_progress_bar
 #upgrade buttons
-@onready var unlock_advanced_scanning_button = $upgrade_container/unlock_advanced_scanning_button
+@onready var unlock_advanced_scanning_button = $upgrade_container/unlock_advanced_scanning
 @onready var unlock_audio_visualizer_button = $upgrade_container/unlock_audio_visualizer
+@onready var unlock_nanite_controller_button = $upgrade_container/unlock_nanite_controller
 
 var has_sold_previously: bool = false
 
@@ -82,6 +83,11 @@ func _on_unlock_audio_visualizer_pressed():
 		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.AUDIO_VISUALIZER, 30000)
 	pass
 
+func _on_unlock_nanite_controller_pressed():
+	if station:
+		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.NANITE_CONTROLLER, 10000)
+	pass 
+
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 	match upgrade_idx:
 		playerAPI.UPGRADE_ID.ADVANCED_SCANNING:
@@ -89,13 +95,20 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 				true:
 					unlock_advanced_scanning_button.set_text("ADVANCED SCANNING: UNLOCKED")
 				false:
-					unlock_advanced_scanning_button.set_text("ADVANCED SCANNING: 30000c")
+					unlock_advanced_scanning_button.set_text("ADVANCED SCANNING: 30000n")
 		playerAPI.UPGRADE_ID.AUDIO_VISUALIZER:
 			match state:
 				true:
 					unlock_audio_visualizer_button.set_text("AUDIO VISUALIZER: UNLOCKED")
 				false:
-					unlock_audio_visualizer_button.set_text("AUDIO VISUALIZER: 20000c (REQ ADVANCED SCANNING)")
+					unlock_audio_visualizer_button.set_text("AUDIO VISUALIZER: 20000n (REQ ADVANCED SCANNING)")
+		playerAPI.UPGRADE_ID.NANITE_CONTROLLER:
+			match state:
+				true:
+					unlock_nanite_controller_button.set_text("NANITE CONTROLLER: UNLOCKED")
+				false:
+					unlock_nanite_controller_button.set_text("NANITE CONTROLLER: 10000n")
 		var error:
 			print(str("STATION UI: ERROR: BUTTON TEXT CHANGE FOR UPGRADE IDX ", error, "NOT CONFIGURED!"))
 	pass
+
