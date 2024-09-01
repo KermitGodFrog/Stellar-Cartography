@@ -83,20 +83,20 @@ func _ready():
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 		
-		#await get_tree().create_timer(1.0, true).timeout
+		await get_tree().create_timer(1.0, true).timeout
 		
 		#var new_query = responseQuery.new()
-		#new_query.add("concept", "openDialog")
+		#new_query.set_concept("openDialog")
 		#new_query.add("id", "station")
 		#new_query.add_tree_access("station_classification", str("ABANDONED"))
 		#new_query.add_tree_access("is_station_abandoned", true)
 		#new_query.add_tree_access("is_station_inhabited", false)
 		#get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
-		#var new_query = responseQuery.new()
-		#new_query.add("concept", "randomPAOpenDialog")
-		#new_query.add_tree_access("planet_classification", "Terran")
-		#get_tree().call_group("dialogueManager", "speak", self, new_query)
+		var new_query = responseQuery.new()
+		new_query.set_concept("randomPAOpenDialog")
+		new_query.add_tree_access("planet_classification", "Neptunian")
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
 		
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
@@ -159,7 +159,7 @@ func _on_player_following_body(following_body: bodyAPI):
 		if destination and (not destination == world.player.previous_star_system):
 			
 			var new_query = responseQuery.new()
-			new_query.add("concept", "openDialog")
+			new_query.set_concept("openDialog")
 			new_query.add("id", "wormhole")
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
 			
@@ -177,7 +177,7 @@ func _on_player_following_body(following_body: bodyAPI):
 		var is_station_inhabited: bool = following_station.station_classification in [game_data.STATION_CLASSIFICATIONS.STANDARD, game_data.STATION_CLASSIFICATIONS.PIRATE]
 		
 		var new_query = responseQuery.new()
-		new_query.add("concept", "openDialog")
+		new_query.set_concept("openDialog")
 		new_query.add("id", "station")
 		new_query.add_tree_access("station_classification", str(game_data.STATION_CLASSIFICATIONS.find_key(following_station.station_classification)))
 		new_query.add_tree_access("is_station_abandoned", is_station_abandoned)
@@ -197,7 +197,7 @@ func _on_player_following_body(following_body: bodyAPI):
 			if following_planet.metadata.get("is_planetary_anomaly_available", false) == true:
 				
 				var new_query = responseQuery.new()
-				new_query.add("concept", "randomPAOpenDialog")
+				new_query.set_concept("randomPAOpenDialog")
 				new_query.add("planet_classification", following_planet.metadata.get("planet_classification"))
 				new_query.add_tree_access("planet_name", following_planet.display_name)
 				get_tree().call_group("dialogueManager", "speak", self, new_query)

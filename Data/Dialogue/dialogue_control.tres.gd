@@ -47,7 +47,7 @@ func clear_options():
 
 func _on_options_item_selected(index):
 	var new_query = responseQuery.new()
-	new_query.add("concept", "optionSelected")
+	new_query.set_concept("optionSelected")
 	new_query.add("option", options.get_item_metadata(index))
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass

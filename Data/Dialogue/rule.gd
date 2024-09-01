@@ -2,6 +2,7 @@ extends Resource
 class_name responseRule
 
 @export_category("Main")
+@export var concept: String = ""
 @export var criteria: Dictionary
 
 #if criteria is met, do these things
@@ -9,8 +10,8 @@ class_name responseRule
 @export var apply_facts: Dictionary #applies facts to calling nodes internal list
 ##Triggers functions if present within the dialogue manager.
 @export var trigger_functions: Dictionary #triggers functions if present in calling node
-##Triggers specific rules while skipping the rule ranking process.
-@export var trigger_rules: Array[responseRule] #triggers additional rules without ranking process
+#Triggers specific rules while skipping the rule ranking process.
+#@export var trigger_rules: Array[responseRule] #triggers additional rules without ranking process
 
 #Like Starsector FireAll and FireBest 
 @export_category("Query")
@@ -28,6 +29,6 @@ class_name responseRule
 
 
 func is_configured() -> bool:
-	if (not criteria.is_empty()) or (not apply_facts.is_empty()) or (not trigger_functions.is_empty()) or (not trigger_rules.is_empty()) or (not query_all_concept.is_empty()) or (not query_best_concept.is_empty()) or (not text.is_empty()) or (not options.is_empty()):
+	if (not concept.is_empty()) or (not criteria.is_empty()) or (not apply_facts.is_empty()) or (not trigger_functions.is_empty()) or (not query_all_concept.is_empty()) or (not query_best_concept.is_empty()) or (not text.is_empty()) or (not options.is_empty()):
 		return true
 	else: return false

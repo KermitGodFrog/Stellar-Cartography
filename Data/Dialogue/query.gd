@@ -1,8 +1,13 @@
 extends Resource
 class_name responseQuery
 
+var concept: String
 var facts: Dictionary #aka context
 var tree_access_facts: Dictionary
+
+func set_concept(new_concept: String):
+	concept = new_concept
+	pass
 
 func add(key, value):
 	facts[key] = value

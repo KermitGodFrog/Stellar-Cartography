@@ -15,7 +15,7 @@ var player: playerAPI
 var character_lookup_dictionary: Dictionary = {}
 
 var rules: Array[responseRule] = []
-enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, OPTIONS, TEXT}
+enum POINTERS {RULE, CONCEPT, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, OPTIONS, TEXT}
 
 @onready var dialogue = $dialogue/dialogue_control
 
@@ -40,6 +40,9 @@ func _ready():
 							print("ADDING NEW RULE: ", new_rule.get_name())
 					new_rule = responseRule.new()
 					new_rule.set_name(cell)
+				"CONCEPT":
+					new_rule.concept = cell
+					print(cell)
 				"CRITERIA":
 					var dict = convert_to_dictionary(cell)
 					if not dict.is_empty():
@@ -52,9 +55,6 @@ func _ready():
 					var dict = convert_to_dictionary(cell)
 					if not dict.is_empty():
 						new_rule.trigger_functions = dict
-				"TRIGGER_RULES":
-					#DEPRECIATED, NOT ADDING
-					pass
 				"QUERY_ALL_CONCEPT":
 					var array = convert_to_array(cell)
 					if not array.is_empty():
@@ -149,8 +149,15 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 	match type:
 		QUERY_TYPES.BEST:
 			
+			var relevant_rules: Array[responseRule]
+			if not incoming_query.concept.is_empty():
+				for rule in rules:
+					if rule.concept == incoming_query.concept:
+						relevant_rules.append(rule)
+			else: relevant_rules = rules
+			
 			var ranked_rules: Dictionary = {}
-			for rule in rules:
+			for rule in relevant_rules:
 				incoming_query.facts["randf_EXCLUSIVE"] = randf()
 				incoming_query.facts["randi_EXCLUSIVE"] = randi()
 				var matches: int = get_rule_matches(rule, incoming_query)
@@ -175,8 +182,15 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			
 		QUERY_TYPES.ALL: #FOR 'QUERY ALL CONCEPT'
 			
+			var relevant_rules: Array[responseRule]
+			if not incoming_query.concept.is_empty():
+				for rule in rules:
+					if rule.concept == incoming_query.concept:
+						relevant_rules.append(rule)
+			else: relevant_rules = rules
+			
 			var matched_rules: Array[responseRule] = []
-			for rule in rules:
+			for rule in relevant_rules:
 				incoming_query.facts["randf_EXCLUSIVE"] = randf()
 				incoming_query.facts["randi_EXCLUSIVE"] = randi()
 				var matches: int = get_rule_matches(rule, incoming_query)
@@ -266,18 +280,18 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 				call(trigger_function)
 	
 	#trigger_rules: \\\\\\\\\\\\\
-	for _trigger_rule in rule.trigger_rules:
-		if rules.has(_trigger_rule):
-			trigger_rule(calling, _trigger_rule, null)
+	#for _trigger_rule in rule.trigger_rules:
+		#if rules.has(_trigger_rule):
+			#trigger_rule(calling, _trigger_rule, null)
 	
 	for concept in rule.query_all_concept:
 		var new_query = responseQuery.new()
-		new_query.add("concept", concept)
+		new_query.set_concept(concept)
 		speak(calling, new_query, true, QUERY_TYPES.ALL)
 	
 	for concept in rule.query_best_concept:
 		var new_query = responseQuery.new()
-		new_query.add("concept", concept)
+		new_query.set_concept(concept)
 		speak(calling, new_query, true, QUERY_TYPES.BEST)
 	
 	#text & options \\\\\\\\\\\\\
