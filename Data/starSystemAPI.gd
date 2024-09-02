@@ -346,7 +346,10 @@ func generateRandomWeightedStations():
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
-func generateRandomWeightedAnomalies():
+#entities = no dialogue, viewable via long range scopes module
+#anomalies = space anomalies - dialogue, disappear afterwards.
+
+func generateRandomWeightedAnomalies(): #this is for entities, have to change
 	for anomaly in global_data.get_randi(0, 2):
 		var location = post_gen_location_candidates.pick_random()
 		var hook = get_body_from_identifier(location.front())

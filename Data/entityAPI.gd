@@ -1,8 +1,8 @@
 extends bodyAPI
-class_name anomalyAPI
+class_name entityAPI
 #any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
-#these are random space anomalies
+@export var entity_classification: int #game data
 
-func is_anomaly():
+func is_entity():
 	return true

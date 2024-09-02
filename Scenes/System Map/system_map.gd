@@ -95,18 +95,20 @@ func _physics_process(delta):
 	system_list.set_item_metadata(star_item_idx, star.get_identifier())
 	
 	for body in system.bodies:
-		if body.is_theorised_but_not_known(): if (body.is_planet() or body.is_wormhole() or body.is_station()):
+		if body.is_theorised_but_not_known(): if (body.is_planet() or body.is_wormhole() or body.is_station() or body.is_anomaly() or body.is_entity()):
 			var new_item_idx: int
 			new_item_idx = system_list.add_item("> ???")
 			system_list.set_item_metadata(new_item_idx, body.get_identifier())
 			if body == follow_body:
 				system_list.set_item_custom_bg_color(new_item_idx, Color.LIGHT_SKY_BLUE)
 			
-		if body.is_known: if (body.is_planet() or body.is_wormhole() or body.is_station()):
+		if body.is_known: if (body.is_planet() or body.is_wormhole() or body.is_station() or body.is_anomaly() or body.is_entity()):
 			var new_item_idx: int
 			if body.is_planet(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.metadata.get("planet_type"), " Planet"))
 			if body.is_wormhole(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Wormhole"))
 			if body.is_station(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Station"))
+			if body.is_anomaly() and body.metadata.get("is_anomaly_available", false) == true: new_item_idx = system_list.add_item("> ???")
+			if body.is_entity(): new_item_idx = system_list.add_item(str("> ", game_data.ANOMALY_CLASSIFICATIONS.get(body.entity_classification)))
 			
 			system_list.set_item_metadata(new_item_idx, body.get_identifier())
 			
@@ -122,6 +124,9 @@ func _physics_process(delta):
 				system_list.set_item_custom_bg_color(new_item_idx, Color.DARK_RED)
 			
 			if body.is_planet(): if (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
+				system_list.set_item_icon(new_item_idx, question_mark_icon)
+			
+			if body.is_anomaly(): if body.metadata.get("is_anomaly_available", false) == true:
 				system_list.set_item_icon(new_item_idx, question_mark_icon)
 	
 	#updating sonar ping visualization time values & sonar polygon display time
@@ -143,7 +148,7 @@ func _physics_process(delta):
 		body_attributes_list.add_item(str("Orbital Speed : ", follow_body.orbit_speed), null, false)
 		body_attributes_list.add_item(str("Orbital Distance : ", follow_body.distance, " (Solar Radii)"), null, false)
 		#metadata
-		var excluding = ["iterations", "color", "value", "has_planetary_anomaly", "is_planetary_anomaly_available"]
+		var excluding = ["iterations", "color", "value", "has_planetary_anomaly", "is_planetary_anomaly_available", "is_anomaly_available"]
 		if follow_body.is_known:
 			for entry in follow_body.metadata:
 				if excluding.find(entry) == -1:
@@ -241,6 +246,7 @@ func draw_map():
 	var size_exponent = pow(camera.zoom.length(), -0.5)
 	
 	for body in system.bodies:
+		
 		if not (body.is_asteroid_belt() or body.is_station()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
@@ -252,11 +258,12 @@ func draw_map():
 				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.0, 0.05)
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, body.radius, 0.05)
 				draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
-	for body in system.get_stations(): #TEMP!!!!!
-		if camera.zoom.length() < system.get_first_star().radius * 100.0:
-			entity_icon.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false, Color(1,1,1,1), false)
-		else:
-			draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
+		
+		if (body.is_station() or body.is_anomaly() or body.is_entity()):
+			if camera.zoom.length() < system.get_first_star().radius * 100.0:
+				entity_icon.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false, Color(1,1,1,1), false)
+			else:
+				draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
 	
 	#draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
 	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, size_exponent)

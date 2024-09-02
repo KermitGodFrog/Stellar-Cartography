@@ -15,8 +15,8 @@ const STATION_CLASSIFICATION_CURVES = {
 	STATION_CLASSIFICATIONS.BIRD: preload("res://Data/Spawn Data/Stations/bird.tres")
 }
 
-enum ANOMALY_CLASSIFICATIONS {SPACE_WHALE_POD, LAGRANGE_CLOUD}
-const ANOMALY_CLASSIFICATION_CURVES = {
+enum ANOMALY_CLASSIFICATIONS {SPACE_WHALE_POD, LAGRANGE_CLOUD} #NOW ENTITY CLASSIFICATIONS, HAVE TO CHANGE
+const ANOMALY_CLASSIFICATION_CURVES = { #NOW ENTITY CLASSIFICATIONS, HAVE TO CHANGE
 }
 
 
@@ -32,7 +32,7 @@ func get_weighted_station_classifications() -> Dictionary:
 	print_debug("STATION CLASSIFICATION WEIGHTINGS : ", weighted)
 	return weighted
 
-func get_weighted_anomaly_classifications() -> Dictionary:
+func get_weighted_anomaly_classifications() -> Dictionary: #NOW ENTITY CLASSIFICATIONS, HAVE TO CHANGE
 	var weighted: Dictionary = {}
 	for classification in ANOMALY_CLASSIFICATION_CURVES:
 		var curve = ANOMALY_CLASSIFICATION_CURVES.get(classification)

@@ -71,6 +71,9 @@ func is_wormhole():
 func is_anomaly():
 	return false
 
+func is_entity():
+	return false
+
 func is_station():
 	return false
 
