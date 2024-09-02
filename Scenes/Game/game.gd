@@ -101,7 +101,7 @@ func _ready():
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 		
 		var new_query = responseQuery.new()
-		new_query.add("concept", "playerStart")
+		new_query.add("concept", "playerStartOpenDialog")
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
 		await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
@@ -297,11 +297,7 @@ func dock_with_station(following_station):
 func _on_player_death():
 	print("GAME (DEBUG): PLAYER DIED!!!!!!!!!!!")
 	
-	var new_query = responseQuery.new()
-	new_query.add("concept", "playerDeath")
-	get_tree().call_group("dialogueManager", "speak", self, new_query)
-	
-	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+	#OPEN STATS SCREEN
 	
 	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
 	game_data.deleteWorld()
@@ -311,10 +307,12 @@ func _on_player_win():
 	print("GAME (DEBUG): PLAYER WON!!!!!!!!!!!!!!")
 	
 	var new_query = responseQuery.new()
-	new_query.add("concept", "playerWin")
+	new_query.add("concept", "playerWinOpenDialog")
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+	
+	#OPEN STATS SCREEN
 	
 	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
 	game_data.deleteWorld()

@@ -6,7 +6,7 @@ signal addPlayerHullStress(amount: int)
 signal removePlayerHullStress(amount: int)
 signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
 
-var dialogue_memory: Dictionary #memory that is added by any query, and is always accessible indefinitely unless a timeout is specified
+var dialogue_memory: Dictionary #memory that is added by any query, and is always accessible indefinitely
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
 enum QUERY_TYPES {BEST, ALL}
 
@@ -102,7 +102,7 @@ func convert_to_dictionary(cell : String) -> Dictionary:
 				if value == "false":
 					type_corrected_value = false
 				
-				#no support for >int or >float 
+				#>int or <float et al cannot go here, must be calculated at runtime
 				
 				new_dictionary[corrected_parts[i]] = type_corrected_value
 				if corrected_parts.size() < (i + 2): break
@@ -118,20 +118,6 @@ func convert_to_array(cell : String) -> Array[String]:
 	if not corrected_parts.is_empty():
 		return corrected_parts
 	else: return []
-
-
-func _physics_process(delta):
-	for fact in dialogue_memory:
-		var values = dialogue_memory.get(fact)
-		var expiry_timer = values.back()
-		
-		if not expiry_timer == null:
-			dialogue_memory[fact] = [values.front(), maxi(0, expiry_timer - delta)]
-		
-		if expiry_timer == 0:
-			dialogue_memory.erase(fact)
-	pass
-
 
 
 func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = true, type: QUERY_TYPES = QUERY_TYPES.BEST):
