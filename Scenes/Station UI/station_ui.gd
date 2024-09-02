@@ -1,19 +1,23 @@
 extends Node
 #DISPLAYS PLAYER VALUE AND PLAYER BALANCE - DOES NOT CHANGE IT
+#all values displayed here are updated BY GAME.GD whenever the relevant signals are received. E.g, sell exploration data signal is sent and game.gd updates the local player balance. its all updated as soon as it opens as well
 
 var station: stationAPI
 var player_current_value: int
 var player_balance: int
+var player_hull_stress: int 
 
+var nanites_per_percentage: int = 1000
 
 #FOR AUDIO VISUALIZER \/\/\/\/\/
 var pending_audio_profiles: Array[audioProfileHelper] = []
-var player_saved_audio_profiles_size_matrix: Array = [] #current, max
+var player_saved_audio_profiles_size_matrix: Array = [] #current, max - only sent when station ui is opened but is estimated while it is opened
 
 signal sellExplorationData(sell_percentage_of_market_price: int)
 signal upgradeShip(upgrade_idx: playerAPI.UPGRADE_ID, cost: int)
 signal undockFromStation(from_station: stationAPI)
 signal addSavedAudioProfile(helper: audioProfileHelper)
+signal removeHullStressForNanites(amount: int, _nanites_per_percentage: int)
 
 @onready var sell_data_button = $sell_data_button
 @onready var balance_label = $balance_label
@@ -24,6 +28,9 @@ signal addSavedAudioProfile(helper: audioProfileHelper)
 @onready var unlock_advanced_scanning_button = $upgrade_container/unlock_advanced_scanning
 @onready var unlock_audio_visualizer_button = $upgrade_container/unlock_audio_visualizer
 @onready var unlock_nanite_controller_button = $upgrade_container/unlock_nanite_controller
+@onready var hull_stress_label = $repair_container/hull_stress_label
+@onready var repair_single_button = $repair_container/repair_single
+@onready var repair_all_button = $repair_container/repair_all
 
 var has_sold_previously: bool = false
 
@@ -34,10 +41,15 @@ func _ready():
 func _physics_process(_delta):
 	if station:
 		balance_label.set_text(str("BALANCE: ", player_balance, "c"))
+		hull_stress_label.set_text(str("HULL STRESS: ", player_hull_stress, "%"))
 		
 		if not has_sold_previously:
 			sell_data_button.set_text(str("SELL EXPLORATION DATA\n", player_current_value, "c\n(", station.sell_percentage_of_market_price, "% OF MARKET PRICE)"))
 		elif has_sold_previously: sell_data_button.set_text("SOLD")
+		
+		repair_single_button.set_text(str("REPAIR 1% (", nanites_per_percentage, "n)"))
+		repair_all_button.set_text(str("REPAIR ", player_hull_stress, "% (", (player_hull_stress * nanites_per_percentage), "n)"))
+		
 	#saved audio profiles control:
 	if player_saved_audio_profiles_size_matrix:
 		storage_progress_bar.set_max(player_saved_audio_profiles_size_matrix.back())
@@ -61,11 +73,7 @@ func _on_undock_button_pressed():
 	pass
 
 func _on_audio_profile_saved(helper: audioProfileHelper):
-	if player_saved_audio_profiles_size_matrix.front() < player_saved_audio_profiles_size_matrix.back():
-		emit_signal("addSavedAudioProfile", helper)
-	else:
-		#ui elemnts flash and stuff
-		pass
+	emit_signal("addSavedAudioProfile", helper)
 	pass
 
 func _on_finished_button_pressed():
@@ -113,3 +121,13 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 			print(str("STATION UI: ERROR: BUTTON TEXT CHANGE FOR UPGRADE IDX ", error, "NOT CONFIGURED!"))
 	pass
 
+
+
+func _on_repair_single_pressed():
+	emit_signal("removeHullStressForNanites", 1, nanites_per_percentage)
+	pass
+
+
+func _on_repair_all_pressed():
+	emit_signal("removeHullStressForNanites", player_hull_stress, nanites_per_percentage)
+	pass

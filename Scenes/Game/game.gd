@@ -23,6 +23,7 @@ func _ready():
 	system_map.connect("updateTargetPosition", _on_update_target_position)
 	system_map.connect("updatedLockedBody", _on_locked_body_updated)
 	system_map.connect("lockedBodyDepreciated", _on_locked_body_depreciated)
+	system_map.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	system_map.connect("DEBUG_REVEAL_ALL_WORMHOLES", _ON_DEBUG_REVEAL_ALL_WORMHOLES)
 	system_map.connect("DEBUG_REVEAL_ALL_BODIES", _ON_DEBUG_REVEAL_ALL_BODIES)
 	
@@ -35,6 +36,7 @@ func _ready():
 	station_ui.connect("undockFromStation", _on_undock_from_station)
 	station_ui.connect("upgradeShip", _on_upgrade_ship)
 	station_ui.connect("addSavedAudioProfile", _on_add_saved_audio_profile)
+	station_ui.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	
 	audio_visualizer.connect("removeSavedAudioProfile", _on_remove_saved_audio_profile)
 	
@@ -108,7 +110,8 @@ func _ready():
 		await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 		
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
-		_on_add_player_hull_stress(1000)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.NANITE_CONTROLLER)
+		
 		
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		world.player.connect("orbitingBody", _on_player_orbiting_body)
@@ -138,7 +141,6 @@ func _physics_process(delta):
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_3d.set("player_position", world.player.position)
-	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
@@ -281,6 +283,8 @@ func dock_with_station(following_station):
 	station_ui.station = following_station
 	station_ui.player_current_value = world.player.current_value
 	station_ui.player_balance = world.player.balance
+	station_ui.player_hull_stress = world.player.hull_stress
+	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	
 	var pending_audio_profiles = []
 	for s in world.star_systems:
@@ -460,6 +464,7 @@ func _on_remove_saved_audio_profile(helper: audioProfileHelper):
 
 func _on_add_saved_audio_profile(helper: audioProfileHelper):
 	world.player.addAudioProfile(helper)
+	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	pass
 
 func _on_add_player_value(amount: int) -> void:
@@ -500,6 +505,17 @@ func _on_kill_character_with_occupation(occupation: characterAPI.OCCUPATIONS) ->
 func _on_update_player_is_boosting(is_boosting: bool):
 	world.player.is_boosting = is_boosting
 	pass
+
+func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void: #both station ui and system map
+	if (world.player.balance >= amount * nanites_per_percentage) and (world.player.hull_stress > 0):
+		world.player.decreaseBalance(amount * nanites_per_percentage)
+		_on_remove_player_hull_stress(amount)
+		print_debug("REMOVE HULL STRESS SUCCESSFUL")
+	station_ui.player_balance = world.player.balance
+	station_ui.player_hull_stress = world.player.hull_stress
+	pass
+
+
 
 
 func _on_open_pause_menu():

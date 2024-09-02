@@ -11,6 +11,8 @@ signal lockedBodyDepreciated
 signal audioVisualizerPopup
 signal journeyMapPopup
 
+signal removeHullStressForNanites(amount: int, nanites_per_percentage: int)
+
 signal DEBUG_REVEAL_ALL_WORMHOLES
 signal DEBUG_REVEAL_ALL_BODIES
 
@@ -28,8 +30,8 @@ var player_is_boosting: bool = false
 @onready var picker_label = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_label
 @onready var picker_button = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
 @onready var console = $camera/canvas/control/console
-
 @onready var audio_visualizer_button = $camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button
+@onready var hull_stress_button = $camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button
 
 @onready var ping_sound_scene = preload("res://Sound/ping.tscn")
 @onready var bounceback_sound_scene = preload("res://Sound/bounceback.tscn")
@@ -39,7 +41,6 @@ var player_is_boosting: bool = false
 enum BOOST_SOUND_TYPES {START, END}
 
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
-
 @onready var entity_icon = preload("res://Graphics/entity_32x.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
@@ -54,6 +55,10 @@ var body_size_multiplier_hint: float = 0.0
 var SONAR_PINGS: Array[pingDisplayHelperAPI]
 var SONAR_POLYGON: PackedVector2Array
 var SONAR_POLYGON_DISPLAY_TIME: float = 0
+
+func _ready():
+	hull_stress_button.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
+	pass
 
 func _physics_process(delta):
 	#If body clicked on in system list, follow the body with the camera (follow body).
@@ -354,6 +359,11 @@ func async_play_boost_sound(sound: BOOST_SOUND_TYPES):
 	instance.play()
 	await instance.finished
 	instance.queue_free()
+	pass
+
+
+func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:
+	emit_signal("removeHullStressForNanites", amount, nanites_per_percentage)
 	pass
 
 

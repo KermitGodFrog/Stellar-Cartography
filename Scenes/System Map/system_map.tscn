@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=36 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://csvtv1sy2k3ns" path="res://Graphics/audio_visualizer_icon.png" id="11_lvg8y"]
 [ext_resource type="Texture2D" uid="uid://cghgcu7ghw8mf" path="res://Graphics/hull_deterioration_icon.png" id="12_3bh3s"]
 [ext_resource type="Texture2D" uid="uid://ce1et15cnh5ao" path="res://Graphics/morale_icon.png" id="13_vaatn"]
+[ext_resource type="Script" path="res://Scenes/System Map/hull_stress_button.gd" id="14_u08qu"]
 [ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://Graphics/journey_map_icon.png" id="19_36y85"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ee55b"]
@@ -370,12 +371,12 @@ text = "100%"
 icon = ExtResource("13_vaatn")
 script = ExtResource("11_1rwmm")
 
-[node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["trackHullStress"]]
+[node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["FOLLOW_UPGRADE_STATE", "trackHullStress"]]
 layout_mode = 2
 tooltip_text = "Hull stress. General starship wear-and-tear. Principally decreases slowly with time or by exchanging nanites at a space station for repairs. Damage over 100% will be transferred to hull deterioration."
 text = "100%"
 icon = ExtResource("11_1tiv0")
-script = ExtResource("11_1rwmm")
+script = ExtResource("14_u08qu")
 
 [node name="hull_deterioration_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["trackHullDeterioration"]]
 layout_mode = 2
@@ -475,6 +476,7 @@ icon_alignment = 2
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]
 [connection signal="item_selected" from="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button" to="system" method="_on_picker_button_item_selected"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" to="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" method="_on_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/journey_map_button" to="system" method="_on_journey_map_button_pressed"]
 [connection signal="mouse_entered" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_mouse_entered"]
 [connection signal="mouse_exited" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_mouse_exited"]
