@@ -1,12 +1,15 @@
 extends Node
 
 signal onCloseDialog(with_return_state)
+signal addDialogueMemoryPair(key, value)
+
+
 signal addPlayerValue(amount: int)
 signal addPlayerHullStress(amount: int)
 signal removePlayerHullStress(amount: int)
 signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
 
-var dialogue_memory: Dictionary #memory that is added by any query, and is always accessible indefinitely
+var dialogue_memory: Dictionary = {} #memory that is added by any query, and is always accessible indefinitely. from worldAPI dialogue_memory which is sent via game.gd
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
 enum QUERY_TYPES {BEST, ALL}
 
@@ -249,7 +252,7 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 	print("QUERY HANDLER: ", calling, " TRIGGERING RULE ", rule.get_name())
 	#apply_facts: \\\\\\\\\\\\\
 	for fact in rule.apply_facts:
-		dialogue_memory[fact] = rule.apply_facts.get(fact)
+		emit_signal("addDialogueMemoryPair", fact, rule.apply_facts.get(fact))
 		print("QUERY HANDLER: ", calling, " APPLYING FACT ", fact)
 	
 	#trigger_functions: \\\\\\\\\\\\\

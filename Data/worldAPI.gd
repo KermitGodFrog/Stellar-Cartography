@@ -5,6 +5,7 @@ class_name worldAPI
 @export var star_systems: Array[starSystemAPI]
 @export var player: playerAPI
 @export var identifier_count: int = 1
+@export var dialogue_memory: Dictionary = {}
 
 func createStarSystem(d_name: String):
 	var new_system = starSystemAPI.new()

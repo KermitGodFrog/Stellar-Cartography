@@ -56,6 +56,9 @@ func _ready():
 	world = await game_data.loadWorld()
 	if world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
 		world = game_data.createWorld()
+		
+		dialogue_manager.dialogue_memory = world.dialogue_memory
+		
 		world.createPlayer(3, 3, 10)
 		world.player.resetJumpsRemaining()
 		
@@ -110,10 +113,11 @@ func _ready():
 		await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 		
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.NANITE_CONTROLLER)
-		
 		
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
+		
+		dialogue_manager.dialogue_memory = world.dialogue_memory
+		
 		world.player.connect("orbitingBody", _on_player_orbiting_body)
 		world.player.connect("followingBody", _on_player_following_body)
 		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
@@ -124,6 +128,7 @@ func _ready():
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
 		_on_switch_star_system(world.player.current_star_system)
+		
 	pass
 
 func _physics_process(delta):
@@ -515,7 +520,10 @@ func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int
 	station_ui.player_hull_stress = world.player.hull_stress
 	pass
 
-
+func _on_add_dialogue_memory_pair(key, value):
+	world.dialogue_memory[key] = value
+	dialogue_manager.dialogue_memory = world.dialogue_memory
+	pass
 
 
 func _on_open_pause_menu():
