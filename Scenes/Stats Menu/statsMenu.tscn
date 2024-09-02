@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://kmp3sfk18y2"]
+
+[ext_resource type="Script" path="res://Scenes/Stats Menu/statsMenu.gd" id="1_twj0w"]
+
+[node name="statsMenu" type="Node"]
+process_mode = 2
+script = ExtResource("1_twj0w")
+
+[node name="stats_canvas" type="CanvasLayer" parent="."]
+
+[node name="stats_control" type="Control" parent="stats_canvas"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="main_scroll" type="VBoxContainer" parent="stats_canvas/stats_control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -94.5
+offset_top = -29.0
+offset_right = 94.5
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="init_type_label" type="Label" parent="stats_canvas/stats_control/main_scroll"]
+layout_mode = 2
+text = "YOU ARE DEAD."
+horizontal_alignment = 1
+
+[node name="systems_traversed_label" type="Label" parent="stats_canvas/stats_control/main_scroll"]
+layout_mode = 2
+text = "SYSTEMS TRAVERSED: 35"
+
+[node name="exit_to_main_menu_button" type="Button" parent="stats_canvas/stats_control/main_scroll"]
+layout_mode = 2
+text = "EXIT TO MAIN MENU"
+
+[connection signal="pressed" from="stats_canvas/stats_control/main_scroll/exit_to_main_menu_button" to="." method="_on_exit_to_main_menu_button_pressed"]

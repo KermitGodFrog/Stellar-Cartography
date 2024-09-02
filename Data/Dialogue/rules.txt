@@ -2,11 +2,15 @@ Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Quer
 defaultOpenDialog,concept: openDialog,,openDialog: null,,,,Leave:defaultLeave,
 defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,
 ,,,,,,,,
-defaultPlayerStart,concept: playerStart,,openDialog: null,,,,Continue:defaultPlayerStartContinueA,"Two thousand years ago, an advanced artificial intelligence named Arata predicted the Universe. "
+defaultPlayerStartOpenDialog,concept: playerStartOpenDialog,,openDialog: null,,,,Continue:defaultPlayerStartContinueA,"Two thousand years ago, an advanced artificial intelligence named Arata predicted the Universe. "
 defaultPlayerStartContinueA,"concept: optionSelected, option: defaultPlayerStartContinueA",,clearOptions: null,,,,Continue:defaultPlayerStartContinueB,"The Arata formula allows starships to transit into a star system closer to any destination by exploiting certain points in space-time. Machines like Arata are long gone, yet their discoveries are still relied on today. "
 defaultPlayerStartContinueB,"concept: optionSelected, option: defaultPlayerStartContinueB",,clearOptions: null,,,,Exit:defaultLeave,"You are a newly established Captain of a starship on a mission of exploration. You have requested for a route to be calculated, via the Arata formula, into an area of space known as New Eden, which reportedly houses a fragment of human civilisation long forgotten. The journey will be perilous, and what you will encounter on the journey towards New Eden cannot be predicted."
-defaultPlayerWin,concept: playerWin,,,,,addNewEdenArrivalFlair,Exit to Main Menu:defaultLeave,"Comms reports that AIS has identified ‘a lot of starships’. It does not take long for several space installations to insist on clarification regarding your ships details. You suspect that if it wasn’t for the uptick in explorers entering New Eden, guns would already be pointed at you. You order the manifest to be sent. "
-playerWinHighHullDeterioration,"concept: playerWin, player_hull_deterioration: > 50",,,,,addNewEdenArrivalFlair,Exit to Main Menu:defaultLeave,"Comms reports that AIS has identified ‘a lot of starships’. It does not take long for several space installations to insist on clarification regarding your ships details. You suspect that if it wasn’t for the uptick in explorers entering New Eden, guns would already be pointed at you. You order the manifest to be sent, and an emergency to be declared given your starships extreme travel damage. "
+,,,,,,,,
+defaultPlayerWinOpenDialog,concept: playerWinOpenDialog,,openDialog: null,,,addNewEdenArrivalFlair,Continue:playerWinStoryConclusion,"Comms reports that AIS has identified ‘a lot of starships’. It does not take long for several space installations to insist on clarification regarding your ships details. You suspect that if it wasn’t for the uptick in explorers entering New Eden, guns would already be pointed at you. You order the manifest to be sent. "
+playerWinStoryConclusionDispatch,"concept: optionSelected, option: playerWinStoryConclusion",,clearOptions: null,,,playerWinStoryConclusionResponse,Exit:defaultLeave,
+playerWinStoryConclusionResponseGeneric,concept: playerWinStoryConclusionResponse,,,,,,,You think back to all you have seen on your journey.
+playerWinStoryConclusionResponseConglomerate,"concept: playerWinStoryConclusionResponse, is_conglomerate_storyline_complete: true",,,,,,,"You think back to the Conglomerate. Evidently, there is a new contender on the galactic stage. The words of the Emissary are still heavy on your mind. You cannot decide if life taking such a form is incredible or horrifying."
+playerWinStoryConclusionResponseDetective,"concept: playerWinStoryConclusionResponse, is_detective_storyline_complete: true",,,,,,,"You think back to the Detective. A being which could pause time and evidently change reality, yet refused to truely intefere with your progress towards its physical location. You realise that throughout your travels, you were astronomically lucky. You also realise that you have changed as a person. You wonder whether your journey was truely random chance, or if the Detective actively manipulated it for an unknown motive."
 newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,"You have arrived in New Eden, the true frontier of human civilisation."
 ,,,,,,,,
 wormholeOpenDialog,"concept: openDialog, id: wormhole",,openDialog: null,,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",Your ship approaches the wormhole.
@@ -22,16 +26,17 @@ stationFlairDebris,"concept: addStationFlair, station_classification: DEBRIS",,,
 stationDockingAccessOption,"concept: populateStationOptions, is_station_inhabited: true",,,,,,Request Docking Access: stationDockingAccess,
 stationSalvageOption,"concept: populateStationOptions, is_station_abandoned: true",,,,,,Scout for Salvage: stationSalvagePreliminary,
 stationDockingAccess,"concept: optionSelected, option: stationDockingAccess",,closeDialog: DOCK_WITH_STATION,,,,,
-stationSalvage,"concept: optionSelected, option: stationSalvage ",,closeDialog: SALVAGE_STATION,,,,,
 ,,,,,,,,
-stationJiyaSalvageOption,"concept: populateStationOptions, is_station_abandoned: true, player_CHIEF_ENGINEER_alive: true",,,,,,Order Chief Engineer Jiya to oversee a salvage operation: stationJiyaSalvage,
-stationJiyaSalvage ,"concept: optionSelected, option: stationJiyaSalvage", ,closeDIalog: SALVAGE_STATION_OFFICER,,,,,
 ,,,,,,,,
-stationSalvagePreliminary,"concept: optionSelected, option: stationSalvagePreliminary",,,,,stationSalvagePreliminaryResponse,,
-stationSalvagePreliminaryAbandoned,"concept: stationSalvagePreliminaryResponse, station_classification: ABANDONED",,clearAll: null,,,,"Commence Salvage Operation: stationSalvage, Leave: defaultLeave","Upon further analysis, the station appears to be pristinely in-operable. Reactors have been shut down following correct procedure, all compartments have been delicately depressurized, and stockpiles have already been extracted. Disregarding the possibility of extraordinarily polite bandits, it is likely that the station was voluntarily evacuated. 
-"
-stationSalvagePreliminaryCoverup,"concept: stationSalvagePreliminaryResponse, station_classification: COVERUP",,clearAll: null,,,,"Commence Salvage Operation: stationSalvage, Leave: defaultLeave","Upon further analysis, the station appears to have been quickly, and efficiently, raided. Nearly every compartment appears to have been simultaneously depressurized through a combination of controlled explosives or small cuts - as a result, nearly all of the station's inhabitants were immediately killed. The sparse percentage of occupants that managed to locate an emergency pressure suit before dying of asphyxiation were eradicated in short order by an unknown attacking force. Reports suggest that a number of on-board data banks and other storage devices have been extracted. Such delicacy and secrecy alludes to a singular question - what were they trying to hide?
-"
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
 ,,,,,,,,
 PAHardLeave,"concept: optionSelected, option: PAHardLeave",,closeDialog: HARD_LEAVE,,,,,
 PASoftLeave,"concept: optionSelected, option: PASoftLeave",,closeDialog: SOFT_LEAVE,,,,,

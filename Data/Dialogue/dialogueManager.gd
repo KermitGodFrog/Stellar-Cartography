@@ -184,7 +184,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			
 	pass
 
-func get_rule_matches(rule, incoming_query):
+func get_rule_matches(rule, incoming_query) -> int:
 	var matches: int = 0
 	for fact in incoming_query.facts:
 		#print(str(rule.criteria.get(fact), " ", incoming_query.facts.get(fact)))
@@ -308,6 +308,7 @@ func convert_value_with_query_key_tags(value: String, query: responseQuery):
 		else:
 			return value
 	return value 
+
 
 func openDialog():
 	clearAll()

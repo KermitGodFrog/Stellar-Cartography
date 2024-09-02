@@ -13,6 +13,7 @@ var world: worldAPI
 @onready var dialogue_manager = $dialogueManager
 @onready var journey_map = $journey_map_window/journey_map
 @onready var pause_menu = $pauseMenu
+@onready var stats_menu = $statsMenu
 @onready var tick = $tick
 
 func _ready():
@@ -107,6 +108,7 @@ func _ready():
 		await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 		
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
+		_on_add_player_hull_stress(1000)
 		
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		world.player.connect("orbitingBody", _on_player_orbiting_body)
@@ -130,7 +132,8 @@ func _physics_process(delta):
 	if current_bodies:
 		for body in current_bodies:
 			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
-	
+	if world.player.hull_deterioration == 100:
+		_on_player_death()
 	
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
@@ -297,7 +300,8 @@ func dock_with_station(following_station):
 func _on_player_death():
 	print("GAME (DEBUG): PLAYER DIED!!!!!!!!!!!")
 	
-	#OPEN STATS SCREEN
+	_on_open_stats_menu(stats_menu.INIT_TYPES.DEATH, world.player.systems_traversed)
+	await stats_menu.onCloseStatsMenu
 	
 	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
 	game_data.deleteWorld()
@@ -312,7 +316,8 @@ func _on_player_win():
 	
 	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 	
-	#OPEN STATS SCREEN
+	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN, world.player.systems_traversed)
+	await stats_menu.onCloseStatsMenu
 	
 	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
 	game_data.deleteWorld()
@@ -501,6 +506,10 @@ func _on_open_pause_menu():
 	pause_menu.openPauseMenu()
 	pass
 
+func _on_open_stats_menu(init_type: int, player_systems_traversed: int): #init type is from statsMenu INIT_TYPES
+	stats_menu.openStatsMenu(init_type, player_systems_traversed)
+	pass
+
 func _on_save_world():
 	game_data.saveWorld(world)
 	pass
@@ -532,11 +541,6 @@ func _ON_DEBUG_REVEAL_ALL_BODIES():
 
 
 
-
-func _on_barycenter_popup():
-	$barycenter_visualizer_window.popup()
-	_on_add_console_item("Opening barycenter visualizer.", Color("353535"), 50)
-	pass
 
 func _on_audio_visualizer_popup():
 	audio_visualizer._on_popup()
