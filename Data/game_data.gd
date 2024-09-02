@@ -15,10 +15,11 @@ const STATION_CLASSIFICATION_CURVES = {
 	STATION_CLASSIFICATIONS.BIRD: preload("res://Data/Spawn Data/Stations/bird.tres")
 }
 
-enum ANOMALY_CLASSIFICATIONS {SPACE_WHALE_POD, LAGRANGE_CLOUD} #NOW ENTITY CLASSIFICATIONS, HAVE TO CHANGE
-const ANOMALY_CLASSIFICATION_CURVES = { #NOW ENTITY CLASSIFICATIONS, HAVE TO CHANGE
+enum ENTITY_CLASSIFICATIONS {SPACE_WHALE_POD, LAGRANGE_CLOUD} 
+const ENTITY_CLASSIFICATION_CURVES = {
+	ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: preload("res://Data/Spawn Data/Entities/space_whale_pod.tres"),
+	ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: preload("res://Data/Spawn Data/Entities/lagrange_cloud.tres")
 }
-
 
 
 
@@ -32,13 +33,13 @@ func get_weighted_station_classifications() -> Dictionary:
 	print_debug("STATION CLASSIFICATION WEIGHTINGS : ", weighted)
 	return weighted
 
-func get_weighted_anomaly_classifications() -> Dictionary: #NOW ENTITY CLASSIFICATIONS, HAVE TO CHANGE
+func get_weighted_entity_classifications() -> Dictionary: 
 	var weighted: Dictionary = {}
-	for classification in ANOMALY_CLASSIFICATION_CURVES:
-		var curve = ANOMALY_CLASSIFICATION_CURVES.get(classification)
+	for classification in ENTITY_CLASSIFICATION_CURVES:
+		var curve = ENTITY_CLASSIFICATION_CURVES.get(classification)
 		var weight = curve.sample(player_weirdness_index)
 		weighted[classification] = {"name": classification, "weight": weight}
-	print_debug("ANOMALY CLASSIFICATION WEIGHTINGS : ", weighted)
+	print_debug("ENTITY CLASSIFICATION WEIGHTINGS : ", weighted)
 	return weighted
 
 func get_closest_body(bodies, pos):

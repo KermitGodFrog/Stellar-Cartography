@@ -81,6 +81,8 @@ func _ready():
 			_on_create_new_star_system(false, new)
 		new.generateRandomWormholes()
 		new.generateRandomWeightedStations()
+		new.generateRandomWeightedEntities()
+		new.generateRandomAnomalies()
 		world.player.resetJumpsRemaining()
 		for body in new.bodies:
 			body.is_known = true
@@ -230,6 +232,26 @@ func _on_player_following_body(following_body: bodyAPI):
 						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
 					_:
 						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
+	
+	if following_body.is_anomaly():
+		var following_anomaly = following_body
+		if following_anomaly.metadata.get("is_anomaly_available", true) == true:
+			
+			var new_query = responseQuery.new()
+			new_query.add("concept", "randomSAOpenDialog")
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+			
+			var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+			match RETURN_STATE:
+				"HARD_LEAVE":
+					following_anomaly.metadata["is_anomaly_available"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_anomaly)
+				"SOFT_LEAVE":
+					following_anomaly.metadata["is_anomaly_available"] = true
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_anomaly)
+				_:
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_anomaly)
+	
 	pass
 
 func enter_wormhole(following_wormhole, wormholes, destination):
@@ -238,6 +260,8 @@ func enter_wormhole(following_wormhole, wormholes, destination):
 		for i in range(2):
 			_on_create_new_star_system(false, destination)
 		destination.generateRandomWormholes()
+		destination.generateRandomWeightedEntities()
+		destination.generateRandomAnomalies()
 	
 	#var destination_position: Vector2 = Vector2.ZERO
 	var destination_wormhole = destination.get_wormhole_with_destination_system(world.player.current_star_system)

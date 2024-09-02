@@ -115,7 +115,7 @@ func spawnBodies():
 			elif body.is_wormhole():
 				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().metadata.get("color"), body.metadata.get("color"), 0.75, wormhole_shader)
 			add_child(new_body_3d)
-		if body.is_station() or body.is_anomaly():
+		if body.is_station() or body.is_anomaly() or body.is_entity():
 			var new_entity_3d = entity_3d.instantiate()
 			new_entity_3d.set_identifier(body.get_identifier())
 			new_entity_3d.initialize(0.03) #pixel size, can be different for stations/anomalies

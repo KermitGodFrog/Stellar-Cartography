@@ -107,8 +107,8 @@ func _physics_process(delta):
 			if body.is_planet(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.metadata.get("planet_type"), " Planet"))
 			if body.is_wormhole(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Wormhole"))
 			if body.is_station(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Station"))
-			if body.is_anomaly() and body.metadata.get("is_anomaly_available", false) == true: new_item_idx = system_list.add_item("> ???")
-			if body.is_entity(): new_item_idx = system_list.add_item(str("> ", game_data.ANOMALY_CLASSIFICATIONS.get(body.entity_classification)))
+			if body.is_anomaly() and body.metadata.get("is_anomaly_available", true) == true: new_item_idx = system_list.add_item("> ???")
+			if body.is_entity(): new_item_idx = system_list.add_item(str("> ", game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification)))
 			
 			system_list.set_item_metadata(new_item_idx, body.get_identifier())
 			
@@ -247,7 +247,7 @@ func draw_map():
 	
 	for body in system.bodies:
 		
-		if not (body.is_asteroid_belt() or body.is_station()) and body.is_known:
+		if not (body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)

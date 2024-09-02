@@ -334,8 +334,6 @@ func generateRandomWeightedStations():
 		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
 		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 		
-		
-		
 		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
 		
 		var percentage_markup = global_data.get_randi(50, 200)
@@ -346,11 +344,35 @@ func generateRandomWeightedStations():
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
+
 #entities = no dialogue, viewable via long range scopes module
 #anomalies = space anomalies - dialogue, disappear afterwards.
 
-func generateRandomWeightedAnomalies(): #this is for entities, have to change
-	for anomaly in global_data.get_randi(0, 2):
+func generateRandomAnomalies():
+	for anomaly in post_gen_location_candidates.size(): #for this reason, have to generate anomalies LAST
+		if randf() > 0.95:
+			var location = post_gen_location_candidates.pick_random()
+			var hook = get_body_from_identifier(location.front())
+			var i = location.back()
+			
+			var new_distance: float = hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * i)
+			var orbit_speed_multiplier: float
+			if hook.orbit_speed > 0: orbit_speed_multiplier = ((hook.orbit_speed * 109.1) + 1)
+			else: orbit_speed_multiplier = 1
+			
+			var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+			var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+			
+			var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
+			
+			var new_anomaly = addAnomaly(identifier_count, "unknown", hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1))
+			get_body_from_identifier(new_anomaly).rotation = deg_to_rad(global_data.get_randf(0,360))
+			
+			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
+	pass
+
+func generateRandomWeightedEntities():
+	for entity in global_data.get_randi(0, 2):
 		var location = post_gen_location_candidates.pick_random()
 		var hook = get_body_from_identifier(location.front())
 		var i = location.back()
@@ -365,12 +387,14 @@ func generateRandomWeightedAnomalies(): #this is for entities, have to change
 		
 		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 		
-		var anomaly_classification = global_data.weighted_pick(game_data.get_weighted_anomaly_classifications())
+		var entity_classification = global_data.weighted_pick(game_data.get_weighted_entity_classifications(), "weight")
 		
+		var new_entity = addEntity(identifier_count, "stellar_phenomena", hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), entity_classification)
+		get_body_from_identifier(new_entity).rotation = deg_to_rad(global_data.get_randf(0,360))
 		
-		#need addAnomaly function
-		
+		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
+
 
 func addBody(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, metadata: Dictionary = {}):
 	var body = bodyAPI.new()
@@ -417,6 +441,35 @@ func addStation(id: int, d_name: String, hook_identifier: int, distance: float, 
 		station.metadata = metadata
 	bodies.append(station)
 	return station.get_identifier()
+
+func addAnomaly(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, metadata: Dictionary = {}):
+	var anomaly = anomalyAPI.new()
+	anomaly.set_identifier(id)
+	identifier_count += 1
+	anomaly.set_display_name(d_name)
+	anomaly.hook_identifier = hook_identifier
+	anomaly.distance = distance
+	anomaly.orbit_speed = orbit_speed
+	anomaly.radius = radius
+	if metadata:
+		anomaly.metadata = metadata
+	bodies.append(anomaly)
+	return anomaly.get_identifier()
+
+func addEntity(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, entity_classification, metadata: Dictionary = {}):
+	var entity = entityAPI.new()
+	entity.set_identifier(id)
+	identifier_count += 1
+	entity.set_display_name(d_name)
+	entity.hook_identifier = hook_identifier
+	entity.distance = distance
+	entity.orbit_speed = orbit_speed
+	entity.radius = radius
+	entity.entity_classification = entity_classification
+	if metadata:
+		entity.metadata = metadata
+	bodies.append(entity)
+	return entity.get_identifier()
 
 func addStationaryBody(id: int, d_name: String, hook_identifier, radius: float, metadata: Dictionary = {}):
 	var body = bodyAPI.new()
