@@ -17,6 +17,7 @@ process_mode = 2
 title = "Station Access"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 500)
+visible = false
 always_on_top = true
 
 [node name="station_control" type="Control" parent="." groups=["FOLLOW_UPGRADE_STATE"]]

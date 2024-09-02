@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=35 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -19,14 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://csvtv1sy2k3ns" path="res://Graphics/audio_visualizer_icon.png" id="11_lvg8y"]
 [ext_resource type="Texture2D" uid="uid://cghgcu7ghw8mf" path="res://Graphics/hull_deterioration_icon.png" id="12_3bh3s"]
 [ext_resource type="Texture2D" uid="uid://ce1et15cnh5ao" path="res://Graphics/morale_icon.png" id="13_vaatn"]
-[ext_resource type="AudioStream" uid="uid://cc05rvmmtxsev" path="res://Sound/SFX/LIDAR/scanning_1.wav" id="15_gusf2"]
-[ext_resource type="AudioStream" uid="uid://cus4xdrnkykve" path="res://Sound/SFX/LIDAR/scanning_2.wav" id="16_7te6b"]
-[ext_resource type="AudioStream" uid="uid://bq0ch8l4q26i" path="res://Sound/SFX/LIDAR/scanning_3.wav" id="17_22n0i"]
-[ext_resource type="AudioStream" uid="uid://cltl3b14h1ute" path="res://Sound/SFX/LIDAR/scanning_4.wav" id="18_nal3x"]
 [ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://Graphics/journey_map_icon.png" id="19_36y85"]
-[ext_resource type="AudioStream" uid="uid://bt7cv0shijpxt" path="res://Sound/SFX/LIDAR/scanning_5.wav" id="19_sbqun"]
-[ext_resource type="AudioStream" uid="uid://c4jdky4e86g8i" path="res://Sound/SFX/LIDAR/scanning_6.wav" id="20_0227f"]
-[ext_resource type="AudioStream" uid="uid://vq7vxfvpd4i0" path="res://Sound/SFX/LIDAR/scanning_7.wav" id="21_xegkg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ee55b"]
 content_margin_left = 25.0
@@ -68,23 +61,6 @@ color = Color(0.207843, 0.207843, 0.207843, 1)
 grow_begin = 11.0
 grow_end = 11.0
 vertical = true
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jthrs"]
-streams_count = 7
-stream_0/stream = ExtResource("15_gusf2")
-stream_0/weight = 3.0
-stream_1/stream = ExtResource("16_7te6b")
-stream_1/weight = 1.0
-stream_2/stream = ExtResource("17_22n0i")
-stream_2/weight = 1.0
-stream_3/stream = ExtResource("18_nal3x")
-stream_3/weight = 1.0
-stream_4/stream = ExtResource("19_sbqun")
-stream_4/weight = 1.0
-stream_5/stream = ExtResource("20_0227f")
-stream_5/weight = 1.0
-stream_6/stream = ExtResource("21_xegkg")
-stream_6/weight = 1.0
 
 [node name="system_window" type="Node"]
 
@@ -491,10 +467,6 @@ text = "AUD"
 icon = ExtResource("11_lvg8y")
 clip_text = true
 icon_alignment = 2
-
-[node name="ping" type="AudioStreamPlayer" parent="system"]
-stream = SubResource("AudioStreamRandomizer_jthrs")
-bus = &"SFX"
 
 [connection signal="tab_button_pressed" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_button_pressed"]
 [connection signal="tab_clicked" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_clicked"]

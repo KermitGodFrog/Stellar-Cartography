@@ -31,11 +31,16 @@ var player_is_boosting: bool = false
 
 @onready var audio_visualizer_button = $camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button
 
-@onready var ping_sound = $ping
+@onready var ping_sound_scene = preload("res://Sound/ping.tscn")
 @onready var bounceback_sound_scene = preload("res://Sound/bounceback.tscn")
 @onready var discovery_sound_scene = preload("res://Sound/discovery.tscn")
+@onready var boost_start_wav = preload("res://Sound/SFX/boost_start.wav")
+@onready var boost_end_wav = preload("res://Sound/SFX/boost_end.wav")
+enum BOOST_SOUND_TYPES {START, END}
 
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
+
+@onready var entity_icon = preload("res://Graphics/entity_32x.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body : bodyAPI
@@ -203,6 +208,11 @@ func _unhandled_input(event):
 	if event.is_action_pressed("boost"):
 		player_is_boosting = !player_is_boosting
 		emit_signal("updatePlayerIsBoosting", player_is_boosting)
+		match player_is_boosting:
+			true:
+				async_play_boost_sound(BOOST_SOUND_TYPES.START)
+			false:
+				async_play_boost_sound(BOOST_SOUND_TYPES.END)
 	pass
 
 func _draw():
@@ -223,6 +233,8 @@ func draw_map():
 	if asteroid_belts: for belt in asteroid_belts:
 		if belt.is_known: draw_arc(belt.position, belt.radius, -10, TAU, 50, belt.metadata.get("color"), belt.metadata.get("width"), false)
 	
+	var size_exponent = pow(camera.zoom.length(), -0.5)
+	
 	for body in system.bodies:
 		if not (body.is_asteroid_belt() or body.is_station()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
@@ -236,9 +248,11 @@ func draw_map():
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, body.radius, 0.05)
 				draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
 	for body in system.get_stations(): #TEMP!!!!!
-		draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
+		if camera.zoom.length() < system.get_first_star().radius * 100.0:
+			entity_icon.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false, Color(1,1,1,1), false)
+		else:
+			draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
 	
-	var size_exponent = pow(camera.zoom.length(), -0.5)
 	#draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
 	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, size_exponent)
 	draw_circle(player_position_matrix[0], size_exponent, Color.WHITE)
@@ -280,8 +294,6 @@ func _on_stop_button_pressed():
 
 
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
-	ping_sound.play()
-	
 	ping_length = remap(ping_width, 5, 90, 300, 100)
 	var line = player_position_matrix[0] + ping_direction * ping_length
 	
@@ -303,6 +315,12 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 		#ping.position = global_data.random_triangle_point(a,b,c)
 		#ping.resetTime()
 		#SONAR_PINGS.append(ping)
+	
+	var ping_instance = ping_sound_scene.instantiate()
+	add_child(ping_instance)
+	ping_instance.play()
+	await ping_instance.finished
+	ping_instance.queue_free()
 	pass
 
 func async_add_ping(body: bodyAPI) -> void:
@@ -322,6 +340,23 @@ func async_add_ping(body: bodyAPI) -> void:
 	await bounceback_instance.finished
 	bounceback_instance.queue_free()
 	pass
+
+func async_play_boost_sound(sound: BOOST_SOUND_TYPES):
+	var instance = AudioStreamPlayer.new()
+	instance.set_bus("SFX")
+	instance.set_volume_db(-36)
+	match sound:
+		BOOST_SOUND_TYPES.START:
+			instance.set_stream(boost_start_wav)
+		BOOST_SOUND_TYPES.END:
+			instance.set_stream(boost_end_wav)
+	add_child(instance)
+	instance.play()
+	await instance.finished
+	instance.queue_free()
+	pass
+
+
 
 
 func _on_found_body(id: int):
