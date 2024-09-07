@@ -259,7 +259,7 @@ func draw_map():
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, body.radius, 0.05)
 				draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
 		
-		if (body.is_station() or body.is_anomaly() or body.is_entity()):
+		if (body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				entity_icon.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false, Color(1,1,1,1), false)
 			else:

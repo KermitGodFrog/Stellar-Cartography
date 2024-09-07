@@ -31,15 +31,15 @@ offset_bottom = 50.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="resume_button" type="Button" parent="pause_canvas/pause_control/pause_scroll"]
+[node name="resume_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
 text = "RESUME"
 
-[node name="save_button" type="Button" parent="pause_canvas/pause_control/pause_scroll"]
+[node name="save_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
 text = "SAVE"
 
-[node name="save_and_quit_button" type="Button" parent="pause_canvas/pause_control/pause_scroll"]
+[node name="save_and_quit_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
 text = "SAVE AND QUIT TO MAIN MENU"
 

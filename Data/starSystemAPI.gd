@@ -350,7 +350,7 @@ func generateRandomWeightedStations():
 
 func generateRandomAnomalies():
 	for anomaly in post_gen_location_candidates.size(): #for this reason, have to generate anomalies LAST
-		if randf() > 0.95:
+		if randf() > 0.99:
 			var location = post_gen_location_candidates.pick_random()
 			var hook = get_body_from_identifier(location.front())
 			var i = location.back()

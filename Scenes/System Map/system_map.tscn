@@ -371,7 +371,7 @@ text = "100%"
 icon = ExtResource("13_vaatn")
 script = ExtResource("11_1rwmm")
 
-[node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["FOLLOW_UPGRADE_STATE", "trackHullStress"]]
+[node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["FOLLOW_UPGRADE_STATE", "playUIClickSFX", "trackHullStress"]]
 layout_mode = 2
 tooltip_text = "Hull stress. General starship wear-and-tear. Principally decreases slowly with time or by exchanging nanites at a space station for repairs. Damage over 100% will be transferred to hull deterioration."
 text = "100%"

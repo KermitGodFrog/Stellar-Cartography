@@ -98,7 +98,7 @@ layout_mode = 2
 text = "You decide to ..."
 vertical_alignment = 1
 
-[node name="options" type="ItemList" parent="dialogue/dialogue_control/margin/panel/panel_margin/content_scroll"]
+[node name="options" type="ItemList" parent="dialogue/dialogue_control/margin/panel/panel_margin/content_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
 auto_height = true
 item_count = 3
