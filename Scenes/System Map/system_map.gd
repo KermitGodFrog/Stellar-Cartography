@@ -106,9 +106,9 @@ func _physics_process(delta):
 			var new_item_idx: int
 			if body.is_planet(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.metadata.get("planet_type"), " Planet"))
 			if body.is_wormhole(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Wormhole"))
-			if body.is_station(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Station"))
+			if body.is_station(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Station"), load("res://Graphics/station_frame.png"))
 			if body.is_anomaly() and body.metadata.get("is_anomaly_available", true) == true: new_item_idx = system_list.add_item("> ???")
-			if body.is_entity(): new_item_idx = system_list.add_item(str("> ", game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification)))
+			if body.is_entity(): new_item_idx = system_list.add_item(str("> ", game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification)), get_entity_frame(body.entity_classification))
 			
 			system_list.set_item_metadata(new_item_idx, body.get_identifier())
 			
@@ -373,7 +373,10 @@ func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int
 	emit_signal("removeHullStressForNanites", amount, nanites_per_percentage)
 	pass
 
-
+func get_entity_frame(classification: game_data.ENTITY_CLASSIFICATIONS) -> Resource:
+	match classification:
+		game_data.ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: return load("res://Graphics/space_whale_pod_frame.png")
+		_: return load("res://Graphics/empty_frame.png")
 
 
 func _on_found_body(id: int):
