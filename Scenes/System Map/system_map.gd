@@ -356,7 +356,7 @@ func async_add_ping(body: bodyAPI) -> void:
 func async_play_boost_sound(sound: BOOST_SOUND_TYPES):
 	var instance = AudioStreamPlayer.new()
 	instance.set_bus("SFX")
-	instance.set_volume_db(-36)
+	instance.set_volume_db(-12)
 	match sound:
 		BOOST_SOUND_TYPES.START:
 			instance.set_stream(boost_start_wav)

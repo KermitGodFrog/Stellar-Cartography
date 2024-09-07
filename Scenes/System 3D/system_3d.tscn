@@ -75,8 +75,9 @@ layout_mode = 1
 offset_right = 40.0
 offset_bottom = 23.0
 theme_override_fonts/font = ExtResource("3_wi6mv")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 15
 theme_override_styles/normal = SubResource("StyleBoxFlat_ajtlq")
+vertical_alignment = 1
 
 [node name="world_environment" type="WorldEnvironment" parent="system_3d"]
 environment = SubResource("Environment_wo5s4")
