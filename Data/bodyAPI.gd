@@ -20,8 +20,8 @@ class_name bodyAPI
 @export var is_known: bool = false
 
 enum VARIATIONS {LOW, MEDIUM, HIGH}
-@export var current_variation: int 
-@export var guessed_variation: int
+@export var current_variation: int = -1
+@export var guessed_variation: int = -1
 
 func get_identifier():
 	return identifier

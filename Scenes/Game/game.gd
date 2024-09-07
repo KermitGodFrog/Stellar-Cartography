@@ -90,6 +90,8 @@ func _ready():
 		_on_switch_star_system(new)
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
@@ -319,7 +321,7 @@ func dock_with_station(following_station):
 	for s in world.star_systems:
 		if s != world.player.current_star_system:
 			for b in s.bodies:
-				if (b.get_current_variation() != null and b.get_guessed_variation() != null) and b.is_planet():
+				if ((b.get_current_variation() != -1) and (b.get_guessed_variation() != -1)) and b.is_planet():
 					var helper = audioProfileHelper.new()
 					var mix = s.planet_type_audio_data.get(b.metadata.get("planet_type")).get(b.get_guessed_variation())
 					helper.mix = mix
