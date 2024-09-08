@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0frxj5cysipi"]
+
+[ext_resource type="Environment" uid="uid://b1yq54jdcwnuc" path="res://Scenes/System 3D/system_3d_environment.tres" id="1_7txwv"]
+[ext_resource type="Script" path="res://Scenes/Long Range Scopes/long_range_scopes.gd" id="1_syfdy"]
+
+[node name="long_range_scopes_window" type="Window"]
+process_mode = 3
+title = "Long Range Scopes"
+size = Vector2i(500, 500)
+visible = false
+
+[node name="long_range_scopes" type="Node3D" parent="."]
+script = ExtResource("1_syfdy")
+
+[node name="camera_offset" type="Node3D" parent="long_range_scopes"]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 0)
+
+[node name="camera" type="Camera3D" parent="long_range_scopes/camera_offset"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
+fov = 10.0
+
+[node name="canvas_layer" type="CanvasLayer" parent="long_range_scopes/camera_offset/camera"]
+
+[node name="post_process" type="ColorRect" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="control" type="Control" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="world_environment" type="WorldEnvironment" parent="long_range_scopes"]
+environment = ExtResource("1_7txwv")
+
+[node name="directional_light" type="DirectionalLight3D" parent="long_range_scopes"]

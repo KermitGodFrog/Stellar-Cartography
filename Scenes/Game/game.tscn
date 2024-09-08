@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://o18qlgh0vvwn"]
+[gd_scene load_steps=11 format=3 uid="uid://o18qlgh0vvwn"]
 
 [ext_resource type="Script" path="res://Scenes/Game/game.gd" id="1_mtv75"]
 [ext_resource type="PackedScene" uid="uid://bhroagne3v4wq" path="res://Scenes/System Map/system_map.tscn" id="2_jilbx"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cu8n2e53bgc37" path="res://Scenes/Pause Menu/pauseMenu.tscn" id="8_s4gh6"]
 [ext_resource type="PackedScene" uid="uid://p275r5sfhnj5" path="res://Sound/Music/soundHandler.tscn" id="9_gksgf"]
 [ext_resource type="PackedScene" uid="uid://kmp3sfk18y2" path="res://Scenes/Stats Menu/statsMenu.tscn" id="9_m7la7"]
+[ext_resource type="PackedScene" uid="uid://b0frxj5cysipi" path="res://Scenes/Long Range Scopes/long_range_scopes.tscn" id="10_q6rur"]
 
 [node name="game" type="Node"]
 process_mode = 1
@@ -21,6 +22,10 @@ script = ExtResource("1_mtv75")
 [node name="station_window" parent="." instance=ExtResource("6_g2s4t")]
 
 [node name="journey_map_window" parent="." instance=ExtResource("5_4mkmd")]
+
+[node name="long_range_scopes_window" parent="." instance=ExtResource("10_q6rur")]
+own_world_3d = true
+handle_input_locally = false
 
 [node name="interaction_cooldown" type="Timer" parent="."]
 wait_time = 2.0
