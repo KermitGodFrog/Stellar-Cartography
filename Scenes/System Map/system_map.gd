@@ -2,6 +2,7 @@ extends Node2D
 #updates a map and object list based on data it is fed by the game component. updates camera position for some reason
 
 signal updatePlayerActionType(type: playerAPI.ACTION_TYPES, action_body)
+signal validUpdatePlayerActionType(type: playerAPI.ACTION_TYPES, action_body) #used for checking if the player is no longer orbiting a body in game.gd!
 signal updatePlayerIsBoosting(is_boosting: bool)
 signal updatePlayerTargetPosition(pos: Vector2)
 signal updateTargetPosition(pos: Vector2)

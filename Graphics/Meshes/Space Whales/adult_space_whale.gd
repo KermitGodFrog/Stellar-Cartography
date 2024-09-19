@@ -10,7 +10,6 @@ func _on_timer_timeout():
 	var animation = ["tail_wag", "tail_wag2"].pick_random()
 	var animation_player: AnimationPlayer = get_node("AnimationPlayer")
 	animation_player.play(animation)
-	print_debug("SPACE WHALE ANIMATION PLAYING")
 	pass
 
 

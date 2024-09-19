@@ -9,6 +9,7 @@ var world: worldAPI
 @onready var sonar = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container/sonar_window/sonar_control
 @onready var barycenter_visualizer = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container/barycenter_visualizer_window/barycenter_control
 @onready var audio_visualizer = $audio_visualizer_window/audio_control
+@onready var long_range_scopes = $long_range_scopes_window/long_range_scopes
 @onready var station_ui = $station_window/station_control
 @onready var dialogue_manager = $dialogueManager
 @onready var journey_map = $journey_map_window/journey_map
@@ -150,6 +151,7 @@ func _physics_process(delta):
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_3d.set("player_position", world.player.position)
+	long_range_scopes.set("player_position", world.player.position)
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
@@ -169,7 +171,13 @@ func _on_tick(): #every 1 second
 		world.player.addHullStress(1)
 	pass
 
-func _on_player_orbiting_body(_orbiting_body: bodyAPI):
+func _on_player_orbiting_body(orbiting_body: bodyAPI):
+	if orbiting_body is entityAPI:
+		var orbiting_entity = orbiting_body
+		long_range_scopes._on_current_entity_changed(orbiting_entity)
+		
+		await system_map.validUpdatePlayerActionType
+		long_range_scopes._on_current_entity_cleared()
 	pass
 
 func _on_player_following_body(following_body: bodyAPI):
@@ -256,6 +264,7 @@ func _on_player_following_body(following_body: bodyAPI):
 	
 	pass
 
+
 func enter_wormhole(following_wormhole, wormholes, destination):
 	#spawning new wormholes in destination system if nonexistent
 	if not destination.destination_systems:
@@ -333,6 +342,7 @@ func dock_with_station(following_station):
 	_on_station_popup()
 	pass
 
+
 func _on_player_death():
 	print("GAME (DEBUG): PLAYER DIED!!!!!!!!!!!")
 	
@@ -359,7 +369,11 @@ func _on_player_win():
 	game_data.deleteWorld()
 	pass
 
+
 func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
+	if not (type == world.player.current_action_type and action_body == world.player.action_body):
+		system_map.emit_signal("validUpdatePlayerActionType", type, action_body) #used for checking if the player is no longer orbiting a body in game.gd!
+	
 	world.player.current_action_type = type
 	if action_body != null:
 		world.player.pending_action_body = action_body

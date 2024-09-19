@@ -8,6 +8,7 @@
 [node name="long_range_scopes_window" type="Window"]
 process_mode = 3
 title = "Long Range Scopes"
+position = Vector2i(0, 36)
 size = Vector2i(500, 500)
 
 [node name="long_range_scopes" type="Node3D" parent="."]
@@ -39,9 +40,31 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="fov_container" type="CenterContainer" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
+custom_minimum_size = Vector2(200, 100)
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+
+[node name="fov_slider" type="VSlider" parent="long_range_scopes/camera_offset/camera/canvas_layer/fov_container"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_constants/grabber_offset = 0
+min_value = 10.0
+max_value = 75.0
+value = 75.0
+tick_count = 3
+ticks_on_borders = true
+
 [node name="world_environment" type="WorldEnvironment" parent="long_range_scopes"]
 environment = ExtResource("1_7txwv")
 
 [node name="directional_light" type="DirectionalLight3D" parent="long_range_scopes"]
 
 [node name="adult_space_whale" parent="long_range_scopes" instance=ExtResource("3_w1w3q")]
+
+[connection signal="value_changed" from="long_range_scopes/camera_offset/camera/canvas_layer/fov_container/fov_slider" to="long_range_scopes" method="_on_fov_slider_value_changed"]
