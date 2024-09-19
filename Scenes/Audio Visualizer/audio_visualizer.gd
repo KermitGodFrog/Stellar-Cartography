@@ -98,7 +98,7 @@ func _on_remove_saved_audio_profile(helper: audioProfileHelper):
 	pass
 
 func _on_locked_body_updated(body: bodyAPI):
-	if body.is_planet() and body.get_current_variation() != null:
+	if body.is_planet() and body.is_known and body.get_current_variation() != null:
 		var audio_variations = starSystemAPI.new().planet_type_audio_data.get(body.metadata.get("planet_type"))
 		var mix = audio_variations.get(body.get_current_variation())
 		var helper = audioProfileHelper.new()

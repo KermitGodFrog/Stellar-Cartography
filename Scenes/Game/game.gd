@@ -302,12 +302,13 @@ func enter_wormhole(following_wormhole, wormholes, destination):
 		world.remove_systems_excluding_systems(exclude_systems)
 		station_ui.has_sold_previously = false #allowing to sell exploration data at station at next civilized system
 	
-	if destination_wormhole: world.player.position = destination_wormhole.position
 	world.player.previous_star_system = world.player.current_star_system
 	world.player.systems_traversed += 1
 	if world.player.systems_traversed == 35: # will need a global variable for how many ssystems until win at some point, customizability would be sick
 		_on_player_win()
 	_on_switch_star_system(destination)
+	if destination_wormhole: 
+		world.player.position = destination_wormhole.position
 	pass
 
 func dock_with_station(following_station):

@@ -26,6 +26,7 @@ script = ExtResource("1_mtv75")
 [node name="long_range_scopes_window" parent="." instance=ExtResource("10_q6rur")]
 own_world_3d = true
 handle_input_locally = false
+position = Vector2i(0, 36)
 
 [node name="interaction_cooldown" type="Timer" parent="."]
 wait_time = 2.0
