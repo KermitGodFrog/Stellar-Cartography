@@ -7,6 +7,7 @@ extends Node3D
 const CAMERA_ROTATION_MAGNITUDE = 1
 var target_fov: float = 75
 
+var system : starSystemAPI
 var current_entity : entityAPI = null
 var player_position: Vector2 = Vector2.ZERO
 
@@ -37,8 +38,13 @@ func rotate_camera_basis(dir: Vector3) -> void:
 func _physics_process(delta):
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
 	if current_entity:
-		var dir = player_position.direction_to(current_entity.position)
-		update_camera_offset_dir(Vector3(dir.x, 0, dir.y))
+		var entity_dir_from_player = player_position.direction_to(current_entity.position)
+		update_camera_offset_dir(Vector3(entity_dir_from_player.x, 0, entity_dir_from_player.y))
+		
+		var first_star = system.get_first_star()
+		if first_star:
+			var star_dir_from_entity = current_entity.position.direction_to(first_star.position)
+			update_star_dir(Vector3(-star_dir_from_entity.x, 0, -star_dir_from_entity.y))
 	pass
 
 

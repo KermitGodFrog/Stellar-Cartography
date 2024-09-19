@@ -412,6 +412,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	system_map.system = to_system
 	system_3d.system = to_system
 	barycenter_visualizer.system = to_system
+	long_range_scopes.system = to_system
 	system_3d.spawnBodies()
 	system_3d.reset_locked_body()
 	journey_map.add_new_system(world.player.systems_traversed)
