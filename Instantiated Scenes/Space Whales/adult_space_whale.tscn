@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://dwtt1i110irrs"]
 
-[ext_resource type="PackedScene" uid="uid://dbf7wc7f4kexq" path="res://Graphics/Meshes/Space Whales/adult_space_whale.glb" id="1_popjc"]
-[ext_resource type="Script" path="res://Graphics/Meshes/Space Whales/adult_space_whale.gd" id="2_2gsu2"]
+[ext_resource type="PackedScene" uid="uid://dbf7wc7f4kexq" path="res://Instantiated Scenes/Space Whales/adult_space_whale.glb" id="1_popjc"]
+[ext_resource type="Script" path="res://Instantiated Scenes/Space Whales/adult_space_whale.gd" id="2_2gsu2"]
 
-[node name="adult_space_whale" instance=ExtResource("1_popjc")]
+[node name="adult_space_whale" groups=["long_range_scopes_prop"] instance=ExtResource("1_popjc")]
 script = ExtResource("2_2gsu2")
 
 [node name="Skeleton3D" parent="adult_space_whale" index="0"]

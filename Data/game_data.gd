@@ -1,6 +1,7 @@
 extends Node
 
-var player_weirdness_index: float
+var player_weirdness_index: float = 0.0
+const GENERATION_VECTORS = [Vector3.UP, Vector3.DOWN, Vector3.LEFT, Vector3.RIGHT, Vector3.FORWARD, Vector3.BACK] #for use in long range scopes and its props!
 
 enum STATION_CLASSIFICATIONS {STANDARD, PIRATE, ABANDONED, COVERUP, DEBRIS, ABANDONED_OPERATIONAL, ABANDONED_BACKROOMS, PARTIALLY_SALVAGED, BIRD}
 const STATION_CLASSIFICATION_CURVES = {

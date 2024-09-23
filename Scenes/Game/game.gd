@@ -172,12 +172,6 @@ func _on_tick(): #every 1 second
 	pass
 
 func _on_player_orbiting_body(orbiting_body: bodyAPI):
-	if orbiting_body is entityAPI:
-		var orbiting_entity = orbiting_body
-		long_range_scopes._on_current_entity_changed(orbiting_entity)
-		
-		await system_map.validUpdatePlayerActionType
-		long_range_scopes._on_current_entity_cleared()
 	pass
 
 func _on_player_following_body(following_body: bodyAPI):
@@ -262,6 +256,12 @@ func _on_player_following_body(following_body: bodyAPI):
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_anomaly)
 	
+	if following_body is entityAPI:
+		var following_entity = following_body
+		long_range_scopes._on_current_entity_changed(following_entity)
+		
+		await system_map.validUpdatePlayerActionType
+		long_range_scopes._on_current_entity_cleared()
 	pass
 
 

@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dbf7wc7f4kexq"
-path="res://.godot/imported/adult_space_whale.glb-37767cfff703df13760673230dabe2bd.scn"
+path="res://.godot/imported/adult_space_whale.glb-a7d72ea72a6a3e9946ae271f9908f58f.scn"
 
 [deps]
 
-source_file="res://Graphics/Meshes/Space Whales/adult_space_whale.glb"
-dest_files=["res://.godot/imported/adult_space_whale.glb-37767cfff703df13760673230dabe2bd.scn"]
+source_file="res://Instantiated Scenes/Space Whales/adult_space_whale.glb"
+dest_files=["res://.godot/imported/adult_space_whale.glb-a7d72ea72a6a3e9946ae271f9908f58f.scn"]
 
 [params]
 
