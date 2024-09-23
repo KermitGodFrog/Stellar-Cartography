@@ -28,3 +28,13 @@ func create_and_connect_timer():
 	var timer = get_tree().create_timer(global_data.get_randi(5, 30), false, true, false)
 	timer.connect("timeout", _on_timer_timeout)
 	pass
+
+func get_positions() -> PackedVector3Array:
+	var positions: PackedVector3Array = []
+	#var skeleton = get_node("adult_space_whale/Skeleton3D")
+	#const bones = ["head1", "right_wing5", "left_wing5", "tail3"]
+	#for bone in bones:
+		#positions.append(skeleton.to_global(skeleton.get_bone_pose_position(skeleton.find_bone(bone))))
+	for child in get_node("adult_space_whale/bounds").get_children():
+		positions.append(get_node("adult_space_whale/bounds").to_global(child.position))
+	return positions

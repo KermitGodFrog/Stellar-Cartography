@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://b0frxj5cysipi"]
+[gd_scene load_steps=9 format=3 uid="uid://b0frxj5cysipi"]
 
 [ext_resource type="Script" path="res://Scenes/Long Range Scopes/long_range_scopes.gd" id="1_syfdy"]
 [ext_resource type="Texture2D" uid="uid://3ea0xeivnnax" path="res://Graphics/long_range_scopes_hud4.png" id="2_d3gep"]
+[ext_resource type="Script" path="res://Scenes/Long Range Scopes/debug_draw.gd" id="2_scloa"]
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="3_iyrid"]
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_kwwow"]
 
@@ -41,12 +42,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 100)
 [node name="canvas_layer" type="CanvasLayer" parent="long_range_scopes/camera_offset/camera"]
 
 [node name="post_process" type="ColorRect" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("2_scloa")
 
 [node name="no_current_entity_bg" type="ColorRect" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
 anchors_preset = 15

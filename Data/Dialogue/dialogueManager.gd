@@ -3,7 +3,6 @@ extends Node
 signal onCloseDialog(with_return_state)
 signal addDialogueMemoryPair(key, value)
 
-
 signal addPlayerValue(amount: int)
 signal addPlayerHullStress(amount: int)
 signal removePlayerHullStress(amount: int)
@@ -11,14 +10,14 @@ signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
 
 var dialogue_memory: Dictionary = {} #memory that is added by any query, and is always accessible indefinitely. from worldAPI dialogue_memory which is sent via game.gd
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
-enum QUERY_TYPES {BEST, ALL}
+enum QUERY_TYPES {BEST, ALL, RAND_BEST}
 
 #for populating query data
 var player: playerAPI
 var character_lookup_dictionary: Dictionary = {}
 
 var rules: Array[responseRule] = []
-enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, OPTIONS, TEXT}
+enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, OPTIONS, TEXT}
 
 @onready var dialogue = $dialogue/dialogue_control
 
@@ -66,6 +65,10 @@ func _ready():
 					var array = convert_to_array(cell)
 					if not array.is_empty():
 						new_rule.query_best_concept = array
+				"QUERY_RAND_BEST_CONCEPT":
+					var array = convert_to_array(cell)
+					if not array.is_empty():
+						new_rule.query_rand_best_concept = array
 				"OPTIONS":
 					var dict = convert_to_dictionary(cell)
 					if not dict.is_empty():
@@ -185,6 +188,38 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			for matched_rule in matched_rules:
 				trigger_rule(calling, matched_rule, incoming_query)
 			
+		QUERY_TYPES.RAND_BEST:
+			
+			#IDENTICAL TO 'BEST' ATM, CHANGE IT!!!!!!!!
+			
+			var relevant_rules = get_relevant_rules(incoming_query)
+			
+			var ranked_rules: Dictionary = {}
+			for rule in relevant_rules:
+				incoming_query.facts["randf_EXCLUSIVE"] = randf()
+				incoming_query.facts["randi_EXCLUSIVE"] = randi()
+				var matches: int = get_rule_matches(rule, incoming_query)
+				ranked_rules[rule] = matches
+			
+			for rule in ranked_rules: #DEBUG!!!!!!!!!!!!!!!!!!!!!!!
+				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", ranked_rules.get(rule)))
+			
+			var sorted_values = ranked_rules.duplicate().values()
+			sorted_values.sort() #counts upwards, e.g [0,0,1,1,1,2,2,5]
+			var match_candidate_indexes: Array = []
+			var max = sorted_values.max()
+			for i in sorted_values.size(): if sorted_values[i] == max: match_candidate_indexes.append(i)
+			
+			var matched_index = match_candidate_indexes.pick_random()
+			
+			incoming_query.facts.erase("randf_EXCLUSIVE")
+			incoming_query.facts.erase("randi_EXCLUSIVE")
+			
+			var matched_rule = ranked_rules.find_key(sorted_values[matched_index])
+			if matched_rule: trigger_rule(calling, matched_rule, incoming_query)
+			
+			
+			
 	pass
 
 func get_rule_matches(rule, incoming_query) -> int:
@@ -287,6 +322,11 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 		var new_query = responseQuery.new()
 		new_query.add("concept", concept)
 		speak(calling, new_query, true, QUERY_TYPES.BEST)
+	
+	for concept in rule.query_rand_best_concept:
+		var new_query = responseQuery.new()
+		new_query.add("concept", concept)
+		speak(calling, new_query, true, QUERY_TYPES.RAND_BEST)
 	
 	#text & options \\\\\\\\\\\\\
 	if rule.text: dialogue.add_text(convert_text_with_custom_tags(rule.text, incoming_query))

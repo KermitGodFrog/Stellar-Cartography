@@ -1,71 +1,71 @@
-Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Query Best Concept,Options,Text
-defaultOpenDialog,concept: openDialog,,openDialog: null,,,,Leave:defaultLeave,
-defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,
-,,,,,,,,
-defaultPlayerStartOpenDialog,concept: playerStartOpenDialog,,openDialog: null,,,,Continue:defaultPlayerStartContinueA,"Two thousand years ago, an advanced artificial intelligence named Arata predicted the Universe. "
-defaultPlayerStartContinueA,"concept: optionSelected, option: defaultPlayerStartContinueA",,clearOptions: null,,,,Continue:defaultPlayerStartContinueB,"The Arata formula allows starships to transit into a star system closer to any destination by exploiting certain points in space-time. Machines like Arata are long gone, yet their discoveries are still relied on today. "
-defaultPlayerStartContinueB,"concept: optionSelected, option: defaultPlayerStartContinueB",,clearOptions: null,,,,Exit:defaultLeave,"You are a newly established Captain of a starship on a mission of exploration. You have requested for a route to be calculated, via the Arata formula, into an area of space known as New Eden, which reportedly houses a fragment of human civilisation long forgotten. The journey will be perilous, and what you will encounter on the journey towards New Eden cannot be predicted."
-,,,,,,,,
-defaultPlayerWinOpenDialog,concept: playerWinOpenDialog,,openDialog: null,,,addNewEdenArrivalFlair,Continue:playerWinStoryConclusion,"Comms reports that AIS has identified ‘a lot of starships’. It does not take long for several space installations to insist on clarification regarding your ships details. You suspect that if it wasn’t for the uptick in explorers entering New Eden, guns would already be pointed at you. You order the manifest to be sent. "
-playerWinStoryConclusionDispatch,"concept: optionSelected, option: playerWinStoryConclusion",,clearOptions: null,,,playerWinStoryConclusionResponse,Exit:defaultLeave,
-playerWinStoryConclusionResponseGeneric,concept: playerWinStoryConclusionResponse,,,,,,,You think back to all you have seen on your journey.
-playerWinStoryConclusionResponseConglomerate,"concept: playerWinStoryConclusionResponse, is_conglomerate_storyline_complete: true",,,,,,,"You think back to the Conglomerate. Evidently, there is a new contender on the galactic stage. The words of the Emissary are still heavy on your mind. You cannot decide if life taking such a form is incredible or horrifying."
-playerWinStoryConclusionResponseDetective,"concept: playerWinStoryConclusionResponse, is_detective_storyline_complete: true",,,,,,,"You think back to the Detective. A being which could pause time and evidently change reality, yet refused to truely intefere with your progress towards its physical location. You realise that throughout your travels, you were astronomically lucky. You also realise that you have changed as a person. You wonder whether your journey was truely random chance, or if the Detective actively manipulated it for an unknown motive."
-newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,"You have arrived in New Eden, the true frontier of human civilisation."
-,,,,,,,,
-wormholeOpenDialog,"concept: openDialog, id: wormhole",,openDialog: null,,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",Your ship approaches the wormhole.
-enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENTER_WORMHOLE,,,,,
-,,,,,,,,
-stationOpenDialog,"concept: openDialog, id: station",,openDialog: null,,populateStationOptions,addStationFlair,Leave:defaultLeave,Your fleet approaches the location of a space station defined in native star charts.
-stationLeave,"concept: optionSelected, option: stationLeave",,closeDialog: null,,,,,
-stationFlairStandard,"concept: addStationFlair, station_classification: STANDARD",,,,,,,(STANDARD STATION FLAIR)
-stationFlairPirate,"concept: addStationFlair, station_classification: PIRATE",,,,,,,(PIRATE STATION FLAIR)
-stationFlairAbandoned,"concept: addStationFlair, is_station_abandoned: true",,,,,,,(ABANDONED STATION FLAIR)
-stationFlairDebris,"concept: addStationFlair, station_classification: DEBRIS",,,,,,,Sensors soon detect an expanding debris field.
-,,,,,,,,
-stationDockingAccessOption,"concept: populateStationOptions, is_station_inhabited: true",,,,,,Request Docking Access: stationDockingAccess,
-stationSalvageOption,"concept: populateStationOptions, is_station_abandoned: true",,,,,,Scout for Salvage: stationSalvagePreliminary,
-stationDockingAccess,"concept: optionSelected, option: stationDockingAccess",,closeDialog: DOCK_WITH_STATION,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-PAHardLeave,"concept: optionSelected, option: PAHardLeave",,closeDialog: HARD_LEAVE,,,,,
-PASoftLeave,"concept: optionSelected, option: PASoftLeave",,closeDialog: SOFT_LEAVE,,,,,
-,,,,,,,,
-PA_GenericOpenDialog,concept: randomPAOpenDialog,,openDialog: null,,,,"Order the inconsistent data to be analyzed: PA_GenericContinue, Leave:PASoftLeave",Analysts mark an inconsistent LIDAR return.
-PA_GenericContinue,"concept: optionSelected, option: PA_GenericContinue",,"clearOptions: null, addValueWithFlair: 100",,,,Leave:PAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo."
-,,,,,,,,
-PA_01ProbeGraveyardOpenDialog,"concept: randomPAOpenDialog, planet_classification: Jovian",,openDialog: null,,,,Continue:PA_01ProbeGraveyardContinueA,"Rather quickly, you are hailed by the senior LIDAR technician in a corner of the operations deck. "
-PA_01ProbeGraveyardContinueA,"concept: optionSelected, option: PA_01ProbeGraveyardContinueA",,clearOptions: null,,,,Order the structures to be identified:PA_01ProbeGraveyardContinueB,"The technician watches over the shoulder of a subordinate as you approach. He points a pen towards the juniors console and tries to find his words. ""There appears to be several high-speed structures orbiting within the upper atmosphere,"" he bluntly states. ""Never seen anything like it. We assumed they were false echoes, but that seems to not be the case."""
-PA_01ProbeGraveyardContinueB,"concept: optionSelected, option: PA_01ProbeGraveyardContinueB",,clearOptions: null,,,,Continue:PA_01ProbeGraveyardContinueC,"It takes ten minutes for a ring of scope and sensor technicians to identify each LIDAR blip. A report is soon handed to you - it suggests that a majority of the contacts are human-made probes, but that one is of unfamiliar design - elongated, ancient and sporting floatation devices, protruding beams and a bow-mounted heatshield. More alarmingly, it suggests that the wind speed is far higher than expected within the upper atmosphere. Although a conclusive story cannot be ascertained, it can be assumed that the unknown starship, and the probes, were inserted without prior knowledge of the wind speed, and became trapped in an endless dance through the clouds.  "
-PA_01ProbeGraveyardContinueC,"concept: optionSelected, option: PA_01ProbeGraveyardContinueC",,clearAll: null,,,,"Dispatch a probe to add to the collection:PA_01ProbeGraveyardDispatch,Leave:PASoftLeave","You assess your options. Recovering the unknown starship is impossible, however you can order a probe to be dispatched as homage to the incidents, with little expectation of a return on investment, or you can just leave the flying wrecks be."
-PA_01ProbeGraveyardDispatch,"concept: optionSelected, option: PA_01ProbeGraveyardDispatch",,,,,PA_01ProbeGraveyardDispatchResponse,,
-PA_01ProbeGraveyardDispatchSuccess,"concept: PA_01ProbeGraveyardDispatchResponse, RAND_50%: true",,"clearAll: null, addValueWithFlair: 1000",,,,Leave:PAHardLeave,"As expected, the probe dramatically changes course upon entering the mesosphere. The garbled transmissions it produces before going dark present compelling data on the giants topology."
-PA_01ProbeGraveyardDispatchFailure,"concept: PA_01ProbeGraveyardDispatchResponse, RAND_50%: false",,clearAll: null,,,,Leave:PAHardLeave,"As expected, the probe dramatically changes course upon entering the mesosphere. The garbled transmissions it produces before going dark present little to no new information, yet its course ultimately coincides with the presumed story of the other probes."
-,,,,,,,,
-PA_02PlanetRCS,"concept: randomPAOpenDialog, planet_classification: Terran",,openDialog: null,,,,Order a closer analysis: PA_02PlanetRCSContinue,"It quickly becomes evident that the planet is covered in hundreds of evenly-spaced abnormalities. Preliminary LIDAR scans indicate that the anomalies are structures, approximately one hundred meters in length, width and height. "
-PA_02PlanetRCSContinue,"concept: optionSelected, option: PA_02PlanetRCSContinue",,clearOptions: null,,populatePA_02PlanetRCSOptions,,"Order an expedition: PA_02PlanetRCSDefaultExpedition, Leave:PASoftLeave","Higher quality scans depict the structures as loosely engine shaped, with the nozzle of each supposed-engine facing away from the planets core. You are informed by a junior analyst that the design of the 'engines' does not appear in any on-board records. Further analysis will require a team on-ground."
-PA_02PlanetRCSJiyaOption,"concept: populatePA_02PlanetRCSOptions, player_CHIEF_ENGINEER_alive: true",,,,,,Order Chief Engineer Jiya to lead an expedition: PA_02PlanetRCSJiyaExpeditionA,
-PA_02PlanetRCSDefaultExpedition,"concept: optionSelected, option: PA_02PlanetRCSDefaultExpedition",,"clearAll: null, addValueWithFlair: 2000",,,,Recall the expedition and leave:PAHardLeave,"A transport lands near one of the behemoth thrusters. An hour of documentation, which you oversee from the operations deck, confirms what was already suspected: it is indeed an engine. How the engine is fueled and powered, if applicable, would be impossible to ascertain without months of arduous excavation. It is not clear how the engine is activated. The absurdity of the discovery merely reflects the absurdity of abyss space."
-PA_02PlanetRCSJiyaExpeditionA,"concept: optionSelected, option: PA_02PlanetRCSJiyaExpeditionA",,clearAll: null,,,,Ask Chief Engineer Jiya for her thoughts: PA_02PlanetRCSJiyaExpeditionB,"A transport lands near one of the behemoth thrusters. Documenting the 'engine' takes about an hour. You listen to the comms chatter from the operations deck, picking up several interesting facts - primarily, the 'engine' is indeed congruent in its construction with a normal starship thruster, and that it appears to have fuel and power lines which tunnel deep into the ground."
-PA_02PlanetRCSJiyaExpeditionB,"concept: optionSelected, option: PA_02PlanetRCSJiyaExpeditionB",,clearAll: null,,,,Ask Chief Engineer Jiya for her opinion on what to do next: PA_02PlanetRCSJiyaExpeditionC,"""It's weird, [SIR_MADAM_OR_CAPTAIN]."" Jiya speaks through garbled static. ""Its a planetary reaction control system, despite there being little benefit to moving a planet - 'least not in this way."" she says, elated. ""The thrusters are human make - twenty years old if I could eyeball it - but the thrust that they would produce could not beg to move billions of tonnes of rock. Either the newest universal constant defying engine which can move a planet looks exactly like an antique, or this is a very disfunctional planetary RCS system."""
-PA_02PlanetRCSJiyaExpeditionC,"concept: optionSelected, option: PA_02PlanetRCSJiyaExpeditionC",,clearOptions: null,,,,"We need supplies - order Jiya to lead a salvage expedition:PA_02PlanetRCSJiyaSalvageDispatch, Heed her advice - recall the expedition and leave: PAHardLeave","""Take notes, pack up and leave. Messing with this kind of thing usually leads to disaster - its classic abyss. Makes no sense and explodes when you act like it follows your rules."" Jiya advises."
-PA_02PlanetRCSJiyaSalvageDispatch,"concept: optionSelected, option: PA_02PlanetRCSJiyaSalvageDispatch",,,,,PA_02PlanetRCSJiyaSalvageResponse,,
-PA_02PlanetRCSJiyaSalvageDispatchSuccess,"concept: PA_02PlanetRCSJiyaSalvageResponse, RAND_50%: true",,"clearAll: null, removeHullStressWithFlair: 25",,,,Leave:PAHardLeave,Jiya acknowledges with a sigh. Salvage teams are launched and several comms specialists are awoken to direct the frequent transport departures and arrivals. You oversee the several hour ordeal from near the communications console. Fuel lines are tapped and rare metals are extracted successfully from several of the behemoths. 
-PA_02PlanetRCSJiyaSalvageDispatchFailure,"concept: PA_02PlanetRCSJiyaSalvageResponse, RAND_50%: false",,"clearAll: null, removeHullStressWithFlair: 5, killCharacterWithFlair: 1",,,,Leave:PAHardLeave,"Jiya acknowledges with a sigh. In a four hour ordeal, salvage teams successfuly pick apart two of the behemoths - the third leads to disaster. Despite excessive safety procedures by Chief Engineer Jiya, an explosion propagated from the target - transpiring just after a tap was installed on the targets fuel line. Half of the salvage team, including Chief Engineer Jiya, are killed. Several salvage specialsits are injuired. A transport is lost. You order a recall. "
-,,,,,,,,
-SAHardLeave,"concept: optionSelected, option: SAHardLeave",,closeDialog: HARD_LEAVE,,,,,
-SASoftLeave,"concept: optionSelected, option: SASoftLeave",,closeDialog: SOFT_LEAVE,,,,,
-,,,,,,,,
-SA_GenericOpenDialog,concept: randomSAOpenDialog,,openDialog: null,,,,"Order the inconsistent data to be analyzed: SA_GenericContinue, Leave:SASoftLeave",Analysts mark an inconsistent LIDAR return.
-SA_GenericContinue,"concept: optionSelected, option: SA_GenericContinue",,"clearOptions: null, addValueWithFlair: 100",,,,Leave:SAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo."
-,,,,,,,,
+Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Query Best Concept,Query Rand Best Concept,Options,Text
+defaultOpenDialog,concept: openDialog,,openDialog: null,,,,,Leave:defaultLeave,
+defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,,
+,,,,,,,,,
+defaultPlayerStartOpenDialog,concept: playerStartOpenDialog,,openDialog: null,,,,,Continue:defaultPlayerStartContinueA,"Two thousand years ago, an advanced artificial intelligence named Arata predicted the Universe. "
+defaultPlayerStartContinueA,"concept: optionSelected, option: defaultPlayerStartContinueA",,clearOptions: null,,,,,Continue:defaultPlayerStartContinueB,"The Arata formula allows starships to transit into a star system closer to any destination by exploiting certain points in space-time. Machines like Arata are long gone, yet their discoveries are still relied on today. "
+defaultPlayerStartContinueB,"concept: optionSelected, option: defaultPlayerStartContinueB",,clearOptions: null,,,,,Exit:defaultLeave,"You are a newly established Captain of a starship on a mission of exploration. You have requested for a route to be calculated, via the Arata formula, into an area of space known as New Eden, which reportedly houses a fragment of human civilisation long forgotten. The journey will be perilous, and what you will encounter on the journey towards New Eden cannot be predicted."
+,,,,,,,,,
+defaultPlayerWinOpenDialog,concept: playerWinOpenDialog,,openDialog: null,,,addNewEdenArrivalFlair,,Continue:playerWinStoryConclusion,"Comms reports that AIS has identified ‘a lot of starships’. It does not take long for several space installations to insist on clarification regarding your ships details. You suspect that if it wasn’t for the uptick in explorers entering New Eden, guns would already be pointed at you. You order the manifest to be sent. "
+playerWinStoryConclusionDispatch,"concept: optionSelected, option: playerWinStoryConclusion",,clearOptions: null,,,playerWinStoryConclusionResponse,,Exit:defaultLeave,
+playerWinStoryConclusionResponseGeneric,concept: playerWinStoryConclusionResponse,,,,,,,,You think back to all you have seen on your journey.
+playerWinStoryConclusionResponseConglomerate,"concept: playerWinStoryConclusionResponse, is_conglomerate_storyline_complete: true",,,,,,,,"You think back to the Conglomerate. Evidently, there is a new contender on the galactic stage. The words of the Emissary are still heavy on your mind. You cannot decide if life taking such a form is incredible or horrifying."
+playerWinStoryConclusionResponseDetective,"concept: playerWinStoryConclusionResponse, is_detective_storyline_complete: true",,,,,,,,"You think back to the Detective. A being which could pause time and evidently change reality, yet refused to truely intefere with your progress towards its physical location. You realise that throughout your travels, you were astronomically lucky. You also realise that you have changed. You wonder whether your journey was truely random chance, or if the Detective actively manipulated it for an unknown motive."
+newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,,"You have arrived in New Eden, the true frontier of human civilisation."
+,,,,,,,,,
+wormholeOpenDialog,"concept: openDialog, id: wormhole",,openDialog: null,,,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",Your ship approaches the wormhole.
+enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENTER_WORMHOLE,,,,,,
+,,,,,,,,,
+stationOpenDialog,"concept: openDialog, id: station",,openDialog: null,,populateStationOptions,addStationFlair,,Leave:defaultLeave,Your fleet approaches the location of a space station defined in native star charts.
+stationLeave,"concept: optionSelected, option: stationLeave",,closeDialog: null,,,,,,
+stationFlairStandard,"concept: addStationFlair, station_classification: STANDARD",,,,,,,,(STANDARD STATION FLAIR)
+stationFlairPirate,"concept: addStationFlair, station_classification: PIRATE",,,,,,,,(PIRATE STATION FLAIR)
+stationFlairAbandoned,"concept: addStationFlair, is_station_abandoned: true",,,,,,,,(ABANDONED STATION FLAIR)
+stationFlairDebris,"concept: addStationFlair, station_classification: DEBRIS",,,,,,,,Sensors soon detect an expanding debris field.
+,,,,,,,,,
+stationDockingAccessOption,"concept: populateStationOptions, is_station_inhabited: true",,,,,,,Request Docking Access: stationDockingAccess,
+stationSalvageOption,"concept: populateStationOptions, is_station_abandoned: true",,,,,,,Scout for Salvage: stationSalvagePreliminary,
+stationDockingAccess,"concept: optionSelected, option: stationDockingAccess",,closeDialog: DOCK_WITH_STATION,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+PAHardLeave,"concept: optionSelected, option: PAHardLeave",,closeDialog: HARD_LEAVE,,,,,,
+PASoftLeave,"concept: optionSelected, option: PASoftLeave",,closeDialog: SOFT_LEAVE,,,,,,
+,,,,,,,,,
+PA_GenericOpenDialog,concept: randomPAOpenDialog,,openDialog: null,,,,,"Order the inconsistent data to be analyzed: PA_GenericContinue, Leave:PASoftLeave",Analysts mark an inconsistent LIDAR return.
+PA_GenericContinue,"concept: optionSelected, option: PA_GenericContinue",,"clearOptions: null, addValueWithFlair: 100",,,,,Leave:PAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo."
+,,,,,,,,,
+PA_01ProbeGraveyardOpenDialog,"concept: randomPAOpenDialog, planet_classification: Jovian",,openDialog: null,,,,,Continue:PA_01ProbeGraveyardContinueA,"Rather quickly, you are hailed by the senior LIDAR technician in a corner of the operations deck. "
+PA_01ProbeGraveyardContinueA,"concept: optionSelected, option: PA_01ProbeGraveyardContinueA",,clearOptions: null,,,,,Order the structures to be identified:PA_01ProbeGraveyardContinueB,"The technician watches over the shoulder of a subordinate as you approach. He points a pen towards the juniors console and tries to find his words. ""There appears to be several high-speed structures orbiting within the upper atmosphere,"" he bluntly states. ""Never seen anything like it. We assumed they were false echoes, but that seems to not be the case."""
+PA_01ProbeGraveyardContinueB,"concept: optionSelected, option: PA_01ProbeGraveyardContinueB",,clearOptions: null,,,,,Continue:PA_01ProbeGraveyardContinueC,"It takes ten minutes for a ring of scope and sensor technicians to identify each LIDAR blip. A report is soon handed to you - it suggests that a majority of the contacts are human-made probes, but that one is of unfamiliar design - elongated, ancient and sporting floatation devices, protruding beams and a bow-mounted heatshield. More alarmingly, it suggests that the wind speed is far higher than expected within the upper atmosphere. Although a conclusive story cannot be ascertained, it can be assumed that the unknown starship, and the probes, were inserted without prior knowledge of the wind speed, and became trapped in an endless dance through the clouds.  "
+PA_01ProbeGraveyardContinueC,"concept: optionSelected, option: PA_01ProbeGraveyardContinueC",,clearAll: null,,,,,"Dispatch a probe to add to the collection:PA_01ProbeGraveyardDispatch,Leave:PASoftLeave","You assess your options. Recovering the unknown starship is impossible, however you can order a probe to be dispatched as homage to the incidents, with little expectation of a return on investment, or you can just leave the flying wrecks be."
+PA_01ProbeGraveyardDispatch,"concept: optionSelected, option: PA_01ProbeGraveyardDispatch",,,,,PA_01ProbeGraveyardDispatchResponse,,,
+PA_01ProbeGraveyardDispatchSuccess,"concept: PA_01ProbeGraveyardDispatchResponse, RAND_50%: true",,"clearAll: null, addValueWithFlair: 1000",,,,,Leave:PAHardLeave,"As expected, the probe dramatically changes course upon entering the mesosphere. The garbled transmissions it produces before going dark present compelling data on the giants topology."
+PA_01ProbeGraveyardDispatchFailure,"concept: PA_01ProbeGraveyardDispatchResponse, RAND_50%: false",,clearAll: null,,,,,Leave:PAHardLeave,"As expected, the probe dramatically changes course upon entering the mesosphere. The garbled transmissions it produces before going dark present little to no new information, yet its course ultimately coincides with the presumed story of the other probes."
+,,,,,,,,,
+PA_02PlanetRCS,"concept: randomPAOpenDialog, planet_classification: Terran",,openDialog: null,,,,,Order a closer analysis: PA_02PlanetRCSContinue,"It quickly becomes evident that the planet is covered in hundreds of evenly-spaced abnormalities. Preliminary LIDAR scans indicate that the anomalies are structures, approximately one hundred meters in length, width and height. "
+PA_02PlanetRCSContinue,"concept: optionSelected, option: PA_02PlanetRCSContinue",,clearOptions: null,,populatePA_02PlanetRCSOptions,,,"Order an expedition: PA_02PlanetRCSDefaultExpedition, Leave:PASoftLeave","Higher quality scans depict the structures as loosely engine shaped, with the nozzle of each supposed-engine facing away from the planets core. You are informed by a junior analyst that the design of the 'engines' does not appear in any on-board records. Further analysis will require a team on-ground."
+PA_02PlanetRCSJiyaOption,"concept: populatePA_02PlanetRCSOptions, player_CHIEF_ENGINEER_alive: true",,,,,,,Order Chief Engineer Jiya to lead an expedition: PA_02PlanetRCSJiyaExpeditionA,
+PA_02PlanetRCSDefaultExpedition,"concept: optionSelected, option: PA_02PlanetRCSDefaultExpedition",,"clearAll: null, addValueWithFlair: 2000",,,,,Recall the expedition and leave:PAHardLeave,"A transport lands near one of the behemoth thrusters. An hour of documentation, which you oversee from the operations deck, confirms what was already suspected: it is indeed an engine. How the engine is fueled and powered, if applicable, would be impossible to ascertain without months of arduous excavation. It is not clear how the engine is activated. The absurdity of the discovery merely reflects the absurdity of abyss space."
+PA_02PlanetRCSJiyaExpeditionA,"concept: optionSelected, option: PA_02PlanetRCSJiyaExpeditionA",,clearAll: null,,,,,Ask Chief Engineer Jiya for her thoughts: PA_02PlanetRCSJiyaExpeditionB,"A transport lands near one of the behemoth thrusters. Documenting the 'engine' takes about an hour. You listen to the comms chatter from the operations deck, picking up several interesting facts - primarily, the 'engine' is indeed congruent in its construction with a normal starship thruster, and that it appears to have fuel and power lines which tunnel deep into the ground."
+PA_02PlanetRCSJiyaExpeditionB,"concept: optionSelected, option: PA_02PlanetRCSJiyaExpeditionB",,clearAll: null,,,,,Ask Chief Engineer Jiya for her opinion on what to do next: PA_02PlanetRCSJiyaExpeditionC,"""It's weird, [SIR_MADAM_OR_CAPTAIN]."" Jiya speaks through garbled static. ""Its a planetary reaction control system, despite there being little benefit to moving a planet - 'least not in this way."" she says, elated. ""The thrusters are human make - twenty years old if I could eyeball it - but the thrust that they would produce could not beg to move billions of tonnes of rock. Either the newest universal constant defying engine which can move a planet looks exactly like an antique, or this is a very disfunctional planetary RCS system."""
+PA_02PlanetRCSJiyaExpeditionC,"concept: optionSelected, option: PA_02PlanetRCSJiyaExpeditionC",,clearOptions: null,,,,,"We need supplies - order Jiya to lead a salvage expedition:PA_02PlanetRCSJiyaSalvageDispatch, Heed her advice - recall the expedition and leave: PAHardLeave","""Take notes, pack up and leave. Messing with this kind of thing usually leads to disaster - its classic abyss. Makes no sense and explodes when you act like it follows your rules."" Jiya advises."
+PA_02PlanetRCSJiyaSalvageDispatch,"concept: optionSelected, option: PA_02PlanetRCSJiyaSalvageDispatch",,,,,PA_02PlanetRCSJiyaSalvageResponse,,,
+PA_02PlanetRCSJiyaSalvageDispatchSuccess,"concept: PA_02PlanetRCSJiyaSalvageResponse, RAND_50%: true",,"clearAll: null, removeHullStressWithFlair: 25",,,,,Leave:PAHardLeave,Jiya acknowledges with a sigh. Salvage teams are launched and several comms specialists are awoken to direct the frequent transport departures and arrivals. You oversee the several hour ordeal from near the communications console. Fuel lines are tapped and rare metals are extracted successfully from several of the behemoths. 
+PA_02PlanetRCSJiyaSalvageDispatchFailure,"concept: PA_02PlanetRCSJiyaSalvageResponse, RAND_50%: false",,"clearAll: null, removeHullStressWithFlair: 5, killCharacterWithFlair: 1",,,,,Leave:PAHardLeave,"Jiya acknowledges with a sigh. In a four hour ordeal, salvage teams successfuly pick apart two of the behemoths - the third leads to disaster. Despite excessive safety procedures by Chief Engineer Jiya, an explosion propagated from the target - transpiring just after a tap was installed on the targets fuel line. Half of the salvage team, including Chief Engineer Jiya, are killed. Several salvage specialsits are injuired. A transport is lost. You order a recall. "
+,,,,,,,,,
+SAHardLeave,"concept: optionSelected, option: SAHardLeave",,closeDialog: HARD_LEAVE,,,,,,
+SASoftLeave,"concept: optionSelected, option: SASoftLeave",,closeDialog: SOFT_LEAVE,,,,,,
+,,,,,,,,,
+SA_GenericOpenDialog,concept: randomSAOpenDialog,,openDialog: null,,,,,"Order the inconsistent data to be analyzed: SA_GenericContinue, Leave:SASoftLeave",Analysts mark an inconsistent LIDAR return.
+SA_GenericContinue,"concept: optionSelected, option: SA_GenericContinue",,"clearOptions: null, addValueWithFlair: 100",,,,,Leave:SAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo."
+,,,,,,,,,
