@@ -469,6 +469,15 @@ icon = ExtResource("11_lvg8y")
 clip_text = true
 icon_alignment = 2
 
+[node name="long_range_scopes_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
+visible = false
+layout_mode = 2
+theme = ExtResource("8_a7cgy")
+text = "LON"
+icon = ExtResource("11_lvg8y")
+clip_text = true
+icon_alignment = 2
+
 [connection signal="tab_button_pressed" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_button_pressed"]
 [connection signal="tab_clicked" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_clicked"]
 [connection signal="item_clicked" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_clicked"]
@@ -481,3 +490,4 @@ icon_alignment = 2
 [connection signal="mouse_entered" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_mouse_entered"]
 [connection signal="mouse_exited" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_mouse_exited"]
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/long_range_scopes_button" to="system" method="_on_long_range_scopes_button_pressed"]

@@ -43,6 +43,7 @@ func _ready():
 	
 	system_map.connect("audioVisualizerPopup", _on_audio_visualizer_popup)
 	system_map.connect("journeyMapPopup", _on_journey_map_popup)
+	system_map.connect("longRangeScopesPopup", _on_long_range_scopes_popup)
 	
 	dialogue_manager.connect("addPlayerValue", _on_add_player_value)
 	dialogue_manager.connect("addPlayerHullStress", _on_add_player_hull_stress)
@@ -93,6 +94,7 @@ func _ready():
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
@@ -567,7 +569,6 @@ func _on_add_dialogue_memory_pair(key, value):
 	dialogue_manager.dialogue_memory = world.dialogue_memory
 	pass
 
-
 func _on_open_pause_menu():
 	pause_menu.openPauseMenu()
 	pass
@@ -622,4 +623,9 @@ func _on_station_popup():
 func _on_journey_map_popup():
 	$journey_map_window.popup()
 	_on_add_console_item("Opening journey map.", Color("353535"), 50)
+	pass
+
+func _on_long_range_scopes_popup():
+	$long_range_scopes_window.popup()
+	_on_add_console_item("Opening long range scopes.", Color("353535"), 50)
 	pass

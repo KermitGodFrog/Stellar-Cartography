@@ -11,6 +11,7 @@ signal lockedBodyDepreciated
 
 signal audioVisualizerPopup
 signal journeyMapPopup
+signal longRangeScopesPopup
 
 signal removeHullStressForNanites(amount: int, nanites_per_percentage: int)
 
@@ -420,3 +421,7 @@ func _on_audio_visualizer_button_pressed():
 func _on_journey_map_button_pressed():
 	emit_signal("journeyMapPopup")
 	pass 
+
+func _on_long_range_scopes_button_pressed():
+	emit_signal("longRangeScopesPopup")
+	pass

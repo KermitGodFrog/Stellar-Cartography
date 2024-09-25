@@ -30,6 +30,7 @@ process_mode = 3
 title = "Long Range Scopes"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
+visible = false
 
 [node name="long_range_scopes" type="Node3D" parent="."]
 script = ExtResource("1_syfdy")
@@ -94,4 +95,5 @@ environment = SubResource("Environment_368mg")
 
 [node name="directional_light" type="DirectionalLight3D" parent="long_range_scopes"]
 
+[connection signal="close_requested" from="." to="long_range_scopes" method="_on_long_range_scopes_window_close_requested"]
 [connection signal="value_changed" from="long_range_scopes/camera_offset/camera/canvas_layer/fov_container/fov_slider" to="long_range_scopes" method="_on_fov_slider_value_changed"]

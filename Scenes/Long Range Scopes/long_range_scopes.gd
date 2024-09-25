@@ -62,11 +62,8 @@ func _unhandled_input(event):
 				
 				
 				TEMP_DRAW_POSITIONS.append_array(fixed_positions)
-				
-			
-			
-			
-			
+		#ranking and stuff
+		
 		get_node("camera_offset/camera/canvas_layer/post_process").TEMP_DRAW_POSITIONS = TEMP_DRAW_POSITIONS
 		get_node("camera_offset/camera/canvas_layer/post_process").queue_redraw()
 		
@@ -164,4 +161,9 @@ func update_camera_offset_dir(dir: Vector3) -> void:
 
 func _on_fov_slider_value_changed(value):
 	target_fov = value
+	pass
+
+
+func _on_long_range_scopes_window_close_requested():
+	owner.hide()
 	pass

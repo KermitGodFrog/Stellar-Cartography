@@ -97,6 +97,11 @@ func _on_unlock_nanite_controller_pressed():
 		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.NANITE_CONTROLLER, 10000)
 	pass 
 
+func _on_unlock_long_range_scopes_pressed():
+	if station:
+		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES, 40000)
+	pass
+
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 	match upgrade_idx:
 		playerAPI.UPGRADE_ID.ADVANCED_SCANNING:
@@ -131,3 +136,4 @@ func _on_repair_single_pressed():
 func _on_repair_all_pressed():
 	emit_signal("removeHullStressForNanites", player_hull_stress, nanites_per_percentage)
 	pass
+
