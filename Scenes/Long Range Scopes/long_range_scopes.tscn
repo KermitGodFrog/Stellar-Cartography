@@ -30,7 +30,6 @@ process_mode = 3
 title = "Long Range Scopes"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
-visible = false
 
 [node name="long_range_scopes" type="Node3D" parent="."]
 script = ExtResource("1_syfdy")
@@ -41,6 +40,13 @@ script = ExtResource("1_syfdy")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 100)
 
 [node name="canvas_layer" type="CanvasLayer" parent="long_range_scopes/camera_offset/camera"]
+
+[node name="photo_texture" type="TextureRect" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="post_process" type="ColorRect" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
 anchors_preset = 15
@@ -69,6 +75,15 @@ grow_vertical = 2
 texture = ExtResource("2_d3gep")
 expand_mode = 3
 stretch_mode = 5
+
+[node name="captures_remaining_label" type="Label" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
 
 [node name="fov_container" type="CenterContainer" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
 custom_minimum_size = Vector2(200, 100)

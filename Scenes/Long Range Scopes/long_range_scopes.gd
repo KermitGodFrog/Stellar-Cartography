@@ -6,7 +6,8 @@ extends Node3D
 @onready var camera = $camera_offset/camera
 @onready var camera_offset = $camera_offset
 @onready var no_current_entity_bg = $camera_offset/camera/canvas_layer/no_current_entity_bg
-
+@onready var photo_texture = $camera_offset/camera/canvas_layer/photo_texture
+@onready var captures_remaining_label = $camera_offset/camera/canvas_layer/captures_remaining_label
 
 var GENERATION_POSITIONS: PackedVector3Array = []
 var GENERATION_BASIS: Basis
@@ -22,6 +23,7 @@ var player_position: Vector2 = Vector2.ZERO
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+			
 			var viewport_size_y = get_viewport().get_visible_rect().size.y
 			var viewport_size_x = get_viewport().get_visible_rect().size.x
 			var mouse_pos_y = get_viewport().get_mouse_position().y
@@ -35,39 +37,49 @@ func _unhandled_input(event):
 				rotate_camera_basis(Vector3.DOWN)
 			if mouse_pos_x < (viewport_size_x / 10):
 				rotate_camera_basis(Vector3.UP)
+			
 	if event.is_action_pressed("gkooble"):
-		var TEMP_DRAW_POSITIONS: PackedVector2Array = [] #TEMP !!!!!!!!
 		
-		for prop in get_tree().get_nodes_in_group("long_range_scopes_prop"):
-			if get_viewport().get_camera_3d().is_position_in_frustum(prop.transform.origin):
-				var prop_positions: PackedVector3Array = prop.get_positions() # MUST BE 4 POINTS!!!!
-				var fixed_positions: PackedVector2Array = []
-				for pos in prop_positions:
-					fixed_positions.append(get_viewport().get_camera_3d().unproject_position(pos))
-				
-				var projected_positions: Array = []
-				for pos in fixed_positions:
-					projected_positions.append(pos.project(Vector2.UP).y)
-				projected_positions.sort()
-				var vertical_size = (projected_positions.back() - projected_positions.front())
-				print("VERTICAL SIZE: ", vertical_size)
-				
-				var screen_centre = get_viewport().get_visible_rect().size / 2
-				var distances_from_centre: Array = []
-				for pos in fixed_positions:
-					distances_from_centre.append(pos.distance_to(screen_centre))
-				var avg_distance_from_centre = global_data.average(distances_from_centre)
-				print("AVG DISTANCE FROM CENTRE: ", avg_distance_from_centre)
-				
-				
-				
-				TEMP_DRAW_POSITIONS.append_array(fixed_positions)
-		#ranking and stuff
-		
-		get_node("camera_offset/camera/canvas_layer/post_process").TEMP_DRAW_POSITIONS = TEMP_DRAW_POSITIONS
-		get_node("camera_offset/camera/canvas_layer/post_process").queue_redraw()
-		
-		
+		if current_entity: if current_entity.captures_remaining > 0:
+			current_entity.remove_captures_remaining(1)
+			captures_remaining_label.text = str(current_entity.captures_remaining)
+			
+			var TEMP_DRAW_POSITIONS: PackedVector2Array = [] #TEMP !!!!!!!!
+			
+			for prop in get_tree().get_nodes_in_group("long_range_scopes_prop"):
+				if get_viewport().get_camera_3d().is_position_in_frustum(prop.transform.origin):
+					var prop_positions: PackedVector3Array = prop.get_positions() # MUST BE 4 POINTS!!!!
+					var fixed_positions: PackedVector2Array = []
+					for pos in prop_positions:
+						fixed_positions.append(get_viewport().get_camera_3d().unproject_position(pos))
+					
+					var projected_positions: Array = []
+					for pos in fixed_positions:
+						projected_positions.append(pos.project(Vector2.UP).y)
+					projected_positions.sort()
+					var vertical_size = (projected_positions.back() - projected_positions.front())
+					print("VERTICAL SIZE: ", vertical_size)
+					
+					var screen_centre = get_viewport().get_visible_rect().size / 2
+					var distances_from_centre: Array = []
+					for pos in fixed_positions:
+						distances_from_centre.append(pos.distance_to(screen_centre))
+					var avg_distance_from_centre = global_data.average(distances_from_centre)
+					print("AVG DISTANCE FROM CENTRE: ", avg_distance_from_centre)
+					
+					TEMP_DRAW_POSITIONS.append_array(fixed_positions)
+			
+			#ranking and stuff
+			
+			
+			
+			#await RenderingServer.frame_post_draw
+			#var image: Image = camera.get_viewport().get_texture().get_image()
+			#photo_texture.texture = image
+			#dont work ^^^
+			
+			get_node("camera_offset/camera/canvas_layer/post_process").TEMP_DRAW_POSITIONS = TEMP_DRAW_POSITIONS
+			get_node("camera_offset/camera/canvas_layer/post_process").queue_redraw()
 	pass
 
 func rotate_camera_basis(dir: Vector3) -> void:
@@ -88,17 +100,11 @@ func _physics_process(delta):
 			update_star_dir(Vector3(-star_dir_from_entity.x, 0, -star_dir_from_entity.y))
 	pass
 
-
-
-
-
-
-
-
 func _on_current_entity_changed(new_entity : entityAPI):
 	if current_entity != new_entity: # to prevent infinite generation by just re-pressing the go-to button, maybe move to game.gd?
 		no_current_entity_bg.hide()
 		current_entity = new_entity
+		captures_remaining_label.text = str(current_entity.captures_remaining)
 		
 		if current_entity.stored_generation_positions.is_empty():
 			for i in GENERATION_POSITION_ITERATIONS:
@@ -140,6 +146,7 @@ func _on_current_entity_changed(new_entity : entityAPI):
 func _on_current_entity_cleared():
 	no_current_entity_bg.show()
 	current_entity = null
+	captures_remaining_label.text = str("")
 	
 	for prop in get_tree().get_nodes_in_group("long_range_scopes_prop"):
 		prop.queue_free()
