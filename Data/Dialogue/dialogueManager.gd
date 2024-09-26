@@ -139,7 +139,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 	print("QUERY HANDLER: ", calling, " QUERYING ", incoming_query.facts)
 	
 	match type:
-		QUERY_TYPES.BEST:
+		QUERY_TYPES.BEST: #im going to be honest with you - i have no idea how this works. the code for randomly selecting out of the highest rank is obviously broken but i literally cannot wrap my head around how. it still returns the first, highest ranked rule though so it works flawlessly. i just dont understand it!!!?!?!??!?!
 			
 			var relevant_rules = get_relevant_rules(incoming_query)
 			
@@ -151,20 +151,15 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 				ranked_rules[rule] = matches
 			
 			for rule in ranked_rules: #DEBUG!!!!!!!!!!!!!!!!!!!!!!!
-				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", ranked_rules.get(rule)))
+				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", ranked_rules.get(rule), " (B)"))
 			
-			var sorted_values = ranked_rules.duplicate().values()
-			sorted_values.sort() #counts upwards, e.g [0,0,1,1,1,2,2,5]
-			var match_candidate_indexes: Array = []
-			var max = sorted_values.max()
-			for i in sorted_values.size(): if sorted_values[i] == max: match_candidate_indexes.append(i)
-			
-			var matched_index = match_candidate_indexes.pick_random()
+			var values = ranked_rules.values()
+			var max_value = values.max()
 			
 			incoming_query.facts.erase("randf_EXCLUSIVE")
 			incoming_query.facts.erase("randi_EXCLUSIVE")
 			
-			var matched_rule = ranked_rules.find_key(sorted_values[matched_index])
+			var matched_rule = ranked_rules.find_key(max_value) #find_key always gets the FIRST key in added-order. as rules are added in order of the rules.csv file, rules towards the top of the .csv will ALWAYS be selected, even if theres other rules with the same number of matches further down. 
 			if matched_rule: trigger_rule(calling, matched_rule, incoming_query)
 			
 		QUERY_TYPES.ALL: #FOR 'QUERY ALL CONCEPT'
@@ -190,8 +185,6 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			
 		QUERY_TYPES.RAND_BEST:
 			
-			#IDENTICAL TO 'BEST' ATM, CHANGE IT!!!!!!!!
-			
 			var relevant_rules = get_relevant_rules(incoming_query)
 			
 			var ranked_rules: Dictionary = {}
@@ -202,23 +195,24 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 				ranked_rules[rule] = matches
 			
 			for rule in ranked_rules: #DEBUG!!!!!!!!!!!!!!!!!!!!!!!
-				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", ranked_rules.get(rule)))
+				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", ranked_rules.get(rule), " (RB)"))
 			
-			var sorted_values = ranked_rules.duplicate().values()
-			sorted_values.sort() #counts upwards, e.g [0,0,1,1,1,2,2,5]
-			var match_candidate_indexes: Array = []
-			var max = sorted_values.max()
-			for i in sorted_values.size(): if sorted_values[i] == max: match_candidate_indexes.append(i)
+			var rules_with_max_matches: Array = []
 			
-			var matched_index = match_candidate_indexes.pick_random()
+			var values = ranked_rules.values()
+			var max_value = values.max()
+			for i in values.size():
+				var key_with_max_value = ranked_rules.find_key(max_value)
+				if key_with_max_value != null:
+					rules_with_max_matches.append(key_with_max_value)
+					ranked_rules.erase(key_with_max_value)
+				else: break
 			
 			incoming_query.facts.erase("randf_EXCLUSIVE")
 			incoming_query.facts.erase("randi_EXCLUSIVE")
 			
-			var matched_rule = ranked_rules.find_key(sorted_values[matched_index])
+			var matched_rule = rules_with_max_matches.pick_random() 
 			if matched_rule: trigger_rule(calling, matched_rule, incoming_query)
-			
-			
 			
 	pass
 
