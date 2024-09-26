@@ -619,13 +619,20 @@ func get_random_wormhole_name():
 
 func get_random_station_name():
 	var name_candidates: Array = []
-	var file = FileAccess.open("res://Data/Name Data/station_names.txt", FileAccess.READ)
-	while not file.eof_reached():
-		var line = file.get_line()
+	var flair_candidates: Array = []
+	var names_file = FileAccess.open("res://Data/Name Data/station_names.txt", FileAccess.READ)
+	while not names_file.eof_reached():
+		var line = names_file.get_line()
 		if not line.is_empty():
 			name_candidates.append(line)
-	file.close()
-	return name_candidates.pick_random()
+	names_file.close()
+	var flairs_file = FileAccess.open("res://Data/Name Data/station_flairs.txt", FileAccess.READ)
+	while not flairs_file.eof_reached():
+		var line = flairs_file.get_line()
+		if not line.is_empty():
+			flair_candidates.append(line)
+	flairs_file.close()
+	return str(name_candidates.pick_random(), " ", flair_candidates.pick_random())
 
 func get_random_flair():
 	var flair_candidates: Array = []
