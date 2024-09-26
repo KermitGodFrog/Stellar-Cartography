@@ -1,6 +1,12 @@
 extends Node3D
 
+signal addConsoleItem(text: String, bg_color: Color, time: int)
+signal addPlayerValue(amount: int)
+
 @onready var space_whale_scene = preload("res://Instantiated Scenes/Space Whales/adult_space_whale.tscn")
+@onready var hud_default = preload("res://Graphics/long_range_scopes_hud4.png")
+@onready var hud_holding = preload("res://Graphics/long_range_scopes_hud3.png")
+@onready var hud_release = preload("res://Graphics/long_range_scopes_hud2.png")
 
 @onready var directional_light = $directional_light
 @onready var camera = $camera_offset/camera
@@ -8,6 +14,7 @@ extends Node3D
 @onready var no_current_entity_bg = $camera_offset/camera/canvas_layer/no_current_entity_bg
 @onready var photo_texture = $camera_offset/camera/canvas_layer/photo_texture
 @onready var captures_remaining_label = $camera_offset/camera/canvas_layer/captures_remaining_label
+@onready var hud = $camera_offset/camera/canvas_layer/hud
 
 var GENERATION_POSITIONS: PackedVector3Array = []
 var GENERATION_BASIS: Basis
@@ -19,6 +26,9 @@ var target_fov: float = 75
 var system : starSystemAPI
 var current_entity : entityAPI = null
 var player_position: Vector2 = Vector2.ZERO
+
+@export var prop_size_reward_curve: Curve
+@export var prop_distance_reward_curve: Curve
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
@@ -37,14 +47,21 @@ func _unhandled_input(event):
 				rotate_camera_basis(Vector3.DOWN)
 			if mouse_pos_x < (viewport_size_x / 10):
 				rotate_camera_basis(Vector3.UP)
-			
+	
 	if event.is_action_pressed("gkooble"):
+		hud.set_texture(hud_holding)
+	
+	if event.is_action_released("gkooble"):
 		
 		if current_entity: if current_entity.captures_remaining > 0:
 			current_entity.remove_captures_remaining(1)
 			captures_remaining_label.text = str(current_entity.captures_remaining)
 			
-			var TEMP_DRAW_POSITIONS: PackedVector2Array = [] #TEMP !!!!!!!!
+			var photo_total_value: int = 0
+			var photo_total_size_reward: int = 0
+			var photo_total_distance_reward: int = 0
+			var photo_total_posing_reward: int = 0
+			var photo_total_characteristics_reward: int = 0
 			
 			for prop in get_tree().get_nodes_in_group("long_range_scopes_prop"):
 				if get_viewport().get_camera_3d().is_position_in_frustum(prop.transform.origin):
@@ -58,28 +75,48 @@ func _unhandled_input(event):
 						projected_positions.append(pos.project(Vector2.UP).y)
 					projected_positions.sort()
 					var vertical_size = (projected_positions.back() - projected_positions.front())
-					print("VERTICAL SIZE: ", vertical_size)
 					
 					var screen_centre = get_viewport().get_visible_rect().size / 2
 					var distances_from_centre: Array = []
 					for pos in fixed_positions:
 						distances_from_centre.append(pos.distance_to(screen_centre))
 					var avg_distance_from_centre = global_data.average(distances_from_centre)
-					print("AVG DISTANCE FROM CENTRE: ", avg_distance_from_centre)
 					
-					TEMP_DRAW_POSITIONS.append_array(fixed_positions)
+					var is_posing: bool = prop.is_posing()
+					
+					var vertical_size_remapped = remap(vertical_size, 0, 800, 0, 1)
+					var distance_remapped = remap(avg_distance_from_centre, 0, 400, 0, 1)
+					var vertical_size_reward: int = 0
+					var distance_reward: int = 0
+					var posing_reward: int = 0
+					var characteristics_reward: int = prop.get_characteristics()
+					
+					if vertical_size <= 800: vertical_size_reward = int(prop_size_reward_curve.sample(vertical_size_remapped))
+					if avg_distance_from_centre <= 400: distance_reward = int(prop_distance_reward_curve.sample(distance_remapped) * vertical_size_remapped)
+					if is_posing: posing_reward = distance_reward + vertical_size_reward
+					
+					photo_total_value += vertical_size_reward + distance_reward + posing_reward + characteristics_reward
+					photo_total_size_reward += vertical_size_reward
+					photo_total_distance_reward += distance_reward
+					photo_total_posing_reward += posing_reward
+					photo_total_characteristics_reward += characteristics_reward
 			
-			#ranking and stuff
+			emit_signal("addConsoleItem", str("Size of subject(s): ", photo_total_size_reward), Color("353535"), 1500)
+			emit_signal("addConsoleItem", str("Framing of subject(s): ", photo_total_distance_reward), Color("353535"), 1500)
+			emit_signal("addConsoleItem", str("Posing of subject(s): ", photo_total_posing_reward), Color("353535"), 1500)
+			emit_signal("addConsoleItem", str("Characteristics of subject(s): ", photo_total_characteristics_reward), Color("353535"), 1500)
+			emit_signal("addConsoleItem", str("Total photo value: ", photo_total_value), Color.GOLD, 2000)
 			
-			
+			emit_signal("addPlayerValue", photo_total_value)
 			
 			#await RenderingServer.frame_post_draw
 			#var image: Image = camera.get_viewport().get_texture().get_image()
 			#photo_texture.texture = image
 			#dont work ^^^
-			
-			get_node("camera_offset/camera/canvas_layer/post_process").TEMP_DRAW_POSITIONS = TEMP_DRAW_POSITIONS
-			get_node("camera_offset/camera/canvas_layer/post_process").queue_redraw()
+		
+		hud.set_texture(hud_release)
+		var reset_timer = get_tree().create_timer(0.25)
+		reset_timer.connect("timeout", _on_reset_hud_image)
 	pass
 
 func rotate_camera_basis(dir: Vector3) -> void:
@@ -154,7 +191,9 @@ func _on_current_entity_cleared():
 	#degererate terrain and stuff and dont allow player to view the scopes n stuff just blank screen n stuff yknow yknow
 	pass
 
-
+func _on_reset_hud_image() -> void:
+	hud.set_texture(hud_default)
+	pass
 
 
 func update_star_dir(dir: Vector3) -> void:

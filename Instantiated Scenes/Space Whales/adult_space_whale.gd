@@ -38,3 +38,10 @@ func get_positions() -> PackedVector3Array:
 	for child in get_node("adult_space_whale/bounds").get_children():
 		positions.append(get_node("adult_space_whale/bounds").to_global(child.position))
 	return positions
+
+func is_posing() -> bool:
+	if get_node("AnimationPlayer").is_playing(): return true
+	else: return false
+
+func get_characteristics() -> int:
+	return 0

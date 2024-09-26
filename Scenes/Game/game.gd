@@ -41,6 +41,9 @@ func _ready():
 	
 	audio_visualizer.connect("removeSavedAudioProfile", _on_remove_saved_audio_profile)
 	
+	long_range_scopes.connect("addConsoleItem", _on_add_console_item)
+	long_range_scopes.connect("addPlayerValue", _on_add_player_value)
+	
 	system_map.connect("audioVisualizerPopup", _on_audio_visualizer_popup)
 	system_map.connect("journeyMapPopup", _on_journey_map_popup)
 	system_map.connect("longRangeScopesPopup", _on_long_range_scopes_popup)
@@ -94,7 +97,7 @@ func _ready():
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
