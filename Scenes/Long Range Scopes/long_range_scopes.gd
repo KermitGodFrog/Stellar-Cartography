@@ -110,7 +110,8 @@ func _unhandled_input(event):
 			emit_signal("addPlayerValue", photo_total_value)
 			
 			#await RenderingServer.frame_post_draw
-			#var image: Image = camera.get_viewport().get_texture().get_image()
+			var image = camera.get_viewport().get_texture().get_image()
+			print(image)
 			#photo_texture.texture = image
 			#dont work ^^^
 		
