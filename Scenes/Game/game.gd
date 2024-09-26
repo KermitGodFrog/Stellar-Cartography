@@ -176,7 +176,7 @@ func _on_tick(): #every 1 second
 		world.player.addHullStress(1)
 	pass
 
-func _on_player_orbiting_body(orbiting_body: bodyAPI):
+func _on_player_orbiting_body(_orbiting_body: bodyAPI):
 	pass
 
 func _on_player_following_body(following_body: bodyAPI):
@@ -576,8 +576,8 @@ func _on_open_pause_menu():
 	pause_menu.openPauseMenu()
 	pass
 
-func _on_open_stats_menu(init_type: int, player_systems_traversed: int): #init type is from statsMenu INIT_TYPES
-	stats_menu.openStatsMenu(init_type, player_systems_traversed)
+func _on_open_stats_menu(_init_type: int, player_systems_traversed: int): #init type is from statsMenu INIT_TYPES
+	stats_menu.openStatsMenu(_init_type, player_systems_traversed)
 	pass
 
 func _on_save_world():

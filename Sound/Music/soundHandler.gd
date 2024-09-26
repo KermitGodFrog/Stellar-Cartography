@@ -26,7 +26,7 @@ func _on_play_timer_timeout():
 	play_timer.start(global_data.get_randi(60, 360))
 	pass
 
-func _on_UI_click_SFX_button_pressed(tab_or_item_index = null) -> void:
+func _on_UI_click_SFX_button_pressed(_tab_or_item_index = null) -> void:
 	async_play_ui_click_SFX()
 	pass
 

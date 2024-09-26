@@ -8,10 +8,10 @@ func async_add_item(text: String, bg_color: Color = Color.WHITE, time: int = 500
 	pass
 
 func _physics_process(delta):
-	var range = range(item_count)
+	var _range = range(item_count)
 	if item_count > 0:
-		range.append(0)
-	for item in range:
+		_range.append(0)
+	for item in _range:
 		var metadata = get_item_metadata(item)
 		if metadata: 
 			set_item_metadata(item, maxi(0, metadata - delta))

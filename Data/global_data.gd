@@ -151,6 +151,6 @@ func await_all(list: Array):
 func count_down(dict):
 	dict.value -= 1
 
-func func_wrapper(call: Callable, call_back: Callable):
-	await call.call()
+func func_wrapper(calling: Callable, call_back: Callable):
+	await calling.call()
 	call_back.call()

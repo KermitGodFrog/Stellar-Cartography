@@ -109,9 +109,7 @@ func _unhandled_input(event):
 			emit_signal("addConsoleItem", str("Posing of subject(s): ", photo_total_posing_reward), Color("353535"), 1500)
 			emit_signal("addConsoleItem", str("Characteristics of subject(s): ", photo_total_characteristics_reward), Color("353535"), 1500)
 			emit_signal("addConsoleItem", str("Total photo value: ", photo_total_value), Color.GOLD, 2000)
-			
 			emit_signal("addPlayerValue", photo_total_value)
-			
 			
 			
 			hud.hide()
@@ -120,22 +118,15 @@ func _unhandled_input(event):
 			
 			await RenderingServer.frame_post_draw
 			var image: Image = camera.get_viewport().get_texture().get_image()
-			
-			var image_path = "Debug/test.png"
-			image.save_png(image_path)
-			
-			var image_texture: ImageTexture = ImageTexture.new()
-			image_texture.create_from_image(image)
-			await RenderingServer.frame_post_draw
+			var image_texture: ImageTexture = ImageTexture.create_from_image(image)
 			photo_texture.texture = image_texture
 			
-			#DOESNT WORK !!!!!! :((((((( WHHYYHYHYYHYHHYHYHYHYHYHYY
+			await get_tree().create_timer(1.0).timeout
+			_on_reset_photo_texture()
+			
 			hud.show()
 			captures_remaining_label.show()
 			fov_container.show()
-			
-			#photo_texture.texture = image
-			#dont work ^^^
 		
 		hud.set_texture(hud_release)
 		var reset_timer = get_tree().create_timer(0.25)
@@ -145,8 +136,6 @@ func _unhandled_input(event):
 func rotate_camera_basis(dir: Vector3) -> void:
 	camera.transform.basis = camera.transform.basis.rotated(dir, deg_to_rad(CAMERA_ROTATION_MAGNITUDE))
 	pass
-
-
 
 func _physics_process(delta):
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
@@ -219,6 +208,10 @@ func _on_reset_hud_image() -> void:
 	hud.set_texture(hud_default)
 	pass
 
+func _on_reset_photo_texture() -> void:
+	photo_texture.texture = null
+	photo_texture.modulate = Color("ffffff")
+	pass
 
 func update_star_dir(dir: Vector3) -> void:
 	directional_light.transform.basis = directional_light.transform.basis.looking_at(dir)
@@ -232,7 +225,6 @@ func update_camera_offset_dir(dir: Vector3) -> void:
 func _on_fov_slider_value_changed(value):
 	target_fov = value
 	pass
-
 
 func _on_long_range_scopes_window_close_requested():
 	owner.hide()

@@ -11,5 +11,5 @@ func is_entity():
 	return true
 
 func remove_captures_remaining(amount: int):
-	captures_remaining = maxi(0, captures_remaining - 1)
+	captures_remaining = maxi(0, captures_remaining - amount)
 	pass
