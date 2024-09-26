@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=37 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://ce1et15cnh5ao" path="res://Graphics/morale_icon.png" id="13_vaatn"]
 [ext_resource type="Script" path="res://Scenes/System Map/hull_stress_button.gd" id="14_u08qu"]
 [ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://Graphics/journey_map_icon.png" id="19_36y85"]
+[ext_resource type="Texture2D" uid="uid://dka6vwu04ir6e" path="res://Graphics/long_range_scopes_icon.png" id="22_sph0q"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ee55b"]
 content_margin_left = 25.0
@@ -474,7 +475,7 @@ visible = false
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
 text = "LON"
-icon = ExtResource("11_lvg8y")
+icon = ExtResource("22_sph0q")
 clip_text = true
 icon_alignment = 2
 

@@ -28,6 +28,8 @@ var system : starSystemAPI
 var current_entity : entityAPI = null
 var player_position: Vector2 = Vector2.ZERO
 
+var camera_offset_target_basis: Basis
+
 @export var prop_size_reward_curve: Curve
 @export var prop_distance_reward_curve: Curve
 
@@ -127,7 +129,7 @@ func _unhandled_input(event):
 			await RenderingServer.frame_post_draw
 			photo_texture.texture = image_texture
 			
-			
+			#DOESNT WORK !!!!!! :((((((( WHHYYHYHYYHYHHYHYHYHYHYHYY
 			hud.show()
 			captures_remaining_label.show()
 			fov_container.show()
@@ -148,6 +150,7 @@ func rotate_camera_basis(dir: Vector3) -> void:
 
 func _physics_process(delta):
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
+	camera_offset.transform.basis = camera_offset.transform.basis.slerp(camera_offset_target_basis, 0.5)
 	if current_entity:
 		var entity_dir_from_player = player_position.direction_to(current_entity.position)
 		update_camera_offset_dir(Vector3(entity_dir_from_player.x, 0, entity_dir_from_player.y))
@@ -222,7 +225,7 @@ func update_star_dir(dir: Vector3) -> void:
 	pass
 
 func update_camera_offset_dir(dir: Vector3) -> void:
-	camera_offset.transform.basis = camera_offset.transform.basis.looking_at(dir)
+	camera_offset_target_basis = camera_offset.transform.basis.looking_at(dir)
 	pass
 
 
