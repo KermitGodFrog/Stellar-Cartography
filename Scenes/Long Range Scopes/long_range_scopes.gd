@@ -15,6 +15,7 @@ signal addPlayerValue(amount: int)
 @onready var photo_texture = $camera_offset/camera/canvas_layer/photo_texture
 @onready var captures_remaining_label = $camera_offset/camera/canvas_layer/captures_remaining_label
 @onready var hud = $camera_offset/camera/canvas_layer/hud
+@onready var fov_container = $camera_offset/camera/canvas_layer/fov_container
 
 var GENERATION_POSITIONS: PackedVector3Array = []
 var GENERATION_BASIS: Basis
@@ -109,9 +110,28 @@ func _unhandled_input(event):
 			
 			emit_signal("addPlayerValue", photo_total_value)
 			
-			#await RenderingServer.frame_post_draw
-			var image = camera.get_viewport().get_texture().get_image()
-			print(image)
+			
+			
+			hud.hide()
+			captures_remaining_label.hide()
+			fov_container.hide()
+			
+			await RenderingServer.frame_post_draw
+			var image: Image = camera.get_viewport().get_texture().get_image()
+			
+			var image_path = "Debug/test.png"
+			image.save_png(image_path)
+			
+			var image_texture: ImageTexture = ImageTexture.new()
+			image_texture.create_from_image(image)
+			await RenderingServer.frame_post_draw
+			photo_texture.texture = image_texture
+			
+			
+			hud.show()
+			captures_remaining_label.show()
+			fov_container.show()
+			
 			#photo_texture.texture = image
 			#dont work ^^^
 		
