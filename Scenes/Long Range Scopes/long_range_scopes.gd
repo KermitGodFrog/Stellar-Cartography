@@ -111,13 +111,13 @@ func _unhandled_input(event):
 			emit_signal("addConsoleItem", str("Total photo value: ", photo_total_value), Color.GOLD, 2000)
 			emit_signal("addPlayerValue", photo_total_value)
 			
-			
 			hud.hide()
 			captures_remaining_label.hide()
 			fov_container.hide()
 			
 			await RenderingServer.frame_post_draw
 			var image: Image = camera.get_viewport().get_texture().get_image()
+			#image.save_png("Debug/test.png")
 			var image_texture: ImageTexture = ImageTexture.create_from_image(image)
 			photo_texture.texture = image_texture
 			
