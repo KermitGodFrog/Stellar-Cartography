@@ -139,7 +139,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 	print("QUERY HANDLER: ", calling, " QUERYING ", incoming_query.facts)
 	
 	match type:
-		QUERY_TYPES.BEST: #im going to be honest with you - i have no idea how this works. the code for randomly selecting out of the highest rank is obviously broken but i literally cannot wrap my head around how. it still returns the first, highest ranked rule though so it works flawlessly. i just dont understand it!!!?!?!??!?!
+		QUERY_TYPES.BEST:
 			
 			var relevant_rules = get_relevant_rules(incoming_query)
 			
