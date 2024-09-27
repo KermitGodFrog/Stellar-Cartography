@@ -110,7 +110,7 @@ func _physics_process(delta):
 			if body.is_wormhole(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Wormhole"))
 			if body.is_station(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Station"), load("res://Graphics/station_frame.png"))
 			if body.is_anomaly() and body.metadata.get("is_anomaly_available", true) == true: new_item_idx = system_list.add_item("> ???")
-			if body.is_entity(): new_item_idx = system_list.add_item(str("> ", game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification)), get_entity_frame(body.entity_classification))
+			if body.is_entity(): new_item_idx = system_list.add_item(str("> ", game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification)).capitalize(), get_entity_frame(body.entity_classification))
 			
 			system_list.set_item_metadata(new_item_idx, body.get_identifier())
 			
@@ -140,15 +140,15 @@ func _physics_process(delta):
 				SONAR_PINGS.erase(ping)
 	
 	#INFOR TAB!!!!!!! \/\/\\/\/
-	if follow_body and follow_body.is_known: follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
+	if follow_body and follow_body.is_known: follow_body_label.set_text(str(">>> ", follow_body.get_display_name().capitalize()))
 	elif follow_body and follow_body.is_theorised_but_not_known(): follow_body_label.set_text(">>> Unknown")
 	else: follow_body_label.set_text(">>> LOCK BODY FOR INFO")
 	body_attributes_list.clear()
 	if follow_body: 
 		#global
-		body_attributes_list.add_item(str("Radius : ", follow_body.radius * 109.1, " (Earth radii)"), null, false)
-		body_attributes_list.add_item(str("Orbital Speed : ", follow_body.orbit_speed), null, false)
-		body_attributes_list.add_item(str("Orbital Distance : ", follow_body.distance, " (Solar Radii)"), null, false)
+		body_attributes_list.add_item("radius : %.2f (earth radii)" % (follow_body.radius * 109.1), null, false)
+		body_attributes_list.add_item("orbital_speed : %.2f (rot/frame)" % follow_body.orbit_speed, null, false)
+		body_attributes_list.add_item("orbital_distance %.2f (solar radii)" % follow_body.distance, null, false)
 		#metadata
 		var excluding = ["iterations", "color", "value", "has_planetary_anomaly", "is_planetary_anomaly_available", "is_anomaly_available"]
 		if follow_body.is_known:
@@ -156,9 +156,10 @@ func _physics_process(delta):
 				if excluding.find(entry) == -1:
 					var parse: String
 					match entry:
-						"mass": parse = str(follow_body.metadata.get(entry) * 333000, " (Earth masses)")
+						"mass": parse = "%.2f (earth masses)" % (follow_body.metadata.get(entry) * 333000)
+						"luminosity": parse = "%.2f" % (follow_body.metadata.get(entry))
 						_: parse = str(follow_body.metadata.get(entry))
-					body_attributes_list.add_item(str(entry, " : ", parse), null, false)
+					body_attributes_list.add_item("%s : %s" % [entry, parse], null, false)
 	
 	#PICKER UTILITY \/\/\/\/\/
 	if follow_body: if follow_body.is_planet() and follow_body.get_current_variation() != -1:
@@ -379,7 +380,6 @@ func get_entity_frame(classification: game_data.ENTITY_CLASSIFICATIONS) -> Resou
 	match classification:
 		game_data.ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: return load("res://Graphics/space_whale_pod_frame.png")
 		_: return load("res://Graphics/empty_frame.png")
-
 
 func _on_found_body(id: int):
 	var body_pos = system.get_body_from_identifier(id).position

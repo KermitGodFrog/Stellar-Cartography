@@ -80,8 +80,9 @@ func _physics_process(_delta):
 					var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
 					if detection_scalar < body_detection_range and associated_body.is_known == false:
 						emit_signal("foundBody", child.get_identifier())
-						if not associated_body.metadata.has("value"): emit_signal("addConsoleItem", str("DISCOVERED BODY: ", associated_body.display_name), Color.DARK_GREEN, 500)
-						elif associated_body.metadata.has("value"): emit_signal("addConsoleItem", str("DISCOVERED BODY: ", associated_body.display_name, " (est. value ", round(associated_body.metadata.get("value")), "c)"), Color.DARK_GREEN, 500)
+						var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
+						if not associated_body.metadata.has("value"): emit_signal("addConsoleItem", str("DISCOVERED BODY: ", associated_body.display_name.capitalize()), Color.DARK_GREEN, 2000)
+						elif associated_body.metadata.has("value"): emit_signal("addConsoleItem", str("DISCOVERED BODY: ", associated_body.display_name.capitalize(), " (est. value ", round(associated_body.metadata.get("value") * star_rarity_multiplier), "n)"), Color.DARK_GREEN, 2000)
 	
 	#this is broked because when you unlock a body by moving the camera target pos, the locked_body_identifier variable on this script remains the same - thereofore, it always displays that you are locked to a body
 	#setting locked_body_label text

@@ -168,7 +168,9 @@ func createRandomWeightedPrimaryHookStar():
 	
 	var color = data.get("color")
 	
-	var new_body = addStationaryBody(identifier_count, str(get_random_star_name()), null, radius, {"star_type": star_type, "mass": mass, "luminosity": luminosity, "color": color, "iterations": 25})
+	var multiplier = get_discovery_multiplier_from_star_type(star_type)
+	
+	var new_body = addStationaryBody(identifier_count, str(get_random_star_name()), null, radius, {"star_type": star_type, "mass": mass, "luminosity": luminosity, "discovery_multiplier": multiplier, "color": color, "iterations": 25})
 	get_body_from_identifier(new_body).is_known = true #so you can see stars on system map before exploring
 	return new_body
 
@@ -518,6 +520,23 @@ func get_first_star():
 		if body.is_star():
 			return body
 
+func get_first_star_discovery_multiplier() -> float:
+	for body in bodies:
+		if body.is_star():
+			return body.metadata.get("discovery_multiplier")
+	return 1.0
+
+func get_discovery_multiplier_from_star_type(star_type: String) -> float:
+	match star_type:
+		"M": return 1.0
+		"K": return 1.1
+		"G": return 1.2
+		"F": return 1.5
+		"A": return 2.0
+		"B": return 3.0
+		"O": return 4.0
+		_: return 1.0
+
 func get_body_from_identifier(id: int):
 	var get_body: bodyAPI
 	for body in bodies:
@@ -565,6 +584,8 @@ func is_civilized():
 		if body is stationAPI:
 			return true
 	return false
+
+
 
 
 
