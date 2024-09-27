@@ -16,6 +16,7 @@ signal addPlayerValue(amount: int)
 @onready var captures_remaining_label = $camera_offset/camera/canvas_layer/captures_remaining_label
 @onready var hud = $camera_offset/camera/canvas_layer/hud
 @onready var fov_container = $camera_offset/camera/canvas_layer/fov_container
+@onready var value_label = $camera_offset/camera/canvas_layer/value_label
 
 var GENERATION_POSITIONS: PackedVector3Array = []
 var GENERATION_BASIS: Basis
@@ -30,10 +31,18 @@ var player_position: Vector2 = Vector2.ZERO
 
 var camera_offset_target_basis: Basis
 
+var photo_is_on_screen: bool = false
+
 @export var prop_size_reward_curve: Curve
 @export var prop_distance_reward_curve: Curve
 
 func _unhandled_input(event):
+	if event is InputEventKey:
+		if event.is_pressed():
+			if event.keycode != KEY_ENTER:
+				if photo_is_on_screen:
+					clear_photo()
+	
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 			
@@ -54,7 +63,7 @@ func _unhandled_input(event):
 	if event.is_action_pressed("gkooble"):
 		hud.set_texture(hud_holding)
 	
-	if event.is_action_released("gkooble"):
+	if event.is_action_released("gkooble") and not photo_is_on_screen:
 		
 		if current_entity: if current_entity.captures_remaining > 0:
 			current_entity.remove_captures_remaining(1)
@@ -104,16 +113,13 @@ func _unhandled_input(event):
 					photo_total_posing_reward += posing_reward
 					photo_total_characteristics_reward += characteristics_reward
 			
-			emit_signal("addConsoleItem", str("Size of subject(s): ", photo_total_size_reward), Color("353535"), 1500)
-			emit_signal("addConsoleItem", str("Framing of subject(s): ", photo_total_distance_reward), Color("353535"), 1500)
-			emit_signal("addConsoleItem", str("Posing of subject(s): ", photo_total_posing_reward), Color("353535"), 1500)
-			emit_signal("addConsoleItem", str("Characteristics of subject(s): ", photo_total_characteristics_reward), Color("353535"), 1500)
-			emit_signal("addConsoleItem", str("Total photo value: ", photo_total_value), Color.GOLD, 2000)
 			emit_signal("addPlayerValue", photo_total_value)
 			
 			hud.hide()
 			captures_remaining_label.hide()
 			fov_container.hide()
+			
+			value_label.set_text("Size of subject(s): %s \n Framing of subject(s): %s \n Posing of subject(s): %s \n Characteristics of subject(s): %s \n Total photo value %s \n \n PRESS ANY >>>" % [photo_total_size_reward, photo_total_distance_reward, photo_total_posing_reward, photo_total_characteristics_reward, photo_total_value])
 			
 			await RenderingServer.frame_post_draw
 			var image: Image = camera.get_viewport().get_texture().get_image()
@@ -121,17 +127,26 @@ func _unhandled_input(event):
 			var image_texture: ImageTexture = ImageTexture.create_from_image(image)
 			photo_texture.texture = image_texture
 			
-			await get_tree().create_timer(1.0).timeout
-			_on_reset_photo_texture()
-			
-			hud.show()
-			captures_remaining_label.show()
-			fov_container.show()
-		
-		hud.set_texture(hud_release)
-		var reset_timer = get_tree().create_timer(0.25)
-		reset_timer.connect("timeout", _on_reset_hud_image)
+			photo_is_on_screen = true
 	pass
+
+func clear_photo() -> void:
+	photo_is_on_screen = false
+	
+	hud.show()
+	captures_remaining_label.show()
+	fov_container.show()
+	value_label.text = ""
+	
+	photo_texture.texture = null
+	#photo_texture.modulate = Color("ffffff")
+	
+	hud.set_texture(hud_release)
+	var reset_timer = get_tree().create_timer(0.5)
+	reset_timer.connect("timeout", _on_reset_hud_image)
+	pass
+
+
 
 func rotate_camera_basis(dir: Vector3) -> void:
 	camera.transform.basis = camera.transform.basis.rotated(dir, deg_to_rad(CAMERA_ROTATION_MAGNITUDE))
@@ -206,11 +221,6 @@ func _on_current_entity_cleared():
 
 func _on_reset_hud_image() -> void:
 	hud.set_texture(hud_default)
-	pass
-
-func _on_reset_photo_texture() -> void:
-	photo_texture.texture = null
-	photo_texture.modulate = Color("ffffff")
 	pass
 
 func update_star_dir(dir: Vector3) -> void:
