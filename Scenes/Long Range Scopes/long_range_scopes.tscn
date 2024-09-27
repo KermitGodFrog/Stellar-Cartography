@@ -1,9 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://b0frxj5cysipi"]
+[gd_scene load_steps=13 format=3 uid="uid://b0frxj5cysipi"]
 
 [ext_resource type="Script" path="res://Scenes/Long Range Scopes/long_range_scopes.gd" id="1_syfdy"]
 [ext_resource type="Texture2D" uid="uid://3ea0xeivnnax" path="res://Graphics/long_range_scopes_hud4.png" id="2_d3gep"]
+[ext_resource type="Shader" path="res://Scenes/pixelate_shader.gdshader" id="2_oxd33"]
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="3_iyrid"]
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_kwwow"]
+[ext_resource type="PackedScene" uid="uid://dwtt1i110irrs" path="res://Instantiated Scenes/Space Whales/adult_space_whale.tscn" id="5_ig4jg"]
 
 [sub_resource type="Curve" id="Curve_t3lry"]
 max_value = 1000.0
@@ -14,6 +16,10 @@ point_count = 3
 max_value = 1000.0
 _data = [Vector2(0, 1000), 0.0, 0.0, 0, 0, Vector2(0.25, 250), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1ochv"]
+shader = ExtResource("2_oxd33")
+shader_parameter/pixel_size = 2.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ch2h2"]
 shader = ExtResource("3_iyrid")
@@ -31,8 +37,9 @@ ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.0
 ambient_light_energy = 0.1
 reflected_light_source = 1
-tonemap_mode = 2
+tonemap_mode = 1
 tonemap_exposure = 2.0
+tonemap_white = 0.5
 
 [node name="long_range_scopes_window" type="Window"]
 process_mode = 3
@@ -53,20 +60,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 100)
 
 [node name="canvas_layer" type="CanvasLayer" parent="long_range_scopes/camera_offset/camera"]
 
-[node name="photo_texture" type="TextureRect" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="post_process" type="ColorRect" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
+material = SubResource("ShaderMaterial_1ochv")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="post_process" type="ColorRect" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="photo_texture" type="TextureRect" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 1, 1, 0)
 
 [node name="no_current_entity_bg" type="ColorRect" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
 anchors_preset = 15
@@ -131,6 +138,8 @@ ticks_on_borders = true
 environment = SubResource("Environment_368mg")
 
 [node name="directional_light" type="DirectionalLight3D" parent="long_range_scopes"]
+
+[node name="adult_space_whale" parent="long_range_scopes" instance=ExtResource("5_ig4jg")]
 
 [connection signal="close_requested" from="." to="long_range_scopes" method="_on_long_range_scopes_window_close_requested"]
 [connection signal="value_changed" from="long_range_scopes/camera_offset/camera/canvas_layer/fov_container/fov_slider" to="long_range_scopes" method="_on_fov_slider_value_changed"]

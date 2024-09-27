@@ -2,17 +2,18 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dw21cn3hyx440"
-path.s3tc="res://.godot/imported/space_whale_underside.png-5af94cec476c3f8ea859ea34ccfcb58f.s3tc.ctex"
+uid="uid://415kl3grfwf1"
+path.s3tc="res://.godot/imported/adult_space_whale_space_whale_underside2.png-d7b310a1b6d4095dad92d4dcf687d4c8.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={}
 
 [deps]
 
-source_file="res://Instantiated Scenes/Space Whales/space_whale_underside.png"
-dest_files=["res://.godot/imported/space_whale_underside.png-5af94cec476c3f8ea859ea34ccfcb58f.s3tc.ctex"]
+source_file="res://Instantiated Scenes/Space Whales/adult_space_whale_space_whale_underside2.png"
+dest_files=["res://.godot/imported/adult_space_whale_space_whale_underside2.png-d7b310a1b6d4095dad92d4dcf687d4c8.s3tc.ctex"]
 
 [params]
 

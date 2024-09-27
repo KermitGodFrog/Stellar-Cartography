@@ -64,7 +64,6 @@ func _unhandled_input(event):
 		hud.set_texture(hud_holding)
 	
 	if event.is_action_released("gkooble") and not photo_is_on_screen:
-		
 		if current_entity: if current_entity.captures_remaining > 0:
 			current_entity.remove_captures_remaining(1)
 			captures_remaining_label.text = str(current_entity.captures_remaining)
@@ -145,8 +144,6 @@ func clear_photo() -> void:
 	var reset_timer = get_tree().create_timer(0.5)
 	reset_timer.connect("timeout", _on_reset_hud_image)
 	pass
-
-
 
 func rotate_camera_basis(dir: Vector3) -> void:
 	camera.transform.basis = camera.transform.basis.rotated(dir, deg_to_rad(CAMERA_ROTATION_MAGNITUDE))

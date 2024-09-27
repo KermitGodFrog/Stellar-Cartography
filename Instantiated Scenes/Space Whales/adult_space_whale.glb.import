@@ -32,27 +32,27 @@ import_script/path=""
 _subresources={
 "materials": {
 "beak": {
-"use_external/enabled": true,
+"use_external/enabled": false,
 "use_external/path": "res://Graphics/Meshes/Space Whales/adult_space_whale_beak.tres"
 },
 "eye": {
-"use_external/enabled": true,
+"use_external/enabled": false,
 "use_external/path": "res://Graphics/Meshes/Space Whales/adult_space_whale_eyes.tres"
 },
 "main": {
-"use_external/enabled": true,
+"use_external/enabled": false,
 "use_external/path": "res://Graphics/Meshes/Space Whales/adult_space_whale_main.tres"
 },
 "tail": {
-"use_external/enabled": true,
+"use_external/enabled": false,
 "use_external/path": "res://Graphics/Meshes/Space Whales/adult_space_whale_tail.tres"
 },
 "underside": {
-"use_external/enabled": true,
+"use_external/enabled": false,
 "use_external/path": "res://Graphics/Meshes/Space Whales/adult_space_whale_underside.tres"
 },
 "wings": {
-"use_external/enabled": true,
+"use_external/enabled": false,
 "use_external/path": "res://Graphics/Meshes/Space Whales/adult_space_whale_wings.tres"
 }
 }
