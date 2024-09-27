@@ -28,6 +28,9 @@ var weirdness_index :
 	get:
 		return remap(systems_traversed, 0, 35, 0.0, 1.0)
 
+enum STORYLINES {THE_DETECTIVE, THE_CONGLOMERATE}
+@export var current_storyline: STORYLINES
+
 @export var hull_deterioration: int = 0
 @export var hull_stress: int = 0
 @export var morale: int = 100

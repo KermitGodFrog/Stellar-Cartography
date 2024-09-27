@@ -76,6 +76,8 @@ func _ready():
 			if character:
 				dialogue_manager.character_lookup_dictionary[character.current_occupation] = character.display_name
 		
+		world.player.current_storyline = playerAPI.STORYLINES.keys().pick_random()
+		
 		world.player.connect("orbitingBody", _on_player_orbiting_body)
 		world.player.connect("followingBody", _on_player_following_body)
 		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
