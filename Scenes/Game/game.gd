@@ -98,8 +98,8 @@ func _ready():
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
@@ -470,7 +470,7 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 func _on_sell_exploration_data(sell_percentage_of_market_price: int):
 	print("STATION_UI (DEBUG): SELLING EXPLORATION DATA")
 	var multiplier = sell_percentage_of_market_price / 100.0
-	var sell_for = world.player.current_value * multiplier
+	var sell_for = world.player.current_value * multiplier #star system multiplier is already added to value
 	#NEED TO ADD MONEY FOR GUESSING CORRECT PLANET VARIATIONS!!!!
 	
 	for s in world.star_systems: for b in s.bodies:
@@ -489,6 +489,7 @@ func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	if world.player.balance >= cost and (world.player.get_upgrade_unlocked_state(upgrade_idx) != true):
 		world.player.decreaseBalance(cost)
 		_on_unlock_upgrade(upgrade_idx)
+	station_ui.player_balance = world.player.balance
 	pass
 
 func _on_undock_from_station(from_station: stationAPI):

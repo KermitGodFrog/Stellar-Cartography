@@ -40,7 +40,7 @@ func _ready():
 
 func _physics_process(_delta):
 	if station:
-		balance_label.set_text(str("BALANCE: ", player_balance, "c"))
+		balance_label.set_text(str("BALANCE: ", player_balance, "n"))
 		hull_stress_label.set_text(str("HULL STRESS: ", player_hull_stress, "%"))
 		
 		if not has_sold_previously:

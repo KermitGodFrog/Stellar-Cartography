@@ -1,11 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://b0frxj5cysipi"]
+[gd_scene load_steps=14 format=3 uid="uid://b0frxj5cysipi"]
 
 [ext_resource type="Script" path="res://Scenes/Long Range Scopes/long_range_scopes.gd" id="1_syfdy"]
 [ext_resource type="Texture2D" uid="uid://3ea0xeivnnax" path="res://Graphics/long_range_scopes_hud4.png" id="2_d3gep"]
 [ext_resource type="Shader" path="res://Scenes/pixelate_shader.gdshader" id="2_oxd33"]
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="3_iyrid"]
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_kwwow"]
-[ext_resource type="PackedScene" uid="uid://dwtt1i110irrs" path="res://Instantiated Scenes/Space Whales/adult_space_whale.tscn" id="5_ig4jg"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="4_mjqhh"]
 
 [sub_resource type="Curve" id="Curve_t3lry"]
 max_value = 1000.0
@@ -20,6 +20,13 @@ point_count = 3
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1ochv"]
 shader = ExtResource("2_oxd33")
 shader_parameter/pixel_size = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1m0fw"]
+bg_color = Color(0.129412, 0.145098, 0.160784, 1)
+skew = Vector2(0.5, 0)
+border_width_top = 5
+border_color = Color(0.203922, 0.227451, 0.25098, 1)
+expand_margin_left = 100.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ch2h2"]
 shader = ExtResource("3_iyrid")
@@ -46,6 +53,7 @@ process_mode = 3
 title = "Long Range Scopes"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
+visible = false
 unresizable = true
 
 [node name="long_range_scopes" type="Node3D" parent="."]
@@ -104,6 +112,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 
 [node name="value_label" type="Label" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
+visible = false
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -111,7 +120,13 @@ offset_top = -24.5
 offset_right = 164.0
 offset_bottom = 24.5
 grow_vertical = 2
-theme_override_font_sizes/font_size = 10
+theme_override_colors/font_color = Color(1, 0.717647, 0, 1)
+theme_override_colors/font_outline_color = Color(0.266667, 0.266667, 0.266667, 1)
+theme_override_fonts/font = ExtResource("4_mjqhh")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_1m0fw")
+text = "
+"
 vertical_alignment = 1
 
 [node name="fov_container" type="CenterContainer" parent="long_range_scopes/camera_offset/camera/canvas_layer"]
@@ -138,8 +153,6 @@ ticks_on_borders = true
 environment = SubResource("Environment_368mg")
 
 [node name="directional_light" type="DirectionalLight3D" parent="long_range_scopes"]
-
-[node name="adult_space_whale" parent="long_range_scopes" instance=ExtResource("5_ig4jg")]
 
 [connection signal="close_requested" from="." to="long_range_scopes" method="_on_long_range_scopes_window_close_requested"]
 [connection signal="value_changed" from="long_range_scopes/camera_offset/camera/canvas_layer/fov_container/fov_slider" to="long_range_scopes" method="_on_fov_slider_value_changed"]

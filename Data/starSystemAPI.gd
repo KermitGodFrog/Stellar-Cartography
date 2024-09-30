@@ -310,7 +310,7 @@ func generateRandomWormholes(): #uses variables post_gen_location_candidates, de
 		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
 		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 		
-		var new_wormhole = addWormhole(identifier_count, str(get_random_wormhole_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), dest_system, {"color": Color.WEB_PURPLE})
+		var new_wormhole = addWormhole(identifier_count, str(get_random_wormhole_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), dest_system, {"color": Color.WEB_PURPLE, "destination_star_type": dest_system.get_first_star().metadata.get("star_type")})
 		get_body_from_identifier(new_wormhole).rotation = deg_to_rad(global_data.get_randf(0,360))
 		if dest_system == previous_system:
 			get_body_from_identifier(new_wormhole).is_disabled = true

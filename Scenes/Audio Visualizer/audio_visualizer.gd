@@ -44,7 +44,7 @@ func _physics_process(delta):
 	HEIGHT = owner.size.y / 4
 	
 	#display stuff
-	if current_audio_profile: body_name_label.set_text(current_audio_profile.body.display_name)
+	if current_audio_profile: body_name_label.set_text(current_audio_profile.body.display_name.capitalize())
 	if saved_audio_profiles_size_matrix: 
 		storage_ratio_label.set_text(str("(", saved_audio_profiles_size_matrix.front(), "/", saved_audio_profiles_size_matrix.back(), " PROFILES)"))
 		storage_progress_bar.set_max(saved_audio_profiles_size_matrix.back())
