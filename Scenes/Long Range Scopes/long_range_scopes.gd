@@ -119,17 +119,18 @@ func _unhandled_input(event):
 			fov_container.hide()
 			value_label.hide()
 			
-			value_label.set_text("Size of subject(s): %s\nFraming of subject(s): %s\nPosing of subject(s): %s\nCharacteristics of subject(s): %s\nTotal photo value %s\n\nPRESS ANY >>>" % [photo_total_size_reward, photo_total_distance_reward, photo_total_posing_reward, photo_total_characteristics_reward, photo_total_value])
-			
 			await RenderingServer.frame_post_draw
 			var image: Image = camera.get_viewport().get_texture().get_image()
 			image.save_png("Debug/test.png")
 			var image_texture: ImageTexture = ImageTexture.create_from_image(image)
 			photo_texture.texture = image_texture
 			
-			value_label.show()
-			
 			photo_is_on_screen = true
+			
+			await get_tree().create_timer(2).timeout
+			
+			value_label.set_text("Size of subject(s): %s\nFraming of subject(s): %s\nPosing of subject(s): %s\nCharacteristics of subject(s): %s\nTotal photo value: %s\n\nPRESS ANY >>>" % [photo_total_size_reward, photo_total_distance_reward, photo_total_posing_reward, photo_total_characteristics_reward, photo_total_value])
+			value_label.show()
 	pass
 
 func clear_photo() -> void:

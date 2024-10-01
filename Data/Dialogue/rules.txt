@@ -36,6 +36,12 @@ stationDockingAccess,"concept: optionSelected, option: stationDockingAccess",,cl
 ,,,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
+PA_PlanetApproachMessage,concept: PA_PlanetApproachMessage,,,,,,,,Your ship approaches [i]>PLANET_NAME<[/i].
+,,,,,,,,,
+PA_GasSiphoningNeptunianMessage,"concept: PA_GasSiphoningMessage, planet_classification: Neptunian",PA_GasSiphoningNeptunianMessageViewedPREV: true,,,,,,,"[color=darkgray]Delving deep into the atmosphere of Neptunian and Jovian worlds in order to extract pressure-forged rare gasses has been a dangerous, yet profitable practice since the early days of space flight. On Neptunian worlds, this is often achieved via high altitude extraction depots, which extract more common gasses at high volumes. [/color]"
+PA_GasSiphoningNeptunianMessageCancel,"concept: PA_GasSiphoningMessage, planet_classification: Neptunian, PA_GasSiphoningNeptunianMessageViewedPREV: true",,,,,,,,
+PA_GasSiphoningJovianMessage,"concept: PA_GasSiphoningMessage, planet_classification: Jovian",PA_GasSiphoningJovianMessageViewedPREV: true,,,,,,,"[color=darkgray]Delving deep into the atmosphere of Neptunian and Jovian worlds in order to extract pressure-forged rare gasses has been a dangerous, yet profitable practice since the early days of space flight. On Jovian worlds, this is often achieved via specialised extraction ships, which glide deep before dropping weight to escape with a small yield of extremely profitable gas. [/color]"
+PA_GasSiphoningJovianMessageCancel,"concept: PA_GasSiphoningMessage, planet_classification: Jovian, PA_GasSiphoningJovianMessagePREV: true",,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
 PAHardLeave,"concept: optionSelected, option: PAHardLeave",,closeDialog: HARD_LEAVE,,,,,,
@@ -46,19 +52,48 @@ PA_TerranPortal,"concept: randomPAOpenDialog, planet_classification: Terran",,,,
 PA_NeptunianPortal,"concept: randomPAOpenDialog, planet_classification: Neptunian",,,,,,PA_NeptunianPortalResponse,,
 PA_JovianPortal,"concept: randomPAOpenDialog, planet_classification: Jovian",,,,,,PA_JovianPortalResponse,,
 ,,,,,,,,,
+PA_01GenericOpenDialog,concept: PA_GenericPortalResponse,,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked.
+PA_01GenericTerranOpenDialog,concept: PA_TerranPortalResponse,,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked on its surface.
+PA_01GenericNeptunianOpenDialog,concept: PA_NeptunianPortalResponse,,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked within its atmosphere.
+PA_01GenericJovianOpenDialog,concept: PA_JovianPortalResponse,,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked within the upper fringes of its atmosphere.
+PA_01GenericActions,concept: PA_01GenericActions,,openDialog: null,,,PA_PlanetApproachMessage,,Continue:PA_01GenericContinue,
+PA_01GenericContinue,"concept: optionSelected, option: PA_01GenericContinue",,"clearOptions: null, addValueWithFlair: 1000",,,,,Leave:PAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo. The higher resolution scan data will yield marginal value."
 ,,,,,,,,,
-PA_GenericOpenDialog,concept: PA_GenericPortalResponse,,,,,PA_GenericActions,,,Analysts mark an inconsistent LIDAR return.
-PA_GenericTerranOpenDialog,concept: PA_TerranPortalResponse,,,,,PA_GenericActions,,,Analysts mark an inconsistent LIDAR return upon the planets rocky surface.
-PA_GenericNeptunianOpenDialog,concept: PA_NeptunianPortalResponse,,,,,PA_GenericActions,,,Analysts mark an inconsistent LIDAR return within the planets thick atmosphere.
-PA_GenericJovianOpenDialog,concept: PA_JovianPortalResponse,,,,,PA_GenericActions,,,Analysts mark an inconsistent LIDAR return within the upper fringe of the planets massive atmosphere.
-PA_GenericActions,concept: PA_GenericActions,,openDialog: null,,,,,"Order the inconsistent data to be analyzed: PA_GenericContinue, Leave:PASoftLeave",
-PA_GenericContinue,"concept: optionSelected, option: PA_GenericContinue",,"clearOptions: null, addValueWithFlair: 100",,,,,Leave:PAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo."
+PA_02GenericOpenDialog,concept: PA_GenericPortalResponse,,,,,PA_02GenericActions,,,Sensors detect an abandoned satellite in low orbit.
+PA_02GenericTerranOpenDialog,concept: PA_TerranPortalResponse,,,,,PA_02GenericActions,,,Sensors detect an abandoned satellite in low orbit.
+PA_02GenericNeptunianOpenDialog,concept: PA_NeptunianPortalResponse,,,,,PA_02GenericActions,,,Sensors detect an abandoned satellite in low orbit.
+PA_02GenericJovianOpenDialog,concept: PA_JovianPortalResponse,,,,,PA_02GenericActions,,,Sensors detect an abandoned satellite in low orbit.
+PA_02GenericActions,concept: PA_02GenericActions,,openDialog: null,,,PA_PlanetApproachMessage,,"Look for salvage:PA_02GenericDispatch, Leave:PASoftLeave",
+PA_02GenericDispatch,"concept: optionSelected, option: PA_02GenericDispatch",,clearOptions: null,,,PA_02GenericDispatchResponse,,Leave:PAHardLeave,
+PA_02GenericDispatchSuccess,"concept: PA_02GenericDispatchResponse, RAND_50%: true",,,,,,,,Salvage teams find high resolution maps within.
+PA_02GenericDispatchFailure,"concept: PA_02GenericDispatchResponse, RAND_50%: false",,,,,,,,Salvage teams find nothing of value.
+,,,,,,,,,
+PA_03GenericOpenDialog,"concept: PA_TerranPortalResponse, player_weirdness_index: <= 0.5",,openDialog: null,,,PA_PlanetApproachMessage,,"Look for salvage:PA_03GenericDispatchA, Leave:PASoftLeave",The crash site of a ship is detected on its surface. Mangled chunks of hull are spread over several kilometers of terrain.
+PA_03GenericDispatchA,"concept: optionSelected, option: PA_03GenericDispatchA",,clearOptions: null,,,PA_03GenericDispatchAResponse,,Continue:PA_03GenericDispatchB,
+PA_03GenericDispatchASuccess,"concept: PA_03GenericDispatchAResponse, RAND_50%: true",,addValueWithFlair: 1000,,,,,,Salvage teams find useful scan data from throughout the system within the remains of a storage compartment.
+PA_03GenericDispatchAFailure,"concept: PA_03GenericDispatchAResponse, RAND_50%: false",,,,,,,,Salvage teams find nothing of value despite clawing through a majority of the wreckage.
+PA_03GenericDispatchB,"concept: optionSelected, option: PA_03GenericDispatchB",,clearOptions: null,,,,PA_03GenericDispatchBResponse,Leave:PAHardLeave,
+PA_03GenericDispatchBSuccessOverride,concept: PA_03GenericDispatchBResponse,,,,,,,,"The black box is cut out of the remains of the bridge. The logs, combined with signs of weapon discharge on portions of the structure, leads to the conclusion that the vessel crashed during a scuffle with pirates."
+PA_03GenericDispatchBSuccess,concept: PA_03GenericDispatchBResponse,,,,,,,,The black box is cut out of the remains of the bridge. The logs lead to the conclusion that the vessel crashed due to pilot error.
+PA_03GenericDispatchBFailure,concept: PA_03GenericDispatchBResponse,,,,,,,,The black box is unable to be located - the reason for the demise of the pinnace will forever be a mystery.
+,,,,,,,,,
+PA_04GenericOpenDialog,"concept: PA_TerranPortalResponse, player_weirdness_index: <= 0.5",,openDialog: null,,,PA_PlanetApproachMessage,,"Look for salvage:PA_04GenericDispatch, Leave:PASoftLeave",An abandoned quarry is detected on its surface.
+PA_04GenericDispatch,"concept: optionSelected, option: PA_04GenericDispatch",,clearOptions: null,,,PA_04GenericDispatchResponse,,Leave:PAHardLeave,
+PA_04GenericDispatchSuccess,"concept: PA_04GenericDispatchResponse, RAND_50%: true",,addValueWithFlair: 1000,,,,,,Salvage teams find antique equipment and several rotting databanks which are restored to yield data about surrounding mineral deposits.
+PA_04GenericDispatchFailure,"concept: PA_04GenericDispatchResponse, RAND_50%: false",,,,,,,,"Salvage teams find antique equipment, but nothing of value to the mission."
+,,,,,,,,,
+PA_05GenericOpenDialog,"concept: PA_NeptunianPortalResponse, player_weirdness_index: <= 0.5",,openDialog: null,,,"PA_PlanetApproachMessage, PA_GasSiphoningMessage",,"Look for salvage:PA_05GenericDispatch, Leave:PASoftLeave",An abandoned gas extraction depot is detected within its atmosphere. 
+PA_05GenericDispatch,"concept: optionSelected, option: PA_05GenericDispatch",,clearOptions: null,,,PA_05GenericDispatchResponse,,Leave:PAHardLeave,
+PA_05GenericDispatchSuccess,"concept: PA_05GenericDispatchResponse, RAND_50%: true",,addValueWithFlair: 1000,,,,,,Salvage teams find databanks containing useful data pertaining to local weather cycles.
+PA_05GenericDispatchFailure,"concept: PA_05GenericDispatchResponse, RAND_50%: false",,,,,,,,Salvage teams find nothing of value.
+,,,,,,,,,
+PA_06GenericOpenDialog,"concept: PA_JovianPortalResponse, player_weirdness_index: <= 0.5",,openDialog: null,,,"PA_PlanetApproachMessage, PA_GasSiphoningMessage",,"Look for salvage:PA_06GenericDispatch, Leave:PASoftLeave",An abandoned gas harvesting pinnace is detected in low orbit.
+PA_06GenericDispatch,"concept: optionSelected, option: PA_06GenericDispatch",,clearOptions: null,,,PA_06GenericDispatchResponse,,Leave:PAHardLeave,
+PA_06GenericDispatchSuccess,"concept: PA_06GenericDispatchResponse, RAND_50%: true",,addValueWithFlair: 1000,,,,,,Salvage teams find data pertaining to the location of concentrated gas pockets deep in the atmosphere.
+PA_06GenericDispatchFailure,"concept: PA_06GenericDispatchResponse, RAND_50%: false",,,,,,,,Salvage teams find nothing of value.
 ,,,,,,,,,
 ,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-PA_01ProbeGraveyardOpenDialog,concept: PA_JovianPortalResponse,,openDialog: null,,,,,Continue:PA_01ProbeGraveyardContinueA,"Rather quickly, you are hailed by the senior LIDAR technician in a corner of the operations deck. "
+PA_01ProbeGraveyardOpenDialog,"concept: PA_JovianPortalResponse, player_weirdness_index: <= 0.5",,openDialog: null,,,PA_PlanetApproachMessage,,Continue:PA_01ProbeGraveyardContinueA,"Rather quickly, you are hailed by the senior LIDAR technician in a corner of the operations deck. "
 PA_01ProbeGraveyardContinueA,"concept: optionSelected, option: PA_01ProbeGraveyardContinueA",,clearOptions: null,,,,,Order the structures to be identified:PA_01ProbeGraveyardContinueB,"The technician watches over the shoulder of a subordinate as you approach. He points a pen towards the juniors console and tries to find his words. ""There appears to be several high-speed structures orbiting within the upper atmosphere,"" he bluntly states. ""Never seen anything like it. We assumed they were false echoes, but that seems to not be the case."""
 PA_01ProbeGraveyardContinueB,"concept: optionSelected, option: PA_01ProbeGraveyardContinueB",,clearOptions: null,,,,,Continue:PA_01ProbeGraveyardContinueC,"It takes ten minutes for a ring of scope and sensor technicians to identify each LIDAR blip. A report is soon handed to you - it suggests that a majority of the contacts are human-made probes, but that one is of unfamiliar design - elongated, ancient and sporting floatation devices, protruding beams and a bow-mounted heatshield. More alarmingly, it suggests that the wind speed is far higher than expected within the upper atmosphere. Although a conclusive story cannot be ascertained, it can be assumed that the unknown starship, and the probes, were inserted without prior knowledge of the wind speed, and became trapped in an endless dance through the clouds.  "
 PA_01ProbeGraveyardContinueC,"concept: optionSelected, option: PA_01ProbeGraveyardContinueC",,clearAll: null,,,,,"Dispatch a probe to add to the collection:PA_01ProbeGraveyardDispatch,Leave:PASoftLeave","You assess your options. Recovering the unknown starship is impossible, however you can order a probe to be dispatched as homage to the incidents, with little expectation of a return on investment, or you can just leave the flying wrecks be."
@@ -66,16 +101,25 @@ PA_01ProbeGraveyardDispatch,"concept: optionSelected, option: PA_01ProbeGraveyar
 PA_01ProbeGraveyardDispatchSuccess,"concept: PA_01ProbeGraveyardDispatchResponse, RAND_50%: true",,"clearAll: null, addValueWithFlair: 1000",,,,,Leave:PAHardLeave,"As expected, the probe dramatically changes course upon entering the mesosphere. The garbled transmissions it produces before going dark present compelling data on the giants topology."
 PA_01ProbeGraveyardDispatchFailure,"concept: PA_01ProbeGraveyardDispatchResponse, RAND_50%: false",,clearAll: null,,,,,Leave:PAHardLeave,"As expected, the probe dramatically changes course upon entering the mesosphere. The garbled transmissions it produces before going dark present little to no new information, yet its course ultimately coincides with the presumed story of the other probes."
 ,,,,,,,,,
-PA_02PlanetRCS,concept: PA_TerranPortalResponse,,openDialog: null,,,,,Order a closer analysis: PA_02PlanetRCSContinue,"It quickly becomes evident that the planet is covered in hundreds of evenly-spaced abnormalities. Preliminary LIDAR scans indicate that the anomalies are structures, approximately one hundred meters in length, width and height. "
+PA_02PlanetRCS,"concept: PA_TerranPortalResponse, player_weirdness_index: > 0.5",,openDialog: null,,,PA_PlanetApproachMessage,,Order a closer analysis: PA_02PlanetRCSContinue,"It quickly becomes evident that the planet is covered in hundreds of evenly-spaced abnormalities. Preliminary LIDAR scans indicate that the anomalies are structures, approximately one hundred meters in length, width and height. "
 PA_02PlanetRCSContinue,"concept: optionSelected, option: PA_02PlanetRCSContinue",,clearOptions: null,,populatePA_02PlanetRCSOptions,,,"Order an expedition: PA_02PlanetRCSDefaultExpedition, Leave:PASoftLeave","Higher quality scans depict the structures as loosely engine shaped, with the nozzle of each supposed-engine facing away from the planets core. You are informed by a junior analyst that the design of the 'engines' does not appear in any on-board records. Further analysis will require a team on-ground."
 PA_02PlanetRCSJiyaOption,"concept: populatePA_02PlanetRCSOptions, player_CHIEF_ENGINEER_alive: true",,,,,,,Order Chief Engineer Jiya to lead an expedition: PA_02PlanetRCSJiyaExpeditionA,
 PA_02PlanetRCSDefaultExpedition,"concept: optionSelected, option: PA_02PlanetRCSDefaultExpedition",,"clearAll: null, addValueWithFlair: 2000",,,,,Recall the expedition and leave:PAHardLeave,"A transport lands near one of the behemoth thrusters. An hour of documentation, which you oversee from the operations deck, confirms what was already suspected: it is indeed an engine. How the engine is fueled and powered, if applicable, would be impossible to ascertain without months of arduous excavation. It is not clear how the engine is activated. The absurdity of the discovery merely reflects the absurdity of abyss space."
 PA_02PlanetRCSJiyaExpeditionA,"concept: optionSelected, option: PA_02PlanetRCSJiyaExpeditionA",,clearAll: null,,,,,Ask Chief Engineer Jiya for her thoughts: PA_02PlanetRCSJiyaExpeditionB,"A transport lands near one of the behemoth thrusters. Documenting the 'engine' takes about an hour. You listen to the comms chatter from the operations deck, picking up several interesting facts - primarily, the 'engine' is indeed congruent in its construction with a normal starship thruster, and that it appears to have fuel and power lines which tunnel deep into the ground."
 PA_02PlanetRCSJiyaExpeditionB,"concept: optionSelected, option: PA_02PlanetRCSJiyaExpeditionB",,clearAll: null,,,,,Ask Chief Engineer Jiya for her opinion on what to do next: PA_02PlanetRCSJiyaExpeditionC,"""It's weird, [SIR_MADAM_OR_CAPTAIN]."" Jiya speaks through garbled static. ""Its a planetary reaction control system, despite there being little benefit to moving a planet - 'least not in this way."" she says, elated. ""The thrusters are human make - twenty years old if I could eyeball it - but the thrust that they would produce could not beg to move billions of tonnes of rock. Either the newest universal constant defying engine which can move a planet looks exactly like an antique, or this is a very disfunctional planetary RCS system."""
-PA_02PlanetRCSJiyaExpeditionC,"concept: optionSelected, option: PA_02PlanetRCSJiyaExpeditionC",,clearOptions: null,,,,,"We need supplies - order Jiya to lead a salvage expedition:PA_02PlanetRCSJiyaSalvageDispatch, Heed her advice - recall the expedition and leave: PAHardLeave","""Take notes, pack up and leave. Messing with this kind of thing usually leads to disaster - its classic abyss. Makes no sense and explodes when you act like it follows your rules."" Jiya advises."
+PA_02PlanetRCSJiyaExpeditionC,"concept: optionSelected, option: PA_02PlanetRCSJiyaExpeditionC",,clearOptions: null,,,,,"We need supplies - order Jiya to lead a salvage expedition:PA_02PlanetRCSJiyaSalvageDispatch, Heed her advice - recall the expedition and leave: PAHardLeave","""Take notes, pack up and leave. Messing with this kind of thing usually leads to disaster - makes no sense and explodes when you act like it follows your rules."" Jiya advises."
 PA_02PlanetRCSJiyaSalvageDispatch,"concept: optionSelected, option: PA_02PlanetRCSJiyaSalvageDispatch",,,,,PA_02PlanetRCSJiyaSalvageResponse,,,
 PA_02PlanetRCSJiyaSalvageDispatchSuccess,"concept: PA_02PlanetRCSJiyaSalvageResponse, RAND_50%: true",,"clearAll: null, removeHullStressWithFlair: 25",,,,,Leave:PAHardLeave,Jiya acknowledges with a sigh. Salvage teams are launched and several comms specialists are awoken to direct the frequent transport departures and arrivals. You oversee the several hour ordeal from near the communications console. Fuel lines are tapped and rare metals are extracted successfully from several of the behemoths. 
 PA_02PlanetRCSJiyaSalvageDispatchFailure,"concept: PA_02PlanetRCSJiyaSalvageResponse, RAND_50%: false",,"clearAll: null, removeHullStressWithFlair: 5, killCharacterWithFlair: 1",,,,,Leave:PAHardLeave,"Jiya acknowledges with a sigh. In a four hour ordeal, salvage teams successfuly pick apart two of the behemoths - the third leads to disaster. Despite excessive safety procedures by Chief Engineer Jiya, an explosion propagated from the target - transpiring just after a tap was installed on the targets fuel line. Half of the salvage team, including Chief Engineer Jiya, are killed. Several salvage specialsits are injuired. A transport is lost. You order a recall. "
+,,,,,,,,,
+PA_03TheResearcherOpenDialog,"concept: PA_TerranPortalResponse, planet_type: Silicate",,openDialog: null,,,PA_PlanetApproachMessage,,Continue:PA_03TheResearcherContinueA,"AIS automatically interrogates and identifies a ship upon the surface of the planet. The vessel is an exploration pinnace, and according to on-board databanks, has been marked as missing for thirty years. It is unlikely that it poses any threat to your ship or your marines."
+PA_03TheResearcherContinueA,"concept: optionSelected, option: PA_03TheResearcherContinueA",,clearOptions: null,,populatePA_03TheResearcherOptions,,,Board a transport to extend formal greetings in person: PA_03TheResearcherContinueB,"Your communications officer sends an oral landing request. The ship, surprisingly, transmits a green flag in response."
+PA_03TheResearcherContinueB,"concept: optionSelected, option: PA_03TheResearcherContinueB",,clearOptions: null,,,,,,"You move to the launch bay and wait outside the chosen transport until directed abroad. You and a contingent of officers take a seat, and a unit of marines clamber in afterwards. The transport soon launches. "
+PA_03TheResearcherContinueC,"concept: optionSelected, option: PA_03TheResearcherContinueC",,clearOptions: null,,,,,Leave:PAHardLeave,I cant be bothered to finish this right now.
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
 ,,,,,,,,,
 SAHardLeave,"concept: optionSelected, option: SAHardLeave",,closeDialog: HARD_LEAVE,,,,,,
 SASoftLeave,"concept: optionSelected, option: SASoftLeave",,closeDialog: SOFT_LEAVE,,,,,,

@@ -51,7 +51,7 @@ func populateWithWorldData():
 
 func populateWithDialogueMemoryData(dialogue_memory: Dictionary):
 	for fact in dialogue_memory:
-		add(fact, dialogue_memory.get(fact).front())
+		add(fact, dialogue_memory.get(fact))
 	pass
 
 func populateWithTreeAccessMemoryData(tree_access_memory: Dictionary):

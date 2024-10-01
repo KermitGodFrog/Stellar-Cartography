@@ -22,6 +22,8 @@ enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QU
 @onready var dialogue = $dialogue/dialogue_control
 
 func _ready():
+	addDialogueMemoryPair.connect(_on_add_dialogue_memory_pair) #im connecitng this signal to its own script because im not sure if it does anything else / is important
+	
 	var csv_rules = FileAccess.open("res://Data/Dialogue/rules.txt", FileAccess.READ)
 	var current_pointer: POINTERS = POINTERS.RULE
 	var current_line: int = 0
@@ -262,11 +264,12 @@ func get_relevant_rules(incoming_query: responseQuery) -> Array[responseRule]:
 				if rule.criteria.get("concept") == incoming_query.facts.get("concept"):
 					relevant_rules.append(rule)
 		if relevant_rules.size() > 0:
-			print_debug("!! ERROR: NO RELEVANT RULES, RETURNING ALL RULES !!")
 			return relevant_rules
 		else:
+			print_debug("!! ERROR: NO RELEVANT RULES, RETURNING ALL RULES !!")
 			return rules
 	else:
+		print_debug("!! ERROR: NO RELEVANT RULES, RETURNING ALL RULES !!")
 		return rules
 
 func convert_string_number(string_number: String):
@@ -295,7 +298,7 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 						call(trigger_function, values)
 					TYPE_STRING:
 						print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
-						call(trigger_function, convert_value_with_query_key_tags(values, incoming_query))
+						call(trigger_function, convert_text_with_custom_tags(values, incoming_query))
 					_:
 						print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
 						call(trigger_function, values)
@@ -328,23 +331,17 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 	pass
 
 func convert_text_with_custom_tags(text: String, query: responseQuery) -> String:
-	if query:
-		if query.get("planet_name"):
-			text.replace("[PLANET_NAME]", query.get("planet_name"))
-		else:
-			text.replace("[PLANET_NAME]", "ERR_NO_PLANET_NAME_IN_QUERY")
+	text = text.replace("$PLANET_NAME", query.facts.get("planet_name", "CONVERT_TEXT_WITH_CUSTOM_TAGS_ERR"))
 	return text
 
-func convert_value_with_query_key_tags(value: String, query: responseQuery):
-	if query:
-		if value.begins_with("$"):
-			if query.facts.find_key(value.trim_prefix("$")) != null:
-				return query.facts.get(value.trim_prefix("$"))
-			else:
-				return value
-		else:
-			return value
-	return value 
+
+
+
+func _on_add_dialogue_memory_pair(key,value) -> void: #im connecitng this signal to its own script because im not sure if it does anything else / is important
+	dialogue_memory[key] = value
+	pass
+
+
 
 
 func openDialog():
@@ -374,22 +371,22 @@ func clearAll():
 
 func addValueWithFlair(amount: int):
 	emit_signal("addPlayerValue", amount)
-	dialogue.add_text(str("[color=green] (Gained ", amount, " nanites in data value) [/color]"))
+	dialogue.add_text(str("[color=green](Gained ", amount, " nanites in data value) [/color]"))
 	pass
 
 func addHullStressWithFlair(amount: int):
 	emit_signal("addPlayerHullStress", amount)
-	dialogue.add_text(str("[color=red] (Plus ", amount, "% hull stress) [/color]"))
+	dialogue.add_text(str("[color=red](Plus ", amount, "% hull stress) [/color]"))
 	pass
 
 func removeHullStressWithFlair(amount: int):
 	emit_signal("removePlayerHullStress", amount)
-	dialogue.add_text(str("[color=green] (Minus ", amount, "% hull stress) [/color]"))
+	dialogue.add_text(str("[color=green](Minus ", amount, "% hull stress) [/color]"))
 	pass
 
 func killCharacterWithFlair(occupation: characterAPI.OCCUPATIONS):
 	emit_signal("killCharacterWithOccupation", occupation)
 	print(character_lookup_dictionary)
 	var lookup = character_lookup_dictionary.get(occupation, " ")
-	dialogue.add_text(str("[color=red] (", characterAPI.OCCUPATIONS.find_key(occupation).replace("_", " "), " ", lookup, " is dead) [/color]"))
+	dialogue.add_text(str("[color=red](", characterAPI.OCCUPATIONS.find_key(occupation).replace("_", " "), " ", lookup, " is dead) [/color]"))
 	pass

@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://ckd75fjfh7urh"]
+[gd_scene load_steps=8 format=3 uid="uid://ckd75fjfh7urh"]
 
 [ext_resource type="Script" path="res://Data/Dialogue/dialogueManager.gd" id="1_5bsxl"]
 [ext_resource type="Theme" uid="uid://pb8t4wekexd8" path="res://Scenes/Station UI/station_ui_SAVE_AUDIO_PROFILES_theme.tres" id="2_0grsb"]
-[ext_resource type="Texture2D" uid="uid://dm2bfs2rf8r1a" path="res://Graphics/2k_earth_specular_map.png" id="3_4dyh3"]
 [ext_resource type="Script" path="res://Data/Dialogue/dialogue_control.gd" id="3_rmmx3"]
+[ext_resource type="Texture2D" uid="uid://cs13346mdnofp" path="res://Graphics/2k_jupiter.jpg" id="4_7jn5y"]
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="5_lo33f"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="6_u4avk"]
 
 [sub_resource type="RichTextEffect" id="RichTextEffect_p0l0r"]
 
@@ -48,7 +50,7 @@ theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
 [node name="panel" type="Panel" parent="dialogue/dialogue_control/margin"]
-custom_minimum_size = Vector2(1200, 800)
+custom_minimum_size = Vector2(1400, 800)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -60,9 +62,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 10
+theme_override_constants/margin_left = 200
 theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
+theme_override_constants/margin_right = 200
 theme_override_constants/margin_bottom = 10
 
 [node name="content_scroll" type="VBoxContainer" parent="dialogue/dialogue_control/margin/panel/panel_margin"]
@@ -71,13 +73,15 @@ layout_mode = 2
 [node name="image" type="TextureRect" parent="dialogue/dialogue_control/margin/panel/panel_margin/content_scroll"]
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
-texture = ExtResource("3_4dyh3")
+texture = ExtResource("4_7jn5y")
 expand_mode = 2
 stretch_mode = 5
 
 [node name="text" type="RichTextLabel" parent="dialogue/dialogue_control/margin/panel/panel_margin/content_scroll"]
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("5_lo33f")
+theme_override_fonts/italics_font = ExtResource("6_u4avk")
 bbcode_enabled = true
 text = "
 dgfhfhffhhhdfdfhdhfdfhdfh
