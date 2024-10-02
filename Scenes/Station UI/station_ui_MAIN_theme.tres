@@ -5,3 +5,5 @@
 [resource]
 default_font = ExtResource("1_tibto")
 default_font_size = 16
+Button/fonts/font = ExtResource("1_tibto")
+Button/styles/normal = null

@@ -2,6 +2,7 @@ extends Node
 #Handles most game stuff that is not local to child windows, loads data, saves data, the whole thing. child windows must route data through this to change the world/system/player
 
 var init_type: int = 0 #from global data GAME_INIT_TYPES
+var init_data: Dictionary = {}
 var world: worldAPI
 
 @onready var system_map = $system_window/system
@@ -64,23 +65,23 @@ func _ready():
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
-		world.createPlayer(3, 3, 10)
-		world.player.resetJumpsRemaining()
+		var new_player = world.createPlayer(init_data.get("name", "Tanaka"), init_data.get("prefix", "Captain"), 3, 3, 10)
+		new_player.resetJumpsRemaining()
 		
 		#CHARACTERS FOR ROGUELIKE:
-		world.player.first_officer = load("res://Data/Characters/rui.tres")
-		world.player.chief_engineer = load("res://Data/Characters/jiya.tres")
-		world.player.security_officer = load("res://Data/Characters/walker.tres")
-		world.player.medical_officer = load("res://Data/Characters/febris.tres")
-		for character in [world.player.first_officer, world.player.chief_engineer, world.player.security_officer, world.player.medical_officer, world.player.linguist, world.player.historian]:
+		new_player.first_officer = load("res://Data/Characters/rui.tres")
+		new_player.chief_engineer = load("res://Data/Characters/jiya.tres")
+		new_player.security_officer = load("res://Data/Characters/walker.tres")
+		new_player.medical_officer = load("res://Data/Characters/febris.tres")
+		for character in [new_player.first_officer, new_player.chief_engineer, new_player.security_officer, new_player.medical_officer, new_player.linguist, new_player.historian]:
 			if character:
 				dialogue_manager.character_lookup_dictionary[character.current_occupation] = character.display_name
 		
-		world.player.current_storyline = playerAPI.STORYLINES.keys().pick_random()
+		new_player.current_storyline = playerAPI.STORYLINES.keys().pick_random()
 		
-		world.player.connect("orbitingBody", _on_player_orbiting_body)
-		world.player.connect("followingBody", _on_player_following_body)
-		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+		new_player.connect("orbitingBody", _on_player_orbiting_body)
+		new_player.connect("followingBody", _on_player_following_body)
+		new_player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
 		
 		#new game stuff
 		var new = _on_create_new_star_system(false)

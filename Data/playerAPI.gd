@@ -6,6 +6,9 @@ signal orbitingBody(body: bodyAPI)
 signal followingBody(body: bodyAPI)
 signal hullDeteriorationChanged(new_value: int)
 
+@export var name: String
+@export var prefix: String
+
 @export var position: Vector2 = Vector2.ZERO
 @export var current_star_system: starSystemAPI
 @export var previous_star_system: starSystemAPI

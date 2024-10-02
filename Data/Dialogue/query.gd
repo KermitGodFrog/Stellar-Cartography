@@ -17,6 +17,10 @@ func populateWithLocalData():
 	pass
 
 func populateWithPlayerData(player: playerAPI):
+	add("player_name", player.name)
+	add("player_prefix", player.prefix)
+	add("player_prefix_lower", player.prefix.to_lower())
+	
 	add("player_speed", player.speed)
 	add("player_balance", player.balance)
 	add("player_current_value", player.current_value)
@@ -26,6 +30,7 @@ func populateWithPlayerData(player: playerAPI):
 	
 	add("player_weirdness_index", player.weirdness_index)
 	add("player_current_storyline", player.current_storyline)
+	
 	add("player_hull_deterioration", player.hull_deterioration)
 	add("player_hull_stress", player.hull_stress)
 	add("player_morale", player.morale)

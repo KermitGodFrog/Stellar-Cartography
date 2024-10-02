@@ -37,5 +37,38 @@ grow_horizontal = 0
 grow_vertical = 2
 text = "NEW"
 
+[node name="name_edit" type="LineEdit" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -67.0625
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+placeholder_text = "name"
+
+[node name="prefix_edit" type="OptionButton" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -105.0
+offset_top = -71.0
+offset_bottom = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+item_count = 3
+popup/item_0/text = "Sir"
+popup/item_0/id = 0
+popup/item_1/text = "Madam"
+popup/item_1/id = 1
+popup/item_2/text = "Captain"
+popup/item_2/id = 2
+
 [connection signal="pressed" from="continue_button" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="new_button" to="." method="_on_new_button_pressed"]

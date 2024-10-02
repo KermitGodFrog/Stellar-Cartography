@@ -11,7 +11,7 @@ var nanites_per_percentage: int = 1000
 
 #FOR AUDIO VISUALIZER \/\/\/\/\/
 var pending_audio_profiles: Array[audioProfileHelper] = []
-var player_saved_audio_profiles_size_matrix: Array = [] #current, max - only sent when station ui is opened but is estimated while it is opened
+var player_saved_audio_profiles_size_matrix: Array = [] #current, max
 
 signal sellExplorationData(sell_percentage_of_market_price: int)
 signal upgradeShip(upgrade_idx: playerAPI.UPGRADE_ID, cost: int)
