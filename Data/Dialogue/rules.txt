@@ -26,10 +26,12 @@ stationFlairAbandoned,"concept: addStationFlair, is_station_abandoned: true",,,,
 stationFlairDebris,"concept: addStationFlair, station_classification: DEBRIS",,,,,,,,Sensors soon detect an expanding debris field.
 ,,,,,,,,,
 stationDockingAccessOption,"concept: populateStationOptions, is_station_inhabited: true",,,,,,,Request Docking Access: stationDockingAccess,
-stationSalvageOption,"concept: populateStationOptions, is_station_abandoned: true",,,,,,,Scout for Salvage: stationSalvagePreliminary,
+stationSalvageOption,"concept: populateStationOptions, is_station_abandoned: true",,,,,,,Scout for Salvage: stationSalvageDispatch,
 stationDockingAccess,"concept: optionSelected, option: stationDockingAccess",,closeDialog: DOCK_WITH_STATION,,,,,,
 ,,,,,,,,,
+postSalvageLeave,"concept: optionSelected, option: postSalvageLeave",,closeDialog: POST_SALVAGE_LEAVE,,,,,,
 ,,,,,,,,,
+stationSalvageResponse,"concept: optionSelected, option: stationSalvageDispatch",,clearAll: null,,,,,,The station is ...
 ,,,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,

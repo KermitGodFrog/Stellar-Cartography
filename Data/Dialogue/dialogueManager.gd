@@ -87,6 +87,8 @@ func _ready():
 	pass
 
 func convert_to_dictionary(cell : String) -> Dictionary:
+	if cell.left(1) == "#": return {}
+	
 	var parts = global_data.split_string_multiple_delimeters(cell, [",", ":"])
 	var corrected_parts: Array = []
 	for part: String in parts: corrected_parts.append(part.dedent())
@@ -120,6 +122,8 @@ func convert_to_dictionary(cell : String) -> Dictionary:
 	else: return {}
 
 func convert_to_array(cell : String) -> Array[String]:
+	if cell.left(1) == "#": return []
+	
 	var parts = cell.split(",", false)
 	var corrected_parts: Array[String] = []
 	for part: String in parts: corrected_parts.append(part.dedent())

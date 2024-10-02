@@ -208,21 +208,26 @@ func _on_player_following_body(following_body: bodyAPI):
 		var is_station_abandoned: bool = following_station.station_classification in [game_data.STATION_CLASSIFICATIONS.ABANDONED, game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS, game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL, game_data.STATION_CLASSIFICATIONS.COVERUP, game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED]
 		var is_station_inhabited: bool = following_station.station_classification in [game_data.STATION_CLASSIFICATIONS.STANDARD, game_data.STATION_CLASSIFICATIONS.PIRATE]
 		
-		var new_query = responseQuery.new()
-		new_query.add("concept", "openDialog")
-		new_query.add("id", "station")
-		new_query.add_tree_access("name", following_station.display_name)
-		new_query.add_tree_access("station_classification", str(game_data.STATION_CLASSIFICATIONS.find_key(following_station.station_classification)))
-		new_query.add_tree_access("is_station_abandoned", is_station_abandoned)
-		new_query.add_tree_access("is_station_inhabited", is_station_inhabited)
-		get_tree().call_group("dialogueManager", "speak", self, new_query)
-		
-		var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
-		match RETURN_STATE:
-			"DOCK_WITH_STATION":
-				dock_with_station(following_station)
-			_:
-				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
+		if following_station.metadata.get("is_interactable", true) == true:
+			
+			var new_query = responseQuery.new()
+			new_query.add("concept", "openDialog")
+			new_query.add("id", "station")
+			new_query.add_tree_access("name", following_station.display_name)
+			new_query.add_tree_access("station_classification", str(game_data.STATION_CLASSIFICATIONS.find_key(following_station.station_classification)))
+			new_query.add_tree_access("is_station_abandoned", is_station_abandoned)
+			new_query.add_tree_access("is_station_inhabited", is_station_inhabited)
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+			
+			var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+			match RETURN_STATE:
+				"DOCK_WITH_STATION":
+					dock_with_station(following_station)
+				"POST_SALVAGE_LEAVE": #this is for abandoned stations which yield salvage, which should not be repeatable
+					following_station.metadata["is_interactable"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
+				_:
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
 	
 	if following_body.is_planet():
 		var following_planet = following_body
