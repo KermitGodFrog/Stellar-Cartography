@@ -150,7 +150,7 @@ func _physics_process(delta):
 		body_attributes_list.add_item("orbital_speed : %.2f (rot/frame)" % follow_body.orbit_speed, null, false)
 		body_attributes_list.add_item("orbital_distance %.2f (solar radii)" % follow_body.distance, null, false)
 		#metadata
-		var excluding = ["iterations", "color", "value", "has_planetary_anomaly", "is_planetary_anomaly_available", "is_anomaly_available"]
+		var excluding = ["iterations", "color", "value", "has_planetary_anomaly", "is_planetary_anomaly_available", "is_anomaly_available", "planetary_anomaly_seed"]
 		if follow_body.is_known:
 			for entry in follow_body.metadata:
 				if excluding.find(entry) == -1:

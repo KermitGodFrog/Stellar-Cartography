@@ -192,6 +192,7 @@ func _on_player_following_body(following_body: bodyAPI):
 			var new_query = responseQuery.new()
 			new_query.add("concept", "openDialog")
 			new_query.add("id", "wormhole")
+			new_query.add_tree_access("name", following_wormhole.display_name)
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
 			
 			var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
@@ -210,6 +211,7 @@ func _on_player_following_body(following_body: bodyAPI):
 		var new_query = responseQuery.new()
 		new_query.add("concept", "openDialog")
 		new_query.add("id", "station")
+		new_query.add_tree_access("name", following_station.display_name)
 		new_query.add_tree_access("station_classification", str(game_data.STATION_CLASSIFICATIONS.find_key(following_station.station_classification)))
 		new_query.add_tree_access("is_station_abandoned", is_station_abandoned)
 		new_query.add_tree_access("is_station_inhabited", is_station_inhabited)
@@ -228,9 +230,11 @@ func _on_player_following_body(following_body: bodyAPI):
 			if following_planet.metadata.get("is_planetary_anomaly_available", false) == true:
 				
 				var new_query = responseQuery.new()
-				new_query.add("concept", "randomPAOpenDialog")
-				new_query.add("planet_classification", following_planet.metadata.get("planet_classification"))
-				new_query.add_tree_access("planet_name", following_planet.display_name)
+				new_query.add("concept", "openDialog")
+				new_query.add("id", "planetaryAnomaly")
+				new_query.add_tree_access("name", following_planet.display_name)
+				new_query.add_tree_access("planet_classification", following_planet.metadata.get("planet_classification"))
+				new_query.add_tree_access("custom_seed", following_planet.metadata.get("planetary_anomaly_seed"))
 				get_tree().call_group("dialogueManager", "speak", self, new_query)
 				
 				var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
@@ -249,7 +253,8 @@ func _on_player_following_body(following_body: bodyAPI):
 		if following_anomaly.metadata.get("is_anomaly_available", true) == true:
 			
 			var new_query = responseQuery.new()
-			new_query.add("concept", "randomSAOpenDialog")
+			new_query.add("concept", "openDialog")
+			new_query.add("id", "spaceAnomaly")
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
 			
 			var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog

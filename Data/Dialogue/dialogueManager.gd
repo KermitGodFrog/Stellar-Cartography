@@ -57,8 +57,9 @@ func _ready():
 					if not dict.is_empty():
 						new_rule.trigger_functions = dict
 				"TRIGGER_RULES":
-					#DEPRECIATED, NOT ADDING
-					pass
+					var array = convert_to_array(cell)
+					if not array.is_empty():
+						new_rule.trigger_rules = array
 				"QUERY_ALL_CONCEPT":
 					var array = convert_to_array(cell)
 					if not array.is_empty():
@@ -213,7 +214,11 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			incoming_query.facts.erase("randf_EXCLUSIVE")
 			incoming_query.facts.erase("randi_EXCLUSIVE")
 			
-			var matched_rule = rules_with_max_matches.pick_random() 
+			var random = RandomNumberGenerator.new()
+			random.set_seed(incoming_query.facts.get("custom_seed", randi()))
+			var random_index = random.randi_range(0, rules_with_max_matches.size() - 1)
+			
+			var matched_rule: responseRule = rules_with_max_matches[random_index]
 			if matched_rule: trigger_rule(calling, matched_rule, incoming_query)
 			
 	pass
@@ -307,8 +312,9 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 	
 	#trigger_rules: \\\\\\\\\\\\\
 	for _trigger_rule in rule.trigger_rules:
-		if rules.has(_trigger_rule):
-			trigger_rule(calling, _trigger_rule, null)
+		for r in rules:
+			if r.get_name() == _trigger_rule:
+				trigger_rule(calling, r, incoming_query)
 	
 	for concept in rule.query_all_concept:
 		var new_query = responseQuery.new()
@@ -331,7 +337,10 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 	pass
 
 func convert_text_with_custom_tags(text: String, query: responseQuery) -> String:
-	text = text.replace("$PLANET_NAME", query.facts.get("planet_name", "CONVERT_TEXT_WITH_CUSTOM_TAGS_ERR"))
+	#i feel like this is veryyy slloooowwwwwwwww.......
+	for fact in query.facts:
+		text = text.replace("$%s" % fact, "%s" % query.facts.get(fact, "ERR"))
+	#text = text.replace("$PLANET_NAME", query.facts.get("planet_name", "CONVERT_TEXT_WITH_CUSTOM_TAGS_ERR"))
 	return text
 
 

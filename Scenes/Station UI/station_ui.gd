@@ -28,6 +28,7 @@ signal removeHullStressForNanites(amount: int, _nanites_per_percentage: int)
 @onready var unlock_advanced_scanning_button = $upgrade_container/unlock_advanced_scanning
 @onready var unlock_audio_visualizer_button = $upgrade_container/unlock_audio_visualizer
 @onready var unlock_nanite_controller_button = $upgrade_container/unlock_nanite_controller
+@onready var unlock_long_range_scopes_button = $upgrade_container/unlock_long_range_scopes
 @onready var hull_stress_label = $repair_container/hull_stress_label
 @onready var repair_single_button = $repair_container/repair_single
 @onready var repair_all_button = $repair_container/repair_all
@@ -44,7 +45,7 @@ func _physics_process(_delta):
 		hull_stress_label.set_text(str("HULL STRESS: ", player_hull_stress, "%"))
 		
 		if not has_sold_previously:
-			sell_data_button.set_text(str("SELL EXPLORATION DATA\n", player_current_value, "c\n(", station.sell_percentage_of_market_price, "% OF MARKET PRICE)"))
+			sell_data_button.set_text(str("SELL EXPLORATION DATA\n", player_current_value * (station.sell_percentage_of_market_price / 100.0), "c\n(", station.sell_percentage_of_market_price, "% OF MARKET PRICE)"))
 		elif has_sold_previously: sell_data_button.set_text("SOLD")
 		
 		repair_single_button.set_text(str("REPAIR 1% (", nanites_per_percentage, "n)"))
@@ -122,6 +123,12 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 					unlock_nanite_controller_button.set_text("NANITE CONTROLLER: UNLOCKED")
 				false:
 					unlock_nanite_controller_button.set_text("NANITE CONTROLLER: 10000n")
+		playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES:
+			match state:
+				true:
+					unlock_long_range_scopes_button.set_text("LONG RANGE SCOPES: UNLOCKED")
+				false:
+					unlock_long_range_scopes_button.set_text("LONG RANGE SCOPES: 40000n")
 		var error:
 			print(str("STATION UI: ERROR: BUTTON TEXT CHANGE FOR UPGRADE IDX ", error, "NOT CONFIGURED!"))
 	pass
@@ -131,7 +138,6 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 func _on_repair_single_pressed():
 	emit_signal("removeHullStressForNanites", 1, nanites_per_percentage)
 	pass
-
 
 func _on_repair_all_pressed():
 	emit_signal("removeHullStressForNanites", player_hull_stress, nanites_per_percentage)

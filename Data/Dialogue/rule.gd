@@ -10,7 +10,7 @@ class_name responseRule
 ##Triggers functions if present within the dialogue manager.
 @export var trigger_functions: Dictionary #triggers functions if present in calling node
 ##Triggers specific rules while skipping the rule ranking process.
-@export var trigger_rules: Array[responseRule] #triggers additional rules without ranking process
+@export var trigger_rules: Array[String] #triggers additional rules without ranking process
 
 #Like Starsector FireAll and FireBest 
 @export_category("Query")
