@@ -30,8 +30,8 @@ stationSalvageOption,"concept: populateStationOptions, is_station_abandoned: tru
 stationDockingAccess,"concept: optionSelected, option: stationDockingAccess",,closeDialog: DOCK_WITH_STATION,,,,,,
 ,,,,,,,,,
 postSalvageLeave,"concept: optionSelected, option: postSalvageLeave",,closeDialog: POST_SALVAGE_LEAVE,,,,,,
-,,,,,,,,,
-stationSalvageResponse,"concept: optionSelected, option: stationSalvageDispatch",,clearAll: null,,,,,,The station is ...
+#default salvage option \/\/\/\/\/,,,,,,,,,
+stationSalvageResponse,"concept: optionSelected, option: stationSalvageDispatch",,"clearAll: null, addValueWithFlair: 5000",,,,,Leave:postSalvageLeave,The station is ...
 ,,,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,

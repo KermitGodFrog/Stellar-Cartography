@@ -66,13 +66,6 @@ func _on_sell_data_button_pressed():
 			save_audio_profiles_control.show()
 	pass
 
-func _on_undock_button_pressed():
-	pending_audio_profiles = []
-	if station: emit_signal("undockFromStation", station)
-	else: emit_signal("undockFromStation", null)
-	get_tree().paused = false
-	pass
-
 func _on_audio_profile_saved(helper: audioProfileHelper):
 	emit_signal("addSavedAudioProfile", helper)
 	pass
@@ -130,7 +123,7 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 				false:
 					unlock_long_range_scopes_button.set_text("LONG RANGE SCOPES: 40000n")
 		var error:
-			print(str("STATION UI: ERROR: BUTTON TEXT CHANGE FOR UPGRADE IDX ", error, "NOT CONFIGURED!"))
+			print_debug(str("STATION UI: ERROR: BUTTON TEXT CHANGE FOR UPGRADE IDX ", error, "NOT CONFIGURED!"))
 	pass
 
 
@@ -143,3 +136,11 @@ func _on_repair_all_pressed():
 	emit_signal("removeHullStressForNanites", player_hull_stress, nanites_per_percentage)
 	pass
 
+
+
+func _on_station_window_close_requested():
+	pending_audio_profiles = []
+	if station: emit_signal("undockFromStation", station)
+	else: emit_signal("undockFromStation", null)
+	get_tree().paused = false
+	pass

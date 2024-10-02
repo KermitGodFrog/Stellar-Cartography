@@ -47,20 +47,6 @@ grow_vertical = 2
 text = "SELL EXPLORATION DATA
 24242409 (75%)"
 
-[node name="undock_button" type="Button" parent="station_control"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -39.0
-offset_top = -31.0
-offset_right = 39.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "UNDOCK"
-
 [node name="balance_label" type="Label" parent="station_control"]
 layout_mode = 1
 offset_right = 40.0
@@ -228,8 +214,8 @@ custom_minimum_size = Vector2(880, 0)
 layout_mode = 2
 text = "FINISHED"
 
+[connection signal="close_requested" from="." to="station_control" method="_on_station_window_close_requested"]
 [connection signal="pressed" from="station_control/sell_data_button" to="station_control" method="_on_sell_data_button_pressed"]
-[connection signal="pressed" from="station_control/undock_button" to="station_control" method="_on_undock_button_pressed"]
 [connection signal="pressed" from="station_control/upgrade_container/unlock_nanite_controller" to="station_control" method="_on_unlock_nanite_controller_pressed"]
 [connection signal="pressed" from="station_control/upgrade_container/unlock_advanced_scanning" to="station_control" method="_on_unlock_advanced_scanning_button_pressed"]
 [connection signal="pressed" from="station_control/upgrade_container/unlock_audio_visualizer" to="station_control" method="_on_unlock_audio_visualizer_pressed"]
