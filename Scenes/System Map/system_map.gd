@@ -20,6 +20,7 @@ signal DEBUG_REVEAL_ALL_BODIES
 
 var system: starSystemAPI
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
+var _player_status_matrix: Array = [0,0,0,0]
 var player_is_boosting: bool = false
 
 @onready var camera = $camera
@@ -33,7 +34,7 @@ var player_is_boosting: bool = false
 @onready var picker_button = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
 @onready var console = $camera/canvas/control/console
 @onready var audio_visualizer_button = $camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button
-@onready var hull_stress_button = $camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button
+@onready var status_scroll = $camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll
 
 @onready var ping_sound_scene = preload("res://Sound/ping.tscn")
 @onready var bounceback_sound_scene = preload("res://Sound/bounceback.tscn")
@@ -59,10 +60,11 @@ var SONAR_POLYGON: PackedVector2Array
 var SONAR_POLYGON_DISPLAY_TIME: float = 0
 
 func _ready():
-	hull_stress_button.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
+	status_scroll.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	pass
 
 func _physics_process(delta):
+	status_scroll.player_status_matrix = _player_status_matrix
 	#If body clicked on in system list, follow the body with the camera (follow body).
 	#If body clicked on in system list, actions can itneract with the body (locked body).
 	#If actions pressed, perform on locked body (action body).

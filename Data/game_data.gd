@@ -22,7 +22,7 @@ const ENTITY_CLASSIFICATION_CURVES = {
 	ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: preload("res://Data/Spawn Data/Entities/lagrange_cloud.tres")
 }
 
-
+const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
 
 
 func get_weighted_station_classifications() -> Dictionary:
@@ -71,9 +71,17 @@ func saveWorld(world: worldAPI) -> void:
 	print("ERROR CODE: ", error)
 	pass
 
-func createWorld() -> worldAPI:
+func createWorld(_total_systems: int, _max_jumps: int, _hull_stress_highest_arc: int, _hull_stress_wormhole: int, _hull_stress_boost: int, _SA_chance_per_candidate: float, _PA_chance_per_planet: float) -> worldAPI:
 	print("GAME DATA: CREATING WORLD")
-	return worldAPI.new()
+	var world = worldAPI.new()
+	world._max_jumps = _max_jumps
+	world._total_systems = _total_systems
+	world._hull_stress_highest_arc = _hull_stress_highest_arc
+	world._hull_stress_wormhole = _hull_stress_wormhole
+	world._hull_stress_boost = _hull_stress_boost
+	world.SA_chance_per_candidate = _SA_chance_per_candidate
+	world.PA_chance_per_planet = _PA_chance_per_planet
+	return world
 
 func deleteWorld() -> void:
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):

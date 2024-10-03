@@ -61,11 +61,13 @@ func _ready():
 	
 	world = await game_data.loadWorld()
 	if world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld()
+		world = game_data.createWorld(25, 5, 3, 10, 1, 0.01, 0.05)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
-		var new_player = world.createPlayer(init_data.get("name", "Tanaka"), init_data.get("prefix", "Captain"), 3, 3, 10)
+		var new_player = world.createPlayer(
+			init_data.get("name", "Tanaka"), 
+			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
 		#CHARACTERS FOR ROGUELIKE:
@@ -84,13 +86,13 @@ func _ready():
 		new_player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
 		
 		#new game stuff
-		var new = _on_create_new_star_system(false)
+		var new: starSystemAPI = _on_create_new_star_system(false)
 		for i in range(2):
 			_on_create_new_star_system(false, new)
 		new.generateRandomWormholes()
 		new.generateRandomWeightedStations()
 		new.generateRandomWeightedEntities()
-		new.generateRandomAnomalies()
+		new.generateRandomAnomalies(world.SA_chance_per_candidate)
 		world.player.resetJumpsRemaining()
 		for body in new.bodies:
 			body.is_known = true
@@ -99,8 +101,8 @@ func _ready():
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
+		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
@@ -135,6 +137,13 @@ func _ready():
 		world.player.connect("followingBody", _on_player_following_body)
 		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
 		
+		#for i in world.player.current_star_system.destination_systems:
+			#i.previous_system = world.player.current_star_system
+			#uhhhmmmmmm
+		
+		
+		
+		
 		for upgrade in world.player.unlocked_upgrades:
 			_on_upgrade_state_change(upgrade, true)
 		
@@ -153,11 +162,12 @@ func _physics_process(delta):
 	if current_bodies:
 		for body in current_bodies:
 			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
-	if world.player.hull_deterioration == 100:
-		_on_player_death()
+	#if world.player.hull_deterioration == 100:
+		#_on_player_death()
 	
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
+	system_map.set("_player_status_matrix", [world.player.balance, world.player.hull_stress, world.player.hull_deterioration, world.player.morale])
 	system_3d.set("player_position", world.player.position)
 	long_range_scopes.set("player_position", world.player.position)
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
@@ -165,18 +175,13 @@ func _physics_process(delta):
 	dialogue_manager.set("player", world.player)
 	game_data.player_weirdness_index = world.player.weirdness_index #really hacky solution which should not have been done this way but im too tired to change the entire game now to accomodate it.
 	
-	get_tree().call_group("trackNanites", "receive_tracked_status", world.player.balance)
-	get_tree().call_group("trackHullStress", "receive_tracked_status", str(world.player.hull_stress, "%"))
-	get_tree().call_group("trackHullDeterioration", "receive_tracked_status", str(world.player.hull_deterioration, "%"))
-	get_tree().call_group("trackMorale", "receive_tracked_status", str(world.player.morale, "%"))
-	
 	if Input.is_action_just_pressed("pause"):
 		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
 	pass
 
 func _on_tick(): #every 1 second
-	if world.player.is_boosting and (world.player.target_position != world.player.position):
-		world.player.addHullStress(1)
+	if world.player.is_boosting and (world.player.target_position != world.player.position): #literally does not work because of the players tendency to exponentially decrease its speed towards a target
+		_on_add_player_hull_stress(world.player.hull_stress_boost)
 	pass
 
 func _on_player_orbiting_body(_orbiting_body: bodyAPI):
@@ -290,16 +295,18 @@ func enter_wormhole(following_wormhole, wormholes, destination):
 			_on_create_new_star_system(false, destination)
 		destination.generateRandomWormholes()
 		destination.generateRandomWeightedEntities()
-		destination.generateRandomAnomalies()
+		destination.generateRandomAnomalies(world.SA_chance_per_candidate)
 	
 	#var destination_position: Vector2 = Vector2.ZERO
-	var destination_wormhole = destination.get_wormhole_with_destination_system(world.player.current_star_system)
+	var destination_wormhole: wormholeAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
 	if destination_wormhole:
-		#destination.updateBodyPosition(destination_wormhole.get_identifier(), delta) #REQURIED SO WORMHOLE HAVE A POSITION OTHER THAN 0,0
+		#destination.updateBodyPosition(destination_wormhole.get_identifier(), 0.01) #REQURIED SO WORMHOLE HAVE A POSITION OTHER THAN 0,0
 		#destination_position = destination_wormhole.position
 		#_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, destination_wormhole)
 		destination_wormhole.is_known = true
 		#system_3d.locked_body_identifier = destination_wormhole.get_identifier() #diesnt seem to work?!
+		print_debug(destination_wormhole)
+		print_debug(destination_wormhole.rotation)
 	
 	#setting whether the new system is a civilized system or not
 	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
@@ -310,8 +317,8 @@ func enter_wormhole(following_wormhole, wormholes, destination):
 			body.is_known = true
 	
 	#world.player.position = destination_position
-	world.player.target_position = world.player.position
-	system_map._on_start_movement_lock_timer()
+	#world.player.target_position = world.player.position
+	#system_map._on_start_movement_lock_timer()
 	
 	#no idea if anything below this point actually works so be careful \/\/\/\/
 	
@@ -331,11 +338,15 @@ func enter_wormhole(following_wormhole, wormholes, destination):
 	
 	world.player.previous_star_system = world.player.current_star_system
 	world.player.systems_traversed += 1
-	if world.player.systems_traversed == 35: # will need a global variable for how many ssystems until win at some point, customizability would be sick
+	
+	if world.player.systems_traversed == world.player.total_systems: # will need a global variable for how many ssystems until win at some point, customizability would be sick
 		_on_player_win()
+	
 	_on_switch_star_system(destination)
-	if destination_wormhole: 
-		world.player.position = destination_wormhole.position
+	
+	#if destination_wormhole: world.player.position = destination_wormhole.position
+	
+	_on_add_player_hull_stress(world.player.hull_stress_wormhole)
 	pass
 
 func dock_with_station(following_station):
@@ -410,7 +421,7 @@ func _on_update_target_position(pos: Vector2):
 func _on_create_new_star_system(force_switch_before_post_gen: bool = false, for_system: starSystemAPI = null):
 	var system = world.createStarSystem("random")
 	var hook_star = system.createRandomWeightedPrimaryHookStar()
-	system.generateRandomWeightedBodies(hook_star)
+	system.generateRandomWeightedBodies(hook_star, world.PA_chance_per_planet)
 	if for_system:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
@@ -473,7 +484,7 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	system_map._on_sonar_ping(ping_width, ping_length, ping_direction)
 	
 	if ping_width > 35:
-		var incurred_hull_stress = round(remap(ping_width, 10, 90, 0, 3))
+		var incurred_hull_stress = round(remap(ping_width, 10, 90, 0, world.player.hull_stress_highest_arc))
 		_on_add_player_hull_stress(incurred_hull_stress)
 		#can have multiple results here depending on what upgrades the player has related to the LIDAR
 	pass
@@ -546,7 +557,8 @@ func _on_remove_player_hull_stress(amount: int) -> void:
 	pass
 
 func _on_player_hull_deterioration_changed(new_value: int) -> void:
-	if new_value == 0:
+	print_debug("_ON_PLAYER_HULL_DETERIORATION_CHANGED")
+	if new_value == 100:
 		_on_player_death()
 	pass
 

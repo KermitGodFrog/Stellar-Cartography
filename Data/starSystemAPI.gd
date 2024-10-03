@@ -174,7 +174,7 @@ func createRandomWeightedPrimaryHookStar():
 	get_body_from_identifier(new_body).is_known = true #so you can see stars on system map before exploring
 	return new_body
 
-func generateRandomWeightedBodies(hook_identifier: int):
+func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: float = 0.0):
 	randomize()
 	var hook = get_body_from_identifier(hook_identifier)
 	var remaining: Array = []
@@ -258,7 +258,7 @@ func generateRandomWeightedBodies(hook_identifier: int):
 				var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
 				var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
 				#CHANCE FOR THE BODY TO ORBIT RETROGRADE:
-				if randf() >= 0.95:
+				if randf() >= 0.975:
 					minimum_speed = -minimum_speed
 					maximum_speed = -maximum_speed
 				
@@ -272,7 +272,7 @@ func generateRandomWeightedBodies(hook_identifier: int):
 				#SETTING WHETHER THE BODY HAS A PLANETARY ANOMALY
 				var has_planetary_anomaly: bool = false
 				var is_planetary_anomaly_available: bool = false
-				if randf() >= 0.975:
+				if randf() >= (1 - _PA_chance_per_planet):
 					has_planetary_anomaly = true
 					is_planetary_anomaly_available = true
 				
@@ -281,7 +281,7 @@ func generateRandomWeightedBodies(hook_identifier: int):
 				get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
 				
 				if generate_sub_bodies:
-					generateRandomWeightedBodies(new_body)
+					generateRandomWeightedBodies(new_body, _PA_chance_per_planet)
 			else: remaining.append([hook_identifier, i]) #else condition all the way from the choice to even have a planet. !! does not check if asteroid belt was spawned instead !!
 		
 		#APPENDING POTENTIAL WORMHOLE LOCATION CANDIDATES TO GLOBAL VARIABLE
@@ -350,9 +350,9 @@ func generateRandomWeightedStations():
 #entities = no dialogue, viewable via long range scopes module
 #anomalies = space anomalies - dialogue, disappear afterwards.
 
-func generateRandomAnomalies():
+func generateRandomAnomalies(_SA_chance_per_candidate: float = 0.0):
 	for anomaly in post_gen_location_candidates.size(): #for this reason, have to generate anomalies LAST
-		if randf() > 0.99:
+		if randf() > (1 - _SA_chance_per_candidate):
 			var location = post_gen_location_candidates.pick_random()
 			var hook = get_body_from_identifier(location.front())
 			var i = location.back()

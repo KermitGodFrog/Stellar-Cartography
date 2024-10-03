@@ -7,7 +7,7 @@ var player_current_value: int
 var player_balance: int
 var player_hull_stress: int 
 
-var nanites_per_percentage: int = 1000
+var nanites_per_percentage: int = 100
 
 #FOR AUDIO VISUALIZER \/\/\/\/\/
 var pending_audio_profiles: Array[audioProfileHelper] = []
@@ -29,6 +29,7 @@ signal removeHullStressForNanites(amount: int, _nanites_per_percentage: int)
 @onready var unlock_audio_visualizer_button = $upgrade_container/unlock_audio_visualizer
 @onready var unlock_nanite_controller_button = $upgrade_container/unlock_nanite_controller
 @onready var unlock_long_range_scopes_button = $upgrade_container/unlock_long_range_scopes
+
 @onready var hull_stress_label = $repair_container/hull_stress_label
 @onready var repair_single_button = $repair_container/repair_single
 @onready var repair_all_button = $repair_container/repair_all
@@ -41,6 +42,10 @@ func _ready():
 
 func _physics_process(_delta):
 	if station:
+		nanites_per_percentage = game_data.REPAIR_CURVE.sample(game_data.player_weirdness_index) #we are using too many global vars here its not very cool and stuff dont like it feel like im a rookie yknow 
+		
+		
+		
 		balance_label.set_text(str("BALANCE: ", player_balance, "n"))
 		hull_stress_label.set_text(str("HULL STRESS: ", player_hull_stress, "%"))
 		

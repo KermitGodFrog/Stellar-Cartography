@@ -13,7 +13,7 @@ signal hullDeteriorationChanged(new_value: int)
 @export var current_star_system: starSystemAPI
 @export var previous_star_system: starSystemAPI
 
-@export var speed: int = 1 :
+@export var speed: int = 3 :
 	get:
 		if is_boosting:
 			return speed * 5
@@ -24,12 +24,18 @@ var is_boosting: bool = false
 @export var balance: int = 0
 @export var current_value: int = 0
 
-@export var max_jumps: int = 5
+#key customization stufufffuff
+@export var total_systems: int 
+@export var max_jumps: int
+@export var hull_stress_highest_arc: int
+@export var hull_stress_wormhole: int
+@export var hull_stress_boost: int
+
 @export var jumps_remaining: int = 0
 @export var systems_traversed: int = 0
 var weirdness_index :
 	get:
-		return remap(systems_traversed, 0, 35, 0.0, 1.0)
+		return remap(systems_traversed, 0, total_systems, 0.0, 1.0)
 
 enum STORYLINES {THE_DETECTIVE, THE_CONGLOMERATE}
 @export var current_storyline: STORYLINES

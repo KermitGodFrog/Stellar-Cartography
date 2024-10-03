@@ -7,6 +7,17 @@ class_name worldAPI
 @export var identifier_count: int = 1
 @export var dialogue_memory: Dictionary = {}
 
+#KEY CUSTOMIZATION
+@export var _total_systems: int 
+@export var _max_jumps: int
+@export var _hull_stress_highest_arc: int
+@export var _hull_stress_wormhole: int
+@export var _hull_stress_boost: int 
+
+@export var SA_chance_per_candidate: float
+@export var PA_chance_per_planet: float
+# in order to justify why thsi is here - what if the player wants to update key customization while playing? this would be useful to ahndle it
+
 func createStarSystem(d_name: String):
 	var new_system = starSystemAPI.new()
 	new_system.set_identifier(identifier_count)
@@ -22,16 +33,19 @@ func removeStarSystem(id: int):
 			break
 	pass
 
-func createPlayer(name: String, prefix: String, speed: int, max_jumps: int, max_saved_audio_profiles: int):
+func createPlayer(name: String, prefix: String) -> playerAPI:
 	var new_player = playerAPI.new()
 	new_player.name = name
 	new_player.prefix = prefix
-	new_player.speed = speed
-	new_player.max_jumps = max_jumps
-	new_player.max_saved_audio_profiles = max_saved_audio_profiles
+	
+	new_player.max_jumps = _max_jumps
+	new_player.total_systems = _total_systems
+	new_player.hull_stress_highest_arc = _hull_stress_highest_arc
+	new_player.hull_stress_wormhole = _hull_stress_wormhole
+	new_player.hull_stress_boost = _hull_stress_boost
+	
 	player = new_player
 	return new_player
-
 
 func get_system_from_identifier(id: int):
 	var get_system: starSystemAPI

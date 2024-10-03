@@ -3,17 +3,12 @@ extends "res://Scenes/System Map/status_button.gd"
 signal removeHullStressForNanites(amount: int, _nanites_per_percentage: int)
 
 var increase_for_nanites: bool = false
-var nanites_per_percentage: int = 3000
+var nanites_per_percentage: int = 200
 
-
-func receive_tracked_status(value):
-	if not is_hovered():
-		set_text(str(value))
-	else:
-		if increase_for_nanites == true:
-			set_text("> (-1%) <")
-		else:
-			set_text(str(value))
+func _physics_process(_delta):
+	nanites_per_percentage = game_data.REPAIR_CURVE.sample(game_data.player_weirdness_index) #we are using too many global vars here its not very cool and stuff dont like it feel like im a rookie yknow
+	if is_hovered() and increase_for_nanites == true:
+		set_text("> (-1%) <") 
 	pass
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
@@ -22,9 +17,6 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 		print_debug("INCREASE FOR NANITES: ", increase_for_nanites)
 	pass
 
-
-
 func _on_pressed():
-	if increase_for_nanites:
-		emit_signal("removeHullStressForNanites", 1, nanites_per_percentage)
+	if increase_for_nanites: emit_signal("removeHullStressForNanites", 1, nanites_per_percentage)
 	pass 

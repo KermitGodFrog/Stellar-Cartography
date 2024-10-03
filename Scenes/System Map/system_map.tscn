@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=38 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://Scenes/System Map/ui_apps_scroll.gd" id="9_pw1kh"]
 [ext_resource type="PackedScene" uid="uid://chwm82adl21cm" path="res://Scenes/Sonar Interface/sonar_interface.tscn" id="10_48t0n"]
 [ext_resource type="Texture2D" uid="uid://4r5ju0dq0137" path="res://Graphics/nanites_icon.png" id="10_e6b7x"]
+[ext_resource type="Script" path="res://Scenes/System Map/status_scroll.gd" id="10_ydc85"]
 [ext_resource type="Script" path="res://Scenes/System Map/status_button.gd" id="11_1rwmm"]
 [ext_resource type="Texture2D" uid="uid://dq25m1n2y5upl" path="res://Graphics/hull_stress_icon.png" id="11_1tiv0"]
 [ext_resource type="PackedScene" uid="uid://co52u63cyk220" path="res://Scenes/System 3D/system_3d.tscn" id="11_domud"]
@@ -357,31 +358,32 @@ theme_override_constants/margin_bottom = 10
 [node name="status_scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin"]
 layout_mode = 2
 alignment = 1
+script = ExtResource("10_ydc85")
 
-[node name="nanites_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["trackNanites"]]
+[node name="nanites_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
 layout_mode = 2
 tooltip_text = "Nanites. Universally recognised currency. Can be obtained via trading in exploration data at a space station. "
 text = "50253"
 icon = ExtResource("10_e6b7x")
 script = ExtResource("11_1rwmm")
 
-[node name="morale_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["trackMorale"]]
+[node name="morale_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
 layout_mode = 2
 tooltip_text = "Morale. The willingness of a starships crew to follow their superiors. Depending on circumstance, an uprising may occur at 0%."
 text = "100%"
 icon = ExtResource("13_vaatn")
 script = ExtResource("11_1rwmm")
 
-[node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["FOLLOW_UPGRADE_STATE", "playUIClickSFX", "trackHullStress"]]
+[node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["FOLLOW_UPGRADE_STATE", "playUIClickSFX"]]
 layout_mode = 2
-tooltip_text = "Hull stress. General starship wear-and-tear. Principally decreases slowly with time or by exchanging nanites at a space station for repairs. Damage over 100% will be transferred to hull deterioration."
+tooltip_text = "Hull stress. General starship wear-and-tear. Principally may be reduced at a space station in exchange for nanites. Damage over 100% will be transferred to hull deterioration."
 text = "100%"
 icon = ExtResource("11_1tiv0")
 script = ExtResource("14_u08qu")
 
-[node name="hull_deterioration_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["trackHullDeterioration"]]
+[node name="hull_deterioration_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
 layout_mode = 2
-tooltip_text = "Hull deterioration. Semi-permanent damage to a starship. Repairable only via a costly visit to a dry dock. Catastrophic, and often explosive, ship breakdown occurs at 100%."
+tooltip_text = "Hull deterioration. Permanent damage to a starship. Catastrophic, and often explosive, ship breakdown occurs at 100%."
 text = "100%"
 icon = ExtResource("12_3bh3s")
 script = ExtResource("11_1rwmm")
