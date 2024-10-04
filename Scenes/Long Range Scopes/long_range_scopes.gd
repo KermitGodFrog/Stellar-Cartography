@@ -154,7 +154,7 @@ func rotate_camera_basis(dir: Vector3) -> void:
 	camera.transform.basis = camera.transform.basis.rotated(dir, deg_to_rad(CAMERA_ROTATION_MAGNITUDE))
 	pass
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
 	camera_offset.transform.basis = camera_offset.transform.basis.slerp(camera_offset_target_basis, 0.5)
 	if current_entity:

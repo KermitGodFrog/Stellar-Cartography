@@ -35,7 +35,7 @@ func _ready():
 	spectrum = AudioServer.get_bus_effect_instance(AudioServer.get_bus_index("Planetary SFX"), 0)
 	pass
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if owner.is_visible(): AudioServer.set_bus_mute(AudioServer.get_bus_index("Planetary SFX"), false)
 	else: AudioServer.set_bus_mute(AudioServer.get_bus_index("Planetary SFX"), true)
 	

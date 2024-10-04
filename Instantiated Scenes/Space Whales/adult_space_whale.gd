@@ -8,7 +8,7 @@ func _ready():
 	create_and_connect_timer()
 	pass
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	transform.basis = transform.basis.orthonormalized()
 	transform.basis = transform.basis.slerp(target_basis, 0.005)
 	pass

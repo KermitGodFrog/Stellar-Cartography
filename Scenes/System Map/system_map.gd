@@ -22,6 +22,7 @@ var system: starSystemAPI
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 var _player_status_matrix: Array = [0,0,0,0]
 var player_is_boosting: bool = false
+var player_audio_visualizer_unlocked: bool = false
 
 @onready var camera = $camera
 @onready var movement_lock_timer = $movement_lock_timer
@@ -45,6 +46,7 @@ enum BOOST_SOUND_TYPES {START, END}
 
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
 @onready var entity_icon = preload("res://Graphics/entity_32x.png")
+@onready var audio_visualizer_icon = preload("res://Graphics/audio_visualizer_icon.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body : bodyAPI
@@ -127,6 +129,9 @@ func _physics_process(delta):
 			if body.is_wormhole(): if body.is_disabled:
 				system_list.set_item_custom_bg_color(new_item_idx, Color.DARK_RED)
 			
+			if body.is_planet(): if (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true):
+				system_list.set_item_icon(new_item_idx, audio_visualizer_icon)
+			
 			if body.is_planet(): if (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
 				system_list.set_item_icon(new_item_idx, question_mark_icon)
 			
@@ -152,7 +157,7 @@ func _physics_process(delta):
 		body_attributes_list.add_item("orbital_speed : %.2f (rot/frame)" % follow_body.orbit_speed, null, false)
 		body_attributes_list.add_item("orbital_distance %.2f (solar radii)" % follow_body.distance, null, false)
 		#metadata
-		var excluding = ["iterations", "color", "value", "has_planetary_anomaly", "is_planetary_anomaly_available", "is_anomaly_available", "planetary_anomaly_seed"]
+		var excluding = ["iterations", "color", "value", "has_planetary_anomaly", "is_planetary_anomaly_available", "is_anomaly_available", "planetary_anomaly_seed", "has_missing_AO"]
 		if follow_body.is_known:
 			for entry in follow_body.metadata:
 				if excluding.find(entry) == -1:
@@ -167,7 +172,7 @@ func _physics_process(delta):
 	if follow_body: if follow_body.is_planet() and follow_body.get_current_variation() != -1:
 		var data_for_planet_type = system.planet_type_data.get(follow_body.metadata.get("planet_type"))
 		var variation_class = data_for_planet_type.get("variation_class")
-		if variation_class != null and (follow_body.is_known == true):
+		if variation_class != null and (follow_body.is_known == true) and (follow_body.metadata.get("has_missing_AO", false) == true):
 			picker_label.show()
 			picker_button.show()
 			picker_label.set_text(str(variation_class.to_upper().replace("_", " "), " (AUDIO VISUALIZER): "))

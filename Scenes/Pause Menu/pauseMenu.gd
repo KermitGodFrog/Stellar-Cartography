@@ -8,7 +8,7 @@ var can_unpause = false
 @onready var pause_control = $pause_canvas/pause_control
 @onready var unpause_possible_timer = $unpause_possible_timer
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if Input.is_action_just_pressed("pause"):
 		if can_unpause == true:
 			closePauseMenu() #can_unpause is only true in the event of the openPauseMenu() function being called, but that function is never called when the dialogue or station UI is shown because game.gd, who calls the method, is paused.

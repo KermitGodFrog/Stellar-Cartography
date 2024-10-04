@@ -29,7 +29,7 @@ var is_boosting: bool = false
 @export var max_jumps: int
 @export var hull_stress_highest_arc: int
 @export var hull_stress_wormhole: int
-@export var hull_stress_boost: int
+@export var hull_stress_module: int
 
 @export var jumps_remaining: int = 0
 @export var systems_traversed: int = 0

@@ -12,10 +12,11 @@ class_name worldAPI
 @export var _max_jumps: int
 @export var _hull_stress_highest_arc: int
 @export var _hull_stress_wormhole: int
-@export var _hull_stress_boost: int 
+@export var _hull_stress_module: int 
 
 @export var SA_chance_per_candidate: float
 @export var PA_chance_per_planet: float
+@export var missing_AO_chance_per_planet: float
 # in order to justify why thsi is here - what if the player wants to update key customization while playing? this would be useful to ahndle it
 
 func createStarSystem(d_name: String):
@@ -42,7 +43,7 @@ func createPlayer(name: String, prefix: String) -> playerAPI:
 	new_player.total_systems = _total_systems
 	new_player.hull_stress_highest_arc = _hull_stress_highest_arc
 	new_player.hull_stress_wormhole = _hull_stress_wormhole
-	new_player.hull_stress_boost = _hull_stress_boost
+	new_player.hull_stress_module = _hull_stress_module
 	
 	player = new_player
 	return new_player

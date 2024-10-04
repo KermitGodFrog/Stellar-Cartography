@@ -58,7 +58,7 @@ func _ready():
 	
 	world = await game_data.loadWorld()
 	if world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 3, 10, 1, 0.01, 0.05)
+		world = game_data.createWorld(25, 5, 3, 10, 1, 0.01, 0.05, 0.25)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -161,6 +161,7 @@ func _physics_process(delta):
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_map.set("_player_status_matrix", [world.player.balance, world.player.hull_stress, world.player.hull_deterioration, world.player.morale])
+	system_map.set("player_audio_visualizer_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.AUDIO_VISUALIZER) != -1))
 	system_3d.set("player_position", world.player.position)
 	long_range_scopes.set("player_position", world.player.position)
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
@@ -417,7 +418,7 @@ func _on_update_target_position(pos: Vector2):
 func _on_create_new_star_system(force_switch_before_post_gen: bool = false, for_system: starSystemAPI = null):
 	var system = world.createStarSystem("random")
 	var hook_star = system.createRandomWeightedPrimaryHookStar()
-	system.generateRandomWeightedBodies(hook_star, world.PA_chance_per_planet)
+	system.generateRandomWeightedBodies(hook_star, world.PA_chance_per_planet, world.missing_AO_chance_per_planet)
 	if for_system:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
