@@ -221,13 +221,13 @@ func _unhandled_input(event):
 		emit_signal("DEBUG_REVEAL_ALL_BODIES")
 	
 	if event.is_action_pressed("boost"):
-		player_is_boosting = !player_is_boosting
+		player_is_boosting = true
 		emit_signal("updatePlayerIsBoosting", player_is_boosting)
-		match player_is_boosting:
-			true:
-				async_play_boost_sound(BOOST_SOUND_TYPES.START)
-			false:
-				async_play_boost_sound(BOOST_SOUND_TYPES.END)
+		async_play_boost_sound(BOOST_SOUND_TYPES.START)
+	elif event.is_action_released("boost"):
+		player_is_boosting = false
+		emit_signal("updatePlayerIsBoosting", player_is_boosting)
+		async_play_boost_sound(BOOST_SOUND_TYPES.END)
 	pass
 
 func _draw():

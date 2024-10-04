@@ -16,7 +16,6 @@ var world: worldAPI
 @onready var journey_map = $journey_map_window/journey_map
 @onready var pause_menu = $pauseMenu
 @onready var stats_menu = $statsMenu
-@onready var tick = $tick
 
 func _ready():
 	system_map.connect("updatePlayerActionType", _on_update_player_action_type)
@@ -56,8 +55,6 @@ func _ready():
 	
 	pause_menu.connect("saveWorld", _on_save_world)
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
-	
-	tick.connect("timeout", _on_tick)
 	
 	world = await game_data.loadWorld()
 	if world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
@@ -137,12 +134,8 @@ func _ready():
 		world.player.connect("followingBody", _on_player_following_body)
 		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
 		
-		#for i in world.player.current_star_system.destination_systems:
-			#i.previous_system = world.player.current_star_system
-			#uhhhmmmmmm
-		
-		
-		
+		for i in world.player.current_star_system.destination_systems:
+			i.previous_system = world.player.current_star_system #i call this 'turning the treadmill back on' - do not ask why.
 		
 		for upgrade in world.player.unlocked_upgrades:
 			_on_upgrade_state_change(upgrade, true)
@@ -177,11 +170,6 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("pause"):
 		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
-	pass
-
-func _on_tick(): #every 1 second
-	if world.player.is_boosting and (world.player.target_position != world.player.position): #literally does not work because of the players tendency to exponentially decrease its speed towards a target
-		_on_add_player_hull_stress(world.player.hull_stress_boost)
 	pass
 
 func _on_player_orbiting_body(_orbiting_body: bodyAPI):
@@ -288,7 +276,7 @@ func _on_player_following_body(following_body: bodyAPI):
 	pass
 
 
-func enter_wormhole(following_wormhole, wormholes, destination):
+func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	#spawning new wormholes in destination system if nonexistent
 	if not destination.destination_systems:
 		for i in range(2):
@@ -299,14 +287,15 @@ func enter_wormhole(following_wormhole, wormholes, destination):
 	
 	#var destination_position: Vector2 = Vector2.ZERO
 	var destination_wormhole: wormholeAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
-	if destination_wormhole:
+	#if destination_wormhole:
 		#destination.updateBodyPosition(destination_wormhole.get_identifier(), 0.01) #REQURIED SO WORMHOLE HAVE A POSITION OTHER THAN 0,0
 		#destination_position = destination_wormhole.position
 		#_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, destination_wormhole)
-		destination_wormhole.is_known = true
 		#system_3d.locked_body_identifier = destination_wormhole.get_identifier() #diesnt seem to work?!
-		print_debug(destination_wormhole)
-		print_debug(destination_wormhole.rotation)
+		#print_debug(destination_wormhole)
+		#print_debug(destination_wormhole.rotation)
+		#world.player.position = destination.get_body_from_identifier(destination_wormhole.hook_identifier)
+	destination_wormhole.is_known = true
 	
 	#setting whether the new system is a civilized system or not
 	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
@@ -342,9 +331,16 @@ func enter_wormhole(following_wormhole, wormholes, destination):
 	if world.player.systems_traversed == world.player.total_systems: # will need a global variable for how many ssystems until win at some point, customizability would be sick
 		_on_player_win()
 	
-	_on_switch_star_system(destination)
 	
-	#if destination_wormhole: world.player.position = destination_wormhole.position
+	#setting position to wormhole??? actually works??????
+	_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+	for body in destination.bodies:
+		destination.updateBodyPosition(body.get_identifier(), get_physics_process_delta_time())
+	world.player.position = destination_wormhole.position
+	world.player.setTargetPosition(world.player.position)
+	world.player.updatePosition(get_physics_process_delta_time())
+	
+	_on_switch_star_system(destination)
 	
 	_on_add_player_hull_stress(world.player.hull_stress_wormhole)
 	pass

@@ -31,9 +31,6 @@ handle_input_locally = false
 wait_time = 2.0
 one_shot = true
 
-[node name="tick" type="Timer" parent="."]
-autostart = true
-
 [node name="dialogueManager" parent="." instance=ExtResource("8_egtoq")]
 
 [node name="musicHandler" parent="." instance=ExtResource("9_gksgf")]
