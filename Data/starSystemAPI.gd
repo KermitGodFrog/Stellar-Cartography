@@ -371,7 +371,7 @@ func generateRandomAnomalies(_SA_chance_per_candidate: float = 0.0):
 			
 			var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 			
-			var new_anomaly = addAnomaly(identifier_count, "unknown", hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1))
+			var new_anomaly = addAnomaly(identifier_count, str(get_random_space_anomaly_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"space_anomaly_seed": randi()}) #dont need to set "is_space_anomaly_available": true, because it defaults to true in every use case.
 			get_body_from_identifier(new_anomaly).rotation = deg_to_rad(global_data.get_randf(0,360))
 			
 			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
@@ -596,7 +596,7 @@ func is_civilized():
 
 #CONSOLIDATE ALL THESE INTO ONE FUNCTION AT SOME POINT \/\/\/\/
 
-func get_random_star_name():
+func get_random_star_name() -> String:
 	var name_candidates: Array = []
 	var file = FileAccess.open("res://Data/Name Data/star_names.txt", FileAccess.READ)
 	while not file.eof_reached():
@@ -609,7 +609,7 @@ func get_random_star_name():
 		pick = str(pick + " " + get_random_flair())
 	return pick
 
-func get_random_planet_name():
+func get_random_planet_name() -> String:
 	var name_candidates: Array = []
 	var file = FileAccess.open("res://Data/Name Data/planet_names.txt", FileAccess.READ)
 	while not file.eof_reached():
@@ -622,7 +622,7 @@ func get_random_planet_name():
 		pick = str(pick + " " + get_random_flair())
 	return pick
 
-func get_random_asteroid_belt_name():
+func get_random_asteroid_belt_name() -> String:
 	var name_candidates: Array = []
 	var file = FileAccess.open("res://Data/Name Data/asteroid_belt_names.txt", FileAccess.READ)
 	while not file.eof_reached():
@@ -632,7 +632,7 @@ func get_random_asteroid_belt_name():
 	file.close()
 	return name_candidates.pick_random()
 
-func get_random_wormhole_name():
+func get_random_wormhole_name() -> String:
 	var name_candidates: Array = []
 	var file = FileAccess.open("res://Data/Name Data/wormhole_names.txt", FileAccess.READ)
 	while not file.eof_reached():
@@ -642,7 +642,7 @@ func get_random_wormhole_name():
 	file.close()
 	return name_candidates.pick_random()
 
-func get_random_station_name():
+func get_random_station_name() -> String:
 	var name_candidates: Array = []
 	var flair_candidates: Array = []
 	var names_file = FileAccess.open("res://Data/Name Data/station_names.txt", FileAccess.READ)
@@ -659,7 +659,7 @@ func get_random_station_name():
 	flairs_file.close()
 	return str(name_candidates.pick_random(), " ", flair_candidates.pick_random())
 
-func get_random_flair():
+func get_random_flair() -> String:
 	var flair_candidates: Array = []
 	var flair_file = FileAccess.open("res://Data/Name Data/name_flair.txt", FileAccess.READ)
 	while not flair_file.eof_reached():
@@ -668,3 +668,13 @@ func get_random_flair():
 			flair_candidates.append(line)
 	flair_file.close()
 	return flair_candidates.pick_random()
+
+func get_random_space_anomaly_name() -> String:
+	var name_candidates: Array = []
+	var file = FileAccess.open("res://Data/Name Data/space_anomaly_names.txt", FileAccess.READ)
+	while not file.eof_reached():
+		var line = file.get_line()
+		if not line.is_empty():
+			name_candidates.append(line)
+	file.close()
+	return name_candidates.pick_random()

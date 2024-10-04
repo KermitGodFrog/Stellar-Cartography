@@ -46,7 +46,7 @@ enum BOOST_SOUND_TYPES {START, END}
 
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
 @onready var entity_icon = preload("res://Graphics/entity_32x.png")
-@onready var player_icon = preload("res://Graphics/player_sprite.png")
+#@onready var player_icon = preload("res://Graphics/player_sprite.png")
 @onready var audio_visualizer_icon = preload("res://Graphics/audio_visualizer_frame.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
@@ -114,7 +114,7 @@ func _physics_process(delta):
 			if body.is_planet(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.metadata.get("planet_type"), " Planet"))
 			if body.is_wormhole(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Wormhole"))
 			if body.is_station(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Station"), load("res://Graphics/station_frame.png"))
-			if body.is_anomaly() and body.metadata.get("is_anomaly_available", true) == true: new_item_idx = system_list.add_item("> ???")
+			if body.is_anomaly(): new_item_idx = system_list.add_item(str("> ", body.display_name))
 			if body.is_entity(): new_item_idx = system_list.add_item(str("> ", game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification)).capitalize(), get_entity_frame(body.entity_classification))
 			
 			system_list.set_item_metadata(new_item_idx, body.get_identifier())
@@ -136,7 +136,7 @@ func _physics_process(delta):
 			if body.is_planet(): if (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
 				system_list.set_item_icon(new_item_idx, question_mark_icon)
 			
-			if body.is_anomaly(): if body.metadata.get("is_anomaly_available", false) == true:
+			if body.is_anomaly(): if body.metadata.get("is_space_anomaly_available", true) == true:
 				system_list.set_item_icon(new_item_idx, question_mark_icon)
 	
 	#updating sonar ping visualization time values & sonar polygon display time
@@ -278,7 +278,8 @@ func draw_map():
 	
 	#draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
 	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, size_exponent)
-	player_icon.draw_rect(get_canvas_item(), Rect2(player_position_matrix[0].x - (size_exponent * 3.0 / 2), player_position_matrix[0].y - (size_exponent * 3.0 / 2), size_exponent * 3.0, size_exponent * 3.0), false, Color(1,1,1,1), false)
+	#player_icon.draw_rect(get_canvas_item(), Rect2(player_position_matrix[0].x - (size_exponent * 3.0 / 2), player_position_matrix[0].y - (size_exponent * 3.0 / 2), size_exponent * 3.0, size_exponent * 3.0), false, Color(1,1,1,1), false)
+	draw_rect(Rect2(player_position_matrix[0].x - (size_exponent * 3.0 / 2), player_position_matrix[0].y - (size_exponent * 3.0 / 2), size_exponent * 3.0, size_exponent * 3.0), Color.WHITE, true)
 	
 	#draw_circle(player_position_matrix[0], size_exponent, Color.WHITE)
 	if camera_target_position != Vector2.ZERO:
