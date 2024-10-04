@@ -3,10 +3,10 @@ extends "res://Scenes/System Map/status_button.gd"
 signal removeHullStressForNanites(amount: int, _nanites_per_percentage: int)
 
 var increase_for_nanites: bool = false
-var nanites_per_percentage: int = 200
+var nanites_per_percentage: int = 500
 
 func _physics_process(_delta):
-	nanites_per_percentage = game_data.REPAIR_CURVE.sample(game_data.player_weirdness_index) #we are using too many global vars here its not very cool and stuff dont like it feel like im a rookie yknow
+	nanites_per_percentage = (game_data.NANITE_CONTROLLER_REPAIR_CURVE.sample(game_data.player_weirdness_index) * 1000) #we are using too many global vars here its not very cool and stuff dont like it feel like im a rookie yknow
 	if is_hovered() and increase_for_nanites == true:
 		set_text("> (-1%) <") 
 	pass

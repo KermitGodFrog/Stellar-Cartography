@@ -98,7 +98,7 @@ func _ready():
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
 		
 		await get_tree().create_timer(1.0, true).timeout
@@ -493,6 +493,7 @@ func _on_sell_exploration_data(sell_percentage_of_market_price: int):
 	#NEED TO ADD MONEY FOR GUESSING CORRECT PLANET VARIATIONS!!!!
 	
 	for s in world.star_systems: for b in s.bodies:
+		if s.is_civilized(): continue
 		if b.guessed_variation and b.current_variation:
 			if b.guessed_variation == b.current_variation:
 				var value = b.metadata.get("value")

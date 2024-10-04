@@ -35,6 +35,18 @@ func populateWithPlayerData(player: playerAPI):
 	add("player_hull_stress", player.hull_stress)
 	add("player_morale", player.morale)
 	
+	var in_CORE_region: bool = false
+	var in_FRONTIER_region: bool = false
+	var in_ABYSS_region: bool = false
+	
+	if player.weirdness_index >= 0.2 and player.weirdness_index < 0.6: in_FRONTIER_region = true
+	elif player.weirdness_index >= 0.6: in_ABYSS_region = true
+	else: in_CORE_region = true
+	
+	add("player_in_CORE_region", in_CORE_region)
+	add("player_in_FRONTIER_region", in_FRONTIER_region)
+	add("player_in_ABYSS_region", in_ABYSS_region)
+	
 	for id in player.UPGRADE_ID:
 		if player.unlocked_upgrades.has(player.UPGRADE_ID.get(id)):
 			add(str("player_", id, "_unlocked"), true)

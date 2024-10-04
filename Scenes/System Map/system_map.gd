@@ -46,7 +46,8 @@ enum BOOST_SOUND_TYPES {START, END}
 
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
 @onready var entity_icon = preload("res://Graphics/entity_32x.png")
-@onready var audio_visualizer_icon = preload("res://Graphics/audio_visualizer_icon.png")
+@onready var player_icon = preload("res://Graphics/player_sprite.png")
+@onready var audio_visualizer_icon = preload("res://Graphics/audio_visualizer_frame.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body : bodyAPI
@@ -277,7 +278,9 @@ func draw_map():
 	
 	#draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
 	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, size_exponent)
-	draw_circle(player_position_matrix[0], size_exponent, Color.WHITE)
+	player_icon.draw_rect(get_canvas_item(), Rect2(player_position_matrix[0].x - (size_exponent * 3.0 / 2), player_position_matrix[0].y - (size_exponent * 3.0 / 2), size_exponent * 3.0, size_exponent * 3.0), false, Color(1,1,1,1), false)
+	
+	#draw_circle(player_position_matrix[0], size_exponent, Color.WHITE)
 	if camera_target_position != Vector2.ZERO:
 		draw_circle(camera_target_position, size_exponent * 1.5, Color.LIGHT_SKY_BLUE)
 		draw_line(player_position_matrix[0], player_position_matrix[0] + (player_position_matrix[0].direction_to(camera_target_position) * 100.0), Color.LIGHT_SKY_BLUE, size_exponent)

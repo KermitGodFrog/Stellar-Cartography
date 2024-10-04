@@ -6,7 +6,6 @@ var station: stationAPI
 var player_current_value: int
 var player_balance: int
 var player_hull_stress: int 
-
 var nanites_per_percentage: int = 100
 
 #FOR AUDIO VISUALIZER \/\/\/\/\/
@@ -50,7 +49,7 @@ func _physics_process(_delta):
 		hull_stress_label.set_text(str("HULL STRESS: ", player_hull_stress, "%"))
 		
 		if not has_sold_previously:
-			sell_data_button.set_text(str("SELL EXPLORATION DATA\n", player_current_value * (station.sell_percentage_of_market_price / 100.0), "c\n(", station.sell_percentage_of_market_price, "% OF MARKET PRICE)"))
+			sell_data_button.set_text(str("SELL EXPLORATION DATA\n", player_current_value * (station.sell_percentage_of_market_price / 100.0), "n\n(", station.sell_percentage_of_market_price, "% OF MARKET PRICE)"))
 		elif has_sold_previously: sell_data_button.set_text("SOLD")
 		
 		repair_single_button.set_text(str("REPAIR 1% (", nanites_per_percentage, "n)"))
@@ -83,22 +82,22 @@ func _on_finished_button_pressed():
 
 func _on_unlock_advanced_scanning_button_pressed():
 	if station: 
-		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.ADVANCED_SCANNING, 20000)
+		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.ADVANCED_SCANNING, 10000)
 	pass
 
 func _on_unlock_audio_visualizer_pressed():
 	if station:
-		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.AUDIO_VISUALIZER, 30000)
+		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.AUDIO_VISUALIZER, 85000)
 	pass
 
 func _on_unlock_nanite_controller_pressed():
 	if station:
-		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.NANITE_CONTROLLER, 10000)
+		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.NANITE_CONTROLLER, 45000)
 	pass 
 
 func _on_unlock_long_range_scopes_pressed():
 	if station:
-		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES, 40000)
+		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES, 85000)
 	pass
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):

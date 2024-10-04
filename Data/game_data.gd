@@ -23,7 +23,7 @@ const ENTITY_CLASSIFICATION_CURVES = {
 }
 
 const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
-
+const NANITE_CONTROLLER_REPAIR_CURVE = preload("res://Data/Spawn Data/nanite_controller_repair_curve.tres")
 
 func get_weighted_station_classifications() -> Dictionary:
 	var weighted: Dictionary = {}

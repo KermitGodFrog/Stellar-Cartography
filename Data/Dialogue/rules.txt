@@ -1,5 +1,5 @@
 Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Query Best Concept,Query Rand Best Concept,Options,Text
-defaultOpenDialog,concept: openDialog,,openDialog: null,,,,,Leave:defaultLeave,
+defaultOpenDialog,concept: openDialog,,openDialog: null,defaultApproachMessage,,,,Leave:defaultLeave,
 defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,,
 defaultApproachMessage,concept: defaultApproachMessage,,,,,,,,Your ship approaches [i]$name[/i].
 ,,,,,,,,,
@@ -13,6 +13,17 @@ playerWinStoryConclusionResponseGeneric,concept: playerWinStoryConclusionRespons
 playerWinStoryConclusionResponseConglomerate,"concept: playerWinStoryConclusionResponse, is_conglomerate_storyline_complete: true",,,,,,,,"You think back to the Conglomerate. Evidently, there is a new contender on the galactic stage. The words of the Emissary are still heavy on your mind. You cannot decide if life taking such a form is incredible or horrifying."
 playerWinStoryConclusionResponseDetective,"concept: playerWinStoryConclusionResponse, is_detective_storyline_complete: true",,,,,,,,"You think back to the Detective. A being which could pause time and evidently change reality, yet refused to truely intefere with your progress towards its physical location. You realise that throughout your travels, you were astronomically lucky. You also realise that you have changed. You wonder whether your journey was truely random chance, or if the Detective actively manipulated it for an unknown motive."
 newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,,"You have arrived in New Eden, the true frontier of human civilisation."
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
 ,,,,,,,,,
 wormholeOpenDialog,"concept: openDialog, id: wormhole",,openDialog: null,defaultApproachMessage,,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
 enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENTER_WORMHOLE,,,,,,
@@ -31,7 +42,7 @@ stationDockingAccess,"concept: optionSelected, option: stationDockingAccess",,cl
 ,,,,,,,,,
 postSalvageLeave,"concept: optionSelected, option: postSalvageLeave",,closeDialog: POST_SALVAGE_LEAVE,,,,,,
 #default salvage option \/\/\/\/\/,,,,,,,,,
-stationSalvageResponse,"concept: optionSelected, option: stationSalvageDispatch",,"clearAll: null, addValueWithFlair: 5000",,,,,Leave:postSalvageLeave,The station is ...
+stationSalvageDispatchResponse,"concept: optionSelected, option: stationSalvageDispatch",,"clearAll: null, addValueWithFlair: 5000",,,,,Leave:postSalvageLeave,Useful data is aquired. 
 ,,,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
@@ -55,23 +66,23 @@ PA_TerranPortal,"concept: openDialog, id: planetaryAnomaly, planet_classificatio
 PA_NeptunianPortal,"concept: openDialog, id: planetaryAnomaly, planet_classification: Neptunian",,,,,,PA_NeptunianPortalResponse,,
 PA_JovianPortal,"concept: openDialog, id: planetaryAnomaly, planet_classification: Jovian",,,,,,PA_JovianPortalResponse,,
 ,,,,,,,,,
-PA_01GenericOpenDialog,concept: PA_GenericPortalResponse,,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked.
-PA_01GenericTerranOpenDialog,concept: PA_TerranPortalResponse,,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked on its surface.
-PA_01GenericNeptunianOpenDialog,concept: PA_NeptunianPortalResponse,,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked within its atmosphere.
-PA_01GenericJovianOpenDialog,concept: PA_JovianPortalResponse,,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked within the upper fringes of its atmosphere.
+PA_01GenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked.
+PA_01GenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked on its surface.
+PA_01GenericNeptunianOpenDialog,"concept: PA_NeptunianPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked within its atmosphere.
+PA_01GenericJovianOpenDialog,"concept: PA_JovianPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked within the upper fringes of its atmosphere.
 PA_01GenericActions,concept: PA_01GenericActions,,openDialog: null,defaultApproachMessage,,,,Investigate:PA_01GenericContinue,
 PA_01GenericContinue,"concept: optionSelected, option: PA_01GenericContinue",,"clearAll: null, addValueWithFlair: 5000",,,,,Leave:PAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo. The higher resolution scan data will yield marginal value."
 ,,,,,,,,,
-PA_02GenericOpenDialog,concept: PA_GenericPortalResponse,,,,,PA_02GenericActions,,,
-PA_02GenericTerranOpenDialog,concept: PA_TerranPortalResponse,,,,,PA_02GenericActions,,,
-PA_02GenericNeptunianOpenDialog,concept: PA_NeptunianPortalResponse,,,,,PA_02GenericActions,,,
-PA_02GenericJovianOpenDialog,concept: PA_JovianPortalResponse,,,,,PA_02GenericActions,,,
+PA_02GenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_FRONTIER_region: true",,,,,PA_02GenericActions,,,
+PA_02GenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_FRONTIER_region: true",,,,,PA_02GenericActions,,,
+PA_02GenericNeptunianOpenDialog,"concept: PA_NeptunianPortalResponse, player_in_FRONTIER_region: true",,,,,PA_02GenericActions,,,
+PA_02GenericJovianOpenDialog,"concept: PA_JovianPortalResponse, player_in_FRONTIER_region: true",,,,,PA_02GenericActions,,,
 PA_02GenericActions,concept: PA_02GenericActions,,openDialog: null,defaultApproachMessage,,,,"Scout for salvage:PA_02GenericDispatch, Leave:PASoftLeave",Sensors detect an abandoned satellite in low orbit.
 PA_02GenericDispatch,"concept: optionSelected, option: PA_02GenericDispatch",,clearAll: null,,,,PA_02GenericDispatchResponse,Leave:PAHardLeave,
 PA_02GenericDispatchSuccess,concept: PA_02GenericDispatchResponse,,addValueWithFlair: 5000,,,,,,Salvage teams find high resolution maps within.
 PA_02GenericDispatchFailure,concept: PA_02GenericDispatchResponse,,,,,,,,Salvage teams find nothing of value.
 ,,,,,,,,,
-PA_03GenericOpenDialog,"concept: PA_TerranPortalResponse, player_weirdness_index: <= 0.5",,openDialog: null,defaultApproachMessage,,,,"Scout for salvage:PA_03GenericDispatchA, Leave:PASoftLeave",The crash site of a ship is detected on its surface. Mangled chunks of hull are spread over several kilometers of terrain.
+PA_03GenericOpenDialog,"concept: PA_TerranPortalResponse, player_in_FRONTIER_region: true",,openDialog: null,defaultApproachMessage,,,,"Scout for salvage:PA_03GenericDispatchA, Leave:PASoftLeave",The crash site of a ship is detected on its surface. Mangled chunks of hull are spread over several kilometers of terrain.
 PA_03GenericDispatchA,"concept: optionSelected, option: PA_03GenericDispatchA",,clearAll: null,,,,PA_03GenericDispatchAResponse,Continue:PA_03GenericDispatchB,
 PA_03GenericDispatchASuccess,concept: PA_03GenericDispatchAResponse,,addValueWithFlair: 5000,,,,,,Salvage teams find useful scan data from throughout the system within the remains of a storage compartment.
 PA_03GenericDispatchAFailure,concept: PA_03GenericDispatchAResponse,,,,,,,,Salvage teams find nothing of value despite clawing through a majority of the wreckage.
@@ -80,22 +91,36 @@ PA_03GenericDispatchBSuccessOverride,concept: PA_03GenericDispatchBResponse,,,,,
 PA_03GenericDispatchBSuccess,concept: PA_03GenericDispatchBResponse,,,,,,,,The black box is cut out of the remains of the bridge. The logs lead to the conclusion that the vessel crashed due to pilot error or malfunction.
 PA_03GenericDispatchBFailure,concept: PA_03GenericDispatchBResponse,,,,,,,,The black box is unable to be located - the reason for the demise of the pinnace will forever be a mystery.
 ,,,,,,,,,
-PA_04GenericOpenDialog,"concept: PA_TerranPortalResponse, player_weirdness_index: <= 0.5",,openDialog: null,defaultApproachMessage,,,,"Scout for salvage:PA_04GenericDispatch, Leave:PASoftLeave",An abandoned quarry is detected on its surface.
+PA_04GenericOpenDialog,"concept: PA_TerranPortalResponse, player_in_FRONTIER_region: true",,openDialog: null,defaultApproachMessage,,,,"Scout for salvage:PA_04GenericDispatch, Leave:PASoftLeave",An abandoned quarry is detected on its surface.
 PA_04GenericDispatch,"concept: optionSelected, option: PA_04GenericDispatch",,clearAll: null,,,,PA_04GenericDispatchResponse,Leave:PAHardLeave,
 PA_04GenericDispatchSuccess,concept: PA_04GenericDispatchResponse,,addValueWithFlair: 5000,,,,,,Salvage teams find antique equipment and several rotting databanks which are restored to yield data about surrounding mineral deposits.
 PA_04GenericDispatchFailure,concept: PA_04GenericDispatchResponse,,,,,,,,"Salvage teams find antique equipment, but nothing of value to the mission."
 ,,,,,,,,,
-PA_05GenericOpenDialog,"concept: PA_NeptunianPortalResponse, player_weirdness_index: <= 0.5",,openDialog: null,defaultApproachMessage,,gasSiphoningMessage,,"Scout for salvage:PA_05GenericDispatch, Leave:PASoftLeave",An abandoned gas extraction depot is detected within its atmosphere. 
+PA_05GenericOpenDialog,"concept: PA_NeptunianPortalResponse, player_in_FRONTIER_region: true",,openDialog: null,defaultApproachMessage,,gasSiphoningMessage,,"Scout for salvage:PA_05GenericDispatch, Leave:PASoftLeave",An abandoned gas extraction depot is detected within its atmosphere. 
 PA_05GenericDispatch,"concept: optionSelected, option: PA_05GenericDispatch",,clearAll: null,,,,PA_05GenericDispatchResponse,Leave:PAHardLeave,
 PA_05GenericDispatchSuccess,concept: PA_05GenericDispatchResponse,,addValueWithFlair: 5000,,,,,,Salvage teams find databanks containing useful data pertaining to local weather cycles.
 PA_05GenericDispatchFailure,concept: PA_05GenericDispatchResponse,,,,,,,,Salvage teams find nothing of value.
 ,,,,,,,,,
-PA_06GenericOpenDialog,"concept: PA_JovianPortalResponse, player_weirdness_index: <= 0.5",,openDialog: null,defaultApproachMessage,,gasSiphoningMessage,,"Scout for salvage:PA_06GenericDispatch, Leave:PASoftLeave",An abandoned gas harvesting pinnace is detected in low orbit.
+PA_06GenericOpenDialog,"concept: PA_JovianPortalResponse, player_in_FRONTIER_region: true",,openDialog: null,defaultApproachMessage,,gasSiphoningMessage,,"Scout for salvage:PA_06GenericDispatch, Leave:PASoftLeave",An abandoned gas harvesting pinnace is detected in low orbit.
 PA_06GenericDispatch,"concept: optionSelected, option: PA_06GenericDispatch",,clearAll: null,,,,PA_06GenericDispatchResponse,Leave:PAHardLeave,
 PA_06GenericDispatchSuccess,concept: PA_06GenericDispatchResponse,,addValueWithFlair: 5000,,,,,,Salvage teams find data pertaining to the location of concentrated gas pockets deep in the atmosphere.
 PA_06GenericDispatchFailure,concept: PA_06GenericDispatchResponse,,,,,,,,Salvage teams find nothing of value.
 ,,,,,,,,,
-PA_01ProbeGraveyardOpenDialog,"concept: PA_JovianPortalResponse, player_weirdness_index: <= 0.5",,openDialog: null,defaultApproachMessage,,,,Continue:PA_01ProbeGraveyardContinueA,"Rather quickly, you are hailed by the senior LIDAR technician in a corner of the operations deck. "
+PA_07GenericOpenDialog,"concept: PA_TerranPortalResponse, player_in_ABYSS_region: true",,openDialog: null,defaultApproachMessage,,,,Investigate: PA_07GenericDispatch,"A single canyon stretches three quarters of the way around its circumference. The canyons natural formation is technically plausible, however incredibly unlikely, and its geometry appears unnaturally sharp, with a near perfect ninety-degree angle between its valley and peaks."
+PA_07GenericDispatch,"concept: optionSelected, option: PA_07GenericDispatch",,clearAll: null,,,,PA_07GenericDispatchResponse,Leave:PAHardLeave,
+PA_07GenericDispatchSuccess,concept: PA_07GenericDispatchResponse,,addValueWithFlair: 10000,,,,,,"The canyon is mapped, and a ground sample is sheepishly retrieved from its lowest point - tampering is detected within it. The canyon was created by something, but the complete lack of any visible devices to permit such a terraforming project leaves its founders unknown."
+PA_07GenericDispatchFailure,concept: PA_07GenericDispatchResponse,,,,,,,,"The canyon is mapped, and a ground sample is sheepishly retrieved from its lowest point - no tampering is detected within it. Results are written but no final conclusion can be ascertained. "
+,,,,,,,,,
+PA_08GenericOpenDialog,"concept: PA_JovianPortalResponse, player_in_ABYSS_region: true",,openDialog: null,defaultApproachMessage,,,,Investigate: PA_08GenericContinue,"Several circular ‘holes’ are detected upon its atmosphere. They appear to displace all matter from the exosphere to the core - in doing so, they violate multiple universal constants. There is no observable device to explain their cause."
+PA_08GenericContinue,"concept: optionSelected, option: PA_08GenericContinue",,"clearAll: null, addValueWithFlair: 10000",,,,,Leave:PAHardLeave,The ‘holes’ are extensively logged. Nothing more can be done.
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+PA_01ProbeGraveyardOpenDialog,"concept: PA_JovianPortalResponse, player_in_FRONTIER_region: true",,openDialog: null,defaultApproachMessage,,,,Continue:PA_01ProbeGraveyardContinueA,"Rather quickly, you are hailed by the senior LIDAR technician in a corner of the operations deck. "
 PA_01ProbeGraveyardContinueA,"concept: optionSelected, option: PA_01ProbeGraveyardContinueA",,clearOptions: null,,,,,Order the structures to be identified:PA_01ProbeGraveyardContinueB,"The technician watches over the shoulder of a subordinate as you approach. He points a pen towards the juniors console and tries to find his words. ""There appears to be several high-speed structures orbiting within the upper atmosphere,"" he bluntly states. ""Never seen anything like it. We assumed they were false echoes, but that seems to not be the case."""
 PA_01ProbeGraveyardContinueB,"concept: optionSelected, option: PA_01ProbeGraveyardContinueB",,clearOptions: null,,,,,Continue:PA_01ProbeGraveyardContinueC,"It takes ten minutes for a ring of scope and sensor technicians to identify each LIDAR blip. A report is soon handed to you - it suggests that a majority of the contacts are human-made probes, but that one is of unfamiliar design - elongated, ancient and sporting floatation devices, protruding beams and a bow-mounted heatshield. More alarmingly, it suggests that the wind speed is far higher than expected within the upper atmosphere. Although a conclusive story cannot be ascertained, it can be assumed that the unknown starship, and the probes, were inserted without prior knowledge of the wind speed, and became trapped in an endless dance through the clouds.  "
 PA_01ProbeGraveyardContinueC,"concept: optionSelected, option: PA_01ProbeGraveyardContinueC",,clearAll: null,,,,,"Dispatch a probe to add to the collection:PA_01ProbeGraveyardDispatch,Leave:PASoftLeave","You assess your options. Recovering the unknown starship is impossible, however you can order a probe to be dispatched as homage to the incidents, with little expectation of a return on investment, or you can just leave the flying wrecks be."
@@ -103,7 +128,7 @@ PA_01ProbeGraveyardDispatch,"concept: optionSelected, option: PA_01ProbeGraveyar
 PA_01ProbeGraveyardDispatchSuccess,"concept: PA_01ProbeGraveyardDispatchResponse, RAND_50%: true",,"clearAll: null, addValueWithFlair: 1000",,,,,Leave:PAHardLeave,"As expected, the probe dramatically changes course upon entering the mesosphere. The garbled transmissions it produces before going dark present compelling data on the giants topology."
 PA_01ProbeGraveyardDispatchFailure,"concept: PA_01ProbeGraveyardDispatchResponse, RAND_50%: false",,clearAll: null,,,,,Leave:PAHardLeave,"As expected, the probe dramatically changes course upon entering the mesosphere. The garbled transmissions it produces before going dark present little to no new information, yet its course ultimately coincides with the presumed story of the other probes."
 ,,,,,,,,,
-PA_02PlanetRCS,"concept: PA_TerranPortalResponse, player_weirdness_index: > 0.5",,openDialog: null,defaultApproachMessage,,,,Order a closer analysis: PA_02PlanetRCSContinue,"It quickly becomes evident that the planet is covered in hundreds of evenly-spaced abnormalities. Preliminary LIDAR scans indicate that the anomalies are structures, approximately one hundred meters in length, width and height. "
+PA_02PlanetRCS,"concept: PA_TerranPortalResponse, player_in_ABYSS_region: true",,openDialog: null,defaultApproachMessage,,,,Order a closer analysis: PA_02PlanetRCSContinue,"It quickly becomes evident that the planet is covered in hundreds of evenly-spaced abnormalities. Preliminary LIDAR scans indicate that the anomalies are structures, approximately one hundred meters in length, width and height. "
 PA_02PlanetRCSContinue,"concept: optionSelected, option: PA_02PlanetRCSContinue",,clearOptions: null,,populatePA_02PlanetRCSOptions,,,"Order an expedition: PA_02PlanetRCSDefaultExpedition, Leave:PASoftLeave","Higher quality scans depict the structures as loosely engine shaped, with the nozzle of each supposed-engine facing away from the planets core. You are informed by a junior analyst that the design of the 'engines' does not appear in any on-board records. Further analysis will require a team on-ground."
 PA_02PlanetRCSJiyaOption,"concept: populatePA_02PlanetRCSOptions, player_CHIEF_ENGINEER_alive: true",,,,,,,Order Chief Engineer Jiya to lead an expedition: PA_02PlanetRCSJiyaExpeditionA,
 PA_02PlanetRCSDefaultExpedition,"concept: optionSelected, option: PA_02PlanetRCSDefaultExpedition",,"clearAll: null, addValueWithFlair: 2000",,,,,Recall the expedition and leave:PAHardLeave,"A transport lands near one of the behemoth thrusters. An hour of documentation, which you oversee from the operations deck, confirms what was already suspected: it is indeed an engine. How the engine is fueled and powered, if applicable, would be impossible to ascertain without months of arduous excavation. It is not clear how the engine is activated. The absurdity of the discovery merely reflects the absurdity of abyss space."
@@ -114,7 +139,7 @@ PA_02PlanetRCSJiyaSalvageDispatch,"concept: optionSelected, option: PA_02PlanetR
 PA_02PlanetRCSJiyaSalvageDispatchSuccess,"concept: PA_02PlanetRCSJiyaSalvageResponse, RAND_50%: true",,"clearAll: null, removeHullStressWithFlair: 25",,,,,Leave:PAHardLeave,Jiya acknowledges with a sigh. Salvage teams are launched and several comms specialists are awoken to direct the frequent transport departures and arrivals. You oversee the several hour ordeal from near the communications console. Fuel lines are tapped and rare metals are extracted successfully from several of the behemoths. 
 PA_02PlanetRCSJiyaSalvageDispatchFailure,"concept: PA_02PlanetRCSJiyaSalvageResponse, RAND_50%: false",,"clearAll: null, removeHullStressWithFlair: 5, killCharacterWithFlair: 1",,,,,Leave:PAHardLeave,"Jiya acknowledges with a sigh. In a four hour ordeal, salvage teams successfuly pick apart two of the behemoths - the third leads to disaster. Despite excessive safety procedures by Chief Engineer Jiya, an explosion propagated from the target - transpiring just after a tap was installed on the targets fuel line. Half of the salvage team, including Chief Engineer Jiya, are killed. Several salvage specialsits are injuired. A transport is lost. You order a recall. "
 ,,,,,,,,,
-PA_03TheResearcherOpenDialog,"concept: PA_TerranPortalResponse, planet_type: Silicate",,openDialog: null,defaultApproachMessage,,,,Continue:PA_03TheResearcherContinueA,"AIS automatically interrogates and identifies a ship upon the surface of the planet. The vessel is an exploration pinnace, and according to on-board databanks, has been marked as missing for thirty years. It is unlikely that it poses any threat to your ship or your marines."
+PA_03TheResearcherOpenDialog,"concept: PA_TerranPortalResponse, player_in_CORE_region: true, planet_type: Silicate",,openDialog: null,defaultApproachMessage,,,,Continue:PA_03TheResearcherContinueA,"AIS automatically interrogates and identifies a ship upon the surface of the planet. The vessel is an exploration pinnace, and according to on-board databanks, has been marked as missing for thirty years. It is unlikely that it poses any threat to your ship or your marines."
 PA_03TheResearcherContinueA,"concept: optionSelected, option: PA_03TheResearcherContinueA",,clearOptions: null,,populatePA_03TheResearcherOptions,,,Board a transport to extend formal greetings in person: PA_03TheResearcherContinueB,"Your communications officer sends an oral landing request. The ship, surprisingly, transmits a green flag in response."
 PA_03TheResearcherContinueB,"concept: optionSelected, option: PA_03TheResearcherContinueB",,clearOptions: null,,,,,,"You move to the launch bay and wait outside the chosen transport until directed abroad. You and a contingent of officers take a seat, and a unit of marines clamber in afterwards. The transport soon launches. "
 PA_03TheResearcherContinueC,"concept: optionSelected, option: PA_03TheResearcherContinueC",,clearOptions: null,,,,,Leave:PAHardLeave,I cant be bothered to finish this right now.
@@ -126,6 +151,6 @@ PA_03TheResearcherContinueC,"concept: optionSelected, option: PA_03TheResearcher
 SAHardLeave,"concept: optionSelected, option: SAHardLeave",,closeDialog: HARD_LEAVE,,,,,,
 SASoftLeave,"concept: optionSelected, option: SASoftLeave",,closeDialog: SOFT_LEAVE,,,,,,
 ,,,,,,,,,
-SA_GenericOpenDialog,concept: randomSAOpenDialog,,openDialog: null,,,,,"Order the inconsistent data to be analyzed: SA_GenericContinue, Leave:SASoftLeave",Analysts mark an inconsistent LIDAR return.
-SA_GenericContinue,"concept: optionSelected, option: SA_GenericContinue",,"clearOptions: null, addValueWithFlair: 100",,,,,Leave:SAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo."
+SA_GenericOpenDialog,"concept: openDialog, id: spaceAnomaly",,openDialog: null,,,,,"Order the inconsistent data to be analyzed: SA_GenericContinue, Leave:SASoftLeave",Analysts mark an inconsistent LIDAR return.
+SA_GenericContinue,"concept: optionSelected, option: SA_GenericContinue",,"clearOptions: null, addValueWithFlair: 2500",,,,,Leave:SAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo."
 ,,,,,,,,,
