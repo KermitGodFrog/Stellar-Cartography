@@ -403,3 +403,7 @@ func killCharacterWithFlair(occupation: characterAPI.OCCUPATIONS):
 	var lookup = character_lookup_dictionary.get(occupation, " ")
 	dialogue.add_text(str("[color=red](", characterAPI.OCCUPATIONS.find_key(occupation).replace("_", " "), " ", lookup, " is dead) [/color]"))
 	pass
+
+func setImage(path: String):
+	dialogue.set_image(path)
+	pass

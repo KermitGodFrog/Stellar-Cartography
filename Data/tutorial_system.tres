@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="starSystemAPI" load_steps=5 format=3 uid="uid://dn6svtqw0uj0q"]
+
+[ext_resource type="Script" path="res://Data/bodyAPI.gd" id="1_j46cy"]
+[ext_resource type="Script" path="res://Data/starSystemAPI.gd" id="1_l2yyi"]
+
+[sub_resource type="Resource" id="Resource_vhniq"]
+script = ExtResource("1_j46cy")
+identifier = 1
+display_name = "star name"
+hook_identifier = 0
+distance = 0.0
+orbit_speed = 0.0
+radius = 0.431
+metadata = {
+"color": Color(1, 0, 0, 1),
+"discovery_multiplier": 1,
+"iterations": 25,
+"luminosity": 0.017,
+"mass": 0.272,
+"star_type": "M"
+}
+position = Vector2(0, 0)
+rotation = 0.0
+pings_to_be_theorised = 3
+is_theorised = false
+is_known = true
+current_variation = 2
+guessed_variation = -1
+
+[sub_resource type="Resource" id="Resource_ngre6"]
+script = ExtResource("1_j46cy")
+identifier = 2
+display_name = "Prelude"
+hook_identifier = 1
+distance = 20.322
+orbit_speed = 0.008
+radius = 0.008
+metadata = {
+"color": Color(0.662745, 0.662745, 0.662745, 1),
+"has_planetary_anomaly": true,
+"is_planetary_anomaly_available": true,
+"iterations": 12,
+"mass": 0.0,
+"planet_classification": "Terran",
+"planet_type": "Silicate",
+"value": 514
+}
+position = Vector2(0, 0)
+rotation = 0.0
+pings_to_be_theorised = 3
+is_theorised = false
+is_known = false
+current_variation = 0
+guessed_variation = -1
+
+[resource]
+script = ExtResource("1_l2yyi")
+identifier = 0
+display_name = "tutorial"
+destination_systems = Array[ExtResource("1_l2yyi")]([])
+bodies = Array[ExtResource("1_j46cy")]([SubResource("Resource_vhniq"), SubResource("Resource_ngre6")])
+identifier_count = 1
+time = 1000
+post_gen_location_candidates = []

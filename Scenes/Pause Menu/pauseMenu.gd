@@ -2,11 +2,14 @@ extends Node
 
 signal saveWorld
 signal saveAndQuit
+signal exitToMainMenu
 
 var can_unpause = false
 
 @onready var pause_control = $pause_canvas/pause_control
 @onready var unpause_possible_timer = $unpause_possible_timer
+@onready var save_button = $pause_canvas/pause_control/pause_scroll/save_button
+@onready var save_and_quit_button = $pause_canvas/pause_control/pause_scroll/save_and_quit_button
 
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("pause"):
@@ -26,6 +29,11 @@ func closePauseMenu():
 	print("PAUSE MENU: CLOSING PAUSE MENU")
 	pause_control.hide()
 	get_tree().paused = false
+	pass
+
+func disableSaving() -> void:
+	save_button.set_disabled(true)
+	save_and_quit_button.set_disabled(true)
 	pass
 
 
@@ -50,3 +58,9 @@ func _on_save_and_quit_button_pressed():
 func _on_unpause_possible_timer_timeout():
 	can_unpause = true
 	pass 
+
+
+func _on_exit_button_pressed():
+	closePauseMenu()
+	emit_signal("exitToMainMenu")
+	pass # Replace with function body.

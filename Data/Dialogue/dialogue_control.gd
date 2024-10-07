@@ -30,6 +30,14 @@ func add_options(new_options: Dictionary):
 		options.set_item_metadata(new_item_idx, new_option_associated_rule)
 	pass
 
+func set_image(path: String):
+	var new = Image.load_from_file("res://Graphics/Dialogue/%s" % path)
+	print_debug(new)
+	if new:
+		var texture = ImageTexture.create_from_image(new)
+		image.set_texture(texture)
+	pass
+
 func clear_all():
 	text.clear()
 	options.clear()

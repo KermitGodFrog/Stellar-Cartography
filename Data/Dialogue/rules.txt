@@ -3,11 +3,11 @@ defaultOpenDialog,concept: openDialog,,openDialog: null,defaultApproachMessage,,
 defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,,
 defaultApproachMessage,concept: defaultApproachMessage,,,,,,,,Your ship approaches [i]$name[/i].
 ,,,,,,,,,
-defaultPlayerStartOpenDialog,concept: playerStartOpenDialog,,openDialog: null,,,,,Continue:defaultPlayerStartContinueA,"Two thousand years ago, an advanced artificial intelligence named Arata predicted the Universe. "
+defaultPlayerStartOpenDialog,concept: playerStart,,openDialog: null,,,,,Continue:defaultPlayerStartContinueA,"Two thousand years ago, an advanced artificial intelligence named Arata predicted the Universe. "
 defaultPlayerStartContinueA,"concept: optionSelected, option: defaultPlayerStartContinueA",,clearOptions: null,,,,,Continue:defaultPlayerStartContinueB,"The Arata formula allows starships to transit into a star system closer to any destination by exploiting certain points in space-time. Machines like Arata are long gone, yet their discoveries are still relied on today. "
 defaultPlayerStartContinueB,"concept: optionSelected, option: defaultPlayerStartContinueB",,clearOptions: null,,,,,Exit:defaultLeave,"You are a newly established Captain of a starship on a mission of exploration. You have requested for a route to be calculated, via the Arata formula, into an area of space known as New Eden, which reportedly houses a fragment of human civilisation long forgotten. The journey will be perilous, and what you will encounter on the journey towards New Eden cannot be predicted."
 ,,,,,,,,,
-defaultPlayerWinOpenDialog,concept: playerWinOpenDialog,,openDialog: null,,,addNewEdenArrivalFlair,,Continue:playerWinStoryConclusion,"Comms reports that AIS has identified ‘a lot of starships’. It does not take long for several space installations to insist on clarification regarding your ships details. You suspect that if it wasn’t for the uptick in explorers entering New Eden, guns would already be pointed at you. You order the manifest to be sent. "
+defaultPlayerWinOpenDialog,concept: playerWin,,openDialog: null,,,addNewEdenArrivalFlair,,Continue:playerWinStoryConclusion,"Comms reports that AIS has identified ‘a lot of starships’. It does not take long for several space installations to insist on clarification regarding your ships details. You suspect that if it wasn’t for the uptick in explorers entering New Eden, guns would already be pointed at you. You order the manifest to be sent. "
 playerWinStoryConclusionDispatch,"concept: optionSelected, option: playerWinStoryConclusion",,clearOptions: null,,,playerWinStoryConclusionResponse,,Exit:defaultLeave,
 playerWinStoryConclusionResponseGeneric,concept: playerWinStoryConclusionResponse,,,,,,,,You think back to all you have seen on your journey.
 playerWinStoryConclusionResponseConglomerate,"concept: playerWinStoryConclusionResponse, is_conglomerate_storyline_complete: true",,,,,,,,"You think back to the Conglomerate. Evidently, there is a new contender on the galactic stage. The words of the Emissary are still heavy on your mind. You cannot decide if life taking such a form is incredible or horrifying."
@@ -53,9 +53,9 @@ stationSalvageDispatchResponse,"concept: optionSelected, option: stationSalvageD
 ,,,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
-gasSiphoningNeptunianMessage,"concept: gasSiphoningMessage, planet_classification: Neptunian",gasSiphoningNeptunianMessageViewedPREV: true,,,,,,,"[color=darkgray]Delving deep into the atmosphere of Neptunian and Jovian worlds in order to extract pressure-forged rare gasses has been a dangerous, yet profitable practice since the early days of space flight. On Neptunian worlds, this is often achieved via high altitude extraction depots, which extract more common gasses at high volumes. [/color]"
-gasSiphoningNeptunianMessageCancel,"concept: gasSiphoningMessage, planet_classification: Neptunian, gasSiphoningNeptunianMessageViewedPREV: true",,,,,,,,
-gasSiphoningJovianMessage,"concept: gasSiphoningMessage, planet_classification: Jovian",gasSiphoningJovianMessageViewedPREV: true,,,,,,,"[color=darkgray]Delving deep into the atmosphere of Neptunian and Jovian worlds in order to extract pressure-forged rare gasses has been a dangerous, yet profitable practice since the early days of space flight. On Jovian worlds, this is often achieved via specialised extraction ships, which glide deep before dropping weight to escape with a small yield of extremely profitable gas. [/color]"
+gasSiphoningNeptunianMessage,"concept: gasSiphoningMessage, planet_classification: Neptunian",gasSiphoningNeptunianMessagePREV: true,,,,,,,"[color=darkgray]Delving deep into the atmosphere of Neptunian and Jovian worlds in order to extract pressure-forged rare gasses has been a dangerous, yet profitable practice since the early days of space flight. On Neptunian worlds, this is often achieved via high altitude extraction depots, which extract more common gasses at high volumes. [/color]"
+gasSiphoningNeptunianMessageCancel,"concept: gasSiphoningMessage, planet_classification: Neptunian, gasSiphoningNeptunianMessagePREV: true",,,,,,,,
+gasSiphoningJovianMessage,"concept: gasSiphoningMessage, planet_classification: Jovian",gasSiphoningJovianMessagePREV: true,,,,,,,"[color=darkgray]Delving deep into the atmosphere of Neptunian and Jovian worlds in order to extract pressure-forged rare gasses has been a dangerous, yet profitable practice since the early days of space flight. On Jovian worlds, this is often achieved via specialised extraction ships, which glide deep before dropping weight to escape with a small yield of extremely profitable gas. [/color]"
 gasSiphoningJovianMessageCancel,"concept: gasSiphoningMessage, planet_classification: Jovian, gasSiphoningJovianMessagePREV: true",,,,,,,,
 ,,,,,,,,,
 PAHardLeave,"concept: optionSelected, option: PAHardLeave",,closeDialog: HARD_LEAVE,,,,,,
@@ -153,4 +153,45 @@ SASoftLeave,"concept: optionSelected, option: SASoftLeave",,closeDialog: SOFT_LE
 ,,,,,,,,,
 SA_GenericOpenDialog,"concept: openDialog, id: spaceAnomaly",,openDialog: null,,,,,"Order the inconsistent data to be analyzed: SA_GenericContinue, Leave:SASoftLeave",Analysts mark an inconsistent LIDAR return.
 SA_GenericContinue,"concept: optionSelected, option: SA_GenericContinue",,"clearOptions: null, addValueWithFlair: 2500",,,,,Leave:SAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo."
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+tutorialPlayerStart,concept: tutorialPlayerStart,,"openDialog: null, setImage: missing_core",,,,,Exit:defaultLeave,(1) LIDAR INTRODUCTION
+,,,,,,,,,
+tutorialPreludeTheorised,concept: tutorialPreludeTheorised,tutorialPreludeTheorisedPREV: true,openDialog: null,,,,,Exit:defaultLeave,"(2) CAMERA MOVEMENT INTRODUCTION, MOVEMENT BUTTONS INTRODUCTION"
+tutorialPreludeTheorisedCancel,"concept: tutorialPreludeTheorised, tutorialPreludeTheorisedPREV: true",,,,,,,,
+tutorialPreludeOrbiting,concept: tutorialPreludeOrbiting,tutorialPreludeOrbitingPREV: true,openDialog: null,,,,,Exit:defaultLeave,"(3) RIGHT-CLICK MOVING INTRODUCTION, BARYCENTER VISUALIZER INTRODUCTION & BOOSTING"
+tutorialPreludeOrbitingCancel,"concept: tutorialPreludeOrbiting, tutorialPreludeOrbitingPREV: true",,,,,,,,
+tutorialPreludeFollowing,concept: tutorialPreludeFollowing,tutorialPreludeFollowingPREV: true,openDialog: null,,,,,Exit:defaultLeave,4
+tutorialPreludeFollowingCancel,"concept: tutorialPreludeFollowing, tutorialPreludeFollowingPREV: true",,,,,,,,
+,,,,,,,,,
+tutorialIngressTheorised,concept: tutorialIngressTheorised,tutorialIngressTheorisedPREV: true,openDialog: null,,,,,Exit:defaultLeave,5
+tutorialIngressTheorisedCancel,"concept: tutorialIngressTheorised, tutorialIngressTheorisedPREV: true",,,,,,,,
+tutorialIngressOrbiting,concept: tutorialIngressOrbiting,tutorialIngressOrbitingPREV: true,openDialog: null,,,,,Exit:defaultLeave,"(6) INFO TAB, 'PRESS THE GO-TO BUTTON ON THE WORMHOLE WHEN READY'"
+tutorialIngressOrbitingCancel,"concept: tutorialIngressOrbiting, tutorialIngressOrbitingPREV: true",,,,,,,,
+tutorialIngressFollowing,concept: tutorialIngressFollowing,tutorialIngressFollowingPREV: true,openDialog: null,,,,,Exit:defaultLeave,7
+tutorialIngressFollowingCancel,"concept: tutorialIngressFollowing, tutorialIngressFollowingPREV: true",,,,,,,,
+,,,,,,,,,
+tutorialOmissionOrbiting,concept: tutorialOmissionOrbiting,tutorialOmissionOrbitingPREV: true,,,,,,Exit:defaultLeave,Optional
+tutorialOmissionOrbitingCancel,"concept: tutorialOmissionOrbiting, tutorialOmissionOrbitingPREV: true",,,,,,,,
 ,,,,,,,,,

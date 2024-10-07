@@ -25,6 +25,7 @@ func _ready():
 	system_map.connect("updatedLockedBody", _on_locked_body_updated)
 	system_map.connect("lockedBodyDepreciated", _on_locked_body_depreciated)
 	system_map.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
+	system_map.connect("theorisedBody", _on_theorised_body)
 	system_map.connect("DEBUG_REVEAL_ALL_WORMHOLES", _ON_DEBUG_REVEAL_ALL_WORMHOLES)
 	system_map.connect("DEBUG_REVEAL_ALL_BODIES", _ON_DEBUG_REVEAL_ALL_BODIES)
 	
@@ -55,9 +56,54 @@ func _ready():
 	
 	pause_menu.connect("saveWorld", _on_save_world)
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
+	pause_menu.connect("exitToMainMenu", _on_exit_to_main_menu)
 	
 	world = await game_data.loadWorld()
-	if world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
+	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+		world = game_data.createWorld(25, 5, 3, 10, 1, 0.01, 0.05, 0.25)
+		
+		dialogue_manager.dialogue_memory = world.dialogue_memory
+		
+		var new_player = world.createPlayer(
+			init_data.get("name", "Tanaka"), 
+			init_data.get("prefix", "Captain"))
+		new_player.resetJumpsRemaining()
+		
+		# -> none of this should be necessary but im worried that the game will break if not included as queries might require this data
+		new_player.first_officer = load("res://Data/Characters/rui.tres")
+		new_player.chief_engineer = load("res://Data/Characters/jiya.tres")
+		new_player.security_officer = load("res://Data/Characters/walker.tres")
+		new_player.medical_officer = load("res://Data/Characters/febris.tres")
+		for character in [new_player.first_officer, new_player.chief_engineer, new_player.security_officer, new_player.medical_officer, new_player.linguist, new_player.historian]:
+			if character: dialogue_manager.character_lookup_dictionary[character.current_occupation] = character.display_name
+		
+		new_player.current_storyline = playerAPI.STORYLINES.keys().pick_random()
+		# <-
+		
+		new_player.connect("orbitingBody", _on_player_orbiting_body)
+		new_player.connect("followingBody", _on_player_following_body)
+		new_player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+		
+		var new: starSystemAPI = load("res://Data/tutorial_system.tres")
+		world.star_systems.append(new)
+		
+		_on_switch_star_system(new)
+		
+		_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+		world.player.position = Vector2(60, 0)
+		world.player.setTargetPosition(world.player.position)
+		world.player.updatePosition(get_physics_process_delta_time())
+		
+		pause_menu.disableSaving() # so savefile cannto be overwriten
+		
+		await get_tree().create_timer(1.0, true).timeout
+		
+		var new_query = responseQuery.new()
+		new_query.add("concept", "tutorialPlayerStart")
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
 		world = game_data.createWorld(25, 5, 3, 10, 1, 0.01, 0.05, 0.25)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
@@ -73,8 +119,7 @@ func _ready():
 		new_player.security_officer = load("res://Data/Characters/walker.tres")
 		new_player.medical_officer = load("res://Data/Characters/febris.tres")
 		for character in [new_player.first_officer, new_player.chief_engineer, new_player.security_officer, new_player.medical_officer, new_player.linguist, new_player.historian]:
-			if character:
-				dialogue_manager.character_lookup_dictionary[character.current_occupation] = character.display_name
+			if character: dialogue_manager.character_lookup_dictionary[character.current_occupation] = character.display_name
 		
 		new_player.current_storyline = playerAPI.STORYLINES.keys().pick_random()
 		
@@ -90,15 +135,14 @@ func _ready():
 		new.generateRandomWeightedStations()
 		new.generateRandomWeightedEntities()
 		new.generateRandomAnomalies(world.SA_chance_per_candidate)
-		world.player.resetJumpsRemaining()
 		for body in new.bodies:
 			body.is_known = true
 		
 		_on_switch_star_system(new)
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
 		
 		await get_tree().create_timer(1.0, true).timeout
@@ -119,13 +163,13 @@ func _ready():
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 		
 		var new_query = responseQuery.new()
-		new_query.add("concept", "playerStartOpenDialog")
+		new_query.add("concept", "playerStart")
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
 		await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 		
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
-		
+	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
@@ -143,7 +187,7 @@ func _ready():
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
 		_on_switch_star_system(world.player.current_star_system)
-		
+	
 	pass
 
 func _physics_process(delta):
@@ -173,11 +217,33 @@ func _physics_process(delta):
 		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
 	pass
 
-func _on_player_orbiting_body(_orbiting_body: bodyAPI):
+func _on_player_orbiting_body(orbiting_body: bodyAPI):
+	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL and orbiting_body.is_planet():
+		var orbiting_planet = orbiting_body
+		match orbiting_planet.get_display_name():
+			"Prelude":
+				var new_query = responseQuery.new()
+				new_query.add("concept", "tutorialPreludeOrbiting")
+				get_tree().call_group("dialogueManager", "speak", self, new_query)
+			"Ingress":
+				var new_query = responseQuery.new()
+				new_query.add("concept", "tutorialIngressOrbiting")
+				get_tree().call_group("dialogueManager", "speak", self, new_query)
+			"Omission":
+				var new_query = responseQuery.new()
+				new_query.add("concept", "tutorialOmissionOrbiting")
+				get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
 func _on_player_following_body(following_body: bodyAPI):
-	if following_body is wormholeAPI:
+	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL and following_body is wormholeAPI:
+		var following_wormhole = following_body
+		if following_wormhole.get_display_name() == "Ingress":
+			var new_query = responseQuery.new()
+			new_query.add("concept", "tutorialIngressFollowing")
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	elif following_body is wormholeAPI:
 		var following_wormhole = following_body #so its not confusing
 		var wormholes = world.player.current_star_system.get_wormholes()
 		var destination = following_wormhole.destination_system
@@ -224,7 +290,19 @@ func _on_player_following_body(following_body: bodyAPI):
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
 	
-	if following_body.is_planet():
+	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL and following_body.is_planet():
+		var following_planet = following_body
+		if following_planet.get_display_name() == "Prelude":
+			
+			var new_query = responseQuery.new()
+			new_query.add("concept", "tutorialPreludeFollowing")
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+			
+			await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+			following_planet.metadata["is_planetary_anomaly_available"] = false
+			_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
+	
+	elif following_body.is_planet():
 		var following_planet = following_body
 		if following_planet.metadata.get("has_planetary_anomaly", false) == true:
 			if following_planet.metadata.get("is_planetary_anomaly_available", false) == true:
@@ -384,7 +462,7 @@ func _on_player_win():
 	print("GAME (DEBUG): PLAYER WON!!!!!!!!!!!!!!")
 	
 	var new_query = responseQuery.new()
-	new_query.add("concept", "playerWinOpenDialog")
+	new_query.add("concept", "playerWin")
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
@@ -614,7 +692,24 @@ func _on_save_and_quit():
 	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
 	pass
 
+func _on_exit_to_main_menu():
+	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
+	pass
 
+func _on_theorised_body(id: int):
+	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+		var body = world.player.current_star_system.get_body_from_identifier(id)
+		if body: 
+			match body.get_display_name():
+				"Prelude":
+					var new_query = responseQuery.new()
+					new_query.add("concept", "tutorialPreludeTheorised")
+					get_tree().call_group("dialogueManager", "speak", self, new_query)
+				"Ingress":
+					var new_query = responseQuery.new()
+					new_query.add("concept", "tutorialIngressTheorised")
+					get_tree().call_group("dialogueManager", "speak", self, new_query)
+	pass
 
 
 

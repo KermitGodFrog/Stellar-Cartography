@@ -8,6 +8,7 @@ signal updatePlayerTargetPosition(pos: Vector2)
 signal updateTargetPosition(pos: Vector2)
 signal updatedLockedBody(body: bodyAPI)
 signal lockedBodyDepreciated
+signal theorisedBody(id: int)
 
 signal audioVisualizerPopup
 signal journeyMapPopup
@@ -355,6 +356,7 @@ func async_add_ping(body: bodyAPI) -> void:
 	body.pings_to_be_theorised = maxi(0, body.pings_to_be_theorised - 1)
 	if body.pings_to_be_theorised == 0:
 		body.is_theorised = true #so it says '???' on the overview
+		emit_signal("theorisedBody", body.get_identifier())
 	var ping = load("res://Data/Ping Display Helpers/normal.tres").duplicate(true)
 	ping.position = body.position
 	ping.resetTime()

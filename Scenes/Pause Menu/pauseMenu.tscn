@@ -43,6 +43,10 @@ text = "SAVE"
 layout_mode = 2
 text = "SAVE AND QUIT TO MAIN MENU"
 
+[node name="exit_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
+layout_mode = 2
+text = "EXIT TO MAIN MENU"
+
 [node name="unpause_possible_timer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
@@ -50,4 +54,5 @@ one_shot = true
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/resume_button" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/save_button" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/save_and_quit_button" to="." method="_on_save_and_quit_button_pressed"]
+[connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/exit_button" to="." method="_on_exit_button_pressed"]
 [connection signal="timeout" from="unpause_possible_timer" to="." method="_on_unpause_possible_timer_timeout"]
