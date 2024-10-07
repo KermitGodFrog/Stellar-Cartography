@@ -218,39 +218,43 @@ func _physics_process(delta):
 	pass
 
 func _on_player_theorised_body(theorised_body: bodyAPI):
-	if theorised_body.is_planet() and init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		var theorised_planet = theorised_body
-		var new_query = responseQuery.new()
-		new_query.add("concept", "theorisedBody")
-		new_query.add("id", "planet")
-		new_query.add_tree_access("name", theorised_planet.display_name)
-		get_tree().call_group("dialogueManager", "speak", self, new_query)
+	if theorised_body.is_planet():
+		if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+			var theorised_planet = theorised_body
+			var new_query = responseQuery.new()
+			new_query.add("concept", "theorisedBody")
+			new_query.add("id", "planet")
+			new_query.add_tree_access("name", theorised_planet.display_name)
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
-	if theorised_body is wormholeAPI and init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		var theorised_wormhole = theorised_body
-		var new_query = responseQuery.new()
-		new_query.add("concept", "theorisedBody")
-		new_query.add("id", "wormhole")
-		new_query.add_tree_access("name", theorised_wormhole.display_name)
-		get_tree().call_group("dialogueManager", "speak", self, new_query)
+	elif theorised_body is wormholeAPI:
+		if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+			var theorised_wormhole = theorised_body
+			var new_query = responseQuery.new()
+			new_query.add("concept", "theorisedBody")
+			new_query.add("id", "wormhole")
+			new_query.add_tree_access("name", theorised_wormhole.display_name)
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
 func _on_player_orbiting_body(orbiting_body: bodyAPI):
-	if orbiting_body.is_planet() and init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		var orbiting_planet = orbiting_body
-		var new_query = responseQuery.new()
-		new_query.add("concept", "orbitingBody")
-		new_query.add("id", "planet")
-		new_query.add_tree_access("name", orbiting_planet.display_name)
-		get_tree().call_group("dialogueManager", "speak", self, new_query)
+	if orbiting_body.is_planet():
+		if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+			var orbiting_planet = orbiting_body
+			var new_query = responseQuery.new()
+			new_query.add("concept", "orbitingBody")
+			new_query.add("id", "planet")
+			new_query.add_tree_access("name", orbiting_planet.display_name)
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
-	if orbiting_body is wormholeAPI and init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		var orbiting_wormhole = orbiting_body
-		var new_query = responseQuery.new()
-		new_query.add("concept", "orbitingBody")
-		new_query.add("id", "wormhole")
-		new_query.add_tree_access("name", orbiting_wormhole.display_name)
-		get_tree().call_group("dialogueManager", "speak", self, new_query)
+	elif orbiting_body is wormholeAPI:
+		if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+			var orbiting_wormhole = orbiting_body
+			var new_query = responseQuery.new()
+			new_query.add("concept", "orbitingBody")
+			new_query.add("id", "wormhole")
+			new_query.add_tree_access("name", orbiting_wormhole.display_name)
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
 func _on_player_following_body(following_body: bodyAPI):
@@ -274,13 +278,13 @@ func _on_player_following_body(following_body: bodyAPI):
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_wormhole)
 	
-	if following_body is stationAPI:
+	elif following_body is stationAPI:
 		var following_station = following_body
 		
 		var is_station_abandoned: bool = following_station.station_classification in [game_data.STATION_CLASSIFICATIONS.ABANDONED, game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS, game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL, game_data.STATION_CLASSIFICATIONS.COVERUP, game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED]
 		var is_station_inhabited: bool = following_station.station_classification in [game_data.STATION_CLASSIFICATIONS.STANDARD, game_data.STATION_CLASSIFICATIONS.PIRATE]
 		
-		if following_station.metadata.get("is_interactable", true) == true:
+		if following_station.metadata.get("is_available", true) == true:
 			
 			var new_query = responseQuery.new()
 			new_query.add("concept", "followingBody")
@@ -296,19 +300,23 @@ func _on_player_following_body(following_body: bodyAPI):
 				"DOCK_WITH_STATION":
 					dock_with_station(following_station)
 				"POST_SALVAGE_LEAVE": #this is for abandoned stations which yield salvage, which should not be repeatable
-					following_station.metadata["is_interactable"] = false
+					following_station.metadata["is_available"] = false
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
 	
-	if following_body.is_planet():
+	elif following_body.is_planet():
 		var following_planet = following_body
 		if following_planet.metadata.get("has_planetary_anomaly", false) == true:
 			if following_planet.metadata.get("is_planetary_anomaly_available", false) == true:
-				
 				var new_query = responseQuery.new()
 				new_query.add("concept", "followingBody")
-				new_query.add("id", "planetaryAnomaly")
+				
+				if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+					new_query.add("id", "planetaryAnomalyTutorialOverride")
+				else:
+					new_query.add("id", "planetaryAnomaly")
+				
 				new_query.add_tree_access("name", following_planet.display_name)
 				new_query.add_tree_access("planet_classification", following_planet.metadata.get("planet_classification"))
 				new_query.add_tree_access("custom_seed", following_planet.metadata.get("planetary_anomaly_seed"))
@@ -325,7 +333,7 @@ func _on_player_following_body(following_body: bodyAPI):
 					_:
 						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
 	
-	if following_body.is_anomaly():
+	elif following_body.is_anomaly():
 		var following_anomaly = following_body
 		if following_anomaly.metadata.get("is_space_anomaly_available", true) == true:
 			
@@ -346,7 +354,7 @@ func _on_player_following_body(following_body: bodyAPI):
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_anomaly)
 	
-	if following_body is entityAPI:
+	elif following_body is entityAPI:
 		var following_entity = following_body
 		long_range_scopes._on_current_entity_changed(following_entity)
 		

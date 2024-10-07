@@ -161,7 +161,7 @@ alignment = 1
 [node name="go_to_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-tooltip_text = "Lay in a course to selected body"
+tooltip_text = "Lay in a course to selected body (go-to selected body)."
 theme = ExtResource("3_djc4s")
 icon = ExtResource("4_niwjs")
 icon_alignment = 1
@@ -170,7 +170,7 @@ expand_icon = true
 [node name="orbit_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-tooltip_text = "Lay in a course to selected body and orbit"
+tooltip_text = "Lay in a course to selected body and orbit."
 theme = ExtResource("3_djc4s")
 icon = ExtResource("5_hp0se")
 icon_alignment = 1
@@ -179,7 +179,7 @@ expand_icon = true
 [node name="stop_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-tooltip_text = "Stop the ship and/or cancel the course to the selected body"
+tooltip_text = "Stop the ship and/or cancel the course to selected body."
 theme = ExtResource("3_djc4s")
 icon = ExtResource("7_bacyf")
 icon_alignment = 1

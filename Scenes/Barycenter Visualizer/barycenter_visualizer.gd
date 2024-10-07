@@ -1,5 +1,7 @@
 extends Control
 
+@onready var locked_body_label = $locked_body_label
+
 var system: starSystemAPI
 var locked_body_identifier: int
 
@@ -9,6 +11,7 @@ var points: Dictionary = {}
 
 func _physics_process(_delta):
 	points.clear()
+	var locked_body = system.get_body_from_identifier(locked_body_identifier)
 	for i in point_count:
 		var theta = (360 / point_count - 1) * i
 		var x = radius * cos(theta)
@@ -16,10 +19,8 @@ func _physics_process(_delta):
 		var new_point_pos = Vector2(x + get_screen_centre().x, y + get_screen_centre().y)
 		points[new_point_pos] = 1.0
 	
-	if locked_body_identifier:
 		for body in system.bodies:
 			if (body.is_planet() or body.is_star()) and body.get_identifier() != locked_body_identifier:
-				var locked_body = system.get_body_from_identifier(locked_body_identifier)
 				if locked_body:
 					var dir = locked_body.position.direction_to(body.position)
 					var dist = locked_body.position.distance_to(body.position)
@@ -30,6 +31,9 @@ func _physics_process(_delta):
 					var closest_point = get_closest_point_to_direction(dir)
 					
 					points[closest_point] = 5.0 + magnitude
+	
+	if locked_body: locked_body_label.set_text(locked_body.get_display_name().capitalize())
+	else: locked_body_label.set_text("")
 	queue_redraw()
 	pass
 
