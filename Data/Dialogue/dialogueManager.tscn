@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://ckd75fjfh7urh"]
+[gd_scene load_steps=7 format=3 uid="uid://ckd75fjfh7urh"]
 
 [ext_resource type="Script" path="res://Data/Dialogue/dialogueManager.gd" id="1_5bsxl"]
 [ext_resource type="Theme" uid="uid://pb8t4wekexd8" path="res://Scenes/Station UI/station_ui_SAVE_AUDIO_PROFILES_theme.tres" id="2_0grsb"]
 [ext_resource type="Script" path="res://Data/Dialogue/dialogue_control.gd" id="3_rmmx3"]
-[ext_resource type="Texture2D" uid="uid://cs13346mdnofp" path="res://Graphics/2k_jupiter.jpg" id="4_7jn5y"]
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="5_lo33f"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="6_u4avk"]
 
@@ -73,7 +72,6 @@ layout_mode = 2
 [node name="image" type="TextureRect" parent="dialogue/dialogue_control/margin/panel/panel_margin/content_scroll"]
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
-texture = ExtResource("4_7jn5y")
 expand_mode = 2
 stretch_mode = 5
 

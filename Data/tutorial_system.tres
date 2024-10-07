@@ -43,6 +43,7 @@ metadata = {
 "mass": 0.0,
 "planet_classification": "Terran",
 "planet_type": "Silicate",
+"planetary_anomaly_seed": 0,
 "value": 514
 }
 position = Vector2(0, 0)

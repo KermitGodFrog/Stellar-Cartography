@@ -38,6 +38,10 @@ func set_image(path: String):
 		image.set_texture(texture)
 	pass
 
+func clear_image() -> void:
+	set_image("default.png")
+	pass
+
 func clear_all():
 	text.clear()
 	options.clear()

@@ -1,5 +1,5 @@
 Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Query Best Concept,Query Rand Best Concept,Options,Text
-defaultOpenDialog,concept: openDialog,,openDialog: null,defaultApproachMessage,,,,Leave:defaultLeave,
+defaultOpenDialog,concept: followingBody,,openDialog: null,defaultApproachMessage,,,,Leave:defaultLeave,
 defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,,
 defaultApproachMessage,concept: defaultApproachMessage,,,,,,,,Your ship approaches [i]$name[/i].
 ,,,,,,,,,
@@ -25,11 +25,11 @@ newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,,"You have arrived in 
 ,,,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
-wormholeOpenDialog,"concept: openDialog, id: wormhole",,openDialog: null,defaultApproachMessage,,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
+wormholeOpenDialog,"concept: followingBody, id: wormhole",,openDialog: null,defaultApproachMessage,,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
 enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENTER_WORMHOLE,,,,,,
 ,,,,,,,,,
 stationApproachMessage,concept: stationApproachMessage,,,,,,,,Your ship approaches the location of a space station defined in native star charts.
-stationOpenDialog,"concept: openDialog, id: station",,openDialog: null,stationApproachMessage,populateStationOptions,addStationFlair,,Leave:defaultLeave,
+stationOpenDialog,"concept: followingBody, id: station",,openDialog: null,stationApproachMessage,populateStationOptions,addStationFlair,,Leave:defaultLeave,
 ,,,,,,,,,
 stationFlairStandard,"concept: addStationFlair, station_classification: STANDARD",,,,,,,,[i]$name[/i] quickly establishes communications.
 stationFlairPirate,"concept: addStationFlair, station_classification: PIRATE",,,,,,,,[i]$name[/i] quickly establishes communications.
@@ -61,10 +61,10 @@ gasSiphoningJovianMessageCancel,"concept: gasSiphoningMessage, planet_classifica
 PAHardLeave,"concept: optionSelected, option: PAHardLeave",,closeDialog: HARD_LEAVE,,,,,,
 PASoftLeave,"concept: optionSelected, option: PASoftLeave",,closeDialog: SOFT_LEAVE,,,,,,
 ,,,,,,,,,
-PA_GenericPortal,"concept: openDialog, id: planetaryAnomaly",,,,,,PA_GenericPortalResponse,,
-PA_TerranPortal,"concept: openDialog, id: planetaryAnomaly, planet_classification: Terran",,,,,,PA_TerranPortalResponse,,
-PA_NeptunianPortal,"concept: openDialog, id: planetaryAnomaly, planet_classification: Neptunian",,,,,,PA_NeptunianPortalResponse,,
-PA_JovianPortal,"concept: openDialog, id: planetaryAnomaly, planet_classification: Jovian",,,,,,PA_JovianPortalResponse,,
+PA_GenericPortal,"concept: followingBody, id: planetaryAnomaly",,,,,,PA_GenericPortalResponse,,
+PA_TerranPortal,"concept: followingBody, id: planetaryAnomaly, planet_classification: Terran",,,,,,PA_TerranPortalResponse,,
+PA_NeptunianPortal,"concept: followingBody, id: planetaryAnomaly, planet_classification: Neptunian",,,,,,PA_NeptunianPortalResponse,,
+PA_JovianPortal,"concept: followingBody, id: planetaryAnomaly, planet_classification: Jovian",,,,,,PA_JovianPortalResponse,,
 ,,,,,,,,,
 PA_01GenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked.
 PA_01GenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked on its surface.
@@ -151,7 +151,7 @@ PA_03TheResearcherContinueC,"concept: optionSelected, option: PA_03TheResearcher
 SAHardLeave,"concept: optionSelected, option: SAHardLeave",,closeDialog: HARD_LEAVE,,,,,,
 SASoftLeave,"concept: optionSelected, option: SASoftLeave",,closeDialog: SOFT_LEAVE,,,,,,
 ,,,,,,,,,
-SA_GenericOpenDialog,"concept: openDialog, id: spaceAnomaly",,openDialog: null,,,,,"Order the inconsistent data to be analyzed: SA_GenericContinue, Leave:SASoftLeave",Analysts mark an inconsistent LIDAR return.
+SA_GenericOpenDialog,"concept: followingBody, id: spaceAnomaly",,openDialog: null,,,,,"Order the inconsistent data to be analyzed: SA_GenericContinue, Leave:SASoftLeave",Analysts mark an inconsistent LIDAR return.
 SA_GenericContinue,"concept: optionSelected, option: SA_GenericContinue",,"clearOptions: null, addValueWithFlair: 2500",,,,,Leave:SAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo."
 ,,,,,,,,,
 ,,,,,,,,,
@@ -176,22 +176,27 @@ SA_GenericContinue,"concept: optionSelected, option: SA_GenericContinue",,"clear
 ,,,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
-tutorialPlayerStart,concept: tutorialPlayerStart,,"openDialog: null, setImage: missing_core",,,,,Exit:defaultLeave,(1) LIDAR INTRODUCTION
+tutorialPlayerStart,concept: tutorialPlayerStart,,openDialog: null,,,,,Continue:tutorialPlayerStartContinueA,"A voice crackles within your earpiece. “Okay. I am (name), and I will be supervising this session. Is that understood?” You acknowledge, and the voice continues. “Good. Pre-flight checklist, then mark the body forty solar-radii from here.”"
+tutorialPlayerStartContinueA,"concept: optionSelected, option: tutorialPlayerStartContinueA",,clearOptions: null,,,,,Continue:tutorialPlayerStartContinueB,"[i]Test the central board via W, A, S and D to MOVE the camera, and Q or E to ZOOM the camera in or out. The red sphere is a M-class star, the white square is your starship. [/i]"
+tutorialPlayerStartContinueB,"concept: optionSelected, option: tutorialPlayerStartContinueB",,"clearOptions: null, setImage: tutorial_LIDAR_example.png",,,,,Exit:defaultLeave,"[i]Mark a body by pinging it THREE times. Refer to the LIDAR module in the lower right of the interface - adjust the scan direction so it points towards the star by left clicking, set the arc to its maximum via the slider, and press the ‘PING’ button to initiate. [/i]"
 ,,,,,,,,,
-tutorialPreludeTheorised,concept: tutorialPreludeTheorised,tutorialPreludeTheorisedPREV: true,openDialog: null,,,,,Exit:defaultLeave,"(2) CAMERA MOVEMENT INTRODUCTION, MOVEMENT BUTTONS INTRODUCTION"
-tutorialPreludeTheorisedCancel,"concept: tutorialPreludeTheorised, tutorialPreludeTheorisedPREV: true",,,,,,,,
-tutorialPreludeOrbiting,concept: tutorialPreludeOrbiting,tutorialPreludeOrbitingPREV: true,openDialog: null,,,,,Exit:defaultLeave,"(3) RIGHT-CLICK MOVING INTRODUCTION, BARYCENTER VISUALIZER INTRODUCTION & BOOSTING"
-tutorialPreludeOrbitingCancel,"concept: tutorialPreludeOrbiting, tutorialPreludeOrbitingPREV: true",,,,,,,,
-tutorialPreludeFollowing,concept: tutorialPreludeFollowing,tutorialPreludeFollowingPREV: true,openDialog: null,,,,,Exit:defaultLeave,4
-tutorialPreludeFollowingCancel,"concept: tutorialPreludeFollowing, tutorialPreludeFollowingPREV: true",,,,,,,,
+tutorialPreludeTheorised,"concept: theorisedBody, id: planet, name: Prelude",,openDialog: null,,,,,Continue:tutorialPreludeTheorisedContinueA,You watch over the shoulder of your mock senior-analyst as they report the third bounce-back. Their composure is a desperate attempt of professional under the bizarreness of the simulation room. Distinctly cadet. (Name) speaks up: “Brilliant. Enter orbit and await for further instruction.”
+tutorialPreludeTheorisedContinueA,"concept: optionSelected, option: tutorialPreludeTheorisedContinueA",,clearOptions: null,,,,,Continue:tutorialPreludeTheorisedContinueB,"[i]Discover a body by visually acquiring it. Click on the marked body - the triple question mark - on the system list, and then press the ORBIT button in the lower left. Hover over buttons to bring up their description. [/i]"
+tutorialPreludeTheorisedContinueB,"concept: optionSelected, option: tutorialPreludeTheorisedContinueB",,clearOptions: null,,,,,Exit:defaultLeave,[i]CLICK and DRAG up or down on the scopes - the 3D view in the lower right - to change its field of view. A lower field of view allows a body to be visually acquired sooner. [/i]
 ,,,,,,,,,
-tutorialIngressTheorised,concept: tutorialIngressTheorised,tutorialIngressTheorisedPREV: true,openDialog: null,,,,,Exit:defaultLeave,5
-tutorialIngressTheorisedCancel,"concept: tutorialIngressTheorised, tutorialIngressTheorisedPREV: true",,,,,,,,
-tutorialIngressOrbiting,concept: tutorialIngressOrbiting,tutorialIngressOrbitingPREV: true,openDialog: null,,,,,Exit:defaultLeave,"(6) INFO TAB, 'PRESS THE GO-TO BUTTON ON THE WORMHOLE WHEN READY'"
-tutorialIngressOrbitingCancel,"concept: tutorialIngressOrbiting, tutorialIngressOrbitingPREV: true",,,,,,,,
-tutorialIngressFollowing,concept: tutorialIngressFollowing,tutorialIngressFollowingPREV: true,openDialog: null,,,,,Exit:defaultLeave,7
-tutorialIngressFollowingCancel,"concept: tutorialIngressFollowing, tutorialIngressFollowingPREV: true",,,,,,,,
+tutorialPreludeOrbiting,"concept: orbitingBody, id: planet, name: Prelude",tutorialPreludeOrbitingPREV: true,openDialog: null,,,,,Continue:tutorialPreludeOrbitingContinueA,"“Great,” says (name). “Perform a mock transport launch to investigate the signature on its surface.”"
+tutorialPreludeOrbitingContinueA,"concept: optionSelected, option:tutorialPreludeOrbitingContinueA",,clearOptions: null,,,,,Continue:tutorialPreludeOrbitingContinueB,[i]The question mark next to $name on the system list symbolises that it has an undocumented planetary anomaly. [/i]
+tutorialPreludeOrbitingContinueB,"concept: optionSelected, option:tutorialPreludeOrbitingContinueB",,clearOptions: null,,,,,Exit:defaultLeave,"[i]Click on $name on the system list, and then press the GO-TO button in the lower left. Wormholes, space stations, planetary anomalies, and other phenomena are all interacted with via the GO-TO button. [/i]"
+tutorialPreludeOrbitingCancel,"concept: orbitingBody, id: planet, name: Prelude, tutorialPreludeOrbitingPREV: true",,,,,,,,
 ,,,,,,,,,
-tutorialOmissionOrbiting,concept: tutorialOmissionOrbiting,tutorialOmissionOrbitingPREV: true,,,,,,Exit:defaultLeave,Optional
-tutorialOmissionOrbitingCancel,"concept: tutorialOmissionOrbiting, tutorialOmissionOrbitingPREV: true",,,,,,,,
+tutorialPreludeFollowing,"concept: followingBody, id: planetaryAnomaly, name: Prelude",tutorialPreludeFollowingPREV: true,openDialog: null,,,,,Exit:PAHardLeave,4
+,,,,,,,,,
+tutorialIngressTheorised,"concept: theorisedBody, id: wormhole, name: Ingress",,openDialog: null,,,,,Exit:defaultLeave,5
+tutorialIngressOrbiting,"concept: orbitingBody, id: wormhole, name: Ingress",tutorialIngressOrbitingPREV: true,openDialog: null,,,,,Exit:defaultLeave,"(6) INFO TAB, 'PRESS THE GO-TO BUTTON ON THE WORMHOLE WHEN READY'"
+tutorialIngressOrbitingCancel,"concept: orbitingBody, id: wormhole, name: Ingress, tutorialIngressOrbitingPREV: true",,,,,,,,
+tutorialIngressFollowing,"concept: followingBody, id: wormhole, name: Ingress",tutorialIngressFollowingPREV: true,openDialog: null,,,,,Exit:defaultLeave,7
+tutorialIngressFollowingCancel,"concept: followingBody, id: wormhole, name: Ingress, tutorialIngressFollowingPREV: true",,,,,,,,
+,,,,,,,,,
+tutorialOmissionOrbiting,"concept: orbitingBody, id: planet, name: Omission",tutorialOmissionOrbitingPREV: true,,,,,,Exit:defaultLeave,Optional
+tutorialOmissionOrbitingCancel,"concept: orbitingBody, id: planet, name: Omission, tutorialOmissionOrbitingPREV: true",,,,,,,,
 ,,,,,,,,,

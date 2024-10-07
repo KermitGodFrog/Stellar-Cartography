@@ -359,6 +359,7 @@ func _on_add_dialogue_memory_pair(key,value) -> void: #im connecitng this signal
 
 func openDialog():
 	clearAll()
+	dialogue.clear_image()
 	dialogue.show()
 	get_tree().paused = true
 	pass

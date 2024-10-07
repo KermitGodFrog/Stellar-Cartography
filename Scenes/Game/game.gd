@@ -217,33 +217,44 @@ func _physics_process(delta):
 		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
 	pass
 
+func _on_player_theorised_body(theorised_body: bodyAPI):
+	if theorised_body.is_planet() and init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+		var theorised_planet = theorised_body
+		var new_query = responseQuery.new()
+		new_query.add("concept", "theorisedBody")
+		new_query.add("id", "planet")
+		new_query.add_tree_access("name", theorised_planet.display_name)
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	if theorised_body is wormholeAPI and init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+		var theorised_wormhole = theorised_body
+		var new_query = responseQuery.new()
+		new_query.add("concept", "theorisedBody")
+		new_query.add("id", "wormhole")
+		new_query.add_tree_access("name", theorised_wormhole.display_name)
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
+	pass
+
 func _on_player_orbiting_body(orbiting_body: bodyAPI):
-	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL and orbiting_body.is_planet():
+	if orbiting_body.is_planet() and init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
 		var orbiting_planet = orbiting_body
-		match orbiting_planet.get_display_name():
-			"Prelude":
-				var new_query = responseQuery.new()
-				new_query.add("concept", "tutorialPreludeOrbiting")
-				get_tree().call_group("dialogueManager", "speak", self, new_query)
-			"Ingress":
-				var new_query = responseQuery.new()
-				new_query.add("concept", "tutorialIngressOrbiting")
-				get_tree().call_group("dialogueManager", "speak", self, new_query)
-			"Omission":
-				var new_query = responseQuery.new()
-				new_query.add("concept", "tutorialOmissionOrbiting")
-				get_tree().call_group("dialogueManager", "speak", self, new_query)
+		var new_query = responseQuery.new()
+		new_query.add("concept", "orbitingBody")
+		new_query.add("id", "planet")
+		new_query.add_tree_access("name", orbiting_planet.display_name)
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	if orbiting_body is wormholeAPI and init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+		var orbiting_wormhole = orbiting_body
+		var new_query = responseQuery.new()
+		new_query.add("concept", "orbitingBody")
+		new_query.add("id", "wormhole")
+		new_query.add_tree_access("name", orbiting_wormhole.display_name)
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
 func _on_player_following_body(following_body: bodyAPI):
-	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL and following_body is wormholeAPI:
-		var following_wormhole = following_body
-		if following_wormhole.get_display_name() == "Ingress":
-			var new_query = responseQuery.new()
-			new_query.add("concept", "tutorialIngressFollowing")
-			get_tree().call_group("dialogueManager", "speak", self, new_query)
-	
-	elif following_body is wormholeAPI:
+	if following_body is wormholeAPI:
 		var following_wormhole = following_body #so its not confusing
 		var wormholes = world.player.current_star_system.get_wormholes()
 		var destination = following_wormhole.destination_system
@@ -251,7 +262,7 @@ func _on_player_following_body(following_body: bodyAPI):
 		if destination and (not destination == world.player.previous_star_system):
 			
 			var new_query = responseQuery.new()
-			new_query.add("concept", "openDialog")
+			new_query.add("concept", "followingBody")
 			new_query.add("id", "wormhole")
 			new_query.add_tree_access("name", following_wormhole.display_name)
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
@@ -272,7 +283,7 @@ func _on_player_following_body(following_body: bodyAPI):
 		if following_station.metadata.get("is_interactable", true) == true:
 			
 			var new_query = responseQuery.new()
-			new_query.add("concept", "openDialog")
+			new_query.add("concept", "followingBody")
 			new_query.add("id", "station")
 			new_query.add_tree_access("name", following_station.display_name)
 			new_query.add_tree_access("station_classification", str(game_data.STATION_CLASSIFICATIONS.find_key(following_station.station_classification)))
@@ -290,25 +301,13 @@ func _on_player_following_body(following_body: bodyAPI):
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
 	
-	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL and following_body.is_planet():
-		var following_planet = following_body
-		if following_planet.get_display_name() == "Prelude":
-			
-			var new_query = responseQuery.new()
-			new_query.add("concept", "tutorialPreludeFollowing")
-			get_tree().call_group("dialogueManager", "speak", self, new_query)
-			
-			await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
-			following_planet.metadata["is_planetary_anomaly_available"] = false
-			_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
-	
-	elif following_body.is_planet():
+	if following_body.is_planet():
 		var following_planet = following_body
 		if following_planet.metadata.get("has_planetary_anomaly", false) == true:
 			if following_planet.metadata.get("is_planetary_anomaly_available", false) == true:
 				
 				var new_query = responseQuery.new()
-				new_query.add("concept", "openDialog")
+				new_query.add("concept", "followingBody")
 				new_query.add("id", "planetaryAnomaly")
 				new_query.add_tree_access("name", following_planet.display_name)
 				new_query.add_tree_access("planet_classification", following_planet.metadata.get("planet_classification"))
@@ -331,7 +330,7 @@ func _on_player_following_body(following_body: bodyAPI):
 		if following_anomaly.metadata.get("is_space_anomaly_available", true) == true:
 			
 			var new_query = responseQuery.new()
-			new_query.add("concept", "openDialog")
+			new_query.add("concept", "followingBody")
 			new_query.add("id", "spaceAnomaly")
 			new_query.add_tree_access("custom_seed", following_anomaly.metadata.get("space_anomaly_seed"))
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
@@ -697,18 +696,9 @@ func _on_exit_to_main_menu():
 	pass
 
 func _on_theorised_body(id: int):
-	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		var body = world.player.current_star_system.get_body_from_identifier(id)
-		if body: 
-			match body.get_display_name():
-				"Prelude":
-					var new_query = responseQuery.new()
-					new_query.add("concept", "tutorialPreludeTheorised")
-					get_tree().call_group("dialogueManager", "speak", self, new_query)
-				"Ingress":
-					var new_query = responseQuery.new()
-					new_query.add("concept", "tutorialIngressTheorised")
-					get_tree().call_group("dialogueManager", "speak", self, new_query)
+	var body = world.player.current_star_system.get_body_from_identifier(id)
+	if body: 
+		_on_player_theorised_body(body)
 	pass
 
 

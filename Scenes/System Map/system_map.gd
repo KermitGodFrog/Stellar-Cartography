@@ -355,8 +355,9 @@ func async_add_ping(body: bodyAPI) -> void:
 	
 	body.pings_to_be_theorised = maxi(0, body.pings_to_be_theorised - 1)
 	if body.pings_to_be_theorised == 0:
+		if not body.is_theorised:
+			emit_signal("theorisedBody", body.get_identifier())
 		body.is_theorised = true #so it says '???' on the overview
-		emit_signal("theorisedBody", body.get_identifier())
 	var ping = load("res://Data/Ping Display Helpers/normal.tres").duplicate(true)
 	ping.position = body.position
 	ping.resetTime()
