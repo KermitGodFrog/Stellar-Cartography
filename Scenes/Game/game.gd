@@ -738,6 +738,7 @@ func _on_audio_visualizer_popup():
 
 func _on_station_popup():
 	$station_window.popup()
+	station_ui._on_popup()
 	get_tree().paused = true
 	pass
 

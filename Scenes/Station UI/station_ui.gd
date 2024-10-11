@@ -33,6 +33,8 @@ signal removeHullStressForNanites(amount: int, _nanites_per_percentage: int)
 @onready var repair_single_button = $repair_container/repair_single
 @onready var repair_all_button = $repair_container/repair_all
 
+@onready var background_animation = $background_center/background_container/background_viewport/station_ui_background/animation_player
+
 var has_sold_previously: bool = false
 
 func _ready():
@@ -147,4 +149,8 @@ func _on_station_window_close_requested():
 	if station: emit_signal("undockFromStation", station)
 	else: emit_signal("undockFromStation", null)
 	get_tree().paused = false
+	pass
+
+func _on_popup():
+	background_animation.play("starship_in_alt")
 	pass
