@@ -152,5 +152,8 @@ func _on_station_window_close_requested():
 	pass
 
 func _on_popup():
-	background_animation.play("starship_in_alt")
+	var animations = ["starship_in_alt", "starship_in2", "starship_in3"]
+	if background_animation.current_animation: animations.erase(background_animation.current_animation)
+	background_animation.play("RESET")
+	background_animation.play(animations.pick_random())
 	pass

@@ -5,6 +5,6 @@ ambient_light_source = 1
 reflected_light_source = 1
 tonemap_exposure = 2.0
 fog_enabled = true
-fog_light_color = Color(0.596078, 0.603922, 1, 1)
+fog_light_color = Color(0, 0.509804, 1, 1)
 fog_light_energy = 0.1
 fog_height_density = 0.25

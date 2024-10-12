@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b7nch6pprtrq8"]
+
+[resource]
+resource_name = "dark"
+albedo_color = Color(0.529412, 0.529412, 0.529412, 1)
+metallic = 1.0
+roughness = 0.75
+backlight = Color(1, 1, 1, 1)
