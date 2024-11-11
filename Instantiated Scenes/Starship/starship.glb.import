@@ -32,15 +32,15 @@ import_script/path=""
 _subresources={
 "materials": {
 "dark": {
-"use_external/enabled": true,
+"use_external/enabled": false,
 "use_external/path": "res://Instantiated Scenes/Starship/dark.tres"
 },
 "darkest": {
-"use_external/enabled": true,
+"use_external/enabled": false,
 "use_external/path": "res://Instantiated Scenes/Starship/darkest.tres"
 },
 "light": {
-"use_external/enabled": true,
+"use_external/enabled": false,
 "use_external/path": "res://Instantiated Scenes/Starship/light.tres"
 }
 }

@@ -21,15 +21,13 @@ signal addPlayerValue(amount: int)
 var GENERATION_POSITIONS: PackedVector3Array = []
 var GENERATION_BASIS: Basis
 const GENERATION_POSITION_ITERATIONS = 30
+const CAMERA_ROTATION_MAGNITUDE = 2
 
-const CAMERA_ROTATION_MAGNITUDE = 1
 var target_fov: float = 75
 
 var system : starSystemAPI
 var current_entity : entityAPI = null
 var player_position: Vector2 = Vector2.ZERO
-
-var camera_offset_target_basis: Basis
 
 var photo_is_on_screen: bool = false
 
@@ -45,20 +43,45 @@ func _unhandled_input(event):
 	
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-			
 			var viewport_size_y = get_viewport().get_visible_rect().size.y
 			var viewport_size_x = get_viewport().get_visible_rect().size.x
 			var mouse_pos_y = get_viewport().get_mouse_position().y
 			var mouse_pos_x = get_viewport().get_mouse_position().x
 			
 			if mouse_pos_y > (viewport_size_y - viewport_size_y / 10):
-				rotate_camera_basis(Vector3.LEFT)
+				rotate_camera_basis(Vector3.LEFT, CAMERA_ROTATION_MAGNITUDE)
 			if mouse_pos_y < (viewport_size_y / 10):
-				rotate_camera_basis(Vector3.RIGHT)
+				rotate_camera_basis(Vector3.RIGHT, CAMERA_ROTATION_MAGNITUDE)
 			if mouse_pos_x > (viewport_size_x - viewport_size_x / 10):
-				rotate_camera_basis(Vector3.DOWN)
+				rotate_camera_basis(Vector3.DOWN, CAMERA_ROTATION_MAGNITUDE)
 			if mouse_pos_x < (viewport_size_x / 10):
-				rotate_camera_basis(Vector3.UP)
+				rotate_camera_basis(Vector3.UP, CAMERA_ROTATION_MAGNITUDE)
+	
+	if event.is_action_pressed("gzooble") and not photo_is_on_screen:
+		for prop in get_tree().get_nodes_in_group("long_range_scopes_prop"):
+			if get_viewport().get_camera_3d().is_position_in_frustum(prop.transform.origin):
+				var prop_positions: PackedVector3Array = prop.get_positions() # MUST BE 4 POINTS!!!!
+				var fixed_positions: PackedVector2Array = []
+				for pos in prop_positions:
+					fixed_positions.append(get_viewport().get_camera_3d().unproject_position(pos))
+				
+				
+				
+				var projected_positions: Array = []
+				for pos in fixed_positions:
+					projected_positions.append(pos.project(Vector2.UP).y)
+				projected_positions.sort()
+				var vertical_size = (projected_positions.back() - projected_positions.front())
+				
+				
+				
+				#rangefinder - in progress
+				
+				
+				
+				
+	
+	
 	
 	if event.is_action_pressed("gkooble"):
 		hud.set_texture(hud_holding)
@@ -150,17 +173,13 @@ func clear_photo() -> void:
 	reset_timer.connect("timeout", _on_reset_hud_image)
 	pass
 
-func rotate_camera_basis(dir: Vector3) -> void:
-	camera.transform.basis = camera.transform.basis.rotated(dir, deg_to_rad(CAMERA_ROTATION_MAGNITUDE))
+func rotate_camera_basis(dir: Vector3, camera_rotation_magnitude: int) -> void:
+	camera.transform.basis = camera.transform.basis.rotated(dir, deg_to_rad(camera_rotation_magnitude))
 	pass
 
 func _physics_process(_delta):
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
-	camera_offset.transform.basis = camera_offset.transform.basis.slerp(camera_offset_target_basis, 0.5)
 	if current_entity:
-		var entity_dir_from_player = player_position.direction_to(current_entity.position)
-		update_camera_offset_dir(Vector3(entity_dir_from_player.x, 0, entity_dir_from_player.y))
-		
 		var first_star = system.get_first_star()
 		if first_star:
 			var star_dir_from_entity = current_entity.position.direction_to(first_star.position)
@@ -206,8 +225,12 @@ func _on_current_entity_changed(new_entity : entityAPI):
 						add_child(space_whale)
 					
 					else: break
-		
-		#regenerate terrain and stuff!
+	
+	
+	var entity_dir_from_player = player_position.direction_to(current_entity.position)
+	camera_offset.transform.basis = camera_offset.transform.basis.looking_at(Vector3(entity_dir_from_player.x, 0, entity_dir_from_player.y))
+	
+	#regenerate terrain and stuff!
 	pass
 
 func _on_current_entity_cleared():
@@ -229,9 +252,6 @@ func update_star_dir(dir: Vector3) -> void:
 	directional_light.transform.basis = directional_light.transform.basis.looking_at(dir)
 	pass
 
-func update_camera_offset_dir(dir: Vector3) -> void:
-	camera_offset_target_basis = camera_offset.transform.basis.looking_at(dir)
-	pass
 
 
 func _on_fov_slider_value_changed(value):
