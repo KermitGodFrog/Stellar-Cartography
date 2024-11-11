@@ -10,7 +10,7 @@ var world: worldAPI
 @onready var sonar = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container/sonar_window/sonar_control
 @onready var barycenter_visualizer = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container/barycenter_visualizer_window/barycenter_control
 @onready var audio_visualizer = $audio_visualizer_window/audio_control
-@onready var long_range_scopes = $long_range_scopes_window/long_range_scopes
+@onready var long_range_scopes = $long_range_scopes_window/split/lrs_container/lrs_viewport/long_range_scopes
 @onready var station_ui = $station_window/station_control
 @onready var dialogue_manager = $dialogueManager
 @onready var journey_map = $journey_map_window/journey_map
@@ -143,7 +143,7 @@ func _ready():
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
