@@ -4,7 +4,7 @@ signal map_updated
 
 var systems_traversed: int = 0
 var systems: Array = []
-var label_font = preload("res://Graphics/Fonts/RobotoMono Medium.ttf")
+const label_font = preload("res://Graphics/Fonts/RobotoMono Medium.ttf")
 var draw_landmarks: Dictionary = {"The Core": -(0 * 100), "The Frontier": -(5 * 100), "The Abyss": -(15 * 100), "New Eden": -(25 * 100)}
 
 

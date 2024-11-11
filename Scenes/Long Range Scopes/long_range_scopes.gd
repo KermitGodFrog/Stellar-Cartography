@@ -17,6 +17,8 @@ signal addPlayerValue(amount: int)
 @onready var hud = $camera_offset/camera/canvas_layer/hud
 @onready var fov_container = $camera_offset/camera/canvas_layer/fov_container
 @onready var value_label = $camera_offset/camera/canvas_layer/value_label
+@onready var rangefinder = $camera_offset/camera/canvas_layer/rangefinder
+
 
 var GENERATION_POSITIONS: PackedVector3Array = []
 var GENERATION_BASIS: Basis
@@ -58,6 +60,7 @@ func _unhandled_input(event):
 				rotate_camera_basis(Vector3.UP, CAMERA_ROTATION_MAGNITUDE)
 	
 	if event.is_action_pressed("gzooble") and not photo_is_on_screen:
+		var DRAW_MATRICIES: Array[Array] = [[]]
 		for prop in get_tree().get_nodes_in_group("long_range_scopes_prop"):
 			if get_viewport().get_camera_3d().is_position_in_frustum(prop.transform.origin):
 				var prop_positions: PackedVector3Array = prop.get_positions() # MUST BE 4 POINTS!!!!
@@ -65,21 +68,45 @@ func _unhandled_input(event):
 				for pos in prop_positions:
 					fixed_positions.append(get_viewport().get_camera_3d().unproject_position(pos))
 				
-				
-				
 				var projected_positions: Array = []
 				for pos in fixed_positions:
 					projected_positions.append(pos.project(Vector2.UP).y)
 				projected_positions.sort()
 				var vertical_size = (projected_positions.back() - projected_positions.front())
 				
+				var x_axis_fixed_positions: Array = []
+				var y_axis_fixed_positions: Array = []
 				
+				for pos in fixed_positions:
+					x_axis_fixed_positions.append(pos.x)
+					y_axis_fixed_positions.append(pos.y)
 				
-				#rangefinder - in progress
+				var average_position = Vector2(global_data.average(x_axis_fixed_positions), global_data.average(y_axis_fixed_positions))
 				
-				
-				
-				
+				DRAW_MATRICIES.append([average_position, vertical_size])
+		
+		rangefinder.draw_rangefinder(DRAW_MATRICIES)
+		await RenderingServer.frame_post_draw
+		
+		hud.hide()
+		captures_remaining_label.hide()
+		fov_container.hide()
+		value_label.hide()
+		
+		await RenderingServer.frame_post_draw
+		var image: Image = camera.get_viewport().get_texture().get_image()
+		image.save_png("Debug/test.png")
+		var image_texture: ImageTexture = ImageTexture.create_from_image(image)
+		photo_texture.texture = image_texture
+		
+		rangefinder.DRAW_MATRICIES.clear()
+		rangefinder.queue_redraw()
+		
+		photo_is_on_screen = true
+		
+		await get_tree().create_timer(2).timeout
+		clear_photo()
+		
 	
 	
 	
@@ -157,8 +184,6 @@ func _unhandled_input(event):
 	pass
 
 func clear_photo() -> void:
-	photo_is_on_screen = false
-	
 	hud.show()
 	captures_remaining_label.show()
 	fov_container.show()
@@ -167,6 +192,9 @@ func clear_photo() -> void:
 	
 	photo_texture.texture = null
 	#photo_texture.modulate = Color("ffffff")
+	
+	await get_tree().physics_frame
+	photo_is_on_screen = false
 	
 	hud.set_texture(hud_release)
 	var reset_timer = get_tree().create_timer(0.5)
