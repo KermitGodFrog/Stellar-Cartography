@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="starSystemAPI" load_steps=7 format=3 uid="uid://dn6svtqw0uj0q"]
+[gd_resource type="Resource" script_class="starSystemAPI" load_steps=8 format=3 uid="uid://dn6svtqw0uj0q"]
 
 [ext_resource type="Script" path="res://Data/bodyAPI.gd" id="1_j46cy"]
 [ext_resource type="Script" path="res://Data/starSystemAPI.gd" id="1_l2yyi"]
@@ -55,11 +55,36 @@ is_known = false
 current_variation = 0
 guessed_variation = -1
 
+[sub_resource type="Resource" id="Resource_w0kvl"]
+script = ExtResource("1_j46cy")
+identifier = 3
+display_name = "Omission"
+hook_identifier = 1
+distance = 132.267
+orbit_speed = 0.005
+radius = 0.132
+metadata = {
+"color": Color(0, 0, 0.545, 1),
+"iterations": 12,
+"mass": 0.0,
+"planet_classification": "Neptunian",
+"planet_type": "Ice Dwarf",
+"planetary_anomaly_seed": 0,
+"value": 3029
+}
+position = Vector2(0, 0)
+rotation = 4.705
+pings_to_be_theorised = 3
+is_theorised = false
+is_known = false
+current_variation = 1
+guessed_variation = -1
+
 [sub_resource type="Resource" id="Resource_ll6oe"]
 script = ExtResource("2_dhi6k")
 post_jumps_remaining = 0
 is_disabled = false
-identifier = 3
+identifier = 4
 display_name = "Ingress"
 hook_identifier = 1
 distance = 64.582
@@ -82,7 +107,7 @@ script = ExtResource("1_l2yyi")
 identifier = 0
 display_name = "tutorial"
 destination_systems = Array[ExtResource("1_l2yyi")]([])
-bodies = Array[ExtResource("1_j46cy")]([SubResource("Resource_vhniq"), SubResource("Resource_ngre6"), SubResource("Resource_ll6oe")])
+bodies = Array[ExtResource("1_j46cy")]([SubResource("Resource_vhniq"), SubResource("Resource_ngre6"), SubResource("Resource_w0kvl"), SubResource("Resource_ll6oe")])
 identifier_count = 1
 time = 1000
 post_gen_location_candidates = []

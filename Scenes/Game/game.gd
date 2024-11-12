@@ -89,8 +89,9 @@ func _ready():
 		
 		_on_switch_star_system(new)
 		
-		_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+		
+		_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 		world.player.position = Vector2(60, 0)
 		world.player.setTargetPosition(world.player.position)
 		world.player.updatePosition(get_physics_process_delta_time())
