@@ -108,7 +108,7 @@ grow_vertical = 2
 mouse_filter = 0
 theme = ExtResource("3_djc4s")
 tab_alignment = 2
-current_tab = 1
+current_tab = 2
 script = ExtResource("4_27qwa")
 
 [node name="WARNING" type="ColorRect" parent="system/camera/canvas/control/tabs"]
@@ -130,6 +130,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="OVERVIEW" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
+visible = false
 custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
 mouse_filter = 0
@@ -186,7 +187,6 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="INFO" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
-visible = false
 custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
 mouse_filter = 0

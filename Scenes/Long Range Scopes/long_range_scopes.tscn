@@ -1,5 +1,6 @@
-[gd_scene load_steps=15 format=3 uid="uid://b0frxj5cysipi"]
+[gd_scene load_steps=17 format=3 uid="uid://b0frxj5cysipi"]
 
+[ext_resource type="Theme" uid="uid://dvp6gmpuweabh" path="res://Scenes/Long Range Scopes/long_range_scopes_MAIN_theme.tres" id="1_njahj"]
 [ext_resource type="Script" path="res://Scenes/Long Range Scopes/long_range_scopes.gd" id="1_syfdy"]
 [ext_resource type="Texture2D" uid="uid://3ea0xeivnnax" path="res://Graphics/long_range_scopes_hud4.png" id="2_d3gep"]
 [ext_resource type="Shader" path="res://Scenes/pixelate_shader.gdshader" id="2_oxd33"]
@@ -7,6 +8,8 @@
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="3_iyrid"]
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_kwwow"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="4_mjqhh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ug3bo"]
 
 [sub_resource type="Curve" id="Curve_t3lry"]
 max_value = 1000.0
@@ -62,14 +65,52 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_njahj")
 
 [node name="bestiary" type="PanelContainer" parent="split"]
 custom_minimum_size = Vector2(300, 500)
 layout_mode = 2
 
-[node name="test_label" type="Label" parent="split/bestiary"]
+[node name="tabs" type="TabContainer" parent="split/bestiary"]
 layout_mode = 2
-text = "RAHHHEEHEHAHAAAA"
+current_tab = 1
+
+[node name="BESTIARY" type="VBoxContainer" parent="split/bestiary/tabs"]
+visible = false
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="INFO" type="VBoxContainer" parent="split/bestiary/tabs"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="title" type="Label" parent="split/bestiary/tabs/INFO"]
+custom_minimum_size = Vector2(300, 30)
+layout_mode = 2
+text = "POD OF SPACE WHALES"
+autowrap_mode = 3
+
+[node name="info_split" type="VSplitContainer" parent="split/bestiary/tabs/INFO"]
+custom_minimum_size = Vector2(300, 400)
+layout_mode = 2
+size_flags_vertical = 3
+split_offset = 200
+
+[node name="description_scroll" type="ScrollContainer" parent="split/bestiary/tabs/INFO/info_split"]
+layout_mode = 2
+theme = ExtResource("1_njahj")
+horizontal_scroll_mode = 0
+
+[node name="description" type="Label" parent="split/bestiary/tabs/INFO/info_split/description_scroll"]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "\"Long-lasting, space-faring creatures which are usually observed in pods. Feast on space dust, asteroids, meteorites, and other sources of rare elements. Move via the expulsion of gasses out of the ‘tail’. These were the first extraterrestrial species observed by Humanity. First contact was initiated and recorded by a salvage ship - the recording consisted of salvage personnel in-the-yard gaping about ‘space whales’, with an extremely bewildered command continuously asking them to ‘restate their previous’. The straightforward term ‘space whales’ was soon picked up by news outlets documenting the discovery, and the name stuck despite scientific names being established.\""
+autowrap_mode = 3
+
+[node name="requested_panel" type="Panel" parent="split/bestiary/tabs/INFO/info_split"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ug3bo")
 
 [node name="lrs_container" type="SubViewportContainer" parent="split"]
 custom_minimum_size = Vector2(500, 500)
