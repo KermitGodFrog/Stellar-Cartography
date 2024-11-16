@@ -259,7 +259,9 @@ func draw_map():
 	
 	var size_exponent = pow(camera.zoom.length(), -0.5)
 	
-	if camera.zoom.length() < system.get_first_star().radius * 100.0: map_overlay.show()
+	if camera.zoom.length() < system.get_first_star().radius * 100.0: 
+		map_overlay.show()
+		map_overlay.frame_update_time = camera.zoom.length()
 	else: map_overlay.hide()
 	
 	for body in system.bodies:
