@@ -37,6 +37,8 @@ var player_audio_visualizer_unlocked: bool = false
 @onready var console = $camera/canvas/control/console
 @onready var audio_visualizer_button = $camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button
 @onready var status_scroll = $camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll
+@onready var map_overlay = $camera/canvas/map_overlay
+
 
 @onready var ping_sound_scene = preload("res://Sound/ping.tscn")
 @onready var bounceback_sound_scene = preload("res://Sound/bounceback.tscn")
@@ -256,6 +258,9 @@ func draw_map():
 		if belt.is_known: draw_arc(belt.position, belt.radius, -10, TAU, 50, belt.metadata.get("color"), belt.metadata.get("width"), false)
 	
 	var size_exponent = pow(camera.zoom.length(), -0.5)
+	
+	if camera.zoom.length() < system.get_first_star().radius * 100.0: map_overlay.show()
+	else: map_overlay.hide()
 	
 	for body in system.bodies:
 		
