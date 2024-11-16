@@ -363,6 +363,7 @@ func _on_player_following_body(following_body: bodyAPI):
 		if world.player.discovered_entities.find(following_entity.entity_classification) == -1:
 			world.player.discovered_entities.append(following_entity.entity_classification)
 		long_range_scopes._on_current_entity_changed(following_entity)
+		lrs_bestiary._on_current_entity_changed(following_entity)
 		
 		await system_map.validUpdatePlayerActionType
 		long_range_scopes._on_current_entity_cleared()
