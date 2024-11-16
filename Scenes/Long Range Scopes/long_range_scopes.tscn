@@ -1,13 +1,12 @@
-[gd_scene load_steps=17 format=3 uid="uid://b0frxj5cysipi"]
+[gd_scene load_steps=16 format=3 uid="uid://b0frxj5cysipi"]
 
 [ext_resource type="Theme" uid="uid://dvp6gmpuweabh" path="res://Scenes/Long Range Scopes/long_range_scopes_MAIN_theme.tres" id="1_njahj"]
 [ext_resource type="Script" path="res://Scenes/Long Range Scopes/long_range_scopes.gd" id="1_syfdy"]
 [ext_resource type="Texture2D" uid="uid://3ea0xeivnnax" path="res://Graphics/long_range_scopes_hud4.png" id="2_d3gep"]
+[ext_resource type="Script" path="res://Scenes/Long Range Scopes/lrs_bestiary.gd" id="2_de04j"]
 [ext_resource type="Shader" path="res://Scenes/pixelate_shader.gdshader" id="2_oxd33"]
 [ext_resource type="Script" path="res://Scenes/Long Range Scopes/rangefinder.gd" id="2_rbmww"]
-[ext_resource type="Curve" uid="uid://bfrxpxig6evj5" path="res://Data/LRS Reward Helpers/size_close_reward_curve.tres" id="3_80h45"]
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="3_iyrid"]
-[ext_resource type="Curve" uid="uid://dc2tmxv4yf7g5" path="res://Data/LRS Reward Helpers/distance_close_reward_curve.tres" id="4_dfem0"]
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_kwwow"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="4_mjqhh"]
 
@@ -63,6 +62,7 @@ theme = ExtResource("1_njahj")
 [node name="bestiary" type="PanelContainer" parent="split"]
 custom_minimum_size = Vector2(300, 500)
 layout_mode = 2
+script = ExtResource("2_de04j")
 
 [node name="tabs" type="TabContainer" parent="split/bestiary"]
 layout_mode = 2
@@ -124,8 +124,6 @@ render_target_update_mode = 0
 
 [node name="long_range_scopes" type="Node3D" parent="split/lrs_center/lrs_container/lrs_viewport"]
 script = ExtResource("1_syfdy")
-prop_size_reward_curve = ExtResource("3_80h45")
-prop_distance_reward_curve = ExtResource("4_dfem0")
 
 [node name="camera_offset" type="Node3D" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes"]
 

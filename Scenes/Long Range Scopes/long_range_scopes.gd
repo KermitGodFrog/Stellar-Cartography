@@ -3,8 +3,6 @@ extends Node3D
 signal addConsoleItem(text: String, bg_color: Color, time: int)
 signal addPlayerValue(amount: int)
 
-var discovered_entities_matrix: PackedInt32Array = []
-
 enum STATES {DEFAULT, DISPLAY_PHOTO, DISPLAY_RANGEFINDER}
 var current_state: STATES = STATES.DEFAULT:
 	set(value):
@@ -44,9 +42,6 @@ var state_on_photo_held: STATES = STATES.DEFAULT
 var system : starSystemAPI
 var current_entity : entityAPI = null
 var player_position: Vector2 = Vector2.ZERO
-
-@export var prop_size_reward_curve: Curve
-@export var prop_distance_reward_curve: Curve
 
 func _unhandled_input(event):
 	if event is InputEventKey:

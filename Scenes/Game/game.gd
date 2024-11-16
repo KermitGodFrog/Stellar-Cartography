@@ -11,6 +11,7 @@ var world: worldAPI
 @onready var barycenter_visualizer = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container/barycenter_visualizer_window/barycenter_control
 @onready var audio_visualizer = $audio_visualizer_window/audio_control
 @onready var long_range_scopes = $long_range_scopes_window/split/lrs_center/lrs_container/lrs_viewport/long_range_scopes
+@onready var lrs_bestiary = $long_range_scopes_window/split/bestiary
 @onready var station_ui = $station_window/station_control
 @onready var dialogue_manager = $dialogueManager
 @onready var journey_map = $journey_map_window/journey_map
@@ -212,7 +213,7 @@ func _physics_process(delta):
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
-	long_range_scopes.set("discovered_entities_matrix", world.player.discovered_entities)
+	lrs_bestiary.set("discovered_entities_matrix", world.player.discovered_entities)
 	
 	game_data.player_weirdness_index = world.player.weirdness_index #really hacky solution which should not have been done this way but im too tired to change the entire game now to accomodate it.
 	
