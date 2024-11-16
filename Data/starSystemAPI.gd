@@ -509,6 +509,9 @@ func updateBodyPosition(id: int, delta):
 				body.position = body.position + (dir * body.distance)
 	pass
 
+
+
+
 func get_random_body():
 	return bodies.pick_random()
 

@@ -3,6 +3,8 @@ extends Node3D
 var initial_basis: Basis
 var target_basis: Basis
 
+@export var size_reward_curve: Curve
+@export var distance_reward_curve: Curve
 
 func _ready():
 	create_and_connect_timer()

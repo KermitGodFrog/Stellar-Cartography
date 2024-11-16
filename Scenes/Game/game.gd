@@ -10,7 +10,7 @@ var world: worldAPI
 @onready var sonar = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container/sonar_window/sonar_control
 @onready var barycenter_visualizer = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container/barycenter_visualizer_window/barycenter_control
 @onready var audio_visualizer = $audio_visualizer_window/audio_control
-@onready var long_range_scopes = $long_range_scopes_window/split/lrs_container/lrs_viewport/long_range_scopes
+@onready var long_range_scopes = $long_range_scopes_window/split/lrs_center/lrs_container/lrs_viewport/long_range_scopes
 @onready var station_ui = $station_window/station_control
 @onready var dialogue_manager = $dialogueManager
 @onready var journey_map = $journey_map_window/journey_map
@@ -144,7 +144,7 @@ func _ready():
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
+		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
@@ -212,6 +212,8 @@ func _physics_process(delta):
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
+	long_range_scopes.set("discovered_entities_matrix", world.player.discovered_entities)
+	
 	game_data.player_weirdness_index = world.player.weirdness_index #really hacky solution which should not have been done this way but im too tired to change the entire game now to accomodate it.
 	
 	if Input.is_action_just_pressed("pause"):
@@ -357,6 +359,8 @@ func _on_player_following_body(following_body: bodyAPI):
 	
 	elif following_body is entityAPI:
 		var following_entity = following_body
+		if world.player.discovered_entities.find(following_entity.entity_classification) == -1:
+			world.player.discovered_entities.append(following_entity.entity_classification)
 		long_range_scopes._on_current_entity_changed(following_entity)
 		
 		await system_map.validUpdatePlayerActionType

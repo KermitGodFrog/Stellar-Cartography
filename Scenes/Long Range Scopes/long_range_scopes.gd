@@ -3,6 +3,8 @@ extends Node3D
 signal addConsoleItem(text: String, bg_color: Color, time: int)
 signal addPlayerValue(amount: int)
 
+var discovered_entities_matrix: PackedInt32Array = []
+
 enum STATES {DEFAULT, DISPLAY_PHOTO, DISPLAY_RANGEFINDER}
 var current_state: STATES = STATES.DEFAULT:
 	set(value):
@@ -14,7 +16,6 @@ var state_change_lock_duration: float = 0.1
 
 var _DRAW_MATRICIES: Array[Array] = [[]] #carried to _on_state_changed
 var _REWARD_MATRIX: Array = [] #carried to _on_state_changed
-
 
 @onready var space_whale_scene = preload("res://Instantiated Scenes/Space Whales/adult_space_whale.tscn")
 @onready var hud_default = preload("res://Graphics/long_range_scopes_hud4.png")
@@ -124,8 +125,8 @@ func _unhandled_input(event):
 					var posing_reward: int = 0
 					var characteristics_reward: int = prop.get_characteristics()
 					
-					if vertical_size <= 800: vertical_size_reward = int(prop_size_reward_curve.sample(vertical_size_remapped))
-					if avg_distance_from_centre <= 400: distance_reward = int(prop_distance_reward_curve.sample(distance_remapped) * vertical_size_remapped)
+					if vertical_size <= 800: vertical_size_reward = int(prop.size_reward_curve.sample(vertical_size_remapped))
+					if avg_distance_from_centre <= 400: distance_reward = int(prop.distance_reward_curve.sample(distance_remapped) * vertical_size_remapped)
 					if is_posing: posing_reward = distance_reward + vertical_size_reward
 					
 					photo_total_value += vertical_size_reward + distance_reward + posing_reward + characteristics_reward
@@ -144,7 +145,6 @@ func rotate_camera_basis(dir: Vector3, camera_rotation_magnitude: int) -> void:
 	pass
 
 func _physics_process(_delta):
-	print(current_state)
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
 	if current_entity:
 		var first_star = system.get_first_star()
@@ -190,14 +190,19 @@ func _on_current_entity_changed(new_entity : entityAPI):
 						space_whale.target_basis = space_whale.initial_basis
 						
 						add_child(space_whale)
-					
 					else: break
 	
+	#var entity_dir_from_player = player_position.direction_to(current_entity.position)
+	#camera_offset.transform.basis = camera_offset.transform.basis.looking_at(Vector3(entity_dir_from_player.x, 0, entity_dir_from_player.y))
+	#updates camera rotation when pressing go-to, so removing this fixes bug but not very accurate (especially with light)
 	
-	var entity_dir_from_player = player_position.direction_to(current_entity.position)
-	camera_offset.transform.basis = camera_offset.transform.basis.looking_at(Vector3(entity_dir_from_player.x, 0, entity_dir_from_player.y))
 	
-	#regenerate terrain and stuff!
+	
+	
+	
+	
+	
+	
 	pass
 
 func _on_current_entity_cleared():

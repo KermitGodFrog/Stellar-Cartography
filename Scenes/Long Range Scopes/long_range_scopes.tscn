@@ -5,21 +5,13 @@
 [ext_resource type="Texture2D" uid="uid://3ea0xeivnnax" path="res://Graphics/long_range_scopes_hud4.png" id="2_d3gep"]
 [ext_resource type="Shader" path="res://Scenes/pixelate_shader.gdshader" id="2_oxd33"]
 [ext_resource type="Script" path="res://Scenes/Long Range Scopes/rangefinder.gd" id="2_rbmww"]
+[ext_resource type="Curve" uid="uid://bfrxpxig6evj5" path="res://Data/LRS Reward Helpers/size_close_reward_curve.tres" id="3_80h45"]
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="3_iyrid"]
+[ext_resource type="Curve" uid="uid://dc2tmxv4yf7g5" path="res://Data/LRS Reward Helpers/distance_close_reward_curve.tres" id="4_dfem0"]
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_kwwow"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="4_mjqhh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ug3bo"]
-
-[sub_resource type="Curve" id="Curve_t3lry"]
-max_value = 1000.0
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25, 1000), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="Curve" id="Curve_odo31"]
-max_value = 1000.0
-_data = [Vector2(0, 1000), 0.0, 0.0, 0, 0, Vector2(0.25, 250), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1ochv"]
 shader = ExtResource("2_oxd33")
@@ -57,7 +49,8 @@ process_mode = 3
 title = "Long Range Scopes"
 position = Vector2i(0, 36)
 size = Vector2i(800, 500)
-unresizable = true
+visible = false
+min_size = Vector2i(800, 500)
 
 [node name="split" type="HBoxContainer" parent="."]
 anchors_preset = 15
@@ -88,6 +81,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(300, 30)
 layout_mode = 2
 text = "POD OF SPACE WHALES"
+vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="info_split" type="VSplitContainer" parent="split/bestiary/tabs/INFO"]
@@ -112,35 +106,41 @@ autowrap_mode = 3
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ug3bo")
 
-[node name="lrs_container" type="SubViewportContainer" parent="split"]
+[node name="lrs_center" type="CenterContainer" parent="split"]
 custom_minimum_size = Vector2(500, 500)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="lrs_viewport" type="SubViewport" parent="split/lrs_container"]
+[node name="lrs_container" type="SubViewportContainer" parent="split/lrs_center"]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="lrs_viewport" type="SubViewport" parent="split/lrs_center/lrs_container"]
 handle_input_locally = false
 size = Vector2i(500, 500)
-render_target_update_mode = 4
+render_target_update_mode = 0
 
-[node name="long_range_scopes" type="Node3D" parent="split/lrs_container/lrs_viewport"]
+[node name="long_range_scopes" type="Node3D" parent="split/lrs_center/lrs_container/lrs_viewport"]
 script = ExtResource("1_syfdy")
-prop_size_reward_curve = SubResource("Curve_t3lry")
-prop_distance_reward_curve = SubResource("Curve_odo31")
+prop_size_reward_curve = ExtResource("3_80h45")
+prop_distance_reward_curve = ExtResource("4_dfem0")
 
-[node name="camera_offset" type="Node3D" parent="split/lrs_container/lrs_viewport/long_range_scopes"]
+[node name="camera_offset" type="Node3D" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes"]
 
-[node name="camera" type="Camera3D" parent="split/lrs_container/lrs_viewport/long_range_scopes/camera_offset"]
+[node name="camera" type="Camera3D" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 100)
 
-[node name="canvas_layer" type="CanvasLayer" parent="split/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera"]
+[node name="canvas_layer" type="CanvasLayer" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera"]
 
-[node name="rangefinder" type="ColorRect" parent="split/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="rangefinder" type="ColorRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 offset_right = 40.0
 offset_bottom = 40.0
 color = Color(1, 1, 1, 0)
 script = ExtResource("2_rbmww")
 
-[node name="post_process" type="ColorRect" parent="split/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="post_process" type="ColorRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 material = SubResource("ShaderMaterial_1ochv")
 anchors_preset = 15
 anchor_right = 1.0
@@ -148,14 +148,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="photo_texture" type="TextureRect" parent="split/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="photo_texture" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="no_current_entity_bg" type="ColorRect" parent="split/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="no_current_entity_bg" type="ColorRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -163,7 +163,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="hud" type="TextureRect" parent="split/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="hud" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 texture_filter = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -174,7 +174,7 @@ texture = ExtResource("2_d3gep")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="captures_remaining_label" type="Label" parent="split/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="captures_remaining_label" type="Label" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -183,7 +183,7 @@ offset_right = 20.0
 offset_bottom = 23.0
 grow_horizontal = 2
 
-[node name="value_label" type="Label" parent="split/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="value_label" type="Label" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 visible = false
 anchors_preset = 4
 anchor_top = 0.5
@@ -201,7 +201,7 @@ text = "
 "
 vertical_alignment = 1
 
-[node name="fov_container" type="CenterContainer" parent="split/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="fov_container" type="CenterContainer" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 custom_minimum_size = Vector2(200, 100)
 anchors_preset = 4
 anchor_top = 0.5
@@ -211,7 +211,7 @@ offset_right = 200.0
 offset_bottom = 50.0
 grow_vertical = 2
 
-[node name="fov_slider" type="VSlider" parent="split/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container"]
+[node name="fov_slider" type="VSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_constants/grabber_offset = 0
@@ -221,10 +221,10 @@ value = 75.0
 tick_count = 3
 ticks_on_borders = true
 
-[node name="world_environment" type="WorldEnvironment" parent="split/lrs_container/lrs_viewport/long_range_scopes"]
+[node name="world_environment" type="WorldEnvironment" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes"]
 environment = SubResource("Environment_368mg")
 
-[node name="directional_light" type="DirectionalLight3D" parent="split/lrs_container/lrs_viewport/long_range_scopes"]
+[node name="directional_light" type="DirectionalLight3D" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes"]
 
-[connection signal="close_requested" from="." to="split/lrs_container/lrs_viewport/long_range_scopes" method="_on_long_range_scopes_window_close_requested"]
-[connection signal="value_changed" from="split/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/fov_slider" to="split/lrs_container/lrs_viewport/long_range_scopes" method="_on_fov_slider_value_changed"]
+[connection signal="close_requested" from="." to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_long_range_scopes_window_close_requested"]
+[connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/fov_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_fov_slider_value_changed"]

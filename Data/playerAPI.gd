@@ -50,6 +50,8 @@ enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RA
 @export var saved_audio_profiles: Array[audioProfileHelper] = []
 @export var max_saved_audio_profiles: int = 10
 
+@export var discovered_entities: PackedInt32Array = [] #int enum identifier from game.gd, e.g - [0,5,9]
+
 #characters \/\/\/\/\/\/
 @export var first_officer: characterAPI
 @export var chief_engineer: characterAPI

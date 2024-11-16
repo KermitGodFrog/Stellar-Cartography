@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://dwtt1i110irrs"]
+[gd_scene load_steps=5 format=3 uid="uid://dwtt1i110irrs"]
 
 [ext_resource type="PackedScene" uid="uid://dbf7wc7f4kexq" path="res://Instantiated Scenes/Space Whales/adult_space_whale.glb" id="1_popjc"]
 [ext_resource type="Script" path="res://Instantiated Scenes/Space Whales/adult_space_whale.gd" id="2_2gsu2"]
+[ext_resource type="Curve" uid="uid://bfrxpxig6evj5" path="res://Data/LRS Reward Helpers/size_close_reward_curve.tres" id="3_mwxiy"]
+[ext_resource type="Curve" uid="uid://dc2tmxv4yf7g5" path="res://Data/LRS Reward Helpers/distance_close_reward_curve.tres" id="4_y0bln"]
 
 [node name="adult_space_whale" groups=["adult_space_whale", "long_range_scopes_prop"] instance=ExtResource("1_popjc")]
 script = ExtResource("2_2gsu2")
+size_reward_curve = ExtResource("3_mwxiy")
+distance_reward_curve = ExtResource("4_y0bln")
 
 [node name="Skeleton3D" parent="adult_space_whale" index="0"]
 bones/3/rotation = Quaternion(0.875468, -4.2552e-09, 0.218867, -0.430874)
