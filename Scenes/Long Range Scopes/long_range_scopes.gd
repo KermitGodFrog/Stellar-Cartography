@@ -190,14 +190,6 @@ func _on_current_entity_changed(new_entity : entityAPI):
 	#var entity_dir_from_player = player_position.direction_to(current_entity.position)
 	#camera_offset.transform.basis = camera_offset.transform.basis.looking_at(Vector3(entity_dir_from_player.x, 0, entity_dir_from_player.y))
 	#updates camera rotation when pressing go-to, so removing this fixes bug but not very accurate (especially with light)
-	
-	
-	
-	
-	
-	
-	
-	
 	pass
 
 func _on_current_entity_cleared():

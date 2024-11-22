@@ -66,24 +66,24 @@ script = ExtResource("2_de04j")
 [node name="tabs" type="TabContainer" parent="split/bestiary"]
 layout_mode = 2
 tab_alignment = 1
+current_tab = 1
 
 [node name="BESTIARY" type="VBoxContainer" parent="split/bestiary/tabs"]
-custom_minimum_size = Vector2(300, 0)
-layout_mode = 2
-
-[node name="list" type="ItemList" parent="split/bestiary/tabs/BESTIARY"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="INFO" type="VBoxContainer" parent="split/bestiary/tabs"]
 visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 
-[node name="title" type="Label" parent="split/bestiary/tabs/INFO"]
+[node name="bestiary_list" type="ItemList" parent="split/bestiary/tabs/BESTIARY"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="INFO" type="VBoxContainer" parent="split/bestiary/tabs"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="info_title" type="Label" parent="split/bestiary/tabs/INFO"]
 custom_minimum_size = Vector2(300, 30)
 layout_mode = 2
-text = "POD OF SPACE WHALES"
 vertical_alignment = 1
 autowrap_mode = 3
 
@@ -98,16 +98,25 @@ layout_mode = 2
 theme = ExtResource("1_njahj")
 horizontal_scroll_mode = 0
 
-[node name="description" type="Label" parent="split/bestiary/tabs/INFO/info_split/description_scroll"]
+[node name="info_description" type="Label" parent="split/bestiary/tabs/INFO/info_split/description_scroll"]
 custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
-text = "\"Long-lasting, space-faring creatures which are usually observed in pods. Feast on space dust, asteroids, meteorites, and other sources of rare elements. Move via the expulsion of gasses out of the ‘tail’. These were the first extraterrestrial species observed by Humanity. First contact was initiated and recorded by a salvage ship - the recording consisted of salvage personnel in-the-yard gaping about ‘space whales’, with an extremely bewildered command continuously asking them to ‘restate their previous’. The straightforward term ‘space whales’ was soon picked up by news outlets documenting the discovery, and the name stuck despite scientific names being established.\""
 autowrap_mode = 3
 
-[node name="requested_panel" type="Panel" parent="split/bestiary/tabs/INFO/info_split"]
+[node name="reward_widgets_panel" type="Panel" parent="split/bestiary/tabs/INFO/info_split"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ug3bo")
+
+[node name="reward_widgets_list" type="ItemList" parent="split/bestiary/tabs/INFO/info_split/reward_widgets_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+item_count = 1
+item_0/text = ""
 
 [node name="lrs_center" type="CenterContainer" parent="split"]
 custom_minimum_size = Vector2(500, 500)
@@ -228,4 +237,5 @@ environment = SubResource("Environment_368mg")
 [node name="directional_light" type="DirectionalLight3D" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes"]
 
 [connection signal="close_requested" from="." to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_long_range_scopes_window_close_requested"]
+[connection signal="item_activated" from="split/bestiary/tabs/BESTIARY/bestiary_list" to="split/bestiary" method="_on_bestiary_list_item_activated"]
 [connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/fov_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_fov_slider_value_changed"]

@@ -1,26 +1,56 @@
 extends PanelContainer
 
-var discovered_entities_matrix: PackedInt32Array = []
+var discovered_entities_matrix: PackedInt32Array = []:
+	set(value):
+		discovered_entities_matrix = value
+		_on_discovered_entities_matrix_changed(value)
+
 var current_entity : entityAPI = null
 
 @onready var tabs = $tabs
+@onready var bestiary_list = $tabs/BESTIARY/bestiary_list
+@onready var info_title = $tabs/INFO/info_title
+@onready var info_description = $tabs/INFO/info_split/description_scroll/info_description
+@onready var info_reward_widgets_list = $tabs/INFO/info_split/reward_widgets_panel/reward_widgets_list
 
-var entity_descriptions = {
-	game_data.ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: "Long-lasting, space-faring creatures which are usually observed in pods. Feast on space dust, asteroids, meteorites, and other sources of rare elements. Move via the expulsion of gasses out of the ‘tail’. These were the first extraterrestrial species observed by Humanity. First contact was initiated and recorded by a salvage ship - the recording consisted of salvage personnel in-the-yard gaping about ‘space whales’, with an extremely bewildered command continuously asking them to ‘restate their previous’. The straightforward term ‘space whales’ was soon picked up by news outlets documenting the discovery, and the name stuck despite scientific names being established."
+const ENTITY_CLASSIFICATION_DESCRIPTIONS = {
+	game_data.ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: "Long-lasting, space-faring creatures which are usually observed in pods. Feast on space dust, asteroids, meteorites, and other sources of rare elements. Move via the expulsion of gasses out of the ‘tail’. These were the first extraterrestrial species observed by Humanity. First contact was initiated and recorded by a salvage ship - the recording consisted of salvage personnel in-the-yard gaping about ‘space whales’, with an extremely bewildered command continuously asking them to ‘restate their previous’. The straightforward term ‘space whales’ was soon picked up by news outlets documenting the discovery, and the name stuck despite scientific names being established.",
+	game_data.ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: ""
 }
 
+const ENTITY_CLASSIFICATION_REWARD_WIDGETS = {
+	game_data.ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: {"MEDIUM CLOSE-UP (200u)": null, "HIGH CLUSTERING (0u)": null},
+	game_data.ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: {}
+}
 
 func _on_current_entity_changed(new_entity : entityAPI):
 	update_bestiary_list()
 	update_info(new_entity.entity_classification)
-	tabs.set_current_tab(1)
+	tabs.set_current_tab(1) #info
 	pass
 
 func update_bestiary_list():
+	bestiary_list.clear()
+	for classification in discovered_entities_matrix:
+		var new = bestiary_list.add_item(game_data.ENTITY_CLASSIFICATIONS.find_key(classification).capitalize())
+		bestiary_list.set_item_metadata(new, classification)
+	pass
+
+func update_info(for_classification: game_data.ENTITY_CLASSIFICATIONS):
+	info_reward_widgets_list.clear()
+	info_title.set_text(game_data.ENTITY_CLASSIFICATIONS.find_key(for_classification).capitalize())
+	info_description.set_text(ENTITY_CLASSIFICATION_DESCRIPTIONS.get(for_classification, ""))
 	
-	
+	#reward widgets here!!!
 	
 	pass
 
-func update_info(for_entity_classification: game_data.ENTITY_CLASSIFICATIONS):
+func _on_bestiary_list_item_activated(index):
+	var classification = bestiary_list.get_item_metadata(index)
+	update_info(classification)
+	tabs.set_current_tab(1) #info
+	pass
+
+func _on_discovered_entities_matrix_changed(value):
+	update_bestiary_list()
 	pass
