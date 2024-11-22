@@ -24,14 +24,14 @@ const ENTITY_CLASSIFICATION_REWARD_WIDGETS = {
 }
 
 func _on_current_entity_changed(new_entity : entityAPI):
-	update_bestiary_list()
+	update_bestiary_list(discovered_entities_matrix)
 	update_info(new_entity.entity_classification)
 	tabs.set_current_tab(1) #info
 	pass
 
-func update_bestiary_list():
+func update_bestiary_list(_discovered_entities_matrix: PackedInt32Array = []):
 	bestiary_list.clear()
-	for classification in discovered_entities_matrix:
+	for classification in _discovered_entities_matrix:
 		var new = bestiary_list.add_item(game_data.ENTITY_CLASSIFICATIONS.find_key(classification).capitalize())
 		bestiary_list.set_item_metadata(new, classification)
 	pass
@@ -52,5 +52,5 @@ func _on_bestiary_list_item_activated(index):
 	pass
 
 func _on_discovered_entities_matrix_changed(value):
-	update_bestiary_list()
+	update_bestiary_list(value)
 	pass

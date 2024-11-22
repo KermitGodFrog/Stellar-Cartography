@@ -19,20 +19,24 @@ func _physics_process(_delta):
 		var new_point_pos = Vector2(x + get_screen_centre().x, y + get_screen_centre().y)
 		points[new_point_pos] = 1.0
 	
-		for body in system.bodies:
-			if (body.is_planet() or body.is_star()) and body.get_identifier() != locked_body_identifier:
-				if locked_body:
-					var dir = locked_body.position.direction_to(body.position)
-					var dist = locked_body.position.distance_to(body.position)
-					var mass = body.metadata.get("mass")
-					
-					var magnitude: float = (dist * mass)
-					
-					var closest_point = get_closest_point_to_direction(dir)
-					
-					points[closest_point] = 5.0 + magnitude
+	for body in system.bodies:
+		if (body.is_planet() or body.is_star() or body.is_wormhole()) and body.get_identifier() != locked_body_identifier:
+			if locked_body:
+				var dir = locked_body.position.direction_to(body.position)
+				var dist = locked_body.position.distance_to(body.position)
+				var mass = body.metadata.get("mass")
+				
+				var magnitude: float = global_data.get_randf(0,1)
+				if not body.is_wormhole():
+					magnitude = (dist * mass)
+				
+				var closest_point = get_closest_point_to_direction(dir)
+				
+				points[closest_point] = 5.0 + magnitude
 	
-	if locked_body: locked_body_label.set_text(locked_body.get_display_name().capitalize())
+	if locked_body: 
+		if locked_body.is_known: locked_body_label.set_text(locked_body.get_display_name().capitalize())
+		elif locked_body.is_theorised_but_not_known(): locked_body_label.set_text("Unknown")
 	else: locked_body_label.set_text("")
 	queue_redraw()
 	pass
