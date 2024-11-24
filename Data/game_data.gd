@@ -25,6 +25,61 @@ const ENTITY_CLASSIFICATION_CURVES = {
 const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
 const NANITE_CONTROLLER_REPAIR_CURVE = preload("res://Data/Spawn Data/nanite_controller_repair_curve.tres")
 
+enum NAME_VARIETIES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY} #for generating star systems
+var NAME_DATA: Dictionary = {
+	"star_names": [],
+	"planet_names": [],
+	"planet_flairs": [],
+	"asteroid_belt_names": [],
+	"wormhole_names": [],
+	"station_names": [],
+	"station_flairs": [],
+	"space_anomaly_names": [],
+	"space_anomaly_flairs": []
+}
+
+#IS NOT CURRENTLY IN USE /\/\/\/\/\/\
+
+
+
+
+
+
+#func get_name_from_variety(variety: NAME_VARIETIES):
+	#match variety:
+		#NAME_VARIETIES.STAR:
+			#return get_lines_from_file("res://Data/Name Data/star_names.txt").pick_random()
+		#NAME_VARIETIES.PLANET:
+			#var names = get_lines_from_file("res://Data/Name Data/planet_names.txt")
+			#var flairs = get_lines_from_file("res://Data/Name Data/planet_flairs.txt")
+			#var pick = names.pick_random()
+			#if randf() >= 0.75:
+				#pick = str(pick + " " + flairs.pick_random())
+			#return pick
+		#NAME_VARIETIES.ASTEROID_BELT:
+			#return get_lines_from_file("res://Data/Name Data/asteroid_belt_names.txt")
+		#NAME_VARIETIES.WORMHOLE:
+			
+		#NAME_VARIETIES.STATION:
+			
+		#NAME_VARIETIES.SPACE_ANOMALY:
+			
+	#pass
+
+func get_lines_from_file(file_path: String):
+	var lines: Array = []
+	var file = FileAccess.open(file_path, FileAccess.READ)
+	while not file.eof_reached():
+		var line = file.get_line()
+		if not line.is_empty():
+			lines.append(line)
+	file.close()
+	return lines
+
+#IS NOT CURRENTLY IN USE /\/\/\/\/\/\
+
+
+
 func get_weighted_station_classifications() -> Dictionary:
 	var weighted: Dictionary = {}
 	for classification in STATION_CLASSIFICATION_CURVES:

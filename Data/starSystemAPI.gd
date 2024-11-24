@@ -599,6 +599,7 @@ func is_civilized():
 
 #CONSOLIDATE ALL THESE INTO ONE FUNCTION AT SOME POINT \/\/\/\/
 
+
 func get_random_star_name() -> String:
 	var name_candidates: Array = []
 	var file = FileAccess.open("res://Data/Name Data/star_names.txt", FileAccess.READ)
@@ -664,7 +665,7 @@ func get_random_station_name() -> String:
 
 func get_random_flair() -> String:
 	var flair_candidates: Array = []
-	var flair_file = FileAccess.open("res://Data/Name Data/name_flair.txt", FileAccess.READ)
+	var flair_file = FileAccess.open("res://Data/Name Data/planet_flairs.txt", FileAccess.READ)
 	while not flair_file.eof_reached():
 		var line = flair_file.get_line()
 		if not line.is_empty():
