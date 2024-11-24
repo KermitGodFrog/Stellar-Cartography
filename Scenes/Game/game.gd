@@ -191,6 +191,7 @@ func _ready():
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
 		_on_switch_star_system(world.player.current_star_system)
+		
 	
 	pass
 

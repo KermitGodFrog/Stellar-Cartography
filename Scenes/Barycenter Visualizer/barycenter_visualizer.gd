@@ -35,11 +35,12 @@ func _physics_process(_delta):
 				
 				var magnitude: float = global_data.get_randf(0,1)
 				if not body.is_wormhole():
-					magnitude = (dist * mass)
+					#magnitude = (dist * mass) as dist increase, magnitude increase - bad
+					magnitude = minf(((mass / dist) * 100), 20.0) #20.0 is maximum magnitude
 				
 				var closest_point = get_closest_point_to_direction(dir)
 				
-				points[closest_point] = 5.0 + magnitude
+				points[closest_point] += 4.0 + magnitude
 	
 	if locked_body: 
 		if locked_body.is_known: locked_body_label.set_text(locked_body.get_display_name().capitalize())
