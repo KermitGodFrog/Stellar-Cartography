@@ -7,6 +7,8 @@ signal addPlayerValue(amount: int)
 signal addPlayerHullStress(amount: int)
 signal removePlayerHullStress(amount: int)
 signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
+signal TUTORIALSetOmissionOverride(value: bool)
+signal TUTORIALPlayerWin()
 
 var dialogue_memory: Dictionary = {} #memory that is added by any query, and is always accessible indefinitely. from worldAPI dialogue_memory which is sent via game.gd
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
@@ -407,4 +409,12 @@ func killCharacterWithFlair(occupation: characterAPI.OCCUPATIONS):
 
 func setImage(path: String):
 	dialogue.set_image(path)
+	pass
+
+func _TUTORIALSetOmissionOverride(value: bool):
+	emit_signal("TUTORIALSetOmissionOverride", value)
+	pass
+
+func _TUTORIALPlayerWin():
+	emit_signal("TUTORIALPlayerWin")
 	pass

@@ -54,6 +54,8 @@ func _ready():
 	dialogue_manager.connect("addPlayerHullStress", _on_add_player_hull_stress)
 	dialogue_manager.connect("removePlayerHullStress", _on_remove_player_hull_stress)
 	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
+	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
+	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
 	
 	pause_menu.connect("saveWorld", _on_save_world)
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
@@ -714,6 +716,17 @@ func _on_theorised_body(id: int):
 	var body = world.player.current_star_system.get_body_from_identifier(id)
 	if body: 
 		_on_player_theorised_body(body)
+	pass
+
+func _on_tutorial_set_omission_override(value: bool):
+	barycenter_visualizer.TUTORIAL_OMISSION_OVERRIDE = value
+	pass
+
+func _on_tutorial_player_win():
+	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN, world.player.systems_traversed)
+	await stats_menu.onCloseStatsMenu
+	
+	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
 	pass
 
 

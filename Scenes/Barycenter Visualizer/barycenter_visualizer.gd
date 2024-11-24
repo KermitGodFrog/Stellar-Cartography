@@ -2,6 +2,8 @@ extends Control
 
 @onready var locked_body_label = $locked_body_label
 
+var TUTORIAL_OMISSION_OVERRIDE: bool = false
+
 var system: starSystemAPI
 var locked_body_identifier: int
 
@@ -21,7 +23,12 @@ func _physics_process(_delta):
 	
 	for body in system.bodies:
 		if (body.is_planet() or body.is_star() or body.is_wormhole()) and body.get_identifier() != locked_body_identifier:
-			if locked_body:
+			if locked_body: #display isnt shown if no body is locked to base points around
+				
+				if body.get_display_name() == "Omission":
+					if TUTORIAL_OMISSION_OVERRIDE == true:
+						continue
+				
 				var dir = locked_body.position.direction_to(body.position)
 				var dist = locked_body.position.distance_to(body.position)
 				var mass = body.metadata.get("mass")
