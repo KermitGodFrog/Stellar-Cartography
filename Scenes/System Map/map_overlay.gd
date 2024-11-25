@@ -4,7 +4,7 @@ extends TextureRect
 var frame: int = 0
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	texture.region.position = Vector2(0, 112 * frame)
 	pass
 

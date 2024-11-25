@@ -30,6 +30,8 @@ var _REWARD_MATRIX: Array = [] #carried to _on_state_changed
 @onready var fov_container = $camera_offset/camera/canvas_layer/fov_container
 @onready var value_label = $camera_offset/camera/canvas_layer/value_label
 @onready var rangefinder = $camera_offset/camera/canvas_layer/rangefinder
+@onready var shutter = $shutter
+@onready var click = $click
 
 var GENERATION_POSITIONS: PackedVector3Array = []
 var GENERATION_BASIS: Basis
@@ -268,6 +270,8 @@ func _on_state_changed(new_state: STATES):
 	
 	match new_state:
 		STATES.DEFAULT:
+			click.play()
+			
 			photo_texture.texture = null
 			show_all_hud_elements()
 			
@@ -276,6 +280,8 @@ func _on_state_changed(new_state: STATES):
 			reset_timer.connect("timeout", _on_reset_hud_image)
 			
 		STATES.DISPLAY_PHOTO:
+			shutter.play()
+			
 			hide_all_hud_elements()
 			
 			await RenderingServer.frame_post_draw

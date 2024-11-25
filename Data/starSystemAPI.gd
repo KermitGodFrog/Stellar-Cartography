@@ -592,5 +592,3 @@ func is_civilized():
 			return true
 	return false
 
-
-

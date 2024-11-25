@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=6 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" path="res://Scenes/Main Menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Texture2D" uid="uid://nav04ap3rdbe" path="res://Graphics/new_game_popup.png" id="2_1jdbj"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_srvhc"]
+texture = ExtResource("2_1jdbj")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8pdab"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_de2wi"]
 
 [node name="main_menu" type="Control"]
 layout_mode = 3
@@ -49,32 +56,78 @@ offset_bottom = 31.0
 grow_horizontal = 2
 text = "TUTORIAL"
 
-[node name="name_edit" type="LineEdit" parent="."]
+[node name="new_game_popup" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -67.0625
-offset_top = -31.0
-grow_horizontal = 0
-grow_vertical = 0
-placeholder_text = "name"
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="prefix_edit" type="OptionButton" parent="."]
+[node name="background" type="ColorRect" parent="new_game_popup"]
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -105.0
-offset_top = -71.0
-offset_bottom = -40.0
-grow_horizontal = 0
-grow_vertical = 0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.235294, 0.235294, 0.235294, 0.313726)
+
+[node name="new_game" type="Panel" parent="new_game_popup"]
+custom_minimum_size = Vector2(400, 500)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -250.0
+offset_right = 200.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_srvhc")
+
+[node name="margin" type="MarginContainer" parent="new_game_popup/new_game"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="scroll" type="VBoxContainer" parent="new_game_popup/new_game/margin"]
+layout_mode = 2
+
+[node name="actions_hbox" type="HBoxContainer" parent="new_game_popup/new_game/margin/scroll"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="new_game_label" type="Label" parent="new_game_popup/new_game/margin/scroll/actions_hbox"]
+layout_mode = 2
+text = "CREATING NEW GAME"
+
+[node name="return_button" type="Button" parent="new_game_popup/new_game/margin/scroll/actions_hbox"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "x"
+
+[node name="seperator" type="HSeparator" parent="new_game_popup/new_game/margin/scroll"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_8pdab")
+
+[node name="prefix_edit" type="OptionButton" parent="new_game_popup/new_game/margin/scroll"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
 item_count = 3
+selected = 2
 popup/item_0/text = "Sir"
 popup/item_0/id = 0
 popup/item_1/text = "Madam"
@@ -82,40 +135,23 @@ popup/item_1/id = 1
 popup/item_2/text = "Captain"
 popup/item_2/id = 2
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
-custom_minimum_size = Vector2(450, 600)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -225.0
-offset_top = -300.0
-offset_right = 225.0
-offset_bottom = 300.0
-grow_horizontal = 2
-grow_vertical = 2
-stretch_mode = 3
-
-[node name="TextureRect" type="TextureRect" parent="AspectRatioContainer"]
+[node name="name_edit" type="LineEdit" parent="new_game_popup/new_game/margin/scroll"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-texture = ExtResource("2_1jdbj")
-stretch_mode = 5
+placeholder_text = "Tanaka"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="AspectRatioContainer"]
+[node name="seperator1" type="HSeparator" parent="new_game_popup/new_game/margin/scroll"]
 layout_mode = 2
-horizontal_scroll_mode = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_de2wi")
 
-[node name="Button" type="Button" parent="AspectRatioContainer/ScrollContainer/VBoxContainer"]
+[node name="create_button" type="Button" parent="new_game_popup/new_game/margin/scroll"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-text = "gdkgkjgdjgdigdij"
+text = "CREATE"
 
 [connection signal="pressed" from="continue_button" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="new_button" to="." method="_on_new_button_pressed"]
 [connection signal="pressed" from="tutorial_button" to="." method="_on_tutorial_button_pressed"]
+[connection signal="pressed" from="new_game_popup/new_game/margin/scroll/actions_hbox/return_button" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="new_game_popup/new_game/margin/scroll/create_button" to="." method="_on_create_button_pressed"]

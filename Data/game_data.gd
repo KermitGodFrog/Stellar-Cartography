@@ -62,7 +62,6 @@ func get_random_name_from_variety(variety: NAME_VARIETIES):
 			return dual_name_selection(NAME_VARIETIES.SPACE_ANOMALY, NAME_VARIETIES.SPACE_ANOMALY_FLAIR)
 		_:
 			return get_data_or_file_candidates(variety).pick_random()
-	pass
 
 func get_lines_from_file(file_path: String):
 	var lines: Array = []

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b0frxj5cysipi"]
+[gd_scene load_steps=29 format=3 uid="uid://b0frxj5cysipi"]
 
 [ext_resource type="Theme" uid="uid://dvp6gmpuweabh" path="res://Scenes/Long Range Scopes/long_range_scopes_MAIN_theme.tres" id="1_njahj"]
 [ext_resource type="Script" path="res://Scenes/Long Range Scopes/long_range_scopes.gd" id="1_syfdy"]
@@ -9,6 +9,16 @@
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="3_iyrid"]
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_kwwow"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="4_mjqhh"]
+[ext_resource type="AudioStream" uid="uid://c4ia3frwfyqim" path="res://Sound/Long Range Scopes/shutter1.wav" id="10_0oh6i"]
+[ext_resource type="AudioStream" uid="uid://dynsxxaf7y458" path="res://Sound/Long Range Scopes/shutter2.wav" id="11_o2hra"]
+[ext_resource type="AudioStream" uid="uid://c7im5vvinagcw" path="res://Sound/Long Range Scopes/shutter3.wav" id="12_5dcf7"]
+[ext_resource type="AudioStream" uid="uid://b80sarkki6se5" path="res://Sound/Long Range Scopes/shutter4.wav" id="13_qubtr"]
+[ext_resource type="AudioStream" uid="uid://bmcs11c0yoccc" path="res://Sound/Long Range Scopes/shutter5.wav" id="14_ki1nd"]
+[ext_resource type="AudioStream" uid="uid://bgvcm0ik74b14" path="res://Sound/Long Range Scopes/click1.wav" id="15_5wp05"]
+[ext_resource type="AudioStream" uid="uid://cg5n3s7hy1pku" path="res://Sound/Long Range Scopes/click2.wav" id="16_qd8eo"]
+[ext_resource type="AudioStream" uid="uid://hri8wjdxrgf5" path="res://Sound/Long Range Scopes/click3.wav" id="17_olq2m"]
+[ext_resource type="AudioStream" uid="uid://b8xrcplx7vrgi" path="res://Sound/Long Range Scopes/click4.wav" id="18_5iyy6"]
+[ext_resource type="AudioStream" uid="uid://fybg1yaoioou" path="res://Sound/Long Range Scopes/click5.wav" id="19_qvp7y"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v3gny"]
 
@@ -45,6 +55,32 @@ reflected_light_source = 1
 tonemap_mode = 1
 tonemap_exposure = 2.0
 tonemap_white = 0.5
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_12p7g"]
+streams_count = 5
+stream_0/stream = ExtResource("10_0oh6i")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("11_o2hra")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("12_5dcf7")
+stream_2/weight = 1.0
+stream_3/stream = ExtResource("13_qubtr")
+stream_3/weight = 1.0
+stream_4/stream = ExtResource("14_ki1nd")
+stream_4/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_cnul4"]
+streams_count = 5
+stream_0/stream = ExtResource("15_5wp05")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("16_qd8eo")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("17_olq2m")
+stream_2/weight = 1.0
+stream_3/stream = ExtResource("18_5iyy6")
+stream_3/weight = 1.0
+stream_4/stream = ExtResource("19_qvp7y")
+stream_4/weight = 1.0
 
 [node name="long_range_scopes_window" type="Window"]
 process_mode = 3
@@ -252,6 +288,14 @@ ticks_on_borders = true
 environment = SubResource("Environment_368mg")
 
 [node name="directional_light" type="DirectionalLight3D" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes"]
+
+[node name="shutter" type="AudioStreamPlayer" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes"]
+stream = SubResource("AudioStreamRandomizer_12p7g")
+bus = &"SFX"
+
+[node name="click" type="AudioStreamPlayer" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes"]
+stream = SubResource("AudioStreamRandomizer_cnul4")
+bus = &"SFX"
 
 [connection signal="close_requested" from="." to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_long_range_scopes_window_close_requested"]
 [connection signal="item_activated" from="split/bestiary/tabs/BESTIARY/bestiary_list" to="split/bestiary" method="_on_bestiary_list_item_activated"]
