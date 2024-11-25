@@ -25,46 +25,44 @@ const ENTITY_CLASSIFICATION_CURVES = {
 const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
 const NANITE_CONTROLLER_REPAIR_CURVE = preload("res://Data/Spawn Data/nanite_controller_repair_curve.tres")
 
-enum NAME_VARIETIES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY} #for generating star systems
+enum NAME_VARIETIES {STAR, PLANET, GENERIC_FLAIR, ASTEROID_BELT, WORMHOLE, STATION, STATION_FLAIR, SPACE_ANOMALY, SPACE_ANOMALY_FLAIR} #for generating star systems
 var NAME_DATA: Dictionary = {
-	"star_names": [],
-	"planet_names": [],
-	"planet_flairs": [],
-	"asteroid_belt_names": [],
-	"wormhole_names": [],
-	"station_names": [],
-	"station_flairs": [],
-	"space_anomaly_names": [],
-	"space_anomaly_flairs": []
+	NAME_VARIETIES.STAR: [],
+	NAME_VARIETIES.PLANET: [],
+	NAME_VARIETIES.GENERIC_FLAIR: [],
+	NAME_VARIETIES.ASTEROID_BELT: [],
+	NAME_VARIETIES.WORMHOLE: [],
+	NAME_VARIETIES.STATION: [],
+	NAME_VARIETIES.STATION_FLAIR: [],
+	NAME_VARIETIES.SPACE_ANOMALY: [],
+	NAME_VARIETIES.SPACE_ANOMALY_FLAIR: []
 }
 
-#IS NOT CURRENTLY IN USE /\/\/\/\/\/\
+const NAME_FILE_PATHS: Dictionary = {
+	NAME_VARIETIES.STAR: "res://Data/Name Data/star_names.txt",
+	NAME_VARIETIES.PLANET: "res://Data/Name Data/planet_names.txt",
+	NAME_VARIETIES.GENERIC_FLAIR: "res://Data/Name Data/generic_flairs.txt",
+	NAME_VARIETIES.ASTEROID_BELT: "res://Data/Name Data/asteroid_belt_names.txt",
+	NAME_VARIETIES.WORMHOLE: "res://Data/Name Data/wormhole_names.txt",
+	NAME_VARIETIES.STATION: "res://Data/Name Data/station_names.txt",
+	NAME_VARIETIES.STATION_FLAIR: "res://Data/Name Data/station_flairs.txt",
+	NAME_VARIETIES.SPACE_ANOMALY: "res://Data/Name Data/space_anomaly_names.txt",
+	NAME_VARIETIES.SPACE_ANOMALY_FLAIR: "res://Data/Name Data/space_anomaly_flairs.txt"
+}
 
-
-
-
-
-
-#func get_name_from_variety(variety: NAME_VARIETIES):
-	#match variety:
-		#NAME_VARIETIES.STAR:
-			#return get_lines_from_file("res://Data/Name Data/star_names.txt").pick_random()
-		#NAME_VARIETIES.PLANET:
-			#var names = get_lines_from_file("res://Data/Name Data/planet_names.txt")
-			#var flairs = get_lines_from_file("res://Data/Name Data/planet_flairs.txt")
-			#var pick = names.pick_random()
-			#if randf() >= 0.75:
-				#pick = str(pick + " " + flairs.pick_random())
-			#return pick
-		#NAME_VARIETIES.ASTEROID_BELT:
-			#return get_lines_from_file("res://Data/Name Data/asteroid_belt_names.txt")
-		#NAME_VARIETIES.WORMHOLE:
-			
-		#NAME_VARIETIES.STATION:
-			
-		#NAME_VARIETIES.SPACE_ANOMALY:
-			
-	#pass
+func get_random_name_from_variety(variety: NAME_VARIETIES):
+	match variety:
+		NAME_VARIETIES.STAR:
+			return dual_name_selection(NAME_VARIETIES.STAR, NAME_VARIETIES.GENERIC_FLAIR)
+		NAME_VARIETIES.PLANET:
+			return dual_name_selection(NAME_VARIETIES.PLANET, NAME_VARIETIES.GENERIC_FLAIR)
+		NAME_VARIETIES.STATION:
+			return dual_name_selection(NAME_VARIETIES.STATION, NAME_VARIETIES.STATION_FLAIR)
+		NAME_VARIETIES.SPACE_ANOMALY:
+			return dual_name_selection(NAME_VARIETIES.SPACE_ANOMALY, NAME_VARIETIES.SPACE_ANOMALY_FLAIR)
+		_:
+			return get_data_or_file_candidates(variety).pick_random()
+	pass
 
 func get_lines_from_file(file_path: String):
 	var lines: Array = []
@@ -76,7 +74,17 @@ func get_lines_from_file(file_path: String):
 	file.close()
 	return lines
 
-#IS NOT CURRENTLY IN USE /\/\/\/\/\/\
+func get_data_or_file_candidates(variety: NAME_VARIETIES):
+	var data: Array = NAME_DATA.get(variety)
+	if data.is_empty():
+		return get_lines_from_file(NAME_FILE_PATHS.get(variety))
+	else:
+		return data
+
+func dual_name_selection(variety1: NAME_VARIETIES, variety2: NAME_VARIETIES):
+	return "%s %s" % [get_data_or_file_candidates(variety1).pick_random(),
+	get_data_or_file_candidates(variety2).pick_random()]
+
 
 
 

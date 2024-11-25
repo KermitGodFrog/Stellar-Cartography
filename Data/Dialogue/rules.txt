@@ -116,8 +116,8 @@ PA_08GenericContinue,"concept: optionSelected, option: PA_08GenericContinue",,"c
 ,,,,,,,,,
 PA_09GenericOpenDialog,"concept: PA_NeptunianPortalResponse, player_in_ABYSS_region: true",,openDialog: null,defaultApproachMessage,,,,Investigate:PA_09GenericDispatch,"There is an unnaturally large storm within its atmosphere, just below the equator. It is hundreds of kilometres deep, with ferocious wind speeds and a diameter akin to the most gargantuan of storms on Jovian worlds."
 PA_09GenericDispatch,"concept: optionSelected, option: PA_09GenericDispatch",,clearAll: null,,,,PA_09GenericDispatchResponse,,
-PA_09GenericDispatchSuccess,concept: PA_09GenericDispatchResponse,,addValueWithFlair: 10000,,,,,,"The storm appears to spin around a spherical device floating a hundred kilometres below the exosphere. No probe in your arsenal can reach the device amidst the extraordinary wind speed, so it is merely surveyed extensively."
-PA_09GenericDispatchFailure,concept: PA_09GenericDispatchResponse,,addValueWithFlair: 2500,,,,,,The storm is determined to be a natural occurrence. It is logged extensively due to its rarity.
+PA_09GenericDispatchSuccess,concept: PA_09GenericDispatchResponse,,addValueWithFlair: 10000,,,,,Leave:PAHardLeave,"The storm appears to spin around a spherical device floating a hundred kilometres below the exosphere. No probe in your arsenal can reach the device amidst the extraordinary wind speed, so it is merely surveyed extensively."
+PA_09GenericDispatchFailure,concept: PA_09GenericDispatchResponse,,addValueWithFlair: 2500,,,,,Leave:PAHardLeave,The storm is determined to be a natural occurrence. It is logged extensively due to its rarity.
 ,,,,,,,,,
 ,,,,,,,,,
 PA_01ProbeGraveyardOpenDialog,"concept: PA_JovianPortalResponse, player_in_FRONTIER_region: true",,openDialog: null,defaultApproachMessage,,,,Continue:PA_01ProbeGraveyardContinueA,"Rather quickly, you are hailed by the senior LIDAR technician in a corner of the operations deck. "
@@ -141,7 +141,7 @@ PA_02PlanetRCSJiyaSalvageDispatchFailure,"concept: PA_02PlanetRCSJiyaSalvageResp
 ,,,,,,,,,
 PA_03TheResearcherOpenDialog,"concept: PA_TerranPortalResponse, player_in_CORE_region: true, planet_type: Silicate",,openDialog: null,defaultApproachMessage,,,,Continue:PA_03TheResearcherContinueA,"AIS automatically interrogates and identifies a ship upon the surface of the planet. The vessel is an exploration pinnace, and according to on-board databanks, has been marked as missing for thirty years. It is unlikely that it poses any threat to your ship or your marines."
 PA_03TheResearcherContinueA,"concept: optionSelected, option: PA_03TheResearcherContinueA",,clearOptions: null,,populatePA_03TheResearcherOptions,,,Board a transport to extend formal greetings in person: PA_03TheResearcherContinueB,"Your communications officer sends an oral landing request. The ship, surprisingly, transmits a green flag in response."
-PA_03TheResearcherContinueB,"concept: optionSelected, option: PA_03TheResearcherContinueB",,clearOptions: null,,,,,,"You move to the launch bay and wait outside the chosen transport until directed abroad. You and a contingent of officers take a seat, and a unit of marines clamber in afterwards. The transport soon launches. "
+PA_03TheResearcherContinueB,"concept: optionSelected, option: PA_03TheResearcherContinueB",,clearOptions: null,,,,,Continue:PA_03TheResearcherContinueC,"You move to the launch bay and wait outside the chosen transport until directed abroad. You and a contingent of officers take a seat, and a unit of marines clamber in afterwards. The transport soon launches. "
 PA_03TheResearcherContinueC,"concept: optionSelected, option: PA_03TheResearcherContinueC",,clearOptions: null,,,,,Leave:PAHardLeave,I cant be bothered to finish this right now.
 ,,,,,,,,,
 ,,,,,,,,,

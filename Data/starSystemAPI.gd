@@ -170,7 +170,7 @@ func createRandomWeightedPrimaryHookStar():
 	
 	var multiplier = get_discovery_multiplier_from_star_type(star_type)
 	
-	var new_body = addStationaryBody(identifier_count, str(get_random_star_name()), null, radius, {"star_type": star_type, "mass": mass, "luminosity": luminosity, "discovery_multiplier": multiplier, "color": color, "iterations": 25})
+	var new_body = addStationaryBody(identifier_count, game_data.get_random_name_from_variety(game_data.NAME_VARIETIES.STAR), null, radius, {"star_type": star_type, "mass": mass, "luminosity": luminosity, "discovery_multiplier": multiplier, "color": color, "iterations": 25})
 	get_body_from_identifier(new_body).is_known = true #so you can see stars on system map before exploring
 	return new_body
 
@@ -197,7 +197,7 @@ func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: f
 				var belt_width = global_data.get_randf(hook.radius * 71, hook.radius * 645) #in solar radii. for reference, asteroid belt in the sol system is 215 solar radii
 				if new_distance > belt_width:
 					var belt_classification = global_data.weighted_pick(asteroid_belt_classifications, "weight")
-					var new_belt = addStationaryBody(identifier_count, str(get_random_asteroid_belt_name()), hook_identifier, new_distance, {"asteroid_belt_classification": belt_classification, "mass": (global_data.get_randf(pow(10, -1.3) / 333000, pow(10, 0.22) / 333000)), "width": belt_width, "color": Color(0.111765, 0.111765, 0.111765, 1), "iterations": (hook.metadata.get("iterations") / 2)})
+					var new_belt = addStationaryBody(identifier_count, game_data.get_random_name_from_variety(game_data.NAME_VARIETIES.ASTEROID_BELT), hook_identifier, new_distance, {"asteroid_belt_classification": belt_classification, "mass": (global_data.get_randf(pow(10, -1.3) / 333000, pow(10, 0.22) / 333000)), "width": belt_width, "color": Color(0.111765, 0.111765, 0.111765, 1), "iterations": (hook.metadata.get("iterations") / 2)})
 					if hook.is_star():
 						get_body_from_identifier(new_belt).is_known = true
 					continue
@@ -281,7 +281,7 @@ func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: f
 					has_missing_AO = true
 				
 				#SPAWNING PLANET + PLANET MOONS
-				var new_body = addBody(identifier_count, str(get_random_planet_name()), hook_identifier, new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"planet_classification": planet_classification, "planet_type": planet_type, "mass": (mass / 333000), "color": color, "value": value, "iterations": (hook.metadata.get("iterations") / 2), "has_planetary_anomaly": has_planetary_anomaly, "is_planetary_anomaly_available": is_planetary_anomaly_available, "planetary_anomaly_seed": randi(), "has_missing_AO": has_missing_AO})
+				var new_body = addBody(identifier_count, game_data.get_random_name_from_variety(game_data.NAME_VARIETIES.PLANET), hook_identifier, new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"planet_classification": planet_classification, "planet_type": planet_type, "mass": (mass / 333000), "color": color, "value": value, "iterations": (hook.metadata.get("iterations") / 2), "has_planetary_anomaly": has_planetary_anomaly, "is_planetary_anomaly_available": is_planetary_anomaly_available, "planetary_anomaly_seed": randi(), "has_missing_AO": has_missing_AO})
 				get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
 				
 				if generate_sub_bodies:
@@ -314,7 +314,7 @@ func generateRandomWormholes(): #uses variables post_gen_location_candidates, de
 		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
 		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 		
-		var new_wormhole = addWormhole(identifier_count, str(get_random_wormhole_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), dest_system, {"color": Color.WEB_PURPLE, "destination_star_type": dest_system.get_first_star().metadata.get("star_type")})
+		var new_wormhole = addWormhole(identifier_count, game_data.get_random_name_from_variety(game_data.NAME_VARIETIES.WORMHOLE), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), dest_system, {"color": Color.WEB_PURPLE, "destination_star_type": dest_system.get_first_star().metadata.get("star_type")})
 		get_body_from_identifier(new_wormhole).rotation = deg_to_rad(global_data.get_randf(0,360))
 		if dest_system == previous_system:
 			get_body_from_identifier(new_wormhole).is_disabled = true
@@ -344,7 +344,7 @@ func generateRandomWeightedStations():
 		
 		var percentage_markup = global_data.get_randi(50, 200)
 		
-		var new_station = addStation(identifier_count, str(get_random_station_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), station_classification, percentage_markup)
+		var new_station = addStation(identifier_count, game_data.get_random_name_from_variety(game_data.NAME_VARIETIES.STATION), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), station_classification, percentage_markup)
 		get_body_from_identifier(new_station).rotation = deg_to_rad(global_data.get_randf(0,360))
 		
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
@@ -371,7 +371,7 @@ func generateRandomAnomalies(_SA_chance_per_candidate: float = 0.0):
 			
 			var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 			
-			var new_anomaly = addAnomaly(identifier_count, str(get_random_space_anomaly_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"space_anomaly_seed": randi()}) #dont need to set "is_space_anomaly_available": true, because it defaults to true in every use case.
+			var new_anomaly = addAnomaly(identifier_count, game_data.get_random_name_from_variety(game_data.NAME_VARIETIES.SPACE_ANOMALY), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"space_anomaly_seed": randi()}) #dont need to set "is_space_anomaly_available": true, because it defaults to true in every use case.
 			get_body_from_identifier(new_anomaly).rotation = deg_to_rad(global_data.get_randf(0,360))
 			
 			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
@@ -594,98 +594,3 @@ func is_civilized():
 
 
 
-
-
-
-#CONSOLIDATE ALL THESE INTO ONE FUNCTION AT SOME POINT \/\/\/\/
-
-
-func get_random_star_name() -> String:
-	var name_candidates: Array = []
-	var file = FileAccess.open("res://Data/Name Data/star_names.txt", FileAccess.READ)
-	while not file.eof_reached():
-		var line = file.get_line()
-		if not line.is_empty():
-			name_candidates.append(line)
-	file.close()
-	var pick = name_candidates.pick_random()
-	if randf() >= 0.75:
-		pick = str(pick + " " + get_random_flair())
-	return pick
-
-func get_random_planet_name() -> String:
-	var name_candidates: Array = []
-	var file = FileAccess.open("res://Data/Name Data/planet_names.txt", FileAccess.READ)
-	while not file.eof_reached():
-		var line = file.get_line()
-		if not line.is_empty():
-			name_candidates.append(line)
-	file.close()
-	var pick = name_candidates.pick_random()
-	if randf() >= 0.75:
-		pick = str(pick + " " + get_random_flair())
-	return pick
-
-func get_random_asteroid_belt_name() -> String:
-	var name_candidates: Array = []
-	var file = FileAccess.open("res://Data/Name Data/asteroid_belt_names.txt", FileAccess.READ)
-	while not file.eof_reached():
-		var line = file.get_line()
-		if not line.is_empty():
-			name_candidates.append(line)
-	file.close()
-	return name_candidates.pick_random()
-
-func get_random_wormhole_name() -> String:
-	var name_candidates: Array = []
-	var file = FileAccess.open("res://Data/Name Data/wormhole_names.txt", FileAccess.READ)
-	while not file.eof_reached():
-		var line = file.get_line()
-		if not line.is_empty():
-			name_candidates.append(line)
-	file.close()
-	return name_candidates.pick_random()
-
-func get_random_station_name() -> String:
-	var name_candidates: Array = []
-	var flair_candidates: Array = []
-	var names_file = FileAccess.open("res://Data/Name Data/station_names.txt", FileAccess.READ)
-	while not names_file.eof_reached():
-		var line = names_file.get_line()
-		if not line.is_empty():
-			name_candidates.append(line)
-	names_file.close()
-	var flairs_file = FileAccess.open("res://Data/Name Data/station_flairs.txt", FileAccess.READ)
-	while not flairs_file.eof_reached():
-		var line = flairs_file.get_line()
-		if not line.is_empty():
-			flair_candidates.append(line)
-	flairs_file.close()
-	return str(name_candidates.pick_random(), " ", flair_candidates.pick_random())
-
-func get_random_flair() -> String:
-	var flair_candidates: Array = []
-	var flair_file = FileAccess.open("res://Data/Name Data/planet_flairs.txt", FileAccess.READ)
-	while not flair_file.eof_reached():
-		var line = flair_file.get_line()
-		if not line.is_empty():
-			flair_candidates.append(line)
-	flair_file.close()
-	return flair_candidates.pick_random()
-
-func get_random_space_anomaly_name() -> String:
-	var name_candidates: Array = []
-	var flair_candidates: Array = []
-	var file = FileAccess.open("res://Data/Name Data/space_anomaly_names.txt", FileAccess.READ)
-	while not file.eof_reached():
-		var line = file.get_line()
-		if not line.is_empty():
-			name_candidates.append(line)
-	file.close()
-	var flairs_file = FileAccess.open("res://Data/Name Data/space_anomaly_flairs.txt", FileAccess.READ)
-	while not flairs_file.eof_reached():
-		var line = flairs_file.get_line()
-		if not line.is_empty():
-			flair_candidates.append(line)
-	flairs_file.close()
-	return str(name_candidates.pick_random(), " ", flair_candidates.pick_random())

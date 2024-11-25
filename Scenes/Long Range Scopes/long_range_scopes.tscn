@@ -51,6 +51,7 @@ process_mode = 3
 title = "Long Range Scopes"
 position = Vector2i(0, 36)
 size = Vector2i(800, 500)
+visible = false
 min_size = Vector2i(800, 500)
 
 [node name="split" type="HBoxContainer" parent="."]
@@ -148,7 +149,7 @@ size_flags_vertical = 4
 [node name="lrs_viewport" type="SubViewport" parent="split/lrs_center/lrs_container"]
 handle_input_locally = false
 size = Vector2i(500, 500)
-render_target_update_mode = 4
+render_target_update_mode = 0
 
 [node name="long_range_scopes" type="Node3D" parent="split/lrs_center/lrs_container/lrs_viewport"]
 script = ExtResource("1_syfdy")

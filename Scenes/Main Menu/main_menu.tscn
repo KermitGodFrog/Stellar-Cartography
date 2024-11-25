@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=3 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" path="res://Scenes/Main Menu/main_menu.gd" id="1_0jam3"]
+[ext_resource type="Texture2D" uid="uid://nav04ap3rdbe" path="res://Graphics/new_game_popup.png" id="2_1jdbj"]
 
 [node name="main_menu" type="Control"]
 layout_mode = 3
@@ -80,6 +81,40 @@ popup/item_1/text = "Madam"
 popup/item_1/id = 1
 popup/item_2/text = "Captain"
 popup/item_2/id = 2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+custom_minimum_size = Vector2(450, 600)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -225.0
+offset_top = -300.0
+offset_right = 225.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="AspectRatioContainer"]
+layout_mode = 2
+texture = ExtResource("2_1jdbj")
+stretch_mode = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="AspectRatioContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="AspectRatioContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "gdkgkjgdjgdigdij"
 
 [connection signal="pressed" from="continue_button" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="new_button" to="." method="_on_new_button_pressed"]
