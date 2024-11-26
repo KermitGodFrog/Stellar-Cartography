@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://hfa4pl2gbv1v"
+path="res://.godot/imported/tutorial_info_example.png-79d9e10ea9e75496509e271c00a92c0d.image"
+
+[deps]
+
+source_file="res://Graphics/Dialogue/tutorial_info_example.png"
+dest_files=["res://.godot/imported/tutorial_info_example.png-79d9e10ea9e75496509e271c00a92c0d.image"]
+
+[params]
+

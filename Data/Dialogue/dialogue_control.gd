@@ -33,7 +33,7 @@ func add_options(new_options: Dictionary):
 func set_image(path: String):
 	var new = load("res://Graphics/Dialogue/%s" % path)
 	if new:
-		var texture = ImageTexture.create_from_image(new)
+		var texture = ImageTexture.create_from_image(new) #IMAGES MUST BE IMPORTED AS 'IMAGE' TYPE!
 		image.set_texture(texture)
 	pass
 

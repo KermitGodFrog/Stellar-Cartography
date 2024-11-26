@@ -90,6 +90,9 @@ func _ready():
 		var new: starSystemAPI = load("res://Data/tutorial_system.tres")
 		world.star_systems.append(new)
 		
+		world.player.systems_traversed = 12
+		journey_map.generate_up_to_system(world.player.systems_traversed)
+		
 		_on_switch_star_system(new)
 		
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
