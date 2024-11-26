@@ -84,22 +84,22 @@ func _on_finished_button_pressed():
 
 func _on_unlock_advanced_scanning_button_pressed():
 	if station: 
-		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.ADVANCED_SCANNING, 10000)
+		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.ADVANCED_SCANNING, 7500) #formerly 10000 (probably more balanced)
 	pass
 
 func _on_unlock_audio_visualizer_pressed():
 	if station:
-		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.AUDIO_VISUALIZER, 85000)
+		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.AUDIO_VISUALIZER, 35000) #formerly 85000 (probably more balanced)
 	pass
 
 func _on_unlock_nanite_controller_pressed():
 	if station:
-		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.NANITE_CONTROLLER, 45000)
+		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.NANITE_CONTROLLER, 25000) #formerly 45000 (probably more balanced)
 	pass 
 
 func _on_unlock_long_range_scopes_pressed():
 	if station:
-		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES, 85000)
+		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES, 35000) #formerly 85000 (probably more balanced)
 	pass
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):

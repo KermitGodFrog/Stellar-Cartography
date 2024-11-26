@@ -96,20 +96,20 @@ grow_horizontal = 0
 
 [node name="unlock_nanite_controller" type="Button" parent="station_control/upgrade_container"]
 layout_mode = 2
-text = "UNLOCK NANITE CONTROLLER (45000n)"
+text = "UNLOCK NANITE CONTROLLER (25000n)"
 
 [node name="unlock_advanced_scanning" type="Button" parent="station_control/upgrade_container"]
 layout_mode = 2
-text = "UNLOCK ADVANCED SCANNING (10000n)"
+text = "UNLOCK ADVANCED SCANNING (7500n)"
 
 [node name="unlock_audio_visualizer" type="Button" parent="station_control/upgrade_container"]
 layout_mode = 2
-text = "UNLOCK AUDIO VISUALIZER (85000n)
+text = "UNLOCK AUDIO VISUALIZER (35000n)
 (ADVANCED SCANNING REQUIRED)"
 
 [node name="unlock_long_range_scopes" type="Button" parent="station_control/upgrade_container"]
 layout_mode = 2
-text = "UNLOCK LONG RANGE SCOPES (85000n)"
+text = "UNLOCK LONG RANGE SCOPES (35000n)"
 
 [node name="repair_container" type="VBoxContainer" parent="station_control"]
 layout_mode = 1
