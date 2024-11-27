@@ -1,0 +1,15 @@
+[gd_resource type="Shader" format=3 uid="uid://bsj7ob65dqjfo"]
+
+[resource]
+code = "shader_type sky;
+render_mode use_half_res_pass;
+
+uniform sampler2D source_panorama : filter_linear, source_color, hint_default_black;
+
+void sky() {
+	vec3 stars = texture(source_panorama, vec2(SKY_COORDS.x + TIME / 100.0, SKY_COORDS.y)).rgb;
+	
+	
+	COLOR += stars;
+}
+"

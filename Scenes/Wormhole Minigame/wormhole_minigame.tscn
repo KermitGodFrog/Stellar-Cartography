@@ -1,5 +1,71 @@
-[gd_scene format=3 uid="uid://c2upluruwt8c"]
+[gd_scene load_steps=10 format=3 uid="uid://c2upluruwt8c"]
 
-[node name="wormhole_minigame" type="Window"]
+[ext_resource type="Shader" uid="uid://bsj7ob65dqjfo" path="res://Scenes/Wormhole Minigame/sky_shader_local.tres" id="1_dcsdk"]
+[ext_resource type="Shader" path="res://Scenes/Wormhole Minigame/wormhole_exterior.gdshader" id="1_hg32g"]
+[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="2_pm5iw"]
+[ext_resource type="PackedScene" uid="uid://cd845qsl0v3dk" path="res://Instantiated Scenes/Starship/starship.glb" id="4_1fh2q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7x8tp"]
+shader = ExtResource("1_dcsdk")
+shader_parameter/source_panorama = ExtResource("2_pm5iw")
+
+[sub_resource type="Sky" id="Sky_3kq4p"]
+sky_material = SubResource("ShaderMaterial_7x8tp")
+
+[sub_resource type="Environment" id="Environment_bj3r6"]
+background_mode = 2
+sky = SubResource("Sky_3kq4p")
+ambient_light_source = 1
+reflected_light_source = 1
+tonemap_mode = 2
+tonemap_exposure = 2.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hvt6d"]
+render_priority = 0
+shader = ExtResource("1_hg32g")
+
+[sub_resource type="SphereMesh" id="SphereMesh_mdcva"]
+material = SubResource("ShaderMaterial_hvt6d")
+radius = 100.0
+height = 200.0
+
+[node name="wormhole_minigame_window" type="Window"]
 title = "Wormhole Traversal"
+position = Vector2i(0, 36)
 size = Vector2i(500, 400)
+
+[node name="minigame_container" type="SubViewportContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="minigame_viewport" type="SubViewport" parent="minigame_container"]
+handle_input_locally = false
+size = Vector2i(500, 400)
+render_target_update_mode = 4
+
+[node name="wormhole_minigame" type="Node3D" parent="minigame_container/minigame_viewport"]
+
+[node name="environment" type="WorldEnvironment" parent="minigame_container/minigame_viewport/wormhole_minigame"]
+environment = SubResource("Environment_bj3r6")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="minigame_container/minigame_viewport/wormhole_minigame"]
+transform = Transform3D(-0.370448, -0.433016, -0.821745, -0.85725, 0.499998, 0.122982, 0.357618, 0.749999, -0.556427, 0, 0, 0)
+shadow_enabled = true
+
+[node name="wormhole" type="MeshInstance3D" parent="minigame_container/minigame_viewport/wormhole_minigame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -150, 0)
+mesh = SubResource("SphereMesh_mdcva")
+
+[node name="starship_and_camera" type="Node3D" parent="minigame_container/minigame_viewport/wormhole_minigame"]
+transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, -200, -150, 0)
+
+[node name="starship" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera" instance=ExtResource("4_1fh2q")]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="camera" type="Camera3D" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera"]
+transform = Transform3D(0.819152, -0.517878, 0.24656, 0, 0.429865, 0.902893, -0.573576, -0.739607, 0.352125, 2.5, 5, -2.5)
