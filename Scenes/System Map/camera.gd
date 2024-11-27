@@ -3,6 +3,8 @@ var zoom_multiplier: Vector2 = Vector2.ONE
 var movement_multiplier: int = 100
 var follow_body: bodyAPI
 
+var mouse_slide_fixed_point: Vector2 = Vector2(0,0)
+
 func _physics_process(delta):
 	if follow_body: position = follow_body.position
 	
@@ -13,5 +15,13 @@ func _physics_process(delta):
 	var input = Input.get_vector("left", "right", "up", "down")
 	if input:
 		position += input * movement_multiplier * pow(zoom.length(), -0.5) * delta
+		follow_body = null
+	
+	if Input.is_action_just_pressed("pan"):
+		mouse_slide_fixed_point = get_viewport().get_mouse_position()
+	if Input.is_action_pressed("pan"):
+		var pos = get_viewport().get_mouse_position()
+		global_position.x += (pos.x - mouse_slide_fixed_point.x) / 80
+		global_position.y += (pos.y - mouse_slide_fixed_point.y) / 80
 		follow_body = null
 	pass
