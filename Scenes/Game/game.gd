@@ -465,6 +465,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	_on_switch_star_system(destination)
 	
 	_on_add_player_hull_stress(world.player.hull_stress_wormhole)
+	barycenter_visualizer.locked_body_identifier = destination_wormhole.get_identifier() #this is a bugfix (really?)
 	pass
 
 func dock_with_station(following_station):
