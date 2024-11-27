@@ -108,4 +108,8 @@ item_0/text = "1) dfdfdfdfdf"
 item_1/text = "2) dfdfdffdfdf"
 item_2/text = "3) fgfgfgfgfgffggf"
 
+[node name="sfx" type="AudioStreamPlayer" parent="dialogue/dialogue_control"]
+
+[node name="music" type="AudioStreamPlayer" parent="dialogue/dialogue_control"]
+
 [connection signal="item_selected" from="dialogue/dialogue_control/margin/panel/panel_margin/content_scroll/options" to="dialogue/dialogue_control" method="_on_options_item_selected"]

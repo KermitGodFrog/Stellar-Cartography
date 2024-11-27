@@ -3,6 +3,8 @@ extends Control
 @onready var image = $margin/panel/panel_margin/content_scroll/image
 @onready var text = $margin/panel/panel_margin/content_scroll/text
 @onready var options = $margin/panel/panel_margin/content_scroll/options
+@onready var sfx = $sfx
+@onready var music = $music
 
 func initialize(new_text, new_options):
 	if new_text is String:
@@ -54,11 +56,18 @@ func clear_options():
 	options.clear()
 	pass
 
-
+func play_sound_effect(path: String):
+	var new = load("res://Sound/Dialogue/%s" % path)
+	if new:
+		sfx.stop()
+		sfx.set_stream(new)
+		sfx.play()
+	pass
 
 func _on_options_item_selected(index):
 	var new_query = responseQuery.new()
 	new_query.add("concept", "optionSelected")
 	new_query.add("option", options.get_item_metadata(index))
+	clear_options() #options are always cleared in rules.csv when an option is selected anyway
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass

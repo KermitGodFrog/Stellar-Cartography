@@ -388,6 +388,7 @@ func clearAll():
 func addValueWithFlair(amount: int):
 	emit_signal("addPlayerValue", amount)
 	dialogue.add_text(str("[color=green](Gained ", amount, " nanites in data value) [/color]"))
+	playSoundEffect("dialogue_success.wav") #easier than putting it in every single rule?
 	pass
 
 func addHullStressWithFlair(amount: int):
@@ -410,6 +411,12 @@ func killCharacterWithFlair(occupation: characterAPI.OCCUPATIONS):
 func setImage(path: String):
 	dialogue.set_image(path)
 	pass
+
+func playSoundEffect(path: String) -> void:
+	dialogue.play_sound_effect(path)
+	pass
+
+
 
 func _TUTORIALSetOmissionOverride(value: bool):
 	emit_signal("TUTORIALSetOmissionOverride", value)
