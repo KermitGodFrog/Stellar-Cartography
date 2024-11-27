@@ -323,7 +323,7 @@ func generateRandomWormholes(): #uses variables post_gen_location_candidates, de
 	pass
 
 func generateRandomWeightedStations():
-	for station in global_data.get_randi(1, 2):
+	for station in global_data.get_randi(1, 3):
 		var location = post_gen_location_candidates.pick_random()
 		var hook = get_body_from_identifier(location.front())
 		var i = location.back()
@@ -342,7 +342,7 @@ func generateRandomWeightedStations():
 		
 		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
 		
-		var percentage_markup = global_data.get_randi(50, 200)
+		var percentage_markup = global_data.get_randi(75, 200)
 		
 		var new_station = addStation(identifier_count, game_data.get_random_name_from_variety(game_data.NAME_VARIETIES.STATION), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), station_classification, percentage_markup)
 		get_body_from_identifier(new_station).rotation = deg_to_rad(global_data.get_randf(0,360))

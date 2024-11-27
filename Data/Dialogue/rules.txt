@@ -2,6 +2,8 @@ Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Quer
 defaultOpenDialog,concept: followingBody,,openDialog: null,defaultApproachMessage,,,,Leave:defaultLeave,
 defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,,
 defaultApproachMessage,concept: defaultApproachMessage,,,,,,,,Your ship approaches [i]$name[/i].
+defaultSuccessSound,concept: defaultSuccessSound,,playSoundEffect: dialogue_success.wav,,,,,,
+defaultFailureSound,concept: defaultFailureSound,,playSoundEffect: dialogue_failure.wav,,,,,,
 ,,,,,,,,,
 defaultPlayerStartOpenDialog,concept: playerStart,,openDialog: null,,,,,Continue:defaultPlayerStartContinueA,"Two thousand years ago, an advanced artificial intelligence named Arata predicted the Universe. "
 defaultPlayerStartContinueA,"concept: optionSelected, option: defaultPlayerStartContinueA",,,,,,,Continue:defaultPlayerStartContinueB,"The Arata formula allows starships to transit into a star system closer to any destination by exploiting certain points in space-time. Machines like Arata are long gone, yet their discoveries are still relied on today. "
@@ -65,6 +67,9 @@ PA_GenericPortal,"concept: followingBody, id: planetaryAnomaly",,,,,,PA_GenericP
 PA_TerranPortal,"concept: followingBody, id: planetaryAnomaly, planet_classification: Terran",,,,,,PA_TerranPortalResponse,,
 PA_NeptunianPortal,"concept: followingBody, id: planetaryAnomaly, planet_classification: Neptunian",,,,,,PA_NeptunianPortalResponse,,
 PA_JovianPortal,"concept: followingBody, id: planetaryAnomaly, planet_classification: Jovian",,,,,,PA_JovianPortalResponse,,
+,,,,,,,,,
+PA_StationGenericOpenDialog,"concept: PA_TerranPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,openDialog: null,defaultApproachMessage,,,,Request Docking Access: PA_StationGenericDockingAccess,"There appears to be an occupied settlement, missing from native starcharts, on the surface of the planet. Communications are quickly established."
+PA_StationGenericDockingAccess,"concept: optionSelected, option: PA_StationGenericDockingAccess",,closeDialog: HARD_LEAVE_STATION_OVERRIDE,,,,,,
 ,,,,,,,,,
 PA_01GenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked.
 PA_01GenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,,,,PA_01GenericActions,,,An inconsistent LIDAR return is marked on its surface.
@@ -151,7 +156,13 @@ PA_03TheResearcherContinueC,"concept: optionSelected, option: PA_03TheResearcher
 SAHardLeave,"concept: optionSelected, option: SAHardLeave",,closeDialog: HARD_LEAVE,,,,,,
 SASoftLeave,"concept: optionSelected, option: SASoftLeave",,closeDialog: SOFT_LEAVE,,,,,,
 ,,,,,,,,,
-SA_GenericOpenDialog,"concept: followingBody, id: spaceAnomaly",,openDialog: null,,,,,"Order the inconsistent data to be analyzed: SA_GenericContinue, Leave:SASoftLeave",Analysts mark an inconsistent LIDAR return.
+SAApproachMessage,concept: SAApproachMessage,,,,,,,,"Your ship approaches the location of a stable point in space, subject to anomalous sensor readings."
+SA_GenericPortal,"concept: followingBody, id: spaceAnomaly",,,,,,SA_GenericPortalResponse,,
+,,,,,,,,,
+SA_StationGenericOpenDialog,"concept: SA_GenericPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,openDialog: null,SAApproachMessage,,,,Request Docking Access: SA_StationGenericDockingAccess,"There appears to be an outpost, missing from native starcharts. Communications are quickly established."
+SA_StationGenericDockingAccess,"concept: optionSelected, option: SA_StationGenericDockingAccess",,closeDialog: HARD_LEAVE_STATION_OVERRIDE,,,,,,
+,,,,,,,,,
+SA_GenericOpenDialog,"concept: SA_GenericPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true, player_in_ABYSS_region: true",,openDialog: null,SAApproachMessage,,,,"Order the inconsistent data to be analyzed: SA_GenericContinue, Leave:SASoftLeave",Analysts mark an inconsistent LIDAR return.
 SA_GenericContinue,"concept: optionSelected, option: SA_GenericContinue",,,,,,,Leave:SAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo."
 ,,,,,,,,,
 ,,,,,,,,,
@@ -218,5 +229,5 @@ tutorialOmissionOrbitingPortal,"concept: orbitingBody, id: planet, name: Omissio
 tutorialOmissionOrbiting,concept: tutorialOmissionOrbitingPortalResponse,tutorialOmissionOrbitingPREV: true,openDialog: null,,,,,Exit:defaultLeave,"Dawn speaks up, obviously unhappy. ""Brilliant job, Captain. You have truely gone above and beyond,"" she sneers. ""Now get back to the wormhole."""
 tutorialOmissionOrbitingCancel,"concept: tutorialOmissionOrbitingPortalResponse, tutorialOmissionOrbitingPREV: true",,,,,,,,
 ,,,,,,,,,
-tutorialPlayerWin,"concept: optionSelected, option: tutorialPlayerWin",,_TUTORIALPlayerWin: null,,,,,,
+tutorialPlayerWin,"concept: optionSelected, option: tutorialPlayerWin",,"closeDialog: null, _TUTORIALPlayerWin: null",,,,,,
 ,,,,,,,,,

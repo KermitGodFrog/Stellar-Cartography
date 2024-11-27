@@ -19,41 +19,27 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_0jam3")
 
-[node name="continue_button" type="Button" parent="."]
+[node name="options_scroll" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_top = -15.5
-offset_right = 91.0
-offset_bottom = 15.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
 grow_vertical = 2
+
+[node name="continue_button" type="Button" parent="options_scroll"]
+layout_mode = 2
 disabled = true
 text = "CONTINUE"
 
-[node name="new_button" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -45.0
-offset_top = -15.5
-offset_bottom = 15.5
-grow_horizontal = 0
-grow_vertical = 2
+[node name="new_button" type="Button" parent="options_scroll"]
+layout_mode = 2
 text = "NEW"
 
-[node name="tutorial_button" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -22.5
-offset_right = 22.5
-offset_bottom = 31.0
-grow_horizontal = 2
+[node name="tutorial_button" type="Button" parent="options_scroll"]
+layout_mode = 2
 text = "TUTORIAL"
 
 [node name="new_game_popup" type="Control" parent="."]
@@ -151,8 +137,20 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "CREATE"
 
-[connection signal="pressed" from="continue_button" to="." method="_on_continue_button_pressed"]
-[connection signal="pressed" from="new_button" to="." method="_on_new_button_pressed"]
-[connection signal="pressed" from="tutorial_button" to="." method="_on_tutorial_button_pressed"]
+[node name="title" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 60
+text = "STELLAR CARTOGRAPHER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="options_scroll/continue_button" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="options_scroll/new_button" to="." method="_on_new_button_pressed"]
+[connection signal="pressed" from="options_scroll/tutorial_button" to="." method="_on_tutorial_button_pressed"]
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/actions_hbox/return_button" to="." method="_on_return_button_pressed"]
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/create_button" to="." method="_on_create_button_pressed"]

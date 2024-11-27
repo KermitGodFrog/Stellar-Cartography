@@ -45,8 +45,6 @@ func _physics_process(_delta):
 	if station:
 		nanites_per_percentage = game_data.REPAIR_CURVE.sample(game_data.player_weirdness_index) #we are using too many global vars here its not very cool and stuff dont like it feel like im a rookie yknow 
 		
-		
-		
 		balance_label.set_text(str("BALANCE: ", player_balance, "n"))
 		hull_stress_label.set_text(str("HULL STRESS: ", player_hull_stress, "%"))
 		

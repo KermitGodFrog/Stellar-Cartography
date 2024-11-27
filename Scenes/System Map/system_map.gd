@@ -325,6 +325,7 @@ func _on_stop_button_pressed():
 	pass
 
 
+
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	ping_length = remap(ping_width, 5, 90, 300, 100)
 	var line = player_position_matrix[0] + ping_direction * ping_length
@@ -363,7 +364,8 @@ func async_add_ping(body: bodyAPI) -> void:
 		if not body.is_theorised:
 			emit_signal("theorisedBody", body.get_identifier())
 		body.is_theorised = true #so it says '???' on the overview
-	var ping = load("res://Data/Ping Display Helpers/normal.tres").duplicate(true)
+	var pings = ["res://Data/Ping Display Helpers/normal.tres"]
+	var ping = load(pings.pick_random()).duplicate(true)
 	ping.position = body.position
 	ping.resetTime()
 	SONAR_PINGS.append(ping)
