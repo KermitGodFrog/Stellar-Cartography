@@ -8,8 +8,6 @@ uniform sampler2D source_panorama : filter_linear, source_color, hint_default_bl
 
 void sky() {
 	vec3 stars = texture(source_panorama, vec2(SKY_COORDS.x + TIME / 100.0, SKY_COORDS.y)).rgb;
-	
-	
 	COLOR += stars;
 }
 "
