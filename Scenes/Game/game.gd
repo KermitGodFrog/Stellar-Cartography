@@ -53,6 +53,8 @@ func _ready():
 	dialogue_manager.connect("addPlayerValue", _on_add_player_value)
 	dialogue_manager.connect("addPlayerHullStress", _on_add_player_hull_stress)
 	dialogue_manager.connect("removePlayerHullStress", _on_remove_player_hull_stress)
+	dialogue_manager.connect("addPlayerMorale", _on_add_player_morale)
+	dialogue_manager.connect("removePlayerMorale", _on_remove_player_morale)
 	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
@@ -162,11 +164,6 @@ func _ready():
 		#new_query.add_tree_access("is_station_inhabited", false)
 		#get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
-		#var new_query = responseQuery.new()
-		#new_query.add("concept", "randomPAOpenDialog")
-		#new_query.add_tree_access("planet_classification", "Neptunian")
-		#get_tree().call_group("dialogueManager", "speak", self, new_query)
-		
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 		
 		var new_query = responseQuery.new()
@@ -176,6 +173,15 @@ func _ready():
 		await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 		
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
+		
+		
+		var debug = responseQuery.new()
+		debug.add("concept", "followingBody")
+		debug.add("id", "planetaryAnomaly")
+		debug.add_tree_access("planet_classification", "Terran")
+		debug.add_tree_access("player_in_ABYSS_region", true)
+		get_tree().call_group("dialogueManager", "speak", self, debug)
+		
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
@@ -756,6 +762,13 @@ func _on_tutorial_player_win():
 	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
 	pass
 
+func _on_add_player_morale(amount : int) -> void:
+	world.player.addMorale(amount)
+	pass
+
+func _on_remove_player_morale(amount : int) -> void:
+	world.player.removeMorale(amount)
+	pass
 
 
 func _ON_DEBUG_REVEAL_ALL_WORMHOLES():

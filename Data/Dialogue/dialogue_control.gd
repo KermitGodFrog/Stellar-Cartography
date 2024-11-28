@@ -22,7 +22,10 @@ func initialize(new_text, new_options):
 	pass
 
 func add_text(new_text: String):
-	text.append_text(str("\n \n", new_text))
+	text.push_paragraph(HORIZONTAL_ALIGNMENT_LEFT)
+	#text.push_color(Color.RED)
+	#text.append_text(str("\n \n", new_text))
+	text.append_text("\n%s" % new_text)
 	pass
 
 func add_options(new_options: Dictionary):
@@ -65,6 +68,11 @@ func play_sound_effect(path: String):
 	pass
 
 func _on_options_item_selected(index):
+	text.push_paragraph(HORIZONTAL_ALIGNMENT_LEFT)
+	text.push_color(Color.DARK_SLATE_BLUE)
+	text.append_text("\n>>> %s" % options.get_item_text(index))
+	text.pop_all()
+	
 	var new_query = responseQuery.new()
 	new_query.add("concept", "optionSelected")
 	new_query.add("option", options.get_item_metadata(index))

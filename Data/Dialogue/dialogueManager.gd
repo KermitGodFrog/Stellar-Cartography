@@ -6,6 +6,9 @@ signal addDialogueMemoryPair(key, value)
 signal addPlayerValue(amount: int)
 signal addPlayerHullStress(amount: int)
 signal removePlayerHullStress(amount: int)
+signal addPlayerMorale(amount: int)
+signal removePlayerMorale(amount: int)
+
 signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
@@ -394,11 +397,25 @@ func addValueWithFlair(amount: int):
 func addHullStressWithFlair(amount: int):
 	emit_signal("addPlayerHullStress", amount)
 	dialogue.add_text(str("[color=red](Plus ", amount, "% hull stress) [/color]"))
+	playSoundEffect("dialogue_failure.wav")
 	pass
 
 func removeHullStressWithFlair(amount: int):
 	emit_signal("removePlayerHullStress", amount)
 	dialogue.add_text(str("[color=green](Minus ", amount, "% hull stress) [/color]"))
+	playSoundEffect("dialogue_success.wav")
+	pass
+
+func addMoraleWithFlair(amount: int):
+	emit_signal("addPlayerMorale", amount)
+	dialogue.add_text(str("[color=green](Plus ", amount, "% morale) [/color]"))
+	playSoundEffect("dialogue_success.wav")
+	pass
+
+func removeMoraleWithFlair(amount: int):
+	emit_signal("removePlayerMorale", amount)
+	dialogue.add_text(str("[color=red](Minus ", amount, "% morale) [/color]"))
+	playSoundEffect("dialogue_failure.wav")
 	pass
 
 func killCharacterWithFlair(occupation: characterAPI.OCCUPATIONS):
@@ -406,6 +423,7 @@ func killCharacterWithFlair(occupation: characterAPI.OCCUPATIONS):
 	print(character_lookup_dictionary)
 	var lookup = character_lookup_dictionary.get(occupation, " ")
 	dialogue.add_text(str("[color=red](", characterAPI.OCCUPATIONS.find_key(occupation).replace("_", " "), " ", lookup, " is dead) [/color]"))
+	playSoundEffect("dialogue_failure.wav")
 	pass
 
 func setImage(path: String):

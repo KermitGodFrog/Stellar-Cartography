@@ -11,6 +11,7 @@ func set_display_name(new_display_name: String) -> void:
 	pass
 
 @export var is_alive: bool = true
+#@export var standing: int = 0
 
 enum GENDERS {M, F, O}
 @export var current_gender: GENDERS
@@ -51,3 +52,15 @@ func get_random_character_name_entry() -> String:
 			name_candidates.append(line)
 	file.close()
 	return name_candidates.pick_random()
+
+#func get_standing() -> int:
+	#return standing
+
+#func addStanding(amount : int) -> void:
+	#standing = mini(100, standing + amount)
+	#pass
+
+#func removeStanding(amount : int) -> void:
+	#standing = maxi(-100, standing - amount)
+	#pass
+
