@@ -175,12 +175,12 @@ func _ready():
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
 		
 		
-		var debug = responseQuery.new()
-		debug.add("concept", "followingBody")
-		debug.add("id", "planetaryAnomaly")
-		debug.add_tree_access("planet_classification", "Terran")
-		debug.add_tree_access("player_in_ABYSS_region", true)
-		get_tree().call_group("dialogueManager", "speak", self, debug)
+		#var debug = responseQuery.new()
+		#debug.add("concept", "followingBody")
+		#debug.add("id", "planetaryAnomaly")
+		#debug.add_tree_access("planet_classification", "Terran")
+		#debug.add_tree_access("player_in_ABYSS_region", true)
+		#get_tree().call_group("dialogueManager", "speak", self, debug)
 		
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:

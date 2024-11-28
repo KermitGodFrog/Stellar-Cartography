@@ -1,25 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://c2upluruwt8c"]
+[gd_scene load_steps=8 format=3 uid="uid://c2upluruwt8c"]
 
-[ext_resource type="Shader" uid="uid://bsj7ob65dqjfo" path="res://Scenes/Wormhole Minigame/sky_shader_local.tres" id="1_dcsdk"]
 [ext_resource type="Shader" path="res://Scenes/Wormhole Minigame/wormhole_exterior.gdshader" id="1_hg32g"]
 [ext_resource type="Script" path="res://Scenes/Wormhole Minigame/wormhole_minigame.gd" id="1_u2vnu"]
-[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="2_pm5iw"]
+[ext_resource type="Environment" uid="uid://ktbbdqasxhbr" path="res://Scenes/Wormhole Minigame/wormhole_minigame_environment.tres" id="2_phyvx"]
 [ext_resource type="PackedScene" uid="uid://cd845qsl0v3dk" path="res://Instantiated Scenes/Starship/starship.glb" id="4_1fh2q"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7x8tp"]
-shader = ExtResource("1_dcsdk")
-shader_parameter/source_panorama = ExtResource("2_pm5iw")
-
-[sub_resource type="Sky" id="Sky_3kq4p"]
-sky_material = SubResource("ShaderMaterial_7x8tp")
-
-[sub_resource type="Environment" id="Environment_bj3r6"]
-background_mode = 2
-sky = SubResource("Sky_3kq4p")
-ambient_light_source = 1
-reflected_light_source = 1
-tonemap_mode = 2
-tonemap_exposure = 2.0
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_whf3l"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hvt6d"]
 render_priority = 0
@@ -31,9 +17,12 @@ radius = 100.0
 height = 200.0
 
 [node name="wormhole_minigame_window" type="Window"]
+own_world_3d = true
+canvas_item_default_texture_filter = 0
 title = "Wormhole Traversal"
 position = Vector2i(0, 36)
 size = Vector2i(500, 400)
+unresizable = true
 always_on_top = true
 
 [node name="minigame_container" type="SubViewportContainer" parent="."]
@@ -47,7 +36,6 @@ size_flags_vertical = 3
 stretch = true
 
 [node name="minigame_viewport" type="SubViewport" parent="minigame_container"]
-own_world_3d = true
 handle_input_locally = false
 size = Vector2i(500, 400)
 render_target_update_mode = 4
@@ -55,12 +43,13 @@ render_target_update_mode = 4
 [node name="wormhole_minigame" type="Node3D" parent="minigame_container/minigame_viewport"]
 script = ExtResource("1_u2vnu")
 
-[node name="environment" type="WorldEnvironment" parent="minigame_container/minigame_viewport/wormhole_minigame"]
-environment = SubResource("Environment_bj3r6")
-
 [node name="star" type="DirectionalLight3D" parent="minigame_container/minigame_viewport/wormhole_minigame"]
 transform = Transform3D(-0.370448, -0.433016, -0.821745, -0.85725, 0.499998, 0.122982, 0.357618, 0.749999, -0.556427, 0, 0, 0)
 shadow_enabled = true
+
+[node name="environment" type="WorldEnvironment" parent="minigame_container/minigame_viewport/wormhole_minigame"]
+environment = ExtResource("2_phyvx")
+camera_attributes = SubResource("CameraAttributesPractical_whf3l")
 
 [node name="wormhole" type="MeshInstance3D" parent="minigame_container/minigame_viewport/wormhole_minigame"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -150, 0)
@@ -100,21 +89,18 @@ grow_vertical = 2
 max_value = 10.0
 tick_count = 10
 
-[node name="info_container" type="VFlowContainer" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
-custom_minimum_size = Vector2(0, 200)
+[node name="info_container" type="VBoxContainer" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
+custom_minimum_size = Vector2(0, 400)
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -20.0
-offset_right = 40.0
-offset_bottom = 20.0
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 16.0
 grow_vertical = 2
 
-[node name="speed_info" type="VSlider" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-editable = false
-scrollable = false
+[node name="hull_stress_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "HULL STRESS: +7%"
 
 [connection signal="value_changed" from="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/speed_slider" to="minigame_container/minigame_viewport/wormhole_minigame" method="_on_speed_slider_value_changed"]
