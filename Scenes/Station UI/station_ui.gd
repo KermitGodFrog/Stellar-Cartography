@@ -143,6 +143,7 @@ func _on_repair_all_pressed():
 
 
 func _on_station_window_close_requested():
+	has_sold_previously = false
 	pending_audio_profiles = []
 	if station: emit_signal("undockFromStation", station)
 	else: emit_signal("undockFromStation", null)

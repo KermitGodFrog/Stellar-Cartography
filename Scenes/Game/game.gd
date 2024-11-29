@@ -451,7 +451,6 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 		var exclude_systems = destination.destination_systems.duplicate()
 		exclude_systems.append(destination)
 		world.remove_systems_excluding_systems(exclude_systems)
-		station_ui.has_sold_previously = false #allowing to sell exploration data at station at next civilized system
 	
 	world.player.previous_star_system = world.player.current_star_system
 	world.player.systems_traversed += 1
