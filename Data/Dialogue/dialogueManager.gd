@@ -8,8 +8,9 @@ signal addPlayerHullStress(amount: int)
 signal removePlayerHullStress(amount: int)
 signal addPlayerMorale(amount: int)
 signal removePlayerMorale(amount: int)
-
 signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
+signal foundBody(id: int)
+
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
 
@@ -18,6 +19,7 @@ var tree_access_memory: Dictionary #memory that is explicitely added by a query 
 enum QUERY_TYPES {BEST, ALL, RAND_BEST}
 
 #for populating query data
+var system: starSystemAPI
 var player: playerAPI
 var character_lookup_dictionary: Dictionary = {}
 
@@ -434,7 +436,20 @@ func playSoundEffect(path: String) -> void:
 	dialogue.play_sound_effect(path)
 	pass
 
-
+func discoverRandomBodyWithFlair() -> void:
+	var undiscovered_bodies: Array[bodyAPI] = []
+	for body in system.bodies:
+		if not (body.is_star() or body.is_station()):
+			if not body.is_known:
+				undiscovered_bodies.append(body)
+	if undiscovered_bodies.size() > 0:
+		var body: bodyAPI = undiscovered_bodies.pick_random()
+		emit_signal("foundBody", body.get_identifier())
+		dialogue.add_text(str("[color=green](Gained scan data for ", body.get_display_name(), ") [/color]"))
+		playSoundEffect("dialogue_success.wav") #easier than putting it in every single rule?
+	else:
+		dialogue.add_text(str("[color=green](Gained no new scan data) [/color]"))
+	pass
 
 func _TUTORIALSetOmissionOverride(value: bool):
 	emit_signal("TUTORIALSetOmissionOverride", value)

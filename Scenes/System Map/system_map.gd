@@ -202,7 +202,7 @@ func _unhandled_input(event):
 			follow_body = closest_body
 			camera.follow_body = closest_body
 			action_body = closest_body
-			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.GO_TO, action_body)
+			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
 			return
 		
 		locked_body = null

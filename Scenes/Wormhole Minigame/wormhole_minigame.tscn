@@ -11,7 +11,7 @@
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_btx65"]
 frequency = 0.005
-offset = Vector3(-10519.9, 0, 0)
+offset = Vector3(-21276.3, 0, 0)
 fractal_type = 2
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mbhjw"]
@@ -124,19 +124,12 @@ anchor_bottom = 1.0
 offset_right = 16.0
 grow_vertical = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container"]
+[node name="speed_container" type="CenterContainer" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ProgressBar" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container/CenterContainer"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-value = 40.0
-fill_mode = 2
-show_percentage = false
-
-[node name="ProgressBar2" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container/CenterContainer"]
+[node name="speed_goal" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container/speed_container"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_pa1kh")
@@ -144,26 +137,26 @@ value = 30.0
 fill_mode = 3
 show_percentage = false
 
-[node name="Label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container/CenterContainer"]
+[node name="speed_progress" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container/speed_container"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+max_value = 10.0
+fill_mode = 3
+show_percentage = false
+
+[node name="speed_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container/speed_container"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_bgttb")
 text = "SPEED"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CenterContainer2" type="CenterContainer" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container"]
+[node name="distance_container" type="CenterContainer" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ProgressBar" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container/CenterContainer2"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-value = 75.0
-fill_mode = 2
-show_percentage = false
-
-[node name="ProgressBar2" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container/CenterContainer2"]
+[node name="distance_goal" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container/distance_container"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_pa1kh")
@@ -171,7 +164,14 @@ value = 10.0
 fill_mode = 3
 show_percentage = false
 
-[node name="Label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container/CenterContainer2"]
+[node name="distance_progress" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container/distance_container"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+max_value = 200.0
+fill_mode = 3
+show_percentage = false
+
+[node name="distance_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/info_container/distance_container"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_vojrf")
 text = "DISTANCE"

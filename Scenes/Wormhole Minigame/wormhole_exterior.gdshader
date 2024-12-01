@@ -17,5 +17,5 @@ void fragment() {
 	ROUGHNESS = 0.0;
 	METALLIC = 0.25;
 	RIM = 0.5;
-	RADIANCE = star_texture;
+	RADIANCE = (star_texture * 4.0);
 }

@@ -23,6 +23,7 @@ script = ExtResource("1_mtv75")
 [node name="station_window" parent="." instance=ExtResource("6_g2s4t")]
 
 [node name="wormhole_minigame_window" parent="." instance=ExtResource("5_43eyq")]
+visible = false
 
 [node name="journey_map_window" parent="." instance=ExtResource("5_4mkmd")]
 

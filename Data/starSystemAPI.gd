@@ -591,4 +591,3 @@ func is_civilized():
 		if body is stationAPI:
 			return true
 	return false
-

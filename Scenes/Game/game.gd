@@ -56,6 +56,7 @@ func _ready():
 	dialogue_manager.connect("addPlayerMorale", _on_add_player_morale)
 	dialogue_manager.connect("removePlayerMorale", _on_remove_player_morale)
 	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
+	dialogue_manager.connect("foundBody", _on_found_body)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
 	
@@ -566,6 +567,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	system_3d.system = to_system
 	barycenter_visualizer.system = to_system
 	long_range_scopes.system = to_system
+	dialogue_manager.system = to_system
 	system_3d.spawnBodies()
 	system_3d.reset_locked_body()
 	journey_map.add_new_system(world.player.systems_traversed)
