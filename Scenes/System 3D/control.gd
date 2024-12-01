@@ -7,6 +7,18 @@ signal targetFOVChange(fov: float)
 
 func _gui_input(event):
 	if event is InputEventMouseButton:
+		print("mouse event")
+		if event.pressed:
+			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+				print(event.factor)
+			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+				print(event.factor)
+	
+	
+	
+	
+	
+	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			if not tracking:
 				tracking = true

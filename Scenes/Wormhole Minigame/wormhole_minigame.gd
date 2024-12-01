@@ -7,7 +7,6 @@ var distance: float = 200.0
 @onready var speed_slider = $starship_and_camera/camera/UI_control/speed_slider
 @onready var starship_and_camera = $starship_and_camera
 
-
 @onready var speed_progress = $starship_and_camera/camera/UI_control/info_container/speed_container/speed_progress
 @onready var distance_progress = $starship_and_camera/camera/UI_control/info_container/distance_container/distance_progress
 
