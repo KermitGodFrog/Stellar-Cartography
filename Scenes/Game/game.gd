@@ -793,8 +793,12 @@ func _ON_DEBUG_REVEAL_ALL_BODIES():
 
 func _on_audio_visualizer_popup():
 	audio_visualizer._on_popup()
-	$audio_visualizer_window.popup()
-	_on_add_console_item("Opening audio visualizer.", Color("353535"), 50)
+	if $audio_visualizer_window.is_visible():
+		$audio_visualizer_window.hide()
+	else:
+		$audio_visualer_window.move_to_center()
+		$audio_visualizer_window.popup()
+		_on_add_console_item("Opening audio visualizer.", Color("353535"), 50)
 	pass
 
 func _on_station_popup():
@@ -804,11 +808,19 @@ func _on_station_popup():
 	pass
 
 func _on_journey_map_popup():
-	$journey_map_window.popup()
-	_on_add_console_item("Opening journey map.", Color("353535"), 50)
+	if $journey_map_window.is_visible():
+		$journey_map_window.hide()
+	else:
+		$journey_map_window.move_to_center()
+		$journey_map_window.popup()
+		_on_add_console_item("Opening journey map.", Color("353535"), 50)
 	pass
 
 func _on_long_range_scopes_popup():
-	$long_range_scopes_window.popup()
-	_on_add_console_item("Opening long range scopes.", Color("353535"), 50)
+	if $long_range_scopes_window.is_visible():
+		$long_range_scopes_window.hide()
+	else:
+		$long_range_scopes_window.move_to_center()
+		$long_range_scopes_window.popup()
+		_on_add_console_item("Opening long range scopes.", Color("353535"), 50)
 	pass
