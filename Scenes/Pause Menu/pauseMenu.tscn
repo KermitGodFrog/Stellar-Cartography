@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cu8n2e53bgc37"]
+[gd_scene load_steps=3 format=3 uid="uid://cu8n2e53bgc37"]
 
 [ext_resource type="Script" path="res://Scenes/Pause Menu/pauseMenu.gd" id="1_u73yd"]
+[ext_resource type="PackedScene" uid="uid://df1xq5fo2rlje" path="res://Scenes/Options Menu/optionsMenu.tscn" id="2_vsgfh"]
 
 [node name="pauseMenu" type="Node"]
 process_mode = 2
@@ -9,7 +10,6 @@ script = ExtResource("1_u73yd")
 [node name="pause_canvas" type="CanvasLayer" parent="."]
 
 [node name="pause_control" type="Control" parent="pause_canvas"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -46,6 +46,10 @@ text = "SAVE AND QUIT TO MAIN MENU"
 [node name="exit_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
 text = "EXIT TO MAIN MENU"
+
+[node name="options_menu" parent="pause_canvas/pause_control" instance=ExtResource("2_vsgfh")]
+visible = false
+layout_mode = 1
 
 [node name="unpause_possible_timer" type="Timer" parent="."]
 wait_time = 0.1

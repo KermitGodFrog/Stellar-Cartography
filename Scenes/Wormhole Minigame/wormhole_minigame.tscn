@@ -167,7 +167,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "CLICK TO START"
+text = "CLICK TO INTERCEPT"
 
 [connection signal="button_up" from="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/brake_button" to="minigame_container/minigame_viewport/wormhole_minigame" method="_on_brake_button_button_up"]
 [connection signal="pressed" from="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/press_to_start_button" to="minigame_container/minigame_viewport/wormhole_minigame" method="_on_press_to_start_button_pressed"]
