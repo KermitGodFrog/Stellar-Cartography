@@ -96,7 +96,6 @@ func _physics_process(_delta):
 		locked_body_label.set_text("")
 	pass
 
-
 func spawnBodies():
 	for child in get_children():
 		if child.is_in_group("body_3d"):

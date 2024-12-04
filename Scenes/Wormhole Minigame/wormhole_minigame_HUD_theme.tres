@@ -1,0 +1,17 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://du8q1tlwo1jt1"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_256lr"]
+color = Color(0, 0, 0, 0.164706)
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 10
+vertical = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gs72h"]
+bg_color = Color(0, 0, 0, 0)
+draw_center = false
+border_width_top = 1
+
+[resource]
+ProgressBar/styles/background = SubResource("StyleBoxLine_256lr")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_gs72h")

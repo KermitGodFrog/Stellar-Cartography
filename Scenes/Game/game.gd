@@ -17,6 +17,7 @@ var world: worldAPI
 @onready var journey_map = $journey_map_window/journey_map
 @onready var pause_menu = $pauseMenu
 @onready var stats_menu = $statsMenu
+@onready var wormhole_minigame = $wormhole_minigame_window/minigame_container/minigame_viewport/wormhole_minigame
 
 func _ready():
 	system_map.connect("updatePlayerActionType", _on_update_player_action_type)
@@ -63,6 +64,11 @@ func _ready():
 	pause_menu.connect("saveWorld", _on_save_world)
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
 	pause_menu.connect("exitToMainMenu", _on_exit_to_main_menu)
+	
+	wormhole_minigame.connect("finishWormholeMinigame", _on_finish_wormhole_minigame)
+	wormhole_minigame.connect("addPlayerHullStress", _on_add_player_hull_stress)
+	
+	
 	
 	world = await game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
@@ -469,9 +475,10 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	world.player.updatePosition(get_physics_process_delta_time())
 	
 	_on_switch_star_system(destination)
-	
-	_on_add_player_hull_stress(world.player.hull_stress_wormhole)
 	barycenter_visualizer.locked_body_identifier = destination_wormhole.get_identifier() #this is a bugfix (really?)
+	
+	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
+	_on_wormhole_minigame_popup()
 	pass
 
 func dock_with_station(following_station):
@@ -771,6 +778,11 @@ func _on_remove_player_morale(amount : int) -> void:
 	world.player.removeMorale(amount)
 	pass
 
+func _on_finish_wormhole_minigame() -> void:
+	$wormhole_minigame_window.hide()
+	pass
+
+
 
 func _ON_DEBUG_REVEAL_ALL_WORMHOLES():
 	for body in world.player.current_star_system.bodies:
@@ -803,7 +815,14 @@ func _on_audio_visualizer_popup():
 
 func _on_station_popup():
 	$station_window.popup()
+	$station_window.move_to_center()
 	station_ui._on_popup()
+	get_tree().paused = true
+	pass
+
+func _on_wormhole_minigame_popup():
+	$wormhole_minigame_window.popup()
+	$wormhole_minigame_window.move_to_center()
 	get_tree().paused = true
 	pass
 
