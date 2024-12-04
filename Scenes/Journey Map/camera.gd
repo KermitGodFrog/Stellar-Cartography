@@ -5,6 +5,13 @@ var aggregrate_vertical_change: int = 0
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
+		if event.pressed:
+			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+				position += Vector2(0, (-event.factor * 13))
+			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+				position += Vector2(0, (event.factor * 13))
+	
+	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			if not tracking:
 				tracking = true

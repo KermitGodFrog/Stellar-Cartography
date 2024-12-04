@@ -2,21 +2,19 @@ extends Control
 
 var tracking: bool = false
 var aggregrate_vertical_change: int = 0
+var ghost_fov: float = 10.0
 signal targetFOVChange(fov: float)
 
 
 func _gui_input(event):
 	if event is InputEventMouseButton:
-		print("mouse event")
 		if event.pressed:
 			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-				print(event.factor)
+				ghost_fov = clamp(ghost_fov - (event.factor * 3), 10, 75)
+				emit_signal("targetFOVChange", ghost_fov)
 			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-				print(event.factor)
-	
-	
-	
-	
+				ghost_fov = clamp(ghost_fov + (event.factor * 3), 10, 75)
+				emit_signal("targetFOVChange", ghost_fov)
 	
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
