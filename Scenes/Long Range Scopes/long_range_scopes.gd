@@ -16,6 +16,7 @@ var _DRAW_MATRICIES: Array[Array] = [[]] #carried to _on_state_changed
 var _REWARD_MATRIX: Array = [] #carried to _on_state_changed
 
 @onready var space_whale_scene = preload("res://Instantiated Scenes/Space Whales/adult_space_whale.tscn")
+@onready var space_coral_scene = preload("res://Instantiated Scenes/Coral Asteroids/coral_asteroid1.tscn")
 @onready var hud_default = preload("res://Graphics/long_range_scopes_hud4.png")
 @onready var hud_holding = preload("res://Graphics/long_range_scopes_hud3.png")
 @onready var hud_release = preload("res://Graphics/long_range_scopes_hud2.png")
@@ -170,10 +171,9 @@ func _on_current_entity_changed(new_entity : entityAPI):
 		GENERATION_BASIS = current_entity.stored_generation_basis
 		
 		print("SPAWNING")
-		
+		var ii: int = 0
 		match current_entity.entity_classification:
 			game_data.ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD:
-				var ii: int = 0
 				
 				for whale in 10:
 					if (ii + 1) < GENERATION_POSITIONS.size():
@@ -188,6 +188,19 @@ func _on_current_entity_changed(new_entity : entityAPI):
 						
 						add_child(space_whale)
 					else: break
+				
+			game_data.ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD:
+				
+				for coral in 10:
+					if (ii + 1) < GENERATION_POSITIONS.size():
+						ii += 1
+						var pos = GENERATION_POSITIONS[ii]
+						
+						var space_coral = space_coral_scene.instantiate()
+						space_coral.transform = Transform3D(GENERATION_BASIS, pos)
+						space_coral.transform.basis = space_coral.transform.basis.rotated(game_data.GENERATION_VECTORS.pick_random(), deg_to_rad(global_data.get_randi(0,360)))
+						
+						add_child(space_coral)
 	
 	#var entity_dir_from_player = player_position.direction_to(current_entity.position)
 	#camera_offset.transform.basis = camera_offset.transform.basis.looking_at(Vector3(entity_dir_from_player.x, 0, entity_dir_from_player.y))

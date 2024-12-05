@@ -1,4 +1,5 @@
 extends Node3D
+#sounds WILL play whenever the game is paused, regardless of whether the window is shown or not!
 
 signal finishWormholeMinigame
 signal addPlayerHullStress(amount: int)
@@ -28,7 +29,7 @@ func _physics_process(delta):
 	starship_and_camera.position.x = -starship_offset
 	distance_progress.set_value(distance)
 	
-	if distance <= 0.0:
+	if distance <= 0.0 and not awaiting_start:
 		finish_minigame(false)
 	pass
 
@@ -56,12 +57,15 @@ func initialize(weirdness_index: float = 0.0, _hull_stress_wormhole: int = 10):
 
 func _on_brake_button_button_up():
 	if (distance <= upper_boundry) and (distance >= lower_boundry):
-		finish_minigame(true)
-	else:
-		finish_minigame(false)
+		if not awaiting_start:
+			finish_minigame(true)
+		else:
+			finish_minigame(false)
 	pass
 
 func finish_minigame(result: bool) -> void:
+	awaiting_start = true
+	
 	match result:
 		true:
 			emit_signal("addPlayerHullStress", hull_stress_wormhole)

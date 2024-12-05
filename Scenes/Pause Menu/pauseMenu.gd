@@ -5,6 +5,7 @@ signal saveAndQuit
 signal exitToMainMenu
 
 var can_unpause = false
+var is_open = false
 
 @onready var pause_control = $pause_canvas/pause_control
 @onready var unpause_possible_timer = $unpause_possible_timer
@@ -13,11 +14,12 @@ var can_unpause = false
 
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("pause"):
-		if can_unpause == true:
+		if (can_unpause == true) and (is_open == true):
 			closePauseMenu() #can_unpause is only true in the event of the openPauseMenu() function being called, but that function is never called when the dialogue or station UI is shown because game.gd, who calls the method, is paused.
 	pass
 
 func openPauseMenu():
+	is_open = true
 	can_unpause = false
 	unpause_possible_timer.start()
 	print("PAUSE MENU: OPENING PAUSE MENU")
@@ -26,6 +28,7 @@ func openPauseMenu():
 	pass
 
 func closePauseMenu():
+	is_open = false
 	print("PAUSE MENU: CLOSING PAUSE MENU")
 	pause_control.hide()
 	get_tree().paused = false

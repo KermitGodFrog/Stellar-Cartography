@@ -10,6 +10,7 @@ script = ExtResource("1_u73yd")
 [node name="pause_canvas" type="CanvasLayer" parent="."]
 
 [node name="pause_control" type="Control" parent="pause_canvas"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
