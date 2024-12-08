@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://b0frxj5cysipi"]
+[gd_scene load_steps=34 format=3 uid="uid://b0frxj5cysipi"]
 
 [ext_resource type="Theme" uid="uid://dvp6gmpuweabh" path="res://Scenes/Long Range Scopes/long_range_scopes_MAIN_theme.tres" id="1_njahj"]
 [ext_resource type="Script" path="res://Scenes/Long Range Scopes/long_range_scopes.gd" id="1_syfdy"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Scenes/Long Range Scopes/lrs_bestiary.gd" id="2_de04j"]
 [ext_resource type="Shader" path="res://Scenes/pixelate_shader.gdshader" id="2_oxd33"]
 [ext_resource type="Script" path="res://Scenes/Long Range Scopes/rangefinder.gd" id="2_rbmww"]
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="3_drepj"]
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="3_iyrid"]
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_kwwow"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="4_mjqhh"]
@@ -24,6 +25,14 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trk5x"]
 bg_color = Color(0.486275, 0.486275, 0.486275, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_563vd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q3qh3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nbh7a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hd7v2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1ochv"]
 shader = ExtResource("2_oxd33")
@@ -86,9 +95,8 @@ stream_4/weight = 1.0
 process_mode = 3
 title = "Long Range Scopes"
 position = Vector2i(0, 36)
-size = Vector2i(800, 500)
-visible = false
-min_size = Vector2i(800, 500)
+size = Vector2i(820, 500)
+min_size = Vector2i(820, 500)
 
 [node name="split" type="HBoxContainer" parent="."]
 anchors_preset = 15
@@ -110,25 +118,27 @@ current_tab = 1
 
 [node name="BESTIARY" type="VBoxContainer" parent="split/bestiary/tabs"]
 visible = false
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 
 [node name="bestiary_list" type="ItemList" parent="split/bestiary/tabs/BESTIARY"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("3_drepj")
 
 [node name="INFO" type="VBoxContainer" parent="split/bestiary/tabs"]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 
 [node name="info_title" type="Label" parent="split/bestiary/tabs/INFO"]
-custom_minimum_size = Vector2(300, 30)
+custom_minimum_size = Vector2(280, 30)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_drepj")
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="info_split" type="VSplitContainer" parent="split/bestiary/tabs/INFO"]
-custom_minimum_size = Vector2(300, 400)
+custom_minimum_size = Vector2(280, 400)
 layout_mode = 2
 size_flags_vertical = 3
 split_offset = 200
@@ -141,6 +151,7 @@ horizontal_scroll_mode = 0
 [node name="info_description" type="Label" parent="split/bestiary/tabs/INFO/info_split/description_scroll"]
 custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.392157, 0.392157, 0.392157, 1)
 theme_override_font_sizes/font_size = 15
 autowrap_mode = 3
 
@@ -169,6 +180,13 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_njahj")
+theme_override_colors/font_color = Color(0.627451, 0.627451, 0.627451, 1)
+theme_override_colors/font_hovered_color = Color(0.627451, 0.627451, 0.627451, 1)
+theme_override_colors/font_selected_color = Color(0.627451, 0.627451, 0.627451, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_563vd")
+theme_override_styles/hovered = SubResource("StyleBoxEmpty_q3qh3")
+theme_override_styles/selected = SubResource("StyleBoxEmpty_nbh7a")
+theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_hd7v2")
 auto_height = true
 
 [node name="lrs_center" type="CenterContainer" parent="split"]
@@ -185,7 +203,7 @@ size_flags_vertical = 4
 [node name="lrs_viewport" type="SubViewport" parent="split/lrs_center/lrs_container"]
 handle_input_locally = false
 size = Vector2i(500, 500)
-render_target_update_mode = 0
+render_target_update_mode = 4
 
 [node name="long_range_scopes" type="Node3D" parent="split/lrs_center/lrs_container/lrs_viewport"]
 script = ExtResource("1_syfdy")

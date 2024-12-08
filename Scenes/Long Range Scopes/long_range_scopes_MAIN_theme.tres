@@ -1,4 +1,29 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://dvp6gmpuweabh"]
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://dvp6gmpuweabh"]
+
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="1_067l0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jtqug"]
+content_margin_left = 10.0
+bg_color = Color(0.180392, 0.180392, 0.180392, 1)
+border_width_left = 10
+border_color = Color(0.156863, 0.156863, 0.156863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fmebn"]
+content_margin_left = 10.0
+bg_color = Color(0.180392, 0.180392, 0.180392, 1)
+border_width_left = 10
+border_color = Color(0.156863, 0.156863, 0.156863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upehu"]
+content_margin_left = 10.0
+bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
+border_width_left = 10
+border_color = Color(0.156863, 0.156863, 0.156863, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0cftp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uunj2"]
+bg_color = Color(0.466667, 0.466667, 0.466667, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k5xeo"]
 
@@ -11,6 +36,14 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_28caw"]
 
 [resource]
+default_font = ExtResource("1_067l0")
+default_font_size = 16
+ItemList/styles/focus = SubResource("StyleBoxFlat_jtqug")
+ItemList/styles/panel = SubResource("StyleBoxFlat_fmebn")
+Label/styles/normal = SubResource("StyleBoxFlat_upehu")
+TabContainer/constants/side_margin = 20
+TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_0cftp")
+TabContainer/styles/tabbar_background = SubResource("StyleBoxFlat_uunj2")
 VScrollBar/styles/grabber = SubResource("StyleBoxEmpty_k5xeo")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxEmpty_pjg1n")
 VScrollBar/styles/grabber_pressed = SubResource("StyleBoxEmpty_0quic")
