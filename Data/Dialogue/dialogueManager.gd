@@ -11,6 +11,7 @@ signal removePlayerMorale(amount: int)
 signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
 signal foundBody(id: int)
 
+signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
 
@@ -449,6 +450,10 @@ func discoverRandomBodyWithFlair() -> void:
 		playSoundEffect("dialogue_success.wav") #easier than putting it in every single rule?
 	else:
 		dialogue.add_text(str("[color=green](Gained no new scan data) [/color]"))
+	pass
+
+func _TUTORIALSetIngressOverride(value: bool):
+	emit_signal("TUTORIALSetIngressOverride", value)
 	pass
 
 func _TUTORIALSetOmissionOverride(value: bool):

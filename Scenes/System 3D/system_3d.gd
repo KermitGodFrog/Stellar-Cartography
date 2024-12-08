@@ -3,6 +3,9 @@ extends Node3D
 signal foundBody(id: int)
 signal addConsoleItem(text: String, bg_color: Color, time: int)
 
+var TUTORIAL_INGRESS_OVERRIDE: bool = false
+var TUTORIAL_OMISSION_OVERRIDE: bool = false
+
 var system: starSystemAPI
 var player_position: Vector2
 var target_position: Vector2
@@ -79,6 +82,14 @@ func _physics_process(_delta):
 				if associated_body:
 					var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
 					if detection_scalar < body_detection_range and associated_body.is_known == false:
+						
+						if associated_body.get_display_name() == "Ingress":
+							if TUTORIAL_INGRESS_OVERRIDE == true:
+								continue
+						if associated_body.get_display_name() == "Omission":
+							if TUTORIAL_OMISSION_OVERRIDE == true:
+								continue
+						
 						emit_signal("foundBody", child.get_identifier())
 						var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
 						if not associated_body.metadata.has("value"): emit_signal("addConsoleItem", str("DISCOVERED BODY: ", associated_body.display_name.capitalize()), Color.DARK_GREEN, 2000)

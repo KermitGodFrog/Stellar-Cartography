@@ -58,6 +58,7 @@ func _ready():
 	dialogue_manager.connect("removePlayerMorale", _on_remove_player_morale)
 	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
 	dialogue_manager.connect("foundBody", _on_found_body)
+	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
 	
@@ -759,8 +760,16 @@ func _on_theorised_body(id: int):
 		_on_player_theorised_body(body)
 	pass
 
+func _on_tutorial_set_ingress_override(value: bool):
+	barycenter_visualizer.TUTORIAL_INGRESS_OVERRIDE = value
+	system_3d.TUTORIAL_INGRESS_OVERRIDE = value
+	system_map.TUTORIAL_INGRESS_OVERRIDE = value
+	pass
+
 func _on_tutorial_set_omission_override(value: bool):
 	barycenter_visualizer.TUTORIAL_OMISSION_OVERRIDE = value
+	system_3d.TUTORIAL_OMISSION_OVERRIDE = value
+	system_map.TUTORIAL_OMISSION_OVERRIDE = value
 	pass
 
 func _on_tutorial_player_win():

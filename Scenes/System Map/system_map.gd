@@ -19,6 +19,9 @@ signal removeHullStressForNanites(amount: int, nanites_per_percentage: int)
 signal DEBUG_REVEAL_ALL_WORMHOLES
 signal DEBUG_REVEAL_ALL_BODIES
 
+var TUTORIAL_INGRESS_OVERRIDE: bool = false
+var TUTORIAL_OMISSION_OVERRIDE: bool = false
+
 var system: starSystemAPI
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 var _player_status_matrix: Array = [0,0,0,0]
@@ -339,6 +342,14 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	SONAR_POLYGON_DISPLAY_TIME = 50
 	
 	for body in system.bodies:
+		
+		if body.get_display_name() == "Ingress":
+			if TUTORIAL_INGRESS_OVERRIDE == true:
+				continue
+		if body.get_display_name() == "Omission":
+			if TUTORIAL_OMISSION_OVERRIDE == true:
+				continue
+		
 		if Geometry2D.is_point_in_polygon(body.position, points):
 			async_add_ping(body)
 	
