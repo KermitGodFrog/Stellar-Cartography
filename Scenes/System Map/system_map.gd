@@ -411,6 +411,8 @@ func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int
 func get_entity_frame(classification: game_data.ENTITY_CLASSIFICATIONS) -> Resource:
 	match classification:
 		game_data.ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: return load("res://Graphics/space_whale_pod_frame.png")
+		game_data.ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: return load("res://Graphics/lagrange_cloud_frame.png")
+		
 		_: return load("res://Graphics/empty_frame.png")
 
 func _on_found_body(id: int):
