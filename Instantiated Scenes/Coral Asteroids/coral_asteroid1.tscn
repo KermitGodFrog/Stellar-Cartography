@@ -5,12 +5,12 @@
 
 [sub_resource type="Curve" id="Curve_lg6un"]
 max_value = 1000.0
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 1000), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 1000), 0.0, 0.0, 0, 0, Vector2(0.5, 200), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
 
 [sub_resource type="Curve" id="Curve_m1a3l"]
 max_value = 1000.0
-_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.25, 1000), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.498856, 1000), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [node name="coral_asteroid1" groups=["coral_asteroid", "long_range_scopes_prop"] instance=ExtResource("1_83r7v")]
