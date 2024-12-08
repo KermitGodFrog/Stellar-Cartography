@@ -35,6 +35,7 @@ var _REWARD_MATRIX: Array = [] #carried to _on_state_changed
 @onready var click = $click
 
 var GENERATION_POSITIONS: PackedVector3Array = []
+var REVERSE_GENERATION_POSITIONS: PackedVector3Array = []
 var GENERATION_BASIS: Basis
 const GENERATION_POSITION_ITERATIONS = 30
 const CAMERA_ROTATION_MAGNITUDE = 2
@@ -168,6 +169,8 @@ func _on_current_entity_changed(new_entity : entityAPI):
 			print("GENERATING NEW BASIS")
 		
 		GENERATION_POSITIONS = current_entity.stored_generation_positions
+		REVERSE_GENERATION_POSITIONS = GENERATION_POSITIONS
+		REVERSE_GENERATION_POSITIONS.reverse()
 		GENERATION_BASIS = current_entity.stored_generation_basis
 		
 		print("SPAWNING")
@@ -199,6 +202,7 @@ func _on_current_entity_changed(new_entity : entityAPI):
 						var space_coral = space_coral_scene.instantiate()
 						space_coral.transform = Transform3D(GENERATION_BASIS, pos)
 						space_coral.transform.basis = space_coral.transform.basis.rotated(game_data.GENERATION_VECTORS.pick_random(), deg_to_rad(global_data.get_randi(0,360)))
+						space_coral.transform = space_coral.transform.translated(Vector3(0, (REVERSE_GENERATION_POSITIONS[ii + 2].x * 0.25), 0))
 						
 						add_child(space_coral)
 	
