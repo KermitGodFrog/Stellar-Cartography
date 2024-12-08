@@ -147,6 +147,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 	
 	if populate_data:
 		incoming_query.populateWithPlayerData(player)
+		incoming_query.populateWithSystemData(system)
 		incoming_query.populateWithDialogueMemoryData(dialogue_memory)
 		incoming_query.populateWithTreeAccessMemoryData(tree_access_memory)
 		incoming_query.populateWithWorldData()

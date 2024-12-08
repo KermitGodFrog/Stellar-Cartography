@@ -293,6 +293,7 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add("concept", "followingBody")
 			new_query.add("id", "wormhole")
 			new_query.add_tree_access("name", following_wormhole.display_name)
+			new_query.add_tree_access("pending_audio_profiles", world.get_pending_audio_profiles().size() > 0) #for AV FLAIR
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
 			
 			var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog

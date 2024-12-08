@@ -51,7 +51,13 @@ newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,,"You have arrived in 
 ,,,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
-wormholeOpenDialog,"concept: followingBody, id: wormhole",,openDialog: null,defaultApproachMessage,,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
+wormholeOpenDialog,"concept: followingBody, id: wormhole",,openDialog: null,defaultApproachMessage,,wormholeTryAVFlairA,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
+wormholeTryAVFlairACancel,concept: wormholeTryAVFlairA,,,,,,,,
+wormholeTryAVFlairAPass,"concept: wormholeTryAVFlairA, system_is_civilized: true",,,,,wormholeTryAVFlairB,,,
+wormholeTryAVFlairBCancel,concept: wormholeTryAVFlairB,,,,,,,,
+wormholeTryAVFlairBPass,"concept: wormholeTryAVFlairB, player_AUDIO_VISUALIZER_unlocked: true",,,,,wormholeTryAVFlairC,,,
+wormholeTryAVFlairCCancel,concept: wormholeTryAVFlairC,,,,,,,,
+wormholeTryAVFlairCPass,"concept: wormholeTryAVFlairC, pending_audio_profiles: true",,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the data banks will be purged following the traversal of [i]$name[/i]."
 enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENTER_WORMHOLE,,,,,,
 ,,,,,,,,,
 stationApproachMessage,concept: stationApproachMessage,,,,,,,,Your ship approaches the location of a space station defined in native star charts.
@@ -238,7 +244,7 @@ tutorialPlayerStartContinueB,"concept: optionSelected, option: tutorialPlayerSta
 ,,,,,,,,,
 tutorialPreludeTheorised,"concept: theorisedBody, id: planet, name: Prelude",,openDialog: null,,,,,Continue:tutorialPreludeTheorisedContinueA,You watch over the shoulder of your mock senior analyst as they report the third bounce-back. Their composure is a desperate attempt of professional under the bizarreness of the simulation room. Distinctly cadet. 
 tutorialPreludeTheorisedContinueA,"concept: optionSelected, option: tutorialPreludeTheorisedContinueA",,setImage: tutorial_orbit_example.png,,,,,Continue:tutorialPreludeTheorisedContinueB,"1)[i] Discover a body by visually acquiring it: Click on the marked body (the triple question mark) on the system list to lock, and then press the orbit button in the lower left of the interface. Hover over buttons to bring up their tooltip. [/i]"
-tutorialPreludeTheorisedContinueB,"concept: optionSelected, option: tutorialPreludeTheorisedContinueB",,setImage: tutorial_scopes_example.png,,,,,Exit:defaultLeave,2)[i] Click and drag up or down on the scopes - the 3D view in the lower right of the interface - to zoom in or out. Zooming in allows bodies to be visually acquired sooner. [/i]
+tutorialPreludeTheorisedContinueB,"concept: optionSelected, option: tutorialPreludeTheorisedContinueB",,setImage: tutorial_scopes_example.png,,,,,Exit:defaultLeave,2)[i] Click and drag up or down (or scroll) on the scopes - the 3D view in the lower right of the interface - to zoom in or out. Zooming in allows bodies to be visually acquired sooner. [/i]
 ,,,,,,,,,
 tutorialPreludeOrbitingPortal,"concept: orbitingBody, id: planet, name: Prelude",,,,,tutorialPreludeOrbitingPortalResponse,,,
 tutorialPreludeOrbiting,concept: tutorialPreludeOrbitingPortalResponse,tutorialPreludeOrbitingPREV: true,openDialog: null,,,,,Continue:tutorialPreludeOrbitingContinue,1)[i] The question mark next to $name on the system list symbolises that it has an undocumented anomaly - these can result in rewards or tragedy. [/i]
@@ -257,8 +263,8 @@ tutorialIngressTheorisedContinueA,"concept: optionSelected, option: tutorialIngr
 tutorialIngressTheorisedContinueB,"concept: optionSelected, option: tutorialIngressTheorisedContinueB",,clearImage: null,,,,,Exit:defaultLeave,2)[i] Hold LSHIFT to boost. This will significantly shorten a journey at no cost to your starship. [/i]
 ,,,,,,,,,
 tutorialIngressOrbitingPortal,"concept: orbitingBody, id: wormhole, name: Ingress",,,,,tutorialIngressOrbitingPortalResponse,,,
-tutorialIngressOrbiting,concept: tutorialIngressOrbitingPortalResponse,tutorialIngressOrbitingPREV: true,openDialog: null,,,,,Attend to your duties:tutorialIngressOrbitingContinueA,"The wormhole glows a dull purple; its surface depicts the space around another star. Anti-protons are ejected in thin flux ropes, but no sooner snatched back into the distortion. Instruments go haywire as your starship enters orbit. ""Analyse and then enter the wormhole,"" Dawn states."
-tutorialIngressOrbitingContinueA,"concept: optionSelected, option: tutorialIngressOrbitingContinueA",,setImage: tutorial_apps_dock_example.png,,,,,Continue:tutorialIngressOrbitingContinueB,"1)[i] Check your exploration progress with the Journey Map in the far lower right of the interface. Click to open, click and drag up or down to offset the map. Bought modules also appear in the apps dock. [/i]"
+tutorialIngressOrbiting,concept: tutorialIngressOrbitingPortalResponse,tutorialIngressOrbitingPREV: true,openDialog: null,,,,,Attend to your duties:tutorialIngressOrbitingContinueA,"The wormhole glows a dull purple; its surface depicts the space around another star. Anti-protons are ejected in thin flux ropes, but no sooner snatched back into the distortion. Instruments go haywire as your starship enters orbit. ""Analyse and then enter the wormhole,"" Dawn commands."
+tutorialIngressOrbitingContinueA,"concept: optionSelected, option: tutorialIngressOrbitingContinueA",,setImage: tutorial_apps_dock_example.png,,,,,Continue:tutorialIngressOrbitingContinueB,"1)[i] Check your exploration progress with the Journey Map on the apps dock in the far lower right of the interface. Click to open, click and drag up or down (or scroll) to offset the map. Bought modules also appear in the apps dock. [/i]"
 tutorialIngressOrbitingContinueB,"concept: optionSelected, option: tutorialIngressOrbitingContinueB",,setImage: tutorial_info_example.png,,,,,Continue:tutorialIngressOrbitingContinueC,"2)[i] Analyse the wormhole: Click on the wormhole on the system list to lock, and then press the 'INFO' tab in the top left of the interface. The 'INFO' tab can display useful information about the locked body, depending on its type. [/i]"
 tutorialIngressOrbitingContinueC,"concept: optionSelected, option: tutorialIngressOrbitingContinueC",,setImage: tutorial_goto_example.png,,,,,Exit:defaultLeave,"3)[i] Again: Click on the wormhole on the system list to lock, and then press the go-to button in the lower left of the interface when ready. [/i]"
 tutorialIngressOrbitingCancel,"concept: tutorialIngressOrbitingPortalResponse, tutorialIngressOrbitingPREV: true",,,,,,,,
@@ -267,7 +273,7 @@ tutorialIngressFollowingPortal,"concept: followingBody, id: wormhole, name: Ingr
 tutorialIngressFollowing,concept: tutorialIngressFollowingPortalResponse,tutorialIngressFollowingPREV: true,openDialog: null,,,,,Continue:tutorialIngressFollowingContinueA,"""Great job,"" Dawn says. ""Shutting down."""
 tutorialIngressFollowingContinueA,"concept: optionSelected, option: tutorialIngressFollowingContinueA",,,,,,,Continue:tutorialIngressFollowingContinueB,1)[i] Trade in discoveries for currency at space stations: Buy modules and upgrades in order to survive and increase the value of your exploration. [/i]
 tutorialIngressFollowingContinueB,"concept: optionSelected, option: tutorialIngressFollowingContinueB",,,,,,,Continue:tutorialIngressFollowingContinueC,2)[i] Entering a discovered wormhole furthers your journey. Wormholes highlighted in red on the system list do not further your journey. [/i]
-tutorialIngressFollowingContinueC,"concept: optionSelected, option: tutorialIngressFollowingContinueC",,setImage: tutorial_status_panel_example.png,,,,,Enter the Wormhole:tutorialPlayerWin,3)[i] Refer to the tooltips on the status panel in the lower middle of the interface for survival information. [/i]
+tutorialIngressFollowingContinueC,"concept: optionSelected, option: tutorialIngressFollowingContinueC",,setImage: tutorial_status_panel_example.png,,,,,Enter the Wormhole:tutorialPlayerWin,3)[i] Refer to the tooltips on the status panel in the lower middle of the interface for survival information. Note that wormhole traversal and using higher scan arcs increase hull stress. [/i]
 tutorialIngressFollowingCancel,"concept: tutorialIngressFollowingPortalResponse, tutorialIngressFollowingPREV: true",,,,,,,,
 tutorialIngressFollowingPlotCancel,"concept: tutorialIngressFollowingPortalResponse, tutorialIngressOrbitingPREV: false",,openDialog: null,,,,,Apologise and enter orbit:defaultLeave,"Dawn speaks up, exasperated. ""Captain! You were meant to orbit $name."""
 ,,,,,,,,,

@@ -58,6 +58,10 @@ func populateWithPlayerData(player: playerAPI):
 			add(str("player_", character.OCCUPATIONS.find_key(character.get_occupation()), "_alive"), character.is_alive)
 	pass
 
+func populateWithSystemData(system: starSystemAPI):
+	add("system_is_civilized", system.is_civilized())
+	pass
+
 func populateWithWorldData():
 	add("randi", randi())
 	add("randf", randf())
@@ -75,5 +79,3 @@ func populateWithTreeAccessMemoryData(tree_access_memory: Dictionary):
 	for fact in tree_access_memory:
 		add(fact, tree_access_memory.get(fact))
 	pass
-
-
