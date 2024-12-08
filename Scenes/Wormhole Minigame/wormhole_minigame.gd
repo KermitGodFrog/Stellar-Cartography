@@ -59,8 +59,8 @@ func _on_brake_button_button_up():
 	if (distance <= upper_boundry) and (distance >= lower_boundry):
 		if not awaiting_start:
 			finish_minigame(true)
-		else:
-			finish_minigame(false)
+	elif not awaiting_start:
+		finish_minigame(false)
 	pass
 
 func finish_minigame(result: bool) -> void:

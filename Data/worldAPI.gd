@@ -77,3 +77,16 @@ func remove_systems_excluding_systems(exclude_systems: Array[starSystemAPI]):
 	for system in remove_systems:
 		removeStarSystem(system.get_identifier())
 	pass
+
+func get_pending_audio_profiles() -> Array[audioProfileHelper]:
+	var pending_audio_profiles: Array[audioProfileHelper] = []
+	for s in star_systems:
+		for b in s.bodies:
+			if ((b.get_current_variation() != -1) and (b.get_guessed_variation() != -1)) and b.is_planet():
+				if b.metadata.get("has_valid_audio_profile", true) == true:
+					var helper = audioProfileHelper.new()
+					var mix = s.planet_type_audio_data.get(b.metadata.get("planet_type")).get(b.get_guessed_variation())
+					helper.mix = mix
+					helper.body = b
+					pending_audio_profiles.append(helper)
+	return pending_audio_profiles

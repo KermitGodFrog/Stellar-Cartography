@@ -255,4 +255,4 @@ text = "FINISHED"
 [connection signal="pressed" from="station_control/repair_container/repair_single" to="station_control" method="_on_repair_single_pressed"]
 [connection signal="pressed" from="station_control/repair_container/repair_all" to="station_control" method="_on_repair_all_pressed"]
 [connection signal="item_clicked" from="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list" to="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list" method="_on_item_clicked"]
-[connection signal="pressed" from="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/finished_button" to="station_control" method="_on_finished_button_pressed"]
+[connection signal="pressed" from="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/finished_button" to="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list" method="_on_finished_button_pressed"]

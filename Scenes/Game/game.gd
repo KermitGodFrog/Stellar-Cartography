@@ -41,6 +41,7 @@ func _ready():
 	station_ui.connect("upgradeShip", _on_upgrade_ship)
 	station_ui.connect("addSavedAudioProfile", _on_add_saved_audio_profile)
 	station_ui.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
+	station_ui.connect("addPlayerValue", _on_add_player_value)
 	
 	audio_visualizer.connect("removeSavedAudioProfile", _on_remove_saved_audio_profile)
 	
@@ -158,8 +159,8 @@ func _ready():
 		_on_switch_star_system(new)
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
 		
 		await get_tree().create_timer(1.0, true).timeout
@@ -181,7 +182,6 @@ func _ready():
 		await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 		
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
-		
 		
 		#var debug = responseQuery.new()
 		#debug.add("concept", "followingBody")
@@ -489,20 +489,12 @@ func dock_with_station(following_station):
 	station_ui.player_hull_stress = world.player.hull_stress
 	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	
-	var pending_audio_profiles = []
-	for s in world.star_systems:
-		if s != world.player.current_star_system:
-			for b in s.bodies:
-				if ((b.get_current_variation() != -1) and (b.get_guessed_variation() != -1)) and b.is_planet():
-					var helper = audioProfileHelper.new()
-					var mix = s.planet_type_audio_data.get(b.metadata.get("planet_type")).get(b.get_guessed_variation())
-					helper.mix = mix
-					helper.body = b
-					pending_audio_profiles.append(helper)
-	station_ui.pending_audio_profiles.append_array(pending_audio_profiles)
+	station_ui.pending_audio_profiles = world.get_pending_audio_profiles()
+	print_debug("PENDING AUDIO PROFILES: ", station_ui.pending_audio_profiles)
 	
 	_on_station_popup()
 	pass
+
 
 
 func _on_player_death():
@@ -530,7 +522,6 @@ func _on_player_win():
 	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
 	game_data.deleteWorld()
 	pass
-
 
 func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
 	if not (type == world.player.current_action_type and action_body == world.player.action_body):
@@ -627,14 +618,8 @@ func _on_sell_exploration_data(sell_percentage_of_market_price: int):
 	print("STATION_UI (DEBUG): SELLING EXPLORATION DATA")
 	var multiplier = sell_percentage_of_market_price / 100.0
 	var sell_for = world.player.current_value * multiplier #star system multiplier is already added to value
-	#NEED TO ADD MONEY FOR GUESSING CORRECT PLANET VARIATIONS!!!!
 	
-	for s in world.star_systems: for b in s.bodies:
-		if s.is_civilized(): continue
-		if b.guessed_variation and b.current_variation:
-			if b.guessed_variation == b.current_variation:
-				var value = b.metadata.get("value")
-				if value: sell_for += value #2x planet payout for guessing correct planet variation
+	#dont worry, audio profiles are added by observed_bodies_list.gd when opened, and are added to player current value - i dont know what that means either, go find out yourself idk idk idk
 	
 	world.player.increaseBalance(sell_for)
 	world.player.current_value = 0
@@ -792,7 +777,6 @@ func _on_finish_wormhole_minigame() -> void:
 	pass
 
 
-
 func _ON_DEBUG_REVEAL_ALL_WORMHOLES():
 	for body in world.player.current_star_system.bodies:
 		if body.is_wormhole():
@@ -817,7 +801,7 @@ func _on_audio_visualizer_popup():
 	if $audio_visualizer_window.is_visible():
 		$audio_visualizer_window.hide()
 	else:
-		$audio_visualer_window.move_to_center()
+		$audio_visualizer_window.move_to_center()
 		$audio_visualizer_window.popup()
 		_on_add_console_item("Opening audio visualizer.", Color("353535"), 50)
 	pass

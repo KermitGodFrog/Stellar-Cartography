@@ -17,6 +17,7 @@ signal upgradeShip(upgrade_idx: playerAPI.UPGRADE_ID, cost: int)
 signal undockFromStation(from_station: stationAPI)
 signal addSavedAudioProfile(helper: audioProfileHelper)
 signal removeHullStressForNanites(amount: int, _nanites_per_percentage: int)
+signal addPlayerValue(amount: int)
 
 @onready var sell_data_button = $sell_data_button
 @onready var balance_label = $balance_label
@@ -39,6 +40,8 @@ var has_sold_previously: bool = false
 
 func _ready():
 	observed_bodies_list.connect("saveAudioProfile", _on_audio_profile_saved)
+	observed_bodies_list.connect("_addPlayerValue", _on_add_player_value)
+	observed_bodies_list.connect("finishedButtonPressed", _on_finished_button_pressed)
 	pass
 
 func _physics_process(_delta):
@@ -65,6 +68,7 @@ func _on_sell_data_button_pressed():
 	if station and not has_sold_previously:
 		has_sold_previously = true
 		emit_signal("sellExplorationData", station.sell_percentage_of_market_price)
+		
 		if pending_audio_profiles:
 			observed_bodies_list.initialize(pending_audio_profiles)
 			save_audio_profiles_control.show()
@@ -76,6 +80,7 @@ func _on_audio_profile_saved(helper: audioProfileHelper):
 
 func _on_finished_button_pressed():
 	save_audio_profiles_control.hide()
+	emit_signal("sellExplorationData", station.sell_percentage_of_market_price)
 	pass 
 
 
@@ -140,6 +145,9 @@ func _on_repair_all_pressed():
 	emit_signal("removeHullStressForNanites", player_hull_stress, nanites_per_percentage)
 	pass
 
+func _on_add_player_value(amount: int):
+	emit_signal("addPlayerValue", amount)
+	pass
 
 
 func _on_station_window_close_requested():
@@ -156,3 +164,5 @@ func _on_popup():
 	background_animation.play("RESET")
 	background_animation.play(animations.pick_random())
 	pass
+
+

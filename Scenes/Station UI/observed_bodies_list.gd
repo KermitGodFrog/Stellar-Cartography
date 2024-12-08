@@ -1,6 +1,8 @@
 extends ItemList
 
 signal saveAudioProfile(helper: audioProfileHelper)
+signal _addPlayerValue(amount: int)
+signal finishedButtonPressed
 
 @onready var confirmed = load("res://Graphics/Misc/confirm_no_shadow.png")
 @onready var denied = load("res://Graphics/Misc/denied.png")
@@ -10,6 +12,8 @@ func initialize(helpers: Array[audioProfileHelper]):
 	clear()
 	
 	for helper in helpers:
+		helper.body.metadata["has_valid_audio_profile"] = false
+		
 		add_item(helper.body.display_name, null, false)
 		if helper.get_variation_class():
 			match helper.is_guessed_variation_correct():
@@ -25,10 +29,9 @@ func initialize(helpers: Array[audioProfileHelper]):
 					add_item(variation_to_string(helper.body.get_guessed_variation()), denied, false)
 		
 		if helper.is_guessed_variation_correct():
-			var added_value: int
 			var value = helper.body.metadata.get("value")
-			if value: added_value = value
-			add_item(str("(+", added_value, "c)"), null, false)
+			emit_signal("_addPlayerValue", value)
+			add_item(str("(+", value, "n)"), null, false)
 		if not helper.is_guessed_variation_correct():
 			add_item("", null, false) #so columns dont get jumbled
 		
@@ -54,4 +57,8 @@ func _on_item_clicked(index, _at_position, mouse_button_index):
 			set_item_disabled(index, true)
 			set_item_custom_bg_color(index, Color("#c0f576"))
 			emit_signal("saveAudioProfile", metadata)
+	pass
+
+func _on_finished_button_pressed():
+	emit_signal("finishedButtonPressed")
 	pass
