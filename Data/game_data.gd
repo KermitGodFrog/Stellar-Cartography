@@ -1,5 +1,7 @@
 extends Node
 
+enum PAUSE_MODES {NONE, PAUSE_MENU, STATS_MENU, STATION_UI, DIALOGUE, WORMHOLE_MINIGAME}
+
 var player_weirdness_index: float = 0.0
 const GENERATION_VECTORS = [Vector3.UP, Vector3.DOWN, Vector3.LEFT, Vector3.RIGHT, Vector3.FORWARD, Vector3.BACK] #for use in long range scopes and its props!
 

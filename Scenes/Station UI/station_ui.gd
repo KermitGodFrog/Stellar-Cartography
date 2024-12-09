@@ -2,6 +2,28 @@ extends Node
 #DISPLAYS PLAYER VALUE AND PLAYER BALANCE - DOES NOT CHANGE IT
 #all values displayed here are updated BY GAME.GD whenever the relevant signals are received. E.g, sell exploration data signal is sent and game.gd updates the local player balance. its all updated as soon as it opens as well
 
+var _pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE:
+	set(value):
+		_pause_mode = value
+		_on_pause_mode_changed(value)
+signal queuePauseMode(new_mode: game_data.PAUSE_MODES)
+signal setPauseMode(new_mode: game_data.PAUSE_MODES)
+func _on_pause_mode_changed(value):
+	match value:
+		game_data.PAUSE_MODES.NONE:
+			print("STATION UI: CLOSING STATION UI")
+			has_sold_previously = false
+			pending_audio_profiles = []
+			get_node(window).hide()
+		game_data.PAUSE_MODES.STATION_UI:
+			print("STATION UI: OPENING STATION UI")
+			get_node(window).popup()
+			get_node(window).move_to_center()
+			_on_popup()
+	pass
+
+
+
 var station: stationAPI
 var player_current_value: int
 var player_balance: int
@@ -14,10 +36,11 @@ var player_saved_audio_profiles_size_matrix: Array = [] #current, max
 
 signal sellExplorationData(sell_percentage_of_market_price: int)
 signal upgradeShip(upgrade_idx: playerAPI.UPGRADE_ID, cost: int)
-signal undockFromStation(from_station: stationAPI)
 signal addSavedAudioProfile(helper: audioProfileHelper)
 signal removeHullStressForNanites(amount: int, _nanites_per_percentage: int)
 signal addPlayerValue(amount: int)
+
+@export var window: NodePath
 
 @onready var sell_data_button = $sell_data_button
 @onready var balance_label = $balance_label
@@ -151,11 +174,7 @@ func _on_add_player_value(amount: int):
 
 
 func _on_station_window_close_requested():
-	has_sold_previously = false
-	pending_audio_profiles = []
-	if station: emit_signal("undockFromStation", station)
-	else: emit_signal("undockFromStation", null)
-	get_tree().paused = false
+	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	pass
 
 func _on_popup():

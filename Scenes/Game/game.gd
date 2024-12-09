@@ -18,6 +18,8 @@ var world: worldAPI
 @onready var pause_menu = $pauseMenu
 @onready var stats_menu = $statsMenu
 @onready var wormhole_minigame = $wormhole_minigame_window/minigame_container/minigame_viewport/wormhole_minigame
+@onready var pause_mode_handler = $pauseModeHandler
+
 
 func _ready():
 	system_map.connect("updatePlayerActionType", _on_update_player_action_type)
@@ -37,7 +39,6 @@ func _ready():
 	sonar.connect("sonarPing", _on_sonar_ping)
 	
 	station_ui.connect("sellExplorationData", _on_sell_exploration_data)
-	station_ui.connect("undockFromStation", _on_undock_from_station)
 	station_ui.connect("upgradeShip", _on_upgrade_ship)
 	station_ui.connect("addSavedAudioProfile", _on_add_saved_audio_profile)
 	station_ui.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
@@ -67,8 +68,21 @@ func _ready():
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
 	pause_menu.connect("exitToMainMenu", _on_exit_to_main_menu)
 	
-	wormhole_minigame.connect("finishWormholeMinigame", _on_finish_wormhole_minigame)
 	wormhole_minigame.connect("addPlayerHullStress", _on_add_player_hull_stress)
+	
+	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
+	
+	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
+	pause_menu.connect("queuePauseMode", _on_queue_pause_mode)
+	dialogue_manager.connect("queuePauseMode", _on_queue_pause_mode)
+	station_ui.connect("queuePauseMode", _on_queue_pause_mode)
+	wormhole_minigame.connect("queuePauseMode", _on_queue_pause_mode)
+	stats_menu.connect("setPauseMode", _on_set_pause_mode)
+	pause_menu.connect("setPauseMode", _on_set_pause_mode)
+	dialogue_manager.connect("setPauseMode", _on_set_pause_mode)
+	station_ui.connect("setPauseMode", _on_set_pause_mode)
+	wormhole_minigame.connect("setPauseMode", _on_set_pause_mode)
+	
 	
 	
 	
@@ -159,8 +173,8 @@ func _ready():
 		_on_switch_star_system(new)
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
 		
 		await get_tree().create_timer(1.0, true).timeout
@@ -213,6 +227,8 @@ func _ready():
 	pass
 
 func _physics_process(delta):
+	#EVERYTHING HERE MUST ONLY FUNCTION WHEN THE GAME IS UNPAUSED!
+	
 	#CORE GAME LOGIC \/\/\/\/\/
 	#updating positions of everyhthing for API's
 	world.player.updateActionBodyState()
@@ -480,6 +496,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	barycenter_visualizer.locked_body_identifier = destination_wormhole.get_identifier() #this is a bugfix (really?)
 	
 	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
+	
 	_on_wormhole_minigame_popup()
 	pass
 
@@ -489,7 +506,6 @@ func dock_with_station(following_station):
 	station_ui.player_balance = world.player.balance
 	station_ui.player_hull_stress = world.player.hull_stress
 	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
-	
 	station_ui.pending_audio_profiles = world.get_pending_audio_profiles()
 	print_debug("PENDING AUDIO PROFILES: ", station_ui.pending_audio_profiles)
 	
@@ -635,12 +651,6 @@ func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	station_ui.player_balance = world.player.balance
 	pass
 
-func _on_undock_from_station(from_station: stationAPI):
-	print("STATION_UI (DEBUG): UNDOCKING FROM STATION ", from_station)
-	$station_window.hide()
-	$interaction_cooldown.start()
-	pass
-
 func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 	var unlock = world.player.unlockUpgrade(upgrade_idx)
 	_on_upgrade_state_change(unlock, true)
@@ -720,11 +730,13 @@ func _on_add_dialogue_memory_pair(key, value):
 	pass
 
 func _on_open_pause_menu():
-	pause_menu.openPauseMenu()
+	pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.PAUSE_MENU)
 	pass
 
 func _on_open_stats_menu(_init_type: int, player_systems_traversed: int): #init type is from statsMenu INIT_TYPES
-	stats_menu.openStatsMenu(_init_type, player_systems_traversed)
+	stats_menu.init_type = _init_type
+	stats_menu._player_systems_traversed = player_systems_traversed
+	pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.STATS_MENU)
 	pass
 
 func _on_save_world():
@@ -773,8 +785,22 @@ func _on_remove_player_morale(amount : int) -> void:
 	world.player.removeMorale(amount)
 	pass
 
-func _on_finish_wormhole_minigame() -> void:
-	$wormhole_minigame_window.hide()
+
+#the epic handshake between game.gd and pauseModeHandler.gd
+func _on_queue_pause_mode(new_mode: game_data.PAUSE_MODES) -> void:
+	pause_mode_handler._on_queue_pause_mode(new_mode)
+	pass
+
+func _on_set_pause_mode(new_mode: game_data.PAUSE_MODES) -> void:
+	pause_mode_handler._on_set_pause_mode(new_mode)
+	pass
+
+func _on_pause_mode_changed(new_mode: game_data.PAUSE_MODES) -> void:
+	stats_menu._pause_mode = new_mode
+	pause_menu._pause_mode = new_mode
+	dialogue_manager._pause_mode = new_mode
+	station_ui._pause_mode = new_mode
+	wormhole_minigame._pause_mode = new_mode
 	pass
 
 
@@ -808,16 +834,11 @@ func _on_audio_visualizer_popup():
 	pass
 
 func _on_station_popup():
-	$station_window.popup()
-	$station_window.move_to_center()
-	station_ui._on_popup()
-	get_tree().paused = true
+	pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.STATION_UI)
 	pass
 
 func _on_wormhole_minigame_popup():
-	$wormhole_minigame_window.popup()
-	$wormhole_minigame_window.move_to_center()
-	get_tree().paused = true
+	pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.WORMHOLE_MINIGAME)
 	pass
 
 func _on_journey_map_popup():

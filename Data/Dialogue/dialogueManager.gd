@@ -1,4 +1,20 @@
 extends Node
+#dialogueManager is an exception to common pausing best practice because it is always active
+var _pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE:
+	set(value):
+		_pause_mode = value
+		_on_pause_mode_changed(value)
+signal queuePauseMode(new_mode: game_data.PAUSE_MODES)
+signal setPauseMode(new_mode: game_data.PAUSE_MODES)
+func _on_pause_mode_changed(value):
+	match value:
+		game_data.PAUSE_MODES.NONE:
+			dialogue.hide()
+		game_data.PAUSE_MODES.DIALOGUE:
+			dialogue.show()
+	pass
+
+
 
 signal onCloseDialog(with_return_state)
 signal addDialogueMemoryPair(key, value)
@@ -369,15 +385,13 @@ func _on_add_dialogue_memory_pair(key,value) -> void: #im connecitng this signal
 func openDialog():
 	clearAll()
 	dialogue.clear_image()
-	dialogue.show()
-	get_tree().paused = true
+	emit_signal("queuePauseMode", game_data.PAUSE_MODES.DIALOGUE)
 	pass
 
 func closeDialog(with_return_state = null):
 	tree_access_memory = {}
-	dialogue.hide()
-	get_tree().paused = false
 	emit_signal("onCloseDialog", with_return_state)
+	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	pass
 
 func clearText():
@@ -452,6 +466,11 @@ func discoverRandomBodyWithFlair() -> void:
 	else:
 		dialogue.add_text(str("[color=green](Gained no new scan data) [/color]"))
 	pass
+
+
+
+
+
 
 func _TUTORIALSetIngressOverride(value: bool):
 	emit_signal("TUTORIALSetIngressOverride", value)

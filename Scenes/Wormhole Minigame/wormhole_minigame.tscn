@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c2upluruwt8c"]
+[gd_scene load_steps=17 format=3 uid="uid://c2upluruwt8c"]
 
 [ext_resource type="Shader" path="res://Scenes/Wormhole Minigame/wormhole_exterior.gdshader" id="1_hg32g"]
 [ext_resource type="Script" path="res://Scenes/Wormhole Minigame/wormhole_minigame.gd" id="1_u2vnu"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_jtuyj"]
 [ext_resource type="Script" path="res://Scenes/Wormhole Minigame/wormhole_animation.gd" id="4_pmdih"]
 [ext_resource type="Theme" uid="uid://du8q1tlwo1jt1" path="res://Scenes/Wormhole Minigame/wormhole_minigame_HUD_theme.tres" id="7_y6ir1"]
+[ext_resource type="Theme" uid="uid://br33hy3pgvm14" path="res://Scenes/System Map/system_map_APPS_theme.tres" id="8_6gm8y"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_whf3l"]
 
@@ -49,6 +50,7 @@ canvas_item_default_texture_filter = 0
 title = "Wormhole Traversal"
 position = Vector2i(0, 36)
 size = Vector2i(500, 400)
+visible = false
 unresizable = true
 always_on_top = true
 
@@ -65,10 +67,11 @@ stretch = true
 [node name="minigame_viewport" type="SubViewport" parent="minigame_container"]
 handle_input_locally = false
 size = Vector2i(500, 400)
-render_target_update_mode = 4
+render_target_update_mode = 0
 
 [node name="wormhole_minigame" type="Node3D" parent="minigame_container/minigame_viewport"]
 script = ExtResource("1_u2vnu")
+window = NodePath("../../..")
 
 [node name="star" type="DirectionalLight3D" parent="minigame_container/minigame_viewport/wormhole_minigame"]
 transform = Transform3D(-0.370448, -0.433016, -0.821745, -0.85725, 0.499998, 0.122982, 0.357618, 0.749999, -0.556427, 0, 0, 0)
@@ -100,6 +103,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("7_y6ir1")
 
 [node name="distance_container" type="CenterContainer" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
 custom_minimum_size = Vector2(0, 150)
@@ -116,7 +120,6 @@ size_flags_vertical = 3
 [node name="distance_upper" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-theme = ExtResource("7_y6ir1")
 theme_override_styles/fill = SubResource("StyleBoxFlat_pa1kh")
 value = 15.0
 fill_mode = 3
@@ -125,7 +128,6 @@ show_percentage = false
 [node name="distance_lower" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-theme = ExtResource("7_y6ir1")
 theme_override_styles/fill = SubResource("StyleBoxFlat_q61wk")
 value = 10.0
 fill_mode = 3
@@ -134,7 +136,6 @@ show_percentage = false
 [node name="distance_progress" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-theme = ExtResource("7_y6ir1")
 value = 100.0
 fill_mode = 3
 show_percentage = false
@@ -158,6 +159,7 @@ offset_top = -15.5
 offset_bottom = 15.5
 grow_horizontal = 0
 grow_vertical = 2
+theme = ExtResource("8_6gm8y")
 text = "BRAKE"
 
 [node name="press_to_start_button" type="Button" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]

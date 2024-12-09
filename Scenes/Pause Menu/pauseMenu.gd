@@ -1,5 +1,25 @@
 extends Node
 
+var _pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE:
+	set(value):
+		_pause_mode = value
+		_on_pause_mode_changed(value)
+signal queuePauseMode(new_mode: game_data.PAUSE_MODES)
+signal setPauseMode(new_mode: game_data.PAUSE_MODES)
+func _on_pause_mode_changed(value):
+	match value:
+		game_data.PAUSE_MODES.NONE:
+			print("PAUSE MENU: CLOSING PAUSE MENU")
+			pause_control.hide()
+		game_data.PAUSE_MODES.PAUSE_MENU:
+			print("PAUSE MENU: OPENING PAUSE MENU")
+			can_unpause = false
+			unpause_possible_timer.start()
+			pause_control.show()
+	pass
+
+
+
 signal saveWorld
 signal saveAndQuit
 signal exitToMainMenu
@@ -14,24 +34,8 @@ var is_open = false
 
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("pause"):
-		if (can_unpause == true) and (is_open == true):
-			closePauseMenu() #can_unpause is only true in the event of the openPauseMenu() function being called, but that function is never called when the dialogue or station UI is shown because game.gd, who calls the method, is paused.
-	pass
-
-func openPauseMenu():
-	is_open = true
-	can_unpause = false
-	unpause_possible_timer.start()
-	print("PAUSE MENU: OPENING PAUSE MENU")
-	pause_control.show()
-	get_tree().paused = true
-	pass
-
-func closePauseMenu():
-	is_open = false
-	print("PAUSE MENU: CLOSING PAUSE MENU")
-	pause_control.hide()
-	get_tree().paused = false
+		if can_unpause == true and _pause_mode == game_data.PAUSE_MODES.PAUSE_MENU:
+			emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	pass
 
 func disableSaving() -> void:
@@ -39,31 +43,25 @@ func disableSaving() -> void:
 	save_and_quit_button.set_disabled(true)
 	pass
 
-
-
 func _on_resume_button_pressed():
-	closePauseMenu()
+	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	pass
-
 
 func _on_save_button_pressed():
-	closePauseMenu()
 	emit_signal("saveWorld")
+	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	pass
-
 
 func _on_save_and_quit_button_pressed():
-	closePauseMenu()
 	emit_signal("saveAndQuit")
+	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	pass
 
+func _on_exit_button_pressed():
+	emit_signal("exitToMainMenu")
+	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
+	pass
 
 func _on_unpause_possible_timer_timeout():
 	can_unpause = true
 	pass 
-
-
-func _on_exit_button_pressed():
-	closePauseMenu()
-	emit_signal("exitToMainMenu")
-	pass # Replace with function body.

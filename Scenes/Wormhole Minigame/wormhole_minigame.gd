@@ -1,7 +1,25 @@
 extends Node3D
 #sounds WILL play whenever the game is paused, regardless of whether the window is shown or not!
 
-signal finishWormholeMinigame
+var _pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE:
+	set(value):
+		_pause_mode = value
+		_on_pause_mode_changed(value)
+signal queuePauseMode(new_mode: game_data.PAUSE_MODES)
+signal setPauseMode(new_mode: game_data.PAUSE_MODES)
+func _on_pause_mode_changed(value):
+	match value:
+		game_data.PAUSE_MODES.NONE:
+			print("WORMHOLE MINIGAME: CLOSING WORMHOLE MINIGAME")
+			get_node(window).hide()
+		game_data.PAUSE_MODES.WORMHOLE_MINIGAME:
+			print("WORMHOLE MINIGAME: OPENING WORMHOLE MINIGAME")
+			get_node(window).popup()
+			get_node(window).move_to_center()
+	pass
+
+
+
 signal addPlayerHullStress(amount: int)
 
 const MAX_DISTANCE = 100.0
@@ -13,6 +31,8 @@ var distance: float = 100.0
 var hull_stress_wormhole: int = 10
 
 var awaiting_start: bool = true
+
+@export var window: NodePath
 
 @onready var starship_and_camera = $starship_and_camera
 @onready var distance_progress = $starship_and_camera/camera/UI_control/distance_container/distance_progress
@@ -29,7 +49,7 @@ func _physics_process(delta):
 	starship_and_camera.position.x = -starship_offset
 	distance_progress.set_value(distance)
 	
-	if distance <= 0.0 and not awaiting_start:
+	if (distance <= 0.0) and (not awaiting_start) and (_pause_mode == game_data.PAUSE_MODES.WORMHOLE_MINIGAME):
 		finish_minigame(false)
 	pass
 
@@ -72,8 +92,7 @@ func finish_minigame(result: bool) -> void:
 		false:
 			emit_signal("addPlayerHullStress", hull_stress_wormhole * 2)
 	
-	emit_signal("finishWormholeMinigame")
-	get_tree().paused = false
+	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	pass
 
 func _on_press_to_start_button_pressed():

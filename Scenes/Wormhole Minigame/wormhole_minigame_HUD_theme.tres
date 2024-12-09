@@ -1,4 +1,6 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://du8q1tlwo1jt1"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://du8q1tlwo1jt1"]
+
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="1_7m4qy"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_256lr"]
 color = Color(0, 0, 0, 0.164706)
@@ -13,5 +15,7 @@ draw_center = false
 border_width_top = 1
 
 [resource]
+default_font = ExtResource("1_7m4qy")
+default_font_size = 16
 ProgressBar/styles/background = SubResource("StyleBoxLine_256lr")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_gs72h")
