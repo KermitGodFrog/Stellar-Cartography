@@ -70,8 +70,8 @@ func _ready():
 	
 	wormhole_minigame.connect("addPlayerHullStress", _on_add_player_hull_stress)
 	
-	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	
+	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
 	pause_menu.connect("queuePauseMode", _on_queue_pause_mode)
 	dialogue_manager.connect("queuePauseMode", _on_queue_pause_mode)
@@ -222,8 +222,6 @@ func _ready():
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
 		_on_switch_star_system(world.player.current_star_system)
-		
-	
 	pass
 
 func _physics_process(delta):
@@ -773,7 +771,6 @@ func _on_tutorial_set_omission_override(value: bool):
 func _on_tutorial_player_win():
 	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN, world.player.systems_traversed)
 	await stats_menu.onCloseStatsMenu
-	
 	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
 	pass
 

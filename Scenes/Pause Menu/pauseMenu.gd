@@ -48,7 +48,10 @@ func _on_resume_button_pressed():
 	pass
 
 func _on_save_button_pressed():
+	
 	emit_signal("saveWorld")
+	#emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
+	emit_signal("queuePauseMode", game_data.PAUSE_MODES.STATS_MENU)
 	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	pass
 
