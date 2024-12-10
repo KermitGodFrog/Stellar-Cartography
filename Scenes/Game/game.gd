@@ -21,6 +21,7 @@ var world: worldAPI
 @onready var pause_mode_handler = $pauseModeHandler
 
 
+
 func _ready():
 	system_map.connect("updatePlayerActionType", _on_update_player_action_type)
 	system_map.connect("updatePlayerTargetPosition", _on_update_player_target_position)
@@ -68,8 +69,9 @@ func _ready():
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
 	pause_menu.connect("exitToMainMenu", _on_exit_to_main_menu)
 	
-	wormhole_minigame.connect("addPlayerHullStress", _on_add_player_hull_stress)
+	stats_menu.connect("statsMenuQuit", _on_stats_menu_quit)
 	
+	wormhole_minigame.connect("addPlayerHullStress", _on_add_player_hull_stress)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -516,10 +518,6 @@ func _on_player_death():
 	print("GAME (DEBUG): PLAYER DIED!!!!!!!!!!!")
 	
 	_on_open_stats_menu(stats_menu.INIT_TYPES.DEATH, world.player.systems_traversed)
-	await stats_menu.onCloseStatsMenu
-	
-	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
-	game_data.deleteWorld()
 	pass
 
 func _on_player_win():
@@ -532,10 +530,6 @@ func _on_player_win():
 	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 	
 	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN, world.player.systems_traversed)
-	await stats_menu.onCloseStatsMenu
-	
-	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
-	game_data.deleteWorld()
 	pass
 
 func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
@@ -770,8 +764,6 @@ func _on_tutorial_set_omission_override(value: bool):
 
 func _on_tutorial_player_win():
 	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN, world.player.systems_traversed)
-	await stats_menu.onCloseStatsMenu
-	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
 	pass
 
 func _on_add_player_morale(amount : int) -> void:
@@ -780,6 +772,15 @@ func _on_add_player_morale(amount : int) -> void:
 
 func _on_remove_player_morale(amount : int) -> void:
 	world.player.removeMorale(amount)
+	pass
+
+func _on_stats_menu_quit(_init_type: int) -> void:
+	match _init_type:
+		stats_menu.INIT_TYPES.TUTORIAL:
+			global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
+		_:
+			global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn") #WIN, DEATH
+			game_data.deleteWorld()
 	pass
 
 

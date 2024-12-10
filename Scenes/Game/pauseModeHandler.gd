@@ -14,7 +14,7 @@ func _ready():
 
 func _process(delta):
 	#print("PAUSE_MODE: ", pause_mode)
-	print("PAUSE_QUEUE: ", pause_queue)
+	#print("PAUSE_QUEUE: ", pause_queue)
 	#print(get_tree().paused)
 	if pause_mode == game_data.PAUSE_MODES.NONE:
 		var new_mode = pause_queue.pop_front()

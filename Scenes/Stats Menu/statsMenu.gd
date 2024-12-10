@@ -24,16 +24,16 @@ func _on_pause_mode_changed(value):
 
 
 
-signal onCloseStatsMenu
+signal statsMenuQuit(_init_type: INIT_TYPES)
 
 @onready var stats_control = $stats_canvas/stats_control
 @onready var systems_traversed_label = $stats_canvas/stats_control/main_scroll/systems_traversed_label
 @onready var init_type_label = $stats_canvas/stats_control/main_scroll/init_type_label
-enum INIT_TYPES {DEATH, WIN}
+enum INIT_TYPES {DEATH, WIN, TUTORIAL}
 var init_type: INIT_TYPES = INIT_TYPES.DEATH
 var _player_systems_traversed: int = 0
 
 func _on_exit_to_main_menu_button_pressed():
-	emit_signal("onCloseStatsMenu")
+	emit_signal("statsMenuQuit", init_type)
 	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	pass 
