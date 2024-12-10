@@ -197,7 +197,7 @@ func _physics_process(delta):
 	pass
 
 func _unhandled_input(event):
-	if event.is_action_pressed("right_mouse") and movement_lock_timer.is_stopped():
+	if event.is_action_pressed("SC_INTERACT2_RIGHT_MOUSE") and movement_lock_timer.is_stopped():
 		var closest_body = game_data.get_closest_body(system.bodies, get_global_mouse_position())
 		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and closest_body.is_known:
 			emit_signal("updatedLockedBody", closest_body)
@@ -213,7 +213,7 @@ func _unhandled_input(event):
 		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
 		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
 	
-	if event.is_action_pressed("left_mouse") and movement_lock_timer.is_stopped():
+	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE") and movement_lock_timer.is_stopped():
 		var closest_body = game_data.get_closest_body(system.bodies, get_global_mouse_position())
 		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and closest_body.is_known:
 			emit_signal("updatedLockedBody", closest_body)
@@ -226,17 +226,17 @@ func _unhandled_input(event):
 		emit_signal("updateTargetPosition", get_global_mouse_position())
 		emit_signal("lockedBodyDepreciated")
 	
-	if event.is_action_pressed("the B"): #DEBUG!!!!!!!!!!!!!!!!!
+	if event.is_action_pressed("SC_DEBUG_REVEAL_ALL_WORMHOLES"): #DEBUG!!!!!!!!!!!!!!!!!
 		emit_signal("DEBUG_REVEAL_ALL_WORMHOLES")
 	
-	if event.is_action_pressed("the N"): #DEBUG!!!!!!!!!!!!!!!!!
+	if event.is_action_pressed("SC_DEBUG_REVEAL_ALL_BODIES"): #DEBUG!!!!!!!!!!!!!!!!!
 		emit_signal("DEBUG_REVEAL_ALL_BODIES")
 	
-	if event.is_action_pressed("boost"):
+	if event.is_action_pressed("SC_BOOST"):
 		player_is_boosting = true
 		emit_signal("updatePlayerIsBoosting", player_is_boosting)
 		async_play_boost_sound(BOOST_SOUND_TYPES.START)
-	elif event.is_action_released("boost"):
+	elif event.is_action_released("SC_BOOST"):
 		player_is_boosting = false
 		emit_signal("updatePlayerIsBoosting", player_is_boosting)
 		async_play_boost_sound(BOOST_SOUND_TYPES.END)

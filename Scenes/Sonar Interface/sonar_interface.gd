@@ -22,7 +22,7 @@ func _physics_process(_delta):
 	pass
 
 func _gui_input(event):
-	if event.is_action_pressed("left_mouse"):
+	if event.is_action_pressed("INTERACT1_LEFT_MOUSE"):
 		ping_direction = get_screen_centre().direction_to(get_global_mouse_position())
 	pass
 

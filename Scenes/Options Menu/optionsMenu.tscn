@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://df1xq5fo2rlje"]
+[gd_scene load_steps=2 format=3 uid="uid://df1xq5fo2rlje"]
+
+[ext_resource type="Script" path="res://Scenes/Options Menu/optionsMenu.gd" id="1_1c1tf"]
 
 [node name="options_menu" type="Control"]
 layout_mode = 3
@@ -7,3 +9,35 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_1c1tf")
+
+[node name="scroll_container" type="ScrollContainer" parent="."]
+custom_minimum_size = Vector2(1300, 900)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="scroll" type="VBoxContainer" parent="scroll_container"]
+custom_minimum_size = Vector2(1300, 900)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="back_button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -15.5
+offset_right = 50.0
+offset_bottom = 15.5
+grow_vertical = 2
+text = "BACK"
+
+[connection signal="pressed" from="back_button" to="." method="_on_back_button_pressed"]

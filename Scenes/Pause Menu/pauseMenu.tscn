@@ -8,9 +8,9 @@ process_mode = 2
 script = ExtResource("1_u73yd")
 
 [node name="pause_canvas" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="pause_control" type="Control" parent="pause_canvas"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -36,6 +36,11 @@ grow_vertical = 2
 layout_mode = 2
 text = "RESUME"
 
+[node name="settings_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
+layout_mode = 2
+text = "SETTINGS
+"
+
 [node name="save_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
 text = "SAVE"
@@ -48,15 +53,15 @@ text = "SAVE AND QUIT TO MAIN MENU"
 layout_mode = 2
 text = "EXIT TO MAIN MENU"
 
-[node name="options_menu" parent="pause_canvas/pause_control" instance=ExtResource("2_vsgfh")]
+[node name="options_menu" parent="pause_canvas" instance=ExtResource("2_vsgfh")]
 visible = false
-layout_mode = 1
 
 [node name="unpause_possible_timer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
 
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/resume_button" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/settings_button" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/save_button" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/save_and_quit_button" to="." method="_on_save_and_quit_button_pressed"]
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/exit_button" to="." method="_on_exit_button_pressed"]
