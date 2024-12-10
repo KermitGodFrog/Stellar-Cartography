@@ -494,8 +494,11 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	_on_switch_star_system(destination)
 	barycenter_visualizer.locked_body_identifier = destination_wormhole.get_identifier() #this is a bugfix (really?)
 	
-	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
+	#removed from the late _on_movement_lock_timer_start function - probably does nothing but im too scared to not add it here just in case
+	system_map.locked_body = null
+	system_map.action_body = null
 	
+	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
 	_on_wormhole_minigame_popup()
 	pass
 

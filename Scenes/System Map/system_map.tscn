@@ -79,10 +79,6 @@ vertical = true
 [node name="system" type="Node2D" parent="."]
 script = ExtResource("1_nhsfb")
 
-[node name="movement_lock_timer" type="Timer" parent="system"]
-wait_time = 5.0
-one_shot = true
-
 [node name="camera" type="Camera2D" parent="system"]
 script = ExtResource("2_miyro")
 

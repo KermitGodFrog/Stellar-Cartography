@@ -29,7 +29,6 @@ var player_is_boosting: bool = false
 var player_audio_visualizer_unlocked: bool = false
 
 @onready var camera = $camera
-@onready var movement_lock_timer = $movement_lock_timer
 @onready var system_list = $camera/canvas/control/tabs/OVERVIEW/system_list
 @onready var follow_body_label = $camera/canvas/control/tabs/INFO/follow_body_label
 @onready var body_attributes_list = $camera/canvas/control/tabs/INFO/body_attributes_list
@@ -52,7 +51,6 @@ enum BOOST_SOUND_TYPES {START, END}
 
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
 @onready var entity_icon = preload("res://Graphics/entity_32x.png")
-#@onready var player_icon = preload("res://Graphics/player_sprite.png")
 @onready var audio_visualizer_icon = preload("res://Graphics/audio_visualizer_frame.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
@@ -197,7 +195,7 @@ func _physics_process(delta):
 	pass
 
 func _unhandled_input(event):
-	if event.is_action_pressed("SC_INTERACT2_RIGHT_MOUSE") and movement_lock_timer.is_stopped():
+	if event.is_action_pressed("SC_INTERACT2_RIGHT_MOUSE"):
 		var closest_body = game_data.get_closest_body(system.bodies, get_global_mouse_position())
 		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and closest_body.is_known:
 			emit_signal("updatedLockedBody", closest_body)
@@ -213,7 +211,7 @@ func _unhandled_input(event):
 		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
 		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
 	
-	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE") and movement_lock_timer.is_stopped():
+	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE"):
 		var closest_body = game_data.get_closest_body(system.bodies, get_global_mouse_position())
 		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and closest_body.is_known:
 			emit_signal("updatedLockedBody", closest_body)
@@ -427,13 +425,6 @@ func _on_found_body(id: int):
 	discovery_instance.play()
 	await discovery_instance.finished
 	discovery_instance.queue_free()
-	pass
-
-func _on_start_movement_lock_timer():
-	if movement_lock_timer.is_stopped():
-		movement_lock_timer.start()
-		locked_body = null
-		action_body = null
 	pass
 
 func _on_picker_button_item_selected(index):
