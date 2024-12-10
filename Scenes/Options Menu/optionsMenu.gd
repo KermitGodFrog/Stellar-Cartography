@@ -10,16 +10,16 @@ func initialize():
 	
 	var actions: Array[StringName] = InputMap.get_actions()
 	for action in actions:
-		print(action)
-		var events = InputMap.action_get_events(action)
-		var info: String = ""
-		for event in events:
-			info += event.to_string()
-		
-		var button = Button.new()
-		button.text = info
-		button.clip_text = true
-		scroll.add_child(button)
+		if action.begins_with("SC_"):
+			var events = InputMap.action_get_events(action)
+			var info: String = ""
+			for event in events:
+				info += event.to_string()
+			
+			var button = Button.new()
+			button.text = action
+			button.clip_text = true
+			scroll.add_child(button)
 	pass
 
 

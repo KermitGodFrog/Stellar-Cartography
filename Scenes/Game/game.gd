@@ -205,7 +205,6 @@ func _ready():
 		#debug.add_tree_access("planet_classification", "Terran")
 		#debug.add_tree_access("player_in_ABYSS_region", true)
 		#get_tree().call_group("dialogueManager", "speak", self, debug)
-		
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
@@ -515,13 +514,13 @@ func dock_with_station(following_station):
 
 
 func _on_player_death():
-	print("GAME (DEBUG): PLAYER DIED!!!!!!!!!!!")
+	print("GAME: PLAYER DIED")
 	
 	_on_open_stats_menu(stats_menu.INIT_TYPES.DEATH, world.player.systems_traversed)
 	pass
 
 func _on_player_win():
-	print("GAME (DEBUG): PLAYER WON!!!!!!!!!!!!!!")
+	print("GAME: PLAYER WON")
 	
 	var new_query = responseQuery.new()
 	new_query.add("concept", "playerWin")
@@ -763,7 +762,7 @@ func _on_tutorial_set_omission_override(value: bool):
 	pass
 
 func _on_tutorial_player_win():
-	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN, world.player.systems_traversed)
+	_on_open_stats_menu(stats_menu.INIT_TYPES.TUTORIAL, world.player.systems_traversed)
 	pass
 
 func _on_add_player_morale(amount : int) -> void:

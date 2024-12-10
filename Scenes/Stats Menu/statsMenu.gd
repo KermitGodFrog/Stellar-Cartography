@@ -18,6 +18,8 @@ func _on_pause_mode_changed(value):
 					init_type_label.set_text("YOU ARE DEAD")
 				INIT_TYPES.WIN:
 					init_type_label.set_text("YOU HAVE REACHED NEW EDEN")
+				INIT_TYPES.TUTORIAL:
+					init_type_label.set_text("YOU HAVE COMPLETED THE TUTORIAL")
 			systems_traversed_label.set_text(str("SYSTEMS DISCOVERED: ", _player_systems_traversed))
 			stats_control.show()
 	pass
