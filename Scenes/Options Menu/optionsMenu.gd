@@ -1,8 +1,10 @@
 extends Control
 
-@onready var settings_button_group = load("res://Scenes/Options Menu/keybind_button_group.tres")
-@onready var keybind_option = load("res://Scenes/Options Menu/keybind_option.gd")
+@onready var keybind_button_group = load("res://Scenes/Options Menu/keybind_button_group.tres")
+@onready var keybind_option = load("res://Scenes/Options Menu/keybind_option.tscn")
 @onready var scroll = $scroll_container/scroll
+
+var options: Array[Node] = []
 
 #options to add:
 #fullscreen (toggle)
@@ -11,23 +13,17 @@ extends Control
 func initialize():
 	for child in scroll.get_children():
 		child.queue_free()
+		options.clear()
 	
 	var actions: Array[StringName] = InputMap.get_actions()
-	for action in actions:
+	for action: StringName in actions:
 		if action.begins_with("SC_"):
-			var events = InputMap.action_get_events(action)
-			var info: String = ""
-			for event in events:
-				info += event.to_string()
-			
-			var button = Button.new()
-			button.text = action
-			button.toggle_mode = true
-			button.button_group = settings_button_group
-			button.set_script(keybind_option)
-			button.clip_text = true
-			button.action = action
-			scroll.add_child(button)
+			var new = keybind_option.instantiate()
+			new.set_button_group(keybind_button_group)
+			new.linked_action = action
+			new.reset_display()
+			scroll.add_child(new)
+			options.append(new)
 	pass
 
 func _on_back_button_pressed():
@@ -35,21 +31,8 @@ func _on_back_button_pressed():
 	pass
 
 func _on_save_button_pressed():
-	var options = scroll.get_children()
-	var actions: Array[StringName] = InputMap.get_actions()
-	
-	for action in actions:
-		var option: Node
-		for _option in options: if _option.action == action: option = _option
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	for option in options:
+		if option.last_input_event:
+			InputMap.action_erase_events(option.linked_action)
+			InputMap.action_add_event(option.linked_action, option.last_input_event)
 	pass

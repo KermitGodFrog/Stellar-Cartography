@@ -1,23 +1,52 @@
 extends Button
 
-var action : StringName 
-@export var input_event : InputEvent
+var linked_action : StringName 
+var last_input_event : InputEvent:
+	set(value):
+		last_input_event = value
+		_on_last_input_event_changed(value)
 
 
+func reset_display() -> void:
+	set_text("%s: %s" % [
+		linked_action, 
+		convert_events_to_readable(InputMap.action_get_events(linked_action))
+		])
+	pass
 
+func update_display() -> void:
+	set_text("%s: %s" % [
+		linked_action, 
+		convert_events_to_readable([last_input_event])
+		])
+	pass
 
-func _input(event):
-	if event is InputEventKey:
-		if get_button_group().get_pressed_button() == self:
-			input_event = event
-			set_text(OS.get_keycode_string(event.keycode))
-	if event is InputEventJoypadButton:
-		if get_button_group().get_pressed_button() == self:
-			input_event = event
-			set_text(str(event.button_index))
-	#if event is InputEventMouseButton:
-		#if get_button_group().get_pressed_button() == self:
-			#input_event = event
-			#set_text(str(event.button_index))
-	print(input_event)
+func _gui_input(event):
+	if get_button_group().get_pressed_button() == self:
+		if event is InputEventKey:
+			last_input_event = event
+		if event is InputEventJoypadButton:
+			last_input_event = event
+		if event is InputEventMouseButton:
+			last_input_event = event
+	pass
+
+func convert_events_to_readable(input_array: Array[InputEvent]) -> String:
+	var s: String = ""
+	for event in input_array:
+		if event is InputEventKey:
+			print(event)
+			if event.physical_keycode:
+				var keycode = DisplayServer.keyboard_get_keycode_from_physical(event.physical_keycode)
+				s += "%s " % OS.get_keycode_string(keycode)
+			else:
+				s += "%s " % OS.get_keycode_string(event.keycode)
+		if event is InputEventJoypadButton:
+			s += "JOY_%s " % event.button_index
+		if event is InputEventMouseButton:
+			s += "MOUSE_%s " % event.button_index
+	return s
+
+func _on_last_input_event_changed(new_input_event: InputEvent):
+	update_display()
 	pass
