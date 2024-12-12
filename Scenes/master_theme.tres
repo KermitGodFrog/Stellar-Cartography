@@ -1,0 +1,44 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://isea3lf5tnwr"]
+
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="1_5ne2b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_602o4"]
+bg_color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qhcdj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21rep"]
+bg_color = Color(0.117647, 0.117647, 0.117647, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qmfw2"]
+bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cr3mb"]
+bg_color = Color(0.85098, 0.85098, 0.85098, 1)
+
+[resource]
+default_font = ExtResource("1_5ne2b")
+default_font_size = 16
+ButtonDull/base_type = &"Button"
+ButtonDull/styles/disabled = SubResource("StyleBoxFlat_602o4")
+ButtonDull/styles/focus = SubResource("StyleBoxEmpty_qhcdj")
+ButtonDull/styles/hover = SubResource("StyleBoxFlat_21rep")
+ButtonDull/styles/normal = SubResource("StyleBoxFlat_qmfw2")
+ButtonDull/styles/pressed = SubResource("StyleBoxFlat_cr3mb")
+ButtonPalette/base_type = &"Button"
+ButtonPalette/styles/disabled = null
+ButtonPalette/styles/focus = null
+ButtonPalette/styles/hover = null
+ButtonPalette/styles/normal = null
+ButtonPalette/styles/pressed = null
+ButtonPaletteLeft/base_type = &"Button"
+ButtonPaletteLeft/styles/disabled = null
+ButtonPaletteLeft/styles/focus = null
+ButtonPaletteLeft/styles/hover = null
+ButtonPaletteLeft/styles/normal = null
+ButtonPaletteLeft/styles/pressed = null
+ButtonPaletteRight/base_type = &"Button"
+ButtonPaletteRight/styles/focus = null
+ButtonPaletteRight/styles/hover = null
+ButtonPaletteRight/styles/normal = null
+ButtonPaletteRight/styles/pressed = null

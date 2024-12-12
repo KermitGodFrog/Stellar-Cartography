@@ -6,8 +6,7 @@ extends Control
 
 #options to add:
 #fullscreen (toggle)
-#
-
+#in the future: UI size options?
 
 func initialize():
 	for child in scroll.get_children():
@@ -27,9 +26,30 @@ func initialize():
 			button.button_group = settings_button_group
 			button.set_script(keybind_option)
 			button.clip_text = true
+			button.action = action
 			scroll.add_child(button)
 	pass
 
 func _on_back_button_pressed():
 	visible = !visible
+	pass
+
+func _on_save_button_pressed():
+	var options = scroll.get_children()
+	var actions: Array[StringName] = InputMap.get_actions()
+	
+	for action in actions:
+		var option: Node
+		for _option in options: if _option.action == action: option = _option
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	pass

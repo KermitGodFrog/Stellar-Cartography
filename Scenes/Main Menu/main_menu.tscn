@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=7 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" path="res://Scenes/Main Menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Texture2D" uid="uid://nav04ap3rdbe" path="res://Graphics/new_game_popup.png" id="2_1jdbj"]
+[ext_resource type="Theme" uid="uid://skdebllj6ft7" path="res://Scenes/Main Menu/main_menu_MAIN_theme.tres" id="2_2eiki"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_srvhc"]
 texture = ExtResource("2_1jdbj")
@@ -31,15 +32,18 @@ grow_vertical = 2
 
 [node name="continue_button" type="Button" parent="options_scroll"]
 layout_mode = 2
+theme = ExtResource("2_2eiki")
 disabled = true
 text = "CONTINUE"
 
 [node name="new_button" type="Button" parent="options_scroll"]
 layout_mode = 2
+theme = ExtResource("2_2eiki")
 text = "NEW"
 
 [node name="tutorial_button" type="Button" parent="options_scroll"]
 layout_mode = 2
+theme = ExtResource("2_2eiki")
 text = "TUTORIAL"
 
 [node name="new_game_popup" type="Control" parent="."]

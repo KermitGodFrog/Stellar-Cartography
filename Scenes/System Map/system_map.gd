@@ -41,7 +41,6 @@ var player_audio_visualizer_unlocked: bool = false
 @onready var status_scroll = $camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll
 @onready var map_overlay = $camera/canvas/map_overlay
 
-
 @onready var ping_sound_scene = preload("res://Sound/ping.tscn")
 @onready var bounceback_sound_scene = preload("res://Sound/bounceback.tscn")
 @onready var discovery_sound_scene = preload("res://Sound/discovery.tscn")

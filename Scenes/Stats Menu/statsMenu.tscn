@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://kmp3sfk18y2"]
+[gd_scene load_steps=3 format=3 uid="uid://kmp3sfk18y2"]
 
 [ext_resource type="Script" path="res://Scenes/Stats Menu/statsMenu.gd" id="1_twj0w"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://Scenes/master_theme.tres" id="2_6jurw"]
 
 [node name="statsMenu" type="Node"]
 process_mode = 2
@@ -16,6 +17,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_6jurw")
 
 [node name="main_scroll" type="VBoxContainer" parent="stats_canvas/stats_control"]
 layout_mode = 1
@@ -42,6 +44,7 @@ text = "SYSTEMS TRAVERSED: 35"
 
 [node name="exit_to_main_menu_button" type="Button" parent="stats_canvas/stats_control/main_scroll"]
 layout_mode = 2
+theme_type_variation = &"ButtonDull"
 text = "EXIT TO MAIN MENU"
 
 [connection signal="pressed" from="stats_canvas/stats_control/main_scroll/exit_to_main_menu_button" to="." method="_on_exit_to_main_menu_button_pressed"]
