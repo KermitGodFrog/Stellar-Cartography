@@ -79,10 +79,6 @@ vertical = true
 [node name="system" type="Node2D" parent="."]
 script = ExtResource("1_nhsfb")
 
-[node name="movement_lock_timer" type="Timer" parent="system"]
-wait_time = 5.0
-one_shot = true
-
 [node name="camera" type="Camera2D" parent="system"]
 script = ExtResource("2_miyro")
 
@@ -505,6 +501,7 @@ clip_text = true
 icon_alignment = 2
 
 [node name="controls_help" type="ItemList" parent="system/camera/canvas/control"]
+visible = false
 custom_minimum_size = Vector2(130, 80)
 layout_mode = 1
 anchors_preset = 7

@@ -175,9 +175,9 @@ func _ready():
 		_on_switch_star_system(new)
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
@@ -205,7 +205,6 @@ func _ready():
 		#debug.add_tree_access("planet_classification", "Terran")
 		#debug.add_tree_access("player_in_ABYSS_region", true)
 		#get_tree().call_group("dialogueManager", "speak", self, debug)
-		
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
@@ -253,7 +252,7 @@ func _physics_process(delta):
 	
 	game_data.player_weirdness_index = world.player.weirdness_index #really hacky solution which should not have been done this way but im too tired to change the entire game now to accomodate it.
 	
-	if Input.is_action_just_pressed("pause"):
+	if Input.is_action_just_pressed("SC_PAUSE"):
 		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
 	pass
 
@@ -495,8 +494,11 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	_on_switch_star_system(destination)
 	barycenter_visualizer.locked_body_identifier = destination_wormhole.get_identifier() #this is a bugfix (really?)
 	
-	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
+	#removed from the late _on_movement_lock_timer_start function - probably does nothing but im too scared to not add it here just in case
+	system_map.locked_body = null
+	system_map.action_body = null
 	
+	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
 	_on_wormhole_minigame_popup()
 	pass
 
@@ -515,13 +517,13 @@ func dock_with_station(following_station):
 
 
 func _on_player_death():
-	print("GAME (DEBUG): PLAYER DIED!!!!!!!!!!!")
+	print("GAME: PLAYER DIED")
 	
 	_on_open_stats_menu(stats_menu.INIT_TYPES.DEATH, world.player.systems_traversed)
 	pass
 
 func _on_player_win():
-	print("GAME (DEBUG): PLAYER WON!!!!!!!!!!!!!!")
+	print("GAME: PLAYER WON")
 	
 	var new_query = responseQuery.new()
 	new_query.add("concept", "playerWin")
@@ -763,7 +765,7 @@ func _on_tutorial_set_omission_override(value: bool):
 	pass
 
 func _on_tutorial_player_win():
-	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN, world.player.systems_traversed)
+	_on_open_stats_menu(stats_menu.INIT_TYPES.TUTORIAL, world.player.systems_traversed)
 	pass
 
 func _on_add_player_morale(amount : int) -> void:

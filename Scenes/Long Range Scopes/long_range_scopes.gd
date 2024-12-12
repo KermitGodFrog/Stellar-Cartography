@@ -69,7 +69,7 @@ func _unhandled_input(event):
 			if mouse_pos_x < (viewport_size_x / 10):
 				rotate_camera_basis(Vector3.UP, CAMERA_ROTATION_MAGNITUDE)
 	
-	if event.is_action_pressed("gzooble") and current_state == STATES.DEFAULT:
+	if event.is_action_pressed("SC_INTERACT4_USE_RANGEFINDER") and current_state == STATES.DEFAULT:
 		var DRAW_MATRICIES: Array[Array] = [[]]
 		for prop in get_tree().get_nodes_in_group("long_range_scopes_prop"):
 			if get_viewport().get_camera_3d().is_position_in_frustum(prop.transform.origin):
@@ -92,11 +92,11 @@ func _unhandled_input(event):
 		_DRAW_MATRICIES = DRAW_MATRICIES
 		set_state(STATES.DISPLAY_RANGEFINDER)
 	
-	if event.is_action_pressed("gkooble"):
+	if event.is_action_pressed("SC_INTERACT3_TAKE_PHOTO"):
 		hud.set_texture(hud_holding)
 		state_on_photo_held = current_state
 	
-	if event.is_action_released("gkooble") and current_state == STATES.DEFAULT and state_on_photo_held == STATES.DEFAULT:
+	if event.is_action_released("SC_INTERACT3_TAKE_PHOTO") and current_state == STATES.DEFAULT and state_on_photo_held == STATES.DEFAULT:
 		if current_entity: if current_entity.captures_remaining > 0:
 			current_entity.remove_captures_remaining(1)
 			captures_remaining_label.text = str(current_entity.captures_remaining)

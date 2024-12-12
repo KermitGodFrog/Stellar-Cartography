@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cu8n2e53bgc37"]
+[gd_scene load_steps=4 format=3 uid="uid://cu8n2e53bgc37"]
 
 [ext_resource type="Script" path="res://Scenes/Pause Menu/pauseMenu.gd" id="1_u73yd"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://Scenes/master_theme.tres" id="2_r6vbf"]
 [ext_resource type="PackedScene" uid="uid://df1xq5fo2rlje" path="res://Scenes/Options Menu/optionsMenu.tscn" id="2_vsgfh"]
 
 [node name="pauseMenu" type="Node"]
@@ -8,15 +9,16 @@ process_mode = 2
 script = ExtResource("1_u73yd")
 
 [node name="pause_canvas" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="pause_control" type="Control" parent="pause_canvas"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_r6vbf")
 
 [node name="pause_scroll" type="VBoxContainer" parent="pause_canvas/pause_control"]
 layout_mode = 1
@@ -34,29 +36,39 @@ grow_vertical = 2
 
 [node name="resume_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
+theme_type_variation = &"ButtonDull"
 text = "RESUME"
+
+[node name="settings_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+text = "SETTINGS
+"
 
 [node name="save_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
+theme_type_variation = &"ButtonDull"
 text = "SAVE"
 
 [node name="save_and_quit_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
+theme_type_variation = &"ButtonDull"
 text = "SAVE AND QUIT TO MAIN MENU"
 
 [node name="exit_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
+theme_type_variation = &"ButtonDull"
 text = "EXIT TO MAIN MENU"
 
-[node name="options_menu" parent="pause_canvas/pause_control" instance=ExtResource("2_vsgfh")]
+[node name="options_menu" parent="pause_canvas" instance=ExtResource("2_vsgfh")]
 visible = false
-layout_mode = 1
 
 [node name="unpause_possible_timer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
 
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/resume_button" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/settings_button" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/save_button" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/save_and_quit_button" to="." method="_on_save_and_quit_button_pressed"]
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/exit_button" to="." method="_on_exit_button_pressed"]

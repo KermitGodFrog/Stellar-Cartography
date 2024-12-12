@@ -35,10 +35,6 @@ script = ExtResource("2_jx1f0")
 own_world_3d = true
 handle_input_locally = false
 
-[node name="interaction_cooldown" type="Timer" parent="."]
-wait_time = 2.0
-one_shot = true
-
 [node name="dialogueManager" parent="." instance=ExtResource("8_egtoq")]
 
 [node name="musicHandler" parent="." instance=ExtResource("9_gksgf")]

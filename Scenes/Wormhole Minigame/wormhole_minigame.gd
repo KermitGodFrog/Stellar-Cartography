@@ -69,6 +69,10 @@ func initialize(weirdness_index: float = 0.0, _hull_stress_wormhole: int = 10):
 	var lower_average = hardest_assumed_lower * weirdness_index 
 	lower_boundry = maxf(0.0, global_data.get_randf(lower_average * 0.75, lower_average * 1.25))
 	
+	
+	
+	
+	
 	distance_upper.value = upper_boundry
 	distance_lower.value = lower_boundry
 	
