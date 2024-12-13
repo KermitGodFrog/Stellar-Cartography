@@ -154,3 +154,9 @@ func deleteWorld() -> void:
 		var error = DirAccess.remove_absolute("user://stellar_cartographer_data.res")
 		print("ERROR CODE: ", error)
 	pass
+
+func loadSettings() -> void:
+	pass
+
+func saveSettings() -> void:
+	pass

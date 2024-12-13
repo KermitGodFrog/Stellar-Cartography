@@ -3,7 +3,7 @@ extends Control
 @onready var keybind_button_group = load("res://Scenes/Options Menu/keybind_button_group.tres")
 @onready var keybind_option = load("res://Scenes/Options Menu/keybind_option.tscn")
 @onready var audio_slider_option = load("res://Scenes/Options Menu/audio_slider_option.tscn")
-@onready var scroll = $scroll_container/scroll
+@onready var scroll = $panel_scroll/background/margin/scroll_container/scroll
 
 var keybind_options: Array[Node] = []
 var audio_slider_options: Array[Node] = []
