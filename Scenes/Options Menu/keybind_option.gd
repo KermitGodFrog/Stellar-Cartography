@@ -35,7 +35,6 @@ func convert_events_to_readable(input_array: Array[InputEvent]) -> String:
 	var s: String = ""
 	for event in input_array:
 		if event is InputEventKey:
-			print(event)
 			if event.physical_keycode:
 				var keycode = DisplayServer.keyboard_get_keycode_from_physical(event.physical_keycode)
 				s += "%s " % OS.get_keycode_string(keycode)
@@ -50,3 +49,4 @@ func convert_events_to_readable(input_array: Array[InputEvent]) -> String:
 func _on_last_input_event_changed(new_input_event: InputEvent):
 	update_display()
 	pass
+
