@@ -18,22 +18,21 @@ func initialize():
 	keybind_options.clear()
 	audio_slider_options.clear()
 	
-	for bus_name in ["Master", "Planetary SFX", "SFX", "Music"]:
+	for bus_name in game_data.SETTINGS_RELEVANT_AUDIO_BUSES:
 		var new = audio_slider_option.instantiate()
 		new.linked_bus_idx = AudioServer.get_bus_index(bus_name)
 		scroll.add_child(new)
 		new.reset_display()
 		audio_slider_options.append(new)
 	
-	var actions: Array[StringName] = InputMap.get_actions()
-	for action: StringName in actions:
-		if action.begins_with("SC_"):
-			var new = keybind_option.instantiate()
-			new.set_button_group(keybind_button_group)
-			new.linked_action = action
-			scroll.add_child(new)
-			new.reset_display()
-			keybind_options.append(new)
+	var relevant_actions = global_data.get_relevant_input_actions() # all starting with SC_
+	for action in relevant_actions:
+		var new = keybind_option.instantiate()
+		new.set_button_group(keybind_button_group)
+		new.linked_action = action
+		scroll.add_child(new)
+		new.reset_display()
+		keybind_options.append(new)
 	pass
 
 func _on_back_button_pressed():
@@ -48,4 +47,6 @@ func _on_save_button_pressed():
 		if option.last_input_event:
 			InputMap.action_erase_events(option.linked_action)
 			InputMap.action_add_event(option.linked_action, option.last_input_event)
+	
+	game_data.saveSettings()
 	pass

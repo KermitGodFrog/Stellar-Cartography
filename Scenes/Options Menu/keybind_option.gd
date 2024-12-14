@@ -3,7 +3,6 @@ extends Button
 var linked_action : StringName 
 var last_input_event : InputEvent:
 	set(value):
-		last_input_event = value
 		_on_last_input_event_changed(value)
 
 
@@ -47,6 +46,7 @@ func convert_events_to_readable(input_array: Array[InputEvent]) -> String:
 	return s
 
 func _on_last_input_event_changed(new_input_event: InputEvent):
+	last_input_event = new_input_event
 	update_display()
 	pass
 

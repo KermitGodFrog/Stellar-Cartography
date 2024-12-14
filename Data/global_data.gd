@@ -154,3 +154,11 @@ func count_down(dict):
 func func_wrapper(calling: Callable, call_back: Callable):
 	await calling.call()
 	call_back.call()
+
+func get_relevant_input_actions() -> Array[StringName]:
+	var relevant_actions: Array[StringName] = []
+	var actions: Array[StringName] = InputMap.get_actions()
+	for action: StringName in actions:
+		if action.begins_with("SC_"):
+			relevant_actions.append(action)
+	return relevant_actions

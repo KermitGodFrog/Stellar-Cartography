@@ -52,6 +52,10 @@ const NAME_FILE_PATHS: Dictionary = {
 	NAME_VARIETIES.SPACE_ANOMALY_FLAIR: "res://Data/Name Data/space_anomaly_flairs.txt"
 }
 
+const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]
+var DEFAULT_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
+
+
 func get_random_name_from_variety(variety: NAME_VARIETIES):
 	match variety:
 		NAME_VARIETIES.STAR:
@@ -155,8 +159,32 @@ func deleteWorld() -> void:
 		print("ERROR CODE: ", error)
 	pass
 
-func loadSettings() -> void:
-	pass
+
+
+
+func loadSettings():
+	print("GAME DATA: LOADING SETTINGS")
+	
+	if ResourceLoader.exists("user://stellar_cartographer_settings.res"):
+		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_settings.res")
+		return resource
+	return null
 
 func saveSettings() -> void:
+	print("GAME DATA: SAVING SETTINGS")
+	
+	var helper = settingsHelper.new()
+	
+	var relevant_actions = global_data.get_relevant_input_actions() # all starting with SC_
+	for action in relevant_actions:
+		var events = InputMap.action_get_events(action)
+		if events: helper.saved_events.append(events.front()) #support for only ONE keybind per action
+		else: helper.saved_events.append(null)
+	
+	for bus_name in game_data.SETTINGS_RELEVANT_AUDIO_BUSES:
+		var bus_idx = AudioServer.get_bus_index(bus_name)
+		helper.saved_bus_volumes.append(AudioServer.get_bus_volume_db(bus_idx))
+	
+	var error = ResourceSaver.save(helper, "user://stellar_cartographer_settings.res")
+	print("ERROR CODE: ", error)
 	pass

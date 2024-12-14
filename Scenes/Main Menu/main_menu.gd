@@ -18,6 +18,31 @@ var SHOW_NEW_GAME_POPUP: bool = false:
 func _ready():
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
 		continue_button.disabled = false
+	
+	
+	
+	#var settings_helper = await game_data.loadSettings()
+	#if settings_helper != null:
+		
+		#var relevant_actions = global_data.get_relevant_input_actions() # all starting with SC_
+		#for action in relevant_actions:
+			#var best_event_if_any
+			#var events = InputMap.action_get_events(action)
+			#if events: best_event_if_any = events.front()
+			#else: best_event_if_any = null
+			
+			#saving to default events for reset to default option
+			#game_data.DEFAULT_RELEVANT_ACTION_EVENTS.append(best_event_if_any)
+			
+			#if best_event_if_any != null:
+				#InputMap.action_erase_events(action)
+				#InputMap.action_add_event(action, best_event_if_any)
+			
+			#THIS IS MEGA BROKE!!!!!! ITS MEANT TO TAKE THE CURRENT ACTION EVENT FROM THE SETTINGS HELPER BUT IT JUST SETS ITSELF TO ITSELF THE FUCKKKKK
+	
+	
+	
+	
 	pass
 
 func _on_continue_button_pressed():
