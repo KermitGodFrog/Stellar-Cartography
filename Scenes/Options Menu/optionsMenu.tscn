@@ -50,6 +50,10 @@ layout_mode = 2
 theme_type_variation = &"ButtonPaletteLeft"
 text = "SAVE"
 
+[node name="reset_button" type="Button" parent="panel_scroll/gradient_background/options_scroll"]
+layout_mode = 2
+text = "RESET TO DEFAULTS"
+
 [node name="back_button" type="Button" parent="panel_scroll/gradient_background/options_scroll"]
 layout_mode = 2
 theme_type_variation = &"ButtonPaletteLeft"
@@ -85,4 +89,5 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [connection signal="pressed" from="panel_scroll/gradient_background/options_scroll/save_button" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="panel_scroll/gradient_background/options_scroll/reset_button" to="." method="_on_reset_button_pressed"]
 [connection signal="pressed" from="panel_scroll/gradient_background/options_scroll/back_button" to="." method="_on_back_button_pressed"]

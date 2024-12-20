@@ -3,7 +3,8 @@ extends Button
 var linked_action : StringName 
 var last_input_event : InputEvent:
 	set(value):
-		_on_last_input_event_changed(value)
+		last_input_event = value
+		_on_last_input_event_changed()
 
 
 func reset_display() -> void:
@@ -45,8 +46,7 @@ func convert_events_to_readable(input_array: Array[InputEvent]) -> String:
 			s += "MOUSE_%s " % event.button_index
 	return s
 
-func _on_last_input_event_changed(new_input_event: InputEvent):
-	last_input_event = new_input_event
+func _on_last_input_event_changed():
 	update_display()
 	pass
 

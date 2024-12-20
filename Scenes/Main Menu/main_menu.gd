@@ -19,30 +19,31 @@ func _ready():
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
 		continue_button.disabled = false
 	
+	#just remove all of this and start again!
 	
-	
-	#var settings_helper = await game_data.loadSettings()
-	#if settings_helper != null:
+	var helper = game_data.loadSettings()
+	if helper != null:
+		#loading audio
+		var relevant_audio_buses = game_data.SETTINGS_RELEVANT_AUDIO_BUSES
+		var volumes_same_size: bool = relevant_audio_buses.size() == helper.saved_bus_volumes.size()
+		for i in relevant_audio_buses.size():
+			var bus_name = game_data.SETTINGS_RELEVANT_AUDIO_BUSES[i]
+			var bus_idx = AudioServer.get_bus_index(bus_name)
+			
+			if volumes_same_size:
+				AudioServer.set_bus_volume_db(bus_idx, helper.saved_bus_volumes[i])
 		
-		#var relevant_actions = global_data.get_relevant_input_actions() # all starting with SC_
-		#for action in relevant_actions:
-			#var best_event_if_any
-			#var events = InputMap.action_get_events(action)
-			#if events: best_event_if_any = events.front()
-			#else: best_event_if_any = null
+		#loading inputs
+		var relevant_actions = global_data.get_relevant_input_actions() # all starting with SC_
+		var events_same_size: bool = relevant_actions.size() == helper.saved_events.size() #if an update comes along and adds keybinds, everything is reset to defaults
+		for i in relevant_actions.size():
+			var action = relevant_actions[i]
+			var event = InputMap.action_get_events(action).front()
+			game_data.DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS.append(event)
 			
-			#saving to default events for reset to default option
-			#game_data.DEFAULT_RELEVANT_ACTION_EVENTS.append(best_event_if_any)
-			
-			#if best_event_if_any != null:
-				#InputMap.action_erase_events(action)
-				#InputMap.action_add_event(action, best_event_if_any)
-			
-			#THIS IS MEGA BROKE!!!!!! ITS MEANT TO TAKE THE CURRENT ACTION EVENT FROM THE SETTINGS HELPER BUT IT JUST SETS ITSELF TO ITSELF THE FUCKKKKK
-	
-	
-	
-	
+			if events_same_size:
+				InputMap.action_erase_events(action)
+				InputMap.action_add_event(action, helper.saved_events[i])
 	pass
 
 func _on_continue_button_pressed():

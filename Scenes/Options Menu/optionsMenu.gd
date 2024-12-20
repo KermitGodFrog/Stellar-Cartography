@@ -8,10 +8,6 @@ extends Control
 var keybind_options: Array[Node] = []
 var audio_slider_options: Array[Node] = []
 
-#options to add:
-#fullscreen (toggle)
-#in the future: UI size options?
-
 func initialize():
 	for child in scroll.get_children():
 		child.queue_free()
@@ -25,8 +21,7 @@ func initialize():
 		new.reset_display()
 		audio_slider_options.append(new)
 	
-	var relevant_actions = global_data.get_relevant_input_actions() # all starting with SC_
-	for action in relevant_actions:
+	for action in global_data.get_relevant_input_actions():
 		var new = keybind_option.instantiate()
 		new.set_button_group(keybind_button_group)
 		new.linked_action = action
@@ -48,5 +43,30 @@ func _on_save_button_pressed():
 			InputMap.action_erase_events(option.linked_action)
 			InputMap.action_add_event(option.linked_action, option.last_input_event)
 	
-	game_data.saveSettings()
+	var helper = settingsHelper.new()
+	
+	for bus_name in game_data.SETTINGS_RELEVANT_AUDIO_BUSES:
+		var bus_idx = AudioServer.get_bus_index(bus_name)
+		helper.saved_bus_volumes.append(AudioServer.get_bus_volume_db(bus_idx))
+	
+	var relevant_actions = global_data.get_relevant_input_actions() # all starting with SC_
+	for action in relevant_actions:
+		var events = InputMap.action_get_events(action)
+		if events: helper.saved_events.append(events.front()) #support for only ONE keybind per action
+		else: helper.saved_events.append(null)
+	
+	game_data.saveSettings(helper)
+	pass
+
+func _on_reset_button_pressed():
+	var default = game_data.DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	pass

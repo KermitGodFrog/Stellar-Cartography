@@ -53,7 +53,7 @@ const NAME_FILE_PATHS: Dictionary = {
 }
 
 const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]
-var DEFAULT_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
+var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
 
 
 func get_random_name_from_variety(variety: NAME_VARIETIES):
@@ -124,6 +124,9 @@ func get_closest_body(bodies, pos):
 		return null
 
 
+
+
+
 func loadWorld():
 	print("GAME DATA: LOADING WORLD")
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
@@ -164,27 +167,15 @@ func deleteWorld() -> void:
 
 func loadSettings():
 	print("GAME DATA: LOADING SETTINGS")
-	
 	if ResourceLoader.exists("user://stellar_cartographer_settings.res"):
 		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_settings.res")
+		print("LOADING SUCCESS")
 		return resource
+	print("LOADING ERORR")
 	return null
 
-func saveSettings() -> void:
+func saveSettings(settings_helper: settingsHelper) -> void:
 	print("GAME DATA: SAVING SETTINGS")
-	
-	var helper = settingsHelper.new()
-	
-	var relevant_actions = global_data.get_relevant_input_actions() # all starting with SC_
-	for action in relevant_actions:
-		var events = InputMap.action_get_events(action)
-		if events: helper.saved_events.append(events.front()) #support for only ONE keybind per action
-		else: helper.saved_events.append(null)
-	
-	for bus_name in game_data.SETTINGS_RELEVANT_AUDIO_BUSES:
-		var bus_idx = AudioServer.get_bus_index(bus_name)
-		helper.saved_bus_volumes.append(AudioServer.get_bus_volume_db(bus_idx))
-	
-	var error = ResourceSaver.save(helper, "user://stellar_cartographer_settings.res")
+	var error = ResourceSaver.save(settings_helper, "user://stellar_cartographer_settings.res")
 	print("ERROR CODE: ", error)
 	pass

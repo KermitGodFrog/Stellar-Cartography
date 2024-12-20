@@ -32,6 +32,10 @@ window/size/viewport_height=900
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[editor]
+
+export/convert_text_resources_to_binary=false
+
 [input]
 
 SC_SYSTEM_MAP_ZOOM_IN={
