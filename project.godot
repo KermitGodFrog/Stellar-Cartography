@@ -10,10 +10,13 @@ config_version=5
 
 [application]
 
-config/name="Space Exploration"
+config/name="Stellar Cartographer"
 run/main_scene="res://Scenes/Game Master/gameMaster.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
-config/icon="res://icon.svg"
+boot_splash/show_image=false
+config/icon="res://Graphics/fallback_icon.png"
+config/macos_native_icon="res://Graphics/icon.icns"
+config/windows_native_icon="res://Graphics/icon.ico"
 
 [autoload]
 
