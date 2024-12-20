@@ -19,7 +19,12 @@ func _ready():
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
 		continue_button.disabled = false
 	
-	#just remove all of this and start again!
+	#setting defaults - has to be done  before because helper might not exist, and so defaults qwould not be set!
+	var relevant_actions = global_data.get_relevant_input_actions()
+	for i in relevant_actions.size():
+		var action = relevant_actions[i]
+		var event = InputMap.action_get_events(action).front()
+		game_data.DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS.append(event)
 	
 	var helper = game_data.loadSettings()
 	if helper != null:
@@ -33,13 +38,10 @@ func _ready():
 			if volumes_same_size:
 				AudioServer.set_bus_volume_db(bus_idx, helper.saved_bus_volumes[i])
 		
-		#loading inputs
-		var relevant_actions = global_data.get_relevant_input_actions() # all starting with SC_
+		#loading inputs - relevant_actions moved upwards because helper might not exist teehee
 		var events_same_size: bool = relevant_actions.size() == helper.saved_events.size() #if an update comes along and adds keybinds, everything is reset to defaults
 		for i in relevant_actions.size():
 			var action = relevant_actions[i]
-			var event = InputMap.action_get_events(action).front()
-			game_data.DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS.append(event)
 			
 			if events_same_size:
 				InputMap.action_erase_events(action)
