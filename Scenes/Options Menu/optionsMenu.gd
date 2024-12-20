@@ -59,14 +59,12 @@ func _on_save_button_pressed():
 	pass
 
 func _on_reset_button_pressed():
-	var default = game_data.DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS
+	for option in audio_slider_options:
+		option.last_value = db_to_linear(0.0)
+		option.slider.value = option.last_value # moving the slider manually
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	var default_events = game_data.DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS
+	for i in keybind_options.size():
+		var option = keybind_options[i]
+		option.last_input_event = default_events[i]
 	pass
