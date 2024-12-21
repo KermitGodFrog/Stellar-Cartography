@@ -20,8 +20,6 @@ var world: worldAPI
 @onready var wormhole_minigame = $wormhole_minigame_window/minigame_container/minigame_viewport/wormhole_minigame
 @onready var pause_mode_handler = $pauseModeHandler
 
-
-
 func _ready():
 	system_map.connect("updatePlayerActionType", _on_update_player_action_type)
 	system_map.connect("updatePlayerTargetPosition", _on_update_player_target_position)
@@ -177,6 +175,7 @@ func _ready():
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
+		new_player.increaseBalance(100000)
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
@@ -426,6 +425,36 @@ func _on_player_following_body(following_body: bodyAPI):
 		long_range_scopes._on_current_entity_cleared()
 	pass
 
+func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
+	match upgrade_idx:
+		playerAPI.UPGRADE_ID.AUDIO_VISUALIZER:
+			
+			var new_query = responseQuery.new()
+			new_query.add("concept", "moduleTutorial")
+			new_query.add("module", "audioVisualizer")
+			new_query.add_tree_access("m_upper", "Audio Visualizer")
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+			
+		playerAPI.UPGRADE_ID.NANITE_CONTROLLER:
+			
+			var new_query = responseQuery.new()
+			new_query.add("concept", "moduleTutorial")
+			new_query.add("module", "naniteController")
+			new_query.add_tree_access("m_upper", "Nanite Controller")
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+			
+		playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES:
+			
+			var new_query = responseQuery.new()
+			new_query.add("concept", "moduleTutorial")
+			new_query.add("module", "longRangeScopes")
+			new_query.add_tree_access("m_upper", "Long Range Scopes")
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+			
+	#BROKE AS HELL!!!! OVERRIDES EACH OTHER IF YOU BUY MORE THAN 1 MODULE PER STATION! WILL REQUIRE SOME SPECIAL CHANGES TO DIALOGUE MANAGER
+	pass
+
+
 
 func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	#spawning new wormholes in destination system if nonexistent
@@ -513,7 +542,6 @@ func dock_with_station(following_station):
 	
 	_on_station_popup()
 	pass
-
 
 
 func _on_player_death():
@@ -658,6 +686,8 @@ func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 	print("GAME (DEBUG): UPGRADE STATE CHANGED: ", upgrade_idx, " ", state)
 	get_tree().call_group("FOLLOW_UPGRADE_STATE", "_on_upgrade_state_change", upgrade_idx, state)
+	if state == true:
+		_on_async_upgrade_tutorial(upgrade_idx)
 	pass
 
 func _on_remove_saved_audio_profile(helper: audioProfileHelper):
