@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dvlokj0bsucd1"
-path="res://.godot/imported/normal.wav-2e7be319fa8c4d1b4125b40b83a07a74.sample"
+path="res://.godot/imported/deceleration.wav-6aaf16a195adf3d2cf92b8a8c5618a75.sample"
 
 [deps]
 
-source_file="res://Sound/Wormhole Minigame/normal.wav"
-dest_files=["res://.godot/imported/normal.wav-2e7be319fa8c4d1b4125b40b83a07a74.sample"]
+source_file="res://Sound/Wormhole Minigame/deceleration.wav"
+dest_files=["res://.godot/imported/deceleration.wav-6aaf16a195adf3d2cf92b8a8c5618a75.sample"]
 
 [params]
 
@@ -18,7 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop_mode=0
+edit/loop_mode=4
 edit/loop_begin=0
 edit/loop_end=-1
 compress/mode=0

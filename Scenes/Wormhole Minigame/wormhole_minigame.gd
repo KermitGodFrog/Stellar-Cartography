@@ -34,6 +34,8 @@ var awaiting_start: bool = true
 
 @onready var starship_and_camera = $starship_and_camera
 @onready var star = $star
+@onready var wormhole_interference = $wormhole_interference
+@onready var deceleration = $deceleration
 @onready var distance_progress = $starship_and_camera/camera/UI_control/distance_container/distance_progress
 @onready var distance_upper = $starship_and_camera/camera/UI_control/distance_container/distance_upper
 @onready var distance_lower = $starship_and_camera/camera/UI_control/distance_container/distance_lower
@@ -48,6 +50,10 @@ func _physics_process(delta):
 	
 	if (distance <= 0.0) and (not awaiting_start) and (_pause_mode == game_data.PAUSE_MODES.WORMHOLE_MINIGAME):
 		finish_minigame(false)
+	
+	wormhole_interference.stream_paused = _pause_mode != game_data.PAUSE_MODES.WORMHOLE_MINIGAME
+	wormhole_interference.volume_db = linear_to_db(remap(distance, 100, 0, 0, 1))
+	deceleration.stream_paused = _pause_mode != game_data.PAUSE_MODES.WORMHOLE_MINIGAME
 	pass
 
 func initialize(weirdness_index: float = 0.0, _hull_stress_wormhole: int = 10):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c2upluruwt8c"]
+[gd_scene load_steps=19 format=3 uid="uid://c2upluruwt8c"]
 
 [ext_resource type="Shader" path="res://Scenes/Wormhole Minigame/wormhole_exterior.gdshader" id="1_hg32g"]
 [ext_resource type="Script" path="res://Scenes/Wormhole Minigame/wormhole_minigame.gd" id="1_u2vnu"]
@@ -8,6 +8,8 @@
 [ext_resource type="Script" path="res://Scenes/Wormhole Minigame/wormhole_animation.gd" id="4_pmdih"]
 [ext_resource type="Theme" uid="uid://du8q1tlwo1jt1" path="res://Scenes/Wormhole Minigame/wormhole_minigame_HUD_theme.tres" id="7_y6ir1"]
 [ext_resource type="Theme" uid="uid://br33hy3pgvm14" path="res://Scenes/System Map/system_map_APPS_theme.tres" id="8_6gm8y"]
+[ext_resource type="AudioStream" uid="uid://cq2a1gsmblou1" path="res://Sound/Wormhole Minigame/wormhole_interference.wav" id="9_w5evm"]
+[ext_resource type="AudioStream" uid="uid://dvlokj0bsucd1" path="res://Sound/Wormhole Minigame/deceleration.wav" id="10_7mbe0"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_whf3l"]
 
@@ -170,6 +172,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "CLICK TO START"
+
+[node name="wormhole_interference" type="AudioStreamPlayer" parent="minigame_container/minigame_viewport/wormhole_minigame"]
+stream = ExtResource("9_w5evm")
+autoplay = true
+bus = &"SFX"
+
+[node name="deceleration" type="AudioStreamPlayer" parent="minigame_container/minigame_viewport/wormhole_minigame"]
+stream = ExtResource("10_7mbe0")
+volume_db = -24.0
+autoplay = true
+bus = &"SFX"
 
 [connection signal="button_up" from="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/brake_button" to="minigame_container/minigame_viewport/wormhole_minigame" method="_on_brake_button_button_up"]
 [connection signal="pressed" from="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/press_to_start_button" to="minigame_container/minigame_viewport/wormhole_minigame" method="_on_press_to_start_button_pressed"]
