@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=38 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -51,19 +51,7 @@ bg_color = Color(0.211765, 0.211765, 0.211765, 0.415686)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5sqdb"]
 bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lol1i"]
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r4cqc"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ua8ob"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_743cv"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yl66s"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4umr7"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m5crt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gne5x"]
 bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
@@ -280,7 +268,7 @@ popup/item_1/id = 1
 popup/item_2/text = "HIGH"
 popup/item_2/id = 2
 
-[node name="console" type="ItemList" parent="system/camera/canvas/control"]
+[node name="console" type="RichTextLabel" parent="system/camera/canvas/control"]
 custom_minimum_size = Vector2(500, 200)
 layout_mode = 1
 anchors_preset = 1
@@ -289,18 +277,37 @@ anchor_right = 1.0
 offset_left = -40.0
 offset_bottom = 40.0
 grow_horizontal = 0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hovered_color = Color(1, 1, 1, 1)
 theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
-theme_override_colors/guide_color = Color(1, 1, 1, 1)
-theme_override_styles/panel = SubResource("StyleBoxEmpty_lol1i")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_r4cqc")
-theme_override_styles/hovered = SubResource("StyleBoxEmpty_ua8ob")
-theme_override_styles/selected = SubResource("StyleBoxEmpty_743cv")
-theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_yl66s")
-theme_override_styles/cursor = SubResource("StyleBoxEmpty_4umr7")
-theme_override_styles/cursor_unfocused = SubResource("StyleBoxEmpty_m5crt")
+bbcode_enabled = true
+text = "gkkgkgdgisgjpidfsfbdhgsdijasodgsfhgroefiapodskfbnogripejafdvfsgadihfsidaffsgrijadvbfjnsguraiejfdvbjnrgdgdgd
+gd
+gd
+g
+dg
+dg
+dg
+d
+gd
+g
+dg
+g
+d
+gd
+g
+g
+d
+gd
+g
+dg
+dg
+dgdgdg
+dg
+dg
+d
+g"
+scroll_following = true
 script = ExtResource("8_oaj06")
 
 [node name="scopes_snap_scroll" type="VBoxContainer" parent="system/camera/canvas/control"]
