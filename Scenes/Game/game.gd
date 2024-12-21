@@ -35,7 +35,7 @@ func _ready():
 	system_map.connect("DEBUG_REVEAL_ALL_BODIES", _ON_DEBUG_REVEAL_ALL_BODIES)
 	
 	system_3d.connect("foundBody", _on_found_body)
-	system_3d.connect("addConsoleItem", _on_add_console_item)
+	system_3d.connect("addConsoleEntry", _on_add_console_entry)
 	
 	sonar.connect("sonarPing", _on_sonar_ping)
 	
@@ -47,7 +47,6 @@ func _ready():
 	
 	audio_visualizer.connect("removeSavedAudioProfile", _on_remove_saved_audio_profile)
 	
-	long_range_scopes.connect("addConsoleItem", _on_add_console_item)
 	long_range_scopes.connect("addPlayerValue", _on_add_player_value)
 	
 	system_map.connect("audioVisualizerPopup", _on_audio_visualizer_popup)
@@ -491,6 +490,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	world.player.setTargetPosition(world.player.position)
 	world.player.updatePosition(get_physics_process_delta_time())
 	
+	system_map._on_clear_console_entries()
 	_on_switch_star_system(destination)
 	barycenter_visualizer.locked_body_identifier = destination_wormhole.get_identifier() #this is a bugfix (really?)
 	
@@ -610,9 +610,9 @@ func _on_found_body(id: int):
 						sub_body.is_known = true
 	pass
 
-func _on_add_console_item(text: String, bg_color: Color = Color.WHITE, time: int = 500): #called via systtem 3d
-	print_debug("ADD CONSOLE ITEM CALLED ", text, " ", bg_color, " ", time)
-	system_map._on_add_console_item(text, bg_color, time)
+func _on_add_console_entry(entry_text: String, text_color: Color = Color.WHITE): #called via systtem 3d
+	print_debug("ADD CONSOLE ITEM CALLED ", entry_text, " ", text_color)
+	system_map._on_add_console_entry(entry_text, text_color)
 	pass
 
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
@@ -830,7 +830,7 @@ func _on_audio_visualizer_popup():
 	else:
 		$audio_visualizer_window.move_to_center()
 		$audio_visualizer_window.popup()
-		_on_add_console_item("Opening audio visualizer.", Color("353535"), 50)
+		_on_add_console_entry("Opening audio visualizer.", Color("353535"))
 	pass
 
 func _on_station_popup():
@@ -847,7 +847,7 @@ func _on_journey_map_popup():
 	else:
 		$journey_map_window.move_to_center()
 		$journey_map_window.popup()
-		_on_add_console_item("Opening journey map.", Color("353535"), 50)
+		_on_add_console_entry("Opening journey map.", Color("353535"))
 	pass
 
 func _on_long_range_scopes_popup():
@@ -856,5 +856,5 @@ func _on_long_range_scopes_popup():
 	else:
 		$long_range_scopes_window.move_to_center()
 		$long_range_scopes_window.popup()
-		_on_add_console_item("Opening long range scopes.", Color("353535"), 50)
+		_on_add_console_entry("Opening long range scopes.", Color("353535"))
 	pass

@@ -1,7 +1,7 @@
 extends Node3D
 
 signal foundBody(id: int)
-signal addConsoleItem(text: String, bg_color: Color, time: int)
+signal addConsoleEntry(entry_text: String, text_color: Color)
 
 var TUTORIAL_INGRESS_OVERRIDE: bool = false
 var TUTORIAL_OMISSION_OVERRIDE: bool = false
@@ -92,8 +92,8 @@ func _physics_process(_delta):
 						
 						emit_signal("foundBody", child.get_identifier())
 						var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
-						if not associated_body.metadata.has("value"): emit_signal("addConsoleItem", str("DISCOVERED BODY: ", associated_body.display_name.capitalize()), Color.DARK_GREEN, 2000)
-						elif associated_body.metadata.has("value"): emit_signal("addConsoleItem", str("DISCOVERED BODY: ", associated_body.display_name.capitalize(), " (est. value ", round(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN, 2000)
+						if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED BODY: ", associated_body.display_name.capitalize()), Color.DARK_GREEN)
+						elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED BODY: ", associated_body.display_name.capitalize(), " (est. value ", round(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
 	
 	#this is broked because when you unlock a body by moving the camera target pos, the locked_body_identifier variable on this script remains the same - thereofore, it always displays that you are locked to a body
 	#setting locked_body_label text

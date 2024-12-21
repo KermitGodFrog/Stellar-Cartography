@@ -431,10 +431,13 @@ func _on_picker_button_item_selected(index):
 		follow_body.guessed_variation = index
 	pass
 
-func _on_add_console_item(text: String, bg_color: Color = Color.WHITE, time: int = 500):
-	console.async_add_item(text, bg_color, time)
+func _on_add_console_entry(text: String, text_color: Color = Color.WHITE):
+	console.add_entry(text, text_color)
 	pass
 
+func _on_clear_console_entries():
+	console.clear_entries()
+	pass
 
 
 

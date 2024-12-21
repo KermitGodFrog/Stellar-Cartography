@@ -1,6 +1,5 @@
 extends Node3D
 
-signal addConsoleItem(text: String, bg_color: Color, time: int)
 signal addPlayerValue(amount: int)
 
 enum STATES {DEFAULT, DISPLAY_PHOTO, DISPLAY_RANGEFINDER}

@@ -281,33 +281,8 @@ theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
 theme_override_styles/focus = SubResource("StyleBoxEmpty_r4cqc")
 bbcode_enabled = true
-text = "gkkgkgdgisgjpidfsfbdhgsdijasodgsfhgroefiapodskfbnogripejafdvfsgadihfsidaffsgrijadvbfjnsguraiejfdvbjnrgdgdgd
-gd
-gd
-g
-dg
-dg
-dg
-d
-gd
-g
-dg
-g
-d
-gd
-g
-g
-d
-gd
-g
-dg
-dg
-dgdgdg
-dg
-dg
-d
-g"
 scroll_following = true
+shortcut_keys_enabled = false
 script = ExtResource("8_oaj06")
 
 [node name="scopes_snap_scroll" type="VBoxContainer" parent="system/camera/canvas/control"]
