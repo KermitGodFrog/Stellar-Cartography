@@ -18,8 +18,6 @@ func _on_pause_mode_changed(value):
 			get_node(window).move_to_center()
 	pass
 
-
-
 signal addPlayerHullStress(amount: int)
 
 const MAX_DISTANCE = 100.0
@@ -35,11 +33,10 @@ var awaiting_start: bool = true
 @export var window: NodePath
 
 @onready var starship_and_camera = $starship_and_camera
+@onready var star = $star
 @onready var distance_progress = $starship_and_camera/camera/UI_control/distance_container/distance_progress
-
 @onready var distance_upper = $starship_and_camera/camera/UI_control/distance_container/distance_upper
 @onready var distance_lower = $starship_and_camera/camera/UI_control/distance_container/distance_lower
-
 @onready var press_to_start = $starship_and_camera/camera/UI_control/press_to_start_button
 
 func _physics_process(delta):
@@ -55,6 +52,7 @@ func _physics_process(delta):
 
 func initialize(weirdness_index: float = 0.0, _hull_stress_wormhole: int = 10):
 	distance = MAX_DISTANCE #resetting distance
+	star.rotation = Vector3(global_data.get_randi(0,360), global_data.get_randi(0,360), global_data.get_randi(0,360))
 	
 	press_to_start.show()
 	awaiting_start = true
