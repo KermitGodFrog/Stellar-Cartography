@@ -52,6 +52,7 @@ signal addPlayerValue(amount: int)
 @onready var unlock_audio_visualizer_button = $upgrade_container/unlock_audio_visualizer
 @onready var unlock_nanite_controller_button = $upgrade_container/unlock_nanite_controller
 @onready var unlock_long_range_scopes_button = $upgrade_container/unlock_long_range_scopes
+@onready var description_label = $upgrade_container/description_label
 
 @onready var hull_stress_label = $repair_container/hull_stress_label
 @onready var repair_single_button = $repair_container/repair_single
@@ -65,6 +66,9 @@ func _ready():
 	observed_bodies_list.connect("saveAudioProfile", _on_audio_profile_saved)
 	observed_bodies_list.connect("_addPlayerValue", _on_add_player_value)
 	observed_bodies_list.connect("finishedButtonPressed", _on_finished_button_pressed)
+	var upgrades = [unlock_nanite_controller_button, unlock_advanced_scanning_button, unlock_audio_visualizer_button, unlock_long_range_scopes_button]
+	for upgrade in upgrades:
+		upgrade.connect("mouse_entered", _on_upgrade_mouse_entered.bind(upgrade))
 	pass
 
 func _physics_process(_delta):
@@ -184,4 +188,14 @@ func _on_popup():
 	background_animation.play(animations.pick_random())
 	pass
 
-
+func _on_upgrade_mouse_entered(upgrade: Node) -> void:
+	match upgrade.name:
+		"unlock_nanite_controller":
+			description_label.set_text("Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a berth, at a greatly increased nanite cost.")
+		"unlock_advanced_scanning":
+			description_label.set_text("Advanced scanning capability. Allows the ‘INFO’ tab on the central board to be utilised. The ‘INFO’ tab is able to display useful information about a locked body, depending on the type of locked body.")
+		"unlock_audio_visualizer":
+			description_label.set_text("Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition.")
+		"unlock_long_range_scopes":
+			description_label.set_text("Long Range Scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid to photos of quality, which take the photography style for different phenomena into account.")
+	pass
