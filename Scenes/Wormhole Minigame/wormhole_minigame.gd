@@ -59,19 +59,9 @@ func initialize(weirdness_index: float = 0.0, _hull_stress_wormhole: int = 10):
 	press_to_start.show()
 	awaiting_start = true
 	
-	const hardest_assumed_speed = 30.0
-	const hardest_assumed_upper = 20
-	const hardest_assumed_lower = 10
-	
-	speed = maxf(10.0, hardest_assumed_speed * weirdness_index)
-	var upper_average = hardest_assumed_upper * remap(weirdness_index, 0.0, 1.0, 3.0, 1.0)
-	upper_boundry = global_data.get_randf(upper_average * 0.75, upper_average * 1.25)
-	var lower_average = hardest_assumed_lower * weirdness_index 
-	lower_boundry = maxf(0.0, global_data.get_randf(lower_average * 0.75, lower_average * 1.25))
-	
-	
-	
-	
+	lower_boundry = clamp(randfn(50, 8) * weirdness_index, 0, 75) #normal distribution: 99.7% of lower boundries above 1 and below 49
+	upper_boundry = lower_boundry + clamp(randfn((100 - lower_boundry) / 2, 8) * remap(weirdness_index, 0, 1, 1, 0), 5, (100 - lower_boundry)) #this is a really cool line of code teehee!! :>
+	speed = clamp(randfn(30, 5) * weirdness_index, 2.5, 57.5)
 	
 	distance_upper.value = upper_boundry
 	distance_lower.value = lower_boundry
