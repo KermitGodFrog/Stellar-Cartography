@@ -57,7 +57,9 @@ func _on_tutorial_button_pressed():
 	pass
 
 func _on_create_button_pressed():
-	global_data.change_scene.emit("res://Scenes/Game/game.tscn", global_data.GAME_INIT_TYPES.NEW, {"name": name_edit.text, "prefix": prefix_edit.get_item_text(prefix_edit.selected)})
+	var player_name = name_edit.text
+	if player_name == null: player_name = "Tanaka"
+	global_data.change_scene.emit("res://Scenes/Game/game.tscn", global_data.GAME_INIT_TYPES.NEW, {"name": player_name, "prefix": prefix_edit.get_item_text(prefix_edit.selected)})
 	pass
 
 func _on_new_button_pressed():

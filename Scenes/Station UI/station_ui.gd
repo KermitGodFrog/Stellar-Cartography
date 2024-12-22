@@ -113,22 +113,22 @@ func _on_finished_button_pressed():
 
 
 func _on_unlock_advanced_scanning_button_pressed():
-	if station: 
+	if station: if station.is_module_store_disabled == false:
 		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.ADVANCED_SCANNING, 7500) #formerly 10000 (probably more balanced)
 	pass
 
 func _on_unlock_audio_visualizer_pressed():
-	if station:
+	if station: if station.is_module_store_disabled == false:
 		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.AUDIO_VISUALIZER, 35000) #formerly 85000 (probably more balanced)
 	pass
 
 func _on_unlock_nanite_controller_pressed():
-	if station:
+	if station: if station.is_module_store_disabled == false:
 		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.NANITE_CONTROLLER, 25000) #formerly 45000 (probably more balanced)
 	pass 
 
 func _on_unlock_long_range_scopes_pressed():
-	if station:
+	if station: if station.is_module_store_disabled == false:
 		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES, 35000) #formerly 85000 (probably more balanced)
 	pass
 
@@ -161,7 +161,6 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 		var error:
 			print_debug(str("STATION UI: ERROR: BUTTON TEXT CHANGE FOR UPGRADE IDX ", error, "NOT CONFIGURED!"))
 	pass
-
 
 
 func _on_repair_single_pressed():
@@ -198,4 +197,8 @@ func _on_upgrade_mouse_entered(upgrade: Node) -> void:
 			description_label.set_text("Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition.")
 		"unlock_long_range_scopes":
 			description_label.set_text("Long Range Scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid to photos of quality, which take the photography style for different phenomena into account.")
+	pass
+
+func _on_disable_module_store() -> void:
+	if station: station.is_module_store_disabled = true
 	pass

@@ -175,7 +175,7 @@ func _ready():
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)
-		new_player.increaseBalance(100000)
+		#new_player.increaseBalance(100000)
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
@@ -670,6 +670,7 @@ func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	if world.player.balance >= cost and (world.player.get_upgrade_unlocked_state(upgrade_idx) != true):
 		world.player.decreaseBalance(cost)
 		_on_unlock_upgrade(upgrade_idx)
+		station_ui._on_disable_module_store() #i really dont know..... shouldnt do anything if not at a station because of 'if station' keywords in thingi fubhodgifaphjdlghruoetaifjpdvghruaeofisdh
 	station_ui.player_balance = world.player.balance
 	pass
 

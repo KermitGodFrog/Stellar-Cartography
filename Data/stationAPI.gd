@@ -4,6 +4,7 @@ class_name stationAPI
 
 @export var station_classification: int #GAME DATA 
 @export var sell_percentage_of_market_price: int
+@export var is_module_store_disabled: bool = false
 
 func is_station():
 	return true
