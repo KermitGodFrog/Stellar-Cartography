@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dtbagvxj5to3"]
+[gd_scene load_steps=14 format=3 uid="uid://dtbagvxj5to3"]
 
 [ext_resource type="Script" path="res://Scenes/Station UI/station_ui.gd" id="1_8gqs2"]
 [ext_resource type="Theme" uid="uid://cyxa5wd6un7de" path="res://Scenes/Station UI/station_ui_MAIN_theme.tres" id="1_20lhg"]
@@ -14,6 +14,8 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bvpf3"]
 shader = ExtResource("3_n6881")
 shader_parameter/pixel_size = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_du8uj"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w52st"]
 content_margin_bottom = 5.0
@@ -125,15 +127,9 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_du8uj")
+text = "(HOVER UPGRADE TO VIEW DESCRIPTION)"
 autowrap_mode = 3
-
-[node name="background" type="Panel" parent="station_control/upgrade_container/description_label"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="repair_container" type="VBoxContainer" parent="station_control"]
 layout_mode = 1
