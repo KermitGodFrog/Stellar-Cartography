@@ -448,6 +448,9 @@ func setImage(path: String):
 	dialogue.set_image(path)
 	pass
 
+func clearImage():
+	dialogue.clear_image()
+
 func playSoundEffect(path: String) -> void:
 	dialogue.play_sound_effect(path)
 	pass

@@ -190,7 +190,7 @@ func _on_popup():
 func _on_upgrade_mouse_entered(upgrade: Node) -> void:
 	match upgrade.name:
 		"unlock_nanite_controller":
-			description_label.set_text("Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a berth, at a greatly increased nanite cost.")
+			description_label.set_text("Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost.")
 		"unlock_advanced_scanning":
 			description_label.set_text("Advanced scanning capability. Allows the ‘INFO’ tab on the central board to be utilised. The ‘INFO’ tab is able to display useful information about a locked body, depending on the type of locked body.")
 		"unlock_audio_visualizer":

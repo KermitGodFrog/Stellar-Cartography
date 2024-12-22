@@ -16,6 +16,7 @@ shader = ExtResource("3_n6881")
 shader_parameter/pixel_size = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_du8uj"]
+bg_color = Color(0.6, 0.6, 0.6, 0.54902)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w52st"]
 content_margin_bottom = 5.0
@@ -112,6 +113,13 @@ layout_mode = 2
 text = "UNLOCK AUDIO VISUALIZER (35000n)
 (ADVANCED SCANNING REQUIRED)"
 
+[node name="audio_visualizer_disclaimer" type="Label" parent="station_control/upgrade_container"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "(REQ. ADVANCED SCANNING)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="unlock_long_range_scopes" type="Button" parent="station_control/upgrade_container"]
 layout_mode = 2
 text = "UNLOCK LONG RANGE SCOPES (35000n)"
@@ -119,7 +127,7 @@ text = "UNLOCK LONG RANGE SCOPES (35000n)"
 [node name="disclaimer_label" type="Label" parent="station_control/upgrade_container"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "(ONLY ONE MAY BE PURCHASED PER STATION)"
+text = "(ONLY ONE MAY BE PURCHASED PER PORT)"
 horizontal_alignment = 1
 vertical_alignment = 1
 

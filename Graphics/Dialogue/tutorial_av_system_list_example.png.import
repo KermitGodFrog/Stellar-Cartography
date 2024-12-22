@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://c4pkeg1o1jrk7"
+path="res://.godot/imported/tutorial_av_system_list_example.png-fa0515adb4154c12d8f47a0a0cf4003e.image"
+
+[deps]
+
+source_file="res://Graphics/Dialogue/tutorial_av_system_list_example.png"
+dest_files=["res://.godot/imported/tutorial_av_system_list_example.png-fa0515adb4154c12d8f47a0a0cf4003e.image"]
+
+[params]
+
