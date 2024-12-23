@@ -248,6 +248,11 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("SC_PAUSE"):
 		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
+	
+	
+	
+	#TEMP!
+	get_node("system_window/system/camera/canvas/control/TEMP").system = world.star_systems[0]
 	pass
 
 func _on_player_theorised_body(theorised_body: bodyAPI):

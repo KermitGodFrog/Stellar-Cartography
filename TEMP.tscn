@@ -1,19 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://2ip3nwh6ba22"]
+[gd_scene load_steps=3 format=3 uid="uid://2ip3nwh6ba22"]
 
 [ext_resource type="Script" path="res://TEMP.gd" id="1_nl0j1"]
 
-[node name="Control" type="Control"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oet0g"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="TEMP" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_nl0j1")
 
-[node name="Tree" type="Tree" parent="."]
+[node name="tree_test" type="Tree" parent="."]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
 grow_vertical = 2
-script = ExtResource("1_nl0j1")
+theme_override_styles/panel = SubResource("StyleBoxFlat_oet0g")
+column_titles_visible = true
+allow_reselect = true
+
+[connection signal="item_collapsed" from="tree_test" to="." method="_on_tree_test_item_collapsed"]
