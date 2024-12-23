@@ -88,7 +88,7 @@ func is_theorised_but_not_known() -> bool:
 		return false
 
 func is_valid_for_system_list() -> bool:
-	if (is_planet() or is_wormhole() or is_station() or is_anomaly() or is_entity()):
+	if (is_star() or is_planet() or is_wormhole() or is_station() or is_anomaly() or is_entity()):
 		return true
 	else:
 		return false

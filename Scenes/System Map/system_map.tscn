@@ -151,6 +151,7 @@ theme = ExtResource("3_djc4s")
 allow_reselect = true
 allow_search = false
 enable_recursive_folding = false
+scroll_horizontal_enabled = false
 
 [node name="actions_panel" type="Panel" parent="system/camera/canvas/control/tabs/OVERVIEW"]
 custom_minimum_size = Vector2(450, 100)
@@ -165,21 +166,21 @@ offset_bottom = 40.0
 theme = ExtResource("3_djc4s")
 alignment = 1
 
-[node name="go_to_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-tooltip_text = "Lay in a course to selected body (go-to selected body)."
-theme = ExtResource("3_djc4s")
-icon = ExtResource("4_niwjs")
-icon_alignment = 1
-expand_icon = true
-
 [node name="orbit_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 tooltip_text = "Lay in a course to selected body and orbit."
 theme = ExtResource("3_djc4s")
 icon = ExtResource("5_hp0se")
+icon_alignment = 1
+expand_icon = true
+
+[node name="go_to_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+tooltip_text = "Lay in a course to selected body (go-to selected body)."
+theme = ExtResource("3_djc4s")
+icon = ExtResource("4_niwjs")
 icon_alignment = 1
 expand_icon = true
 
@@ -507,10 +508,11 @@ item_1/icon = ExtResource("28_81ibq")
 [connection signal="timeout" from="system/camera/canvas/map_overlay/frame_update" to="system/camera/canvas/map_overlay" method="_on_frame_update_timeout"]
 [connection signal="tab_button_pressed" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_button_pressed"]
 [connection signal="tab_clicked" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_clicked"]
+[connection signal="item_activated" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_activated"]
 [connection signal="item_collapsed" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_collapsed"]
 [connection signal="item_selected" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_selected"]
-[connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]
 [connection signal="item_selected" from="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button" to="system" method="_on_picker_button_item_selected"]
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" to="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" method="_on_pressed"]
