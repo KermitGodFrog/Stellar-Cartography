@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Stellar Cartographer"
 config/version="0.0.0.0"
-run/main_scene="res://Scenes/Game Master/gameMaster.tscn"
+run/main_scene="res://TEMP.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 boot_splash/show_image=false
 config/icon="res://Graphics/fallback_icon.png"
