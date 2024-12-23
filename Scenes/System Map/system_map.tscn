@@ -149,6 +149,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("3_djc4s")
 allow_reselect = true
+allow_rmb_select = true
 allow_search = false
 enable_recursive_folding = false
 scroll_horizontal_enabled = false

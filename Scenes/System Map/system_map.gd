@@ -71,6 +71,7 @@ var SONAR_POLYGON_DISPLAY_TIME: float = 0
 
 #system list
 var collapsed_cache: Dictionary = {}
+var selected_cache: Dictionary = {} #CURRENTLY DOES NOTHING BECAUSE I CANT FIGURE OUT HOW TO MAKE IT WORK!
 var closest_body_id: int
 
 func _ready():
@@ -106,7 +107,9 @@ func _physics_process(delta):
 	sorted_values.sort()
 	closest_body_id = camera_position_to_bodies.find_key(sorted_values.front()) #FOR SYSTEM LIST, create_item_for_body()
 	
+	
 	generate_system_list()
+	
 	
 	#updating sonar ping visualization time values & sonar polygon display time
 	SONAR_POLYGON_DISPLAY_TIME = maxi(0, SONAR_POLYGON_DISPLAY_TIME - delta)
@@ -158,6 +161,8 @@ func _physics_process(delta):
 	
 	queue_redraw()
 	pass
+
+
 
 func generate_system_list() -> void:
 	system_list.clear()
@@ -254,6 +259,8 @@ func clear_system_list_caches() -> void:
 	print("SYSTEM MAP (DEBUG): CLEARING SYSTEM LIST CACHES")
 	collapsed_cache.clear()
 	pass
+
+
 
 func _unhandled_input(event):
 	if event.is_action_pressed("SC_INTERACT2_RIGHT_MOUSE"):
@@ -497,6 +504,7 @@ func async_play_boost_sound(sound: BOOST_SOUND_TYPES):
 	pass
 
 
+
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:
 	emit_signal("removeHullStressForNanites", amount, nanites_per_percentage)
 	pass
@@ -548,7 +556,6 @@ func _on_journey_map_button_pressed():
 func _on_long_range_scopes_button_pressed():
 	emit_signal("longRangeScopesPopup")
 	pass
-
 
 
 
