@@ -22,7 +22,10 @@ signal DEBUG_REVEAL_ALL_BODIES
 var TUTORIAL_INGRESS_OVERRIDE: bool = false
 var TUTORIAL_OMISSION_OVERRIDE: bool = false
 
-var system: starSystemAPI
+var system: starSystemAPI:
+	set(value):
+		system = value
+		clear_system_list_caches()
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 var _player_status_matrix: Array = [0,0,0,0]
 var player_is_boosting: bool = false
@@ -51,6 +54,7 @@ enum BOOST_SOUND_TYPES {START, END}
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
 @onready var entity_icon = preload("res://Graphics/entity_32x.png")
 @onready var audio_visualizer_icon = preload("res://Graphics/audio_visualizer_frame.png")
+@onready var station_frame = load("res://Graphics/station_frame.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body : bodyAPI
@@ -64,6 +68,10 @@ var body_size_multiplier_hint: float = 0.0
 var SONAR_PINGS: Array[pingDisplayHelperAPI]
 var SONAR_POLYGON: PackedVector2Array
 var SONAR_POLYGON_DISPLAY_TIME: float = 0
+
+#system list
+var collapsed_cache: Dictionary = {}
+var closest_body_id: int
 
 func _ready():
 	status_scroll.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
@@ -92,55 +100,56 @@ func _physics_process(delta):
 		go_to_button.set("disabled", false)
 	
 	#setting system list and drawing screen
-	system_list.clear()
+	generate_system_list()
+#	system_list.clear()
 	var camera_position_to_bodies: Dictionary = {}
 	for body in system.bodies:
 		camera_position_to_bodies[body.get_identifier()] = body.position.distance_to(camera.position)
 	var sorted_values = camera_position_to_bodies.values()
 	sorted_values.sort()
-	var closest_body_id = camera_position_to_bodies.find_key(sorted_values.front())
-	
-	var star = system.get_first_star()
-	var star_item_idx = system_list.add_item(str(star.display_name + " - ", star.metadata.get("star_type"), " Class Star"))
-	system_list.set_item_metadata(star_item_idx, star.get_identifier())
-	
-	for body in system.bodies:
-		if body.is_theorised_but_not_known(): if (body.is_planet() or body.is_wormhole() or body.is_station() or body.is_anomaly() or body.is_entity()):
-			var new_item_idx: int
-			new_item_idx = system_list.add_item("> ???")
-			system_list.set_item_metadata(new_item_idx, body.get_identifier())
-			if body == follow_body:
-				system_list.set_item_custom_bg_color(new_item_idx, Color.LIGHT_SKY_BLUE)
-			
-		if body.is_known: if (body.is_planet() or body.is_wormhole() or body.is_station() or body.is_anomaly() or body.is_entity()):
-			var new_item_idx: int
-			if body.is_planet(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.metadata.get("planet_type"), " Planet"))
-			if body.is_wormhole(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Wormhole"))
-			if body.is_station(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Station"), load("res://Graphics/station_frame.png"))
-			if body.is_anomaly(): new_item_idx = system_list.add_item(str("> ", body.display_name))
-			if body.is_entity(): new_item_idx = system_list.add_item(str("> ", game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification)).capitalize(), get_entity_frame(body.entity_classification))
-			
-			system_list.set_item_metadata(new_item_idx, body.get_identifier())
-			
-			if body.get_identifier() == closest_body_id:
-				system_list.set_item_custom_bg_color(new_item_idx, Color.WEB_GRAY)
-			else:
-				system_list.set_item_custom_bg_color(new_item_idx, Color.DARK_SLATE_GRAY)
-			
-			if body == follow_body:
-				system_list.set_item_custom_bg_color(new_item_idx, Color.LIGHT_SKY_BLUE)
-			
-			if body.is_wormhole(): if body.is_disabled:
-				system_list.set_item_custom_bg_color(new_item_idx, Color.DARK_RED)
-			
-			if body.is_planet(): if (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true):
-				system_list.set_item_icon(new_item_idx, audio_visualizer_icon)
-			
-			if body.is_planet(): if (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
-				system_list.set_item_icon(new_item_idx, question_mark_icon)
-			
-			if body.is_anomaly(): if body.metadata.get("is_space_anomaly_available", true) == true:
-				system_list.set_item_icon(new_item_idx, question_mark_icon)
+	closest_body_id = camera_position_to_bodies.find_key(sorted_values.front()) #FOR SYSTEM LIST, create_item_for_body()
+#	
+#	var star = system.get_first_star()
+#	var star_item_idx = system_list.add_item(str(star.display_name + " - ", star.metadata.get("star_type"), " Class Star"))
+#	system_list.set_item_metadata(star_item_idx, star.get_identifier())
+#	
+#	for body in system.bodies:
+#		if body.is_theorised_but_not_known(): if (body.is_planet() or body.is_wormhole() or body.is_station() or body.is_anomaly() or body.is_entity()):
+#			var new_item_idx: int
+#			new_item_idx = system_list.add_item("> ???")
+#			system_list.set_item_metadata(new_item_idx, body.get_identifier())
+#			if body == follow_body:
+#				system_list.set_item_custom_bg_color(new_item_idx, Color.LIGHT_SKY_BLUE)
+#			
+#		if body.is_known: if (body.is_planet() or body.is_wormhole() or body.is_station() or body.is_anomaly() or body.is_entity()):
+#			var new_item_idx: int
+#			if body.is_planet(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.metadata.get("planet_type"), " Planet"))
+#			if body.is_wormhole(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Wormhole"))
+#			if body.is_station(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Station"), load("res://Graphics/station_frame.png"))
+#			if body.is_anomaly(): new_item_idx = system_list.add_item(str("> ", body.display_name))
+#			if body.is_entity(): new_item_idx = system_list.add_item(str("> ", game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification)).capitalize(), get_entity_frame(body.entity_classification))
+#			
+#			system_list.set_item_metadata(new_item_idx, body.get_identifier())
+#			
+#			if body.get_identifier() == closest_body_id:
+#				system_list.set_item_custom_bg_color(new_item_idx, Color.WEB_GRAY)
+#			else:
+#				system_list.set_item_custom_bg_color(new_item_idx, Color.DARK_SLATE_GRAY)
+#			
+#			if body == follow_body:
+#				system_list.set_item_custom_bg_color(new_item_idx, Color.LIGHT_SKY_BLUE)
+#			
+#			if body.is_wormhole(): if body.is_disabled:
+#				system_list.set_item_custom_bg_color(new_item_idx, Color.DARK_RED)
+#			
+#			if body.is_planet(): if (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true):
+#				system_list.set_item_icon(new_item_idx, audio_visualizer_icon)
+#			
+#			if body.is_planet(): if (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
+#				system_list.set_item_icon(new_item_idx, question_mark_icon)
+#			
+#			if body.is_anomaly(): if body.metadata.get("is_space_anomaly_available", true) == true:
+#				system_list.set_item_icon(new_item_idx, question_mark_icon)
 	
 	#updating sonar ping visualization time values & sonar polygon display time
 	SONAR_POLYGON_DISPLAY_TIME = maxi(0, SONAR_POLYGON_DISPLAY_TIME - delta)
@@ -192,6 +201,87 @@ func _physics_process(delta):
 	
 	queue_redraw()
 	pass
+
+
+func generate_system_list() -> void:
+	system_list.clear()
+	recursive_add(system.get_first_star(), null) #RECUSION IS SO COOL
+	pass
+
+func recursive_add(body: bodyAPI, parent: TreeItem) -> void:
+	var new = create_item_for_body(body, parent)
+	for b in system.get_bodies_with_hook_identifier(body.get_identifier()):
+		recursive_add(b, new)
+	pass
+
+func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
+	var item: TreeItem = system_list.create_item(parent)
+	item.set_metadata(0, body.get_identifier())
+	
+	if body == system.get_first_star():
+		item.set_text(0, "%s - %s Class Star" % [body.display_name, body.metadata.get("star_type")])
+	
+	if body.is_theorised_but_not_known(): if body.is_valid_for_system_list():
+		item.set_text(0, "???")
+	
+	if body.is_known: if body.is_valid_for_system_list():
+		if body.is_planet(): item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
+		if body.is_wormhole(): item.set_text(0, "%s - Wormhole" % body.get_display_name())
+		if body.is_station(): item.set_text(0, "%s - Station" % body.get_display_name())
+		if body.is_anomaly(): item.set_text(0, "%s" % body.get_display_name())
+		if body.is_entity(): item.set_text(0, "%s" % game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
+		
+		if body.is_station():
+			item.set_icon(0, station_frame)
+		
+		if body.is_entity():
+			item.set_icon(0, get_entity_frame(body.entity_classification))
+		
+		if body.get_identifier() == closest_body_id: 
+			item.set_custom_bg_color(0, Color.WEB_GRAY)
+		else:
+			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
+		
+		if body == follow_body:
+			item.set_custom_bg_color(0, Color.LIGHT_SKY_BLUE)
+		
+		if body.is_wormhole():
+			item.set_custom_bg_color(0, Color.WEB_PURPLE)
+		
+		if body.is_wormhole(): if body.is_disabled: 
+			item.set_custom_bg_color(0, Color.DARK_RED)
+		
+		if body.is_planet(): if (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true):
+			item.set_icon(0, audio_visualizer_icon)
+		
+		if body.is_planet(): if (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
+			item.set_icon(0, question_mark_icon)
+		
+		if body.is_anomaly(): if body.metadata.get("is_space_anomaly_available", true) == true:
+			item.set_icon(0, question_mark_icon)
+	
+	var c = collapsed_cache.get(body.get_identifier())
+	if c != null:
+		item.set_collapsed(c)
+	return item
+
+func clear_system_list_caches() -> void:
+	print("SYSTEM MAP (DEBUG): CLEARING SYSTEM LIST CACHES")
+	collapsed_cache.clear()
+	pass
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 func _unhandled_input(event):
 	if event.is_action_pressed("SC_INTERACT2_RIGHT_MOUSE"):
@@ -337,15 +427,15 @@ func draw_custom_arc(center, radius, angle_from, angle_to, color): #this is used
 	pass
 
 
-func _on_system_list_item_clicked(index, _at_position, _mouse_button_index):
-	var index_to_identifier = system_list.get_item_metadata(index)
-	if index_to_identifier:
-		var body = system.get_body_from_identifier(index_to_identifier)
-		emit_signal("updatedLockedBody", body)
-		locked_body = body
-		follow_body = body
-		camera.follow_body = follow_body
-	pass
+#func _on_system_list_item_clicked(index, _at_position, _mouse_button_index):
+	#var index_to_identifier = system_list.get_item_metadata(index)
+	#if index_to_identifier:
+		#var body = system.get_body_from_identifier(index_to_identifier)
+		#emit_signal("updatedLockedBody", body)
+		#locked_body = body
+		#follow_body = body
+		#camera.follow_body = follow_body
+	#pass
 
 func _on_go_to_button_pressed():
 	if locked_body:
@@ -495,3 +585,21 @@ func _on_journey_map_button_pressed():
 func _on_long_range_scopes_button_pressed():
 	emit_signal("longRangeScopesPopup")
 	pass
+
+
+func _on_system_list_item_collapsed(item):
+	collapsed_cache[item.get_metadata(0)] = item.is_collapsed()
+	pass
+
+func _on_system_list_item_selected():
+	var item: TreeItem = system_list.get_selected()
+	var identifier: int
+	if item: 
+		identifier = item.get_metadata(0)
+	if identifier:
+		var body = system.get_body_from_identifier(identifier)
+		emit_signal("updatedLockedBody", body)
+		locked_body = body
+		follow_body = body
+		camera.follow_body = follow_body
+	pass 

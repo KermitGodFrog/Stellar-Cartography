@@ -47,42 +47,48 @@ func set_current_variation(new_variation: VARIATIONS):
 	current_variation = new_variation
 	pass
 
-func is_star():
+func is_star() -> bool:
 	if metadata.has("luminosity"):
 		return true
 	else:
 		return false
 
-func is_planet():
+func is_planet() -> bool:
 	if not metadata.has("luminosity") and metadata.has("planet_classification"):
 		return true
 	else:
 		return false
 
-func is_asteroid_belt():
+func is_asteroid_belt() -> bool:
 	if metadata.has("asteroid_belt_classification"):
 		return true
 	else:
 		return false
 
-func is_wormhole():
+func is_wormhole() -> bool:
 	return false #cant be wormhole because script does not extend bodyAPI
 
-func is_anomaly():
+func is_anomaly() -> bool:
 	return false
 
-func is_entity():
+func is_entity() -> bool:
 	return false
 
-func is_station():
+func is_station() -> bool:
 	return false
 
-func is_theorised_but_not_known():
+func is_theorised_but_not_known() -> bool:
 	if is_theorised and is_known:
 		return false
 	elif is_theorised and (not is_known):
 		return true
 	elif (not is_theorised) and is_known:
 		return false #??????????????????
+	else:
+		return false
+
+func is_valid_for_system_list() -> bool:
+	if (is_planet() or is_wormhole() or is_station() or is_anomaly() or is_entity()):
+		return true
 	else:
 		return false

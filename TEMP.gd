@@ -9,10 +9,6 @@ var system: starSystemAPI = null:
 
 var collapsed_cache: Dictionary = {}
 
-func _process(delta):
-	pass
-
-
 
 
 func generate() -> void:

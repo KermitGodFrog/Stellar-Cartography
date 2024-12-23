@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=12 format=3 uid="uid://dm3fbhtw7qov2"]
+[gd_resource type="Theme" load_steps=14 format=3 uid="uid://dm3fbhtw7qov2"]
 
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="1_17eso"]
 [ext_resource type="Texture2D" uid="uid://ckms0lt6w3rsx" path="res://Graphics/icon_bg_2.png" id="1_gejg4"]
@@ -35,6 +35,14 @@ border_color = Color(0.156863, 0.156863, 0.156863, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1iwfw"]
 bg_color = Color(0.466667, 0.466667, 0.466667, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f2ap2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8blav"]
+content_margin_left = 20.0
+bg_color = Color(0.180392, 0.180392, 0.180392, 0.415686)
+border_width_left = 20
+border_color = Color(0.156863, 0.156863, 0.156863, 1)
+
 [resource]
 default_font = ExtResource("1_17eso")
 default_font_size = 16
@@ -58,3 +66,10 @@ TabContainer/styles/tab_hovered = null
 TabContainer/styles/tab_selected = null
 TabContainer/styles/tab_unselected = null
 TabContainer/styles/tabbar_background = SubResource("StyleBoxFlat_1iwfw")
+Tree/colors/font_color = Color(1, 1, 1, 1)
+Tree/colors/guide_color = Color(0.156863, 0.156863, 0.156863, 1)
+Tree/colors/parent_hl_line_color = Color(1, 1, 1, 1)
+Tree/colors/relationship_line_color = Color(1, 1, 1, 1)
+Tree/font_sizes/font_size = 16
+Tree/styles/focus = SubResource("StyleBoxEmpty_f2ap2")
+Tree/styles/panel = SubResource("StyleBoxFlat_8blav")
