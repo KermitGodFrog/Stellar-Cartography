@@ -515,7 +515,7 @@ func updateBodyPosition(id: int, delta):
 func get_random_body():
 	return bodies.pick_random()
 
-func get_random_planet():
+func get_random_planet(): #the fuck? why return an array????
 	var planets: Array = []
 	for body in bodies:
 		if body.is_planet():
@@ -526,6 +526,7 @@ func get_first_star():
 	for body in bodies:
 		if body.is_star():
 			return body
+	return null
 
 func get_first_star_discovery_multiplier() -> float:
 	for body in bodies:
@@ -552,41 +553,42 @@ func get_body_from_identifier(id: int):
 			break
 	return get_body
 
-func get_bodies_with_hook_identifier(id: int):
+func get_bodies_with_hook_identifier(id: int) -> Array:
 	var bodies_with_requested_hook_identifier: Array = []
 	for body in bodies:
 		if body.hook_identifier == id:
 			bodies_with_requested_hook_identifier.append(body)
 	return bodies_with_requested_hook_identifier
 
-func get_bodies_with_metadata_key(metadata_key: String):
+func get_bodies_with_metadata_key(metadata_key: String) -> Array:
 	var return_bodies: Array = []
 	for body in bodies:
 		if body.metadata.has(metadata_key):
 			return_bodies.append(body)
 	return return_bodies
 
-func get_wormholes():
+func get_wormholes() -> Array:
 	var wormholes: Array[wormholeAPI] = []
 	for body in bodies:
 		if body is wormholeAPI:
 			wormholes.append(body)
 	return wormholes
 
-func get_stations():
+func get_stations() -> Array:
 	var stations: Array[stationAPI] = []
 	for body in bodies:
 		if body is stationAPI:
 			stations.append(body)
 	return stations
 
-func get_wormhole_with_destination_system(dest_system: starSystemAPI):
+func get_wormhole_with_destination_system(dest_system: starSystemAPI) -> wormholeAPI:
 	for body in bodies:
 		if body.is_wormhole():
 			if body.destination_system == dest_system:
 				return body
+	return null
 
-func is_civilized():
+func is_civilized() -> bool:
 	for body in bodies:
 		if body is stationAPI:
 			return true

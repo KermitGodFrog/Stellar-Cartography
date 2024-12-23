@@ -22,7 +22,10 @@ signal DEBUG_REVEAL_ALL_BODIES
 var TUTORIAL_INGRESS_OVERRIDE: bool = false
 var TUTORIAL_OMISSION_OVERRIDE: bool = false
 
-var system: starSystemAPI
+var system: starSystemAPI:
+	set(value):
+		system = value
+		clear_system_list_caches()
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 var _player_status_matrix: Array = [0,0,0,0]
 var player_is_boosting: bool = false
@@ -51,6 +54,7 @@ enum BOOST_SOUND_TYPES {START, END}
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
 @onready var entity_icon = preload("res://Graphics/entity_32x.png")
 @onready var audio_visualizer_icon = preload("res://Graphics/audio_visualizer_frame.png")
+@onready var station_frame = load("res://Graphics/station_frame.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body : bodyAPI
@@ -64,6 +68,11 @@ var body_size_multiplier_hint: float = 0.0
 var SONAR_PINGS: Array[pingDisplayHelperAPI]
 var SONAR_POLYGON: PackedVector2Array
 var SONAR_POLYGON_DISPLAY_TIME: float = 0
+
+#system list
+var collapsed_cache: Dictionary = {}
+var selected_cache: Dictionary = {} #CURRENTLY DOES NOTHING BECAUSE I CANT FIGURE OUT HOW TO MAKE IT WORK!
+var closest_body_id: int
 
 func _ready():
 	status_scroll.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
@@ -91,56 +100,16 @@ func _physics_process(delta):
 		orbit_button.set("disabled", false)
 		go_to_button.set("disabled", false)
 	
-	#setting system list and drawing screen
-	system_list.clear()
 	var camera_position_to_bodies: Dictionary = {}
 	for body in system.bodies:
 		camera_position_to_bodies[body.get_identifier()] = body.position.distance_to(camera.position)
 	var sorted_values = camera_position_to_bodies.values()
 	sorted_values.sort()
-	var closest_body_id = camera_position_to_bodies.find_key(sorted_values.front())
+	closest_body_id = camera_position_to_bodies.find_key(sorted_values.front()) #FOR SYSTEM LIST, create_item_for_body()
 	
-	var star = system.get_first_star()
-	var star_item_idx = system_list.add_item(str(star.display_name + " - ", star.metadata.get("star_type"), " Class Star"))
-	system_list.set_item_metadata(star_item_idx, star.get_identifier())
 	
-	for body in system.bodies:
-		if body.is_theorised_but_not_known(): if (body.is_planet() or body.is_wormhole() or body.is_station() or body.is_anomaly() or body.is_entity()):
-			var new_item_idx: int
-			new_item_idx = system_list.add_item("> ???")
-			system_list.set_item_metadata(new_item_idx, body.get_identifier())
-			if body == follow_body:
-				system_list.set_item_custom_bg_color(new_item_idx, Color.LIGHT_SKY_BLUE)
-			
-		if body.is_known: if (body.is_planet() or body.is_wormhole() or body.is_station() or body.is_anomaly() or body.is_entity()):
-			var new_item_idx: int
-			if body.is_planet(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", body.metadata.get("planet_type"), " Planet"))
-			if body.is_wormhole(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Wormhole"))
-			if body.is_station(): new_item_idx = system_list.add_item(str("> ", body.display_name + " - ", "Station"), load("res://Graphics/station_frame.png"))
-			if body.is_anomaly(): new_item_idx = system_list.add_item(str("> ", body.display_name))
-			if body.is_entity(): new_item_idx = system_list.add_item(str("> ", game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification)).capitalize(), get_entity_frame(body.entity_classification))
-			
-			system_list.set_item_metadata(new_item_idx, body.get_identifier())
-			
-			if body.get_identifier() == closest_body_id:
-				system_list.set_item_custom_bg_color(new_item_idx, Color.WEB_GRAY)
-			else:
-				system_list.set_item_custom_bg_color(new_item_idx, Color.DARK_SLATE_GRAY)
-			
-			if body == follow_body:
-				system_list.set_item_custom_bg_color(new_item_idx, Color.LIGHT_SKY_BLUE)
-			
-			if body.is_wormhole(): if body.is_disabled:
-				system_list.set_item_custom_bg_color(new_item_idx, Color.DARK_RED)
-			
-			if body.is_planet(): if (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true):
-				system_list.set_item_icon(new_item_idx, audio_visualizer_icon)
-			
-			if body.is_planet(): if (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
-				system_list.set_item_icon(new_item_idx, question_mark_icon)
-			
-			if body.is_anomaly(): if body.metadata.get("is_space_anomaly_available", true) == true:
-				system_list.set_item_icon(new_item_idx, question_mark_icon)
+	generate_system_list()
+	
 	
 	#updating sonar ping visualization time values & sonar polygon display time
 	SONAR_POLYGON_DISPLAY_TIME = maxi(0, SONAR_POLYGON_DISPLAY_TIME - delta)
@@ -192,6 +161,106 @@ func _physics_process(delta):
 	
 	queue_redraw()
 	pass
+
+
+
+func generate_system_list() -> void:
+	system_list.clear()
+	recursive_add(system.get_first_star(), null) #RECUSION IS SO COOL
+	pass
+
+func recursive_add(body: bodyAPI, parent: TreeItem) -> void:
+	if body != null:
+		var new = create_item_for_body(body, parent)
+		for b in system.get_bodies_with_hook_identifier(body.get_identifier()):
+			recursive_add(b, new)
+	pass
+
+func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
+	if body.is_valid_for_system_list():
+		var item: TreeItem = system_list.create_item(parent)
+		item.set_metadata(0, body.get_identifier())
+		
+		if body.is_theorised_but_not_known():
+			item.set_text(0, "???")
+			
+			if body.get_identifier() == closest_body_id: 
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.2)) #WEB_GRAY
+			else:
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
+			
+			if body == follow_body:
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
+		
+		elif body.is_known:
+			if body.is_star(): item.set_text(0, "%s - %s Class Star" % [body.display_name, body.metadata.get("star_type")])
+			if body.is_planet(): item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
+			if body.is_wormhole(): item.set_text(0, "%s - Wormhole" % body.get_display_name())
+			if body.is_station(): item.set_text(0, "%s - Station" % body.get_display_name())
+			if body.is_anomaly(): item.set_text(0, "%s" % body.get_display_name())
+			if body.is_entity(): item.set_text(0, "%s" % game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
+			
+			#earlier entries override later entries
+			
+			if body.get_identifier() == closest_body_id: 
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.2)) #WEB_GRAY
+			else:
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
+			
+			if body.is_star(): if body.get_identifier() == closest_body_id:
+				item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416).lightened(0.2))
+			else:
+				item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416))
+			
+			if body == follow_body:
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
+			
+			if body.is_wormhole():
+				item.set_custom_bg_color(0, Color.WEB_PURPLE)
+			
+			if body.is_wormhole(): if body.get_identifier() == closest_body_id:
+				item.set_custom_bg_color(0, Color.WEB_PURPLE.lightened(0.2))
+			
+			if body.is_wormhole(): if body == follow_body:
+				item.set_custom_bg_color(0, Color.WEB_PURPLE.lightened(0.5))
+			
+			if body.is_wormhole(): if body.is_disabled: 
+				item.set_custom_bg_color(0, Color.DARK_RED)
+			
+			if body.is_wormhole(): if body.is_disabled: if body.get_identifier() == closest_body_id:
+				item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.2))
+			
+			if body.is_wormhole(): if body.is_disabled: if body == follow_body: 
+				item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.5))
+			
+			if body.is_station():
+				item.set_icon(0, station_frame)
+			
+			if body.is_entity():
+				item.set_icon(0, get_entity_frame(body.entity_classification))
+			
+			if body.is_planet(): if (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true):
+				item.set_icon(0, audio_visualizer_icon)
+			
+			if body.is_planet(): if (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
+				item.set_icon(0, question_mark_icon)
+			
+			if body.is_anomaly(): if body.metadata.get("is_space_anomaly_available", true) == true:
+				item.set_icon(0, question_mark_icon)
+		
+		var c = collapsed_cache.get(body.get_identifier())
+		if c != null:
+			item.set_collapsed(c)
+		
+		return item
+	return null
+
+func clear_system_list_caches() -> void:
+	print("SYSTEM MAP (DEBUG): CLEARING SYSTEM LIST CACHES")
+	collapsed_cache.clear()
+	pass
+
+
 
 func _unhandled_input(event):
 	if event.is_action_pressed("SC_INTERACT2_RIGHT_MOUSE"):
@@ -264,23 +333,55 @@ func draw_map():
 	
 	for body in system.bodies:
 		
-		if not (body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
+		#batch orbit line drawing:
+		
+		if not (body.is_star() or body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
-				body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
 				if system.get_body_from_identifier(body.hook_identifier):
 					draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -TAU, TAU, 30, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint), 1.0, false)
+					#draw_custom_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -360, 360, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint))
+		
+	for body in system.bodies:
+		
+		#batching circle drawing:
+		
+		if not (body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
+			if camera.zoom.length() < system.get_first_star().radius * 100.0:
+				body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
 				draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
 			else:
-				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.0, 0.05)
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, body.radius, 0.05)
 				draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
 		
 		if (body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
+			if not camera.zoom.length() < system.get_first_star().radius * 100.0:
+				draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
+		
+		
+	for body in system.bodies:
+		
+		#batching entity icons:
+		
+		#if not (body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
+			#if camera.zoom.length() < system.get_first_star().radius * 100.0:
+				#orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
+				#body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
+				#if system.get_body_from_identifier(body.hook_identifier):
+					#draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -TAU, TAU, 30, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint), 1.0, false)
+				#draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
+			#else:
+				#orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.0, 0.05)
+				#body_size_multiplier_hint = lerp(body_size_multiplier_hint, body.radius, 0.05)
+				#draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
+		
+		if (body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				entity_icon.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false, Color(1,1,1,1), false)
-			else:
-				draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
+			#else:
+				#draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
+	
+	
 	
 	#draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
 	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, size_exponent)
@@ -294,15 +395,17 @@ func draw_map():
 	#draw_texture_rect(camera_here_tex, Rect2(Vector2(camera_target_position.x - size_exponent, camera_target_position.y - size_exponent), Vector2(size_exponent,size_exponent)), false)
 	pass
 
-func _on_system_list_item_clicked(index, _at_position, _mouse_button_index):
-	var index_to_identifier = system_list.get_item_metadata(index)
-	if index_to_identifier:
-		var body = system.get_body_from_identifier(index_to_identifier)
-		emit_signal("updatedLockedBody", body)
-		locked_body = body
-		follow_body = body
-		camera.follow_body = follow_body
+func draw_custom_arc(center, radius, angle_from, angle_to, color): #this is used under the assumption that batching can only occur on polygons/lines/rects, although this info is from godot 3.5 so idk (NO THICKNESS VARIABBLE, NOT SURE HOW TO ADD, ABANDONED THIS)
+	var nb_points = 32
+	var points_arc = PackedVector2Array()
+	for i in range(nb_points + 1):
+		var angle_point = deg_to_rad(angle_from + i * (angle_to-angle_from) / nb_points - 90)
+		points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * radius)
+	for index_point in range(nb_points):
+		draw_line(points_arc[index_point], points_arc[index_point + 1], color)
 	pass
+
+
 
 func _on_go_to_button_pressed():
 	if locked_body:
@@ -401,6 +504,7 @@ func async_play_boost_sound(sound: BOOST_SOUND_TYPES):
 	pass
 
 
+
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:
 	emit_signal("removeHullStressForNanites", amount, nanites_per_percentage)
 	pass
@@ -451,4 +555,32 @@ func _on_journey_map_button_pressed():
 
 func _on_long_range_scopes_button_pressed():
 	emit_signal("longRangeScopesPopup")
+	pass
+
+
+
+func _on_system_list_item_collapsed(item):
+	collapsed_cache[item.get_metadata(0)] = item.is_collapsed()
+	pass
+
+func _on_system_list_item_selected():
+	follow_and_lock_item(system_list.get_selected())
+	pass 
+
+func _on_system_list_item_activated():
+	follow_and_lock_item(system_list.get_selected())
+	_on_orbit_button_pressed()
+	pass
+
+func follow_and_lock_item(item: TreeItem):
+	var identifier: int
+	if item: 
+		identifier = item.get_metadata(0)
+	if identifier:
+		var body = system.get_body_from_identifier(identifier)
+		if body.is_theorised_but_not_known() or body.is_known:
+			emit_signal("updatedLockedBody", body)
+			locked_body = body
+			follow_body = body
+			camera.follow_body = follow_body
 	pass
