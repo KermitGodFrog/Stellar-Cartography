@@ -25,3 +25,4 @@ column_titles_visible = true
 allow_reselect = true
 
 [connection signal="item_collapsed" from="tree_test" to="." method="_on_tree_test_item_collapsed"]
+[connection signal="item_selected" from="tree_test" to="." method="_on_tree_test_item_selected"]

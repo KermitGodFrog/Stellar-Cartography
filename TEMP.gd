@@ -38,3 +38,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 func _on_tree_test_item_collapsed(item):
 	collapsed_cache[item.get_metadata(0)] = item.is_collapsed()
 	pass
+
+func _on_tree_test_item_selected():
+	print("ITEM SELECTED!")
+	pass

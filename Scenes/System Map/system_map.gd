@@ -264,23 +264,55 @@ func draw_map():
 	
 	for body in system.bodies:
 		
-		if not (body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
+		#batch orbit line drawing:
+		
+		if not (body.is_star() or body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
-				body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
 				if system.get_body_from_identifier(body.hook_identifier):
 					draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -TAU, TAU, 30, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint), 1.0, false)
+					#draw_custom_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -360, 360, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint))
+		
+	for body in system.bodies:
+		
+		#batching circle drawing:
+		
+		if not (body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
+			if camera.zoom.length() < system.get_first_star().radius * 100.0:
+				body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
 				draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
 			else:
-				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.0, 0.05)
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, body.radius, 0.05)
 				draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
 		
 		if (body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
+			if not camera.zoom.length() < system.get_first_star().radius * 100.0:
+				draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
+		
+		
+	for body in system.bodies:
+		
+		#batching entity icons:
+		
+		#if not (body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
+			#if camera.zoom.length() < system.get_first_star().radius * 100.0:
+				#orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
+				#body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
+				#if system.get_body_from_identifier(body.hook_identifier):
+					#draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -TAU, TAU, 30, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint), 1.0, false)
+				#draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
+			#else:
+				#orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.0, 0.05)
+				#body_size_multiplier_hint = lerp(body_size_multiplier_hint, body.radius, 0.05)
+				#draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
+		
+		if (body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				entity_icon.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false, Color(1,1,1,1), false)
-			else:
-				draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
+			#else:
+				#draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
+	
+	
 	
 	#draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
 	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, size_exponent)
@@ -293,6 +325,17 @@ func draw_map():
 		draw_line(player_position_matrix[0], player_position_matrix[0] + (player_position_matrix[0].direction_to(camera_target_position) * 100.0), Color.LIGHT_SKY_BLUE, size_exponent)
 	#draw_texture_rect(camera_here_tex, Rect2(Vector2(camera_target_position.x - size_exponent, camera_target_position.y - size_exponent), Vector2(size_exponent,size_exponent)), false)
 	pass
+
+func draw_custom_arc(center, radius, angle_from, angle_to, color): #this is used under the assumption that batching can only occur on polygons/lines/rects, although this info is from godot 3.5 so idk (NO THICKNESS VARIABBLE, NOT SURE HOW TO ADD, ABANDONED THIS)
+	var nb_points = 32
+	var points_arc = PackedVector2Array()
+	for i in range(nb_points + 1):
+		var angle_point = deg_to_rad(angle_from + i * (angle_to-angle_from) / nb_points - 90)
+		points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * radius)
+	for index_point in range(nb_points):
+		draw_line(points_arc[index_point], points_arc[index_point + 1], color)
+	pass
+
 
 func _on_system_list_item_clicked(index, _at_position, _mouse_button_index):
 	var index_to_identifier = system_list.get_item_metadata(index)
