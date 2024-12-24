@@ -237,7 +237,7 @@ SA_02GenericDispatchFailure,concept: SA_02GenericDispatchResponse,,,,,,,Leave:SA
 ,,,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
-#TUTORIAL,,,,,,,,,
+,,,,,,,,,
 tutorialPlayerStart,concept: tutorialPlayerStart,"tutorialPreludeOrbitingPREV: false, tutorialIngressOrbitingPREV: false","openDialog: null, _TUTORIALSetIngressOverride: true, _TUTORIALSetOmissionOverride: true",,,,,Continue:tutorialPlayerStartContinueA,"A voice crackles within your earpiece. “Okay. My name is Dawn; I will be supervising this session. Is that understood?” You acknowledge, and the voice continues. “Good. You've been briefed on the mission - get it done.”"
 tutorialPlayerStartContinueA,"concept: optionSelected, option: tutorialPlayerStartContinueA",,,,,,,Continue:tutorialPlayerStartContinueB,"1)[i] Test the central board: W, A, S and D to move the camera, Q or E to zoom the camera in or out. The red sphere is a M-class star, the white square is your starship. [/i]"
 tutorialPlayerStartContinueB,"concept: optionSelected, option: tutorialPlayerStartContinueB",,setImage: tutorial_LIDAR_example.png,,,,,Exit:defaultLeave,"2)[i] Mark a body by pinging it three times: Refer to the LIDAR module in the lower right of the interface - adjust the scan direction so it points towards the star by left clicking, set the arc to its maximum with the slider, and press the ‘PING’ button. [/i]"
@@ -285,7 +285,7 @@ tutorialOmissionOrbitingCancel,"concept: tutorialOmissionOrbitingPortalResponse,
 tutorialPlayerWin,"concept: optionSelected, option: tutorialPlayerWin",,"closeDialog: null, _TUTORIALPlayerWin: null",,,,,,
 ,,,,,,,,,
 moduleTutorialMessage,concept: moduleTutorialMessage,,,,,,,,You are informed that instructions for the newly aquired $m_upper module are being sent to on-board databanks. You have them forwarded to the display in your quarters. 
-,,,,,,,,,#m_upper because module_upper gets shadowed by module which results in the string 'moduleName_upper'
+,,,,,,,,,
 tutorialLRS,"concept: moduleTutorial, module: longRangeScopes",,openDialog: null,moduleTutorialMessage,,,,"Continue: tutorialLRSContinueA, Exit (SKIP TUTORIAL): defaultLeave",
 tutorialLRSContinueA,"concept: optionSelected, option: tutorialLRSContinueA",,,,,,,Continue: tutorialLRSContinueB,1)[i] Lock Stellar Phenomena and press the go-to button to view with Long Range Scopes (when open). [/i]
 tutorialLRSContinueB,"concept: optionSelected, option: tutorialLRSContinueB",,setImage: tutorial_lrs_view_boundary_example.png,,,,,Continue: tutorialLRSContinueC,"2)[i] By default: click on the view boundaries to rotate the camera, press Enter to take a photo, and press QuoteLeft to use the rangefinder. When range-finding or viewing photos, press any key to return to taking photos. [/i]"

@@ -82,9 +82,6 @@ func _ready():
 	station_ui.connect("setPauseMode", _on_set_pause_mode)
 	wormhole_minigame.connect("setPauseMode", _on_set_pause_mode)
 	
-	
-	
-	
 	world = await game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
 		world = game_data.createWorld(25, 5, 3, 10, 1, 0.01, 0.05, 0.25)
@@ -92,8 +89,8 @@ func _ready():
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
 		var new_player = world.createPlayer(
-			init_data.get("name", "Tanaka"), 
-			init_data.get("prefix", "Captain"))
+			init_data.get("name"), 
+			init_data.get("prefix")) #default values unnecessary as init data always has the keys
 		new_player.resetJumpsRemaining()
 		
 		# -> none of this should be necessary but im worried that the game will break if not included as queries might require this data
@@ -140,8 +137,8 @@ func _ready():
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
 		var new_player = world.createPlayer(
-			init_data.get("name", "Tanaka"), 
-			init_data.get("prefix", "Captain"))
+			init_data.get("name"), 
+			init_data.get("prefix")) #default values unnecessary as init data always has the keys
 		new_player.resetJumpsRemaining()
 		
 		#CHARACTERS FOR ROGUELIKE:
@@ -184,6 +181,8 @@ func _ready():
 		#get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 		
 		var new_query = responseQuery.new()
 		new_query.add("concept", "playerStart")
@@ -212,7 +211,7 @@ func _ready():
 			i.previous_system = world.player.current_star_system #i call this 'turning the treadmill back on' - do not ask why.
 		
 		for upgrade in world.player.unlocked_upgrades:
-			_on_upgrade_state_change(upgrade, true)
+			_on_upgrade_state_change(upgrade, true) #this cause bug 
 		
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
@@ -446,8 +445,6 @@ func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
 			new_query.add("module", "longRangeScopes")
 			new_query.add_tree_access("m_upper", "Long Range Scopes")
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
-			
-	#BROKE AS HELL!!!! OVERRIDES EACH OTHER IF YOU BUY MORE THAN 1 MODULE PER STATION! WILL REQUIRE SOME SPECIAL CHANGES TO DIALOGUE MANAGER
 	pass
 
 
@@ -533,12 +530,9 @@ func dock_with_station(following_station):
 	station_ui.player_balance = world.player.balance
 	station_ui.player_hull_stress = world.player.hull_stress
 	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
-	station_ui.pending_audio_profiles = world.get_pending_audio_profiles()
-	print_debug("PENDING AUDIO PROFILES: ", station_ui.pending_audio_profiles)
-	
+	station_ui.set("pending_audio_profiles", world.get_pending_audio_profiles())
 	_on_station_popup()
 	pass
-
 
 func _on_player_death():
 	print("GAME: PLAYER DIED")

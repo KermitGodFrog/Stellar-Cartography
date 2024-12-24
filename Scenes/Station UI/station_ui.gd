@@ -13,7 +13,7 @@ func _on_pause_mode_changed(value):
 		game_data.PAUSE_MODES.NONE:
 			print("STATION UI: CLOSING STATION UI")
 			has_sold_previously = false
-			pending_audio_profiles = []
+			pending_audio_profiles = [] #now this is the problem...
 			get_node(window).hide()
 		game_data.PAUSE_MODES.STATION_UI:
 			print("STATION UI: OPENING STATION UI")
@@ -31,7 +31,11 @@ var player_hull_stress: int
 var nanites_per_percentage: int = 100
 
 #FOR AUDIO VISUALIZER \/\/\/\/\/
-var pending_audio_profiles: Array[audioProfileHelper] = []
+var pending_audio_profiles: Array = []:
+	set(value):
+		pending_audio_profiles = value
+		print("PENDING AUDIO PROFILES UPDATED")
+		print(pending_audio_profiles)
 var player_saved_audio_profiles_size_matrix: Array = [] #current, max
 
 signal sellExplorationData(sell_percentage_of_market_price: int)
@@ -84,7 +88,7 @@ func _physics_process(_delta):
 		
 		repair_single_button.set_text(str("REPAIR 1% (", nanites_per_percentage, "n)"))
 		repair_all_button.set_text(str("REPAIR ", player_hull_stress, "% (", (player_hull_stress * nanites_per_percentage), "n)"))
-		
+	
 	#saved audio profiles control:
 	if player_saved_audio_profiles_size_matrix:
 		storage_progress_bar.set_max(player_saved_audio_profiles_size_matrix.back())
