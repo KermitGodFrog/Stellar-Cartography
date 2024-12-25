@@ -180,10 +180,6 @@ func _ready():
 		#new_query.add_tree_access("is_station_inhabited", false)
 		#get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-		
 		var new_query = responseQuery.new()
 		new_query.add("concept", "playerStart")
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
@@ -677,7 +673,7 @@ func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 	print("GAME (DEBUG): UPGRADE STATE CHANGED: ", upgrade_idx, " ", state)
 	get_tree().call_group("FOLLOW_UPGRADE_STATE", "_on_upgrade_state_change", upgrade_idx, state)
-	if state == true:
+	if state == true and pause_mode_handler.pause_mode == game_data.PAUSE_MODES.STATION_UI:
 		_on_async_upgrade_tutorial(upgrade_idx)
 	pass
 
