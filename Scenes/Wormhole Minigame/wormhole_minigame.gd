@@ -40,6 +40,7 @@ var awaiting_start: bool = true
 @onready var distance_upper = $starship_and_camera/camera/UI_control/distance_container/distance_upper
 @onready var distance_lower = $starship_and_camera/camera/UI_control/distance_container/distance_lower
 @onready var press_to_start = $starship_and_camera/camera/UI_control/press_to_start_button
+@onready var brake_button = $starship_and_camera/camera/UI_control/brake_button
 
 func _physics_process(delta):
 	if not awaiting_start:
@@ -54,6 +55,11 @@ func _physics_process(delta):
 	wormhole_interference.stream_paused = _pause_mode != game_data.PAUSE_MODES.WORMHOLE_MINIGAME
 	wormhole_interference.volume_db = linear_to_db(remap(distance, 100, 0, 0, 1))
 	deceleration.stream_paused = _pause_mode != game_data.PAUSE_MODES.WORMHOLE_MINIGAME
+	
+	if (distance <= upper_boundry) and (distance >= lower_boundry):
+		brake_button.set_theme_type_variation("BrakeGreen")
+	else:
+		brake_button.set_theme_type_variation("BrakeRed")
 	pass
 
 func initialize(weirdness_index: float = 0.0, _hull_stress_wormhole: int = 10):

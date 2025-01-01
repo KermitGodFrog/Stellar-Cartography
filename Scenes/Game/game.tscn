@@ -9,9 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://bwlfi3x5r51fo" path="res://Scenes/Audio Visualizer/audio_visualizer.tscn" id="7_uparo"]
 [ext_resource type="PackedScene" uid="uid://ckd75fjfh7urh" path="res://Data/Dialogue/dialogueManager.tscn" id="8_egtoq"]
 [ext_resource type="PackedScene" uid="uid://cu8n2e53bgc37" path="res://Scenes/Pause Menu/pauseMenu.tscn" id="8_s4gh6"]
-[ext_resource type="PackedScene" uid="uid://p275r5sfhnj5" path="res://Sound/Music/soundHandler.tscn" id="9_gksgf"]
 [ext_resource type="PackedScene" uid="uid://kmp3sfk18y2" path="res://Scenes/Stats Menu/statsMenu.tscn" id="9_m7la7"]
 [ext_resource type="PackedScene" uid="uid://b0frxj5cysipi" path="res://Scenes/Long Range Scopes/long_range_scopes.tscn" id="10_q6rur"]
+[ext_resource type="PackedScene" uid="uid://p275r5sfhnj5" path="res://Sound/audioHandler.tscn" id="12_adxnc"]
 
 [node name="game" type="Node"]
 process_mode = 1
@@ -37,8 +37,8 @@ handle_input_locally = false
 
 [node name="dialogueManager" parent="." instance=ExtResource("8_egtoq")]
 
-[node name="musicHandler" parent="." instance=ExtResource("9_gksgf")]
-
 [node name="pauseMenu" parent="." instance=ExtResource("8_s4gh6")]
 
 [node name="statsMenu" parent="." instance=ExtResource("9_m7la7")]
+
+[node name="audioHandler" parent="." instance=ExtResource("12_adxnc")]

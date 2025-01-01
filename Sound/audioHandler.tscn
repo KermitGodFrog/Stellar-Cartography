@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://p275r5sfhnj5"]
 
-[ext_resource type="Script" path="res://Sound/Music/soundHandler.gd" id="1_eb43v"]
+[ext_resource type="Script" path="res://Sound/audioHandler.gd" id="1_eb43v"]
 [ext_resource type="AudioStream" uid="uid://v4nc0u5uqltk" path="res://Sound/Music/ambience1.wav" id="2_3ch8q"]
 [ext_resource type="AudioStream" uid="uid://cku4d8tw2cajp" path="res://Sound/Music/ambience2.wav" id="3_0obpv"]
 [ext_resource type="AudioStream" uid="uid://cu5vu17sts25g" path="res://Sound/Music/ambience3.wav" id="4_lyr1t"]
@@ -17,7 +17,7 @@ stream_2/weight = 1.0
 stream_3/stream = ExtResource("5_cebs6")
 stream_3/weight = 1.0
 
-[node name="soundHandler" type="Node"]
+[node name="audioHandler" type="Node"]
 script = ExtResource("1_eb43v")
 
 [node name="music" type="AudioStreamPlayer" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://c2upluruwt8c"]
+[gd_scene load_steps=18 format=3 uid="uid://c2upluruwt8c"]
 
 [ext_resource type="Shader" path="res://Scenes/Wormhole Minigame/wormhole_exterior.gdshader" id="1_hg32g"]
 [ext_resource type="Script" path="res://Scenes/Wormhole Minigame/wormhole_minigame.gd" id="1_u2vnu"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_jtuyj"]
 [ext_resource type="Script" path="res://Scenes/Wormhole Minigame/wormhole_animation.gd" id="4_pmdih"]
 [ext_resource type="Theme" uid="uid://du8q1tlwo1jt1" path="res://Scenes/Wormhole Minigame/wormhole_minigame_HUD_theme.tres" id="7_y6ir1"]
-[ext_resource type="Theme" uid="uid://br33hy3pgvm14" path="res://Scenes/System Map/system_map_APPS_theme.tres" id="8_6gm8y"]
 [ext_resource type="AudioStream" uid="uid://cq2a1gsmblou1" path="res://Sound/Wormhole Minigame/wormhole_interference.wav" id="9_w5evm"]
 [ext_resource type="AudioStream" uid="uid://dvlokj0bsucd1" path="res://Sound/Wormhole Minigame/deceleration.wav" id="10_7mbe0"]
 
@@ -150,18 +149,21 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="brake_button" type="Button" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -59.0
-offset_top = -15.5
-offset_bottom = 15.5
+offset_left = -150.0
+offset_top = -50.0
+offset_right = -50.0
+offset_bottom = 50.0
 grow_horizontal = 0
 grow_vertical = 2
-theme = ExtResource("8_6gm8y")
+theme = ExtResource("7_y6ir1")
+theme_type_variation = &"BrakeRed"
 text = "BRAKE"
 
 [node name="press_to_start_button" type="Button" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
