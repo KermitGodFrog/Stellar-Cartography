@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://chwm82adl21cm"]
+[gd_scene load_steps=5 format=3 uid="uid://chwm82adl21cm"]
 
 [ext_resource type="Script" path="res://Scenes/Sonar Interface/sonar_interface.gd" id="1_bmylm"]
 [ext_resource type="Texture2D" uid="uid://bu4clhu1rmiwq" path="res://Graphics/sonar_64x.png" id="1_t5fig"]
+[ext_resource type="Texture2D" uid="uid://dq25m1n2y5upl" path="res://Graphics/hull_stress_icon.png" id="3_8o0ly"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wt7tw"]
+texture = ExtResource("3_8o0ly")
+modulate_color = Color(0.211765, 0.211765, 0.211765, 1)
 
 [node name="sonar_window" type="SubViewport"]
 disable_3d = true
@@ -26,27 +31,29 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bmylm")
 
-[node name="strength_indicator" type="Label" parent="sonar_control"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-
 [node name="flow_container" type="VFlowContainer" parent="sonar_control"]
+custom_minimum_size = Vector2(50, 75)
 layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 64.0
-grow_vertical = 2
+offset_right = 118.0
+offset_bottom = 50.0
 
 [node name="ping_width_slider" type="HSlider" parent="sonar_control/flow_container"]
 layout_mode = 2
-min_value = 5.0
+min_value = 9.0
 max_value = 90.0
-value = 5.0
+step = 27.0
+value = 10.0
 
 [node name="ping_button" type="Button" parent="sonar_control/flow_container"]
 layout_mode = 2
 text = "PING!"
+
+[node name="hull_stress_increase_label" type="Label" parent="sonar_control/flow_container"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_wt7tw")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ping_cooldown_timer" type="Timer" parent="sonar_control"]
 wait_time = 5.0

@@ -40,9 +40,10 @@ var player_audio_visualizer_unlocked: bool = false
 @onready var picker_label = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_label
 @onready var picker_button = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
 @onready var console = $camera/canvas/control/console
-@onready var audio_visualizer_button = $camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button
-@onready var status_scroll = $camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll
+@onready var audio_visualizer_button = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button
+@onready var status_scroll = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll
 @onready var map_overlay = $camera/canvas/map_overlay
+@onready var data_value_increase_label = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/data_value_increase_label
 
 @onready var ping_sound_scene = preload("res://Sound/SFX/ping.tscn")
 @onready var bounceback_sound_scene = preload("res://Sound/SFX/bounceback.tscn")
@@ -106,7 +107,6 @@ func _physics_process(delta):
 	var sorted_values = camera_position_to_bodies.values()
 	sorted_values.sort()
 	closest_body_id = camera_position_to_bodies.find_key(sorted_values.front()) #FOR SYSTEM LIST, create_item_for_body()
-	
 	
 	generate_system_list()
 	
@@ -351,10 +351,10 @@ func draw_map():
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
 				
 				if body == follow_body:
-					draw_circle(body.position, body_size_multiplier_hint * 1.75, body.metadata.get("color").lerp(Color(1.0, 1.0, 1.0, 0.0), 0.25))
+					draw_circle(body.position, body_size_multiplier_hint * 1.75, body.metadata.get("color").lerp(Color(1.0, 1.0, 1.0, 0.0), 0.50))
 					draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
 				elif body.get_identifier() == closest_body_id:
-					draw_circle(body.position, body_size_multiplier_hint * 1.5, body.metadata.get("color").lerp(Color(1.0, 1.0, 1.0, 0.0), 0.50))
+					draw_circle(body.position, body_size_multiplier_hint * 1.5, body.metadata.get("color").lerp(Color(1.0, 1.0, 1.0, 0.0), 0.75))
 					draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
 				else:
 					draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
@@ -371,18 +371,6 @@ func draw_map():
 		
 		#batching entity icons:
 		
-		#if not (body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
-			#if camera.zoom.length() < system.get_first_star().radius * 100.0:
-				#orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
-				#body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
-				#if system.get_body_from_identifier(body.hook_identifier):
-					#draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -TAU, TAU, 30, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint), 1.0, false)
-				#draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
-			#else:
-				#orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.0, 0.05)
-				#body_size_multiplier_hint = lerp(body_size_multiplier_hint, body.radius, 0.05)
-				#draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
-		
 		if (body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				entity_icon.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false)
@@ -393,8 +381,6 @@ func draw_map():
 		
 		if body.is_planet(): if ((body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true)) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
-				#draw_rect(Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, 1.0))
-				#draw_circle(Vector2(body.position.x + (size_exponent * 10.0 / 2), body.position.y + (size_exponent * 10.0 / 2)), (size_exponent * 5.0 / 2), Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, 1.0))
 				question_mark_icon.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
 		elif body.is_anomaly(): if (body.metadata.get("is_space_anomaly_available", true) == true) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
@@ -558,6 +544,12 @@ func _on_add_console_entry(text: String, text_color: Color = Color.WHITE):
 
 func _on_clear_console_entries():
 	console.clear_entries()
+	pass
+
+func _on_player_data_value_changed(new_value: int):
+	data_value_increase_label.set_text("%sn" % str(new_value))
+	if new_value != 0:
+		data_value_increase_label.blink()
 	pass
 
 

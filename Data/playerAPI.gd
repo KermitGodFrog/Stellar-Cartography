@@ -5,6 +5,7 @@ class_name playerAPI
 signal orbitingBody(body: bodyAPI)
 signal followingBody(body: bodyAPI)
 signal hullDeteriorationChanged(new_value: int)
+signal dataValueChanged(new_value: int)
 
 @export var name: String
 @export var prefix: String
@@ -22,7 +23,11 @@ signal hullDeteriorationChanged(new_value: int)
 var is_boosting: bool = false
 
 @export var balance: int = 0
-@export var current_value: int = 0
+@export var current_value: int = 0:
+	set(value):
+		current_value = value
+		print_debug("PLAYER VALUE CHANGED: ", current_value)
+		emit_signal("dataValueChanged", current_value)
 
 #key customization stufufffuff
 @export var total_systems: int 

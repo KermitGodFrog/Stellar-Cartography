@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=42 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -21,6 +21,8 @@
 [ext_resource type="PackedScene" uid="uid://co52u63cyk220" path="res://Scenes/System 3D/system_3d.tscn" id="11_domud"]
 [ext_resource type="Texture2D" uid="uid://csvtv1sy2k3ns" path="res://Graphics/audio_visualizer_icon.png" id="11_lvg8y"]
 [ext_resource type="Texture2D" uid="uid://cghgcu7ghw8mf" path="res://Graphics/hull_deterioration_icon.png" id="12_3bh3s"]
+[ext_resource type="Texture2D" uid="uid://vdjsk4r01pst" path="res://Graphics/ui_arrow.png" id="12_6oeqo"]
+[ext_resource type="Script" path="res://Scenes/System Map/data_value_increase_label.gd" id="13_6i2x8"]
 [ext_resource type="Texture2D" uid="uid://ce1et15cnh5ao" path="res://Graphics/morale_icon.png" id="13_vaatn"]
 [ext_resource type="Script" path="res://Scenes/System Map/hull_stress_button.gd" id="14_u08qu"]
 [ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://Graphics/journey_map_icon.png" id="19_36y85"]
@@ -52,6 +54,15 @@ bg_color = Color(0.211765, 0.211765, 0.211765, 0.415686)
 bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r4cqc"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vdy1a"]
+texture = ExtResource("12_6oeqo")
+region_rect = Rect2(0, 0, 67, 32)
+modulate_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
+
+[sub_resource type="Curve" id="Curve_j23tm"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.35, 1), 0.0, 0.0, 0, 0, Vector2(0.9, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gne5x"]
 bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
@@ -327,12 +338,25 @@ size_flags_horizontal = 8
 handle_input_locally = false
 render_target_update_mode = 4
 
-[node name="core_panel_bg" type="ColorRect" parent="system/camera/canvas/control/scopes_snap_scroll"]
+[node name="core_and_value_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll"]
+layout_mode = 2
+alignment = 2
+
+[node name="data_value_increase_label" type="Label" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll"]
+custom_minimum_size = Vector2(134, 64)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_vdy1a")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("13_6i2x8")
+hide_curve = SubResource("Curve_j23tm")
+
+[node name="core_panel_bg" type="ColorRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll"]
 custom_minimum_size = Vector2(710, 235)
 layout_mode = 2
 color = Color(0.180392, 0.180392, 0.180392, 0.415686)
 
-[node name="core_panel_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg"]
+[node name="core_panel_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -341,12 +365,12 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 2
 
-[node name="status_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll"]
+[node name="status_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gne5x")
 
-[node name="status_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel"]
+[node name="status_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -358,44 +382,44 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="status_scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin"]
+[node name="status_scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin"]
 layout_mode = 2
 alignment = 1
 script = ExtResource("10_ydc85")
 
-[node name="nanites_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
+[node name="nanites_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
 layout_mode = 2
 tooltip_text = "Nanites. Universally recognised currency. Can be obtained via trading in exploration data at a space station. "
 text = "50253"
 icon = ExtResource("10_e6b7x")
 script = ExtResource("11_1rwmm")
 
-[node name="morale_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
+[node name="morale_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
 layout_mode = 2
 tooltip_text = "Morale. The willingness of a starships crew to follow their superiors. Depending on circumstance, an uprising may occur at 0%."
 text = "100%"
 icon = ExtResource("13_vaatn")
 script = ExtResource("11_1rwmm")
 
-[node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["FOLLOW_UPGRADE_STATE", "playUIClickSFX"]]
+[node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["FOLLOW_UPGRADE_STATE", "playUIClickSFX"]]
 layout_mode = 2
 tooltip_text = "Hull stress. General starship wear-and-tear. Principally may be reduced at a space station in exchange for nanites. Damage over 100% will be transferred to hull deterioration."
 text = "100%"
 icon = ExtResource("11_1tiv0")
 script = ExtResource("14_u08qu")
 
-[node name="hull_deterioration_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
+[node name="hull_deterioration_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
 layout_mode = 2
 tooltip_text = "Hull deterioration. Permanent damage to a starship. Catastrophic, and often explosive, ship breakdown occurs at 100%."
 text = "100%"
 icon = ExtResource("12_3bh3s")
 script = ExtResource("11_1rwmm")
 
-[node name="core_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll"]
+[node name="core_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll"]
 custom_minimum_size = Vector2(460, 235)
 layout_mode = 2
 
-[node name="core_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel"]
+[node name="core_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -407,42 +431,42 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="core_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin"]
+[node name="core_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin"]
 layout_mode = 2
 alignment = 1
 
-[node name="barycenter_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
+[node name="barycenter_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 4
 stretch = true
 
-[node name="barycenter_visualizer_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container" instance=ExtResource("9_2aiel")]
+[node name="barycenter_visualizer_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container" instance=ExtResource("9_2aiel")]
 handle_input_locally = false
 render_target_update_mode = 4
 
-[node name="separator1" type="VSeparator" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
+[node name="separator1" type="VSeparator" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 theme_override_constants/separation = 20
 theme_override_styles/separator = SubResource("StyleBoxLine_5218o")
 
-[node name="sonar_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
+[node name="sonar_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 4
 stretch = true
 
-[node name="sonar_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container" instance=ExtResource("10_48t0n")]
+[node name="sonar_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container" instance=ExtResource("10_48t0n")]
 handle_input_locally = false
 render_target_update_mode = 4
 
-[node name="apps_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll"]
+[node name="apps_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll"]
 custom_minimum_size = Vector2(100, 235)
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
 
-[node name="apps_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel"]
+[node name="apps_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -454,11 +478,11 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="apps_scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin" groups=["FOLLOW_UPGRADE_STATE"]]
+[node name="apps_scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
 script = ExtResource("9_pw1kh")
 
-[node name="journey_map_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
+[node name="journey_map_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
 text = "JUR"
@@ -466,7 +490,7 @@ icon = ExtResource("19_36y85")
 clip_text = true
 icon_alignment = 2
 
-[node name="audio_visualizer_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
+[node name="audio_visualizer_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
 visible = false
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
@@ -475,7 +499,7 @@ icon = ExtResource("11_lvg8y")
 clip_text = true
 icon_alignment = 2
 
-[node name="long_range_scopes_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
+[node name="long_range_scopes_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
 visible = false
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
@@ -516,9 +540,7 @@ item_1/icon = ExtResource("28_81ibq")
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]
 [connection signal="item_selected" from="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button" to="system" method="_on_picker_button_item_selected"]
-[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" to="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" method="_on_pressed"]
-[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/journey_map_button" to="system" method="_on_journey_map_button_pressed"]
-[connection signal="mouse_entered" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_mouse_entered"]
-[connection signal="mouse_exited" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_mouse_exited"]
-[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_pressed"]
-[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/long_range_scopes_button" to="system" method="_on_long_range_scopes_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" to="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" method="_on_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/journey_map_button" to="system" method="_on_journey_map_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/long_range_scopes_button" to="system" method="_on_long_range_scopes_button_pressed"]

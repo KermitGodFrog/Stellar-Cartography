@@ -7,8 +7,8 @@ var world: worldAPI
 
 @onready var system_map = $system_window/system
 @onready var system_3d = $system_window/system/camera/canvas/control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container/system_3d_window/system_3d
-@onready var sonar = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container/sonar_window/sonar_control
-@onready var barycenter_visualizer = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container/barycenter_visualizer_window/barycenter_control
+@onready var sonar = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container/sonar_window/sonar_control
+@onready var barycenter_visualizer = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container/barycenter_visualizer_window/barycenter_control
 @onready var audio_visualizer = $audio_visualizer_window/audio_control
 @onready var long_range_scopes = $long_range_scopes_window/split/lrs_center/lrs_container/lrs_viewport/long_range_scopes
 @onready var lrs_bestiary = $long_range_scopes_window/split/bestiary
@@ -107,6 +107,7 @@ func _ready():
 		new_player.connect("orbitingBody", _on_player_orbiting_body)
 		new_player.connect("followingBody", _on_player_following_body)
 		new_player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+		new_player.connect("dataValueChanged", _on_player_data_value_changed)
 		
 		var new: starSystemAPI = load("res://Data/tutorial_system.tres")
 		world.star_systems.append(new)
@@ -154,6 +155,7 @@ func _ready():
 		new_player.connect("orbitingBody", _on_player_orbiting_body)
 		new_player.connect("followingBody", _on_player_following_body)
 		new_player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+		new_player.connect("dataValueChanged", _on_player_data_value_changed)
 		
 		#new game stuff
 		var new: starSystemAPI = _on_create_new_star_system(false)
@@ -202,6 +204,7 @@ func _ready():
 		world.player.connect("orbitingBody", _on_player_orbiting_body)
 		world.player.connect("followingBody", _on_player_following_body)
 		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+		world.player.connect("dataValueChanged", _on_player_data_value_changed)
 		
 		for i in world.player.current_star_system.destination_systems:
 			i.previous_system = world.player.current_star_system #i call this 'turning the treadmill back on' - do not ask why.
@@ -238,6 +241,7 @@ func _physics_process(delta):
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
 	lrs_bestiary.set("discovered_entities_matrix", world.player.discovered_entities)
+	sonar.set("_player_hull_stress_highest_arc", world.player.hull_stress_highest_arc)
 	
 	game_data.player_weirdness_index = world.player.weirdness_index #really hacky solution which should not have been done this way but im too tired to change the entire game now to accomodate it.
 	
@@ -630,13 +634,11 @@ func _on_add_console_entry(entry_text: String, text_color: Color = Color.WHITE):
 	pass
 
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
-	print("SONAR INTERFACE (DEBUG): PINGING")
+	print("GAME (DEBUG): PINGING")
 	system_map._on_sonar_ping(ping_width, ping_length, ping_direction)
-	
-	if ping_width > 35:
-		var incurred_hull_stress = round(remap(ping_width, 10, 90, 0, world.player.hull_stress_highest_arc))
-		_on_add_player_hull_stress(incurred_hull_stress)
-		#can have multiple results here depending on what upgrades the player has related to the LIDAR
+	var incurred_hull_stress = round(remap(ping_width, 9, 90, 0, world.player.hull_stress_highest_arc))
+	_on_add_player_hull_stress(incurred_hull_stress)
+	#can have multiple results here depending on what upgrades the player has related to the LIDAR
 	pass
 
 func _on_sell_exploration_data(sell_percentage_of_market_price: int):
@@ -801,6 +803,12 @@ func _on_stats_menu_quit(_init_type: int) -> void:
 			global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn") #WIN, DEATH
 			game_data.deleteWorld()
 	pass
+
+func _on_player_data_value_changed(new_value: int):
+	system_map._on_player_data_value_changed(new_value)
+	pass
+
+
 
 
 #the epic handshake between game.gd and pauseModeHandler.gd
