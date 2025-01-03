@@ -110,7 +110,6 @@ func _physics_process(delta):
 	
 	generate_system_list()
 	
-	
 	#updating sonar ping visualization time values & sonar polygon display time
 	SONAR_POLYGON_DISPLAY_TIME = maxi(0, SONAR_POLYGON_DISPLAY_TIME - delta)
 	if SONAR_PINGS:
@@ -331,6 +330,7 @@ func draw_map():
 	if camera.zoom.length() < system.get_first_star().radius * 100.0: map_overlay.show()
 	else: map_overlay.hide()
 	
+	
 	for body in system.bodies:
 		
 		#batch orbit line drawing:
@@ -341,7 +341,7 @@ func draw_map():
 				if system.get_body_from_identifier(body.hook_identifier):
 					draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -TAU, TAU, 30, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint), 1.0, false)
 					#draw_custom_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -360, 360, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint))
-		
+	
 	for body in system.bodies:
 		
 		#batching circle drawing:
@@ -349,7 +349,16 @@ func draw_map():
 		if not (body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
-				draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
+				
+				if body == follow_body:
+					draw_circle(body.position, body_size_multiplier_hint * 1.75, body.metadata.get("color").lerp(Color(1.0, 1.0, 1.0, 0.0), 0.25))
+					draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
+				elif body.get_identifier() == closest_body_id:
+					draw_circle(body.position, body_size_multiplier_hint * 1.5, body.metadata.get("color").lerp(Color(1.0, 1.0, 1.0, 0.0), 0.50))
+					draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
+				else:
+					draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
+				
 			else:
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, body.radius, 0.05)
 				draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
@@ -357,8 +366,7 @@ func draw_map():
 		if (body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
 			if not camera.zoom.length() < system.get_first_star().radius * 100.0:
 				draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
-		
-		
+	
 	for body in system.bodies:
 		
 		#batching entity icons:
@@ -377,11 +385,20 @@ func draw_map():
 		
 		if (body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
-				entity_icon.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false, Color(1,1,1,1), false)
-			#else:
-				#draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
+				entity_icon.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false)
 	
-	
+	for body in system.bodies:
+		
+		#batching anomaly map icons:
+		
+		if body.is_planet(): if ((body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true)) and body.is_known:
+			if camera.zoom.length() < system.get_first_star().radius * 100.0:
+				#draw_rect(Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, 1.0))
+				#draw_circle(Vector2(body.position.x + (size_exponent * 10.0 / 2), body.position.y + (size_exponent * 10.0 / 2)), (size_exponent * 5.0 / 2), Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, 1.0))
+				question_mark_icon.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
+		elif body.is_anomaly(): if (body.metadata.get("is_space_anomaly_available", true) == true) and body.is_known:
+			if camera.zoom.length() < system.get_first_star().radius * 100.0:
+				question_mark_icon.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
 	
 	#draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
 	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, size_exponent)

@@ -2,7 +2,6 @@ extends Node
 
 @onready var play_timer = $play_timer
 @onready var music = $music
-
 @onready var ui_click_sound_scene = preload("res://Sound/button_press.tscn")
 
 #needs to duck for dialogue!
