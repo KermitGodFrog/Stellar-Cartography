@@ -11,9 +11,9 @@ signal setPauseMode(new_mode: game_data.PAUSE_MODES)
 func _on_pause_mode_changed(value):
 	match value:
 		game_data.PAUSE_MODES.NONE:
-			music.set_stream_paused(false)
+			music_linear_volume_target = 1.0
 		_:
-			music.set_stream_paused(true)
+			music_linear_volume_target = 0.0
 	pass
 
 @onready var UI_click_generic = preload("res://Sound/SFX/UI_click_generic.tres")
@@ -28,9 +28,17 @@ var audio_visualizer_visible: bool = false:
 func _on_av_visibility_changed(value):
 	match value:
 		true:
-			music.set_stream_paused(true)
+			music_linear_volume_target = 0.0
 		false:
-			music.set_stream_paused(false)
+			music_linear_volume_target = 1.0
+	pass
+
+var music_linear_volume_target: float = 1.0
+
+func _process(delta):
+	#print("MUSIC LINEAR VOLUME TARGET: ", music_linear_volume_target)
+	#print("MUSIC REAL VOLUME (DB): ", music.volume_db)
+	music.volume_db = maxf(-80, move_toward(music.volume_db, linear_to_db(music_linear_volume_target), 35.0 * delta))
 	pass
 
 func _ready():
@@ -59,7 +67,7 @@ func _on_intermission_finished() -> void:
 	pass
 
 func _on_play_once_UI_click_SFX() -> void:
-	play_once(UI_click_generic, -6.0, "SFX")
+	play_once(UI_click_generic, -12.0, "SFX")
 	pass
 
 func play_once(stream: AudioStream, volume_db: float = 0.0, bus: StringName = "Master"):
