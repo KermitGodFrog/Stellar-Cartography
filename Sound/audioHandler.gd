@@ -20,6 +20,19 @@ func _on_pause_mode_changed(value):
 @onready var music = $music
 @onready var intermission = $intermission
 
+#for ducking music when audio visualizer is open!
+var audio_visualizer_visible: bool = false:
+	set(value):
+		audio_visualizer_visible = value
+		_on_av_visibility_changed(value)
+func _on_av_visibility_changed(value):
+	match value:
+		true:
+			music.set_stream_paused(true)
+		false:
+			music.set_stream_paused(false)
+	pass
+
 func _ready():
 	music.connect("finished", _on_music_finished)
 	intermission.connect("timeout", _on_intermission_finished)

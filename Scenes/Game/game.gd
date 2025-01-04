@@ -32,6 +32,7 @@ func _ready():
 	system_map.connect("theorisedBody", _on_theorised_body)
 	system_map.connect("DEBUG_REVEAL_ALL_WORMHOLES", _ON_DEBUG_REVEAL_ALL_WORMHOLES)
 	system_map.connect("DEBUG_REVEAL_ALL_BODIES", _ON_DEBUG_REVEAL_ALL_BODIES)
+	system_map.connect("DEBUG_QUICK_ADD_NANITES", _ON_DEBUG_QUICK_ADD_NANITES)
 	
 	system_3d.connect("foundBody", _on_found_body)
 	system_3d.connect("addConsoleEntry", _on_add_console_entry)
@@ -246,6 +247,7 @@ func _physics_process(delta):
 	dialogue_manager.set("player", world.player)
 	lrs_bestiary.set("discovered_entities_matrix", world.player.discovered_entities)
 	sonar.set("_player_hull_stress_highest_arc", world.player.hull_stress_highest_arc)
+	audio_handler.set("audio_visualizer_visible", $audio_visualizer_window.is_visible()) # for music ducking, but there shouldnt be GREEN here so fix later!
 	
 	game_data.player_weirdness_index = world.player.weirdness_index #really hacky solution which should not have been done this way but im too tired to change the entire game now to accomodate it.
 	
@@ -845,7 +847,9 @@ func _ON_DEBUG_REVEAL_ALL_BODIES():
 		body.is_known = true
 	pass
 
-
+func _ON_DEBUG_QUICK_ADD_NANITES():
+	world.player.increaseBalance(100000)
+	pass
 
 
 

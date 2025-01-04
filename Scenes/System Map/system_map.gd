@@ -18,6 +18,7 @@ signal removeHullStressForNanites(amount: int, nanites_per_percentage: int)
 
 signal DEBUG_REVEAL_ALL_WORMHOLES
 signal DEBUG_REVEAL_ALL_BODIES
+signal DEBUG_QUICK_ADD_NANITES
 
 var TUTORIAL_INGRESS_OVERRIDE: bool = false
 var TUTORIAL_OMISSION_OVERRIDE: bool = false
@@ -296,6 +297,9 @@ func _unhandled_input(event):
 	
 	if event.is_action_pressed("SC_DEBUG_REVEAL_ALL_BODIES"): #DEBUG!!!!!!!!!!!!!!!!!
 		emit_signal("DEBUG_REVEAL_ALL_BODIES")
+	
+	if event.is_action_pressed("SC_DEBUG_QUICK_ADD_NANITES"):
+		emit_signal("DEBUG_QUICK_ADD_NANITES")
 	
 	if event.is_action_pressed("SC_BOOST"):
 		player_is_boosting = true
