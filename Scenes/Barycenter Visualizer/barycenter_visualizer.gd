@@ -64,7 +64,7 @@ func get_closest_point_to_direction(dir: Vector2):
 
 func _draw():
 	for point in points:
-		draw_line(point, (point + get_screen_centre().direction_to(point) * (radius / 2)), Color.DARK_RED, 10.0)
+		draw_line(point, (point + get_screen_centre().direction_to(point) * (radius / 2)), Color.DARK_OLIVE_GREEN, 10.0)
 		draw_circle(point, points.get(point), Color.RED)
 	pass
 

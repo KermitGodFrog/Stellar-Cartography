@@ -8,10 +8,10 @@ var ping_direction: Vector2 = Vector2.ZERO
 
 var _player_hull_stress_highest_arc: int
 
-@onready var ping_width_slider = $flow_container/ping_width_slider
+@onready var ping_width_slider = $info_panel/scroll_horizontal/scroll_vertical/ping_width_slider
+@onready var hull_stress_increase_label = $info_panel/scroll_horizontal/hull_stress_increase_label
 @onready var ping_cooldown_timer = $ping_cooldown_timer
 @onready var cooldown_label = $cooldown_label
-@onready var hull_stress_increase_label = $flow_container/hull_stress_increase_label
 
 func _physics_process(_delta):
 	hull_stress_increase_label.set_text("+%.f%s" % [round(remap(ping_width, 9, 90, 0, _player_hull_stress_highest_arc)), "%"])

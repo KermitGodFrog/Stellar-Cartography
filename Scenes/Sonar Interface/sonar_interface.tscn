@@ -31,24 +31,38 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bmylm")
 
-[node name="flow_container" type="VFlowContainer" parent="sonar_control"]
-custom_minimum_size = Vector2(50, 75)
+[node name="info_panel" type="Panel" parent="sonar_control"]
+custom_minimum_size = Vector2(110, 50)
 layout_mode = 1
-offset_right = 118.0
-offset_bottom = 50.0
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="ping_width_slider" type="HSlider" parent="sonar_control/flow_container"]
+[node name="scroll_horizontal" type="HBoxContainer" parent="sonar_control/info_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="scroll_vertical" type="VBoxContainer" parent="sonar_control/info_panel/scroll_horizontal"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="ping_width_slider" type="HSlider" parent="sonar_control/info_panel/scroll_horizontal/scroll_vertical"]
 layout_mode = 2
 min_value = 9.0
 max_value = 90.0
 step = 27.0
-value = 10.0
+value = 9.0
 
-[node name="ping_button" type="Button" parent="sonar_control/flow_container"]
+[node name="ping_button" type="Button" parent="sonar_control/info_panel/scroll_horizontal/scroll_vertical"]
 layout_mode = 2
 text = "PING!"
 
-[node name="hull_stress_increase_label" type="Label" parent="sonar_control/flow_container"]
+[node name="hull_stress_increase_label" type="Label" parent="sonar_control/info_panel/scroll_horizontal"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_wt7tw")
@@ -71,4 +85,4 @@ text = "5
 "
 horizontal_alignment = 2
 
-[connection signal="pressed" from="sonar_control/flow_container/ping_button" to="sonar_control" method="_on_ping_button_pressed"]
+[connection signal="pressed" from="sonar_control/info_panel/scroll_horizontal/scroll_vertical/ping_button" to="sonar_control" method="_on_ping_button_pressed"]
