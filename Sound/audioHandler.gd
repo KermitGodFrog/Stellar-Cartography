@@ -38,7 +38,7 @@ var music_linear_volume_target: float = 1.0
 func _process(delta):
 	#print("MUSIC LINEAR VOLUME TARGET: ", music_linear_volume_target)
 	#print("MUSIC REAL VOLUME (DB): ", music.volume_db)
-	music.volume_db = maxf(-80, move_toward(music.volume_db, linear_to_db(music_linear_volume_target), 35.0 * delta))
+	music.volume_db = maxf(-80, move_toward(music.volume_db, linear_to_db(music_linear_volume_target), 50.0 * delta))
 	pass
 
 func _ready():

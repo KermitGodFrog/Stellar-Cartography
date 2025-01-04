@@ -702,6 +702,12 @@ func _on_add_player_value(amount: int) -> void:
 	pass
 
 func _on_add_player_hull_stress(amount: int) -> void:
+	#damage sfx, couldnt find any other place to put this :(
+	if amount > 0:
+		if world.player.hull_stress >= 100:
+			get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/damage_deterioration.tres"), -12, "SFX")
+		else:
+			get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/damage_stress.tres"), -12, "SFX")
 	world.player.addHullStress(amount)
 	pass
 
