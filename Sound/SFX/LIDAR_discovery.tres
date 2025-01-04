@@ -1,0 +1,26 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=8 format=3 uid="uid://dmdwnnnq2d2xo"]
+
+[ext_resource type="AudioStream" uid="uid://dkba6nssnw1iv" path="res://Sound/SFX/LIDAR/discovery_1.wav" id="1_q2fq4"]
+[ext_resource type="AudioStream" uid="uid://b5u6seq6xugcp" path="res://Sound/SFX/LIDAR/discovery_2.wav" id="2_edblv"]
+[ext_resource type="AudioStream" uid="uid://beh5q2yhbdxsi" path="res://Sound/SFX/LIDAR/discovery_3.wav" id="3_q0v1a"]
+[ext_resource type="AudioStream" uid="uid://cnxsk1jo424wx" path="res://Sound/SFX/LIDAR/discovery_4.wav" id="4_vcj7c"]
+[ext_resource type="AudioStream" uid="uid://bdevm5ajx8g4m" path="res://Sound/SFX/LIDAR/discovery_5.wav" id="5_1jqyg"]
+[ext_resource type="AudioStream" uid="uid://bqcbdfrp302ck" path="res://Sound/SFX/LIDAR/discovery_6.wav" id="6_si7hi"]
+[ext_resource type="AudioStream" uid="uid://b82crlbnhcoog" path="res://Sound/SFX/LIDAR/discovery_7.wav" id="7_ex1qk"]
+
+[resource]
+streams_count = 7
+stream_0/stream = ExtResource("1_q2fq4")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("2_edblv")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("3_q0v1a")
+stream_2/weight = 1.0
+stream_3/stream = ExtResource("4_vcj7c")
+stream_3/weight = 1.0
+stream_4/stream = ExtResource("5_1jqyg")
+stream_4/weight = 1.0
+stream_5/stream = ExtResource("6_si7hi")
+stream_5/weight = 1.0
+stream_6/stream = ExtResource("7_ex1qk")
+stream_6/weight = 1.0

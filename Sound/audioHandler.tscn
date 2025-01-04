@@ -17,7 +17,8 @@ stream_2/weight = 1.0
 stream_3/stream = ExtResource("5_cebs6")
 stream_3/weight = 1.0
 
-[node name="audioHandler" type="Node"]
+[node name="audioHandler" type="Node" groups=["audioHandler"]]
+process_mode = 3
 script = ExtResource("1_eb43v")
 
 [node name="music" type="AudioStreamPlayer" parent="."]
@@ -25,8 +26,6 @@ stream = SubResource("AudioStreamRandomizer_3odmk")
 mix_target = 1
 bus = &"Music"
 
-[node name="play_timer" type="Timer" parent="."]
+[node name="intermission" type="Timer" parent="."]
 wait_time = 60.0
 one_shot = true
-
-[connection signal="timeout" from="play_timer" to="." method="_on_play_timer_timeout"]

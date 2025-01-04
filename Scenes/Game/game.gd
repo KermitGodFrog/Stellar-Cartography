@@ -19,6 +19,7 @@ var world: worldAPI
 @onready var stats_menu = $statsMenu
 @onready var wormhole_minigame = $wormhole_minigame_window/minigame_container/minigame_viewport/wormhole_minigame
 @onready var pause_mode_handler = $pauseModeHandler
+@onready var audio_handler = $audioHandler
 
 func _ready():
 	system_map.connect("updatePlayerActionType", _on_update_player_action_type)
@@ -76,11 +77,13 @@ func _ready():
 	dialogue_manager.connect("queuePauseMode", _on_queue_pause_mode)
 	station_ui.connect("queuePauseMode", _on_queue_pause_mode)
 	wormhole_minigame.connect("queuePauseMode", _on_queue_pause_mode)
+	audio_handler.connect("queuePauseMode", _on_queue_pause_mode) #audio handler doesnt TECHNICALLY need pause control
 	stats_menu.connect("setPauseMode", _on_set_pause_mode)
 	pause_menu.connect("setPauseMode", _on_set_pause_mode)
 	dialogue_manager.connect("setPauseMode", _on_set_pause_mode)
 	station_ui.connect("setPauseMode", _on_set_pause_mode)
 	wormhole_minigame.connect("setPauseMode", _on_set_pause_mode)
+	audio_handler.connect("setPauseMode", _on_set_pause_mode) #audio handler doesnt TECHNICALLY need pause control
 	
 	world = await game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
@@ -827,6 +830,7 @@ func _on_pause_mode_changed(new_mode: game_data.PAUSE_MODES) -> void:
 	dialogue_manager._pause_mode = new_mode
 	station_ui._pause_mode = new_mode
 	wormhole_minigame._pause_mode = new_mode
+	audio_handler._pause_mode = new_mode #audio handler doesnt TECHNICALLY need pause control
 	pass
 
 

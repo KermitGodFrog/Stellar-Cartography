@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://beh5q2yhbdxsi"
-path="res://.godot/imported/prove_3.wav-b4ccb66105484bb5f724b42dab89c968.sample"
+path="res://.godot/imported/discovery_3.wav-690174f025e11b2adff2defe44ecd7d4.sample"
 
 [deps]
 
-source_file="res://Sound/SFX/LIDAR/prove_3.wav"
-dest_files=["res://.godot/imported/prove_3.wav-b4ccb66105484bb5f724b42dab89c968.sample"]
+source_file="res://Sound/SFX/LIDAR/discovery_3.wav"
+dest_files=["res://.godot/imported/discovery_3.wav-690174f025e11b2adff2defe44ecd7d4.sample"]
 
 [params]
 

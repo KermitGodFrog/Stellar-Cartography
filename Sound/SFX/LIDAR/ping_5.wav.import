@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://cnxsk1jo424wx"
-path="res://.godot/imported/prove_4.wav-5bfaa6fda1ed50807eb282bdc15510be.sample"
+uid="uid://bt7cv0shijpxt"
+path="res://.godot/imported/ping_5.wav-b87a15832a41ca6047387f6cd6f578f0.sample"
 
 [deps]
 
-source_file="res://Sound/SFX/LIDAR/prove_4.wav"
-dest_files=["res://.godot/imported/prove_4.wav-5bfaa6fda1ed50807eb282bdc15510be.sample"]
+source_file="res://Sound/SFX/LIDAR/ping_5.wav"
+dest_files=["res://.godot/imported/ping_5.wav-b87a15832a41ca6047387f6cd6f578f0.sample"]
 
 [params]
 

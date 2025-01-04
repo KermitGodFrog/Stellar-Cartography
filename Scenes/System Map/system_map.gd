@@ -45,9 +45,9 @@ var player_audio_visualizer_unlocked: bool = false
 @onready var map_overlay = $camera/canvas/map_overlay
 @onready var data_value_increase_label = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/data_value_increase_label
 
-@onready var ping_sound_scene = preload("res://Sound/SFX/ping.tscn")
-@onready var bounceback_sound_scene = preload("res://Sound/SFX/bounceback.tscn")
-@onready var discovery_sound_scene = preload("res://Sound/SFX/discovery.tscn")
+@onready var LIDAR_ping = preload("res://Sound/SFX/LIDAR_ping.tres")
+@onready var LIDAR_bounceback = preload("res://Sound/SFX/LIDAR_bounceback.tres")
+@onready var LIDAR_discovery = preload("res://Sound/SFX/LIDAR_discovery.tres")
 @onready var boost_start_wav = preload("res://Sound/SFX/boost_start.wav")
 @onready var boost_end_wav = preload("res://Sound/SFX/boost_end.wav")
 enum BOOST_SOUND_TYPES {START, END}
@@ -463,11 +463,7 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 		#ping.resetTime()
 		#SONAR_PINGS.append(ping)
 	
-	var ping_instance = ping_sound_scene.instantiate()
-	add_child(ping_instance)
-	ping_instance.play()
-	await ping_instance.finished
-	ping_instance.queue_free()
+	get_tree().call_group("audioHandler", "play_once", LIDAR_ping, 0.0, "SFX")
 	pass
 
 func async_add_ping(body: bodyAPI) -> void:
@@ -484,11 +480,7 @@ func async_add_ping(body: bodyAPI) -> void:
 	ping.resetTime()
 	SONAR_PINGS.append(ping)
 	
-	var bounceback_instance = bounceback_sound_scene.instantiate()
-	add_child(bounceback_instance)
-	bounceback_instance.play()
-	await bounceback_instance.finished
-	bounceback_instance.queue_free()
+	get_tree().call_group("audioHandler", "play_once", LIDAR_bounceback, 0.0, "SFX")
 	pass
 
 func async_play_boost_sound(sound: BOOST_SOUND_TYPES):
@@ -526,11 +518,7 @@ func _on_found_body(id: int):
 	ping.resetTime()
 	SONAR_PINGS.append(ping)
 	
-	var discovery_instance = discovery_sound_scene.instantiate()
-	add_child(discovery_instance)
-	discovery_instance.play()
-	await discovery_instance.finished
-	discovery_instance.queue_free()
+	get_tree().call_group("audioHandler", "play_once", LIDAR_discovery, 0.0, "SFX")
 	pass
 
 func _on_picker_button_item_selected(index):

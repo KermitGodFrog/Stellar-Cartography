@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://vq7vxfvpd4i0"
-path="res://.godot/imported/scanning_7.wav-535b9945ccd4ee8c1ac8c163bee528d2.sample"
+path="res://.godot/imported/ping_7.wav-0f7db81ef18d9c368e13e445fad67b57.sample"
 
 [deps]
 
-source_file="res://Sound/SFX/LIDAR/scanning_7.wav"
-dest_files=["res://.godot/imported/scanning_7.wav-535b9945ccd4ee8c1ac8c163bee528d2.sample"]
+source_file="res://Sound/SFX/LIDAR/ping_7.wav"
+dest_files=["res://.godot/imported/ping_7.wav-0f7db81ef18d9c368e13e445fad67b57.sample"]
 
 [params]
 

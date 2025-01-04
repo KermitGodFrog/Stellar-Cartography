@@ -1,38 +1,65 @@
 extends Node
+#this class plays ONE SHOT audio (called to by other scripts), plays generic UI click sounds, and music
+#it does NOT play persistent sounds, which are handled locally by other scritps! (besides music, which is persistent)
 
-@onready var play_timer = $play_timer
+var _pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE:
+	set(value):
+		_pause_mode = value
+		_on_pause_mode_changed(value)
+signal queuePauseMode(new_mode: game_data.PAUSE_MODES)
+signal setPauseMode(new_mode: game_data.PAUSE_MODES)
+func _on_pause_mode_changed(value):
+	match value:
+		game_data.PAUSE_MODES.NONE:
+			music.set_stream_paused(false)
+		_:
+			music.set_stream_paused(true)
+	pass
+
+@onready var UI_click_generic = preload("res://Sound/SFX/UI_click_generic.tres")
 @onready var music = $music
-@onready var ui_click_sound_scene = preload("res://Sound/button_press.tscn")
-
-#needs to duck for dialogue!
-#should be always active and just not play some SFX when game is paused!
+@onready var intermission = $intermission
 
 func _ready():
-	var SFX_buttons = get_tree().get_nodes_in_group("playUIClickSFX")
-	for button in SFX_buttons:
-		if button is Button:
-			button.connect("pressed", _on_UI_click_SFX_button_pressed)
-		if button is TabContainer:
-			button.connect("tab_button_pressed", _on_UI_click_SFX_button_pressed)
-		if button is ItemList:
-			button.connect("item_selected", _on_UI_click_SFX_button_pressed)
+	music.connect("finished", _on_music_finished)
+	intermission.connect("timeout", _on_intermission_finished)
+	_on_music_finished()
 	
-	play_timer.start(global_data.get_randi(60, 360))
+	for node in get_tree().get_nodes_in_group("playUIClickSFX"):
+		if node is Button:
+			node.connect("pressed", _on_play_once_UI_click_SFX)
+		elif node is TabContainer:
+			node.connect("tab_button_pressed", _on_play_once_UI_click_SFX.unbind(1))
+		elif node is ItemList:
+			node.connect("item_selected", _on_play_once_UI_click_SFX.unbind(1))
 	pass
 
-func _on_play_timer_timeout():
-	$music.play()
-	play_timer.start(global_data.get_randi(60, 360))
+func _on_music_finished() -> void:
+	intermission.set_wait_time(
+		maxi(0, randfn(60.0, 15.0))
+		)
+	intermission.start()
 	pass
 
-func _on_UI_click_SFX_button_pressed(_tab_or_item_index = null) -> void:
-	async_play_ui_click_SFX()
+func _on_intermission_finished() -> void:
+	music.play()
 	pass
 
-func async_play_ui_click_SFX() -> void:
-	var SFX_instance = ui_click_sound_scene.instantiate()
-	add_child(SFX_instance)
-	SFX_instance.play()
-	await SFX_instance.finished
-	SFX_instance.queue_free()
+func _on_play_once_UI_click_SFX() -> void:
+	play_once(UI_click_generic, -6.0, "SFX")
 	pass
+
+func play_once(stream: AudioStream, volume_db: float = 0.0, bus: StringName = "Master"):
+	var player = AudioStreamPlayer.new()
+	player.set_stream(stream)
+	player.set_volume_db(volume_db)
+	player.set_bus(bus)
+	player.set_autoplay(true)
+	player.connect("finished", _on_play_once_player_finished.bind(player))
+	add_child(player)
+	pass
+
+func _on_play_once_player_finished(player: AudioStreamPlayer) -> void:
+	player.call_deferred("queue_free")
+	pass
+
