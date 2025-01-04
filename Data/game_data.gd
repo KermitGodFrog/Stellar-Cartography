@@ -27,13 +27,14 @@ const ENTITY_CLASSIFICATION_CURVES = {
 const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
 const NANITE_CONTROLLER_REPAIR_CURVE = preload("res://Data/Spawn Data/nanite_controller_repair_curve.tres")
 
-enum NAME_VARIETIES {STAR, PLANET, GENERIC_FLAIR, ASTEROID_BELT, WORMHOLE, STATION, STATION_FLAIR, SPACE_ANOMALY, SPACE_ANOMALY_FLAIR} #for generating star systems
+enum NAME_VARIETIES {STAR, PLANET, GENERIC_FLAIR, ASTEROID_BELT, WORMHOLE, WORMHOLE_FLAIR, STATION, STATION_FLAIR, SPACE_ANOMALY, SPACE_ANOMALY_FLAIR} #for generating star systems
 var NAME_DATA: Dictionary = {
 	NAME_VARIETIES.STAR: [],
 	NAME_VARIETIES.PLANET: [],
 	NAME_VARIETIES.GENERIC_FLAIR: [],
 	NAME_VARIETIES.ASTEROID_BELT: [],
 	NAME_VARIETIES.WORMHOLE: [],
+	NAME_VARIETIES.WORMHOLE_FLAIR: [],
 	NAME_VARIETIES.STATION: [],
 	NAME_VARIETIES.STATION_FLAIR: [],
 	NAME_VARIETIES.SPACE_ANOMALY: [],
@@ -46,6 +47,7 @@ const NAME_FILE_PATHS: Dictionary = {
 	NAME_VARIETIES.GENERIC_FLAIR: "res://Data/Name Data/generic_flairs.txt",
 	NAME_VARIETIES.ASTEROID_BELT: "res://Data/Name Data/asteroid_belt_names.txt",
 	NAME_VARIETIES.WORMHOLE: "res://Data/Name Data/wormhole_names.txt",
+	NAME_VARIETIES.WORMHOLE_FLAIR: "res://Data/Name Data/wormhole_flairs.txt",
 	NAME_VARIETIES.STATION: "res://Data/Name Data/station_names.txt",
 	NAME_VARIETIES.STATION_FLAIR: "res://Data/Name Data/station_flairs.txt",
 	NAME_VARIETIES.SPACE_ANOMALY: "res://Data/Name Data/space_anomaly_names.txt",
@@ -66,6 +68,8 @@ func get_random_name_from_variety(variety: NAME_VARIETIES):
 			return dual_name_selection(NAME_VARIETIES.STATION, NAME_VARIETIES.STATION_FLAIR)
 		NAME_VARIETIES.SPACE_ANOMALY:
 			return dual_name_selection(NAME_VARIETIES.SPACE_ANOMALY, NAME_VARIETIES.SPACE_ANOMALY_FLAIR)
+		NAME_VARIETIES.WORMHOLE:
+			return dual_name_selection(NAME_VARIETIES.WORMHOLE, NAME_VARIETIES.WORMHOLE_FLAIR)
 		_:
 			return get_data_or_file_candidates(variety).pick_random()
 

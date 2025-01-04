@@ -1,8 +1,8 @@
+Gate
 Gateway
 Rift
 Portal
 Crossroads
 Bridge
-Wander
-Journey
 Tunnel
+Conduit

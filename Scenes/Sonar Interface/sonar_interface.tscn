@@ -1,8 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://chwm82adl21cm"]
+[gd_scene load_steps=6 format=3 uid="uid://chwm82adl21cm"]
 
 [ext_resource type="Script" path="res://Scenes/Sonar Interface/sonar_interface.gd" id="1_bmylm"]
 [ext_resource type="Texture2D" uid="uid://bu4clhu1rmiwq" path="res://Graphics/sonar_64x.png" id="1_t5fig"]
 [ext_resource type="Texture2D" uid="uid://dq25m1n2y5upl" path="res://Graphics/hull_stress_icon.png" id="3_8o0ly"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_njxhc"]
+bg_color = Color(0.184314, 0.14902, 0.156863, 0.784314)
+skew = Vector2(0.35, 0)
+expand_margin_left = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wt7tw"]
 texture = ExtResource("3_8o0ly")
@@ -36,6 +41,7 @@ custom_minimum_size = Vector2(110, 50)
 layout_mode = 1
 offset_right = 40.0
 offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_njxhc")
 
 [node name="scroll_horizontal" type="HBoxContainer" parent="sonar_control/info_panel"]
 layout_mode = 1
