@@ -53,7 +53,7 @@ func _on_continue_button_pressed():
 	pass
 
 func _on_tutorial_button_pressed():
-	global_data.change_scene.emit("res://Scenes/Game/game.tscn", global_data.GAME_INIT_TYPES.TUTORIAL)
+	global_data.change_scene.emit("res://Scenes/Game/game.tscn", global_data.GAME_INIT_TYPES.TUTORIAL, {"name": name_edit.placeholder_text, "prefix": "Captain"})
 	pass
 
 func _on_create_button_pressed():

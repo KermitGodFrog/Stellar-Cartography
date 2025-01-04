@@ -33,8 +33,7 @@ var nanites_per_percentage: int = 100
 var pending_audio_profiles: Array = []:
 	set(value):
 		pending_audio_profiles = value
-		print("PENDING AUDIO PROFILES UPDATED")
-		print(pending_audio_profiles)
+		print("PENDING AUDIO PROFILES ", pending_audio_profiles)
 var player_saved_audio_profiles_size_matrix: Array = [] #current, max
 
 signal sellExplorationData(sell_percentage_of_market_price: int)
@@ -50,12 +49,9 @@ signal addPlayerValue(amount: int)
 @onready var save_audio_profiles_control = $save_audio_profiles_control
 @onready var observed_bodies_list = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list
 @onready var storage_progress_bar = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/storage_progress_bar
-#upgrade buttons
-@onready var unlock_advanced_scanning_button = $upgrade_container/unlock_advanced_scanning
-@onready var unlock_audio_visualizer_button = $upgrade_container/unlock_audio_visualizer
-@onready var unlock_nanite_controller_button = $upgrade_container/unlock_nanite_controller
-@onready var unlock_long_range_scopes_button = $upgrade_container/unlock_long_range_scopes
+#upgrade shtuff
 @onready var description_label = $upgrade_container/description_label
+@onready var UPGRADES = $upgrade_container/UPGRADES
 
 @onready var hull_stress_label = $repair_container/hull_stress_label
 @onready var repair_single_button = $repair_container/repair_single
@@ -69,9 +65,10 @@ func _ready():
 	observed_bodies_list.connect("saveAudioProfile", _on_audio_profile_saved)
 	observed_bodies_list.connect("_addPlayerValue", _on_add_player_value)
 	observed_bodies_list.connect("finishedButtonPressed", _on_finished_button_pressed)
-	var upgrades = [unlock_nanite_controller_button, unlock_advanced_scanning_button, unlock_audio_visualizer_button, unlock_long_range_scopes_button]
-	for upgrade in upgrades:
-		upgrade.connect("mouse_entered", _on_upgrade_mouse_entered.bind(upgrade))
+	
+	for child in UPGRADES.get_children():
+		child.connect("pressed", _on_upgrade_pressed.bind(child.upgrade, child.cost))
+		child.connect("mouse_entered", _on_upgrade_mouse_entered.bind(child.description))
 	pass
 
 func _physics_process(_delta):
@@ -104,6 +101,7 @@ func _on_sell_data_button_pressed():
 			save_audio_profiles_control.show()
 	pass
 
+
 func _on_audio_profile_saved(helper: audioProfileHelper):
 	emit_signal("addSavedAudioProfile", helper)
 	pass
@@ -112,58 +110,6 @@ func _on_finished_button_pressed():
 	save_audio_profiles_control.hide()
 	emit_signal("sellExplorationData", station.sell_percentage_of_market_price)
 	pass 
-
-
-
-func _on_unlock_advanced_scanning_button_pressed():
-	if station: if station.is_module_store_disabled == false:
-		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.ADVANCED_SCANNING, 7500) #formerly 10000 (probably more balanced)
-	pass
-
-func _on_unlock_audio_visualizer_pressed():
-	if station: if station.is_module_store_disabled == false:
-		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.AUDIO_VISUALIZER, 35000) #formerly 85000 (probably more balanced)
-	pass
-
-func _on_unlock_nanite_controller_pressed():
-	if station: if station.is_module_store_disabled == false:
-		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.NANITE_CONTROLLER, 25000) #formerly 45000 (probably more balanced)
-	pass 
-
-func _on_unlock_long_range_scopes_pressed():
-	if station: if station.is_module_store_disabled == false:
-		emit_signal("upgradeShip", playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES, 35000) #formerly 85000 (probably more balanced)
-	pass
-
-func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
-	match upgrade_idx:
-		playerAPI.UPGRADE_ID.ADVANCED_SCANNING:
-			match state:
-				true:
-					unlock_advanced_scanning_button.set_text("ADVANCED SCANNING: UNLOCKED")
-				false:
-					unlock_advanced_scanning_button.set_text("ADVANCED SCANNING: 30000n")
-		playerAPI.UPGRADE_ID.AUDIO_VISUALIZER:
-			match state:
-				true:
-					unlock_audio_visualizer_button.set_text("AUDIO VISUALIZER: UNLOCKED")
-				false:
-					unlock_audio_visualizer_button.set_text("AUDIO VISUALIZER: 20000n (REQ ADVANCED SCANNING)")
-		playerAPI.UPGRADE_ID.NANITE_CONTROLLER:
-			match state:
-				true:
-					unlock_nanite_controller_button.set_text("NANITE CONTROLLER: UNLOCKED")
-				false:
-					unlock_nanite_controller_button.set_text("NANITE CONTROLLER: 10000n")
-		playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES:
-			match state:
-				true:
-					unlock_long_range_scopes_button.set_text("LONG RANGE SCOPES: UNLOCKED")
-				false:
-					unlock_long_range_scopes_button.set_text("LONG RANGE SCOPES: 40000n")
-		var error:
-			print_debug(str("STATION UI: ERROR: BUTTON TEXT CHANGE FOR UPGRADE IDX ", error, "NOT CONFIGURED!"))
-	pass
 
 
 func _on_repair_single_pressed():
@@ -190,16 +136,14 @@ func _on_popup():
 	background_animation.play(animations.pick_random())
 	pass
 
-func _on_upgrade_mouse_entered(upgrade: Node) -> void:
-	match upgrade.name:
-		"unlock_nanite_controller":
-			description_label.set_text("Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost.")
-		"unlock_advanced_scanning":
-			description_label.set_text("Advanced scanning capability. Allows the ‘INFO’ tab on the central board to be utilised. The ‘INFO’ tab is able to display useful information about a locked body, depending on the type of locked body.")
-		"unlock_audio_visualizer":
-			description_label.set_text("Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition.")
-		"unlock_long_range_scopes":
-			description_label.set_text("Long Range Scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid to photos of quality, which take the photography style for different phenomena into account.")
+
+func _on_upgrade_mouse_entered(description: String) -> void:
+	description_label.set_text(description)
+	pass
+
+func _on_upgrade_pressed(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
+	if station: if not station.is_module_store_disabled:
+		emit_signal("upgradeShip", upgrade_idx, cost)
 	pass
 
 func _on_disable_module_store() -> void:

@@ -21,7 +21,7 @@ func _physics_process(delta):
 		mouse_slide_fixed_point = get_viewport().get_mouse_position()
 	if Input.is_action_pressed("SC_PAN"):
 		var pos = get_viewport().get_mouse_position()
-		global_position.x += (pos.x - mouse_slide_fixed_point.x) * pow(zoom.length(), -0.5)
-		global_position.y += (pos.y - mouse_slide_fixed_point.y) * pow(zoom.length(), -0.5)
+		global_position.x += (pos.x - mouse_slide_fixed_point.x) * pow(zoom.length(), -0.5) * delta
+		global_position.y += (pos.y - mouse_slide_fixed_point.y) * pow(zoom.length(), -0.5) * delta
 		follow_body = null
 	pass

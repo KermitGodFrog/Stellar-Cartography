@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dtbagvxj5to3"]
+[gd_scene load_steps=15 format=3 uid="uid://dtbagvxj5to3"]
 
 [ext_resource type="Script" path="res://Scenes/Station UI/station_ui.gd" id="1_8gqs2"]
 [ext_resource type="Theme" uid="uid://cyxa5wd6un7de" path="res://Scenes/Station UI/station_ui_MAIN_theme.tres" id="1_20lhg"]
@@ -7,6 +7,7 @@
 [ext_resource type="Shader" path="res://Scenes/pixelate_shader.gdshader" id="3_n6881"]
 [ext_resource type="Script" path="res://Scenes/Station UI/observed_bodies_list.gd" id="4_ng3on"]
 [ext_resource type="Texture2D" uid="uid://c5r5ok7jmth3o" path="res://Graphics/Misc/confirm_no_shadow.png" id="5_nd783"]
+[ext_resource type="Script" path="res://Scenes/Station UI/upgrade_button.gd" id="5_nlbm1"]
 [ext_resource type="Texture2D" uid="uid://c5wk5giq8ua5h" path="res://Graphics/download_icon.png" id="5_oh1b1"]
 [ext_resource type="Texture2D" uid="uid://cudxvqxk513ea" path="res://Graphics/Misc/denied.png" id="7_pt3w3"]
 [ext_resource type="PackedScene" uid="uid://c3o837337jhqc" path="res://Scenes/Station UI/station_ui_background.tscn" id="9_c1dhy"]
@@ -29,7 +30,7 @@ size = Vector2i(1000, 500)
 visible = false
 always_on_top = true
 
-[node name="station_control" type="Control" parent="." groups=["FOLLOW_UPGRADE_STATE"]]
+[node name="station_control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -98,31 +99,40 @@ offset_left = -321.0
 offset_bottom = 40.0
 grow_horizontal = 0
 
-[node name="unlock_nanite_controller" type="Button" parent="station_control/upgrade_container"]
+[node name="UPGRADES" type="VBoxContainer" parent="station_control/upgrade_container"]
 layout_mode = 2
-tooltip_text = "
-"
-text = "UNLOCK NANITE CONTROLLER (25000n)"
+size_flags_vertical = 3
 
-[node name="unlock_advanced_scanning" type="Button" parent="station_control/upgrade_container"]
+[node name="1" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
-text = "UNLOCK ADVANCED SCANNING (7500n)"
+alignment = 0
+script = ExtResource("5_nlbm1")
+cost = 7500
+description = "Advanced scanning capability. Allows the ‘INFO’ tab on the central board to be utilised. The ‘INFO’ tab is able to display useful information about a locked body, depending on the type of locked body."
 
-[node name="unlock_audio_visualizer" type="Button" parent="station_control/upgrade_container"]
+[node name="2" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
-text = "UNLOCK AUDIO VISUALIZER (35000n)
-(ADVANCED SCANNING REQUIRED)"
+alignment = 0
+script = ExtResource("5_nlbm1")
+upgrade = 1
+cost = 35000
+description = "Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."
 
-[node name="audio_visualizer_disclaimer" type="Label" parent="station_control/upgrade_container"]
+[node name="3" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "(REQ. ADVANCED SCANNING)"
-horizontal_alignment = 1
-vertical_alignment = 1
+alignment = 0
+script = ExtResource("5_nlbm1")
+upgrade = 2
+cost = 25000
+description = "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost."
 
-[node name="unlock_long_range_scopes" type="Button" parent="station_control/upgrade_container"]
+[node name="4" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
-text = "UNLOCK LONG RANGE SCOPES (35000n)"
+alignment = 0
+script = ExtResource("5_nlbm1")
+upgrade = 3
+cost = 35000
+description = "Long Range Scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid to photos of quality, which take the photography style for different phenomena into account."
 
 [node name="disclaimer_label" type="Label" parent="station_control/upgrade_container"]
 layout_mode = 2
@@ -276,10 +286,6 @@ text = "FINISHED"
 
 [connection signal="close_requested" from="." to="station_control" method="_on_station_window_close_requested"]
 [connection signal="pressed" from="station_control/sell_data_button" to="station_control" method="_on_sell_data_button_pressed"]
-[connection signal="pressed" from="station_control/upgrade_container/unlock_nanite_controller" to="station_control" method="_on_unlock_nanite_controller_pressed"]
-[connection signal="pressed" from="station_control/upgrade_container/unlock_advanced_scanning" to="station_control" method="_on_unlock_advanced_scanning_button_pressed"]
-[connection signal="pressed" from="station_control/upgrade_container/unlock_audio_visualizer" to="station_control" method="_on_unlock_audio_visualizer_pressed"]
-[connection signal="pressed" from="station_control/upgrade_container/unlock_long_range_scopes" to="station_control" method="_on_unlock_long_range_scopes_pressed"]
 [connection signal="pressed" from="station_control/repair_container/repair_single" to="station_control" method="_on_repair_single_pressed"]
 [connection signal="pressed" from="station_control/repair_container/repair_all" to="station_control" method="_on_repair_all_pressed"]
 [connection signal="item_clicked" from="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list" to="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list" method="_on_item_clicked"]

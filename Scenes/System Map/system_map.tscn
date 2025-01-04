@@ -22,7 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://csvtv1sy2k3ns" path="res://Graphics/audio_visualizer_icon.png" id="11_lvg8y"]
 [ext_resource type="Texture2D" uid="uid://cghgcu7ghw8mf" path="res://Graphics/hull_deterioration_icon.png" id="12_3bh3s"]
 [ext_resource type="Texture2D" uid="uid://vdjsk4r01pst" path="res://Graphics/ui_arrow.png" id="12_6oeqo"]
-[ext_resource type="Script" path="res://Scenes/System Map/data_value_increase_label.gd" id="13_6i2x8"]
+[ext_resource type="Script" path="res://Scenes/System Map/value_increase_label.gd" id="13_6i2x8"]
 [ext_resource type="Texture2D" uid="uid://ce1et15cnh5ao" path="res://Graphics/morale_icon.png" id="13_vaatn"]
 [ext_resource type="Script" path="res://Scenes/System Map/hull_stress_button.gd" id="14_u08qu"]
 [ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://Graphics/journey_map_icon.png" id="19_36y85"]
