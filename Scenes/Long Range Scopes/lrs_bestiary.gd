@@ -8,7 +8,7 @@ var discovered_entities_matrix: PackedInt32Array = []:
 var current_entity : entityAPI = null
 
 @onready var tabs = $tabs
-@onready var bestiary_list = $tabs/BESTIARY/bestiary_list
+@onready var bestiary_list = $tabs/INDEX/bestiary_list
 @onready var info_title = $tabs/INFO/info_title
 @onready var info_description = $tabs/INFO/info_split/description_scroll/info_description
 @onready var info_reward_widgets_list = $tabs/INFO/info_split/reward_widgets_panel/reward_widgets_scroll/reward_widgets_list

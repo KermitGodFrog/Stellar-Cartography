@@ -117,12 +117,12 @@ layout_mode = 2
 tab_alignment = 1
 current_tab = 1
 
-[node name="BESTIARY" type="VBoxContainer" parent="split/bestiary/tabs"]
+[node name="INDEX" type="VBoxContainer" parent="split/bestiary/tabs"]
 visible = false
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 
-[node name="bestiary_list" type="ItemList" parent="split/bestiary/tabs/BESTIARY"]
+[node name="bestiary_list" type="ItemList" parent="split/bestiary/tabs/INDEX"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("3_drepj")
@@ -317,5 +317,5 @@ stream = SubResource("AudioStreamRandomizer_cnul4")
 bus = &"SFX"
 
 [connection signal="close_requested" from="." to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_long_range_scopes_window_close_requested"]
-[connection signal="item_activated" from="split/bestiary/tabs/BESTIARY/bestiary_list" to="split/bestiary" method="_on_bestiary_list_item_activated"]
+[connection signal="item_activated" from="split/bestiary/tabs/INDEX/bestiary_list" to="split/bestiary" method="_on_bestiary_list_item_activated"]
 [connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/fov_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_fov_slider_value_changed"]

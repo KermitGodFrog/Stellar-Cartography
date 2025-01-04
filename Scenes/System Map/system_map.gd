@@ -311,6 +311,11 @@ func _unhandled_input(event):
 		async_play_boost_sound(BOOST_SOUND_TYPES.END)
 	pass
 
+func reset_player_boosting() -> void:
+	player_is_boosting = false
+	emit_signal("updatePlayerIsBoosting", player_is_boosting)
+	pass
+
 func _draw():
 	draw_map()
 	draw_sonar()
