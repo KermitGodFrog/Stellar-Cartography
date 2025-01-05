@@ -51,6 +51,7 @@ signal addPlayerValue(amount: int)
 @onready var storage_progress_bar = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/storage_progress_bar
 #upgrade shtuff
 @onready var description_label = $upgrade_container/description_label
+@onready var disclaimer_label = $upgrade_container/disclaimer_label
 @onready var UPGRADES = $upgrade_container/UPGRADES
 
 @onready var hull_stress_label = $repair_container/hull_stress_label
@@ -142,8 +143,11 @@ func _on_upgrade_mouse_entered(description: String) -> void:
 	pass
 
 func _on_upgrade_pressed(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
-	if station: if not station.is_module_store_disabled:
-		emit_signal("upgradeShip", upgrade_idx, cost)
+	if station: 
+		if not station.is_module_store_disabled:
+			emit_signal("upgradeShip", upgrade_idx, cost)
+		else:
+			disclaimer_label.blink(Color.RED)
 	pass
 
 func _on_disable_module_store() -> void:

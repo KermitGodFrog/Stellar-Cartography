@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dtbagvxj5to3"]
+[gd_scene load_steps=16 format=3 uid="uid://dtbagvxj5to3"]
 
 [ext_resource type="Script" path="res://Scenes/Station UI/station_ui.gd" id="1_8gqs2"]
 [ext_resource type="Theme" uid="uid://cyxa5wd6un7de" path="res://Scenes/Station UI/station_ui_MAIN_theme.tres" id="1_20lhg"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c5r5ok7jmth3o" path="res://Graphics/Misc/confirm_no_shadow.png" id="5_nd783"]
 [ext_resource type="Script" path="res://Scenes/Station UI/upgrade_button.gd" id="5_nlbm1"]
 [ext_resource type="Texture2D" uid="uid://c5wk5giq8ua5h" path="res://Graphics/download_icon.png" id="5_oh1b1"]
+[ext_resource type="Script" path="res://Scenes/Station UI/disclaimer_label.gd" id="6_ubeaq"]
 [ext_resource type="Texture2D" uid="uid://cudxvqxk513ea" path="res://Graphics/Misc/denied.png" id="7_pt3w3"]
 [ext_resource type="PackedScene" uid="uid://c3o837337jhqc" path="res://Scenes/Station UI/station_ui_background.tscn" id="9_c1dhy"]
 
@@ -140,6 +141,7 @@ theme_override_font_sizes/font_size = 12
 text = "(ONLY ONE MAY BE PURCHASED PER PORT)"
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("6_ubeaq")
 
 [node name="description_label" type="Label" parent="station_control/upgrade_container"]
 custom_minimum_size = Vector2(100, 0)
