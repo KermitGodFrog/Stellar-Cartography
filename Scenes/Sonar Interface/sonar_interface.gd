@@ -1,6 +1,7 @@
 extends Control
 
-signal sonarPing(ping_width: int, ping_length: int)
+signal sonarPing(ping_width: int, ping_length: int, ping_direction: Vector2)
+signal sonarValuesChanged(ping_width: int, ping_length: int, ping_direction: Vector2) #for SCAN_PREDICTION upgrade!
 
 var ping_width: int
 var ping_length: int
@@ -28,6 +29,7 @@ func _physics_process(_delta):
 func _gui_input(event):
 	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE"):
 		ping_direction = get_screen_centre().direction_to(get_global_mouse_position())
+		emit_signal("sonarValuesChanged", ping_width, ping_length, ping_direction)
 	pass
 
 func _draw():
@@ -54,3 +56,15 @@ func _on_ping_button_pressed():
 		ping_cooldown_timer.start()
 	pass
 
+
+
+var width_value_changed_recently: bool = false
+func _on_ping_width_slider_value_changed(value):
+	width_value_changed_recently = true
+	pass
+
+func _on_width_value_changed_cooldown_timeout():
+	if width_value_changed_recently == true:
+		emit_signal("sonarValuesChanged", ping_width, ping_length, ping_direction)
+	width_value_changed_recently = false
+	pass

@@ -197,7 +197,7 @@ func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: f
 				var belt_width = global_data.get_randf(hook.radius * 71, hook.radius * 645) #in solar radii. for reference, asteroid belt in the sol system is 215 solar radii
 				if new_distance > belt_width:
 					var belt_classification = global_data.weighted_pick(asteroid_belt_classifications, "weight")
-					var new_belt = addStationaryBody(identifier_count, game_data.get_random_name_from_variety(game_data.NAME_VARIETIES.ASTEROID_BELT), hook_identifier, new_distance, {"asteroid_belt_classification": belt_classification, "mass": (global_data.get_randf(pow(10, -1.3) / 333000, pow(10, 0.22) / 333000)), "width": belt_width, "color": Color(0.111765, 0.111765, 0.111765, 1), "iterations": (hook.metadata.get("iterations") / 2)})
+					var new_belt = addStationaryBody(identifier_count, game_data.get_random_name_from_variety(game_data.NAME_VARIETIES.ASTEROID_BELT), hook_identifier, new_distance, {"asteroid_belt_classification": belt_classification, "mass": (global_data.get_randf(pow(10, -1.3) / 333000, pow(10, 0.22) / 333000)), "width": belt_width, "color": Color(0.111765, 0.111765, 0.111765, 0.9), "iterations": (hook.metadata.get("iterations") / 2)})
 					if hook.is_star():
 						get_body_from_identifier(new_belt).is_known = true
 					continue

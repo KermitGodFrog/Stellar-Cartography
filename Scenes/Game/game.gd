@@ -38,6 +38,7 @@ func _ready():
 	system_3d.connect("addConsoleEntry", _on_add_console_entry)
 	
 	sonar.connect("sonarPing", _on_sonar_ping)
+	sonar.connect("sonarValuesChanged", _on_sonar_values_changed)
 	
 	station_ui.connect("sellExplorationData", _on_sell_exploration_data)
 	station_ui.connect("upgradeShip", _on_upgrade_ship)
@@ -648,6 +649,10 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	var incurred_hull_stress = round(remap(ping_width, 9, 90, 0, world.player.hull_stress_highest_arc))
 	_on_add_player_hull_stress(incurred_hull_stress)
 	#can have multiple results here depending on what upgrades the player has related to the LIDAR
+	pass
+
+func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2):
+	system_map._on_sonar_values_changed(ping_width, ping_length, ping_direction)
 	pass
 
 func _on_sell_exploration_data(sell_percentage_of_market_price: int):

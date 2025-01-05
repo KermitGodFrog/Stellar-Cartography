@@ -79,6 +79,10 @@ vertical_alignment = 1
 wait_time = 5.0
 one_shot = true
 
+[node name="width_value_changed_cooldown" type="Timer" parent="sonar_control"]
+wait_time = 0.25
+autostart = true
+
 [node name="cooldown_label" type="Label" parent="sonar_control"]
 layout_mode = 1
 anchors_preset = 1
@@ -91,4 +95,6 @@ text = "5
 "
 horizontal_alignment = 2
 
+[connection signal="value_changed" from="sonar_control/info_panel/scroll_horizontal/scroll_vertical/ping_width_slider" to="sonar_control" method="_on_ping_width_slider_value_changed"]
 [connection signal="pressed" from="sonar_control/info_panel/scroll_horizontal/scroll_vertical/ping_button" to="sonar_control" method="_on_ping_button_pressed"]
+[connection signal="timeout" from="sonar_control/width_value_changed_cooldown" to="sonar_control" method="_on_width_value_changed_cooldown_timeout"]

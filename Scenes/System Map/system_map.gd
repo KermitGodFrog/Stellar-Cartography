@@ -45,6 +45,7 @@ var player_audio_visualizer_unlocked: bool = false
 @onready var status_scroll = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll
 @onready var map_overlay = $camera/canvas/map_overlay
 @onready var data_value_increase_label = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/data_value_increase_label
+@onready var scan_prediction_upgrade = $scan_prediction_upgrade
 
 @onready var LIDAR_ping = preload("res://Sound/SFX/LIDAR_ping.tres")
 @onready var LIDAR_bounceback = preload("res://Sound/SFX/LIDAR_bounceback.tres")
@@ -82,6 +83,8 @@ func _ready():
 
 func _physics_process(delta):
 	status_scroll.player_status_matrix = _player_status_matrix
+	scan_prediction_upgrade._player_position_matrix = player_position_matrix
+	scan_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME
 	#If body clicked on in system list, follow the body with the camera (follow body).
 	#If body clicked on in system list, actions can itneract with the body (locked body).
 	#If actions pressed, perform on locked body (action body).
@@ -507,6 +510,11 @@ func async_play_boost_sound(sound: BOOST_SOUND_TYPES):
 	instance.queue_free()
 	pass
 
+func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2): #for SCAN_PREDICTION upgrade!
+	scan_prediction_upgrade._on_sonar_values_changed(ping_width, ping_length, ping_direction)
+	pass
+
+
 
 
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:
@@ -593,3 +601,4 @@ func follow_and_lock_item(item: TreeItem):
 			follow_body = body
 			camera.follow_body = follow_body
 	pass
+

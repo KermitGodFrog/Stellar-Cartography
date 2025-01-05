@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=43 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -30,6 +30,7 @@
 [ext_resource type="Theme" uid="uid://bmu4r6ao4lfps" path="res://Scenes/controls_help_theme.tres" id="26_737wk"]
 [ext_resource type="Texture2D" uid="uid://bkvwgdists7up" path="res://Graphics/Mouse/mouse_left.png" id="27_0ojpo"]
 [ext_resource type="Texture2D" uid="uid://c3n7r80d4bem1" path="res://Graphics/Mouse/mouse_right.png" id="28_81ibq"]
+[ext_resource type="Script" path="res://Scenes/System Map/scan_prediction_upgrade.gd" id="31_k5t5q"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ciwjv"]
 atlas = ExtResource("3_bft1b")
@@ -529,6 +530,10 @@ item_0/text = "Quick Lock"
 item_0/icon = ExtResource("27_0ojpo")
 item_1/text = "Quick Orbit"
 item_1/icon = ExtResource("28_81ibq")
+
+[node name="scan_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
+show_behind_parent = true
+script = ExtResource("31_k5t5q")
 
 [connection signal="timeout" from="system/camera/canvas/map_overlay/frame_update" to="system/camera/canvas/map_overlay" method="_on_frame_update_timeout"]
 [connection signal="tab_button_pressed" from="system/camera/canvas/control/tabs" to="system/camera/canvas/control/tabs" method="_on_tab_button_pressed"]
