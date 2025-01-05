@@ -26,7 +26,7 @@ var upper_boundry: float = 0.0
 var lower_boundry: float = 0.0
 var speed: float = 0.0
 var distance: float = 100.0
-var hull_stress_wormhole: int = 10
+var hull_stress_wormhole: int = 10 #dont worry!! this value is updated every time the player traverses a wormhole - but not every frame! :> :^                                       FUCK YOU
 
 var awaiting_start: bool = true
 
@@ -41,6 +41,7 @@ var awaiting_start: bool = true
 @onready var distance_lower = $starship_and_camera/camera/UI_control/distance_container/distance_lower
 @onready var press_to_start = $starship_and_camera/camera/UI_control/press_to_start_button
 @onready var brake_button = $starship_and_camera/camera/UI_control/brake_button
+@onready var hull_stress_increase_label = $starship_and_camera/camera/UI_control/hull_stress_increase_label
 
 func _physics_process(delta):
 	if not awaiting_start:
@@ -58,8 +59,10 @@ func _physics_process(delta):
 	
 	if (distance <= upper_boundry) and (distance >= lower_boundry):
 		brake_button.set_theme_type_variation("BrakeGreen")
+		hull_stress_increase_label.set_text("+%.f%s" % [hull_stress_wormhole, "%"])
 	else:
 		brake_button.set_theme_type_variation("BrakeRed")
+		hull_stress_increase_label.set_text("+%.f%s" % [hull_stress_wormhole * 2, "%"])
 	pass
 
 func initialize(weirdness_index: float = 0.0, _hull_stress_wormhole: int = 10):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://c2upluruwt8c"]
+[gd_scene load_steps=20 format=3 uid="uid://c2upluruwt8c"]
 
 [ext_resource type="Shader" path="res://Scenes/Wormhole Minigame/wormhole_exterior.gdshader" id="1_hg32g"]
 [ext_resource type="Script" path="res://Scenes/Wormhole Minigame/wormhole_minigame.gd" id="1_u2vnu"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="4_jtuyj"]
 [ext_resource type="Script" path="res://Scenes/Wormhole Minigame/wormhole_animation.gd" id="4_pmdih"]
 [ext_resource type="Theme" uid="uid://du8q1tlwo1jt1" path="res://Scenes/Wormhole Minigame/wormhole_minigame_HUD_theme.tres" id="7_y6ir1"]
+[ext_resource type="Texture2D" uid="uid://dq25m1n2y5upl" path="res://Graphics/hull_stress_icon.png" id="8_41qj7"]
 [ext_resource type="AudioStream" uid="uid://cq2a1gsmblou1" path="res://Sound/Wormhole Minigame/wormhole_interference.wav" id="9_w5evm"]
 [ext_resource type="AudioStream" uid="uid://dvlokj0bsucd1" path="res://Sound/Wormhole Minigame/deceleration.wav" id="10_7mbe0"]
 
@@ -44,6 +45,10 @@ bg_color = Color(1, 0, 0, 1)
 content_margin_left = 50.0
 content_margin_bottom = 140.0
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_17at8"]
+texture = ExtResource("8_41qj7")
+modulate_color = Color(0.211765, 0.211765, 0.211765, 1)
+
 [node name="wormhole_minigame_window" type="Window"]
 process_mode = 2
 own_world_3d = true
@@ -51,7 +56,6 @@ canvas_item_default_texture_filter = 0
 title = "Wormhole Traversal"
 position = Vector2i(0, 36)
 size = Vector2i(500, 400)
-visible = false
 unresizable = true
 always_on_top = true
 
@@ -68,7 +72,7 @@ stretch = true
 [node name="minigame_viewport" type="SubViewport" parent="minigame_container"]
 handle_input_locally = false
 size = Vector2i(500, 400)
-render_target_update_mode = 0
+render_target_update_mode = 4
 
 [node name="wormhole_minigame" type="Node3D" parent="minigame_container/minigame_viewport"]
 script = ExtResource("1_u2vnu")
@@ -165,6 +169,24 @@ grow_vertical = 2
 theme = ExtResource("7_y6ir1")
 theme_type_variation = &"BrakeRed"
 text = "BRAKE"
+
+[node name="hull_stress_increase_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -25.0
+offset_top = -100.0
+offset_right = 25.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_17at8")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="press_to_start_button" type="Button" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
 layout_mode = 1
