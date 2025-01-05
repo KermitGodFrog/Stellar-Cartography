@@ -59,7 +59,7 @@ func _on_ping_button_pressed():
 
 
 var width_value_changed_recently: bool = false
-func _on_ping_width_slider_value_changed(value):
+func _on_ping_width_slider_value_changed(_value):
 	width_value_changed_recently = true
 	pass
 
@@ -67,4 +67,11 @@ func _on_width_value_changed_cooldown_timeout():
 	if width_value_changed_recently == true:
 		emit_signal("sonarValuesChanged", ping_width, ping_length, ping_direction)
 	width_value_changed_recently = false
+	pass
+
+
+
+func _on_reset_button_pressed():
+	ping_direction = Vector2.ZERO
+	emit_signal("sonarValuesChanged", ping_width, ping_length, ping_direction)
 	pass

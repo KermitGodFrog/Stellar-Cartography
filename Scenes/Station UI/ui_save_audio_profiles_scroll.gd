@@ -14,6 +14,4 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 			false:
 				warning.hide()
 				observed_bodies_list.show()
-	
-	print_debug("DISPLAY WARNING: ", !display_warning)
 	pass

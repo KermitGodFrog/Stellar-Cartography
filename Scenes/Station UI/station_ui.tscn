@@ -104,14 +104,22 @@ grow_horizontal = 0
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="1" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+[node name="0" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
 alignment = 0
 script = ExtResource("5_nlbm1")
 cost = 7500
 description = "Advanced scanning capability. Allows the ‘INFO’ tab on the central board to be utilised. The ‘INFO’ tab is able to display useful information about a locked body, depending on the type of locked body."
 
-[node name="2" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+[node name="4" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+layout_mode = 2
+alignment = 0
+script = ExtResource("5_nlbm1")
+upgrade = 4
+cost = 7500
+description = "Scan prediction algorithms. Allow LIDAR scan arcs to be visible on the central board, by the system map, before the 'PING' button is pressed."
+
+[node name="1" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
 alignment = 0
 script = ExtResource("5_nlbm1")
@@ -119,7 +127,7 @@ upgrade = 1
 cost = 35000
 description = "Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."
 
-[node name="3" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+[node name="2" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
 alignment = 0
 script = ExtResource("5_nlbm1")
@@ -127,7 +135,7 @@ upgrade = 2
 cost = 25000
 description = "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost."
 
-[node name="4" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+[node name="3" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
 alignment = 0
 script = ExtResource("5_nlbm1")
