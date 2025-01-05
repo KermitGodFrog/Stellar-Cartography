@@ -26,7 +26,7 @@ var is_boosting: bool = false
 @export var current_value: int = 0:
 	set(value):
 		current_value = value
-		print_debug("PLAYER VALUE CHANGED: ", current_value)
+		print_debug("PLAYER DATA VALUE CHANGED: ", current_value)
 		emit_signal("dataValueChanged", current_value)
 
 #key customization stufufffuff
@@ -49,7 +49,7 @@ enum STORYLINES {THE_DETECTIVE, THE_CONGLOMERATE}
 @export var hull_stress: int = 0
 @export var morale: int = 95
 
-enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES}
+enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES, SCAN_PREDICTION}
 @export var unlocked_upgrades: Array[UPGRADE_ID] = []
 
 @export var saved_audio_profiles: Array[audioProfileHelper] = []

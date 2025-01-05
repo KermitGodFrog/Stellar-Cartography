@@ -38,7 +38,7 @@ var music_linear_volume_target: float = 1.0
 func _process(delta):
 	#print("MUSIC LINEAR VOLUME TARGET: ", music_linear_volume_target)
 	#print("MUSIC REAL VOLUME (DB): ", music.volume_db)
-	music.volume_db = maxf(-80, move_toward(music.volume_db, linear_to_db(music_linear_volume_target), 50.0 * delta))
+	music.volume_db = maxf(-80, move_toward(music.volume_db, linear_to_db(music_linear_volume_target), 100.0 * delta))
 	pass
 
 func _ready():
@@ -63,7 +63,10 @@ func _on_music_finished() -> void:
 	pass
 
 func _on_intermission_finished() -> void:
-	music.play()
+	if _pause_mode == game_data.PAUSE_MODES.NONE:
+		music.play()
+	else:
+		_on_music_finished()
 	pass
 
 func _on_play_once_UI_click_SFX() -> void:

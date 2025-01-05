@@ -495,7 +495,7 @@ func async_add_ping(body: bodyAPI) -> void:
 func async_play_boost_sound(sound: BOOST_SOUND_TYPES):
 	var instance = AudioStreamPlayer.new()
 	instance.set_bus("SFX")
-	instance.set_volume_db(-12)
+	instance.set_volume_db(-24)
 	match sound:
 		BOOST_SOUND_TYPES.START:
 			instance.set_stream(boost_start_wav)
@@ -544,7 +544,7 @@ func _on_clear_console_entries():
 	pass
 
 func _on_player_data_value_changed(new_value: int):
-	data_value_increase_label.set_text("%sn" % str(new_value))
+	data_value_increase_label.set_text("%.fn" % new_value)
 	if new_value != 0:
 		data_value_increase_label.blink()
 	pass
@@ -573,9 +573,12 @@ func _on_system_list_item_selected():
 	follow_and_lock_item(system_list.get_selected())
 	pass 
 
-func _on_system_list_item_activated():
-	follow_and_lock_item(system_list.get_selected())
-	_on_orbit_button_pressed()
+func _on_system_list_item_mouse_selected(_position, mouse_button_index):
+	if mouse_button_index == MouseButton.MOUSE_BUTTON_RIGHT:
+		var item = system_list.get_item_at_position(_position)
+		if item:
+			follow_and_lock_item(item)
+			_on_orbit_button_pressed()
 	pass
 
 func follow_and_lock_item(item: TreeItem):

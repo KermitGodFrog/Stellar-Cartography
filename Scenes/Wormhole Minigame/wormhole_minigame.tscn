@@ -56,6 +56,7 @@ canvas_item_default_texture_filter = 0
 title = "Wormhole Traversal"
 position = Vector2i(0, 36)
 size = Vector2i(500, 400)
+visible = false
 unresizable = true
 always_on_top = true
 
@@ -72,7 +73,7 @@ stretch = true
 [node name="minigame_viewport" type="SubViewport" parent="minigame_container"]
 handle_input_locally = false
 size = Vector2i(500, 400)
-render_target_update_mode = 4
+render_target_update_mode = 0
 
 [node name="wormhole_minigame" type="Node3D" parent="minigame_container/minigame_viewport"]
 script = ExtResource("1_u2vnu")
