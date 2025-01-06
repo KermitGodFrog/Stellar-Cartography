@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://4e1i5c1fp30c"
-path="res://.godot/imported/discovery4.wav-828225971b4d20473ae11d3ba32717c7.sample"
+uid="uid://bix0666n18m6i"
+path="res://.godot/imported/upgrade_2.wav-c416a943053bffed7cb8b21449fca169.sample"
 
 [deps]
 
-source_file="res://Sound/SFX/discovery4.wav"
-dest_files=["res://.godot/imported/discovery4.wav-828225971b4d20473ae11d3ba32717c7.sample"]
+source_file="res://Sound/Station UI/upgrade_2.wav"
+dest_files=["res://.godot/imported/upgrade_2.wav-c416a943053bffed7cb8b21449fca169.sample"]
 
 [params]
 

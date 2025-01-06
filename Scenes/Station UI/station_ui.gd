@@ -60,6 +60,8 @@ signal addPlayerValue(amount: int)
 
 @onready var background_animation = $background_center/background_container/background_viewport/station_ui_background/animation_player
 
+@onready var station_upgrade = preload("res://Sound/Station UI/station_upgrade.tres")
+
 var has_sold_previously: bool = false
 
 func _ready():
@@ -151,5 +153,7 @@ func _on_upgrade_pressed(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	pass
 
 func _on_disable_module_store() -> void:
-	if station: station.is_module_store_disabled = true
+	if station: 
+		station.is_module_store_disabled = true
+		get_tree().call_group("audioHandler", "play_once", station_upgrade, 0.0, "SFX") #assumes that every time the module store is disabled, its ALWAYS because a module is bought. pay attention to this 
 	pass

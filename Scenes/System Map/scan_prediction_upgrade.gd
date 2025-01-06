@@ -18,7 +18,7 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 		draw_scan_arc = state
 	pass
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	queue_redraw()
 	pass
 

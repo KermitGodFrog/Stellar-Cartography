@@ -12,7 +12,7 @@ func _ready():
 	pauseModeChanged.connect(_on_pause_mode_changed)
 	pass
 
-func _process(delta):
+func _process(_delta):
 	#print("PAUSE_MODE: ", pause_mode)
 	#print("PAUSE_QUEUE: ", pause_queue)
 	#print(get_tree().paused)

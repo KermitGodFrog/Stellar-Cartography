@@ -92,3 +92,15 @@ func is_valid_for_system_list() -> bool:
 		return true
 	else:
 		return false
+
+func is_planet_with_valid_PA() -> bool:
+	if is_planet():
+		if ((metadata.get("has_planetary_anomaly", false) == true) and (metadata.get("is_planetary_anomaly_available", false) == true)):
+			return true
+	return false
+
+func is_anomaly_with_valid_SA() -> bool:
+	if is_anomaly():
+		if (metadata.get("is_space_anomaly_available", true) == true):
+			return true
+	return false

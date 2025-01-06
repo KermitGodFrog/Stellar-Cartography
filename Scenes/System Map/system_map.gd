@@ -50,6 +50,7 @@ var player_audio_visualizer_unlocked: bool = false
 @onready var LIDAR_ping = preload("res://Sound/SFX/LIDAR_ping.tres")
 @onready var LIDAR_bounceback = preload("res://Sound/SFX/LIDAR_bounceback.tres")
 @onready var LIDAR_discovery = preload("res://Sound/SFX/LIDAR_discovery.tres")
+@onready var LIDAR_anomaly_discovery = preload("res://Sound/SFX/LIDAR_anomaly_discovery.tres")
 @onready var boost_start_wav = preload("res://Sound/SFX/boost_start.wav")
 @onready var boost_end_wav = preload("res://Sound/SFX/boost_end.wav")
 enum BOOST_SOUND_TYPES {START, END}
@@ -342,7 +343,6 @@ func draw_map():
 	if camera.zoom.length() < system.get_first_star().radius * 100.0: map_overlay.show()
 	else: map_overlay.hide()
 	
-	
 	for body in system.bodies:
 		
 		#batch orbit line drawing:
@@ -529,13 +529,17 @@ func get_entity_frame(classification: game_data.ENTITY_CLASSIFICATIONS) -> Resou
 		_: return load("res://Graphics/empty_frame.png")
 
 func _on_found_body(id: int):
-	var body_pos = system.get_body_from_identifier(id).position
+	var body = system.get_body_from_identifier(id)
+	var body_pos = body.position
 	var ping = load("res://Data/Ping Display Helpers/discovery.tres").duplicate(true)
 	ping.position = body_pos
 	ping.resetTime()
 	SONAR_PINGS.append(ping)
 	
-	get_tree().call_group("audioHandler", "play_once", LIDAR_discovery, 0.0, "SFX")
+	if body.is_planet_with_valid_PA() or body.is_anomaly_with_valid_SA():
+		get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
+	else:
+		get_tree().call_group("audioHandler", "play_once", LIDAR_discovery, 0.0, "SFX")
 	pass
 
 func _on_picker_button_item_selected(index):
