@@ -81,6 +81,8 @@ offset_right = 102.0
 offset_bottom = 27.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("4_0fv2y")
+theme_type_variation = &"ButtonDull"
 text = "SELL EXPLORATION DATA
 24242409 (75%)"
 

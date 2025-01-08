@@ -202,7 +202,6 @@ func _ready():
 		#debug.add_tree_access("planet_type", "Silicate")
 		#debug.add_tree_access("player_in_CORE_region", true)
 		#get_tree().call_group("dialogueManager", "speak", self, debug)
-		#_on_add_player_hull_stress(2000)
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
