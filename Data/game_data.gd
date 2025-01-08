@@ -162,6 +162,7 @@ func createWorld(_total_systems: int, _max_jumps: int, _hull_stress_highest_arc:
 func deleteWorld() -> void:
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
 		print("GAME DATA: DELETING WORLD")
+		
 		var error = DirAccess.remove_absolute("user://stellar_cartographer_data.res")
 		print("ERROR CODE: ", error)
 	pass

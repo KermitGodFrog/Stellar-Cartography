@@ -94,8 +94,8 @@ func _ready():
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
 		var new_player = world.createPlayer(
-			init_data.get("name"), 
-			init_data.get("prefix")) #default values unnecessary as init data always has the keys
+			init_data.get("name", "Tanaka"), 
+			init_data.get("prefix", "Captain")) #default values unnecessary as init data always has the keys
 		new_player.resetJumpsRemaining()
 		
 		# -> none of this should be necessary but im worried that the game will break if not included as queries might require this data
@@ -143,8 +143,8 @@ func _ready():
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
 		var new_player = world.createPlayer(
-			init_data.get("name"), 
-			init_data.get("prefix")) #default values unnecessary as init data always has the keys
+			init_data.get("name", "Tanaka"), 
+			init_data.get("prefix", "Captain")) #default values unnecessary as init data always has the keys (or doesnt lol)
 		new_player.resetJumpsRemaining()
 		
 		#CHARACTERS FOR ROGUELIKE:
@@ -202,6 +202,7 @@ func _ready():
 		#debug.add_tree_access("planet_type", "Silicate")
 		#debug.add_tree_access("player_in_CORE_region", true)
 		#get_tree().call_group("dialogueManager", "speak", self, debug)
+		#_on_add_player_hull_stress(2000)
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		

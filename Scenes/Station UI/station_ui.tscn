@@ -1,10 +1,10 @@
 [gd_scene load_steps=16 format=3 uid="uid://dtbagvxj5to3"]
 
 [ext_resource type="Script" path="res://Scenes/Station UI/station_ui.gd" id="1_8gqs2"]
-[ext_resource type="Theme" uid="uid://cyxa5wd6un7de" path="res://Scenes/Station UI/station_ui_MAIN_theme.tres" id="1_20lhg"]
 [ext_resource type="Script" path="res://Scenes/Station UI/ui_save_audio_profiles_scroll.gd" id="3_b7unw"]
 [ext_resource type="Theme" uid="uid://pb8t4wekexd8" path="res://Scenes/Station UI/station_ui_SAVE_AUDIO_PROFILES_theme.tres" id="3_bcdrx"]
 [ext_resource type="Shader" path="res://Scenes/pixelate_shader.gdshader" id="3_n6881"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://Scenes/master_theme.tres" id="4_0fv2y"]
 [ext_resource type="Script" path="res://Scenes/Station UI/observed_bodies_list.gd" id="4_ng3on"]
 [ext_resource type="Texture2D" uid="uid://c5r5ok7jmth3o" path="res://Graphics/Misc/confirm_no_shadow.png" id="5_nd783"]
 [ext_resource type="Script" path="res://Scenes/Station UI/upgrade_button.gd" id="5_nlbm1"]
@@ -38,7 +38,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_20lhg")
 script = ExtResource("1_8gqs2")
 window = NodePath("..")
 
@@ -99,6 +98,7 @@ anchor_right = 1.0
 offset_left = -321.0
 offset_bottom = 40.0
 grow_horizontal = 0
+theme = ExtResource("4_0fv2y")
 
 [node name="UPGRADES" type="VBoxContainer" parent="station_control/upgrade_container"]
 layout_mode = 2
@@ -106,14 +106,14 @@ size_flags_vertical = 3
 
 [node name="0" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
-alignment = 0
+theme_type_variation = &"ButtonDull"
 script = ExtResource("5_nlbm1")
 cost = 7500
 description = "Advanced scanning capability. Allows the ‘INFO’ tab on the central board to be utilised. The ‘INFO’ tab is able to display useful information about a locked body, depending on the type of locked body."
 
 [node name="4" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
-alignment = 0
+theme_type_variation = &"ButtonDull"
 script = ExtResource("5_nlbm1")
 upgrade = 4
 cost = 7500
@@ -121,7 +121,7 @@ description = "Scan prediction algorithms. Allow LIDAR scan arcs to be visible o
 
 [node name="1" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
-alignment = 0
+theme_type_variation = &"ButtonDull"
 script = ExtResource("5_nlbm1")
 upgrade = 1
 cost = 35000
@@ -129,7 +129,7 @@ description = "Audio visualisation software. Allows analysis of planetary compos
 
 [node name="2" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
-alignment = 0
+theme_type_variation = &"ButtonDull"
 script = ExtResource("5_nlbm1")
 upgrade = 2
 cost = 25000
@@ -137,7 +137,7 @@ description = "Nanite control capability - made possible by specialised infrastr
 
 [node name="3" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
-alignment = 0
+theme_type_variation = &"ButtonDull"
 script = ExtResource("5_nlbm1")
 upgrade = 3
 cost = 35000
@@ -167,6 +167,7 @@ anchor_bottom = 1.0
 offset_top = -40.0
 offset_right = 40.0
 grow_vertical = 0
+theme = ExtResource("4_0fv2y")
 
 [node name="hull_stress_label" type="Label" parent="station_control/repair_container"]
 layout_mode = 2
@@ -174,11 +175,13 @@ text = "HULL STRESS"
 
 [node name="repair_single" type="Button" parent="station_control/repair_container"]
 layout_mode = 2
+theme_type_variation = &"ButtonDull"
 text = "REPAIR 1% (100n)"
 alignment = 0
 
 [node name="repair_all" type="Button" parent="station_control/repair_container"]
 layout_mode = 2
+theme_type_variation = &"ButtonDull"
 text = "REPAIR 100% (10000n)"
 alignment = 0
 

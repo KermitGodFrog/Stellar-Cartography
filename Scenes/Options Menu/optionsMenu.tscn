@@ -52,6 +52,8 @@ text = "SAVE"
 
 [node name="reset_button" type="Button" parent="panel_scroll/gradient_background/options_scroll"]
 layout_mode = 2
+theme = ExtResource("1_5cywm")
+theme_type_variation = &"ButtonPaletteLeft"
 text = "RESET TO DEFAULTS"
 
 [node name="back_button" type="Button" parent="panel_scroll/gradient_background/options_scroll"]

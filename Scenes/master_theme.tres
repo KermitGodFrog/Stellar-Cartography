@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://isea3lf5tnwr"]
+[gd_resource type="Theme" load_steps=16 format=3 uid="uid://isea3lf5tnwr"]
 
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="1_5ne2b"]
 
@@ -16,6 +16,57 @@ bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cr3mb"]
 bg_color = Color(0.85098, 0.85098, 0.85098, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b0n7c"]
+bg_color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+skew = Vector2(1, 0)
+expand_margin_left = 10.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6rcvu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bp7g1"]
+bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
+skew = Vector2(1, 0)
+border_width_left = 30
+border_color = Color(0.0862745, 0.109804, 0.2, 1)
+expand_margin_left = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aa6kl"]
+bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
+skew = Vector2(1, 0)
+border_width_left = 20
+border_color = Color(0.0862745, 0.109804, 0.2, 1)
+expand_margin_left = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vibnc"]
+bg_color = Color(0.501961, 0.560784, 0.764706, 1)
+skew = Vector2(1, 0)
+border_width_left = 20
+border_color = Color(0.643137, 0.698039, 0.858824, 1)
+expand_margin_left = 10.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lufxy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c11eu"]
+bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
+skew = Vector2(-1, 0)
+border_width_right = 30
+border_color = Color(0.0862745, 0.109804, 0.2, 1)
+expand_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_20ogi"]
+bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
+skew = Vector2(-1, 0)
+border_width_right = 20
+border_color = Color(0.0862745, 0.109804, 0.2, 1)
+expand_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xf504"]
+bg_color = Color(0.501961, 0.560784, 0.764706, 1)
+skew = Vector2(-1, 0)
+border_width_right = 20
+border_color = Color(0.643137, 0.698039, 0.858824, 1)
+expand_margin_right = 10.0
+
 [resource]
 default_font = ExtResource("1_5ne2b")
 default_font_size = 16
@@ -32,13 +83,13 @@ ButtonPalette/styles/hover = null
 ButtonPalette/styles/normal = null
 ButtonPalette/styles/pressed = null
 ButtonPaletteLeft/base_type = &"Button"
-ButtonPaletteLeft/styles/disabled = null
-ButtonPaletteLeft/styles/focus = null
-ButtonPaletteLeft/styles/hover = null
-ButtonPaletteLeft/styles/normal = null
-ButtonPaletteLeft/styles/pressed = null
+ButtonPaletteLeft/styles/disabled = SubResource("StyleBoxFlat_b0n7c")
+ButtonPaletteLeft/styles/focus = SubResource("StyleBoxEmpty_6rcvu")
+ButtonPaletteLeft/styles/hover = SubResource("StyleBoxFlat_bp7g1")
+ButtonPaletteLeft/styles/normal = SubResource("StyleBoxFlat_aa6kl")
+ButtonPaletteLeft/styles/pressed = SubResource("StyleBoxFlat_vibnc")
 ButtonPaletteRight/base_type = &"Button"
-ButtonPaletteRight/styles/focus = null
-ButtonPaletteRight/styles/hover = null
-ButtonPaletteRight/styles/normal = null
-ButtonPaletteRight/styles/pressed = null
+ButtonPaletteRight/styles/focus = SubResource("StyleBoxEmpty_lufxy")
+ButtonPaletteRight/styles/hover = SubResource("StyleBoxFlat_c11eu")
+ButtonPaletteRight/styles/normal = SubResource("StyleBoxFlat_20ogi")
+ButtonPaletteRight/styles/pressed = SubResource("StyleBoxFlat_xf504")

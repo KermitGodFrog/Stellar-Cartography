@@ -60,11 +60,13 @@ func clear_options():
 	pass
 
 func play_sound_effect(path: String):
-	var new = load("res://Sound/Dialogue/%s" % path)
-	if new:
-		sfx.stop()
-		sfx.set_stream(new)
-		sfx.play()
+	get_tree().call_group("audioHandler", "play_once", load("res://Sound/Dialogue/%s" % path), 0.0, "SFX")
+	
+	#var new = load("res://Sound/Dialogue/%s" % path)
+	#if new:
+		#sfx.stop()
+		#sfx.set_stream(new)
+		#sfx.play()
 	pass
 
 func _on_options_item_selected(index):

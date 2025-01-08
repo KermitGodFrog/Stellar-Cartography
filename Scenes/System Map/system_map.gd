@@ -420,8 +420,6 @@ func draw_custom_arc(center, radius, angle_from, angle_to, color): #this is used
 		draw_line(points_arc[index_point], points_arc[index_point + 1], color)
 	pass
 
-
-
 func _on_go_to_button_pressed():
 	if locked_body:
 		action_body = locked_body
@@ -513,7 +511,6 @@ func async_play_boost_sound(sound: BOOST_SOUND_TYPES):
 func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2): #for SCAN_PREDICTION upgrade!
 	scan_prediction_upgrade._on_sonar_values_changed(ping_width, ping_length, ping_direction)
 	pass
-
 
 
 
