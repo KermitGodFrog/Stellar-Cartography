@@ -28,6 +28,7 @@ var is_boosting: bool = false
 		current_value = value
 		print_debug("PLAYER DATA VALUE CHANGED: ", current_value)
 		emit_signal("dataValueChanged", current_value)
+@export var net_worth: int = 0
 
 #key customization stufufffuff
 @export var total_systems: int 
@@ -200,6 +201,7 @@ func get_upgrade_unlocked_state(upgrade_idx: UPGRADE_ID):
 
 func increaseBalance(amount: int):
 	balance += amount
+	net_worth += amount
 	pass
 
 func decreaseBalance(amount: int):

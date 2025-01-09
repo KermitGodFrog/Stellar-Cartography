@@ -20,7 +20,7 @@ func _on_pause_mode_changed(value):
 					init_type_label.set_text("YOU HAVE REACHED NEW EDEN")
 				INIT_TYPES.TUTORIAL:
 					init_type_label.set_text("YOU HAVE COMPLETED THE TUTORIAL")
-			systems_traversed_label.set_text(str("SYSTEMS DISCOVERED: ", _player_systems_traversed))
+			systems_traversed_label.set_text("SCORE: %.f" % _player_score)
 			stats_control.show()
 	pass
 
@@ -33,7 +33,7 @@ signal statsMenuQuit(_init_type: INIT_TYPES)
 @onready var init_type_label = $stats_canvas/stats_control/main_scroll/init_type_label
 enum INIT_TYPES {DEATH, WIN, TUTORIAL}
 var init_type: INIT_TYPES = INIT_TYPES.DEATH
-var _player_systems_traversed: int = 0
+var _player_score: int = 0
 
 func _on_exit_to_main_menu_button_pressed():
 	emit_signal("statsMenuQuit", init_type)
