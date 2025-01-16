@@ -3,12 +3,20 @@ extends Node
 
 signal achievementsChanged(new_achievements: Array[achievement])
 
-@export var achievements: Array[achievement] = []
+var achievements: Array[achievement] = []
 
 func _ready():
 	#load achievement data (global to all worlds) - names, descriptions, criteria and whether unlocked
+	var helper = game_data.loadAchievements()
+	if helper != null:
+		achievements = helper.achievements
+	else:
+		for a in game_data.DEFAULT_ACHIEVEMENTS:
+			achievements.append(a.duplicate())
 	
-	
+	#unlike settings or the world, achievement data must be accessible anywhere at any time!
+	#rather then saving and loading the data in all parts of the game whenever necessary, the achievement data will simply be LOADED on game start, and SAVED on game exit.
+	#after loading achievement data, it will be sent to a game_data.gd variable. this data is modified at runtime (for whether achievements are unlocked or not) and is only saved when exiting the game
 	
 	
 	
@@ -25,5 +33,8 @@ func receive_ranked_achievements(ranked_achievements: Dictionary):
 	for a: achievement in ranked_achievements:
 		if ranked_achievements.get(a) == a.dialogue_criteria.size():
 			#if number of matches == size of criteria:
+			
+			#then, if achievement not already unlocked :3 :
+			#>unlock achievement
 			pass
 	pass

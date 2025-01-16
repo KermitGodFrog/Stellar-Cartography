@@ -57,6 +57,10 @@ const NAME_FILE_PATHS: Dictionary = {
 const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]
 var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
 
+const DEFAULT_ACHIEVEMENTS = [
+	preload("res://Data/Achievement/game_finish_100k.tres")
+]
+
 
 func get_random_name_from_variety(variety: NAME_VARIETIES):
 	match variety:
@@ -169,7 +173,6 @@ func deleteWorld() -> void:
 
 
 
-
 func loadSettings():
 	print("GAME DATA: LOADING SETTINGS")
 	if ResourceLoader.exists("user://stellar_cartographer_settings.res"):
@@ -182,5 +185,23 @@ func loadSettings():
 func saveSettings(settings_helper: settingsHelper) -> void:
 	print("GAME DATA: SAVING SETTINGS")
 	var error = ResourceSaver.save(settings_helper, "user://stellar_cartographer_settings.res")
+	print("ERROR CODE: ", error)
+	pass
+
+
+
+
+func loadAchievements():
+	print("GAME DATA: LOADING ACHIEVEMENTS")
+	if ResourceLoader.exists("user://stellar_cartographer_achievements.res"):
+		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_achievements.res")
+		print("LOADING SUCCESS")
+		return resource
+	print("LOADING ERROR")
+	return null
+
+func saveAchievements(achievements_helper: achievementsHelper) -> void:
+	print("GAME DATA: SAVING ACHIEVEMENTS")
+	var error = ResourceSaver.save(achievements_helper, "user://stellar_cartographer_achievements.res")
 	print("ERROR CODE: ", error)
 	pass

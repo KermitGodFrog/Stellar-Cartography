@@ -126,13 +126,11 @@ func is_even(x: int):
 func is_odd(x: int):
 	return x % 2 != 0
 
-
 func average(numbers: Array) -> float:
 	var sum := 0.0
 	for n in numbers:
 		sum += n
 	return sum / numbers.size()
-
 
 func await_all(list: Array):
 	var counter = {
