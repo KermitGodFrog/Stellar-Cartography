@@ -226,11 +226,7 @@ func connect_all_signals() -> void:
 	station_ui.connect("setPauseMode", _on_set_pause_mode)
 	wormhole_minigame.connect("setPauseMode", _on_set_pause_mode)
 	audio_handler.connect("setPauseMode", _on_set_pause_mode) #audio handler doesnt TECHNICALLY need pause control
-	
-	achievement_manager.connect("achievementsChanged", _on_achievements_changed)
 	pass
-
-
 
 func _physics_process(delta):
 	#EVERYTHING HERE MUST ONLY FUNCTION WHEN THE GAME IS UNPAUSED!

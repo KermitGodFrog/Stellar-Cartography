@@ -19,3 +19,15 @@ func _change_scene(path_to_scene, with_init_type = null, with_init_data = null):
 	add_child(new_scene)
 	pass
 
+func _notification(what): #achievements are on the highest level as they always persist and need to be accessible everywhere, where if it was local to the manager, it would be too difficult to plan i think!
+	match what:
+		NOTIFICATION_PARENTED:
+			game_data.quick_load_achievements()
+		NOTIFICATION_WM_CLOSE_REQUEST:
+			game_data.quick_save_achievements()
+			get_tree().quit()
+	pass
+
+func _process(delta): #TEMP
+	for i in game_data.ACHIEVEMENTS:
+		print(i.unlocked)

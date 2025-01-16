@@ -43,10 +43,6 @@ var character_lookup_dictionary: Dictionary = {}
 var rules: Array[responseRule] = []
 enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, OPTIONS, TEXT}
 
-
-
-var _achievements: Array[achievement] = [] #sent by achievementManager via game when achievements are updated (and on _ready)
-
 @onready var dialogue = $dialogue/dialogue_control
 
 func _ready():
@@ -384,7 +380,7 @@ func _on_add_dialogue_memory_pair(key,value) -> void: #im connecitng this signal
 
 func get_send_ranked_achievements(incoming_query) -> void:
 	var ranked_achievements: Dictionary = {}
-	for _achievement in _achievements:
+	for _achievement in game_data.ACHIEVEMENTS:
 		var rule = responseRule.new()
 		rule.criteria = _achievement.dialogue_criteria
 		ranked_achievements[_achievement] = get_rule_matches(rule, incoming_query)
