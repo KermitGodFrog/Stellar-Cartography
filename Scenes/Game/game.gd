@@ -22,70 +22,7 @@ var world: worldAPI
 @onready var audio_handler = $audioHandler
 
 func _ready():
-	system_map.connect("updatePlayerActionType", _on_update_player_action_type)
-	system_map.connect("updatePlayerTargetPosition", _on_update_player_target_position)
-	system_map.connect("updatePlayerIsBoosting", _on_update_player_is_boosting)
-	system_map.connect("updateTargetPosition", _on_update_target_position)
-	system_map.connect("updatedLockedBody", _on_locked_body_updated)
-	system_map.connect("lockedBodyDepreciated", _on_locked_body_depreciated)
-	system_map.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
-	system_map.connect("theorisedBody", _on_theorised_body)
-	system_map.connect("DEBUG_REVEAL_ALL_WORMHOLES", _ON_DEBUG_REVEAL_ALL_WORMHOLES)
-	system_map.connect("DEBUG_REVEAL_ALL_BODIES", _ON_DEBUG_REVEAL_ALL_BODIES)
-	system_map.connect("DEBUG_QUICK_ADD_NANITES", _ON_DEBUG_QUICK_ADD_NANITES)
-	
-	system_3d.connect("foundBody", _on_found_body)
-	system_3d.connect("addConsoleEntry", _on_add_console_entry)
-	
-	sonar.connect("sonarPing", _on_sonar_ping)
-	sonar.connect("sonarValuesChanged", _on_sonar_values_changed)
-	
-	station_ui.connect("sellExplorationData", _on_sell_exploration_data)
-	station_ui.connect("upgradeShip", _on_upgrade_ship)
-	station_ui.connect("addSavedAudioProfile", _on_add_saved_audio_profile)
-	station_ui.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
-	station_ui.connect("addPlayerValue", _on_add_player_value)
-	
-	audio_visualizer.connect("removeSavedAudioProfile", _on_remove_saved_audio_profile)
-	
-	long_range_scopes.connect("addPlayerValue", _on_add_player_value)
-	
-	system_map.connect("audioVisualizerPopup", _on_audio_visualizer_popup)
-	system_map.connect("journeyMapPopup", _on_journey_map_popup)
-	system_map.connect("longRangeScopesPopup", _on_long_range_scopes_popup)
-	
-	dialogue_manager.connect("addPlayerValue", _on_add_player_value)
-	dialogue_manager.connect("addPlayerHullStress", _on_add_player_hull_stress)
-	dialogue_manager.connect("removePlayerHullStress", _on_remove_player_hull_stress)
-	dialogue_manager.connect("addPlayerMorale", _on_add_player_morale)
-	dialogue_manager.connect("removePlayerMorale", _on_remove_player_morale)
-	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
-	dialogue_manager.connect("foundBody", _on_found_body)
-	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
-	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
-	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
-	
-	pause_menu.connect("saveWorld", _on_save_world)
-	pause_menu.connect("saveAndQuit", _on_save_and_quit)
-	pause_menu.connect("exitToMainMenu", _on_exit_to_main_menu)
-	
-	stats_menu.connect("statsMenuQuit", _on_stats_menu_quit)
-	
-	wormhole_minigame.connect("addPlayerHullStress", _on_add_player_hull_stress)
-	
-	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
-	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
-	pause_menu.connect("queuePauseMode", _on_queue_pause_mode)
-	dialogue_manager.connect("queuePauseMode", _on_queue_pause_mode)
-	station_ui.connect("queuePauseMode", _on_queue_pause_mode)
-	wormhole_minigame.connect("queuePauseMode", _on_queue_pause_mode)
-	audio_handler.connect("queuePauseMode", _on_queue_pause_mode) #audio handler doesnt TECHNICALLY need pause control
-	stats_menu.connect("setPauseMode", _on_set_pause_mode)
-	pause_menu.connect("setPauseMode", _on_set_pause_mode)
-	dialogue_manager.connect("setPauseMode", _on_set_pause_mode)
-	station_ui.connect("setPauseMode", _on_set_pause_mode)
-	wormhole_minigame.connect("setPauseMode", _on_set_pause_mode)
-	audio_handler.connect("setPauseMode", _on_set_pause_mode) #audio handler doesnt TECHNICALLY need pause control
+	connect_all_signals()
 	
 	world = await game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
@@ -222,6 +159,75 @@ func _ready():
 		
 		_on_switch_star_system(world.player.current_star_system)
 	pass
+
+func connect_all_signals() -> void:
+	system_map.connect("updatePlayerActionType", _on_update_player_action_type)
+	system_map.connect("updatePlayerTargetPosition", _on_update_player_target_position)
+	system_map.connect("updatePlayerIsBoosting", _on_update_player_is_boosting)
+	system_map.connect("updateTargetPosition", _on_update_target_position)
+	system_map.connect("updatedLockedBody", _on_locked_body_updated)
+	system_map.connect("lockedBodyDepreciated", _on_locked_body_depreciated)
+	system_map.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
+	system_map.connect("theorisedBody", _on_theorised_body)
+	system_map.connect("DEBUG_REVEAL_ALL_WORMHOLES", _ON_DEBUG_REVEAL_ALL_WORMHOLES)
+	system_map.connect("DEBUG_REVEAL_ALL_BODIES", _ON_DEBUG_REVEAL_ALL_BODIES)
+	system_map.connect("DEBUG_QUICK_ADD_NANITES", _ON_DEBUG_QUICK_ADD_NANITES)
+	
+	system_3d.connect("foundBody", _on_found_body)
+	system_3d.connect("addConsoleEntry", _on_add_console_entry)
+	
+	sonar.connect("sonarPing", _on_sonar_ping)
+	sonar.connect("sonarValuesChanged", _on_sonar_values_changed)
+	
+	station_ui.connect("sellExplorationData", _on_sell_exploration_data)
+	station_ui.connect("upgradeShip", _on_upgrade_ship)
+	station_ui.connect("addSavedAudioProfile", _on_add_saved_audio_profile)
+	station_ui.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
+	station_ui.connect("addPlayerValue", _on_add_player_value)
+	
+	audio_visualizer.connect("removeSavedAudioProfile", _on_remove_saved_audio_profile)
+	
+	long_range_scopes.connect("addPlayerValue", _on_add_player_value)
+	
+	system_map.connect("audioVisualizerPopup", _on_audio_visualizer_popup)
+	system_map.connect("journeyMapPopup", _on_journey_map_popup)
+	system_map.connect("longRangeScopesPopup", _on_long_range_scopes_popup)
+	
+	dialogue_manager.connect("addPlayerValue", _on_add_player_value)
+	dialogue_manager.connect("addPlayerHullStress", _on_add_player_hull_stress)
+	dialogue_manager.connect("removePlayerHullStress", _on_remove_player_hull_stress)
+	dialogue_manager.connect("addPlayerMorale", _on_add_player_morale)
+	dialogue_manager.connect("removePlayerMorale", _on_remove_player_morale)
+	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
+	dialogue_manager.connect("foundBody", _on_found_body)
+	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
+	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
+	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
+	
+	pause_menu.connect("saveWorld", _on_save_world)
+	pause_menu.connect("saveAndQuit", _on_save_and_quit)
+	pause_menu.connect("exitToMainMenu", _on_exit_to_main_menu)
+	
+	stats_menu.connect("statsMenuQuit", _on_stats_menu_quit)
+	
+	wormhole_minigame.connect("addPlayerHullStress", _on_add_player_hull_stress)
+	
+	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
+	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
+	pause_menu.connect("queuePauseMode", _on_queue_pause_mode)
+	dialogue_manager.connect("queuePauseMode", _on_queue_pause_mode)
+	station_ui.connect("queuePauseMode", _on_queue_pause_mode)
+	wormhole_minigame.connect("queuePauseMode", _on_queue_pause_mode)
+	audio_handler.connect("queuePauseMode", _on_queue_pause_mode) #audio handler doesnt TECHNICALLY need pause control
+	stats_menu.connect("setPauseMode", _on_set_pause_mode)
+	pause_menu.connect("setPauseMode", _on_set_pause_mode)
+	dialogue_manager.connect("setPauseMode", _on_set_pause_mode)
+	station_ui.connect("setPauseMode", _on_set_pause_mode)
+	wormhole_minigame.connect("setPauseMode", _on_set_pause_mode)
+	audio_handler.connect("setPauseMode", _on_set_pause_mode) #audio handler doesnt TECHNICALLY need pause control
+	pass
+
+
 
 func _physics_process(delta):
 	#EVERYTHING HERE MUST ONLY FUNCTION WHEN THE GAME IS UNPAUSED!

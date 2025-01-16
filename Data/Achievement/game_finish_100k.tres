@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="achievement" load_steps=2 format=3 uid="uid://ddibrs7yeb308"]
+
+[ext_resource type="Script" path="res://Data/Achievement/achievement.gd" id="1_xnu8t"]
+
+[resource]
+script = ExtResource("1_xnu8t")
+name = "Wayfarer"
+description = "Finish the game with a final score of 100k or more."
+criteria = {}

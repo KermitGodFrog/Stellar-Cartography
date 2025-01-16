@@ -255,36 +255,34 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 func get_rule_matches(rule, incoming_query) -> int:
 	var matches: int = 0
 	for fact in incoming_query.facts:
-		#print(str(rule.criteria.get(fact), " ", incoming_query.facts.get(fact)))
 		if rule.criteria.has(fact):
 			if typeof(rule.criteria.get(fact)) == TYPE_STRING:
 				match rule.criteria.get(fact).left(1):
 					"<":
-						var number = rule.criteria.get(fact).trim_prefix("<")
-						if float(rule.criteria.get(fact)) < float(number): #will this work>>???
+						#say we are doing this: player_jumps_remaining:<10
+						#therefore, we would be comparing the players ACTUAL jumps remaining (from the query data) to the criteria jumps remaining
+						#so, query jumps remaining < criteria jumps remaining
+						if incoming_query.facts.get(fact) < rule.criteria.get(fact).trim_prefix("<").to_float():
 							matches += 1
 						else: continue
 					">":
-						var number = rule.criteria.get(fact).trim_prefix(">")
-						if float(rule.criteria.get(fact)) > float(number):
+						if incoming_query.facts.get(fact) > rule.criteria.get(fact).trim_prefix(">").to_float():
 							matches += 1
 						else: continue
 					"<=":
-						var number = rule.criteria.get(fact).trim_prefix("<=")
-						if float(rule.criteria.get(fact)) <= float(number):
+						if incoming_query.facts.get(fact) <= rule.criteria.get(fact).trim_prefix("<=").to_float():
 							matches += 1
 						else: continue
 					">=":
-						var number = rule.criteria.get(fact).trim_prefix(">=")
-						if float(rule.criteria.get(fact)) >= float(number):
+						if incoming_query.facts.get(fact) >= rule.criteria.get(fact).trim_prefix(">=").to_float():
 							matches += 1
 						else: continue
 					_:
-						if rule.criteria.get(fact) == incoming_query.facts.get(fact):
+						if incoming_query.facts.get(fact) == rule.criteria.get(fact):
 							matches += 1
 						else: continue
 			else:
-				if rule.criteria.get(fact) == incoming_query.facts.get(fact):
+				if incoming_query.facts.get(fact) == rule.criteria.get(fact):
 					matches += 1
 				else: continue
 		else: continue
