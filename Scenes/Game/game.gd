@@ -20,6 +20,7 @@ var world: worldAPI
 @onready var wormhole_minigame = $wormhole_minigame_window/minigame_container/minigame_viewport/wormhole_minigame
 @onready var pause_mode_handler = $pauseModeHandler
 @onready var audio_handler = $audioHandler
+@onready var achievement_manager = $achievementManager
 
 func _ready():
 	connect_all_signals()
@@ -225,6 +226,8 @@ func connect_all_signals() -> void:
 	station_ui.connect("setPauseMode", _on_set_pause_mode)
 	wormhole_minigame.connect("setPauseMode", _on_set_pause_mode)
 	audio_handler.connect("setPauseMode", _on_set_pause_mode) #audio handler doesnt TECHNICALLY need pause control
+	
+	achievement_manager.connect("achievementsChanged", _on_achievements_changed)
 	pass
 
 
@@ -834,6 +837,9 @@ func _on_player_data_value_changed(new_value: int):
 	system_map._on_player_data_value_changed(new_value)
 	pass
 
+func _on_achievements_changed(new_achievements: Array[achievement]):
+	dialogue_manager._achievements = new_achievements
+	pass
 
 
 

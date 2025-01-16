@@ -18,8 +18,6 @@
 process_mode = 1
 script = ExtResource("1_mtv75")
 
-[node name="achievementManager" parent="." instance=ExtResource("2_sircy")]
-
 [node name="pauseModeHandler" type="Node" parent="."]
 process_mode = 3
 script = ExtResource("2_jx1f0")
@@ -45,3 +43,5 @@ handle_input_locally = false
 [node name="statsMenu" parent="." instance=ExtResource("9_m7la7")]
 
 [node name="audioHandler" parent="." instance=ExtResource("12_adxnc")]
+
+[node name="achievementManager" parent="." instance=ExtResource("2_sircy")]

@@ -6,4 +6,6 @@
 script = ExtResource("1_xnu8t")
 name = "Wayfarer"
 description = "Finish the game with a final score of 100k or more."
-criteria = {}
+dialogue_criteria = {
+"concept": "playerWin"
+}

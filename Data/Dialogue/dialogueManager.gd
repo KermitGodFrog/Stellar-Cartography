@@ -43,6 +43,10 @@ var character_lookup_dictionary: Dictionary = {}
 var rules: Array[responseRule] = []
 enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, OPTIONS, TEXT}
 
+
+
+var _achievements: Array[achievement] = [] #sent by achievementManager via game when achievements are updated (and on _ready)
+
 @onready var dialogue = $dialogue/dialogue_control
 
 func _ready():
@@ -167,6 +171,8 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 		incoming_query.populateWithDialogueMemoryData(dialogue_memory)
 		incoming_query.populateWithTreeAccessMemoryData(tree_access_memory)
 		incoming_query.populateWithWorldData()
+	
+	get_send_ranked_achievements(incoming_query)
 	
 	print("QUERY HANDLER: ", calling, " QUERYING ", incoming_query.facts)
 	
@@ -370,13 +376,21 @@ func convert_text_with_custom_tags(text: String, query: responseQuery) -> String
 	#text = text.replace("$PLANET_NAME", query.facts.get("planet_name", "CONVERT_TEXT_WITH_CUSTOM_TAGS_ERR"))
 	return text
 
-
-
-
 func _on_add_dialogue_memory_pair(key,value) -> void: #im connecitng this signal to its own script because im not sure if it does anything else / is important
 	dialogue_memory[key] = value
 	pass
 
+
+
+func get_send_ranked_achievements(incoming_query) -> void:
+	var ranked_achievements: Dictionary = {}
+	for _achievement in _achievements:
+		var rule = responseRule.new()
+		rule.criteria = _achievement.dialogue_criteria
+		ranked_achievements[_achievement] = get_rule_matches(rule, incoming_query)
+	
+	get_tree().call_group("achievementManager", "receive_ranked_achievements", ranked_achievements)
+	pass
 
 
 
@@ -467,9 +481,6 @@ func discoverRandomBodyWithFlair() -> void:
 	else:
 		dialogue.add_text(str("[color=green](Gained no new scan data) [/color]"))
 	pass
-
-
-
 
 
 

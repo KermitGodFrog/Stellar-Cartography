@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://duvniw8fxre1f"]
+[gd_scene load_steps=9 format=3 uid="uid://duvniw8fxre1f"]
 
 [ext_resource type="Script" path="res://Data/Achievement/achievementManager.gd" id="1_gnb3m"]
+[ext_resource type="Resource" uid="uid://ddibrs7yeb308" path="res://Data/Achievement/game_finish_100k.tres" id="2_8fbxf"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://Scenes/master_theme.tres" id="2_kbb0r"]
 [ext_resource type="Script" path="res://Data/Achievement/achievement_control.gd" id="2_qro3f"]
 [ext_resource type="Texture2D" uid="uid://bkagb0wi4hewb" path="res://Graphics/trophy.png" id="3_ptiso"]
@@ -23,6 +24,7 @@ border_blend = true
 [node name="achievementManager" type="Node" groups=["achievementManager"]]
 process_mode = 3
 script = ExtResource("1_gnb3m")
+achievements = Array[Resource("res://Data/Achievement/achievement.gd")]([ExtResource("2_8fbxf")])
 
 [node name="achievement_display" type="CanvasLayer" parent="."]
 layer = 128
