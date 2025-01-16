@@ -9,3 +9,4 @@ description = "Finish the game with a final score of 100k or more."
 dialogue_criteria = {
 "concept": "playerWin"
 }
+unlocked = false

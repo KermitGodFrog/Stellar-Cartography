@@ -57,13 +57,6 @@ const NAME_FILE_PATHS: Dictionary = {
 const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]
 var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
 
-var ACHIEVEMENTS: Array[achievement] = []
-const DEFAULT_ACHIEVEMENTS: Array[achievement] = [
-	#preload("res://Data/Achievement/game_finish_100k.tres"),
-	preload("res://Data/Achievement/unlock_audio_visualizer.tres")
-]
-
-
 func get_random_name_from_variety(variety: NAME_VARIETIES):
 	match variety:
 		NAME_VARIETIES.STAR:
@@ -140,7 +133,6 @@ func get_closest_body(bodies, pos):
 func loadWorld():
 	print("GAME DATA: LOADING WORLD")
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
-		#var resource : Resource = load("user://stellar_cartographer_data.res")
 		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_data.res", "", ResourceLoader.CACHE_MODE_IGNORE)
 		return resource
 	return null
@@ -192,33 +184,10 @@ func saveSettings(settings_helper: settingsHelper) -> void:
 
 
 
-func quick_load_achievements() -> void:
-	#this is done locally because ACHIEVEMENTS are saved locally :3
-	var helper = loadAchievements()
-	if helper != null:
-		print("HELPER EXISTS, LOADING ACHIEVEMENTS")
-		ACHIEVEMENTS = helper.achievements
-	else:
-		print("HELPER DOES NOT EXIST, RESETTING ACHIEVEMENTS")
-		ACHIEVEMENTS = DEFAULT_ACHIEVEMENTS
-	
-	if ACHIEVEMENTS.size() != DEFAULT_ACHIEVEMENTS.size():
-		print("SIZE DIFFERENCE, ASSUMING GAME UPDATE, RESETTING ACHIEVEMENTS")
-		print(ACHIEVEMENTS.size(), " VS ", DEFAULT_ACHIEVEMENTS.size())
-		ACHIEVEMENTS = DEFAULT_ACHIEVEMENTS #a way to reset achievements if the DEFAULT_ACHIEVMENTS array is larger then the loaded array (reset on version update)
-	pass
-
-func quick_save_achievements() -> void:
-	#this is done locally because ACHIEVEMENTS are saved locally :3
-	var helper = achievementsHelper.new()
-	helper.achievements = ACHIEVEMENTS
-	saveAchievements(helper)
-	pass
-
 func loadAchievements():
 	print("GAME DATA: LOADING ACHIEVEMENTS")
 	if ResourceLoader.exists("user://stellar_cartographer_achievements.res"):
-		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_achievements.res")
+		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_achievements.res", "", ResourceLoader.CACHE_MODE_IGNORE)
 		print("LOADING SUCCESS")
 		return resource
 	print("LOADING ERROR")
@@ -226,7 +195,6 @@ func loadAchievements():
 
 func saveAchievements(achievements_helper: achievementsHelper) -> void:
 	print("GAME DATA: SAVING ACHIEVEMENTS")
-	achievements_helper.take_over_path("user://stellar_cartographer_achievements.res")
 	var error = ResourceSaver.save(achievements_helper, "user://stellar_cartographer_achievements.res", ResourceSaver.FLAG_REPLACE_SUBRESOURCE_PATHS)
 	print("ERROR CODE: ", error)
 	pass

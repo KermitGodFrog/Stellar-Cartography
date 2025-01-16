@@ -20,7 +20,6 @@ var world: worldAPI
 @onready var wormhole_minigame = $wormhole_minigame_window/minigame_container/minigame_viewport/wormhole_minigame
 @onready var pause_mode_handler = $pauseModeHandler
 @onready var audio_handler = $audioHandler
-@onready var achievement_manager = $achievementManager
 
 func _ready():
 	connect_all_signals()

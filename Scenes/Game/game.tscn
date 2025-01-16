@@ -1,9 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://o18qlgh0vvwn"]
+[gd_scene load_steps=13 format=3 uid="uid://o18qlgh0vvwn"]
 
 [ext_resource type="Script" path="res://Scenes/Game/game.gd" id="1_mtv75"]
 [ext_resource type="PackedScene" uid="uid://bhroagne3v4wq" path="res://Scenes/System Map/system_map.tscn" id="2_jilbx"]
 [ext_resource type="Script" path="res://Scenes/Game/pauseModeHandler.gd" id="2_jx1f0"]
-[ext_resource type="PackedScene" uid="uid://duvniw8fxre1f" path="res://Data/Achievement/achievementManager.tscn" id="2_sircy"]
 [ext_resource type="PackedScene" uid="uid://dt0crabynqgvv" path="res://Scenes/Journey Map/journey_map.tscn" id="5_4mkmd"]
 [ext_resource type="PackedScene" uid="uid://c2upluruwt8c" path="res://Scenes/Wormhole Minigame/wormhole_minigame.tscn" id="5_43eyq"]
 [ext_resource type="PackedScene" uid="uid://dtbagvxj5to3" path="res://Scenes/Station UI/station_ui.tscn" id="6_g2s4t"]
@@ -43,5 +42,3 @@ handle_input_locally = false
 [node name="statsMenu" parent="." instance=ExtResource("9_m7la7")]
 
 [node name="audioHandler" parent="." instance=ExtResource("12_adxnc")]
-
-[node name="achievementManager" parent="." instance=ExtResource("2_sircy")]
