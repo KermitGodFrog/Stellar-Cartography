@@ -29,6 +29,9 @@ var is_boosting: bool = false
 		print_debug("PLAYER DATA VALUE CHANGED: ", current_value)
 		emit_signal("dataValueChanged", current_value)
 @export var net_worth: int = 0
+var total_score: int = 0:
+	get:
+		return (net_worth + current_value) * systems_traversed
 
 #key customization stufufffuff
 @export var total_systems: int 

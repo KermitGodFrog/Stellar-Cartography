@@ -23,8 +23,8 @@ const default_achievements: Array[achievement] = [
 @onready var achievement_control = $achievement_display/achievement_control #might be depreciated soon
 
 func _process(_delta):
-	for a in achievements:
-		print(a.unlocked)
+	#for a in achievements:
+		#print(a.unlocked)
 	pass
 
 func _notification(what):

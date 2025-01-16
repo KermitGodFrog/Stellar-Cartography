@@ -551,7 +551,7 @@ func dock_with_station(following_station):
 func _on_player_death():
 	print("GAME: PLAYER DIED")
 	
-	_on_open_stats_menu(stats_menu.INIT_TYPES.DEATH, world.player.current_value, world.player.net_worth, world.player.systems_traversed)
+	_on_open_stats_menu(stats_menu.INIT_TYPES.DEATH)
 	pass
 
 func _on_player_win():
@@ -563,7 +563,7 @@ func _on_player_win():
 	
 	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 	
-	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN, world.player.current_value, world.player.net_worth, world.player.systems_traversed)
+	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN)
 	pass
 
 func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
@@ -770,9 +770,9 @@ func _on_open_pause_menu():
 	pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.PAUSE_MENU)
 	pass
 
-func _on_open_stats_menu(_init_type: int, _player_current_value: int, _player_net_worth: int, _player_systems_traversed: int): #init type is from statsMenu INIT_TYPES
+func _on_open_stats_menu(_init_type: int): #init type is from statsMenu INIT_TYPES
 	stats_menu.init_type = _init_type
-	stats_menu._player_score = (_player_net_worth + _player_current_value) * _player_systems_traversed
+	stats_menu._player_score = world.player.total_score
 	pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.STATS_MENU)
 	pass
 
@@ -808,7 +808,7 @@ func _on_tutorial_set_omission_override(value: bool):
 	pass
 
 func _on_tutorial_player_win():
-	_on_open_stats_menu(stats_menu.INIT_TYPES.TUTORIAL, world.player.current_value, world.player.net_worth, world.player.systems_traversed)
+	_on_open_stats_menu(stats_menu.INIT_TYPES.TUTORIAL)
 	pass
 
 func _on_add_player_morale(amount : int) -> void:
@@ -830,10 +830,6 @@ func _on_stats_menu_quit(_init_type: int) -> void:
 
 func _on_player_data_value_changed(new_value: int):
 	system_map._on_player_data_value_changed(new_value)
-	pass
-
-func _on_achievements_changed(new_achievements: Array[achievement]):
-	dialogue_manager._achievements = new_achievements
 	pass
 
 

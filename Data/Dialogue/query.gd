@@ -24,6 +24,7 @@ func populateWithPlayerData(player: playerAPI):
 	add("player_speed", player.speed)
 	add("player_balance", player.balance)
 	add("player_current_value", player.current_value)
+	add("player_total_score", player.total_score)
 	
 	add("player_max_jumps", player.max_jumps)
 	add("player_jumps_remaining", player.jumps_remaining)
