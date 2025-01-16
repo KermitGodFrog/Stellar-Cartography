@@ -22,7 +22,7 @@ const default_achievements: Array[achievement] = [
 
 @onready var achievement_control = $achievement_display/achievement_control #might be depreciated soon
 
-func _process(delta):
+func _process(_delta):
 	for a in achievements:
 		print(a.unlocked)
 	pass
@@ -64,7 +64,7 @@ func _ready():
 func _change_scene(_path_to_scene, _with_init_type = null, _with_init_data = null):
 	#maybe make a more general group to do this later, as other things will need updated achievements list (especially main menu display) :3
 	print("SENDING UPDATED ACHIEVEMENTS")
-	get_tree().call_deferred("call_group", "dialogueManager", "receive_updated_achievements", achievements)
+	get_tree().call_deferred("call_group", "dialogueManager", "receive_updated_achievements", achievements) #this calls too early/late and doesnt work for some reason when achievementsHelper 'achievements' variable is inferred to be an array rather than an Array[achievement]
 	pass
 
 

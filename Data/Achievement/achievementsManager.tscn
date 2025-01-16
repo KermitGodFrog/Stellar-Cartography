@@ -48,17 +48,14 @@ hide_curve = SubResource("Curve_ll3ha")
 [node name="panel" type="PanelContainer" parent="achievement_display/achievement_control"]
 custom_minimum_size = Vector2(600, 125)
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -303.0
-offset_top = -375.0
-offset_right = 303.0
-offset_bottom = -244.0
+offset_left = -305.0
+offset_top = 25.0
+offset_right = 305.0
+offset_bottom = 156.0
 grow_horizontal = 2
-grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_xjqd0")
 
@@ -98,12 +95,16 @@ theme_override_fonts/font = ExtResource("5_dia62")
 theme_override_font_sizes/font_size = 20
 text = "ACHIEVEMENT UNLOCKED"
 vertical_alignment = 1
+clip_text = true
 
 [node name="name" type="Label" parent="achievement_display/achievement_control/panel/scroll/text_split"]
 layout_mode = 2
+clip_text = true
 
 [node name="description" type="Label" parent="achievement_display/achievement_control/panel/scroll/text_split"]
+custom_minimum_size = Vector2(475, 0)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.701961, 0.701961, 0.701961, 1)
+autowrap_mode = 3
 clip_text = true
