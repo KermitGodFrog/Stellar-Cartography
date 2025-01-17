@@ -45,7 +45,7 @@ enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QU
 
 
 
-var _achievements: Array[achievement] = []
+var _achievements_array: Array[achievement] = []
 
 @onready var dialogue = $dialogue/dialogue_control
 
@@ -382,13 +382,13 @@ func _on_add_dialogue_memory_pair(key,value) -> void: #im connecitng this signal
 
 
 
-func receive_updated_achievements(updated_achievements: Array[achievement]):
-	_achievements = updated_achievements
+func receive_updated_achievements_array(updated_achievements_array: Array[achievement]):
+	_achievements_array = updated_achievements_array
 	pass
 
 func get_send_ranked_achievements(incoming_query) -> void:
 	var ranked_achievements: Dictionary = {}
-	for _achievement in _achievements:
+	for _achievement in _achievements_array:
 		var rule = responseRule.new()
 		rule.criteria = _achievement.dialogue_criteria
 		ranked_achievements[_achievement] = get_rule_matches(rule, incoming_query)
