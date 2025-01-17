@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=12 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" path="res://Scenes/Main Menu/main_menu.gd" id="1_0jam3"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://Scenes/master_theme.tres" id="1_b84fj"]
 [ext_resource type="Texture2D" uid="uid://nav04ap3rdbe" path="res://Graphics/new_game_popup.png" id="2_1jdbj"]
 [ext_resource type="Theme" uid="uid://skdebllj6ft7" path="res://Scenes/Main Menu/main_menu_MAIN_theme.tres" id="2_2eiki"]
+[ext_resource type="Script" path="res://Scenes/Main Menu/achievements_list_popup.gd" id="4_ibe4y"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_srvhc"]
 texture = ExtResource("2_1jdbj")
@@ -11,6 +13,14 @@ texture = ExtResource("2_1jdbj")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_de2wi"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_igd4g"]
+bg_color = Color(0.207843, 0.207843, 0.207843, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mpd30"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77k44"]
+bg_color = Color(0.156863, 0.294118, 0.388235, 1)
+
 [node name="main_menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -18,7 +28,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_b84fj")
 script = ExtResource("1_0jam3")
+
+[node name="title" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 300.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 60
+text = "STELLAR CARTOGRAPHER"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="options_scroll" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -45,6 +68,11 @@ text = "NEW"
 layout_mode = 2
 theme = ExtResource("2_2eiki")
 text = "TUTORIAL"
+
+[node name="achievements_button" type="Button" parent="options_scroll"]
+layout_mode = 2
+theme = ExtResource("2_2eiki")
+text = "ACHIEVEMENTS"
 
 [node name="new_game_popup" type="Control" parent="."]
 visible = false
@@ -103,7 +131,7 @@ layout_mode = 2
 layout_mode = 2
 text = "CREATING NEW GAME"
 
-[node name="return_button" type="Button" parent="new_game_popup/new_game/margin/scroll/actions_hbox"]
+[node name="new_game_return_button" type="Button" parent="new_game_popup/new_game/margin/scroll/actions_hbox"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 10
@@ -141,20 +169,84 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "CREATE"
 
-[node name="title" type="Label" parent="."]
-custom_minimum_size = Vector2(0, 300)
+[node name="achievements_list_popup" type="Control" parent="." groups=["FOLLOW_ACHIEVEMENTS_UPDATE"]]
+visible = false
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
-offset_bottom = 23.0
+anchor_bottom = 1.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 60
-text = "STELLAR CARTOGRAPHER"
-horizontal_alignment = 1
+grow_vertical = 2
+script = ExtResource("4_ibe4y")
+
+[node name="background" type="ColorRect" parent="achievements_list_popup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.235294, 0.235294, 0.235294, 0.313726)
+
+[node name="panel" type="PanelContainer" parent="achievements_list_popup"]
+custom_minimum_size = Vector2(700, 800)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_igd4g")
+
+[node name="margin" type="MarginContainer" parent="achievements_list_popup/panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="scroll" type="ScrollContainer" parent="achievements_list_popup/panel/margin"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mpd30")
+follow_focus = true
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="spawn_scroll" type="VBoxContainer" parent="achievements_list_popup/panel/margin/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="actions_panel" type="PanelContainer" parent="achievements_list_popup/panel/margin/scroll/spawn_scroll"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_77k44")
+
+[node name="actions_hbox" type="HBoxContainer" parent="achievements_list_popup/panel/margin/scroll/spawn_scroll/actions_panel"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="new_game_label" type="Label" parent="achievements_list_popup/panel/margin/scroll/spawn_scroll/actions_panel/actions_hbox"]
+layout_mode = 2
+text = "ACHIEVEMENTS"
 vertical_alignment = 1
+
+[node name="achievements_return_button" type="Button" parent="achievements_list_popup/panel/margin/scroll/spawn_scroll/actions_panel/actions_hbox"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "x"
 
 [connection signal="pressed" from="options_scroll/continue_button" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="options_scroll/new_button" to="." method="_on_new_button_pressed"]
 [connection signal="pressed" from="options_scroll/tutorial_button" to="." method="_on_tutorial_button_pressed"]
-[connection signal="pressed" from="new_game_popup/new_game/margin/scroll/actions_hbox/return_button" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="options_scroll/achievements_button" to="." method="_on_achievements_button_pressed"]
+[connection signal="pressed" from="new_game_popup/new_game/margin/scroll/actions_hbox/new_game_return_button" to="." method="_on_new_game_return_button_pressed"]
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/create_button" to="." method="_on_create_button_pressed"]
+[connection signal="pressed" from="achievements_list_popup/panel/margin/scroll/spawn_scroll/actions_panel/actions_hbox/achievements_return_button" to="." method="_on_achievements_return_button_pressed"]

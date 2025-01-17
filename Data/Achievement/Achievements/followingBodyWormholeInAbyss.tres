@@ -11,4 +11,3 @@ dialogue_criteria = {
 "id": "wormhole",
 "player_in_ABYSS_region": true
 }
-unlocked = false

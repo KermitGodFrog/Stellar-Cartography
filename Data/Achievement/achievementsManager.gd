@@ -66,12 +66,11 @@ func _ready():
 
 func _change_scene(_path_to_scene, _with_init_type = null, _with_init_data = null):
 	#maybe make a more general group to do this later, as other things will need updated achievements list (especially main menu display) :3
-	#await get_tree().physics_frame
+	await get_tree().physics_frame #probby not necessary!
 	print("SENDING UPDATED ACHIEVEMENTS")
-	get_tree().call_deferred("call_group", "dialogueManager", "receive_updated_achievements_array", achievements_array) #this calls too early/late and doesnt work for some reason when/if achievementsHelper 'achievements' variable is inferred to be an array rather than an Array[achievement]
+	get_tree().call_deferred("call_group", "FOLLOW_ACHIEVEMENTS_ARRAY_UPDATE", "receive_updated_achievements_array", achievements_array) #this calls too early/late and doesnt work for some reason when/if achievementsHelper 'achievements' variable is inferred to be an array rather than an Array[achievement]
+	get_tree().call_deferred("call_group", "FOLLOW_ACHIEVEMENTS_UPDATE", "receive_updated_achievements", achievements)
 	pass
-
-
 
 func receive_ranked_achievements(ranked_achievements: Dictionary):
 	print("RANKED ACHIEVEMENTS ", ranked_achievements)

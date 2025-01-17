@@ -9,4 +9,3 @@ description = "Buy the Long Range Scopes module at port during a run."
 dialogue_criteria = {
 "player_LONG_RANGE_SCOPES_unlocked": true
 }
-unlocked = false

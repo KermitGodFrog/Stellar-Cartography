@@ -11,4 +11,3 @@ dialogue_criteria = {
 "id": "wormhole",
 "player_in_FRONTIER_region": true
 }
-unlocked = false

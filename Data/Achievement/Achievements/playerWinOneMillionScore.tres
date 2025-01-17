@@ -10,4 +10,3 @@ dialogue_criteria = {
 "concept": "playerWin",
 "player_total_score": ">=1000000"
 }
-unlocked = false

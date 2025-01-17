@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=3 uid="uid://b34lxvbuquaso"]
+
+[ext_resource type="StyleBox" uid="uid://cnaci0fj8gv3d" path="res://Scenes/Main Menu/item_locked_stylebox.tres" id="1_bh4td"]
+[ext_resource type="Texture2D" uid="uid://bkagb0wi4hewb" path="res://Graphics/trophy.png" id="1_dkg2a"]
+[ext_resource type="Script" path="res://Scenes/Main Menu/achievement_item.gd" id="2_iichn"]
+
+[node name="achievement_item" type="PanelContainer" groups=["achievement_item"]]
+custom_minimum_size = Vector2(0, 100)
+theme_override_styles/panel = ExtResource("1_bh4td")
+script = ExtResource("2_iichn")
+
+[node name="achievement_scroll" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="icon" type="TextureRect" parent="achievement_scroll"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("1_dkg2a")
+stretch_mode = 5
+
+[node name="info_scroll" type="VBoxContainer" parent="achievement_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="name_label" type="Label" parent="achievement_scroll/info_scroll"]
+layout_mode = 2
+vertical_alignment = 1
+clip_text = true
+
+[node name="description" type="Label" parent="achievement_scroll/info_scroll"]
+custom_minimum_size = Vector2(475, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.701961, 0.701961, 0.701961, 1)
+autowrap_mode = 3
+clip_text = true

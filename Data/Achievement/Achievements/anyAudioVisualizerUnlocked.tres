@@ -9,4 +9,3 @@ description = "Buy the Audio Visualizer module at port during a run."
 dialogue_criteria = {
 "player_AUDIO_VISUALIZER_unlocked": true
 }
-unlocked = false

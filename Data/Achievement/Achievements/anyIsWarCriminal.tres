@@ -9,4 +9,3 @@ description = "Break the Geneva Protocol."
 dialogue_criteria = {
 "player_war_criminal": true
 }
-unlocked = false

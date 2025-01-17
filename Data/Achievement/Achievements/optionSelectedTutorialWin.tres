@@ -10,4 +10,3 @@ dialogue_criteria = {
 "concept": "optionSelected",
 "option": "tutorialPlayerWin"
 }
-unlocked = false

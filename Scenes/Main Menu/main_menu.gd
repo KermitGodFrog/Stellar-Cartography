@@ -14,6 +14,13 @@ var SHOW_NEW_GAME_POPUP: bool = false:
 			$new_game_popup.show()
 		elif value == false:
 			$new_game_popup.hide()
+var SHOW_ACHIEVEMENTS_POPUP: bool = false:
+	set(value):
+		SHOW_ACHIEVEMENTS_POPUP = value
+		if value == true:
+			$achievements_list_popup.show()
+		if value == false:
+			$achievements_list_popup.hide()
 
 func _ready():
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
@@ -66,6 +73,14 @@ func _on_new_button_pressed():
 	SHOW_NEW_GAME_POPUP = true
 	pass
 
-func _on_return_button_pressed():
+func _on_new_game_return_button_pressed():
 	SHOW_NEW_GAME_POPUP = false
+	pass
+
+func _on_achievements_button_pressed():
+	SHOW_ACHIEVEMENTS_POPUP = true
+	pass
+
+func _on_achievements_return_button_pressed():
+	SHOW_ACHIEVEMENTS_POPUP = false
 	pass
