@@ -6,7 +6,7 @@ signal returnButtonPressed
 @onready var item_locked_stylebox = preload("res://Scenes/Achievements List/item_locked_stylebox.tres")
 @onready var item_unlocked_stylebox = preload("res://Scenes/Achievements List/item_unlocked_stylebox.tres")
 
-@onready var spawn_scroll = $panel/margin/scroll/spawn_scroll
+@onready var spawn_scroll = $panel/margin/actions_items_split/scroll/spawn_scroll
 
 func receive_updated_achievements(updated_achievements: Dictionary):
 	for i in spawn_scroll.get_children():
