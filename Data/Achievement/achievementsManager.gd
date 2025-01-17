@@ -15,9 +15,18 @@ var achievements: Array[achievement] = []:
 		achievements = value
 		print("ACHIEVEMENTS UPDATED ", value)
 const default_achievements: Array[achievement] = [
-	preload("res://Data/Achievement/game_finish_100k.tres"),
-	preload("res://Data/Achievement/unlock_audio_visualizer.tres"),
-	preload("res://Data/Achievement/unlock_audio_visualizer_and_long_range_scopes.tres")
+	preload("res://Data/Achievement/Achievements/anyAllModulesUnlocked.tres"),
+	preload("res://Data/Achievement/Achievements/anyAudioVisualizerUnlocked.tres"),
+	preload("res://Data/Achievement/Achievements/anyHullDeteriorationFifty.tres"),
+	preload("res://Data/Achievement/Achievements/anyIsWarCriminal.tres"),
+	preload("res://Data/Achievement/Achievements/anyLongRangeScopesUnlocked.tres"),
+	preload("res://Data/Achievement/Achievements/followingBodyWormholeInAbyss.tres"),
+	preload("res://Data/Achievement/Achievements/followingBodyWormholeInFrontier.tres"),
+	preload("res://Data/Achievement/Achievements/playerWinAllCharactersAlive.tres"),
+	preload("res://Data/Achievement/Achievements/playerWinOneMillionScore.tres"),
+	preload("res://Data/Achievement/Achievements/playerWinThreeMillionScore.tres"),
+	preload("res://Data/Achievement/Achievements/playerWinTwoMillionScore.tres"),
+	preload("res://Data/Achievement/Achievements/optionSelectedTutorialWin.tres")
 ]
 
 @onready var achievement_control = $achievement_display/achievement_control #might be depreciated soon
@@ -64,13 +73,15 @@ func _ready():
 func _change_scene(_path_to_scene, _with_init_type = null, _with_init_data = null):
 	#maybe make a more general group to do this later, as other things will need updated achievements list (especially main menu display) :3
 	print("SENDING UPDATED ACHIEVEMENTS")
-	get_tree().call_deferred("call_group", "dialogueManager", "receive_updated_achievements", achievements) #this calls too early/late and doesnt work for some reason when achievementsHelper 'achievements' variable is inferred to be an array rather than an Array[achievement]
+	get_tree().call_deferred("call_group", "dialogueManager", "receive_updated_achievements", achievements) #this calls too early/late and doesnt work for some reason when/if achievementsHelper 'achievements' variable is inferred to be an array rather than an Array[achievement]
 	pass
 
 
 
 func receive_ranked_achievements(ranked_achievements: Dictionary):
 	print("RANKED ACHIEVEMENTS ", ranked_achievements)
+	#for i in ranked_achievements:
+		#print(i.name, " ", ranked_achievements.get(i))
 	
 	for a: achievement in ranked_achievements:
 		if ranked_achievements.get(a) == a.dialogue_criteria.size(): #e.g, if number of matches == size of criteria:
@@ -78,6 +89,7 @@ func receive_ranked_achievements(ranked_achievements: Dictionary):
 				a.unlocked = true
 				print("UNLOCKED ACHIEVEMENT: ", a.name)
 				achievement_control.blink(a.name, a.description) #might be depreciated soon
+				#needs to queue unlocked achievements
 			else:
 				print("ACHIEVEMENT ALREADY UNLOCKED: ", a.name)
 	pass

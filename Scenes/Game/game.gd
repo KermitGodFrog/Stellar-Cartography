@@ -54,7 +54,7 @@ func _ready():
 		var new: starSystemAPI = load("res://Data/tutorial_system.tres")
 		world.star_systems.append(new)
 		
-		world.player.systems_traversed = 12
+		world.player.systems_traversed = 4
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
 		_on_switch_star_system(new)
@@ -725,7 +725,7 @@ func _on_remove_player_hull_stress(amount: int) -> void:
 	pass
 
 func _on_player_hull_deterioration_changed(new_value: int) -> void:
-	print_debug("_ON_PLAYER_HULL_DETERIORATION_CHANGED")
+	#print_debug("_ON_PLAYER_HULL_DETERIORATION_CHANGED")
 	if new_value == 100:
 		_on_player_death()
 	pass

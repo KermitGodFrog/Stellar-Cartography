@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="achievement" load_steps=2 format=3 uid="uid://by1e4fqswofqx"]
+
+[ext_resource type="Script" path="res://Data/Achievement/achievement.gd" id="1_pqmhg"]
+
+[resource]
+script = ExtResource("1_pqmhg")
+name = "Jack of All Trades"
+description = "Buy all modules sold at port in one run."
+dialogue_criteria = {
+"player_ADVANCED_SCANNING_unlocked": true,
+"player_AUDIO_VISUALIZER_unlocked": true,
+"player_LONG_RANGE_SCOPES_unlocked": true,
+"player_NANITE_CONTROLLER_unlocked": true,
+"player_SCAN_PREDICTION_unlocked": true
+}
+unlocked = false

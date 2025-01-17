@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="achievement" load_steps=2 format=3 uid="uid://b1p5pjreb7qtb"]
+
+[ext_resource type="Script" path="res://Data/Achievement/achievement.gd" id="1_yhpkd"]
+
+[resource]
+script = ExtResource("1_yhpkd")
+name = "Pirate Haven"
+description = "Enter the treacherous Frontier region during a run."
+dialogue_criteria = {
+"concept": "followingBody",
+"id": "wormhole",
+"player_in_FRONTIER_region": true
+}
+unlocked = false

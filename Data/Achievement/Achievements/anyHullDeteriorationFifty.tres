@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="achievement" load_steps=2 format=3 uid="uid://bmt6d3hv7bcuw"]
+
+[ext_resource type="Script" path="res://Data/Achievement/achievement.gd" id="1_11215"]
+
+[resource]
+script = ExtResource("1_11215")
+name = "Damage Report"
+description = "Gain fifty percent hull deterioration or more during a run."
+dialogue_criteria = {
+"player_hull_deterioration": ">=50"
+}
+unlocked = false
