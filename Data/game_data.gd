@@ -102,7 +102,7 @@ func get_weighted_station_classifications() -> Dictionary:
 		var curve = STATION_CLASSIFICATION_CURVES.get(classification)
 		var weight = curve.sample(player_weirdness_index)
 		weighted[classification] = {"name": classification, "weight": weight}
-	print_debug("STATION CLASSIFICATION WEIGHTINGS : ", weighted)
+	#print_debug("STATION CLASSIFICATION WEIGHTINGS : ", weighted)
 	return weighted
 
 func get_weighted_entity_classifications() -> Dictionary: 
@@ -111,7 +111,7 @@ func get_weighted_entity_classifications() -> Dictionary:
 		var curve = ENTITY_CLASSIFICATION_CURVES.get(classification)
 		var weight = curve.sample(player_weirdness_index)
 		weighted[classification] = {"name": classification, "weight": weight}
-	print_debug("ENTITY CLASSIFICATION WEIGHTINGS : ", weighted)
+	#print_debug("ENTITY CLASSIFICATION WEIGHTINGS : ", weighted)
 	return weighted
 
 func get_closest_body(bodies, pos):

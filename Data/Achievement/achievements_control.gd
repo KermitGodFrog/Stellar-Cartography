@@ -4,7 +4,7 @@ extends Control
 @onready var name_label = $panel/scroll/text_split/name
 @onready var description_label = $panel/scroll/text_split/description
 
-const max_hide_time: int = 350
+const max_hide_time: int = 500
 var hide_time: int = 0:
 	set(value):
 		hide_time = maxi(0, value)
