@@ -6,23 +6,27 @@ extends Control
 @onready var name_edit = $new_game_popup/new_game/margin/scroll/name_edit
 @onready var prefix_edit = $new_game_popup/new_game/margin/scroll/prefix_edit
 @onready var new_game_popup = $new_game_popup
+@onready var achievements_list_popup = $achievements_list_popup
 
 var SHOW_NEW_GAME_POPUP: bool = false:
 	set(value):
 		SHOW_NEW_GAME_POPUP = value
 		if value == true:
-			$new_game_popup.show()
+			new_game_popup.show()
 		elif value == false:
-			$new_game_popup.hide()
-var SHOW_ACHIEVEMENTS_POPUP: bool = false:
+			new_game_popup.hide()
+var SHOW_ACHIEVEMENTS_LIST_POPUP: bool = false:
 	set(value):
-		SHOW_ACHIEVEMENTS_POPUP = value
+		SHOW_ACHIEVEMENTS_LIST_POPUP = value
 		if value == true:
-			$achievements_list_popup.show()
+			achievements_list_popup.show()
 		if value == false:
-			$achievements_list_popup.hide()
+			achievements_list_popup.hide()
 
 func _ready():
+	achievements_list_popup.connect("returnButtonPressed", _on_achievements_list_return_button_pressed)
+	
+	
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
 		continue_button.disabled = false
 	
@@ -78,9 +82,9 @@ func _on_new_game_return_button_pressed():
 	pass
 
 func _on_achievements_button_pressed():
-	SHOW_ACHIEVEMENTS_POPUP = true
+	SHOW_ACHIEVEMENTS_LIST_POPUP = true
 	pass
 
-func _on_achievements_return_button_pressed():
-	SHOW_ACHIEVEMENTS_POPUP = false
+func _on_achievements_list_return_button_pressed(): #connects in _ready
+	SHOW_ACHIEVEMENTS_LIST_POPUP = false
 	pass
