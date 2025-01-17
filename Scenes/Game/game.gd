@@ -258,6 +258,12 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("SC_PAUSE"):
 		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
+	
+	
+	#DEBUG \/\//\/\/\//\/\\/
+	if Input.is_action_just_pressed("SC_DEBUG_MISC"):
+		_on_add_player_hull_stress(10)
+	
 	pass
 
 func _on_player_theorised_body(theorised_body: bodyAPI):

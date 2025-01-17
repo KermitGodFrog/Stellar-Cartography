@@ -43,8 +43,6 @@ var character_lookup_dictionary: Dictionary = {}
 var rules: Array[responseRule] = []
 enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, OPTIONS, TEXT}
 
-
-
 var _achievements_array: Array[achievement] = []
 
 @onready var dialogue = $dialogue/dialogue_control
@@ -258,39 +256,35 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			
 	pass
 
-func get_rule_matches(rule, incoming_query) -> int:
+func get_rule_matches(rule, incoming_query) -> int: #I should be executed for this.
 	var matches: int = 0
 	for fact in incoming_query.facts:
 		if rule.criteria.has(fact):
 			if typeof(rule.criteria.get(fact)) == TYPE_STRING:
-				match rule.criteria.get(fact).left(1):
-					"<":
-						#say we are doing this: player_jumps_remaining:<10
-						#therefore, we would be comparing the players ACTUAL jumps remaining (from the query data) to the criteria jumps remaining
-						#so, query jumps remaining < criteria jumps remaining
-						print(incoming_query.facts.get(fact), " < ", rule.criteria.get(fact).trim_prefix("<").to_float())
-						if incoming_query.facts.get(fact) < rule.criteria.get(fact).trim_prefix("<").to_float():
-							matches += 1
-						else: continue
-					">":
-						print(incoming_query.facts.get(fact), " > ", rule.criteria.get(fact).trim_prefix("<").to_float())
-						if incoming_query.facts.get(fact) > rule.criteria.get(fact).trim_prefix(">").to_float():
-							matches += 1
-						else: continue
-					"<=":
-						print(incoming_query.facts.get(fact), " <= ", rule.criteria.get(fact).trim_prefix("<").to_float())
-						if incoming_query.facts.get(fact) <= rule.criteria.get(fact).trim_prefix("<=").to_float():
-							matches += 1
-						else: continue
-					">=":
-						print(incoming_query.facts.get(fact), " >= ", rule.criteria.get(fact).trim_prefix("<").to_float())
-						if incoming_query.facts.get(fact) >= rule.criteria.get(fact).trim_prefix(">=").to_float():
-							matches += 1
-						else: continue
-					_:
-						if incoming_query.facts.get(fact) == rule.criteria.get(fact):
-							matches += 1
-						else: continue
+				
+				
+				if rule.criteria.get(fact).begins_with("<="):
+					if incoming_query.facts.get(fact) <= rule.criteria.get(fact).trim_prefix("<=").to_float():
+						matches += 1
+					else: continue
+				elif rule.criteria.get(fact).begins_with(">="):
+					if incoming_query.facts.get(fact) >= rule.criteria.get(fact).trim_prefix(">=").to_float():
+						matches += 1
+					else: continue
+				elif rule.criteria.get(fact).begins_with("<"):
+					if incoming_query.facts.get(fact) < rule.criteria.get(fact).trim_prefix("<").to_float():
+						matches += 1
+					else: continue
+				elif rule.criteria.get(fact).begins_with(">"):
+					if incoming_query.facts.get(fact) > rule.criteria.get(fact).trim_prefix(">").to_float():
+						matches += 1
+					else: continue
+				else:
+					if incoming_query.facts.get(fact) == rule.criteria.get(fact):
+						matches += 1
+					else: continue
+					
+					
 			else:
 				if incoming_query.facts.get(fact) == rule.criteria.get(fact):
 					matches += 1

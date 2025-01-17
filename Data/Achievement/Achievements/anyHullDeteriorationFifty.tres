@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_11215")
-name = "'Damage Report!'"
+name = "\"Damage Report!\""
 description = "Gain fifty percent hull deterioration or more during a run."
 dialogue_criteria = {
 "player_hull_deterioration": ">=50"
