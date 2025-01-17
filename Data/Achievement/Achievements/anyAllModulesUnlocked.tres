@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_pqmhg")
 name = "Jack of All Trades"
-description = "Buy all modules sold at port in one run."
+description = "Buy all modules sold at ports in one run."
 dialogue_criteria = {
 "player_ADVANCED_SCANNING_unlocked": true,
 "player_AUDIO_VISUALIZER_unlocked": true,

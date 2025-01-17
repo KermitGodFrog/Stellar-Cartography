@@ -268,18 +268,22 @@ func get_rule_matches(rule, incoming_query) -> int:
 						#say we are doing this: player_jumps_remaining:<10
 						#therefore, we would be comparing the players ACTUAL jumps remaining (from the query data) to the criteria jumps remaining
 						#so, query jumps remaining < criteria jumps remaining
+						print(incoming_query.facts.get(fact), " < ", rule.criteria.get(fact).trim_prefix("<").to_float())
 						if incoming_query.facts.get(fact) < rule.criteria.get(fact).trim_prefix("<").to_float():
 							matches += 1
 						else: continue
 					">":
+						print(incoming_query.facts.get(fact), " > ", rule.criteria.get(fact).trim_prefix("<").to_float())
 						if incoming_query.facts.get(fact) > rule.criteria.get(fact).trim_prefix(">").to_float():
 							matches += 1
 						else: continue
 					"<=":
+						print(incoming_query.facts.get(fact), " <= ", rule.criteria.get(fact).trim_prefix("<").to_float())
 						if incoming_query.facts.get(fact) <= rule.criteria.get(fact).trim_prefix("<=").to_float():
 							matches += 1
 						else: continue
 					">=":
+						print(incoming_query.facts.get(fact), " >= ", rule.criteria.get(fact).trim_prefix("<").to_float())
 						if incoming_query.facts.get(fact) >= rule.criteria.get(fact).trim_prefix(">=").to_float():
 							matches += 1
 						else: continue
