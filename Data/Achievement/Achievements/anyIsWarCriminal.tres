@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_lhnuh")
 name = "War Criminal"
-description = "Break the Geneva Protocol."
+description = "Break the Codex Ethica."
 dialogue_criteria = {
 "player_war_criminal": true
 }
