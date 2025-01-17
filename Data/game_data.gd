@@ -171,9 +171,10 @@ func loadSettings():
 	print("GAME DATA: LOADING SETTINGS")
 	if ResourceLoader.exists("user://stellar_cartographer_settings.res"):
 		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_settings.res")
-		print("LOADING SUCCESS")
+		#print("LOADING SUCCESS") the resource being returned does not necessarily mean that the resource was loaded successfully!
 		return resource
-	print("LOADING ERORR")
+	#print("LOADING ERORR")
+	print("FILE DOES NOT EXIST")
 	return null
 
 func saveSettings(settings_helper: settingsHelper) -> void:
@@ -187,14 +188,15 @@ func saveSettings(settings_helper: settingsHelper) -> void:
 func loadAchievements():
 	print("GAME DATA: LOADING ACHIEVEMENTS")
 	if ResourceLoader.exists("user://stellar_cartographer_achievements.res"):
-		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_achievements.res", "", ResourceLoader.CACHE_MODE_IGNORE)
-		print("LOADING SUCCESS")
+		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_achievements.res")
+		#print("LOADING SUCCESS") the resource being returned does not necessarily mean that the resource was loaded successfully!
 		return resource
-	print("LOADING ERROR")
+	#print("LOADING ERROR")
+	print("FILE DOES NOT EXIST")
 	return null
 
 func saveAchievements(achievements_helper: achievementsHelper) -> void:
 	print("GAME DATA: SAVING ACHIEVEMENTS")
-	var error = ResourceSaver.save(achievements_helper, "user://stellar_cartographer_achievements.res", ResourceSaver.FLAG_REPLACE_SUBRESOURCE_PATHS)
+	var error = ResourceSaver.save(achievements_helper, "user://stellar_cartographer_achievements.res")
 	print("ERROR CODE: ", error)
 	pass
