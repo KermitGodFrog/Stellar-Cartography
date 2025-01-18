@@ -12,6 +12,7 @@ var achievements_array: Array[achievement] = []:
 		return array
 const default_achievements: Dictionary = {
 	preload("res://Data/Achievement/Achievements/optionSelectedTutorialWin.tres"): false,
+	preload("res://Data/Achievement/Achievements/anyTutorialOmissionOrbitingPREV.tres"): false,
 	preload("res://Data/Achievement/Achievements/playerWinOneMillionScore.tres"): false,
 	preload("res://Data/Achievement/Achievements/playerWinTwoMillionScore.tres"): false,
 	preload("res://Data/Achievement/Achievements/playerWinThreeMillionScore.tres"): false,
@@ -22,7 +23,7 @@ const default_achievements: Dictionary = {
 	preload("res://Data/Achievement/Achievements/followingBodyWormholeInFrontier.tres"): false,
 	preload("res://Data/Achievement/Achievements/followingBodyWormholeInAbyss.tres"): false,
 	preload("res://Data/Achievement/Achievements/anyHullDeteriorationFifty.tres"): false,
-	preload("res://Data/Achievement/Achievements/anyIsWarCriminal.tres"): false,
+	preload("res://Data/Achievement/Achievements/anyIsWarCriminal.tres"): false
 	#preload("res://Data/Achievement/Achievements/anyLRSAndAVUnlockedDEBUG.tres"): false
 }
 
@@ -88,7 +89,6 @@ func receive_ranked_achievements(ranked_achievements: Dictionary):
 				print("UNLOCKED ACHIEVEMENT: ", a.name)
 				achievement_control.queue_achievement(a)
 				#needs to queue unlocked achievements
-			else:
+			#else:
 				#print("ACHIEVEMENT ALREADY UNLOCKED: ", a.name)
-				pass
 	pass

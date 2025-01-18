@@ -43,7 +43,7 @@ metadata = {
 "iterations": 12,
 "mass": 0.0,
 "planet_classification": "Terran",
-"planet_type": "Silicate",
+"planet_type": "Iron",
 "planetary_anomaly_seed": 0,
 "value": 514
 }
