@@ -376,6 +376,7 @@ func _on_player_following_body(following_body: bodyAPI):
 				
 				new_query.add_tree_access("name", following_planet.display_name)
 				new_query.add_tree_access("planet_classification", following_planet.metadata.get("planet_classification"))
+				new_query.add_tree_access("planet_type", following_planet.metadata.get("planet_type"))
 				new_query.add_tree_access("custom_seed", following_planet.metadata.get("planetary_anomaly_seed"))
 				get_tree().call_group("dialogueManager", "speak", self, new_query)
 				
