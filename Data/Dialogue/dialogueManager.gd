@@ -268,7 +268,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 				incoming_query.facts["randi_EXCLUSIVE"] = randi()
 				var matches: int = get_rule_matches(rule, incoming_query)
 				if rule.criteria.size() == matches:
-					full_rules[rule] = matches
+					full_rules[rule] = matches #this is the only change from QUERY_TYPES.BEST - i couldnt believe it either lol
 			
 			for rule in full_rules:
 				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", full_rules.get(rule), " (FB)"))
@@ -281,8 +281,6 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			
 			var matched_rule = full_rules.find_key(max_value)
 			if matched_rule != null: trigger_rule(calling, matched_rule, incoming_query)
-			
-			#STILL IN TESTIN(G) /\/\/\ UNSURE IF WORKS
 			
 	pass
 

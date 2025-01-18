@@ -51,13 +51,8 @@ newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,,,"You have arrived in
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
-wormholeOpenDialog,"concept: followingBody, id: wormhole",,openDialog: null,defaultApproachMessage,,wormholeTryAVFlairA,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
-wormholeTryAVFlairACancel,concept: wormholeTryAVFlairA,,,,,,,,,
-wormholeTryAVFlairAPass,"concept: wormholeTryAVFlairA, system_is_civilized: true",,,,,wormholeTryAVFlairB,,,,
-wormholeTryAVFlairBCancel,concept: wormholeTryAVFlairB,,,,,,,,,
-wormholeTryAVFlairBPass,"concept: wormholeTryAVFlairB, player_AUDIO_VISUALIZER_unlocked: true",,,,,wormholeTryAVFlairC,,,,
-wormholeTryAVFlairCCancel,concept: wormholeTryAVFlairC,,,,,,,,,
-wormholeTryAVFlairCPass,"concept: wormholeTryAVFlairC, pending_audio_profiles: true",,,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the data banks will be purged following the traversal of [i]$name[/i]."
+wormholeOpenDialog,"concept: followingBody, id: wormhole",,openDialog: null,defaultApproachMessage,,,,wormholeTryAVFlair,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
+wormholeTryAVFlairResponse,"concept: wormholeTryAVFlair, system_is_civilized: true, player_AUDIO_VISUALIZER_unlocked: true, pending_audio_profiles: true",,,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the data banks will be purged following the traversal of [i]$name[/i]."
 enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENTER_WORMHOLE,,,,,,,
 ,,,,,,,,,,
 stationApproachMessage,concept: stationApproachMessage,,,,,,,,,Your ship approaches the location of a space station defined in native star charts.
