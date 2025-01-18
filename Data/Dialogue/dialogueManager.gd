@@ -368,6 +368,11 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 		new_query.add("concept", concept)
 		speak(calling, new_query, true, QUERY_TYPES.RAND_BEST)
 	
+	for concept in rule.query_full_best_concept:
+		var new_query = responseQuery.new()
+		new_query.add("concept", concept)
+		speak(calling, new_query, true, QUERY_TYPES.FULL_BEST)
+	
 	#text & options \\\\\\\\\\\\\
 	if rule.text: dialogue.add_text(convert_text_with_custom_tags(rule.text, incoming_query))
 	if rule.options: dialogue.add_options(rule.options)
