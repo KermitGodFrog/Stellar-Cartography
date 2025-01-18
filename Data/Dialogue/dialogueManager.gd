@@ -33,7 +33,7 @@ signal TUTORIALPlayerWin()
 
 var dialogue_memory: Dictionary = {} #memory that is added by any query, and is always accessible indefinitely. from worldAPI dialogue_memory which is sent via game.gd
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
-enum QUERY_TYPES {BEST, ALL, RAND_BEST}
+enum QUERY_TYPES {BEST, ALL, RAND_BEST, FULL_BEST}
 
 #for populating query data
 var system: starSystemAPI
@@ -41,7 +41,7 @@ var player: playerAPI
 var character_lookup_dictionary: Dictionary = {}
 
 var rules: Array[responseRule] = []
-enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, OPTIONS, TEXT}
+enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, QUERY_FULL_BEST_CONCEPT, OPTIONS, TEXT}
 
 var _achievements_array: Array[achievement] = []
 
@@ -98,6 +98,10 @@ func _ready():
 					var array = convert_to_array(cell)
 					if not array.is_empty():
 						new_rule.query_rand_best_concept = array
+				"QUERY_FULL_BEST_CONCEPT":
+					var array = convert_to_array(cell)
+					if not array.is_empty():
+						new_rule.query_full_best_concept = array
 				"OPTIONS":
 					var dict = convert_to_dictionary(cell)
 					if not dict.is_empty():
@@ -254,6 +258,8 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			var matched_rule: responseRule = rules_with_max_matches[random_index]
 			if matched_rule: trigger_rule(calling, matched_rule, incoming_query)
 			
+		QUERY_TYPES.FULL_BEST:
+			pass
 	pass
 
 func get_rule_matches(rule, incoming_query) -> int: #I should be executed for this.

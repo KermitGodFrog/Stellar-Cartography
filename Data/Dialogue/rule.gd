@@ -20,7 +20,8 @@ class_name responseRule
 @export var query_best_concept: Array[String]
 ##Queries for a concept, and triggers a random rule from multiple with the highest criteria met.
 @export var query_rand_best_concept: Array[String]
-
+##Queries for a concept, and triggers a rule (if any) whose entire criteria is met, and whose criteria is larger than all other rules whose entire criteria is met.
+@export var query_full_best_concept: Array[String]
 
 #just like the GDC - criteria, apply_facts and response (but response is two things like in starsector)
 
