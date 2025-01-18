@@ -81,8 +81,10 @@ var planet_types = {
 	}, { # post hab
 		"Ice": {"name": "Ice", "weight": 0.3}
 	}, { # shared
-		"Silicate": {"name": "Silicate", "weight": 0.7},
-		"Terrestrial": {"name": "Terrestrial", "weight": 0.7},
+		"Iron": {"name": "Silicate", "weight": 0.3},
+		"Nickel": {"name": "Terrestrial", "weight": 0.3},
+		"Sulfur": {"name": "Sulfur", "weight": 0.3},
+		"Coreless": {"name": "Coreless", "weight": 0.3},
 		"Carbon": {"name": "Carbon", "weight": 0.1},
 	}],
 	"Neptunian": [{ # pre hab
@@ -113,8 +115,10 @@ var planet_type_data = {
 	"Ocean": {"color": Color.BLUE, "avg_value": 15000, "variation_class": "average_water_depth"},
 	"Earth-like": {"color": Color.GREEN, "avg_value": 15000, "variation_class": "cloud_cover"},
 	"Ice": {"color": Color.WHITE, "avg_value": 2500, "variation_class": "surface_reflectivity"},
-	"Silicate": {"color": Color.DARK_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude"},
-	"Terrestrial": {"color": Color.DARK_SLATE_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude"},
+	"Iron": {"color": Color.DARK_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude"},
+	"Nickel": {"color": Color.LIGHT_SLATE_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude"},
+	"Sulfur": {"color": Color.WEB_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude"},
+	"Coreless": {"color": Color.SLATE_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude"},
 	"Carbon": {"color": Color.BLACK, "avg_value": 2500, "variation_class": "carbon_oxygen_difference"},
 	"Fire Dwarf": {"color": Color.LIGHT_CORAL, "avg_value": 1000, "variation_class": "wind_speed"},
 	"Gas Dwarf": {"color": Color.ORANGE, "avg_value": 2000, "variation_class": "water_content"},
@@ -138,8 +142,10 @@ var planet_type_audio_data = {
 	"Ocean": {LOW_VAR: [-12,-80,-80,-12], MED_VAR: [-6,-80,-80,-6], HIGH_VAR: [0,-80,-80,0]},
 	"Earth-like": {LOW_VAR: [0,0,-12,-12], MED_VAR: [-6,0,-12,-6], HIGH_VAR: [-12,0,-12,0]},
 	"Ice": {LOW_VAR: [-12,-80,-80,-80], MED_VAR: [-6,-80,-80,-80], HIGH_VAR: [0,-80,-80,-80]},
-	"Silicate": {LOW_VAR: [-12,0,-80,-80], MED_VAR: [-6,0,-80,-80], HIGH_VAR: [0,0,-80,-80]},
-	"Terrestrial": {LOW_VAR: [-12,0,-70,-80], MED_VAR: [-6,0,-70,-80], HIGH_VAR: [0,0,-70,-80]},
+	"Iron": {LOW_VAR: [-12,0,-80,-80], MED_VAR: [-6,0,-80,-80], HIGH_VAR: [0,0,-80,-80]},
+	"Nickel": {LOW_VAR: [-12,0,-70,-80], MED_VAR: [-6,0,-70,-80], HIGH_VAR: [0,0,-70,-80]},
+	"Sulfur": {LOW_VAR: [-12,0,-80,-80], MED_VAR: [-6,0,-80,-80], HIGH_VAR: [0,0,-80,-80]}, #COPY OF IRON - REDO WHEN BALANCING THE AUDIO VISUALIZER
+	"Coreless": {LOW_VAR: [-12,0,-70,-80], MED_VAR: [-6,0,-70,-80], HIGH_VAR: [0,0,-70,-80]}, #COPY OF NICKEL - REDO WHEN BALANCING THE AUIO VISUALIZER
 	"Carbon": {LOW_VAR: [-12,-80,-6,-80], MED_VAR: [-6,-80,-3,-80], HIGH_VAR: [0,-80,0,-80]},
 	"Fire Dwarf": {LOW_VAR: [-80,-12,-12,0], MED_VAR: [-80,-6,-6,0], HIGH_VAR: [-80,0,0,0]},
 	"Gas Dwarf": {LOW_VAR: [-80,-80,-12,-12], MED_VAR: [-80,-80,-6,-12], HIGH_VAR: [-80,-80,0,-12]},
@@ -184,7 +190,7 @@ func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: f
 		
 		for i in range(hook.metadata.get("iterations")):
 			#SETTING DISTANCE
-			var new_distance: float = hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * i) #sets a base of the bodies radius + roche limit, increments upwards by 1.5x the bodies radius so subbodies cant touch each other
+			var new_distance: float = hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10.0) * i) #sets a base of the bodies radius + roche limit, increments upwards by 1.5x the bodies radius so subbodies cant touch each other
 			var inner_boundry: float #has to be on this level so it can be used later
 			var outer_boundry: float #has to be on this level so it can be used later
 			if hook.is_star():
@@ -195,6 +201,7 @@ func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: f
 			#CHANCE TO SPAWN AN ASTEROID BELT INSTEAD
 			if randf() <= 0.1:
 				var belt_width = global_data.get_randf(hook.radius * 71, hook.radius * 645) #in solar radii. for reference, asteroid belt in the sol system is 215 solar radii
+				#this works STUPID well /\/\/\/\/\
 				if new_distance > belt_width:
 					var belt_classification = global_data.weighted_pick(asteroid_belt_classifications, "weight")
 					var new_belt = addStationaryBody(identifier_count, game_data.get_random_name_from_variety(game_data.NAME_VARIETIES.ASTEROID_BELT), hook_identifier, new_distance, {"asteroid_belt_classification": belt_classification, "mass": (global_data.get_randf(pow(10, -1.3) / 333000, pow(10, 0.22) / 333000)), "width": belt_width, "color": Color(0.111765, 0.111765, 0.111765, 0.9), "iterations": (hook.metadata.get("iterations") / 2)})
@@ -213,13 +220,13 @@ func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: f
 							corrected_planet_classifications.erase("Neptunian")
 							corrected_planet_classifications.erase("Jovian")
 						"Neptunian":
-							corrected_planet_classifications.erase("Neptunian") #maybe dont have?
+							corrected_planet_classifications.erase("Neptunian") #this is necessary because neptunian worlds are so damn common. all moons of a neptunian planet would be neptunian moons if not the case!
 							corrected_planet_classifications.erase("Jovian")
 					planet_classification = global_data.weighted_pick(corrected_planet_classifications, "weight")
 				else:
 					planet_classification = global_data.weighted_pick(planet_classifications, "weight")
 				
-				#POICKING PLANET TYPE
+				#PICKING PLANET TYPE
 				var planet_type
 				var categories = planet_types.get(planet_classification)
 				var candidates: Dictionary
@@ -227,10 +234,10 @@ func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: f
 					if new_distance < inner_boundry:
 						candidates = categories[0].duplicate()
 						candidates.merge(categories[3])
-					if new_distance > inner_boundry and new_distance < outer_boundry:
+					elif new_distance > inner_boundry and new_distance < outer_boundry:
 						candidates = categories[1].duplicate()
 						candidates.merge(categories[3])
-					if new_distance > outer_boundry:
+					elif new_distance > outer_boundry: #unsure of the effect of elif statements here
 						candidates = categories[2].duplicate()
 						candidates.merge(categories[3])
 				else: candidates = categories[3]
@@ -239,16 +246,32 @@ func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: f
 				#PICKING PLANET MASS
 				var mass: float
 				var data = planet_classification_data.get(planet_classification)
-				var normal_mass_calc = global_data.get_randf(data.get("earth_mass_min"), data.get("earth_mass_max"))
+				#var normal_mass_calc = global_data.get_randf(data.get("earth_mass_min"), data.get("earth_mass_max"))
 				
-				if hook.is_planet():
-					if hook.metadata.get("planet_classification") == "Terran":
-						mass = global_data.get_randf(data.get("earth_mass_min"), hook.metadata.get("mass"))
-					else: mass = normal_mass_calc
-				else: mass = normal_mass_calc
+				#dont forget to use minf and other float functions. integers coudl ruin this thing
+				mass = global_data.get_randf(data.get("earth_mass_min"), minf(data.get("earth_mass_max"), hook.metadata.get("mass") * 333000 * 0.75))
+				#print("------------")
+				#print("MINIMUM MASS (EARTH MASSES): ", data.get("earth_mass_min"))
+				#print("MAXIMUM MASS (EARTH MASSES): ", data.get("earth_mass_max"))
+				#print("HOST MASS (EARTH MASSSES): ", hook.metadata.get("mass") * 333000)
+				#print("MAXIMUM MASS CONSOLIDATED: ", minf(data.get("earth_mass_max"), hook.metadata.get("mass") * 333000 * 0.75))
+				#print("------------")
+				#if hook.is_planet(): #this assumes that a moon with a radius of 0.75x its host will no longer be orbiting it. this is because i dont understand the maths to find a ""GRAVITATIONAL NULL POINT""
+					
+					#if hook.metadata.get("planet_classification") == "Terran":
+						#mass = global_data.get_randf(data.get("earth_mass_min"), hook.metadata.get("mass") * 0.75)
+					#else: mass = normal_mass_calc
+				#else: mass = normal_mass_calc
 				
 				#PICKING RADIUS
-				var radius: float = global_data.get_randf(data.get("earth_radius_min"), data.get("earth_radius_max"))
+				#var radius: float = global_data.get_randf(data.get("earth_radius_min"), data.get("earth_radius_max"))
+				var radius: float = global_data.get_randf(data.get("earth_radius_min"), minf(data.get("earth_radius_max"), hook.radius * 109.1 * 0.75))
+				#print("------------")
+				#print("MINIMUM RADIUS (EARTH RADII): ", data.get("earth_radius_min"))
+				#print("MAXIMUM RADIUS (EARTH RADII): ", data.get("earth_radius_max"))
+				#print("HOST RADIUS (EARTH RADII): ", hook.radius * 109.1)
+				#print("MAXIMUM RADIUS CONSOLIDATED: ", minf(data.get("earth_radius_max"), hook.radius * 109.1 * 0.75))
+				#print("------------")
 				
 				#PICKING SPEED
 				var orbit_speed_multiplier: float

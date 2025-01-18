@@ -139,6 +139,13 @@ func _ready():
 		#debug.add_tree_access("planet_type", "Silicate")
 		#debug.add_tree_access("player_in_CORE_region", true)
 		#get_tree().call_group("dialogueManager", "speak", self, debug)
+		
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+		print("NEPTUNIAN RADII MIN: ", pow(pow(10, 0.22), 0.59))
+		print("NEPTUNIAN RADII MAX: ", pow(pow(10, 2), 0.59))
+		print("NEPTUNIAN MASS MIN: ", pow(10, 0.22))
+		print("NEPTUNIAN MASS MAX: ", pow(10, 2))
+		
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
