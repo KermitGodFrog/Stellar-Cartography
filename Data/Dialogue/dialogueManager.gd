@@ -190,7 +190,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 				var matches: int = get_rule_matches(rule, incoming_query)
 				ranked_rules[rule] = matches
 			
-			for rule in ranked_rules: #DEBUG!!!!!!!!!!!!!!!!!!!!!!!
+			for rule in ranked_rules:
 				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", ranked_rules.get(rule), " (B)"))
 			
 			var values = ranked_rules.values()
@@ -200,7 +200,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			incoming_query.facts.erase("randi_EXCLUSIVE")
 			
 			var matched_rule = ranked_rules.find_key(max_value) #find_key always gets the FIRST key in added-order. as rules are added in order of the rules.csv file, rules towards the top of the .csv will ALWAYS be selected, even if theres other rules with the same number of matches further down. 
-			if matched_rule: trigger_rule(calling, matched_rule, incoming_query)
+			if matched_rule != null: trigger_rule(calling, matched_rule, incoming_query)
 			
 		QUERY_TYPES.ALL: #FOR 'QUERY ALL CONCEPT'
 			
@@ -214,7 +214,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 				if matches == rule.criteria.size():
 					matched_rules.append(rule)
 			
-			for rule in matched_rules: #DEBUG!!!!!!!!!!!!!!!!!!!!!!!
+			for rule in matched_rules:
 				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", rule.criteria.size(), " (ALL)"))
 			
 			incoming_query.facts.erase("randf_EXCLUSIVE")
@@ -256,10 +256,34 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			var random_index = random.randi_range(0, rules_with_max_matches.size() - 1)
 			
 			var matched_rule: responseRule = rules_with_max_matches[random_index]
-			if matched_rule: trigger_rule(calling, matched_rule, incoming_query)
+			if matched_rule != null: trigger_rule(calling, matched_rule, incoming_query)
 			
 		QUERY_TYPES.FULL_BEST:
-			pass
+			
+			var relevant_rules = get_relevant_rules(incoming_query)
+			
+			var full_rules: Dictionary = {}
+			for rule in relevant_rules:
+				incoming_query.facts["randf_EXCLUSIVE"] = randf()
+				incoming_query.facts["randi_EXCLUSIVE"] = randi()
+				var matches: int = get_rule_matches(rule, incoming_query)
+				if rule.criteria.size() == matches:
+					full_rules[rule] = matches
+			
+			for rule in full_rules:
+				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", full_rules.get(rule), " (FB)"))
+			
+			var values = full_rules.values()
+			var max_value = values.max()
+			
+			incoming_query.facts.erase("randf_EXCLUSIVE")
+			incoming_query.facts.erase("randi_EXCLUSIVE")
+			
+			var matched_rule = full_rules.find_key(max_value)
+			if matched_rule != null: trigger_rule(calling, matched_rule, incoming_query)
+			
+			#STILL IN TESTIN(G) /\/\/\ UNSURE IF WORKS
+			
 	pass
 
 func get_rule_matches(rule, incoming_query) -> int: #I should be executed for this.

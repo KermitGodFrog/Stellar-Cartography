@@ -26,7 +26,6 @@ var SHOW_ACHIEVEMENTS_LIST_POPUP: bool = false:
 func _ready():
 	achievements_list_popup.connect("returnButtonPressed", _on_achievements_list_return_button_pressed)
 	
-	
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
 		continue_button.disabled = false
 	
