@@ -10,11 +10,11 @@ var hide_time: int = 0:
 		hide_time = maxi(0, value)
 		if hide_time == 0:
 			try_display_next_achievement()
-var queue: Array[achievement] = []
+var queue: Array[responseAchievement] = []
 
 @export var hide_curve: Curve
 
-func queue_achievement(new_achievement: achievement) -> void:
+func queue_achievement(new_achievement: responseAchievement) -> void:
 	queue.append(new_achievement)
 	pass
 

@@ -4,9 +4,9 @@ var achievements: Dictionary = {}:
 	set(value):
 		achievements = value
 		#print("ACHIEVEMENTS UPDATED ", value)
-var achievements_array: Array[achievement] = []:
+var achievements_array: Array[responseAchievement] = []:
 	get:
-		var array: Array[achievement] = []
+		var array: Array[responseAchievement] = []
 		for a in achievements:
 			array.append(a)
 		return array
@@ -82,7 +82,7 @@ func receive_ranked_achievements(ranked_achievements: Dictionary):
 	#for i in ranked_achievements:
 		#print(i.name, " ", ranked_achievements.get(i))
 	
-	for a: achievement in ranked_achievements:
+	for a: responseAchievement in ranked_achievements:
 		if ranked_achievements.get(a) == a.dialogue_criteria.size(): #e.g, if number of matches == size of criteria:
 			if achievements.get(a) == false:
 				achievements[a] = true

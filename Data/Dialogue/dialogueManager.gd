@@ -43,7 +43,7 @@ var character_lookup_dictionary: Dictionary = {}
 var rules: Array[responseRule] = []
 enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, QUERY_FULL_BEST_CONCEPT, OPTIONS, TEXT}
 
-var _achievements_array: Array[achievement] = []
+var _achievements_array: Array[responseAchievement] = []
 
 @onready var dialogue = $dialogue/dialogue_control
 
@@ -413,7 +413,7 @@ func _on_add_dialogue_memory_pair(key,value) -> void: #im connecitng this signal
 
 
 
-func receive_updated_achievements_array(updated_achievements_array: Array[achievement]):
+func receive_updated_achievements_array(updated_achievements_array: Array[responseAchievement]):
 	_achievements_array = updated_achievements_array
 	pass
 

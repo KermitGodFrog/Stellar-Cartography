@@ -1,5 +1,5 @@
 extends Resource
-class_name achievement
+class_name responseAchievement
 #FILE naming syntax: concept (if applicable, else 'any'), short phrase describing other dialogue criteria. Written in camel case, verbose numbers. The word 'player' shall not be used outside of the concept name.
 
 @export var name : String = ""
