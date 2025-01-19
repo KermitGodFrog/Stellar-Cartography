@@ -265,9 +265,10 @@ func _physics_process(delta):
 	
 	
 	#DEBUG \/\//\/\/\//\/\\/
-	if Input.is_action_just_pressed("SC_DEBUG_MISC"):
-		_on_add_player_hull_stress(10)
-	
+	#if Input.is_action_just_pressed("SC_DEBUG_MISC"):
+		#var new_query = responseQuery.new()
+		#new_query.add("concept", "DEBUGfalseMatchTest")
+		#get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
 func _on_player_theorised_body(theorised_body: bodyAPI):

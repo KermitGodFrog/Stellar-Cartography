@@ -68,7 +68,7 @@ stationSalvageOption,"concept: populateStationOptions, is_station_abandoned: tru
 stationDockingAccess,"concept: optionSelected, option: stationDockingAccess",,closeDialog: DOCK_WITH_STATION,,,,,,,
 ,,,,,,,,,,
 postSalvageLeave,"concept: optionSelected, option: postSalvageLeave",,closeDialog: POST_SALVAGE_LEAVE,,,,,,,
-#default salvage option \/\/\/\/\/,,,,,,,,,,
+,,,,,,,,,,
 stationSalvageDispatchResponse,"concept: optionSelected, option: stationSalvageDispatch",,addValueWithFlair: 5000,,,,,,Leave:postSalvageLeave,Useful data is aquired. 
 ,,,,,,,,,,
 ,,,,,,,,,,

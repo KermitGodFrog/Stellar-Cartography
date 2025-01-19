@@ -286,6 +286,15 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 
 func get_rule_matches(rule, incoming_query) -> int: #I should be executed for this.
 	var matches: int = 0
+	
+	#(probably very inefficient) code to make criteria values which are 'false' result in a match if their key does not exist in incoming_query facts
+	for c_key in rule.criteria:
+		var c_value = rule.criteria.get(c_key)
+		if typeof(c_value) == TYPE_BOOL:
+			if c_value == false:
+				if not incoming_query.facts.has(c_key):
+					matches += 1
+	
 	for fact in incoming_query.facts:
 		if rule.criteria.has(fact):
 			if typeof(rule.criteria.get(fact)) == TYPE_STRING:

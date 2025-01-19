@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="achievement" load_steps=2 format=3 uid="uid://cw60jj5x3nom5"]
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://cw60jj5x3nom5"]
 
 [ext_resource type="Script" path="res://Data/Achievement/achievement.gd" id="1_n1br8"]
 
