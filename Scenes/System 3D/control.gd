@@ -12,9 +12,11 @@ func _gui_input(event):
 			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 				ghost_fov = clamp(ghost_fov - (event.factor * 3), 10, 75)
 				emit_signal("targetFOVChange", ghost_fov)
+				get_viewport().set_input_as_handled()
 			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 				ghost_fov = clamp(ghost_fov + (event.factor * 3), 10, 75)
 				emit_signal("targetFOVChange", ghost_fov)
+				get_viewport().set_input_as_handled()
 	
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:

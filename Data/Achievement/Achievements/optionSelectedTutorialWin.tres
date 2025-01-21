@@ -10,3 +10,4 @@ dialogue_criteria = {
 "concept": "optionSelected",
 "option": "tutorialPlayerWin"
 }
+index = 0

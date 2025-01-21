@@ -48,6 +48,7 @@ signal addPlayerValue(amount: int)
 @onready var balance_label = $balance_label
 @onready var save_audio_profiles_control = $save_audio_profiles_control
 @onready var observed_bodies_list = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list
+@onready var save_audio_profiles_info_label = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/info_label
 @onready var storage_progress_bar = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/storage_progress_bar
 #upgrade shtuff
 @onready var description_label = $upgrade_container/description_label
@@ -137,6 +138,9 @@ func _on_popup():
 	if background_animation.current_animation: animations.erase(background_animation.current_animation)
 	background_animation.play("RESET")
 	background_animation.play(animations.pick_random())
+	
+	if station:
+		save_audio_profiles_info_label.set_text("The wider astronomical community on %s has analyzed the legitimacy of additional observations you have inferred on unknown bodies during your travels." % station.get_display_name())
 	pass
 
 

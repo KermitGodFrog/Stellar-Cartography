@@ -244,7 +244,6 @@ script = ExtResource("3_b7unw")
 custom_minimum_size = Vector2(880, 0)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_w52st")
-text = "The wider astronomical community on (STATION NAME) has analyzed the legitimacy of additional observations you have inferred on unknown bodies during your travels."
 horizontal_alignment = 1
 autowrap_mode = 2
 

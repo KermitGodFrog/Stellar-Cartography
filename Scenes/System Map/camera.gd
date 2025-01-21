@@ -25,3 +25,11 @@ func _physics_process(delta):
 		global_position.y += (pos.y - mouse_slide_fixed_point.y) * pow(zoom.length(), -0.5) * delta
 		follow_body = null
 	pass
+
+func _unhandled_input(event):
+	if event is InputEventMouseButton and event.is_pressed():
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			zoom += 10 * zoom_multiplier * (zoom.length() / 100)
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			zoom += -10 * zoom_multiplier * (zoom.length() / 100)
+	pass
