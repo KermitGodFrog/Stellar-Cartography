@@ -29,8 +29,8 @@ func _on_pause_mode_changed(value):
 signal statsMenuQuit(_init_type: INIT_TYPES)
 
 @onready var stats_control = $stats_canvas/stats_control
-@onready var systems_traversed_label = $stats_canvas/stats_control/main_scroll/systems_traversed_label
-@onready var init_type_label = $stats_canvas/stats_control/main_scroll/init_type_label
+@onready var systems_traversed_label = $stats_canvas/stats_control/main_panel/main_scroll/systems_traversed_label
+@onready var init_type_label = $stats_canvas/stats_control/main_panel/main_scroll/init_type_label
 enum INIT_TYPES {DEATH, WIN, TUTORIAL}
 var init_type: INIT_TYPES = INIT_TYPES.DEATH
 var _player_score: int = 0

@@ -1,7 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://kmp3sfk18y2"]
+[gd_scene load_steps=6 format=3 uid="uid://kmp3sfk18y2"]
 
 [ext_resource type="Script" path="res://Scenes/Stats Menu/statsMenu.gd" id="1_twj0w"]
-[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://Scenes/master_theme.tres" id="2_6jurw"]
+[ext_resource type="Theme" uid="uid://pb8t4wekexd8" path="res://Scenes/Station UI/station_ui_SAVE_AUDIO_PROFILES_theme.tres" id="2_21eu0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4p42"]
+bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+skew = Vector2(0.15, 0)
+expand_margin_left = 50.0
+expand_margin_top = 50.0
+expand_margin_right = 50.0
+expand_margin_bottom = 50.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hfdl3"]
+bg_color = Color(0.184314, 0.14902, 0.156863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5hpt3"]
+bg_color = Color(0.184314, 0.14902, 0.156863, 1)
 
 [node name="statsMenu" type="Node"]
 process_mode = 2
@@ -17,34 +31,55 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2_6jurw")
+theme = ExtResource("2_21eu0")
 
-[node name="main_scroll" type="VBoxContainer" parent="stats_canvas/stats_control"]
+[node name="background" type="ColorRect" parent="stats_canvas/stats_control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.235294, 0.235294, 0.235294, 0.313726)
+
+[node name="main_panel" type="PanelContainer" parent="stats_canvas/stats_control"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -94.5
-offset_top = -29.0
-offset_right = 94.5
-offset_bottom = 29.0
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_y4p42")
 
-[node name="init_type_label" type="Label" parent="stats_canvas/stats_control/main_scroll"]
+[node name="main_scroll" type="VBoxContainer" parent="stats_canvas/stats_control/main_panel"]
 layout_mode = 2
-text = "YOU ARE DEAD."
+theme_override_constants/separation = 0
+
+[node name="init_type_label" type="Label" parent="stats_canvas/stats_control/main_panel/main_scroll"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_hfdl3")
+text = "YOU ARE DEAD"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="systems_traversed_label" type="Label" parent="stats_canvas/stats_control/main_scroll"]
+[node name="systems_traversed_label" type="Label" parent="stats_canvas/stats_control/main_panel/main_scroll"]
 layout_mode = 2
-text = "SYSTEMS TRAVERSED: 35"
+theme_override_colors/font_color = Color(0.701961, 0.701961, 0.701961, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_5hpt3")
+text = "SCORE: ????????"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="exit_to_main_menu_button" type="Button" parent="stats_canvas/stats_control/main_scroll"]
+[node name="exit_to_main_menu_button" type="Button" parent="stats_canvas/stats_control/main_panel/main_scroll"]
 layout_mode = 2
 theme_type_variation = &"ButtonDull"
 text = "EXIT TO MAIN MENU"
 
-[connection signal="pressed" from="stats_canvas/stats_control/main_scroll/exit_to_main_menu_button" to="." method="_on_exit_to_main_menu_button_pressed"]
+[connection signal="pressed" from="stats_canvas/stats_control/main_panel/main_scroll/exit_to_main_menu_button" to="." method="_on_exit_to_main_menu_button_pressed"]
