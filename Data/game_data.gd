@@ -58,7 +58,7 @@ const NAME_FILE_PATHS: Dictionary = {
 const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]
 var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
 
-func get_random_name_from_variety_for_scheme(variety: NAME_VARIETIES, scheme: NAME_SCHEMES, _hook_display_name: String = "", _iteration: int = -1):
+func get_random_name_from_variety_for_scheme(variety: NAME_VARIETIES, scheme: NAME_SCHEMES, _hook_display_name: String = "", _iteration: int = -1, _remaining_size = -1):
 	match scheme:
 		NAME_SCHEMES.STANDARD:
 			return STANDARD_get_random_name_from_variety(variety)
@@ -67,7 +67,7 @@ func get_random_name_from_variety_for_scheme(variety: NAME_VARIETIES, scheme: NA
 				SYSTEM_PREFIX = SCIENTIFIC_construct_system_prefix(maxi(1, round(randfn(3, 1))))
 			return SCIENTIFIC_get_random_name_from_variety(variety, _hook_display_name, _iteration)
 		NAME_SCHEMES.TREK:
-			return TREK_get_random_name_from_variety(variety, _hook_display_name, _iteration)
+			return TREK_get_random_name_from_variety(variety, _hook_display_name, _iteration, _remaining_size)
 	pass
 
 enum GRAPHEMES {
@@ -86,11 +86,11 @@ enum GRAPHEMES {
 	W, U, O, Z, ZZ, 
 	ZE, SI, TCH, TU, TE, 
 	SH, CI, SCI, TI, Y, 
-	I
+	I, A #A is not part of this but i wanted the system to be able to auto generate the word 'IRAN' which is surprisingly common in this kinda thing
 }
 var SYSTEM_PREFIX: String = "" #this is reset whenever _on_create_star_system in game.gd is called. (kinda hacky)
 
-func TREK_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1):
+func TREK_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1, remaining_size: int = -1):
 	match variety:
 		NAME_VARIETIES.SPACE_ENTITY_DEFAULT:
 			return "stellar_phenomena"
@@ -98,7 +98,7 @@ func TREK_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_nam
 			if randf() >= 0.75:
 				return STANDARD_dual_name_selection(NAME_VARIETIES.PLANET, NAME_VARIETIES.GENERIC_FLAIR)
 			else:
-				return "%s %s" % [hook_display_name, global_data.convertToRomanNumeral(iteration + 1)]
+				return "%s %s" % [hook_display_name, global_data.convertToRomanNumeral((iteration - remaining_size) + 1)]
 		_:
 			return STANDARD_get_random_name_from_variety(variety)
 
