@@ -7,6 +7,7 @@ extends Control
 @onready var prefix_edit = $new_game_popup/new_game/margin/scroll/prefix_edit
 @onready var new_game_popup = $new_game_popup
 @onready var achievements_list_popup = $achievements_list_popup
+@onready var background = $background
 
 var SHOW_NEW_GAME_POPUP: bool = false:
 	set(value):
@@ -23,8 +24,14 @@ var SHOW_ACHIEVEMENTS_LIST_POPUP: bool = false:
 		if value == false:
 			achievements_list_popup.hide()
 
+const background_images: Array = [
+	preload("res://Graphics/Dialogue/SA_01_generation_ship_OFF.png"),
+	preload("res://Graphics/Dialogue/PA_04_missing_core.png")
+]
+
 func _ready():
 	achievements_list_popup.connect("returnButtonPressed", _on_achievements_list_return_button_pressed)
+	background.set_texture(ImageTexture.create_from_image(background_images.pick_random()))
 	
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
 		continue_button.disabled = false

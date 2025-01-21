@@ -1,13 +1,20 @@
-[gd_scene load_steps=9 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=12 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" path="res://Scenes/Main Menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://Scenes/master_theme.tres" id="1_b84fj"]
 [ext_resource type="Texture2D" uid="uid://nav04ap3rdbe" path="res://Graphics/new_game_popup.png" id="2_1jdbj"]
 [ext_resource type="Theme" uid="uid://skdebllj6ft7" path="res://Scenes/Main Menu/main_menu_MAIN_theme.tres" id="2_2eiki"]
 [ext_resource type="PackedScene" uid="uid://njcr66sajfan" path="res://Scenes/Achievements List/achievements_list_popup.tscn" id="5_7l6aj"]
+[ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://Graphics/Misc/denied_monochrome.png" id="5_uqij0"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_srvhc"]
 texture = ExtResource("2_1jdbj")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2i1us"]
+bg_color = Color(0.235294, 0.431373, 0.443137, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qyn1f"]
+bg_color = Color(0.501961, 0.501961, 0.501961, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8pdab"]
 
@@ -23,6 +30,17 @@ grow_vertical = 2
 theme = ExtResource("1_b84fj")
 script = ExtResource("1_0jam3")
 
+[node name="background" type="TextureRect" parent="."]
+self_modulate = Color(0.501961, 0.501961, 0.501961, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 2
+stretch_mode = 6
+
 [node name="title" type="Label" parent="."]
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 1
@@ -30,6 +48,11 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 300.0
 grow_horizontal = 2
+theme_override_colors/font_shadow_color = Color(0.156863, 0.294118, 0.388235, 1)
+theme_override_colors/font_outline_color = Color(0.0588235, 0.0784314, 0.14902, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 10
+theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 60
 text = "STELLAR CARTOGRAPHER"
 horizontal_alignment = 1
@@ -127,7 +150,12 @@ text = "CREATING NEW GAME"
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 10
-text = "x"
+theme_type_variation = &"ButtonDull"
+theme_override_styles/normal = SubResource("StyleBoxFlat_2i1us")
+theme_override_styles/hover = SubResource("StyleBoxFlat_qyn1f")
+icon = ExtResource("5_uqij0")
+icon_alignment = 1
+expand_icon = true
 
 [node name="seperator" type="HSeparator" parent="new_game_popup/new_game/margin/scroll"]
 layout_mode = 2
