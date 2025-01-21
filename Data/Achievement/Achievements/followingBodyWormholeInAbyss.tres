@@ -11,3 +11,4 @@ dialogue_criteria = {
 "id": "wormhole",
 "player_in_ABYSS_region": true
 }
+index = 10

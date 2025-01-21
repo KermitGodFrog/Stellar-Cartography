@@ -13,3 +13,4 @@ dialogue_criteria = {
 "player_MEDICAL_OFFICER_alive": true,
 "player_SECURITY_OFFICER_alive": true
 }
+index = 5

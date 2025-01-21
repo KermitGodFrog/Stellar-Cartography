@@ -9,3 +9,4 @@ description = "Gain fifty percent hull deterioration or more during a run."
 dialogue_criteria = {
 "player_hull_deterioration": ">=50"
 }
+index = 11

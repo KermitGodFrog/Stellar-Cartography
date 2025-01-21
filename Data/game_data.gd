@@ -27,7 +27,8 @@ const ENTITY_CLASSIFICATION_CURVES = {
 const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
 const NANITE_CONTROLLER_REPAIR_CURVE = preload("res://Data/Spawn Data/nanite_controller_repair_curve.tres")
 
-enum NAME_VARIETIES {STAR, PLANET, GENERIC_FLAIR, ASTEROID_BELT, WORMHOLE, WORMHOLE_FLAIR, STATION, STATION_FLAIR, SPACE_ANOMALY, SPACE_ANOMALY_FLAIR} #for generating star systems
+enum NAME_SCHEMES {STANDARD, SCIENTIFIC, TREK}
+enum NAME_VARIETIES {STAR, PLANET, GENERIC_FLAIR, ASTEROID_BELT, WORMHOLE, WORMHOLE_FLAIR, STATION, STATION_FLAIR, SPACE_ANOMALY, SPACE_ANOMALY_FLAIR, SPACE_ENTITY_DEFAULT} #SPACE_ENTITY_DEFAULT exists because SCIENTIFIC name scheme will give a space entity something like "SF-1058" while STANDARD name scheme will give a space entity "stellar_phenomena"
 var NAME_DATA: Dictionary = {
 	NAME_VARIETIES.STAR: [],
 	NAME_VARIETIES.PLANET: [],
@@ -57,20 +58,105 @@ const NAME_FILE_PATHS: Dictionary = {
 const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]
 var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
 
-func get_random_name_from_variety(variety: NAME_VARIETIES):
+func get_random_name_from_variety_for_scheme(variety: NAME_VARIETIES, scheme: NAME_SCHEMES, _hook_display_name: String = "", _iteration: int = -1):
+	match scheme:
+		NAME_SCHEMES.STANDARD:
+			return STANDARD_get_random_name_from_variety(variety)
+		NAME_SCHEMES.SCIENTIFIC:
+			if SYSTEM_PREFIX.is_empty(): 
+				SYSTEM_PREFIX = SCIENTIFIC_construct_system_prefix(maxi(1, round(randfn(3, 1))))
+			return SCIENTIFIC_get_random_name_from_variety(variety, _hook_display_name, _iteration)
+		NAME_SCHEMES.TREK:
+			return TREK_get_random_name_from_variety(variety, _hook_display_name, _iteration)
+	pass
+
+enum GRAPHEMES {
+	B, BB, D, DD, ED, 
+	F, FF, PH, GH, LF, 
+	FT, G, GG, GU, GUE, 
+	H, WH, J, GE, DGE, 
+	DI, K, C, CH, CC, 
+	LK, QU, Q, CK, X, 
+	L, LL, M, MM, MB, 
+	LM, N, NN, KN, GN, 
+	PN, MN, P, PP, R, 
+	RR, WR, RH, S, SS, 
+	SC, PS, ST, CE, SE, 
+	T, TT, TH, V, VE, 
+	W, U, O, Z, ZZ, 
+	ZE, SI, TCH, TU, TE, 
+	SH, CI, SCI, TI, Y, 
+	I
+}
+var SYSTEM_PREFIX: String = "" #this is reset whenever _on_create_star_system in game.gd is called. (kinda hacky)
+
+func TREK_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1):
 	match variety:
-		NAME_VARIETIES.STAR:
-			return dual_name_selection(NAME_VARIETIES.STAR, NAME_VARIETIES.GENERIC_FLAIR)
+		NAME_VARIETIES.SPACE_ENTITY_DEFAULT:
+			return "stellar_phenomena"
 		NAME_VARIETIES.PLANET:
-			return dual_name_selection(NAME_VARIETIES.PLANET, NAME_VARIETIES.GENERIC_FLAIR)
-		NAME_VARIETIES.STATION:
-			return dual_name_selection(NAME_VARIETIES.STATION, NAME_VARIETIES.STATION_FLAIR)
-		NAME_VARIETIES.SPACE_ANOMALY:
-			return dual_name_selection(NAME_VARIETIES.SPACE_ANOMALY, NAME_VARIETIES.SPACE_ANOMALY_FLAIR)
-		NAME_VARIETIES.WORMHOLE:
-			return dual_name_selection(NAME_VARIETIES.WORMHOLE, NAME_VARIETIES.WORMHOLE_FLAIR)
+			if randf() >= 0.75:
+				return STANDARD_dual_name_selection(NAME_VARIETIES.PLANET, NAME_VARIETIES.GENERIC_FLAIR)
+			else:
+				return "%s %s" % [hook_display_name, global_data.convertToRomanNumeral(iteration + 1)]
 		_:
-			return get_data_or_file_candidates(variety).pick_random()
+			return STANDARD_get_random_name_from_variety(variety)
+
+
+func SCIENTIFIC_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1):
+	match variety:
+		NAME_VARIETIES.SPACE_ENTITY_DEFAULT:
+			return "stellar_phenomena"
+		NAME_VARIETIES.STAR:
+			return "%s" % SYSTEM_PREFIX
+		NAME_VARIETIES.PLANET:
+			if hook_display_name.right(1).is_valid_int():
+				return "%s %s" % [hook_display_name, global_data.convertToAlphabet(iteration + 1)]
+			return "%s %03d" % [hook_display_name, iteration]
+		NAME_VARIETIES.WORMHOLE:
+			return "%s W-%03d" % [hook_display_name, global_data.get_randi(0, 999)]
+		_:
+			return STANDARD_get_random_name_from_variety(variety)
+
+func SCIENTIFIC_construct_system_prefix(grapheme_count: int) -> String:
+	randomize()
+	var parts: PackedStringArray = []
+	for i in grapheme_count:
+		parts.append(GRAPHEMES.keys().pick_random())
+	if randf() >= 0.25:
+		return "-".join(parts)
+	else:
+		return "".join(parts)
+
+
+func STANDARD_get_random_name_from_variety(variety: NAME_VARIETIES):
+	match variety:
+		NAME_VARIETIES.SPACE_ENTITY_DEFAULT:
+			return "stellar_phenomena"
+		NAME_VARIETIES.STAR:
+			return STANDARD_dual_name_selection(NAME_VARIETIES.STAR, NAME_VARIETIES.GENERIC_FLAIR)
+		NAME_VARIETIES.PLANET:
+			return STANDARD_dual_name_selection(NAME_VARIETIES.PLANET, NAME_VARIETIES.GENERIC_FLAIR)
+		NAME_VARIETIES.STATION:
+			return STANDARD_dual_name_selection(NAME_VARIETIES.STATION, NAME_VARIETIES.STATION_FLAIR)
+		NAME_VARIETIES.SPACE_ANOMALY:
+			return STANDARD_dual_name_selection(NAME_VARIETIES.SPACE_ANOMALY, NAME_VARIETIES.SPACE_ANOMALY_FLAIR)
+		NAME_VARIETIES.WORMHOLE:
+			return STANDARD_dual_name_selection(NAME_VARIETIES.WORMHOLE, NAME_VARIETIES.WORMHOLE_FLAIR)
+		_:
+			return STANDARD_get_data_or_file_candidates(variety).pick_random()
+
+func STANDARD_dual_name_selection(variety1: NAME_VARIETIES, variety2: NAME_VARIETIES):
+	return "%s %s" % [STANDARD_get_data_or_file_candidates(variety1).pick_random(),
+	STANDARD_get_data_or_file_candidates(variety2).pick_random()]
+
+func STANDARD_get_data_or_file_candidates(variety: NAME_VARIETIES):
+	var data: Array = NAME_DATA.get(variety)
+	if data.is_empty():
+		return get_lines_from_file(NAME_FILE_PATHS.get(variety))
+	else:
+		return data
+
 
 func get_lines_from_file(file_path: String):
 	var lines: Array = []
@@ -81,18 +167,6 @@ func get_lines_from_file(file_path: String):
 			lines.append(line)
 	file.close()
 	return lines
-
-func get_data_or_file_candidates(variety: NAME_VARIETIES):
-	var data: Array = NAME_DATA.get(variety)
-	if data.is_empty():
-		return get_lines_from_file(NAME_FILE_PATHS.get(variety))
-	else:
-		return data
-
-func dual_name_selection(variety1: NAME_VARIETIES, variety2: NAME_VARIETIES):
-	return "%s %s" % [get_data_or_file_candidates(variety1).pick_random(),
-	get_data_or_file_candidates(variety2).pick_random()]
-
 
 
 
@@ -125,8 +199,6 @@ func get_closest_body(bodies, pos):
 		return distance_to_bodies.find_key(corrected[0])
 	else:
 		return null
-
-
 
 
 

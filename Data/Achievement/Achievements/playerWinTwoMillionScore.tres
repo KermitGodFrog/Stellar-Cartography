@@ -10,3 +10,4 @@ dialogue_criteria = {
 "concept": "playerWin",
 "player_total_score": ">=2000000"
 }
+index = 3

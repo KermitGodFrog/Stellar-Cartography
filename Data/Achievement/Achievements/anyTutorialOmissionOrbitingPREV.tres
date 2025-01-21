@@ -9,3 +9,4 @@ description = "Fail to follow orders during the tutorial."
 dialogue_criteria = {
 "tutorialOmissionOrbitingPREV": true
 }
+index = 1

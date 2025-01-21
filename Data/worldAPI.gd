@@ -19,8 +19,9 @@ class_name worldAPI
 @export var missing_AO_chance_per_planet: float
 # in order to justify why thsi is here - what if the player wants to update key customization while playing? this would be useful to ahndle it
 
-func createStarSystem(d_name: String):
+func createStarSystem(d_name: String) -> starSystemAPI:
 	var new_system = starSystemAPI.new()
+	new_system.current_name_scheme = game_data.NAME_SCHEMES.values().pick_random()
 	new_system.set_identifier(identifier_count)
 	identifier_count += 1
 	new_system.set_display_name(d_name)
@@ -47,6 +48,8 @@ func createPlayer(name: String, prefix: String) -> playerAPI:
 	
 	player = new_player
 	return new_player
+
+
 
 func get_system_from_identifier(id: int):
 	var get_system: starSystemAPI

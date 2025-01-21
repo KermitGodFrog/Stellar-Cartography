@@ -54,36 +54,72 @@ func get_all_files(path: String, file_ext := "", files := []):
 	
 	return files
 
-var roman_numerals: Dictionary = {
-	"1": "I",
-	"2": "II",
-	"3": "III",
-	"4": "IV",
-	"5": "V",
-	"6": "VI",
-	"7": "VII",
-	"8": "VIII",
-	"9": "IX",
-	"10": "X",
-	"11": "XI",
-	"12": "XII",
-	"13": "XIII",
-	"14": "XIV",
-	"15": "XV",
-	"16": "XVI",
-	"17": "XVII",
-	"18": "XVIII",
-	"19": "XIX",
-	"20": "XX",
-	"21": "XXI",
-	"22": "XXII",
-	"23": "XXIII",
-	"24": "XXIV",
-	"25": "XXV"
+const roman_numerals: Dictionary = {
+	1: "I",
+	2: "II",
+	3: "III",
+	4: "IV",
+	5: "V",
+	6: "VI",
+	7: "VII",
+	8: "VIII",
+	9: "IX",
+	10: "X",
+	11: "XI",
+	12: "XII",
+	13: "XIII",
+	14: "XIV",
+	15: "XV",
+	16: "XVI",
+	17: "XVII",
+	18: "XVIII",
+	19: "XIX",
+	20: "XX",
+	21: "XXI",
+	22: "XXII",
+	23: "XXIII",
+	24: "XXIV",
+	25: "XXV"
 }
 
-func convertToRomanNumeral(number: int):
-	var conversion = roman_numerals.get(str(number))
+func convertToRomanNumeral(number: int) -> String:
+	var conversion = roman_numerals.get(number)
+	if conversion:
+		return conversion
+	else:
+		return str(number)
+
+const alphabet: Dictionary = { # i hate my life man
+	1: "A",
+	2: "B",
+	3: "C",
+	4: "D",
+	5: "E",
+	6: "F",
+	7: "G",
+	8: "H",
+	9: "I",
+	10: "J",
+	11: "K",
+	12: "L",
+	13: "M",
+	14: "N",
+	15: "O",
+	16: "P",
+	17: "Q",
+	18: "R",
+	19: "S",
+	20: "T",
+	21: "U",
+	22: "V",
+	23: "W",
+	24: "X",
+	25: "Y",
+	26: "Z",
+}
+
+func convertToAlphabet(number: int) -> String:
+	var conversion = alphabet.get(number)
 	if conversion:
 		return conversion
 	else:

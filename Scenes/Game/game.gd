@@ -140,7 +140,7 @@ func _ready():
 		#debug.add_tree_access("player_in_CORE_region", true)
 		#get_tree().call_group("dialogueManager", "speak", self, debug)
 		
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 		
 	
@@ -262,7 +262,6 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("SC_PAUSE"):
 		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
-	
 	
 	#DEBUG \/\//\/\/\//\/\\/
 	#if Input.is_action_just_pressed("SC_DEBUG_MISC"):
@@ -390,7 +389,7 @@ func _on_player_following_body(following_body: bodyAPI):
 						following_planet.metadata["is_planetary_anomaly_available"] = false
 						
 						var temp_station: stationAPI = stationAPI.new()
-						temp_station.set_display_name(game_data.get_random_name_from_variety(game_data.NAME_VARIETIES.STATION))
+						temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
 						temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
 						var random = RandomNumberGenerator.new()
 						random.set_seed(following_planet.metadata.get("planetary_anomaly_seed", randi()))
@@ -422,7 +421,7 @@ func _on_player_following_body(following_body: bodyAPI):
 					following_anomaly.metadata["is_space_anomaly_available"] = false
 					
 					var temp_station: stationAPI = stationAPI.new()
-					temp_station.set_display_name(game_data.get_random_name_from_variety(game_data.NAME_VARIETIES.STATION))
+					temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
 					temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
 					var random = RandomNumberGenerator.new()
 					random.set_seed(following_anomaly.metadata.get("space_anomaly_seed", randi()))
@@ -598,6 +597,7 @@ func _on_update_target_position(pos: Vector2):
 	pass
 
 func _on_create_new_star_system(force_switch_before_post_gen: bool = false, for_system: starSystemAPI = null):
+	game_data.SYSTEM_PREFIX = "" #shuldnt be calling game_data from game.gd but whateverrrrrrr
 	var system = world.createStarSystem("random")
 	var hook_star = system.createRandomWeightedPrimaryHookStar()
 	system.generateRandomWeightedBodies(hook_star, world.PA_chance_per_planet, world.missing_AO_chance_per_planet)
