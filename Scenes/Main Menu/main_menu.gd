@@ -33,8 +33,11 @@ func _ready():
 	var relevant_actions = global_data.get_relevant_input_actions()
 	for i in relevant_actions.size():
 		var action = relevant_actions[i]
-		var event = InputMap.action_get_events(action).front()
-		game_data.DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS.append(event)
+		var event = InputMap.action_get_events(action)
+		if not event.is_empty():
+			game_data.DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS.append(event.front())
+		else:
+			game_data.DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS.append(null)
 	
 	var helper = game_data.loadSettings()
 	if helper != null:

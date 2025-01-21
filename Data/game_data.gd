@@ -70,6 +70,20 @@ func get_random_name_from_variety_for_scheme(variety: NAME_VARIETIES, scheme: NA
 			return TREK_get_random_name_from_variety(variety, _hook_display_name, _iteration, _remaining_size)
 	pass
 
+
+func TREK_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1, remaining_size: int = -1):
+	match variety:
+		NAME_VARIETIES.SPACE_ENTITY_DEFAULT:
+			return "stellar_phenomena"
+		NAME_VARIETIES.PLANET:
+			if randf() >= 0.75:
+				return STANDARD_dual_name_selection(NAME_VARIETIES.PLANET, NAME_VARIETIES.GENERIC_FLAIR)
+			else:
+				return "%s %s" % [hook_display_name, global_data.convertToRomanNumeral((iteration - remaining_size) + 1)]
+		_:
+			return STANDARD_get_random_name_from_variety(variety)
+
+
 enum GRAPHEMES {
 	B, BB, D, DD, ED, 
 	F, FF, PH, GH, LF, 
@@ -89,19 +103,6 @@ enum GRAPHEMES {
 	I, A #A is not part of this but i wanted the system to be able to auto generate the word 'IRAN' which is surprisingly common in this kinda thing
 }
 var SYSTEM_PREFIX: String = "" #this is reset whenever _on_create_star_system in game.gd is called. (kinda hacky)
-
-func TREK_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1, remaining_size: int = -1):
-	match variety:
-		NAME_VARIETIES.SPACE_ENTITY_DEFAULT:
-			return "stellar_phenomena"
-		NAME_VARIETIES.PLANET:
-			if randf() >= 0.75:
-				return STANDARD_dual_name_selection(NAME_VARIETIES.PLANET, NAME_VARIETIES.GENERIC_FLAIR)
-			else:
-				return "%s %s" % [hook_display_name, global_data.convertToRomanNumeral((iteration - remaining_size) + 1)]
-		_:
-			return STANDARD_get_random_name_from_variety(variety)
-
 
 func SCIENTIFIC_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1):
 	match variety:
