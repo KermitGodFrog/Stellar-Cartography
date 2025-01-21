@@ -443,7 +443,6 @@ func _on_stop_button_pressed():
 
 
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
-	ping_length = remap(ping_width, 5, 90, 300, 100)
 	var line = player_position_matrix[0] + ping_direction * ping_length
 	
 	var a = player_position_matrix[0]

@@ -8,12 +8,17 @@ var TUTORIAL_OMISSION_OVERRIDE: bool = false
 var system: starSystemAPI
 var locked_body_identifier: int
 
+var _ping_length: int = 0 #game.gd _on_sonar_values_changed
+var _player_position: Vector2 = Vector2.ZERO #game.gd _physics_process
+
 var point_count: int = 20
 var radius: int = 50
 var points: Dictionary = {}
+var pingable_points: Dictionary = {}
 
 func _physics_process(_delta):
 	points.clear()
+	pingable_points.clear()
 	var locked_body = system.get_body_from_identifier(locked_body_identifier)
 	for i in point_count:
 		var theta = (360 / point_count - 1) * i
@@ -45,6 +50,9 @@ func _physics_process(_delta):
 				var closest_point = get_closest_point_to_direction(dir)
 				
 				points[closest_point] += 4.0 + magnitude
+				
+				if _player_position.distance_to(body.position) < _ping_length:
+					pingable_points[closest_point] = true
 	
 	if locked_body: 
 		if locked_body.is_known: locked_body_label.set_text(locked_body.get_display_name().capitalize())
@@ -65,7 +73,10 @@ func get_closest_point_to_direction(dir: Vector2):
 func _draw():
 	for point in points:
 		draw_line(point, (point + get_screen_centre().direction_to(point) * (radius / 2)), Color.DARK_OLIVE_GREEN, 10.0)
-		draw_circle(point, points.get(point), Color.RED)
+		if pingable_points.get(point, false) == true:
+			draw_circle(point, points.get(point), Color.RED)
+		else:
+			draw_circle(point, points.get(point), Color.DARK_RED)
 	pass
 
 func get_screen_centre():

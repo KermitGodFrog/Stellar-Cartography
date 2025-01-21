@@ -251,6 +251,7 @@ func _physics_process(delta):
 	system_map.set("player_audio_visualizer_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.AUDIO_VISUALIZER) != -1))
 	system_3d.set("player_position", world.player.position)
 	long_range_scopes.set("player_position", world.player.position)
+	barycenter_visualizer.set("_player_position", world.player.position)
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
@@ -669,6 +670,7 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 
 func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2):
 	system_map._on_sonar_values_changed(ping_width, ping_length, ping_direction)
+	barycenter_visualizer._ping_length = ping_length
 	pass
 
 func _on_sell_exploration_data(sell_percentage_of_market_price: int):
