@@ -140,7 +140,7 @@ func _ready():
 		#debug.add_tree_access("player_in_CORE_region", true)
 		#get_tree().call_group("dialogueManager", "speak", self, debug)
 		
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 		
 	
