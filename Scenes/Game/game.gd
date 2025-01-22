@@ -317,12 +317,14 @@ func _on_player_following_body(following_body: bodyAPI):
 		var wormholes = world.player.current_star_system.get_wormholes()
 		var destination = following_wormhole.destination_system
 		
-		if destination and (not destination == world.player.previous_star_system):
+		#if destination and (not destination == world.player.previous_star_system): #there is special interaction for disabled wormholes, so not having this SHOULDNT be a problem!
+		if destination:
 			
 			var new_query = responseQuery.new()
 			new_query.add("concept", "followingBody")
 			new_query.add("id", "wormhole")
 			new_query.add_tree_access("name", following_wormhole.display_name)
+			new_query.add_tree_access("is_wormhole_disabled", following_wormhole.is_disabled)
 			new_query.add_tree_access("pending_audio_profiles", world.get_pending_audio_profiles().size() > 0) #for AV FLAIR
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
 			

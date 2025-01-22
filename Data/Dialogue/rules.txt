@@ -5,10 +5,7 @@ defaultApproachMessage,concept: defaultApproachMessage,,,,,,,,,Your ship approac
 defaultSuccessSound,concept: defaultSuccessSound,,playSoundEffect: dialogue_success.wav,,,,,,,
 defaultFailureSound,concept: defaultFailureSound,,playSoundEffect: dialogue_failure.wav,,,,,,,
 ,,,,,,,,,,
-defaultPlayerStartOpenDialog,concept: playerStart,,openDialog: null,,,,,,Continue:defaultPlayerStartContinueA,"[i]Two thousand years ago, an advanced artificial intelligence named Arata predicted the Universe. [/i]"
-defaultPlayerStartContinueA,"concept: optionSelected, option: defaultPlayerStartContinueA",,,,,,,,Continue:defaultPlayerStartContinueB,"[i]The Arata formula allows starships to transit into a star system closer to any destination by exploiting certain points in space-time. Machines like Arata are long gone, yet their discoveries are still relied on today. [/i]"
-defaultPlayerStartContinueB,"concept: optionSelected, option: defaultPlayerStartContinueB",,,,,,,,Exit:defaultPlayerStartContinueC,"[i]You are a newly established Captain of a starship on a mission of exploration. You have requested for a route to be calculated, via the Arata formula, into an area of space known as New Eden, which reportedly houses a fragment of human civilisation long forgotten. The journey will be perilous, and what you will encounter on the journey towards New Eden cannot be predicted. [/i]"
-defaultPlayerStartContinueC,"concept: optionSelected, option: defaultPlayerStartContinueC",,clearAll: null,,,,,,Step out of the transport:defaultPlayerStartPortal,Your transport attaches to a docking port of your new command with a series of whines. The hatch twists open.
+defaultPlayerStartOpenDialog,concept: playerStart,,openDialog: null,,,,,,Step out of the transport:defaultPlayerStartPortal,Your transport attaches to a docking port of your new command with a series of whines. The hatch twists open.
 defaultPlayerStartPortal,"concept: optionSelected, option: defaultPlayerStartPortal",,,,,,defaultPlayerStartPortalResponse,,,
 ,,,,,,,,,,
 defaultPlayerStartWalkerResponse,concept: defaultPlayerStartPortalResponse,,,,,,,,"Mention his service record:defaultPlayerStartWalkerOptionA, Demand an explanation for the tarnished uniform:defaultPlayerStartWalkerOptionB","You are greeted by one Cairo Walker, your new Security Officer. He has a muscular build, slick brown hair and an ancient English moustache. You notice that one of the gold buttons on his otherwise perfect uniform is loose. He salutes briskly as you step into refuge. "
@@ -54,13 +51,14 @@ newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,,,"You have arrived in
 wormholeOpenDialog,"concept: followingBody, id: wormhole",,openDialog: null,defaultApproachMessage,,,,wormholeTryAVFlair,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
 wormholeTryAVFlairResponse,"concept: wormholeTryAVFlair, system_is_civilized: true, player_AUDIO_VISUALIZER_unlocked: true, pending_audio_profiles: true",,,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the data banks will be purged following the traversal of [i]$name[/i]."
 enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENTER_WORMHOLE,,,,,,,
+wormholeDisabledOpenDialog,"concept: followingBody, id: wormhole, is_wormhole_disabled: true",,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,"""This wormhole leads to our previous star system,"" the navigator on-deck informs you. ""At its present stability, we cannot risk traversal."""
 ,,,,,,,,,,
 stationApproachMessage,concept: stationApproachMessage,,,,,,,,,Your ship approaches the location of a space station defined in native star charts.
 stationOpenDialog,"concept: followingBody, id: station",,openDialog: null,stationApproachMessage,populateStationOptions,addStationFlair,,,Leave:defaultLeave,
 ,,,,,,,,,,
 stationFlairStandard,"concept: addStationFlair, station_classification: STANDARD",,,,,,,,,[i]$name[/i] quickly establishes communications.
 stationFlairPirate,"concept: addStationFlair, station_classification: PIRATE",,,,,,,,,[i]$name[/i] quickly establishes communications.
-stationFlairAbandoned,"concept: addStationFlair, is_station_abandoned: true",,,,,,,,,No communication is established.
+stationFlairAbandoned,"concept: addStationFlair, is_station_abandoned: true",,,,,,,,,[i]$name[/i] does not attempt to establish communications.
 stationFlairDebris,"concept: addStationFlair, station_classification: DEBRIS",,,,,,,,,Sensors soon detect an expanding debris field.
 ,,,,,,,,,,
 stationDockingAccessOption,"concept: populateStationOptions, is_station_inhabited: true",,,,,,,,Request Docking Access: stationDockingAccess,

@@ -117,9 +117,9 @@ var planet_type_data = {
 	"Ocean": {"color": Color.BLUE, "avg_value": 15000, "variation_class": "average_water_depth"},
 	"Earth-like": {"color": Color.GREEN, "avg_value": 15000, "variation_class": "cloud_cover"},
 	"Ice": {"color": Color.WHITE, "avg_value": 2500, "variation_class": "surface_reflectivity"},
-	"Iron": {"color": Color.DARK_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude"},
-	"Nickel": {"color": Color.LIGHT_SLATE_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude"},
-	"Sulfur": {"color": Color.WEB_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude"},
+	"Iron": {"color": Color.DARK_GRAY, "avg_value": 1000, "variation_class": "iron_core_size"},
+	"Nickel": {"color": Color.LIGHT_SLATE_GRAY, "avg_value": 1000, "variation_class": "nickel_core_size"},
+	"Sulfur": {"color": Color.WEB_GRAY, "avg_value": 1000, "variation_class": "sulfur_core_size"},
 	"Coreless": {"color": Color.SLATE_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude"},
 	"Carbon": {"color": Color.BLACK, "avg_value": 2500, "variation_class": "carbon_oxygen_difference"},
 	"Fire Dwarf": {"color": Color.LIGHT_CORAL, "avg_value": 1000, "variation_class": "wind_speed"},
@@ -129,7 +129,8 @@ var planet_type_data = {
 	"Fire Giant": {"color": Color.DARK_SALMON, "avg_value": 1000, "variation_class": "wind_speed"},
 	"Gas Giant": {"color": Color.CORAL, "avg_value": 2000, "variation_class": "water_content"},
 	"Ice Giant": {"color": Color.DARK_SLATE_BLUE, "avg_value": 3000, "variation_class": "volatile_content"},
-	"Helium Giant": {"color": Color.ORANGE_RED, "avg_value": 4500, "variation_class": "noble_gas_content"}
+	"Helium Giant": {"color": Color.ORANGE_RED, "avg_value": 4500, "variation_class": "noble_gas_content"} 
+	#dwarfs and giants have the same audio data and thus can have the same variation class!
 }
 
 var LOW_VAR = bodyAPI.VARIATIONS.LOW

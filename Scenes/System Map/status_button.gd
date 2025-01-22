@@ -1,4 +1,4 @@
-extends Button
+extends "res://Scenes/System Map/custom_tooltip_button.gd"
 
 var value_change_tween: Tween
 

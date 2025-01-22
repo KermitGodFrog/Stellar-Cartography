@@ -58,6 +58,8 @@ const NAME_FILE_PATHS: Dictionary = {
 const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]
 var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
 
+
+
 func get_random_name_from_variety_for_scheme(variety: NAME_VARIETIES, scheme: NAME_SCHEMES, _hook_display_name: String = "", _iteration: int = -1, _remaining_size = -1):
 	match scheme:
 		NAME_SCHEMES.STANDARD:
@@ -70,11 +72,8 @@ func get_random_name_from_variety_for_scheme(variety: NAME_VARIETIES, scheme: NA
 			return TREK_get_random_name_from_variety(variety, _hook_display_name, _iteration, _remaining_size)
 	pass
 
-
 func TREK_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1, remaining_size: int = -1):
 	match variety:
-		NAME_VARIETIES.SPACE_ENTITY_DEFAULT:
-			return "stellar_phenomena"
 		NAME_VARIETIES.PLANET:
 			if randf() >= 0.75:
 				return STANDARD_dual_name_selection(NAME_VARIETIES.PLANET, NAME_VARIETIES.GENERIC_FLAIR)
@@ -82,7 +81,6 @@ func TREK_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_nam
 				return "%s %s" % [hook_display_name, global_data.convertToRomanNumeral((iteration - remaining_size) + 1)]
 		_:
 			return STANDARD_get_random_name_from_variety(variety)
-
 
 enum GRAPHEMES {
 	B, BB, D, DD, ED, 
@@ -106,8 +104,6 @@ var SYSTEM_PREFIX: String = "" #this is reset whenever _on_create_star_system in
 
 func SCIENTIFIC_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1):
 	match variety:
-		NAME_VARIETIES.SPACE_ENTITY_DEFAULT:
-			return "stellar_phenomena"
 		NAME_VARIETIES.STAR:
 			return "%s" % SYSTEM_PREFIX
 		NAME_VARIETIES.PLANET:
@@ -129,11 +125,10 @@ func SCIENTIFIC_construct_system_prefix(grapheme_count: int) -> String:
 	else:
 		return "".join(parts)
 
-
 func STANDARD_get_random_name_from_variety(variety: NAME_VARIETIES):
 	match variety:
 		NAME_VARIETIES.SPACE_ENTITY_DEFAULT:
-			return "stellar_phenomena"
+			return "Stellar Phenomena"
 		NAME_VARIETIES.STAR:
 			return STANDARD_dual_name_selection(NAME_VARIETIES.STAR, NAME_VARIETIES.GENERIC_FLAIR)
 		NAME_VARIETIES.PLANET:
@@ -157,7 +152,6 @@ func STANDARD_get_data_or_file_candidates(variety: NAME_VARIETIES):
 		return get_lines_from_file(NAME_FILE_PATHS.get(variety))
 	else:
 		return data
-
 
 func get_lines_from_file(file_path: String):
 	var lines: Array = []

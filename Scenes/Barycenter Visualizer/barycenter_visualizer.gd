@@ -55,7 +55,7 @@ func _physics_process(_delta):
 					pingable_points[closest_point] = true
 	
 	if locked_body: 
-		if locked_body.is_known: locked_body_label.set_text(locked_body.get_display_name().capitalize())
+		if locked_body.is_known: locked_body_label.set_text(locked_body.get_display_name())
 		elif locked_body.is_theorised_but_not_known(): locked_body_label.set_text("Unknown")
 	else: locked_body_label.set_text("")
 	queue_redraw()

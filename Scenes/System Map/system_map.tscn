@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=45 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://7klr1mcpbsc4" path="res://Graphics/go_to_icon.png" id="4_niwjs"]
 [ext_resource type="Texture2D" uid="uid://dn8ug1anbuwpu" path="res://Graphics/orbit_icon.png" id="5_hp0se"]
 [ext_resource type="Texture2D" uid="uid://dsyfc4m1nq34w" path="res://Graphics/stop_icon.png" id="7_bacyf"]
+[ext_resource type="Script" path="res://Scenes/System Map/custom_tooltip_button.gd" id="8_0b1dd"]
 [ext_resource type="Theme" uid="uid://br33hy3pgvm14" path="res://Scenes/System Map/system_map_APPS_theme.tres" id="8_a7cgy"]
 [ext_resource type="Script" path="res://Scenes/System Map/console.gd" id="8_oaj06"]
 [ext_resource type="PackedScene" uid="uid://oqkfuasvgtj6" path="res://Scenes/Barycenter Visualizer/barycenter_visualizer.tscn" id="9_2aiel"]
@@ -25,6 +26,7 @@
 [ext_resource type="Script" path="res://Scenes/System Map/value_increase_label.gd" id="13_6i2x8"]
 [ext_resource type="Texture2D" uid="uid://ce1et15cnh5ao" path="res://Graphics/morale_icon.png" id="13_vaatn"]
 [ext_resource type="Script" path="res://Scenes/System Map/hull_stress_button.gd" id="14_u08qu"]
+[ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://Scenes/Custom Tooltip/custom_tooltip_host.tres" id="15_534fl"]
 [ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://Graphics/journey_map_icon.png" id="19_36y85"]
 [ext_resource type="Texture2D" uid="uid://dka6vwu04ir6e" path="res://Graphics/long_range_scopes_icon.png" id="22_sph0q"]
 [ext_resource type="Theme" uid="uid://bmu4r6ao4lfps" path="res://Scenes/controls_help_theme.tres" id="26_737wk"]
@@ -176,35 +178,40 @@ custom_minimum_size = Vector2(450, 0)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-theme = ExtResource("3_djc4s")
 alignment = 1
 
 [node name="orbit_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-tooltip_text = "Lay in a course to selected body and orbit."
-theme = ExtResource("3_djc4s")
+tooltip_text = "Orbit the locked body."
+theme = ExtResource("15_534fl")
 icon = ExtResource("5_hp0se")
 icon_alignment = 1
 expand_icon = true
+script = ExtResource("8_0b1dd")
+tooltip_title = "'ORBIT' ORDER:"
 
 [node name="go_to_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-tooltip_text = "Lay in a course to selected body (go-to selected body)."
-theme = ExtResource("3_djc4s")
+tooltip_text = "Go-to (follow) the locked body. "
+theme = ExtResource("15_534fl")
 icon = ExtResource("4_niwjs")
 icon_alignment = 1
 expand_icon = true
+script = ExtResource("8_0b1dd")
+tooltip_title = "'GO-TO' ORDER:"
 
 [node name="stop_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-tooltip_text = "Stop the ship and/or cancel the course to selected body."
-theme = ExtResource("3_djc4s")
+tooltip_text = "Cancel 'GO-TO' and/or 'ORBIT' orders for the locked body. "
+theme = ExtResource("15_534fl")
 icon = ExtResource("7_bacyf")
 icon_alignment = 1
 expand_icon = true
+script = ExtResource("8_0b1dd")
+tooltip_title = "'STOP' ORDER:"
 
 [node name="INFO" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
 visible = false
@@ -390,31 +397,39 @@ script = ExtResource("10_ydc85")
 
 [node name="nanites_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
 layout_mode = 2
-tooltip_text = "Nanites. Universally recognised currency. Can be obtained via trading in exploration data at a space station. "
+tooltip_text = "Universally recognised currency. Can be obtained via trading in exploration data at a space station. "
+theme = ExtResource("15_534fl")
 text = "50253"
 icon = ExtResource("10_e6b7x")
 script = ExtResource("11_1rwmm")
+tooltip_title = "Nanites:"
 
 [node name="morale_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
 layout_mode = 2
-tooltip_text = "Morale. The willingness of a starships crew to follow their superiors. Depending on circumstance, an uprising may occur at 0%."
+tooltip_text = "The willingness of a starships crew to follow their superiors. Depending on circumstance, an uprising may occur at 0%."
+theme = ExtResource("15_534fl")
 text = "100%"
 icon = ExtResource("13_vaatn")
 script = ExtResource("11_1rwmm")
+tooltip_title = "Morale:"
 
 [node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["FOLLOW_UPGRADE_STATE", "playUIClickSFX"]]
 layout_mode = 2
-tooltip_text = "Hull stress. General starship wear-and-tear. Principally may be reduced at a space station in exchange for nanites. Damage over 100% will be transferred to hull deterioration."
+tooltip_text = "General starship wear-and-tear. Principally may be reduced at a space station in exchange for nanites. Damage over 100% will be transferred to hull deterioration."
+theme = ExtResource("15_534fl")
 text = "100%"
 icon = ExtResource("11_1tiv0")
 script = ExtResource("14_u08qu")
+tooltip_title = "Hull Stress:"
 
 [node name="hull_deterioration_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
 layout_mode = 2
-tooltip_text = "Hull deterioration. Permanent damage to a starship. Catastrophic, and often explosive, ship breakdown occurs at 100%."
+tooltip_text = "Permanent damage to a starship. Catastrophic, and often explosive, ship breakdown occurs at 100%."
+theme = ExtResource("15_534fl")
 text = "100%"
 icon = ExtResource("12_3bh3s")
 script = ExtResource("11_1rwmm")
+tooltip_title = "Hull Deterioration:"
 
 [node name="core_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll"]
 custom_minimum_size = Vector2(460, 235)

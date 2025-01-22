@@ -1,0 +1,32 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://bx7nt7mq77cly"]
+
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="1_3k0nl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g2f2o"]
+bg_color = Color(0, 0, 0, 0.196078)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_armmx"]
+bg_color = Color(0.184314, 0.14902, 0.156863, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_om4u1"]
+
+[resource]
+default_font = ExtResource("1_3k0nl")
+default_font_size = 16
+Label/styles/normal = SubResource("StyleBoxFlat_g2f2o")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_armmx")
+RichTextLabel/colors/default_color = Color(0.701961, 0.701961, 0.701961, 1)
+RichTextLabel/styles/focus = SubResource("StyleBoxEmpty_om4u1")

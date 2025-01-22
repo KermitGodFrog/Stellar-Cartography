@@ -18,5 +18,6 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 	pass
 
 func _on_pressed():
-	if increase_for_nanites: emit_signal("removeHullStressForNanites", 1, nanites_per_percentage)
+	if increase_for_nanites:
+		emit_signal("removeHullStressForNanites", 1, nanites_per_percentage)
 	pass 
