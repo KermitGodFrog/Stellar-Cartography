@@ -5,7 +5,8 @@ defaultApproachMessage,concept: defaultApproachMessage,,,,,,,,,Your ship approac
 defaultSuccessSound,concept: defaultSuccessSound,,playSoundEffect: dialogue_success.wav,,,,,,,
 defaultFailureSound,concept: defaultFailureSound,,playSoundEffect: dialogue_failure.wav,,,,,,,
 ,,,,,,,,,,
-defaultPlayerStartOpenDialog,concept: playerStart,,openDialog: null,,,,,,Step out of the transport:defaultPlayerStartPortal,Your transport attaches to a docking port of your new command with a series of whines. The hatch twists open.
+defaultPlayerStartOpenDialog,concept: playerStart,,openDialog: null,,,,,,Continue:defaultPlayerStartContinue,"[i]You are a newly established Captain of a starship on a mission of exploration. You have requested for a route to be calculated into an area of space known as New Eden, which reportedly houses a fragment of human civilisation long forgotten. The journey to New Eden be perilous, and the dangers you will face cannot be predicted. [/i]"
+defaultPlayerStartContinue,"concept: optionSelected, option: defaultPlayerStartContinue",,,,,,,,Step out of the transport:defaultPlayerStartPortal,Your transport attaches to a docking port of your new command with a series of whines. The hatch twists open.
 defaultPlayerStartPortal,"concept: optionSelected, option: defaultPlayerStartPortal",,,,,,defaultPlayerStartPortalResponse,,,
 ,,,,,,,,,,
 defaultPlayerStartWalkerResponse,concept: defaultPlayerStartPortalResponse,,,,,,,,"Mention his service record:defaultPlayerStartWalkerOptionA, Demand an explanation for the tarnished uniform:defaultPlayerStartWalkerOptionB","You are greeted by one Cairo Walker, your new Security Officer. He has a muscular build, slick brown hair and an ancient English moustache. You notice that one of the gold buttons on his otherwise perfect uniform is loose. He salutes briskly as you step into refuge. "
