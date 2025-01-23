@@ -32,7 +32,7 @@ func _ready():
 		
 		var new_player = world.createPlayer(
 			init_data.get("name", "Tanaka"), 
-			init_data.get("prefix", "Captain")) #default values unnecessary as init data always has the keys
+			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
 		# -> none of this should be necessary but im worried that the game will break if not included as queries might require this data
@@ -81,7 +81,7 @@ func _ready():
 		
 		var new_player = world.createPlayer(
 			init_data.get("name", "Tanaka"), 
-			init_data.get("prefix", "Captain")) #default values unnecessary as init data always has the keys (or doesnt lol)
+			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
 		#CHARACTERS FOR ROGUELIKE:

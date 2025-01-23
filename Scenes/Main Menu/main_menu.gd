@@ -69,17 +69,22 @@ func _ready():
 	pass
 
 func _on_continue_button_pressed():
-	global_data.change_scene.emit("res://Scenes/Game/game.tscn", global_data.GAME_INIT_TYPES.CONTINUE)
+	global_data.change_scene.emit("res://Scenes/Game/game.tscn", {"init_type": global_data.GAME_INIT_TYPES.CONTINUE})
 	pass
 
 func _on_tutorial_button_pressed():
-	global_data.change_scene.emit("res://Scenes/Game/game.tscn", global_data.GAME_INIT_TYPES.TUTORIAL) #default values in game startup mean that arguments here not required!
+	global_data.change_scene.emit("res://Scenes/Game/game.tscn", {"init_type": global_data.GAME_INIT_TYPES.TUTORIAL})
 	pass
 
 func _on_create_button_pressed():
-	var player_name_with_fallback: String
-	if name_edit.text.is_empty(): player_name_with_fallback = name_edit.placeholder_text
-	global_data.change_scene.emit("res://Scenes/Game/game.tscn", global_data.GAME_INIT_TYPES.NEW, {"name": player_name_with_fallback, "prefix": prefix_edit.get_item_text(prefix_edit.selected)})
+	if not name_edit.text.is_empty():
+		global_data.change_scene.emit("res://Scenes/Game/game.tscn", {
+			"init_type": global_data.GAME_INIT_TYPES.NEW, 
+			"init_data": {"name": name_edit.get_text(), "prefix": prefix_edit.get_item_text(prefix_edit.selected)}
+			})
+	else:
+		global_data.change_scene.emit("res://Scenes/Game/game.tscn", {
+			"init_type": global_data.GAME_INIT_TYPES.NEW})
 	pass
 
 func _on_new_button_pressed():
