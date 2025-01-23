@@ -66,8 +66,8 @@ func get_random_name_from_variety_for_scheme(variety: NAME_VARIETIES, scheme: NA
 			return STANDARD_get_random_name_from_variety(variety)
 		NAME_SCHEMES.SCIENTIFIC:
 			if SYSTEM_PREFIX.is_empty(): 
-				SYSTEM_PREFIX = SCIENTIFIC_construct_system_prefix(maxi(1, round(randfn(3, 1))))
-			return SCIENTIFIC_get_random_name_from_variety(variety, _hook_display_name, _iteration)
+				SYSTEM_PREFIX = SCIENTIFIC_construct_system_prefix(maxi(1, round(randfn(2, 1))))
+			return SCIENTIFIC_get_random_name_from_variety(variety, _hook_display_name, _iteration, _remaining_size)
 		NAME_SCHEMES.TREK:
 			return TREK_get_random_name_from_variety(variety, _hook_display_name, _iteration, _remaining_size)
 	pass
@@ -75,10 +75,10 @@ func get_random_name_from_variety_for_scheme(variety: NAME_VARIETIES, scheme: NA
 func TREK_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1, remaining_size: int = -1):
 	match variety:
 		NAME_VARIETIES.PLANET:
-			if randf() >= 0.75:
-				return STANDARD_dual_name_selection(NAME_VARIETIES.PLANET, NAME_VARIETIES.GENERIC_FLAIR)
-			else:
+			if randf() >= 0.25:
 				return "%s %s" % [hook_display_name, global_data.convertToRomanNumeral((iteration - remaining_size) + 1)]
+			else:
+				return STANDARD_dual_name_selection(NAME_VARIETIES.PLANET, NAME_VARIETIES.GENERIC_FLAIR)
 		_:
 			return STANDARD_get_random_name_from_variety(variety)
 
@@ -102,13 +102,13 @@ enum GRAPHEMES {
 }
 var SYSTEM_PREFIX: String = "" #this is reset whenever _on_create_star_system in game.gd is called. (kinda hacky)
 
-func SCIENTIFIC_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1):
+func SCIENTIFIC_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1, remaining_size: int = -1):
 	match variety:
 		NAME_VARIETIES.STAR:
-			return "%s" % SYSTEM_PREFIX
+			return SYSTEM_PREFIX
 		NAME_VARIETIES.PLANET:
 			if hook_display_name.right(1).is_valid_int():
-				return "%s %s" % [hook_display_name, global_data.convertToAlphabet(iteration + 1)]
+				return "%s %s" % [hook_display_name, global_data.convertToAlphabet((iteration - remaining_size) + 1)]
 			return "%s %03d" % [hook_display_name, iteration]
 		NAME_VARIETIES.WORMHOLE:
 			return "%s W-%03d" % [hook_display_name, global_data.get_randi(0, 999)]
@@ -119,7 +119,11 @@ func SCIENTIFIC_construct_system_prefix(grapheme_count: int) -> String:
 	randomize()
 	var parts: PackedStringArray = []
 	for i in grapheme_count:
-		parts.append(GRAPHEMES.keys().pick_random())
+		if randf() >= 0.25:
+			parts.append(GRAPHEMES.keys().pick_random())
+		else:
+			parts.append("%03d" % global_data.get_randi(0, 999))
+	parts.append("%03d" % global_data.get_randi(0, 999))
 	if randf() >= 0.25:
 		return "-".join(parts)
 	else:

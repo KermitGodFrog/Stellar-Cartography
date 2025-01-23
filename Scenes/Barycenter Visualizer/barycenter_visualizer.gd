@@ -9,6 +9,7 @@ var system: starSystemAPI
 var locked_body_identifier: int
 
 var _ping_length: int = 0 #game.gd _on_sonar_values_changed
+var _ping_direction: Vector2 = Vector2.ZERO
 var _player_position: Vector2 = Vector2.ZERO #game.gd _physics_process
 
 var point_count: int = 20
@@ -52,7 +53,8 @@ func _physics_process(_delta):
 				points[closest_point] += 4.0 + magnitude
 				
 				if _player_position.distance_to(body.position) < _ping_length:
-					pingable_points[closest_point] = true
+					if _ping_direction != Vector2.ZERO:
+						pingable_points[closest_point] = true
 	
 	if locked_body: 
 		if locked_body.is_known: locked_body_label.set_text(locked_body.get_display_name())
