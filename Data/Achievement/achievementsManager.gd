@@ -66,12 +66,11 @@ func _notification(what):
 	pass
 
 func _ready():
-	global_data.change_scene.connect(_change_scene) #i think this class is high enough level to be granted access to this
+	global_data.scene_changed.connect(_on_scene_changed.unbind(1)) #i think this class is high enough level to be granted access to this
+	#unbind(1) = unbind 'path_to_scene'
 	pass
 
-func _change_scene(_path_to_scene, _with_init_type = null, _with_init_data = null):
-	#maybe make a more general group to do this later, as other things will need updated achievements list (especially main menu display) :3
-	await get_tree().physics_frame #probby not necessary!
+func _on_scene_changed():
 	print("DISTRIBUTING UPDATED ACHIEVEMENTS")
 	get_tree().call_deferred("call_group", "FOLLOW_ACHIEVEMENTS_ARRAY_UPDATE", "receive_updated_achievements_array", achievements_array) #this calls too early/late and doesnt work for some reason when/if achievementsHelper 'achievements' variable is inferred to be an array rather than an Array[achievement]
 	get_tree().call_deferred("call_group", "FOLLOW_ACHIEVEMENTS_UPDATE", "receive_updated_achievements", achievements)

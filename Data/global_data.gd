@@ -2,6 +2,7 @@ extends Node
 
 enum GAME_INIT_TYPES {NEW, CONTINUE, TUTORIAL}
 signal change_scene(path_to_scene)
+signal scene_changed(path_to_scene)
 
 func get_randi(from: int, to: int):
 	return RandomNumberGenerator.new().randi_range(from, to)

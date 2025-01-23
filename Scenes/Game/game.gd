@@ -331,7 +331,8 @@ func _on_player_following_body(following_body: bodyAPI):
 			var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 			match RETURN_STATE:
 				"ENTER_WORMHOLE":
-					enter_wormhole(following_wormhole, wormholes, destination)
+					if (not destination == world.player.previous_star_system) and (not following_wormhole.is_disabled): # im a lil paranoid teeehee :3
+						enter_wormhole(following_wormhole, wormholes, destination)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_wormhole)
 	

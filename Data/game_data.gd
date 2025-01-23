@@ -75,7 +75,7 @@ func get_random_name_from_variety_for_scheme(variety: NAME_VARIETIES, scheme: NA
 func TREK_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1, remaining_size: int = -1):
 	match variety:
 		NAME_VARIETIES.PLANET:
-			if randf() >= 0.25:
+			if randf() >= 0.5:
 				return "%s %s" % [hook_display_name, global_data.convertToRomanNumeral((iteration - remaining_size) + 1)]
 			else:
 				return STANDARD_dual_name_selection(NAME_VARIETIES.PLANET, NAME_VARIETIES.GENERIC_FLAIR)

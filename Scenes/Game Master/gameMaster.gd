@@ -49,7 +49,10 @@ func _process(_delta):
 				call_deferred("remove_child", _current_loading_instance)
 				_current_loading_instance.queue_free()
 				
+				global_data.scene_changed.emit(_current_path_to_scene)
+				
 				reset_all_current()
+				
 			ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 				if _current_loading_instance:
 					if _current_loading_instance.is_node_ready():

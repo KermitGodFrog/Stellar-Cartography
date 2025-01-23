@@ -6,7 +6,7 @@ extends Control
 @onready var sfx = $sfx
 @onready var music = $music
 
-const TYPING_SPEED: int = 200.0 #could have this in settings! good test for a slider option!
+const TYPING_SPEED: int = 350.0 #could have this in settings! good test for a slider option!
 var typing_position: float = 0.0
 func _process(delta):
 	typing_position = clampf(typing_position + (delta * TYPING_SPEED), 0.0, text.get_total_character_count())
