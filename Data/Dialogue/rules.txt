@@ -189,16 +189,16 @@ PA_03TheResearcherReturnFailure,"concept: optionSelected, option: PA_03TheResear
 PA_03TheResearcherEliminate,"concept: optionSelected, option: PA_03TheResearcherEliminate",,"addValueWithFlair: 2500, removeMoraleWithFlair: 10",,,,,,Return to the transport: PA_03TheResearcherLeave,You discretely signal for your marine escort to kill him. They nod nonchalantly and drag the man away while he flails hopelessly. You do not wait to hear the gunshot.
 PA_03TheResearcherLeave,"concept: optionSelected, option: PA_03TheResearcherLeave",,,,,,,,Leave: PAHardLeave,"You return to the landing zone. Following fifteen minutes of delays and comm chatter, the transport takes off on an interception course with your starship."
 ,,,,,,,,,,
-PA_04HollowGiant,"concept: PA_JovianPortalResponse, player_in_ABYSS_region: true",,openDialog: null,defaultApproachMessage,,,,,Dispatch a probe: PA_04HollowGiantContinueA,intro message
-PA_04HollowGiantContinueA,"concept: optionSelected, option: PA_04HollowGiantContinueA",,setImage: PA_04_missing_core.png,,,,,"PA_04HollowGiantContinueATryRuiFlair, PA_04HollowGiantContinueAFlairOption",,probe dispatch message and discovery
-PA_04HollowGiantContinueARuiFlair,"concept: PA_04HollowGiantContinueATryRuiFlair, player_FIRST_OFFICER_alive: true",,,,,,,,,first officer rui theorises what the forcefield is for
-PA_04HollowGiantContinueAFlairOptionDefault,concept: PA_04HollowGiantContinueAFlairOption,,addValueWithFlair: 2500,,,,,,Leave:PAHardLeave,there is no sufficiently skilled person aboard to lead a mission down to the core
-PA_04HollowGiantContinueAFlairOptionJiya,"concept: PA_04HollowGiantContinueAFlairOption, player_CHIEF_ENGINEER_alive: true",,,,,,,,"Order Chief Engineer Jiya to lead an expedition: PA_04HollowGiantJiyaExpeditionA, Leave: PAHardLeave",chief engineer jiya can lead an expedition down to the core
-PA_04HollowGiantJiyaExpeditionA,"concept: optionSelected, option: PA_04HollowGiantJiyaExpeditionA",,,,,,,,Order a closer analysis of the light: PA_04HollowGiantJiyaExpeditionB,expedition gets through clouds into forcefield
+PA_04HollowGiant,"concept: PA_JovianPortalResponse, player_in_ABYSS_region: true",,openDialog: null,defaultApproachMessage,,,,,Dispatch a probe: PA_04HollowGiantContinueA,(UNFINISHED EVENT) intro message
+PA_04HollowGiantContinueA,"concept: optionSelected, option: PA_04HollowGiantContinueA",,setImage: PA_04_missing_core.png,,,,,"PA_04HollowGiantContinueATryRuiFlair, PA_04HollowGiantContinueAFlairOption",,(UNFINISHED EVENT) probe dispatch message and discovery
+PA_04HollowGiantContinueARuiFlair,"concept: PA_04HollowGiantContinueATryRuiFlair, player_FIRST_OFFICER_alive: true",,,,,,,,,(UNFINISHED EVENT) first officer rui theorises what the forcefield is for
+PA_04HollowGiantContinueAFlairOptionDefault,concept: PA_04HollowGiantContinueAFlairOption,,addValueWithFlair: 2500,,,,,,Leave:PAHardLeave,(UNFINISHED EVENT) there is no sufficiently skilled person aboard to lead a mission down to the core
+PA_04HollowGiantContinueAFlairOptionJiya,"concept: PA_04HollowGiantContinueAFlairOption, player_CHIEF_ENGINEER_alive: true",,,,,,,,"Order Chief Engineer Jiya to lead an expedition: PA_04HollowGiantJiyaExpeditionA, Leave: PAHardLeave",(UNFINISHED EVENT) chief engineer jiya can lead an expedition down to the core
+PA_04HollowGiantJiyaExpeditionA,"concept: optionSelected, option: PA_04HollowGiantJiyaExpeditionA",,,,,,,,Order a closer analysis of the light: PA_04HollowGiantJiyaExpeditionB,(UNFINISHED EVENT) expedition gets through clouds into forcefield
 PA_04HollowGiantJiyaExpeditionB,"concept: optionSelected, option: PA_04HollowGiantJiyaExpeditionB",,,,,,PA_04HollowGiantJiyaExpeditionBDispatchResponse,,,
-PA_04HollowGiantJiyaExpeditionBDispatchSuccess,concept: PA_04HollowGiantJiyaExpeditionBDispatchResponse,,addValueWithFlair: 25000,,,,,,Order a recall: PA_04HollowGiantLeave,find great data of the forcefield projector thingamabob
-PA_04HollowGiantJiyaExpeditionBDispatchFailure,concept: PA_04HollowGiantJiyaExpeditionBDispatchResponse,,"addValueWithFlair: 5000, killCharacterWithFlair: 1",,,,,,Regroup: PA_04HollowGiantLeave,accidently touch it and BOOM entire planet collapse
-PA_04HollowGiantLeave,"concept: optionSelected, option: PA_04HollowGiantLeave",,,,,,,,Leave: PAHardLeave,leaving message
+PA_04HollowGiantJiyaExpeditionBDispatchSuccess,concept: PA_04HollowGiantJiyaExpeditionBDispatchResponse,,addValueWithFlair: 25000,,,,,,Order a recall: PA_04HollowGiantLeave,(UNFINISHED EVENT) find great data of the forcefield projector thingamabob
+PA_04HollowGiantJiyaExpeditionBDispatchFailure,concept: PA_04HollowGiantJiyaExpeditionBDispatchResponse,,"addValueWithFlair: 5000, killCharacterWithFlair: 1",,,,,,Regroup: PA_04HollowGiantLeave,(UNFINISHED EVENT) accidently touch it and BOOM entire planet collapse
+PA_04HollowGiantLeave,"concept: optionSelected, option: PA_04HollowGiantLeave",,,,,,,,Leave: PAHardLeave,(UNFINISHED EVENT) leaving message
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
