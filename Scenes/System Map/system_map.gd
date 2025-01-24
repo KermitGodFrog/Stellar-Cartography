@@ -38,6 +38,7 @@ var player_audio_visualizer_unlocked: bool = false
 @onready var body_attributes_list = $camera/canvas/control/tabs/INFO/body_attributes_list
 @onready var orbit_button = $camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button
 @onready var go_to_button = $camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button
+@onready var stop_button = $camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button
 @onready var picker_label = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_label
 @onready var picker_button = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
 @onready var console = $camera/canvas/control/console
@@ -318,6 +319,12 @@ func _unhandled_input(event):
 func reset_player_boosting() -> void:
 	player_is_boosting = false
 	emit_signal("updatePlayerIsBoosting", player_is_boosting)
+	pass
+
+func reset_actions_buttons_pressed() -> void: #godot 4.3 migration issue quickfix... terrible...
+	orbit_button._on_button_up()
+	go_to_button._on_button_up()
+	stop_button._on_button_up()
 	pass
 
 func _draw():
@@ -601,4 +608,3 @@ func follow_and_lock_item(item: TreeItem):
 			follow_body = body
 			camera.follow_body = follow_body
 	pass
-

@@ -870,6 +870,7 @@ func _on_pause_mode_changed(new_mode: game_data.PAUSE_MODES) -> void:
 	audio_handler._pause_mode = new_mode #audio handler doesnt TECHNICALLY need pause control
 	
 	system_map.reset_player_boosting() #to stop boosting from being stuck to true, this SHOULD cover ALL grounds!
+	system_map.reset_actions_buttons_pressed() #godot 4.3 migration quick fix
 	pass
 
 
