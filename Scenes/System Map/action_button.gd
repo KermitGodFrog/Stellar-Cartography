@@ -20,7 +20,7 @@ func _on_button_up():
 
 func _process(_delta: float) -> void:
 	if is_disabled():
-		get_node(texture_node).set_self_modulate(Color.DIM_GRAY)
+		get_node(texture_node).set_self_modulate(Color.GRAY)
 	else:
 		get_node(texture_node).set_self_modulate(Color.WHITE)
 	pass
