@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://ctt5uf8aj8nro"
 path.s3tc="res://.godot/imported/coral_asteroid1_algae_bush.png-2ab3343c28238596245016316b996eb1.s3tc.ctex"
+path.etc2="res://.godot/imported/coral_asteroid1_algae_bush.png-2ab3343c28238596245016316b996eb1.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={}
@@ -13,7 +14,7 @@ generator_parameters={}
 [deps]
 
 source_file="res://Instantiated Scenes/Coral Asteroids/coral_asteroid1_algae_bush.png"
-dest_files=["res://.godot/imported/coral_asteroid1_algae_bush.png-2ab3343c28238596245016316b996eb1.s3tc.ctex"]
+dest_files=["res://.godot/imported/coral_asteroid1_algae_bush.png-2ab3343c28238596245016316b996eb1.s3tc.ctex", "res://.godot/imported/coral_asteroid1_algae_bush.png-2ab3343c28238596245016316b996eb1.etc2.ctex"]
 
 [params]
 

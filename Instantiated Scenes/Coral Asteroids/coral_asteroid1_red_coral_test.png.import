@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://lba43ej8nqtf"
 path.s3tc="res://.godot/imported/coral_asteroid1_red_coral_test.png-438271601668345c9a469b285f08296e.s3tc.ctex"
+path.etc2="res://.godot/imported/coral_asteroid1_red_coral_test.png-438271601668345c9a469b285f08296e.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={}
@@ -13,7 +14,7 @@ generator_parameters={}
 [deps]
 
 source_file="res://Instantiated Scenes/Coral Asteroids/coral_asteroid1_red_coral_test.png"
-dest_files=["res://.godot/imported/coral_asteroid1_red_coral_test.png-438271601668345c9a469b285f08296e.s3tc.ctex"]
+dest_files=["res://.godot/imported/coral_asteroid1_red_coral_test.png-438271601668345c9a469b285f08296e.s3tc.ctex", "res://.godot/imported/coral_asteroid1_red_coral_test.png-438271601668345c9a469b285f08296e.etc2.ctex"]
 
 [params]
 

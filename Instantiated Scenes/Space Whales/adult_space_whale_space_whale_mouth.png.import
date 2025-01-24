@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b5a3wup561gre"
 path.s3tc="res://.godot/imported/adult_space_whale_space_whale_mouth.png-21128732ef76a0c3d1684fb2b26cfa71.s3tc.ctex"
+path.etc2="res://.godot/imported/adult_space_whale_space_whale_mouth.png-21128732ef76a0c3d1684fb2b26cfa71.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={}
@@ -13,7 +14,7 @@ generator_parameters={}
 [deps]
 
 source_file="res://Instantiated Scenes/Space Whales/adult_space_whale_space_whale_mouth.png"
-dest_files=["res://.godot/imported/adult_space_whale_space_whale_mouth.png-21128732ef76a0c3d1684fb2b26cfa71.s3tc.ctex"]
+dest_files=["res://.godot/imported/adult_space_whale_space_whale_mouth.png-21128732ef76a0c3d1684fb2b26cfa71.s3tc.ctex", "res://.godot/imported/adult_space_whale_space_whale_mouth.png-21128732ef76a0c3d1684fb2b26cfa71.etc2.ctex"]
 
 [params]
 
