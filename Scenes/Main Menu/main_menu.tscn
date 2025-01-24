@@ -10,11 +10,11 @@
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_srvhc"]
 texture = ExtResource("2_1jdbj")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2i1us"]
-bg_color = Color(0.235294, 0.431373, 0.443137, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qyn1f"]
 bg_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2i1us"]
+bg_color = Color(0.235294, 0.431373, 0.443137, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8pdab"]
 
@@ -69,22 +69,26 @@ offset_bottom = 20.0
 grow_vertical = 2
 
 [node name="continue_button" type="Button" parent="options_scroll"]
+custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
 theme = ExtResource("2_2eiki")
 disabled = true
 text = "CONTINUE"
 
 [node name="new_button" type="Button" parent="options_scroll"]
+custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
 theme = ExtResource("2_2eiki")
 text = "NEW"
 
 [node name="tutorial_button" type="Button" parent="options_scroll"]
+custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
 theme = ExtResource("2_2eiki")
 text = "TUTORIAL"
 
 [node name="achievements_button" type="Button" parent="options_scroll"]
+custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
 theme = ExtResource("2_2eiki")
 text = "ACHIEVEMENTS"
@@ -151,8 +155,8 @@ custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 theme_type_variation = &"ButtonDull"
-theme_override_styles/normal = SubResource("StyleBoxFlat_2i1us")
 theme_override_styles/hover = SubResource("StyleBoxFlat_qyn1f")
+theme_override_styles/normal = SubResource("StyleBoxFlat_2i1us")
 icon = ExtResource("5_uqij0")
 icon_alignment = 1
 expand_icon = true
@@ -165,10 +169,9 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_8pdab")
 [node name="prefix_edit" type="OptionButton" parent="new_game_popup/new_game/margin/scroll"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-item_count = 3
 selected = 2
+item_count = 3
 popup/item_0/text = "Sir"
-popup/item_0/id = 0
 popup/item_1/text = "Madam"
 popup/item_1/id = 1
 popup/item_2/text = "Captain"

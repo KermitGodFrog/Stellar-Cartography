@@ -6,21 +6,21 @@
 [ext_resource type="Theme" uid="uid://dm3fbhtw7qov2" path="res://Scenes/System Map/system_map_HUD_theme.tres" id="3_djc4s"]
 [ext_resource type="Script" path="res://Scenes/System Map/ui_tabs.gd" id="4_27qwa"]
 [ext_resource type="Script" path="res://Scenes/System Map/map_overlay.gd" id="4_cfo3w"]
-[ext_resource type="Texture2D" uid="uid://7klr1mcpbsc4" path="res://Graphics/go_to_icon.png" id="4_niwjs"]
 [ext_resource type="Texture2D" uid="uid://dn8ug1anbuwpu" path="res://Graphics/orbit_icon.png" id="5_hp0se"]
-[ext_resource type="Texture2D" uid="uid://dsyfc4m1nq34w" path="res://Graphics/stop_icon.png" id="7_bacyf"]
-[ext_resource type="Script" path="res://Scenes/System Map/custom_tooltip_button.gd" id="8_0b1dd"]
 [ext_resource type="Theme" uid="uid://br33hy3pgvm14" path="res://Scenes/System Map/system_map_APPS_theme.tres" id="8_a7cgy"]
+[ext_resource type="Script" path="res://Scenes/System Map/action_button.gd" id="8_ne0ka"]
 [ext_resource type="Script" path="res://Scenes/System Map/console.gd" id="8_oaj06"]
 [ext_resource type="PackedScene" uid="uid://oqkfuasvgtj6" path="res://Scenes/Barycenter Visualizer/barycenter_visualizer.tscn" id="9_2aiel"]
 [ext_resource type="Script" path="res://Scenes/System Map/ui_apps_scroll.gd" id="9_pw1kh"]
 [ext_resource type="PackedScene" uid="uid://chwm82adl21cm" path="res://Scenes/Sonar Interface/sonar_interface.tscn" id="10_48t0n"]
 [ext_resource type="Texture2D" uid="uid://4r5ju0dq0137" path="res://Graphics/nanites_icon.png" id="10_e6b7x"]
+[ext_resource type="Texture2D" uid="uid://7klr1mcpbsc4" path="res://Graphics/go_to_icon.png" id="10_xhqpl"]
 [ext_resource type="Script" path="res://Scenes/System Map/status_scroll.gd" id="10_ydc85"]
 [ext_resource type="Script" path="res://Scenes/System Map/status_button.gd" id="11_1rwmm"]
 [ext_resource type="Texture2D" uid="uid://dq25m1n2y5upl" path="res://Graphics/hull_stress_icon.png" id="11_1tiv0"]
 [ext_resource type="PackedScene" uid="uid://co52u63cyk220" path="res://Scenes/System 3D/system_3d.tscn" id="11_domud"]
 [ext_resource type="Texture2D" uid="uid://csvtv1sy2k3ns" path="res://Graphics/audio_visualizer_icon.png" id="11_lvg8y"]
+[ext_resource type="Texture2D" uid="uid://dsyfc4m1nq34w" path="res://Graphics/stop_icon.png" id="11_vquxl"]
 [ext_resource type="Texture2D" uid="uid://cghgcu7ghw8mf" path="res://Graphics/hull_deterioration_icon.png" id="12_3bh3s"]
 [ext_resource type="Texture2D" uid="uid://vdjsk4r01pst" path="res://Graphics/ui_arrow.png" id="12_6oeqo"]
 [ext_resource type="Script" path="res://Scenes/System Map/value_increase_label.gd" id="13_6i2x8"]
@@ -50,11 +50,11 @@ bg_color = Color(0.109804, 0.109804, 0.211765, 0.415686)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ufej3"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w1mgb"]
-bg_color = Color(0.211765, 0.211765, 0.211765, 0.415686)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5sqdb"]
 bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w1mgb"]
+bg_color = Color(0.211765, 0.211765, 0.211765, 0.415686)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r4cqc"]
 
@@ -137,6 +137,7 @@ visible = false
 custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
 color = Color(0.184314, 0.14902, 0.156863, 1)
+metadata/_tab_index = 0
 
 [node name="warning_label" type="Label" parent="system/camera/canvas/control/tabs/WARNING"]
 layout_mode = 1
@@ -156,6 +157,7 @@ layout_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 1
 theme = ExtResource("3_djc4s")
+metadata/_tab_index = 1
 
 [node name="system_list" type="Tree" parent="system/camera/canvas/control/tabs/OVERVIEW"]
 custom_minimum_size = Vector2(450, 700)
@@ -185,33 +187,72 @@ custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 tooltip_text = "Orbit the locked body."
 theme = ExtResource("15_534fl")
-icon = ExtResource("5_hp0se")
 icon_alignment = 1
 expand_icon = true
-script = ExtResource("8_0b1dd")
-tooltip_title = "'ORBIT' ORDER:"
+script = ExtResource("8_ne0ka")
+texture_node = NodePath("orbit_texture")
+tooltip_title = "'ORBIT' ACTION:"
+
+[node name="orbit_texture" type="TextureRect" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -25.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_hp0se")
+stretch_mode = 5
 
 [node name="go_to_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 tooltip_text = "Go-to (follow) the locked body. "
 theme = ExtResource("15_534fl")
-icon = ExtResource("4_niwjs")
 icon_alignment = 1
 expand_icon = true
-script = ExtResource("8_0b1dd")
-tooltip_title = "'GO-TO' ORDER:"
+script = ExtResource("8_ne0ka")
+texture_node = NodePath("go_to_texture")
+tooltip_title = "'GO-TO' ACTION:"
+
+[node name="go_to_texture" type="TextureRect" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -25.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("10_xhqpl")
+stretch_mode = 5
 
 [node name="stop_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 tooltip_text = "Cancel 'GO-TO' and/or 'ORBIT' orders for the locked body. "
 theme = ExtResource("15_534fl")
-icon = ExtResource("7_bacyf")
 icon_alignment = 1
 expand_icon = true
-script = ExtResource("8_0b1dd")
-tooltip_title = "'STOP' ORDER:"
+script = ExtResource("8_ne0ka")
+texture_node = NodePath("stop_texture")
+tooltip_title = "'STOP' ACTION:"
+
+[node name="stop_texture" type="TextureRect" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -25.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("11_vquxl")
+stretch_mode = 5
 
 [node name="INFO" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
 visible = false
@@ -219,6 +260,7 @@ custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
 mouse_filter = 0
 theme = ExtResource("3_djc4s")
+metadata/_tab_index = 2
 
 [node name="follow_body_label" type="Label" parent="system/camera/canvas/control/tabs/INFO"]
 custom_minimum_size = Vector2(0, 50)
@@ -277,13 +319,12 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 tooltip_text = "A value which can be reasonably estimated via the audio visualizer."
 theme_override_styles/focus = SubResource("StyleBoxEmpty_ufej3")
-theme_override_styles/normal = SubResource("StyleBoxFlat_w1mgb")
 theme_override_styles/hover = SubResource("StyleBoxFlat_5sqdb")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_w1mgb")
-item_count = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_w1mgb")
 fit_to_longest_item = false
+item_count = 3
 popup/item_0/text = "LOW"
-popup/item_0/id = 0
 popup/item_1/text = "MEDIUM"
 popup/item_1/id = 1
 popup/item_2/text = "HIGH"
