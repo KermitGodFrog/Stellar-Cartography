@@ -10,9 +10,7 @@ class_name worldAPI
 #KEY CUSTOMIZATION
 @export var _total_systems: int 
 @export var _max_jumps: int
-@export var _hull_stress_highest_arc: int
 @export var _hull_stress_wormhole: int
-@export var _hull_stress_module: int 
 
 @export var SA_chance_per_candidate: float
 @export var PA_chance_per_planet: float
@@ -42,9 +40,7 @@ func createPlayer(name: String, prefix: String) -> playerAPI:
 	
 	new_player.max_jumps = _max_jumps
 	new_player.total_systems = _total_systems
-	new_player.hull_stress_highest_arc = _hull_stress_highest_arc
 	new_player.hull_stress_wormhole = _hull_stress_wormhole
-	new_player.hull_stress_module = _hull_stress_module
 	
 	player = new_player
 	return new_player

@@ -36,9 +36,7 @@ var total_score: int = 0:
 #key customization stufufffuff
 @export var total_systems: int 
 @export var max_jumps: int
-@export var hull_stress_highest_arc: int
 @export var hull_stress_wormhole: int
-@export var hull_stress_module: int
 
 @export var jumps_remaining: int = 0
 @export var systems_traversed: int = 0

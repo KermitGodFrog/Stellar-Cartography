@@ -215,14 +215,12 @@ func saveWorld(world: worldAPI) -> void:
 	print("ERROR CODE: ", error)
 	pass
 
-func createWorld(_total_systems: int, _max_jumps: int, _hull_stress_highest_arc: int, _hull_stress_wormhole: int, _hull_stress_module: int, _SA_chance_per_candidate: float, _PA_chance_per_planet: float, _missing_AO_chance_per_planet: float) -> worldAPI:
+func createWorld(_total_systems: int, _max_jumps: int, _hull_stress_wormhole: int, _SA_chance_per_candidate: float, _PA_chance_per_planet: float, _missing_AO_chance_per_planet: float) -> worldAPI:
 	print("GAME DATA: CREATING WORLD")
 	var world = worldAPI.new()
 	world._max_jumps = _max_jumps
 	world._total_systems = _total_systems
-	world._hull_stress_highest_arc = _hull_stress_highest_arc
 	world._hull_stress_wormhole = _hull_stress_wormhole
-	world._hull_stress_module = _hull_stress_module
 	world.SA_chance_per_candidate = _SA_chance_per_candidate
 	world.PA_chance_per_planet = _PA_chance_per_planet
 	world.missing_AO_chance_per_planet = _missing_AO_chance_per_planet

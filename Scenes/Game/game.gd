@@ -26,7 +26,7 @@ func _ready():
 	
 	world = await game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 3, 10, 1, 0.01, 0.05, 0.25)
+		world = game_data.createWorld(25, 5, 25, 0.01, 0.05, 0.25)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -75,7 +75,7 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 3, 10, 1, 0.01, 0.05, 0.25)
+		world = game_data.createWorld(25, 5, 25, 0.01, 0.05, 0.25)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -256,7 +256,6 @@ func _physics_process(delta):
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
 	lrs_bestiary.set("discovered_entities_matrix", world.player.discovered_entities)
-	sonar.set("_player_hull_stress_highest_arc", world.player.hull_stress_highest_arc)
 	audio_handler.set("audio_visualizer_visible", $audio_visualizer_window.is_visible()) # for music ducking, but there shouldnt be GREEN here so fix later!
 	
 	game_data.player_weirdness_index = world.player.weirdness_index #really hacky solution which should not have been done this way but im too tired to change the entire game now to accomodate it.
@@ -666,8 +665,8 @@ func _on_add_console_entry(entry_text: String, text_color: Color = Color.WHITE):
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	print("GAME (DEBUG): PINGING")
 	system_map._on_sonar_ping(ping_width, ping_length, ping_direction)
-	var incurred_hull_stress = round(remap(ping_width, 9, 90, 0, world.player.hull_stress_highest_arc))
-	_on_add_player_hull_stress(incurred_hull_stress)
+	#var incurred_hull_stress = round(remap(ping_width, 9, 90, 0, world.player.hull_stress_highest_arc))
+	#_on_add_player_hull_stress(incurred_hull_stress)
 	#can have multiple results here depending on what upgrades the player has related to the LIDAR
 	pass
 
