@@ -1,4 +1,4 @@
-Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Query Best Concept,Query Rand Best Concept,Query Full Best Concept,Options,Text
+Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Query Best Concept,Query Rand Best Concept,Query Old Best Concept,Options,Text
 defaultOpenDialog,concept: followingBody,,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,
 defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,,,
 defaultApproachMessage,concept: defaultApproachMessage,,,,,,,,,Your ship approaches [i]$name[/i].
@@ -29,8 +29,6 @@ defaultPlayerStartFebrisOptionA,"concept: optionSelected, option: defaultPlayerS
 defaultPlayerStartFebrisOptionB,"concept: optionSelected, option: defaultPlayerStartFebrisOptionB",,addMoraleWithFlair: 5,,,,,,Continue: defaultPlayerStartFebrisContinue,"She easily describes the fundamentals of her research. However, once you begin asking more specific questions, her knowledge quickly fails; she deliberates over which type of protein was integral to the third phase of her process, the exact impact of certain stimuli on the interventional trial, et al. You end up completing her sentences, and she quickly grows flustered. You note that she does not have the best memory."
 defaultPlayerStartFebrisContinue,"concept: optionSelected, option: defaultPlayerStartFebrisContinue",,,,,,,,Exit:defaultLeave,"Febris takes you around the hearts of the main subdivisions aboard - besides sick bay, which she seemingly forgets. You meet Chief Engineer Jiya in main engineering, Security Officer Walker in the armoury and First Officer Rui on the bridge. "
 ,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
 defaultPlayerWinOpenDialog,concept: playerWin,,openDialog: null,,,addNewEdenArrivalFlair,,,Continue:playerWinStoryConclusion,"Comms reports that AIS has identified ‘a lot of starships’. It does not take long for several space installations to insist on clarification regarding your ships details. You suspect that if it wasn’t for the uptick in explorers entering New Eden, guns would already be pointed at you. You order the manifest to be sent. "
 playerWinStoryConclusionDispatch,"concept: optionSelected, option: playerWinStoryConclusion",,,,,playerWinStoryConclusionResponse,,,Exit:defaultLeave,
 playerWinStoryConclusionResponseGeneric,concept: playerWinStoryConclusionResponse,,,,,,,,,You think back to all you have seen on your journey.
@@ -38,18 +36,7 @@ playerWinStoryConclusionResponseConglomerate,"concept: playerWinStoryConclusionR
 playerWinStoryConclusionResponseDetective,"concept: playerWinStoryConclusionResponse, is_detective_storyline_complete: true",,,,,,,,,"You think back to the Detective. A being which could pause time and evidently change reality, yet refused to truely intefere with your progress towards its physical location. You realise that throughout your travels, you were astronomically lucky. You also realise that you have changed. You wonder whether your journey was truely random chance, or if the Detective actively manipulated it for an unknown motive."
 newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,,,"You have arrived in New Eden, the true frontier of human civilisation."
 ,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-wormholeOpenDialog,"concept: followingBody, id: wormhole",,openDialog: null,defaultApproachMessage,,,,wormholeTryAVFlair,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
+wormholeOpenDialog,"concept: followingBody, id: wormhole",,openDialog: null,defaultApproachMessage,,wormholeTryAVFlair,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
 wormholeTryAVFlairResponse,"concept: wormholeTryAVFlair, system_is_civilized: true, player_AUDIO_VISUALIZER_unlocked: true, pending_audio_profiles: true",,,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the data banks will be purged following the traversal of [i]$name[/i]."
 enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENTER_WORMHOLE,,,,,,,
 wormholeDisabledOpenDialog,"concept: followingBody, id: wormhole, is_wormhole_disabled: true",,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,"""This wormhole leads to our previous star system,"" the navigator on-deck informs you. ""At its present stability, we cannot risk traversal."""
@@ -65,12 +52,13 @@ stationFlairDebris,"concept: addStationFlair, station_classification: DEBRIS",,,
 stationDockingAccessOption,"concept: populateStationOptions, is_station_inhabited: true",,,,,,,,Request Docking Access: stationDockingAccess,
 stationSalvageOption,"concept: populateStationOptions, is_station_abandoned: true",,,,,,,,Scout for Salvage: stationSalvageDispatch,
 stationDockingAccess,"concept: optionSelected, option: stationDockingAccess",,closeDialog: DOCK_WITH_STATION,,,,,,,
-,,,,,,,,,,
 postSalvageLeave,"concept: optionSelected, option: postSalvageLeave",,closeDialog: POST_SALVAGE_LEAVE,,,,,,,
-,,,,,,,,,,
 stationSalvageDispatchResponse,"concept: optionSelected, option: stationSalvageDispatch",,addValueWithFlair: 5000,,,,,,Leave:postSalvageLeave,Useful data is aquired. 
 ,,,,,,,,,,
 ,,,,,,,,,,
+rendezvousPointOpenDialog,"concept: followingBody, id: rendezvousPoint",,openDialog: null,,#populateRendezvousPointOptions,,,,Leave:defaultLeave,Your ship approaches the rendezvous point. (THIS WILL BE USED FOR CHARACTER INTERACTIONS AND EMERGENCY ACTIONS IN THE FUTURE)
+rendezvousPointRuiOption,"concept: populateRendezvousPointOptions, player_FIRST_OFFICER_alive: true",,,,,,,,,
+rendezvousPointJiyaOption,"concept: populateRendezvousPointOptions, player_CHIEF_ENGINEER_alive: true",,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
@@ -78,7 +66,9 @@ stationSalvageDispatchResponse,"concept: optionSelected, option: stationSalvageD
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
-gasSiphoningMessage,concept: gasSiphoningMessage,,,,,,,gasSiphoningMessageDispatch,,
+,,,,,,,,,,
+,,,,,,,,,,
+gasSiphoningMessage,concept: gasSiphoningMessage,,,,,gasSiphoningMessageDispatch,,,,
 gasSiphoningNeptunianMessage,"concept: gasSiphoningMessageDispatch, planet_classification: Neptunian, gasSiphoningNeptunianMessagePREV: false",gasSiphoningNeptunianMessagePREV: true,,,,,,,,"[color=darkgray]Delving deep into the atmosphere of Neptunian and Jovian worlds in order to extract pressure-forged rare gasses has been a dangerous, yet profitable practice since the early days of space flight. On Neptunian worlds, this is often achieved via high altitude extraction depots, which extract more common gasses at high volumes. [/color]"
 gasSiphoningJovianMessage,"concept: gasSiphoningMessageDispatch, planet_classification: Jovian, gasSiphoningJovianMessagePREV: false",gasSiphoningJovianMessagePREV: true,,,,,,,,"[color=darkgray]Delving deep into the atmosphere of Neptunian and Jovian worlds in order to extract pressure-forged rare gasses has been a dangerous, yet profitable practice since the early days of space flight. On Jovian worlds, this is often achieved via specialised extraction ships, which glide deep before dropping weight to escape with a small yield of extremely profitable gas. [/color]"
 ,,,,,,,,,,
@@ -91,13 +81,20 @@ PA_TerranPortal,"concept: followingBody, id: planetaryAnomaly, planet_classifica
 PA_NeptunianPortal,"concept: followingBody, id: planetaryAnomaly, planet_classification: Neptunian",,,,,,PA_NeptunianPortalResponse,,,
 PA_JovianPortal,"concept: followingBody, id: planetaryAnomaly, planet_classification: Jovian",,,,,,PA_JovianPortalResponse,,,
 ,,,,,,,,,,
-PA_StationGenericOpenDialog,"concept: PA_TerranPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,openDialog: null,defaultApproachMessage,,,,,"Request Docking Access: PA_StationGenericDockingAccess, Leave:PASoftLeave","There appears to be an occupied settlement, missing from native starcharts, on the surface of the planet. You recall that profits at such bases are usually lower than official counterparts. Communications are quickly established. "
+PA_StationGenericOpenDialog,"concept: PA_TerranPortalResponse, player_in_CORE_or_FRONTIER_region: true",,openDialog: null,defaultApproachMessage,,,,,"Request Docking Access: PA_StationGenericDockingAccess, Leave:PASoftLeave","There appears to be an occupied settlement, missing from native starcharts, on the surface of the planet. You recall that profits at such bases are usually lower than official counterparts. Communications are quickly established. "
 PA_StationGenericDockingAccess,"concept: optionSelected, option: PA_StationGenericDockingAccess",,closeDialog: HARD_LEAVE_STATION_OVERRIDE,,,,,,,
 ,,,,,,,,,,
-PA_01GenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked.
-PA_01GenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked on its surface.
-PA_01GenericNeptunianOpenDialog,"concept: PA_NeptunianPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked within its atmosphere.
-PA_01GenericJovianOpenDialog,"concept: PA_JovianPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked within the upper fringes of its atmosphere.
+PA_RepairGenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
+PA_RepairGenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
+PA_RepairGenericNeptunianOpenDialog,"concept: PA_NeptunianPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
+PA_RepairGenericJovianOpenDialog,"concept: PA_JovianPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
+PA_RepairGenericActions,concept: PA_RepairGenericActions,,openDialog: null,defaultApproachMessage,,,,,"Repurpose the nanites for repair: PA_RepairGenericContinue, Leave: PASoftLeave",Sensors detect an abandoned nanite cache in low orbit.
+PA_RepairGenericContinue,"concept: optionSelected, option: PA_RepairGenericContinue",,removeHullStressWithFlair: 15,,,,,,Leave:PAHardLeave,
+,,,,,,,,,,
+PA_01GenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_ANY_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked.
+PA_01GenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_ANY_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked on its surface.
+PA_01GenericNeptunianOpenDialog,"concept: PA_NeptunianPortalResponse, player_in_ANY_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked within its atmosphere.
+PA_01GenericJovianOpenDialog,"concept: PA_JovianPortalResponse, player_in_ANY_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked within the upper fringes of its atmosphere.
 PA_01GenericActions,concept: PA_01GenericActions,,openDialog: null,defaultApproachMessage,,,,,"Investigate:PA_01GenericContinue, Leave:PASoftLeave",
 PA_01GenericContinue,"concept: optionSelected, option: PA_01GenericContinue",,addValueWithFlair: 5000,,,,,,Leave:PAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo. The higher resolution scan data will yield marginal value."
 ,,,,,,,,,,
@@ -147,7 +144,7 @@ PA_09GenericDispatch,"concept: optionSelected, option: PA_09GenericDispatch",,,,
 PA_09GenericDispatchSuccess,concept: PA_09GenericDispatchResponse,,addValueWithFlair: 10000,,,,,,Leave:PAHardLeave,"The storm appears to spin around a spherical device floating a hundred kilometres below the exosphere. No probe in your arsenal can reach the device amidst the extraordinary wind speed, so it is merely surveyed extensively."
 PA_09GenericDispatchFailure,concept: PA_09GenericDispatchResponse,,addValueWithFlair: 2500,,,,,,Leave:PAHardLeave,The storm is determined to be a natural occurrence. It is logged extensively due to its rarity.
 ,,,,,,,,,,
-PA_10GenericOpenDialog,"concept: PA_TerranPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,openDialog: null,defaultApproachMessage,,,,,"Scout for salvage:PA_10GenericDispatch, Leave:PASoftLeave",An abandoned research settlement is detected on its surface.
+PA_10GenericOpenDialog,"concept: PA_TerranPortalResponse, player_in_FRONTIER_region: true",,openDialog: null,defaultApproachMessage,,,,,"Scout for salvage:PA_10GenericDispatch, Leave:PASoftLeave",An abandoned research settlement is detected on its surface.
 PA_10GenericDispatch,"concept: optionSelected, option: PA_10GenericDispatch",,,,,,PA_10GenericDispatchResponse,,,
 PA_10GenericDispatchSuccess,concept: PA_10GenericDispatchResponse,,discoverRandomBodyWithFlair: null,,,,,,Leave:PAHardLeave,Salvage teams find databanks containing useful scan data of nearby phenomena.
 PA_10GenericDispatchFailure,concept: PA_10GenericDispatchResponse,,,,,,,,Leave:PAHardLeave,Salvage teams find nothing of value.
@@ -172,7 +169,7 @@ PA_02PlanetRCSJiyaSalvageDispatch,"concept: optionSelected, option: PA_02PlanetR
 PA_02PlanetRCSJiyaSalvageDispatchSuccess,"concept: PA_02PlanetRCSJiyaSalvageResponse, RAND_50%: true",,removeHullStressWithFlair: 35,,,,,,Leave:PAHardLeave,Jiya acknowledges with a sigh. Salvage teams are launched and several comms specialists are awoken to direct the frequent transport departures and arrivals. You oversee the several hour ordeal from near the communications console. Fuel lines are tapped and rare metals are extracted successfully from several of the behemoths. 
 PA_02PlanetRCSJiyaSalvageDispatchFailure,"concept: PA_02PlanetRCSJiyaSalvageResponse, RAND_50%: false",,"removeHullStressWithFlair: 10, killCharacterWithFlair: 1",,,,,,Leave:PAHardLeave,"Jiya acknowledges with a sigh. In a four hour ordeal, salvage teams successfuly pick apart two of the behemoths - the third leads to disaster. Despite excessive safety procedures by Chief Engineer Jiya, an explosion propagated from the target - transpiring just after a tap was installed on the targets fuel line. Half of the salvage team, including Chief Engineer Jiya, are killed. Several salvage specialsits are injuired. A transport is lost. You order a recall. "
 ,,,,,,,,,,
-PA_03TheResearcher,"concept: PA_TerranPortalResponse, planet_type: Iron, planet_type: Nickel, planet_type: Sulfur, planet_type: Coreless",,openDialog: null,defaultApproachMessage,,,,,Lead an away team:PA_03TheResearcherContinueA,"AIS automatically interrogates and identifies a ship upon the surface of the planet. The vessel is an exploration pinnace, and according to on-board databanks, has been marked as missing for thirty years. Your communications officer sends an oral landing request. The ship, surprisingly, transmits a green flag in response."
+PA_03TheResearcher,"concept: PA_TerranPortalResponse, player_in_CORE_region: true, planet_type: Iron",,openDialog: null,defaultApproachMessage,,,,,Lead an away team:PA_03TheResearcherContinueA,"AIS automatically interrogates and identifies a ship upon the surface of the planet. The vessel is an exploration pinnace, and according to on-board databanks, has been marked as missing for thirty years. Your communications officer sends an oral landing request. The ship, surprisingly, transmits a green flag in response."
 PA_03TheResearcherContinueA,"concept: optionSelected, option: PA_03TheResearcherContinueA",,,,,,,,Follow him: PA_03TheResearcherContinueB,"A contingent of officers, a unit of marines and yourself take a transport to the vessel. From the landing zone, it appears to be converted into a home of sorts, with scattered solar panels and hydroponics setups nearby. Two stakes draped in tarp, an attempt at a veranda, shadows it. A voice is heard from inside initially, but soon an old man clad in an ancient space suit is shouting from under the veranda. “Visitors - I can’t believe it!” he yells, giddy with excitement. “Please, come inside.”"
 PA_03TheResearcherContinueB,"concept: optionSelected, option: PA_03TheResearcherContinueB",,,,,,,,Ask why he's here: PA_03TheResearcherContinueC,"The space inside the vessel is cluttered and grotty - clothes, nondescript containers and electrical hazards plague every surface besides a shoddy dining table, which he ushers you and your senior officers towards. He serves home grown vegetables with survival rations, tipping several piles of filth in the process. All of your senior staff appear uncomfortable. When he’s finally seated, you only have one question to ask."
 PA_03TheResearcherContinueC,"concept: optionSelected, option: PA_03TheResearcherContinueC",,,,,,,,Ask to see the cave: PA_03TheResearcherContinueD,"Momentarily, he appears flabbergasted. “Why, I’m documenting the life!” he proclaims. “There are small bastions of simple life in a cave around here.” You recall that preliminary scans of the planet suggested that life would be impossible. He goes on to enchantedly describe its composition and characteristics, giving the impression of a simple, bacteria-analogue life-form."
@@ -208,15 +205,18 @@ SAHardLeave,"concept: optionSelected, option: SAHardLeave",,closeDialog: HARD_LE
 SASoftLeave,"concept: optionSelected, option: SASoftLeave",,closeDialog: SOFT_LEAVE,,,,,,,
 ,,,,,,,,,,
 SAApproachMessage,concept: SAApproachMessage,,,,,,,,,Your ship approaches the location of a stable point in space.
-SA_GenericPortal,"concept: followingBody, id: spaceAnomaly",,,,,,SA_GenericPortalResponse,,,
+SA_Portal,"concept: followingBody, id: spaceAnomaly",,,,,,SA_PortalResponse,,,
 ,,,,,,,,,,
-SA_StationGenericOpenDialog,"concept: SA_GenericPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,openDialog: null,SAApproachMessage,,,,,"Request Docking Access: SA_StationGenericDockingAccess, Leave:SASoftLeave","An outpost, missing from native starcharts, is detected. You recall that profits at such bases are usually lower than official counterparts. Communications are quickly established."
+SA_StationGenericOpenDialog,"concept: SA_PortalResponse, player_in_CORE_or_FRONTIER_region: true",,openDialog: null,SAApproachMessage,,,,,"Request Docking Access: SA_StationGenericDockingAccess, Leave:SASoftLeave","An outpost, missing from native starcharts, is detected. You recall that profits at such bases are usually lower than official counterparts. Communications are quickly established."
 SA_StationGenericDockingAccess,"concept: optionSelected, option: SA_StationGenericDockingAccess",,closeDialog: HARD_LEAVE_STATION_OVERRIDE,,,,,,,
 ,,,,,,,,,,
-SA_01GenericOpenDialog,"concept: SA_GenericPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true, player_in_ABYSS_region: true",,openDialog: null,SAApproachMessage,,,,,"Investigate: SA_01GenericContinue, Leave:SASoftLeave",Analysts mark an inconsistent LIDAR return.
+SA_RepairGenericOpenDialog,"concept: SA_PortalResponse, player_in_ANY_region: true",,openDialog: null,SAApproachMessage,,,,,"Repurpose the nanites for repair: SA_RepairGenericContinue, Leave: SASoftLeave",Sensors detect an abandoned nanite cache.
+SA_RepairGenericContinue,"concept: optionSelected, option: SA_RepairGenericContinue",,removeHullStressWithFlair: 15,,,,,,Leave:SAHardLeave,
+,,,,,,,,,,
+SA_01GenericOpenDialog,"concept: SA_PortalResponse, player_in_ANY_region: true",,openDialog: null,SAApproachMessage,,,,,"Investigate: SA_01GenericContinue, Leave:SASoftLeave",Analysts mark an inconsistent LIDAR return.
 SA_01GenericContinue,"concept: optionSelected, option: SA_01GenericContinue",,,,,,,,Leave:SAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo."
 ,,,,,,,,,,
-SA_02GenericOpenDialog,"concept: SA_GenericPortalResponse, player_in_CORE_region: true, player_in_FRONTIER_region: true",,openDialog: null,SAApproachMessage,,,,,"Scout for salvage:SA_02GenericDispatch, Leave:SASoftLeave",An abandoned research outpost is detected.
+SA_02GenericOpenDialog,"concept: SA_PortalResponse, player_in_FRONTIER_region: true",,openDialog: null,SAApproachMessage,,,,,"Scout for salvage:SA_02GenericDispatch, Leave:SASoftLeave",An abandoned research outpost is detected.
 SA_02GenericDispatch,"concept: optionSelected, option: SA_02GenericDispatch",,,,,,SA_02GenericDispatchResponse,,,
 SA_02GenericDispatchSuccess,concept: SA_02GenericDispatchResponse,,discoverRandomBodyWithFlair: null,,,,,,Leave:SAHardLeave,Salvage teams find databanks containing useful scan data of nearby phenomena.
 SA_02GenericDispatchFailure,concept: SA_02GenericDispatchResponse,,,,,,,,Leave:SAHardLeave,Salvage teams find nothing of value.

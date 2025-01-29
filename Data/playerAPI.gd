@@ -26,7 +26,7 @@ var is_boosting: bool = false
 @export var current_value: int = 0:
 	set(value):
 		current_value = value
-		print_debug("PLAYER DATA VALUE CHANGED: ", current_value)
+		#print_debug("PLAYER DATA VALUE CHANGED: ", current_value)
 		emit_signal("dataValueChanged", current_value)
 @export var net_worth: int = 0
 var total_score: int = 0:
@@ -36,9 +36,7 @@ var total_score: int = 0:
 #key customization stufufffuff
 @export var total_systems: int 
 @export var max_jumps: int
-@export var hull_stress_highest_arc: int
 @export var hull_stress_wormhole: int
-@export var hull_stress_module: int
 
 @export var jumps_remaining: int = 0
 @export var systems_traversed: int = 0

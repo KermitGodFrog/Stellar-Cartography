@@ -26,7 +26,7 @@ func _ready():
 	
 	world = await game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 3, 10, 1, 0.01, 0.05, 0.25)
+		world = game_data.createWorld(25, 5, 25, 0.01, 0.05, 0.25)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -75,7 +75,7 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 3, 10, 1, 0.01, 0.05, 0.25)
+		world = game_data.createWorld(25, 5, 25, 0.01, 0.05, 0.25)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -107,6 +107,7 @@ func _ready():
 		new.generateRandomWeightedStations()
 		new.generateRandomWeightedEntities()
 		new.generateRandomAnomalies(world.SA_chance_per_candidate)
+		new.generateRendezvousPoint()
 		for body in new.bodies:
 			body.is_known = true
 		
@@ -136,7 +137,7 @@ func _ready():
 		#debug.add("concept", "followingBody")
 		#debug.add("id", "planetaryAnomaly")
 		#debug.add_tree_access("planet_classification", "Terran")
-		#debug.add_tree_access("planet_type", "Silicate")
+		#debug.add_tree_access("planet_type", "Iron")
 		#debug.add_tree_access("player_in_CORE_region", true)
 		#get_tree().call_group("dialogueManager", "speak", self, debug)
 		
@@ -256,7 +257,6 @@ func _physics_process(delta):
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
 	lrs_bestiary.set("discovered_entities_matrix", world.player.discovered_entities)
-	sonar.set("_player_hull_stress_highest_arc", world.player.hull_stress_highest_arc)
 	audio_handler.set("audio_visualizer_visible", $audio_visualizer_window.is_visible()) # for music ducking, but there shouldnt be GREEN here so fix later!
 	
 	game_data.player_weirdness_index = world.player.weirdness_index #really hacky solution which should not have been done this way but im too tired to change the entire game now to accomodate it.
@@ -447,6 +447,20 @@ func _on_player_following_body(following_body: bodyAPI):
 		
 		await system_map.validUpdatePlayerActionType
 		long_range_scopes._on_current_entity_cleared()
+	
+	elif following_body.is_rendezvous_point():
+		var following_rendezvous_point = following_body
+		
+		var new_query = responseQuery.new()
+		new_query.add("concept", "followingBody")
+		new_query.add("id", "rendezvousPoint")
+		new_query.add_tree_access("custom_seed", following_rendezvous_point.metadata.get("rendezvous_point_seed"))
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
+		
+		var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+		match RETURN_STATE:
+			_:
+				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_rendezvous_point)
 	pass
 
 func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
@@ -486,6 +500,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 		destination.generateRandomWormholes()
 		destination.generateRandomWeightedEntities()
 		destination.generateRandomAnomalies(world.SA_chance_per_candidate)
+		destination.generateRendezvousPoint()
 	
 	#var destination_position: Vector2 = Vector2.ZERO
 	var destination_wormhole: wormholeAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
@@ -666,8 +681,8 @@ func _on_add_console_entry(entry_text: String, text_color: Color = Color.WHITE):
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	print("GAME (DEBUG): PINGING")
 	system_map._on_sonar_ping(ping_width, ping_length, ping_direction)
-	var incurred_hull_stress = round(remap(ping_width, 9, 90, 0, world.player.hull_stress_highest_arc))
-	_on_add_player_hull_stress(incurred_hull_stress)
+	#var incurred_hull_stress = round(remap(ping_width, 9, 90, 0, world.player.hull_stress_highest_arc))
+	#_on_add_player_hull_stress(incurred_hull_stress)
 	#can have multiple results here depending on what upgrades the player has related to the LIDAR
 	pass
 
