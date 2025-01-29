@@ -33,7 +33,7 @@ signal TUTORIALPlayerWin()
 
 var dialogue_memory: Dictionary = {} #memory that is added by any query, and is always accessible indefinitely. from worldAPI dialogue_memory which is sent via game.gd
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
-enum QUERY_TYPES {BEST, ALL, RAND_BEST, FULL_BEST}
+enum QUERY_TYPES {BEST, ALL, RAND_BEST, OLD_BEST}
 
 #for populating query data
 var system: starSystemAPI
@@ -98,10 +98,10 @@ func _ready():
 					var array = convert_to_array(cell)
 					if not array.is_empty():
 						new_rule.query_rand_best_concept = array
-				"QUERY_FULL_BEST_CONCEPT":
+				"QUERY_OLD_BEST_CONCEPT":
 					var array = convert_to_array(cell)
 					if not array.is_empty():
-						new_rule.query_full_best_concept = array
+						new_rule.query_old_best_concept = array
 				"OPTIONS":
 					var dict = convert_to_dictionary(cell)
 					if not dict.is_empty():
@@ -188,7 +188,8 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 				incoming_query.facts["randf_EXCLUSIVE"] = randf()
 				incoming_query.facts["randi_EXCLUSIVE"] = randi()
 				var matches: int = get_rule_matches(rule, incoming_query)
-				ranked_rules[rule] = matches
+				if rule.criteria.size() == matches:
+					ranked_rules[rule] = matches 
 			
 			for rule in ranked_rules:
 				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", ranked_rules.get(rule), " (B)"))
@@ -211,7 +212,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 				incoming_query.facts["randf_EXCLUSIVE"] = randf()
 				incoming_query.facts["randi_EXCLUSIVE"] = randi()
 				var matches: int = get_rule_matches(rule, incoming_query)
-				if matches == rule.criteria.size():
+				if rule.criteria.size() == matches:
 					matched_rules.append(rule)
 			
 			for rule in matched_rules:
@@ -232,7 +233,8 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 				incoming_query.facts["randf_EXCLUSIVE"] = randf()
 				incoming_query.facts["randi_EXCLUSIVE"] = randi()
 				var matches: int = get_rule_matches(rule, incoming_query)
-				ranked_rules[rule] = matches
+				if rule.criteria.size() == matches:
+					ranked_rules[rule] = matches
 			
 			for rule in ranked_rules: #DEBUG!!!!!!!!!!!!!!!!!!!!!!!
 				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", ranked_rules.get(rule), " (RB)"))
@@ -248,38 +250,39 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 					ranked_rules.erase(key_with_max_value)
 				else: break
 			
+			print_rich("[color=RED]", rules_with_max_matches, "[/color]")
 			incoming_query.facts.erase("randf_EXCLUSIVE")
 			incoming_query.facts.erase("randi_EXCLUSIVE")
 			
-			var random = RandomNumberGenerator.new()
-			random.set_seed(incoming_query.facts.get("custom_seed", randi()))
-			var random_index = random.randi_range(0, rules_with_max_matches.size() - 1)
+			if rules_with_max_matches.size() > 0:
+				var random = RandomNumberGenerator.new()
+				random.set_seed(incoming_query.facts.get("custom_seed", randi()))
+				var random_index = random.randi_range(0, rules_with_max_matches.size() - 1)
+				
+				var matched_rule: responseRule = rules_with_max_matches[random_index]
+				if matched_rule != null: trigger_rule(calling, matched_rule, incoming_query)
 			
-			var matched_rule: responseRule = rules_with_max_matches[random_index]
-			if matched_rule != null: trigger_rule(calling, matched_rule, incoming_query)
-			
-		QUERY_TYPES.FULL_BEST:
+		QUERY_TYPES.OLD_BEST:
 			
 			var relevant_rules = get_relevant_rules(incoming_query)
 			
-			var full_rules: Dictionary = {}
+			var ranked_rules: Dictionary = {}
 			for rule in relevant_rules:
 				incoming_query.facts["randf_EXCLUSIVE"] = randf()
 				incoming_query.facts["randi_EXCLUSIVE"] = randi()
 				var matches: int = get_rule_matches(rule, incoming_query)
-				if rule.criteria.size() == matches:
-					full_rules[rule] = matches #this is the only change from QUERY_TYPES.BEST - i couldnt believe it either lol
+				ranked_rules[rule] = matches
 			
-			for rule in full_rules:
-				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", full_rules.get(rule), " (FB)"))
+			for rule in ranked_rules:
+				print_rich(str("[color=GREEN]", rule.get_name(), " : ", "[color=PINK]", ranked_rules.get(rule), " (B)"))
 			
-			var values = full_rules.values()
+			var values = ranked_rules.values()
 			var max_value = values.max()
 			
 			incoming_query.facts.erase("randf_EXCLUSIVE")
 			incoming_query.facts.erase("randi_EXCLUSIVE")
 			
-			var matched_rule = full_rules.find_key(max_value)
+			var matched_rule = ranked_rules.find_key(max_value) #find_key always gets the FIRST key in added-order. as rules are added in order of the rules.csv file, rules towards the top of the .csv will ALWAYS be selected, even if theres other rules with the same number of matches further down. 
 			if matched_rule != null: trigger_rule(calling, matched_rule, incoming_query)
 			
 	pass
@@ -399,10 +402,10 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 		new_query.add("concept", concept)
 		speak(calling, new_query, true, QUERY_TYPES.RAND_BEST)
 	
-	for concept in rule.query_full_best_concept:
+	for concept in rule.query_old_best_concept:
 		var new_query = responseQuery.new()
 		new_query.add("concept", concept)
-		speak(calling, new_query, true, QUERY_TYPES.FULL_BEST)
+		speak(calling, new_query, true, QUERY_TYPES.OLD_BEST)
 	
 	#text & options \\\\\\\\\\\\\
 	if rule.text: dialogue.add_text(convert_text_with_custom_tags(rule.text, incoming_query))

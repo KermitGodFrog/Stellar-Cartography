@@ -16,12 +16,12 @@ class_name responseRule
 @export_category("Query")
 ##Queries for a concept, and triggers all rules whose entire criteria is met.
 @export var query_all_concept: Array[String]
-##Queries for a concept, and triggers a rule who has the most criteria met.
+##Queries for a concept, and triggers a rule whose entire criteria is met, and whose criteria is larger than all other rules whose entire criteria is met.
 @export var query_best_concept: Array[String]
-##Queries for a concept, and triggers a random rule from multiple with the highest criteria met.
+##Queries for a concept, and triggers a random rule from a group of rules whose entire criteria is met, and collectively have the highest number of criteria met.
 @export var query_rand_best_concept: Array[String]
-##Queries for a concept, and triggers a rule (if any) whose entire criteria is met, and whose criteria is larger than all other rules whose entire criteria is met.
-@export var query_full_best_concept: Array[String]
+##Queries for a concept, and triggers a rule who has the most criteria met.
+@export var query_old_best_concept: Array[String]
 
 #just like the GDC - criteria, apply_facts and response (but response is two things like in starsector)
 

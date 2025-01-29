@@ -39,14 +39,24 @@ func populateWithPlayerData(player: playerAPI):
 	var in_CORE_region: bool = false
 	var in_FRONTIER_region: bool = false
 	var in_ABYSS_region: bool = false
+	var is_CORE_or_FRONTIER_region: bool = false
+	var is_any_region: bool = false
 	
 	if player.weirdness_index >= 0.2 and player.weirdness_index < 0.6: in_FRONTIER_region = true
 	elif player.weirdness_index >= 0.6: in_ABYSS_region = true
 	else: in_CORE_region = true
 	
+	if in_CORE_region or in_FRONTIER_region:
+		is_CORE_or_FRONTIER_region = true
+	
+	if in_CORE_region or in_FRONTIER_region or in_ABYSS_region:
+		is_any_region = true
+	
 	add("player_in_CORE_region", in_CORE_region)
 	add("player_in_FRONTIER_region", in_FRONTIER_region)
 	add("player_in_ABYSS_region", in_ABYSS_region)
+	add("player_in_CORE_or_FRONTIER_region", is_CORE_or_FRONTIER_region)
+	add("player_in_ANY_region", is_any_region)
 	
 	for id in player.UPGRADE_ID:
 		if player.unlocked_upgrades.has(player.UPGRADE_ID.get(id)):
