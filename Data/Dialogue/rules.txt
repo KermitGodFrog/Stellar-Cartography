@@ -56,9 +56,16 @@ postSalvageLeave,"concept: optionSelected, option: postSalvageLeave",,closeDialo
 stationSalvageDispatchResponse,"concept: optionSelected, option: stationSalvageDispatch",,addValueWithFlair: 5000,,,,,,Leave:postSalvageLeave,Useful data is aquired. 
 ,,,,,,,,,,
 ,,,,,,,,,,
-rendezvousPointOpenDialog,"concept: followingBody, id: rendezvousPoint",,openDialog: null,,#populateRendezvousPointOptions,,,,Leave:defaultLeave,Your ship approaches the rendezvous point. (THIS WILL BE USED FOR CHARACTER INTERACTIONS AND EMERGENCY ACTIONS IN THE FUTURE)
-rendezvousPointRuiOption,"concept: populateRendezvousPointOptions, player_FIRST_OFFICER_alive: true",,,,,,,,,
-rendezvousPointJiyaOption,"concept: populateRendezvousPointOptions, player_CHIEF_ENGINEER_alive: true",,,,,,,,,
+RPOpenDialog,"concept: followingBody, id: rendezvousPoint",,openDialog: null,,populateRPOptions,,,,Leave:defaultLeave,Your ship approaches the rendezvous point. Your hand hovers over the intra-ship communications console in your ready room.
+RPFallback,"concept: optionSelected, option: RPFallback",,,RPOpenDialog,,,,,,
+RPRuiOption,"concept: populateRPOptions, player_FIRST_OFFICER_alive: true",,,,,,,,Summon First Officer Rui: RP_RuiSummon,
+RPJiyaOption,"concept: populateRPOptions, player_CHIEF_ENGINEER_alive: true",,,,,,,,Summon Chief Engineer Jiya: RP_JiyaSummon,
+RPWalkerOption,"concept: populateRPOptions, player_SECURITY_OFFICER_alive: true",,,,,,,,Summon Security Officer Walker: RP_WalkerSummon,
+RPFebrisOption,"concept: populateRPOptions, player_MEDICAL_OFFICER_alive: true",,,,,,,,Summon Medical Officer Febris: RP_FebrisSummon,
+,,,,,,,,,,
+RPRuiSummon,"concept: optionSelected, option: RP_RuiSummon",,,,populateRPRuiOptions,,,,Dismiss First Officer Rui: RPFallback,Rui entering ready room message! PLUS important info on trading option
+RPRuiHelpOption,concept: populateRPRuiOptions,,,,,,,,Order Rui to increase morale: RPRuiHelp,
+RPRuiHelp,"concept: optionSelected, option: RPRuiHelp",,,RPRuiSummon,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,

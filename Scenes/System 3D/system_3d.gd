@@ -68,9 +68,7 @@ func _physics_process(_delta):
 		camera.global_transform = camera.global_transform.looking_at(Vector3((target_position.x * system_scalar), 0, (target_position.y * system_scalar)))
 		camera.global_transform = camera.global_transform.orthonormalized()
 	
-	
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
-	
 	
 	#detecting bodies
 	for child in get_children():
@@ -92,8 +90,8 @@ func _physics_process(_delta):
 						
 						emit_signal("foundBody", child.get_identifier())
 						var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
-						if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED BODY: ", associated_body.display_name.capitalize()), Color.DARK_GREEN)
-						elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED BODY: ", associated_body.display_name.capitalize(), " (est. value ", round(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
+						if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED BODY: ", associated_body.display_name, Color.DARK_GREEN))
+						elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED BODY: ", associated_body.display_name, " (est. value ", round(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
 	
 	#this is broked because when you unlock a body by moving the camera target pos, the locked_body_identifier variable on this script remains the same - thereofore, it always displays that you are locked to a body
 	#setting locked_body_label text

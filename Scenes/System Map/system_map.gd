@@ -60,6 +60,7 @@ enum BOOST_SOUND_TYPES {START, END}
 @onready var entity_icon = preload("res://Graphics/entity_32x.png")
 @onready var audio_visualizer_icon = preload("res://Graphics/audio_visualizer_frame.png")
 @onready var station_frame = load("res://Graphics/station_frame.png")
+@onready var rendezvous_point_frame = load("res://Graphics/rendezvous_point_frame.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body : bodyAPI
@@ -245,6 +246,9 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 			if body.is_entity():
 				item.set_icon(0, get_entity_frame(body.entity_classification))
 			
+			if body.is_rendezvous_point():
+				item.set_icon(0, rendezvous_point_frame)
+			
 			if body.is_planet(): if (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true):
 				item.set_icon(0, audio_visualizer_icon)
 			
@@ -262,7 +266,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 	return null
 
 func clear_system_list_caches() -> void:
-	print("SYSTEM MAP (DEBUG): CLEARING SYSTEM LIST CACHES")
+	#print("SYSTEM MAP (DEBUG): CLEARING SYSTEM LIST CACHES")
 	collapsed_cache.clear()
 	pass
 
