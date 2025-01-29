@@ -376,7 +376,6 @@ func generateRandomWeightedStations():
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
-
 #entities = no dialogue, viewable via long range scopes module
 #anomalies = space anomalies - dialogue, disappear afterwards.
 
@@ -425,6 +424,30 @@ func generateRandomWeightedEntities():
 		get_body_from_identifier(new_entity).rotation = deg_to_rad(global_data.get_randf(0,360))
 		
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
+	pass
+
+func generateRendezvousPoint():
+	var location = post_gen_location_candidates.pick_random()
+	var hook = get_body_from_identifier(location.front())
+	var i = location.back()
+	
+	#whole bunch of stuff borrowed from generateRandomWeightedBodies
+	var new_distance: float = hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * i)
+	var orbit_speed_multiplier: float
+	if hook.orbit_speed > 0: orbit_speed_multiplier = ((hook.orbit_speed * 109.1) + 1)
+	else: orbit_speed_multiplier = 1
+	
+	var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+	var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+	
+	#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
+	var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
+	
+	
+	var new_body = addBody(identifier_count, game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.RENDEZVOUS_POINT_DEFAULT, current_name_scheme, hook.get_display_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"rendezvous_point_seed": randi()})
+	get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
+	
+	post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
 

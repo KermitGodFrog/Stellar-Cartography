@@ -250,7 +250,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 					ranked_rules.erase(key_with_max_value)
 				else: break
 			
-			print_rich("[color=RED]", rules_with_max_matches, "[/color]")
+			#print_rich("[color=RED]", rules_with_max_matches, "[/color]")
 			incoming_query.facts.erase("randf_EXCLUSIVE")
 			incoming_query.facts.erase("randi_EXCLUSIVE")
 			

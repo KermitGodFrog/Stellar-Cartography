@@ -135,7 +135,7 @@ func _physics_process(delta):
 		body_attributes_list.add_item("orbital_speed : %.2f (rot/frame)" % follow_body.orbit_speed, null, false)
 		body_attributes_list.add_item("orbital_distance %.2f (solar radii)" % follow_body.distance, null, false)
 		#metadata
-		var excluding = ["iterations", "color", "value", "has_planetary_anomaly", "is_planetary_anomaly_available", "is_anomaly_available", "planetary_anomaly_seed", "has_missing_AO"]
+		var excluding = ["iterations", "color", "value", "has_planetary_anomaly", "is_planetary_anomaly_available", "is_anomaly_available", "planetary_anomaly_seed", "has_missing_AO", "rendezvous_point_seed"]
 		if follow_body.is_known:
 			for entry in follow_body.metadata:
 				if excluding.find(entry) == -1:
@@ -204,6 +204,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 			if body.is_station(): item.set_text(0, "%s - Station" % body.get_display_name())
 			if body.is_anomaly(): item.set_text(0, "%s" % body.get_display_name())
 			if body.is_entity(): item.set_text(0, "%s" % game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
+			if body.is_rendezvous_point(): item.set_text(0, "%s" % body.get_display_name())
 			
 			#earlier entries override later entries
 			
@@ -365,7 +366,7 @@ func draw_map():
 		
 		#batching circle drawing:
 		
-		if not (body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
+		if not (body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity() or body.is_rendezvous_point()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
 				
@@ -390,7 +391,7 @@ func draw_map():
 		
 		#batching entity icons:
 		
-		if (body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
+		if (body.is_station() or body.is_anomaly() or body.is_entity() or body.is_rendezvous_point()) and body.is_known:
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				entity_icon.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false)
 	

@@ -28,7 +28,7 @@ const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
 const NANITE_CONTROLLER_REPAIR_CURVE = preload("res://Data/Spawn Data/nanite_controller_repair_curve.tres")
 
 enum NAME_SCHEMES {STANDARD, SCIENTIFIC, TREK}
-enum NAME_VARIETIES {STAR, PLANET, GENERIC_FLAIR, ASTEROID_BELT, WORMHOLE, WORMHOLE_FLAIR, STATION, STATION_FLAIR, SPACE_ANOMALY, SPACE_ANOMALY_FLAIR, SPACE_ENTITY_DEFAULT} #SPACE_ENTITY_DEFAULT exists because SCIENTIFIC name scheme will give a space entity something like "SF-1058" while STANDARD name scheme will give a space entity "stellar_phenomena"
+enum NAME_VARIETIES {STAR, PLANET, GENERIC_FLAIR, ASTEROID_BELT, WORMHOLE, WORMHOLE_FLAIR, STATION, STATION_FLAIR, SPACE_ANOMALY, SPACE_ANOMALY_FLAIR, SPACE_ENTITY_DEFAULT, RENDEZVOUS_POINT_DEFAULT} #SPACE_ENTITY_DEFAULT exists because SCIENTIFIC name scheme will give a space entity something like "SF-1058" while STANDARD name scheme will give a space entity "stellar_phenomena"
 var NAME_DATA: Dictionary = {
 	NAME_VARIETIES.STAR: [],
 	NAME_VARIETIES.PLANET: [],
@@ -133,6 +133,8 @@ func STANDARD_get_random_name_from_variety(variety: NAME_VARIETIES):
 	match variety:
 		NAME_VARIETIES.SPACE_ENTITY_DEFAULT:
 			return "Stellar Phenomena"
+		NAME_VARIETIES.RENDEZVOUS_POINT_DEFAULT:
+			return "Rendezvous Point"
 		NAME_VARIETIES.STAR:
 			return STANDARD_dual_name_selection(NAME_VARIETIES.STAR, NAME_VARIETIES.GENERIC_FLAIR)
 		NAME_VARIETIES.PLANET:

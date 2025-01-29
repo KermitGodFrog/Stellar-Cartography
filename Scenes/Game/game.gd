@@ -107,6 +107,7 @@ func _ready():
 		new.generateRandomWeightedStations()
 		new.generateRandomWeightedEntities()
 		new.generateRandomAnomalies(world.SA_chance_per_candidate)
+		new.generateRendezvousPoint()
 		for body in new.bodies:
 			body.is_known = true
 		
@@ -136,7 +137,7 @@ func _ready():
 		#debug.add("concept", "followingBody")
 		#debug.add("id", "planetaryAnomaly")
 		#debug.add_tree_access("planet_classification", "Terran")
-		#debug.add_tree_access("planet_type", "Silicate")
+		#debug.add_tree_access("planet_type", "Iron")
 		#debug.add_tree_access("player_in_CORE_region", true)
 		#get_tree().call_group("dialogueManager", "speak", self, debug)
 		
@@ -446,6 +447,20 @@ func _on_player_following_body(following_body: bodyAPI):
 		
 		await system_map.validUpdatePlayerActionType
 		long_range_scopes._on_current_entity_cleared()
+	
+	elif following_body.is_rendezvous_point():
+		var following_rendezvous_point = following_body
+		
+		var new_query = responseQuery.new()
+		new_query.add("concept", "followingBody")
+		new_query.add("id", "rendezvousPoint")
+		new_query.add_tree_access("custom_seed", following_rendezvous_point.metadata.get("rendezvous_point_seed"))
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
+		
+		var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+		match RETURN_STATE:
+			_:
+				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_rendezvous_point)
 	pass
 
 func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
@@ -485,6 +500,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 		destination.generateRandomWormholes()
 		destination.generateRandomWeightedEntities()
 		destination.generateRandomAnomalies(world.SA_chance_per_candidate)
+		destination.generateRendezvousPoint()
 	
 	#var destination_position: Vector2 = Vector2.ZERO
 	var destination_wormhole: wormholeAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
