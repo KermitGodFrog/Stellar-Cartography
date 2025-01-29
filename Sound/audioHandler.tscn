@@ -1,21 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://p275r5sfhnj5"]
+[gd_scene load_steps=8 format=3 uid="uid://p275r5sfhnj5"]
 
 [ext_resource type="Script" path="res://Sound/audioHandler.gd" id="1_eb43v"]
 [ext_resource type="AudioStream" uid="uid://v4nc0u5uqltk" path="res://Sound/Music/ambience1.wav" id="2_3ch8q"]
 [ext_resource type="AudioStream" uid="uid://cku4d8tw2cajp" path="res://Sound/Music/ambience2.wav" id="3_0obpv"]
 [ext_resource type="AudioStream" uid="uid://cu5vu17sts25g" path="res://Sound/Music/ambience3.wav" id="4_lyr1t"]
 [ext_resource type="AudioStream" uid="uid://oenxmfqy2kac" path="res://Sound/Music/ambience4.wav" id="5_cebs6"]
+[ext_resource type="AudioStream" uid="uid://cl2t8klaj22iy" path="res://Sound/Music/ambience5.wav" id="6_dpdkj"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_3odmk"]
-streams_count = 4
+streams_count = 5
 stream_0/stream = ExtResource("2_3ch8q")
-stream_0/weight = 1.0
 stream_1/stream = ExtResource("3_0obpv")
-stream_1/weight = 1.0
 stream_2/stream = ExtResource("4_lyr1t")
-stream_2/weight = 1.0
 stream_3/stream = ExtResource("5_cebs6")
-stream_3/weight = 1.0
+stream_4/stream = ExtResource("6_dpdkj")
 
 [node name="audioHandler" type="Node" groups=["audioHandler"]]
 process_mode = 3

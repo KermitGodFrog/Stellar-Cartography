@@ -86,4 +86,3 @@ func play_once(stream: AudioStream, volume_db: float = 0.0, bus: StringName = "M
 func _on_play_once_player_finished(player: AudioStreamPlayer) -> void:
 	player.call_deferred("queue_free")
 	pass
-
