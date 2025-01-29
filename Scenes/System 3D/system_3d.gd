@@ -103,7 +103,9 @@ func _physics_process(_delta):
 			locked_body_label.set_text(str("LOCKED: ", body.get_display_name()))
 		elif body.is_theorised_but_not_known():
 			locked_body_label.set_text("LOCKED: Unknown")
-	else:
+	elif target_position != Vector2.ZERO:
+		locked_body_label.set_text("LOCKED: MANUAL")
+	else: 
 		locked_body_label.set_text("")
 	pass
 
