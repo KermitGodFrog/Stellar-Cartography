@@ -100,13 +100,12 @@ func _ready():
 		new_player.connect("dataValueChanged", _on_player_data_value_changed)
 		
 		#new game stuff
-		var new: starSystemAPI = _on_create_new_star_system(false)
+		var new: starSystemAPI = _on_create_new_star_system()
 		for i in range(2):
-			_on_create_new_star_system(false, new)
-		new.generateRandomWormholes()
+			_on_create_new_star_system(new)
+		new.generateWormholes()
 		new.generateRandomWeightedStations()
 		new.generateRandomWeightedEntities()
-		new.generateRandomAnomalies(world.SA_chance_per_candidate)
 		new.generateRendezvousPoint()
 		for body in new.bodies:
 			body.is_known = true
@@ -496,10 +495,9 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	#spawning new wormholes in destination system if nonexistent
 	if not destination.destination_systems:
 		for i in range(2):
-			_on_create_new_star_system(false, destination)
-		destination.generateRandomWormholes()
+			_on_create_new_star_system(destination)
+		destination.generateWormholes()
 		destination.generateRandomWeightedEntities()
-		destination.generateRandomAnomalies(world.SA_chance_per_candidate)
 		destination.generateRendezvousPoint()
 	
 	#var destination_position: Vector2 = Vector2.ZERO
@@ -546,7 +544,6 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	
 	if world.player.systems_traversed == world.player.total_systems: # will need a global variable for how many ssystems until win at some point, customizability would be sick
 		_on_player_win()
-	
 	
 	#setting position to wormhole??? actually works??????
 	_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
@@ -615,19 +612,13 @@ func _on_update_target_position(pos: Vector2):
 	print("SYSTEM MAP: UPDATING TARGET POSITION: ", pos)
 	pass
 
-func _on_create_new_star_system(force_switch_before_post_gen: bool = false, for_system: starSystemAPI = null):
+func _on_create_new_star_system(for_system: starSystemAPI = null):
 	game_data.SYSTEM_PREFIX = "" #shuldnt be calling game_data from game.gd but whateverrrrrrr
 	var system = world.createStarSystem("random")
-	var hook_star = system.createRandomWeightedPrimaryHookStar()
-	system.generateRandomWeightedBodies(hook_star, world.PA_chance_per_planet, world.missing_AO_chance_per_planet)
-	if for_system:
+	system.generateBase(world.PA_chance_per_planet, world.missing_AO_chance_per_planet, world.SA_chance_per_candidate)
+	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
-	if force_switch_before_post_gen:
-		world.player.current_star_system = system
-		system_map.system = system
-		system_3d.system = system
-		system_3d.spawnBodies()
 	print("SYSTEM MAP (DEBUG): CREATING NEW STAR SYSTEM")
 	return system
 
@@ -635,12 +626,14 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	if world.player.current_star_system:
 		if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1:
 			audio_visualizer._on_clear_button_pressed()
+	
 	world.player.current_star_system = to_system
 	system_map.system = to_system
 	system_3d.system = to_system
 	barycenter_visualizer.system = to_system
 	long_range_scopes.system = to_system
 	dialogue_manager.system = to_system
+	
 	system_3d.spawnBodies()
 	system_3d.reset_locked_body()
 	journey_map.add_new_system(world.player.systems_traversed)
