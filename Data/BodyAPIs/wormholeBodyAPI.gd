@@ -1,5 +1,5 @@
-extends bodyAPI
-class_name wormholeAPI
+extends circularBodyAPI
+class_name wormholeBodyAPI
 #any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
 @export var destination_system: starSystemAPI

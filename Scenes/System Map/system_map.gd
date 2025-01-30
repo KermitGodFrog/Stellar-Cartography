@@ -350,7 +350,7 @@ func draw_sonar():
 func draw_map():
 	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT) #not EXACTLY proper but yknow
 	if asteroid_belts: for belt in asteroid_belts:
-		if belt.is_known(): draw_arc(belt.position, belt.metadata.get("belt_radius"), -10, TAU, 50, belt.metadata.get("belt_color"), belt.metadata.get("belt_width"), false)
+		if belt.is_known(): draw_arc(belt.position, belt.orbit_distance, -10, TAU, 50, belt.metadata.get("belt_color"), belt.metadata.get("belt_width"), false)
 	
 	var size_exponent = pow(camera.zoom.length(), -0.5)
 	

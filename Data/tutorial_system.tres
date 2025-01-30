@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Data/BodyAPIs/Depreciated/bodyAPI.gd" id="1_j46cy"]
 [ext_resource type="Script" path="res://Data/starSystemAPI.gd" id="1_l2yyi"]
-[ext_resource type="Script" path="res://Data/BodyAPIs/Depreciated/wormholeAPI.gd" id="2_dhi6k"]
+[ext_resource type="Script" path="res://Data/BodyAPIs/wormholeBodyAPI.gd" id="2_dhi6k"]
 
 [sub_resource type="Resource" id="Resource_vhniq"]
 script = ExtResource("1_j46cy")
