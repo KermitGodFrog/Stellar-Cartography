@@ -1,5 +1,5 @@
 extends Resource
-class_name pingDisplayHelperAPI
+class_name pingDisplayHelper
 
 var position: Vector2
 var current_radius: float

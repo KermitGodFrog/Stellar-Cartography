@@ -71,7 +71,7 @@ var orbit_line_opacity_hint: float = 0.0
 var body_size_multiplier_hint: float = 0.0
 
 #to dispaly data from sonar interface
-var SONAR_PINGS: Array[pingDisplayHelperAPI]
+var SONAR_PINGS: Array[pingDisplayHelper]
 var SONAR_POLYGON: PackedVector2Array
 var SONAR_POLYGON_DISPLAY_TIME: float = 0
 

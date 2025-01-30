@@ -510,9 +510,14 @@ func generateRendezvousPoint():
 
 func generateRandomWeightedSpecialAnomaly():
 	var special_anomaly_classification = global_data.weighted_pick(game_data.get_weighted_special_anomaly_classifications(), "weight")
-	if not special_anomaly_classification == game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.NONE:
+	match special_anomaly_classification:
+		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.NONE:
+			pass
+		
+		
 		#spawn it 
 		#first one of these that I want to do is the sentient asteroid one.
+		#either have additional code for spawning in the match statements, or as a _: fallback, just load a .tres file (if relevant in game_data dictionary) 
 		pass
 	pass
 
