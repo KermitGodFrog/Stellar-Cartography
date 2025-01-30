@@ -31,6 +31,11 @@ const SPECIAL_ANOMALY_CLASSIFICATION_CURVES = {
 #const SPECIAL_ANOMALY_TEXTURES {} need the special anomalies to be able to point to textures/meshes here so they are not saved locally to the anomaly!
 #const SPECIAL_ANOMALY_MESHES {}
 
+enum SPECIAL_SYSTEM_CLASSIFICATIONS {NONE}
+const SPECIAL_SYSTEM_CLASSIFICATION_CURVES = {
+	SPECIAL_SYSTEM_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/Special Systems/none.tres")
+}
+
 const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
 const NANITE_CONTROLLER_REPAIR_CURVE = preload("res://Data/Spawn Data/nanite_controller_repair_curve.tres")
 
@@ -195,6 +200,9 @@ func get_weighted_entity_classifications() -> Dictionary:
 func get_weighted_special_anomaly_classifications() -> Dictionary:
 	return get_weighted_classifications(SPECIAL_ANOMALY_CLASSIFICATION_CURVES)
 
+func get_weighted_special_system_classifications() -> Dictionary:
+	return get_weighted_classifications(SPECIAL_SYSTEM_CLASSIFICATION_CURVES)
+
 
 
 func get_closest_body(bodies, pos):
@@ -208,7 +216,6 @@ func get_closest_body(bodies, pos):
 		return distance_to_bodies.find_key(corrected[0])
 	else:
 		return null
-
 
 
 func loadWorld():
