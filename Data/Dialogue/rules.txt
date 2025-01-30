@@ -56,16 +56,16 @@ postSalvageLeave,"concept: optionSelected, option: postSalvageLeave",,closeDialo
 stationSalvageDispatchResponse,"concept: optionSelected, option: stationSalvageDispatch",,addValueWithFlair: 5000,,,,,,Leave:postSalvageLeave,Useful data is aquired. 
 ,,,,,,,,,,
 ,,,,,,,,,,
-RPOpenDialog,"concept: followingBody, id: rendezvousPoint",,openDialog: null,,populateRPOptions,,,,Leave:defaultLeave,Your ship approaches the rendezvous point. Your hand hovers over the intra-ship communications console in your ready room.
-RPFallback,"concept: optionSelected, option: RPFallback",,,RPOpenDialog,,,,,,
-RPRuiOption,"concept: populateRPOptions, player_FIRST_OFFICER_alive: true",,,,,,,,Summon First Officer Rui: RP_RuiSummon,
-RPJiyaOption,"concept: populateRPOptions, player_CHIEF_ENGINEER_alive: true",,,,,,,,Summon Chief Engineer Jiya: RP_JiyaSummon,
-RPWalkerOption,"concept: populateRPOptions, player_SECURITY_OFFICER_alive: true",,,,,,,,Summon Security Officer Walker: RP_WalkerSummon,
-RPFebrisOption,"concept: populateRPOptions, player_MEDICAL_OFFICER_alive: true",,,,,,,,Summon Medical Officer Febris: RP_FebrisSummon,
+RP_OpenDialog,"concept: followingBody, id: rendezvousPoint",,openDialog: null,,populateRPOptions,,,,Leave:defaultLeave,Your ship approaches the rendezvous point. Your hand hovers over the intra-ship communications console in your ready room.
+RP_Fallback,"concept: optionSelected, option: RPFallback",,,,populateRPOptions,,,,Leave:defaultLeave,Your hand hovers over the intra-ship communications console in your ready room.
+RP_RuiOption,"concept: populateRPOptions, player_FIRST_OFFICER_alive: true",,,,,,,,Summon First Officer Rui: RP_RuiSummon,
+RP_JiyaOption,"concept: populateRPOptions, player_CHIEF_ENGINEER_alive: true",,,,,,,,Summon Chief Engineer Jiya: RP_JiyaSummon,
+RP_WalkerOption,"concept: populateRPOptions, player_SECURITY_OFFICER_alive: true",,,,,,,,Summon Security Officer Walker: RP_WalkerSummon,
+RP_FebrisOption,"concept: populateRPOptions, player_MEDICAL_OFFICER_alive: true",,,,,,,,Summon Medical Officer Febris: RP_FebrisSummon,
 ,,,,,,,,,,
-RPRuiSummon,"concept: optionSelected, option: RP_RuiSummon",,,,populateRPRuiOptions,,,,Dismiss First Officer Rui: RPFallback,Rui entering ready room message! PLUS important info on trading option
-RPRuiHelpOption,concept: populateRPRuiOptions,,,,,,,,Order Rui to increase morale: RPRuiHelp,
-RPRuiHelp,"concept: optionSelected, option: RPRuiHelp",,,RPRuiSummon,,,,,,
+RP_RuiSummon,"concept: optionSelected, option: RP_RuiSummon",,,,populateRPRuiOptions,,,,Dismiss First Officer Rui: RPFallback,Rui entering ready room message! PLUS important info on trading option
+RP_RuiHelpOption,concept: populateRPRuiOptions,,,,,,,,Order Rui to increase morale: RPRuiHelp,
+RP_RuiHelp,"concept: optionSelected, option: RPRuiHelp",,,RPRuiSummon,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
