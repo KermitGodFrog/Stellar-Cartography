@@ -32,14 +32,16 @@ func set_display_name(new_display_name: String):
 	pass
 
 #universal element enums (grouped by equillibrium condensation temperature)
-enum SUPER_REFRACTORY {Re, Os, W, Zr, Hf}
-enum REFRACTORY {Al, Sc, Ca, Ti, Th, Lu, Tb, Dy, Ho, Er, Tm, Ir, Ru, Mo, U, Sm, Nd, La}
-enum MODERATELY_REFRACTORY {Nb, Be, V, Ce, Yb, Pt, Fe, Co, Ni, Pd, Mg, Eu, Si, Cr}
-enum MODERATELY_VOLATILE {Au, P, Li, Sr, Mn, Cu, Ba}
-enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
-enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
+#enum SUPER_REFRACTORY {Re, Os, W, Zr, Hf}
+#enum REFRACTORY {Al, Sc, Ca, Ti, Th, Lu, Tb, Dy, Ho, Er, Tm, Ir, Ru, Mo, U, Sm, Nd, La}
+#enum MODERATELY_REFRACTORY {Nb, Be, V, Ce, Yb, Pt, Fe, Co, Ni, Pd, Mg, Eu, Si, Cr}
+#enum MODERATELY_VOLATILE {Au, P, Li, Sr, Mn, Cu, Ba}
+#enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
+#enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
 
-var star_types = {
+enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ENTITY, SPACE_ANOMALY, RENDEZVOUS_POINT, SPECIAL, OTHER}
+
+const star_types = {
 	"M": {"name": "M", "weight": 0.7645629},
 	"K": {"name": "K", "weight": 0.1213592},
 	"G": {"name": "G", "weight": 0.0764563},
@@ -49,7 +51,7 @@ var star_types = {
 	"O": {"name": "O", "weight": 0.0000003}
 }
 
-var star_data = { #MASS IS IN SOLAR MASSES, RADIUS IS IN SOLAR RADII
+const star_data = { #MASS IS IN SOLAR MASSES, RADIUS IS IN SOLAR RADII
 	"M": {"solar_radius_min": 0.1, "solar_radius_max": 0.7, "solar_mass_min": 0.08, "solar_mass_max": 0.45, "luminosity_min": 0.01, "luminosity_max": 0.08, "color": Color.RED},
 	"K": {"solar_radius_min": 0.7, "solar_radius_max": 0.96, "solar_mass_min": 0.45, "solar_mass_max": 0.8, "luminosity_min": 0.08, "luminosity_max": 0.6, "color": Color.ORANGE},
 	"G": {"solar_radius_min": 0.96, "solar_radius_max": 1.15, "solar_mass_min": 0.8, "solar_mass_max": 1.04, "luminosity_min": 0.6, "luminosity_max": 1.5, "color": Color.YELLOW},
@@ -59,19 +61,19 @@ var star_data = { #MASS IS IN SOLAR MASSES, RADIUS IS IN SOLAR RADII
 	"O": {"solar_radius_min": 6.6, "solar_radius_max": 10, "solar_mass_min": 16, "solar_mass_max": 25, "luminosity_min": 30000, "luminosity_max": 50000, "color": Color.BLUE}
 }
 
-var planet_classifications = {
+const planet_classifications = {
 	"Terran": {"name": "Terran", "weight": 0.3},
 	"Neptunian": {"name": "Neptunian", "weight": 0.6},
 	"Jovian": {"name": "Jovian", "weight": 0.15}
 }
 
-var planet_classification_data = { #MASS IS IN EARTH MASSES (DIVIDE BY 333000 FOR SOLAR MASSES), RADIUS IS IN EARTH RADIUS (DIVIDE BY 109.1 FOR SOLAR RADII)
+const planet_classification_data = { #MASS IS IN EARTH MASSES (DIVIDE BY 333000 FOR SOLAR MASSES), RADIUS IS IN EARTH RADIUS (DIVIDE BY 109.1 FOR SOLAR RADII)
 	"Terran": {"earth_radius_min": pow(pow(10, -1.3), 0.28), "earth_radius_max": pow(pow(10, 0.22), 0.28),  "earth_mass_min": pow(10, -1.3), "earth_mass_max": pow(10, 0.22)}, 
 	"Neptunian": {"earth_radius_min": pow(pow(10, 0.22), 0.59), "earth_radius_max": pow(pow(10, 2), 0.59), "earth_mass_min": pow(10, 0.22), "earth_mass_max": pow(10, 2)},
 	"Jovian": {"earth_radius_min": pow(pow(10, 2), 0.4), "earth_radius_max": pow(pow(10, 3.5), 0.4), "earth_mass_min": pow(10, 2), "earth_mass_max": pow(10, 3.5)} #?????????????????????????
 }
 
-var planet_types = {
+const planet_types = {
 	"Terran": [{ # pre hab
 		"Chthonian": {"name": "Chthonian", "weight": 0.1},
 		"Lava": {"name": "Lava", "weight": 0.2}
@@ -109,7 +111,7 @@ var planet_types = {
 	}]
 }
 
-var planet_type_data = {
+const planet_type_data = {
 	"Chthonian": {"color": Color.DARK_RED, "avg_value": 4000, "variation_class": "density"},
 	"Lava": {"color": Color.RED, "avg_value": 3000, "variation_class": "geological_activity"},
 	"Hycean": {"color": Color.BLUE_VIOLET, "avg_value": 10000, "variation_class": "hydrogen_content"},
@@ -160,7 +162,7 @@ var planet_type_audio_data = {
 	"Helium Giant": {LOW_VAR: [-12,-12,-80,-80], MED_VAR: [-6,-6,-80,-80], HIGH_VAR: [0,0,-80,-80]},
 }
 
-var asteroid_belt_classifications = {
+const asteroid_belt_classifications = {
 	"Silicate": {"name": "Silicate", "weight": 0.3},
 	"Metal-rich": {"name": "Metal-rich", "weight": 0.3},
 	"Carbonaceous": {"name": "Carbonaceous", "weight": 0.3}

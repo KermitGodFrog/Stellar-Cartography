@@ -89,6 +89,7 @@ bodies = Array[ExtResource("1_j46cy")]([])
 identifier_count = 1
 time = 1000
 post_gen_location_candidates = []
+current_name_scheme = 0
 
 [sub_resource type="Resource" id="Resource_ll6oe"]
 script = ExtResource("2_dhi6k")
@@ -122,3 +123,4 @@ bodies = Array[ExtResource("1_j46cy")]([SubResource("Resource_vhniq"), SubResour
 identifier_count = 1
 time = 1000
 post_gen_location_candidates = []
+current_name_scheme = 0

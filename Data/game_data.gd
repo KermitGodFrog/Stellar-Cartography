@@ -24,6 +24,10 @@ const ENTITY_CLASSIFICATION_CURVES = {
 	ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: preload("res://Data/Spawn Data/Entities/lagrange_cloud.tres")
 }
 
+enum SPECIAL_BODY_CLASSIFICATIONS {}
+const SPECIAL_BODY_CURVES = {
+}
+
 const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
 const NANITE_CONTROLLER_REPAIR_CURVE = preload("res://Data/Spawn Data/nanite_controller_repair_curve.tres")
 
