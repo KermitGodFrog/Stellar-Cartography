@@ -1,125 +1,154 @@
-[gd_resource type="Resource" script_class="starSystemAPI" load_steps=9 format=3 uid="uid://dn6svtqw0uj0q"]
+[gd_resource type="Resource" script_class="starSystemAPI" load_steps=13 format=3 uid="uid://bpnb60fo3ghca"]
 
-[ext_resource type="Script" path="res://Data/BodyAPIs/Depreciated/bodyAPI.gd" id="1_j46cy"]
-[ext_resource type="Script" path="res://Data/starSystemAPI.gd" id="1_l2yyi"]
-[ext_resource type="Script" path="res://Data/BodyAPIs/wormholeBodyAPI.gd" id="2_dhi6k"]
+[ext_resource type="Script" path="res://Data/BodyAPIs/bodyAPI.gd" id="1_cmw3s"]
+[ext_resource type="Script" path="res://Data/BodyAPIs/circularBodyAPI.gd" id="2_b751l"]
+[ext_resource type="Script" path="res://Data/starSystemAPI.gd" id="2_isoyl"]
+[ext_resource type="Script" path="res://Data/BodyAPIs/planetBodyAPI.gd" id="3_n87ef"]
+[ext_resource type="Script" path="res://Data/BodyAPIs/wormholeBodyAPI.gd" id="5_1oytx"]
 
-[sub_resource type="Resource" id="Resource_vhniq"]
-script = ExtResource("1_j46cy")
+[sub_resource type="Resource" id="Resource_ne0u5"]
+script = ExtResource("2_b751l")
+mass = 0.272
+surface_color = Color(1, 0, 0, 1)
+current_type = 0
 identifier = 1
 display_name = "King"
 hook_identifier = 0
-distance = 0.0
-orbit_speed = 0.0
-radius = 0.431
 metadata = {
-"color": Color(1, 0, 0, 1),
-"discovery_multiplier": 1,
+"discovery_multiplier": 1.0,
 "iterations": 25,
 "luminosity": 0.017,
-"mass": 0.272,
 "star_type": "M"
 }
+orbit_distance = 0.0
+orbit_speed = 0.0
+radius = 0.431
 position = Vector2(0, 0)
 rotation = 0.0
 pings_to_be_theorised = 3
-is_theorised = false
-is_known = true
-current_variation = 2
-guessed_variation = -1
+theorised = false
+known = true
+hidden = false
 
-[sub_resource type="Resource" id="Resource_ngre6"]
-script = ExtResource("1_j46cy")
+[sub_resource type="Resource" id="Resource_pkjv2"]
+script = ExtResource("3_n87ef")
+current_variation = 0
+guessed_variation = -1
+mass = 0.0
+surface_color = Color(0.663, 0.663, 0.663, 1)
+current_type = 1
 identifier = 2
 display_name = "Prelude"
 hook_identifier = 1
-distance = 20.322
-orbit_speed = 0.008
-radius = 0.008
 metadata = {
-"color": Color(0.662745, 0.662745, 0.662745, 1),
 "has_planetary_anomaly": true,
 "is_planetary_anomaly_available": true,
 "iterations": 12,
-"mass": 0.0,
 "planet_classification": "Terran",
 "planet_type": "Iron",
 "planetary_anomaly_seed": 0,
 "value": 514
 }
+orbit_distance = 20.322
+orbit_speed = 0.008
+radius = 0.008
 position = Vector2(0, 0)
 rotation = 0.0
 pings_to_be_theorised = 3
-is_theorised = false
-is_known = false
-current_variation = 0
-guessed_variation = -1
+theorised = false
+known = false
+hidden = false
 
-[sub_resource type="Resource" id="Resource_w0kvl"]
-script = ExtResource("1_j46cy")
+[sub_resource type="Resource" id="Resource_lw4hu"]
+script = ExtResource("3_n87ef")
+current_variation = 1
+guessed_variation = -1
+mass = 0.026
+surface_color = Color(0, 0, 0.545, 1)
+current_type = 1
 identifier = 3
 display_name = "Omission"
 hook_identifier = 1
-distance = 132.267
-orbit_speed = 0.005
-radius = 0.132
 metadata = {
-"color": Color(0, 0, 0.545, 1),
 "iterations": 12,
-"mass": 0.0,
 "planet_classification": "Neptunian",
 "planet_type": "Ice Dwarf",
 "planetary_anomaly_seed": 0,
 "value": 3029
 }
+orbit_distance = 132.267
+orbit_speed = 0.005
+radius = 0.132
 position = Vector2(0, 0)
 rotation = 4.705
 pings_to_be_theorised = 3
-is_theorised = false
-is_known = false
-current_variation = 1
-guessed_variation = -1
+theorised = false
+known = false
+hidden = false
 
-[sub_resource type="Resource" id="Resource_ype23"]
-script = ExtResource("1_l2yyi")
-identifier = 1
+[sub_resource type="Resource" id="Resource_bgi00"]
+script = ExtResource("2_isoyl")
+identifier = 0
 display_name = ""
-destination_systems = Array[ExtResource("1_l2yyi")]([])
-bodies = Array[ExtResource("1_j46cy")]([])
+destination_systems = Array[ExtResource("2_isoyl")]([])
+bodies = Array[ExtResource("1_cmw3s")]([])
 identifier_count = 1
 time = 1000
 post_gen_location_candidates = []
 current_name_scheme = 0
 
-[sub_resource type="Resource" id="Resource_ll6oe"]
-script = ExtResource("2_dhi6k")
-destination_system = SubResource("Resource_ype23")
+[sub_resource type="Resource" id="Resource_wvc64"]
+script = ExtResource("5_1oytx")
+destination_system = SubResource("Resource_bgi00")
 post_jumps_remaining = 0
-is_disabled = false
+disabled = false
+mass = 0.0
+surface_color = Color(0.502, 0, 0.502, 1)
+current_type = 3
 identifier = 4
 display_name = "Ingress"
 hook_identifier = 1
-distance = 64.582
-orbit_speed = 0.012
-radius = 0.005
 metadata = {
-"color": Color(0.502, 0, 0.502, 1),
 "destination_star_type": "M"
 }
+orbit_distance = 64.582
+orbit_speed = 0.012
+radius = 0.005
 position = Vector2(0, 0)
 rotation = 0.0
 pings_to_be_theorised = 3
-is_theorised = false
-is_known = false
-current_variation = 1
-guessed_variation = -1
+theorised = false
+known = false
+hidden = false
+
+[sub_resource type="Resource" id="Resource_8eyb4"]
+script = ExtResource("2_isoyl")
+identifier = 0
+display_name = ""
+destination_systems = Array[ExtResource("2_isoyl")]([])
+bodies = Array[ExtResource("1_cmw3s")]([])
+identifier_count = 1
+time = 1000
+post_gen_location_candidates = []
+current_name_scheme = 0
+
+[sub_resource type="Resource" id="Resource_fn3du"]
+script = ExtResource("2_isoyl")
+identifier = 0
+display_name = ""
+destination_systems = Array[ExtResource("2_isoyl")]([])
+bodies = Array[ExtResource("1_cmw3s")]([])
+identifier_count = 1
+time = 1000
+post_gen_location_candidates = []
+current_name_scheme = 0
 
 [resource]
-script = ExtResource("1_l2yyi")
+script = ExtResource("2_isoyl")
 identifier = 0
 display_name = "tutorial"
-destination_systems = Array[ExtResource("1_l2yyi")]([])
-bodies = Array[ExtResource("1_j46cy")]([SubResource("Resource_vhniq"), SubResource("Resource_ngre6"), SubResource("Resource_w0kvl"), SubResource("Resource_ll6oe")])
+destination_systems = Array[ExtResource("2_isoyl")]([SubResource("Resource_8eyb4"), SubResource("Resource_fn3du")])
+bodies = Array[ExtResource("1_cmw3s")]([SubResource("Resource_ne0u5"), SubResource("Resource_pkjv2"), SubResource("Resource_lw4hu"), SubResource("Resource_wvc64")])
 identifier_count = 1
 time = 1000
 post_gen_location_candidates = []

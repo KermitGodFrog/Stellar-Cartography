@@ -39,7 +39,7 @@ func set_display_name(new_display_name: String):
 #enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
 #enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
 
-enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, SPECIAL, OTHER}
+enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, SPECIAL_ANOMALY, OTHER}
 
 const star_types = {
 	"M": {"name": "M", "weight": 0.7645629},
@@ -333,7 +333,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 				var has_missing_AO: bool = false
 				if randf() >= (1 - missing_AO_chance_per_planet):
 					has_missing_AO = true
-				
+				print(mass)
 				var new_planet = addBody(
 					planetBodyAPI.new(),
 					BODY_TYPES.PLANET,

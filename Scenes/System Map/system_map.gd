@@ -130,7 +130,7 @@ func _physics_process(delta):
 	elif follow_body and follow_body.is_theorised_not_known(): follow_body_label.set_text(">>> Unknown")
 	else: follow_body_label.set_text(">>> LOCK BODY FOR INFO")
 	body_attributes_list.clear()
-	if follow_body:
+	if follow_body and follow_body.is_known():
 		
 		if follow_body is circularBodyAPI: 
 			body_attributes_list.add_item("radius : %.2f (earth radii)" % (follow_body.radius * 109.1), null, false)

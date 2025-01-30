@@ -65,7 +65,7 @@ func _draw():
 		prev_hz = hz
 	pass
 
-func initialize(chimes_db: float, pops_db: float, pulses_db: float, storm_db: float, custom_audio_stream = null, custom_db = null):
+func initialize(chimes_db: float, pops_db: float, pulses_db: float, storm_db: float, custom_audio_stream = null, custom_db = null): #not going to have custom audio streams (atleast in the long future), so this is useless
 	var pairs = [[chimes, chimes_db], [pops, pops_db], [pulses, pulses_db], [storm, storm_db]]
 	for sound in pairs:
 		sound.front().set_volume_db(sound.back())

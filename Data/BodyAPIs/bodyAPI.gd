@@ -32,7 +32,7 @@ func set_display_name(value) -> void:
 @export var radius: float #this is used for important things like player exclusion zone from bodies in 3d, player orbit distance from body, etc. set to (1.0 / 192.1) as a default (earth size). 
 
 @export_storage var position: Vector2
-@export_storage var rotation: float
+@export var rotation: float
 
 @export var pings_to_be_theorised: int = 3
 @export var theorised: bool = false:
