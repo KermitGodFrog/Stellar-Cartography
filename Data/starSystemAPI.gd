@@ -511,14 +511,8 @@ func generateRendezvousPoint():
 func generateRandomWeightedSpecialAnomaly():
 	var special_anomaly_classification = global_data.weighted_pick(game_data.get_weighted_special_anomaly_classifications(), "weight")
 	if not special_anomaly_classification == game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.NONE:
-		
-		
 		#spawn it 
-		
-		
-		
-		
-		
+		#first one of these that I want to do is the sentient asteroid one.
 		pass
 	pass
 

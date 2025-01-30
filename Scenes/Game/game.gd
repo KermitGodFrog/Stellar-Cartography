@@ -242,6 +242,7 @@ func _physics_process(delta):
 	if current_bodies:
 		for body in current_bodies:
 			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
+			body.advance() #capacity to do more stuff, can be overriden by classes that inherit bodyAPI
 	#if world.player.hull_deterioration == 100:
 		#_on_player_death()
 	
