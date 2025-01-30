@@ -10,14 +10,12 @@ enum VARIATIONS {LOW, MEDIUM, HIGH}
 func get_current_variation() -> int:
 	return current_variation
 func set_current_variation(value) -> void:
-	print("CURRENT VARIATION UPDATED! DONT KNOW FROM WHERE THO!")
 	current_variation = value
 	pass
 func get_guessed_variation() -> int:
 	return guessed_variation
 func set_guessed_variation(value) -> void:
 	guessed_variation = value
-
 
 func is_PA_valid() -> bool:
 	if ((metadata.get("has_planetary_anomaly", false) == true) and (metadata.get("is_planetary_anomaly_available", false) == true)):

@@ -98,13 +98,14 @@ func _on_remove_saved_audio_profile(helper: audioProfileHelper):
 	pass
 
 func _on_locked_body_updated(body: bodyAPI):
-	if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_known(): if body.get_current_variation() != -1:
-		var audio_variations = starSystemAPI.new().planet_type_audio_data.get(body.metadata.get("planet_type"))
-		var mix = audio_variations.get(body.get_current_variation())
-		var helper = audioProfileHelper.new()
-		helper.body = body
-		helper.mix = mix
-		_on_play_audio_profile(helper)
+	if (body.get_type() == starSystemAPI.BODY_TYPES.PLANET) and (body.is_known()): 
+		if body.get_current_variation() != -1:
+			var audio_variations = starSystemAPI.new().planet_type_audio_data.get(body.metadata.get("planet_type"))
+			var mix = audio_variations.get(body.get_current_variation())
+			var helper = audioProfileHelper.new()
+			helper.body = body
+			helper.mix = mix
+			_on_play_audio_profile(helper)
 	else:
 		current_audio_profile = null
 		deactivate()

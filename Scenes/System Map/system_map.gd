@@ -357,13 +357,21 @@ func draw_sonar():
 
 func draw_map():
 	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT) #not EXACTLY proper but yknow
-	if asteroid_belts: for belt in asteroid_belts:
-		if belt.is_known(): draw_arc(belt.position, belt.orbit_distance, -10, TAU, 50, belt.metadata.get("belt_color"), belt.metadata.get("belt_width"), false)
+	if asteroid_belts: 
+		for belt in asteroid_belts:
+			if belt.is_known(): 
+				draw_arc(belt.position, belt.orbit_distance, -10, TAU, 50, belt.metadata.get("belt_color"), belt.metadata.get("belt_width"), false)
 	
 	var size_exponent = pow(camera.zoom.length(), -0.5)
 	
 	if camera.zoom.length() < system.get_first_star().radius * 100.0: map_overlay.show()
 	else: map_overlay.hide()
+	
+	for body in system.bodies:
+		
+		#batch customBodyAPI texture drawing
+		
+		pass
 	
 	for body in system.bodies:
 		
@@ -398,7 +406,7 @@ func draw_map():
 		
 		if body is glintBodyAPI and body.is_known():
 			if not camera.zoom.length() < system.get_first_star().radius * 100.0:
-				draw_circle(body.position, 1.0, Color.NAVAJO_WHITE) #assuming radius to be 1.0
+				draw_circle(body.position, (1.0 / 192.1), Color.NAVAJO_WHITE) #assuming radius to be 1.0
 	
 	for body in system.bodies:
 		
@@ -478,10 +486,12 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	
 	for body in system.bodies:
 		
-		if body.get_display_name() == "Ingress":
+		if body.is_hidden():
+			continue
+		elif body.get_display_name() == "Ingress":
 			if TUTORIAL_INGRESS_OVERRIDE == true:
 				continue
-		if body.get_display_name() == "Omission":
+		elif body.get_display_name() == "Omission":
 			if TUTORIAL_OMISSION_OVERRIDE == true:
 				continue
 		

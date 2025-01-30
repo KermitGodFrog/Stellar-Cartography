@@ -241,7 +241,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 						orbit_distance,
 						0.0,
 						(1.0 / 109.1),
-						{},
+						{"hidden": true},
 						{"asteroid_belt_classification": belt_classification, "belt_width": belt_width, "belt_color": Color(0.111765, 0.111765, 0.111765, 0.9), "belt_mass": belt_mass}
 					)
 					
@@ -360,7 +360,6 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 func generateWormholes(): #uses variables post_gen_location_candidates, destination_systems
 	randomize()
 	var spawn_systems = destination_systems.duplicate()
-	print(spawn_systems)
 	if previous_system:
 		spawn_systems.push_front(previous_system)
 	for dest_system in spawn_systems:
@@ -395,6 +394,7 @@ func generateWormholes(): #uses variables post_gen_location_candidates, destinat
 	pass
 
 func generateRandomWeightedStations():
+	randomize()
 	for station in global_data.get_randi(1, 3):
 		var location = post_gen_location_candidates.pick_random()
 		var hook = get_body_from_identifier(location.front())
@@ -424,6 +424,7 @@ func generateRandomWeightedStations():
 	pass
 
 func generateRandomAnomalies(SA_chance_per_candidate: float = 0.0):
+	randomize()
 	#anomalies = space anomalies - dialogue, disappear afterwards.
 	for anomaly in post_gen_location_candidates.size(): #for this reason, have to generate anomalies LAST
 		if randf() > (1 - SA_chance_per_candidate):
@@ -452,6 +453,7 @@ func generateRandomAnomalies(SA_chance_per_candidate: float = 0.0):
 	pass
 
 func generateRandomWeightedEntities():
+	randomize()
 	#entities = no dialogue, viewable via long range scopes module
 	for entity in global_data.get_randi(0, 2):
 		var location = post_gen_location_candidates.pick_random()
@@ -481,6 +483,7 @@ func generateRandomWeightedEntities():
 	pass
 
 func generateRendezvousPoint():
+	randomize()
 	var location = post_gen_location_candidates.pick_random()
 	var hook = get_body_from_identifier(location.front())
 	var i = location.back()
@@ -505,7 +508,18 @@ func generateRendezvousPoint():
 	post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
-func generateRandomWeightedSpecial():
+func generateRandomWeightedSpecialAnomaly():
+	var special_anomaly_classification = global_data.weighted_pick(game_data.get_weighted_special_anomaly_classifications(), "weight")
+	if not special_anomaly_classification == game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.NONE:
+		
+		
+		#spawn it 
+		
+		
+		
+		
+		
+		pass
 	pass
 
 

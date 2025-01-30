@@ -24,9 +24,12 @@ const ENTITY_CLASSIFICATION_CURVES = {
 	ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: preload("res://Data/Spawn Data/Entities/lagrange_cloud.tres")
 }
 
-enum SPECIAL_BODY_CLASSIFICATIONS {}
-const SPECIAL_BODY_CURVES = {
+enum SPECIAL_ANOMALY_CLASSIFICATIONS {NONE}
+const SPECIAL_ANOMALY_CLASSIFICATION_CURVES = {
+	SPECIAL_ANOMALY_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/Special Anomalies/none.tres")
 }
+#const SPECIAL_ANOMALY_TEXTURES {} need the special anomalies to be able to point to textures/meshes here so they are not saved locally to the anomaly!
+#const SPECIAL_ANOMALY_MESHES {}
 
 const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
 const NANITE_CONTROLLER_REPAIR_CURVE = preload("res://Data/Spawn Data/nanite_controller_repair_curve.tres")
@@ -175,23 +178,24 @@ func get_lines_from_file(file_path: String):
 
 
 
-func get_weighted_station_classifications() -> Dictionary:
+func get_weighted_classifications(dict: Dictionary) -> Dictionary:
 	var weighted: Dictionary = {}
-	for classification in STATION_CLASSIFICATION_CURVES:
-		var curve = STATION_CLASSIFICATION_CURVES.get(classification)
+	for classification in dict:
+		var curve = dict.get(classification)
 		var weight = curve.sample(player_weirdness_index)
 		weighted[classification] = {"name": classification, "weight": weight}
-	#print_debug("STATION CLASSIFICATION WEIGHTINGS : ", weighted)
 	return weighted
 
+func get_weighted_station_classifications() -> Dictionary:
+	return get_weighted_classifications(STATION_CLASSIFICATION_CURVES)
+
 func get_weighted_entity_classifications() -> Dictionary: 
-	var weighted: Dictionary = {}
-	for classification in ENTITY_CLASSIFICATION_CURVES:
-		var curve = ENTITY_CLASSIFICATION_CURVES.get(classification)
-		var weight = curve.sample(player_weirdness_index)
-		weighted[classification] = {"name": classification, "weight": weight}
-	#print_debug("ENTITY CLASSIFICATION WEIGHTINGS : ", weighted)
-	return weighted
+	return get_weighted_classifications(ENTITY_CLASSIFICATION_CURVES)
+
+func get_weighted_special_anomaly_classifications() -> Dictionary:
+	return get_weighted_classifications(SPECIAL_ANOMALY_CLASSIFICATION_CURVES)
+
+
 
 func get_closest_body(bodies, pos):
 	if bodies.size() > 0:

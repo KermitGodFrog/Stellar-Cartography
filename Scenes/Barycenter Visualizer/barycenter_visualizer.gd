@@ -32,10 +32,12 @@ func _physics_process(_delta):
 		if body is circularBodyAPI and body.get_identifier() != locked_body_identifier:
 			if locked_body: #display isnt shown if no body is locked to base points around
 				
-				if body.get_display_name() == "Omission":
+				if body.is_hidden():
+					continue
+				elif body.get_display_name() == "Omission":
 					if TUTORIAL_OMISSION_OVERRIDE == true:
 						continue
-				if body.get_display_name() == "Ingress":
+				elif body.get_display_name() == "Ingress":
 					if TUTORIAL_INGRESS_OVERRIDE == true:
 						continue
 				

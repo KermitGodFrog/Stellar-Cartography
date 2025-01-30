@@ -89,10 +89,12 @@ func _physics_process(_delta):
 					var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
 					if detection_scalar < body_detection_range and associated_body.is_known() == false:
 						
-						if associated_body.get_display_name() == "Ingress":
+						if associated_body.is_hidden():
+							continue
+						elif associated_body.get_display_name() == "Ingress":
 							if TUTORIAL_INGRESS_OVERRIDE == true:
 								continue
-						if associated_body.get_display_name() == "Omission":
+						elif associated_body.get_display_name() == "Omission":
 							if TUTORIAL_OMISSION_OVERRIDE == true:
 								continue
 						

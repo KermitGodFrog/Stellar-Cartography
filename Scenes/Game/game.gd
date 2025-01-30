@@ -510,7 +510,9 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	
 	#setting whether the new system is a civilized system or not
 	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
-	if world.player.get_jumps_remaining() == 0:
+	if not world.player.get_jumps_remaining() == 0:
+		destination.generateRandomWeightedSpecialAnomaly()
+	else:
 		destination.generateRandomWeightedStations()
 		world.player.resetJumpsRemaining()
 		for body in destination.bodies:
@@ -619,9 +621,9 @@ func _on_create_new_star_system(for_system: starSystemAPI = null):
 	return system
 
 func _on_switch_star_system(to_system: starSystemAPI):
-	if world.player.current_star_system:
-		if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1:
-			audio_visualizer._on_clear_button_pressed()
+	#if world.player.current_star_system:
+		#if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1: #this was the thing throwing TypedArray does not inherit from GDScript errors, so I just removed it.... hopefully ok. does not look important at all
+	audio_visualizer._on_clear_button_pressed()
 	
 	world.player.current_star_system = to_system
 	system_map.system = to_system
