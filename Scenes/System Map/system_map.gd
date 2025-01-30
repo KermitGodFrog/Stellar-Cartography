@@ -126,35 +126,38 @@ func _physics_process(delta):
 				SONAR_PINGS.erase(ping)
 	
 	#INFOR TAB!!!!!!! \/\/\\/\/
-	if follow_body and follow_body.is_known: follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
+	if follow_body and follow_body.is_known(): follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
 	elif follow_body and follow_body.is_theorised_but_not_known(): follow_body_label.set_text(">>> Unknown")
 	else: follow_body_label.set_text(">>> LOCK BODY FOR INFO")
 	body_attributes_list.clear()
-	if follow_body: 
-		#global
-		body_attributes_list.add_item("radius : %.2f (earth radii)" % (follow_body.radius * 109.1), null, false)
+	if follow_body:
+		
+		if follow_body is circularBodyAPI: 
+			body_attributes_list.add_item("radius : %.2f (earth radii)" % (follow_body.radius * 109.1), null, false)
+			body_attributes_list.add_item("mass : %.2f (earth masses)" % (follow_body.mass * 333000))
+		
 		body_attributes_list.add_item("orbital_speed : %.2f (rot/frame)" % follow_body.orbit_speed, null, false)
 		body_attributes_list.add_item("orbital_distance %.2f (solar radii)" % follow_body.distance, null, false)
+		
 		#metadata
 		var excluding = ["iterations", "color", "value", "has_planetary_anomaly", "is_planetary_anomaly_available", "is_anomaly_available", "planetary_anomaly_seed", "has_missing_AO", "rendezvous_point_seed"]
-		if follow_body.is_known:
+		if follow_body.is_known():
 			for entry in follow_body.metadata:
 				if excluding.find(entry) == -1:
 					var parse: String
 					match entry:
-						"mass": parse = "%.2f (earth masses)" % (follow_body.metadata.get(entry) * 333000)
 						"luminosity": parse = "%.2f" % (follow_body.metadata.get(entry))
 						_: parse = str(follow_body.metadata.get(entry))
 					body_attributes_list.add_item("%s : %s" % [entry, parse], null, false)
 	
 	#PICKER UTILITY \/\/\/\/\/
-	if follow_body: if follow_body.is_planet() and follow_body.get_current_variation() != -1:
+	if follow_body: if follow_body.current_body_type == starSystemAPI.BODY_TYPES.PLANET: if follow_body.get_current_variation() != -1:
 		var data_for_planet_type = system.planet_type_data.get(follow_body.metadata.get("planet_type"))
 		var variation_class = data_for_planet_type.get("variation_class")
-		if variation_class != null and (follow_body.is_known == true) and (follow_body.metadata.get("has_missing_AO", false) == true):
+		if variation_class != null and (follow_body.is_known()) and (follow_body.metadata.get("has_missing_AO", false) == true):
 			picker_label.show()
 			picker_button.show()
-			picker_label.set_text(str(variation_class.to_upper().replace("_", " "), " (AUDIO VISUALIZER): "))
+			picker_label.set_text(str(variation_class.capitalize(), " (AUDIO VISUALIZER): "))
 			if follow_body.get_guessed_variation() != -1:
 				picker_button.select(follow_body.get_guessed_variation())
 			else: picker_button.select(-1)
@@ -183,80 +186,79 @@ func recursive_add(body: bodyAPI, parent: TreeItem) -> void:
 	pass
 
 func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
-	if body.is_valid_for_system_list():
+	if not body.is_hidden():
 		var item: TreeItem = system_list.create_item(parent)
 		item.set_metadata(0, body.get_identifier())
 		
 		if body.is_theorised_but_not_known():
 			item.set_text(0, "???")
 			
-			if body.get_identifier() == closest_body_id: 
+			if body == follow_body:
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
+			elif body.get_identifier() == closest_body_id: 
 				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.2)) #WEB_GRAY
 			else:
 				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
-			
-			if body == follow_body:
-				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
 		
-		elif body.is_known:
-			if body.is_star(): item.set_text(0, "%s - %s Class Star" % [body.display_name, body.metadata.get("star_type")])
-			if body.is_planet(): item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
-			if body.is_wormhole(): item.set_text(0, "%s - Wormhole" % body.get_display_name())
-			if body.is_station(): item.set_text(0, "%s - Station" % body.get_display_name())
-			if body.is_anomaly(): item.set_text(0, "%s" % body.get_display_name())
-			if body.is_entity(): item.set_text(0, "%s" % game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
-			if body.is_rendezvous_point(): item.set_text(0, "%s" % body.get_display_name())
+		elif body.is_known():
 			
-			#earlier entries override later entries
-			
-			if body.get_identifier() == closest_body_id: 
+			if body == follow_body:
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
+			elif body.get_identifier() == closest_body_id: 
 				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.2)) #WEB_GRAY
 			else:
 				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
 			
-			if body.is_star(): if body.get_identifier() == closest_body_id:
-				item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416).lightened(0.2))
-			else:
-				item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416))
-			
-			if body == follow_body:
-				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
-			
-			if body.is_wormhole():
-				item.set_custom_bg_color(0, Color.WEB_PURPLE)
-			
-			if body.is_wormhole(): if body.get_identifier() == closest_body_id:
-				item.set_custom_bg_color(0, Color.WEB_PURPLE.lightened(0.2))
-			
-			if body.is_wormhole(): if body == follow_body:
-				item.set_custom_bg_color(0, Color.WEB_PURPLE.lightened(0.5))
-			
-			if body.is_wormhole(): if body.is_disabled: 
-				item.set_custom_bg_color(0, Color.DARK_RED)
-			
-			if body.is_wormhole(): if body.is_disabled: if body.get_identifier() == closest_body_id:
-				item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.2))
-			
-			if body.is_wormhole(): if body.is_disabled: if body == follow_body: 
-				item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.5))
-			
-			if body.is_station():
-				item.set_icon(0, station_frame)
-			
-			if body.is_entity():
-				item.set_icon(0, get_entity_frame(body.entity_classification))
-			
-			if body.is_rendezvous_point():
-				item.set_icon(0, rendezvous_point_frame)
-			
-			if body.is_planet(): if (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true):
-				item.set_icon(0, audio_visualizer_icon)
-			
-			if body.is_planet(): if (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
-				item.set_icon(0, question_mark_icon)
-			
-			if body.is_anomaly(): if body.metadata.get("is_space_anomaly_available", true) == true:
-				item.set_icon(0, question_mark_icon)
+			match body.get_body_type():
+				starSystemAPI.BODY_TYPES.STAR:
+					item.set_text(0, "%s - %s Class Star" % [body.get_display_name(), body.metadata.get("star_type")])
+					if body.get_identifier() == closest_body_id:
+						item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416).lightened(0.2))
+					else:
+						item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416))
+					
+				starSystemAPI.BODY_TYPES.PLANET:
+					item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
+					if (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
+						item.set_icon(0, audio_visualizer_icon)
+					elif (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
+						item.set_icon(0, question_mark_icon)
+					
+				starSystemAPI.BODY_TYPES.WORMHOLE:
+					item.set_text(0, "%s - Wormhole" % body.get_display_name())
+					match body.is_disabled(): #is_disabled() will be a function in new wormholeAPI
+						true:
+							if body == follow_body:
+								item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.5))
+							elif body.get_identifier() == closest_body_id:
+								item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.2))
+							else:
+								item.set_custom_bg_color(0, Color.DARK_RED)
+						false:
+							if body == follow_body:
+								item.set_custom_bg_color(0, Color.WEB_PURPLE.lightened(0.5))
+							elif body.get_identifier() == closest_body_id:
+								item.set_custom_bg_color(0, Color.WEB_PURPLE.lightened(0.2))
+							else:
+								item.set_custom_bg_color(0, Color.WEB_PURPLE)
+					
+				starSystemAPI.BODY_TYPES.STATION:
+					item.set_text(0, "%s - Station" % body.get_display_name())
+					item.set_icon(0, station_frame)
+					
+				starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
+					item.set_text(0, "%s" % body.get_display_name())
+					if body.metadata.get("is_space_anomaly_available", true) == true:
+						item.set_icon(0, question_mark_icon)
+					
+				starSystemAPI.BODY_TYPES.SPACE_ENTITY:
+					item.set_text(0, "%s" % game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
+					item.set_icon(0, get_entity_frame(body.entity_classification))
+					
+				starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
+					item.set_text(0, "%s" % body.get_display_name())
+					item.set_icon(0, rendezvous_point_frame)
+					
 		
 		var c = collapsed_cache.get(body.get_identifier())
 		if c != null:
@@ -346,9 +348,9 @@ func draw_sonar():
 	pass
 
 func draw_map():
-	var asteroid_belts = system.get_bodies_with_metadata_key("asteroid_belt_classification") #not EXACTLY proper but yknow
+	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT) #not EXACTLY proper but yknow
 	if asteroid_belts: for belt in asteroid_belts:
-		if belt.is_known: draw_arc(belt.position, belt.radius, -10, TAU, 50, belt.metadata.get("color"), belt.metadata.get("width"), false)
+		if belt.is_known(): draw_arc(belt.position, belt.metadata.get("belt_radius"), -10, TAU, 50, belt.metadata.get("belt_color"), belt.metadata.get("belt_width"), false)
 	
 	var size_exponent = pow(camera.zoom.length(), -0.5)
 	
@@ -359,7 +361,7 @@ func draw_map():
 		
 		#batch orbit line drawing:
 		
-		if not (body.is_star() or body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
+		if body is circularBodyAPI and body.is_known():
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
 				if system.get_body_from_identifier(body.hook_identifier):
@@ -370,32 +372,31 @@ func draw_map():
 		
 		#batching circle drawing:
 		
-		if not (body.is_asteroid_belt() or body.is_station() or body.is_anomaly() or body.is_entity() or body.is_rendezvous_point()) and body.is_known:
+		if body is circularBodyAPI and body.is_known():
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
 				
 				if body == follow_body:
-					draw_circle(body.position, body_size_multiplier_hint * 1.75, body.metadata.get("color").lerp(Color(1.0, 1.0, 1.0, 0.0), 0.50))
-					draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
+					draw_circle(body.position, body_size_multiplier_hint * 1.75, body.surface_color.lerp(Color(1.0, 1.0, 1.0, 0.0), 0.50))
+					draw_circle(body.position, body_size_multiplier_hint, body.surface_color)
 				elif body.get_identifier() == closest_body_id:
-					draw_circle(body.position, body_size_multiplier_hint * 1.5, body.metadata.get("color").lerp(Color(1.0, 1.0, 1.0, 0.0), 0.75))
-					draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
+					draw_circle(body.position, body_size_multiplier_hint * 1.5, body.surface_color.lerp(Color(1.0, 1.0, 1.0, 0.0), 0.75))
+					draw_circle(body.position, body_size_multiplier_hint, body.surface_color)
 				else:
-					draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
-				
+					draw_circle(body.position, body_size_multiplier_hint, body.surface_color)
 			else:
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, body.radius, 0.05)
-				draw_circle(body.position, body_size_multiplier_hint, body.metadata.get("color"))
+				draw_circle(body.position, body_size_multiplier_hint, body.surface_color)
 		
-		if (body.is_station() or body.is_anomaly() or body.is_entity()) and body.is_known:
+		if body is glintBodyAPI and body.is_known():
 			if not camera.zoom.length() < system.get_first_star().radius * 100.0:
-				draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
+				draw_circle(body.position, 1.0, Color.NAVAJO_WHITE) #assuming radius to be 1.0
 	
 	for body in system.bodies:
 		
 		#batching entity icons:
 		
-		if (body.is_station() or body.is_anomaly() or body.is_entity() or body.is_rendezvous_point()) and body.is_known:
+		if body is glintBodyAPI and body.is_known():
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				entity_icon.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false)
 	
@@ -403,12 +404,14 @@ func draw_map():
 		
 		#batching anomaly map icons:
 		
-		if body.is_planet(): if ((body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true)) and body.is_known:
-			if camera.zoom.length() < system.get_first_star().radius * 100.0:
-				question_mark_icon.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
-		elif body.is_anomaly(): if (body.metadata.get("is_space_anomaly_available", true) == true) and body.is_known:
-			if camera.zoom.length() < system.get_first_star().radius * 100.0:
-				question_mark_icon.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
+		if body.current_body_type == starSystemAPI.BODY_TYPES.PLANET and body.is_known(): 
+			if body.is_PA_valid():
+				if camera.zoom.length() < system.get_first_star().radius * 100.0:
+					question_mark_icon.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
+		elif body.current_body_type == starSystemAPI.BODY_TYPES.SPACE_ANOMALY and body.is_known(): 
+			if body.is_SA_valid():
+				if camera.zoom.length() < system.get_first_star().radius * 100.0:
+					question_mark_icon.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
 	
 	#draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
 	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, size_exponent)
@@ -492,9 +495,9 @@ func async_add_ping(body: bodyAPI) -> void:
 	
 	body.pings_to_be_theorised = maxi(0, body.pings_to_be_theorised - 1)
 	if body.pings_to_be_theorised == 0:
-		if not body.is_theorised:
+		if not body.theorised:
 			emit_signal("theorisedBody", body.get_identifier())
-		body.is_theorised = true #so it says '???' on the overview
+		body.theorised = true #so it says '???' on the overview
 	var pings = ["res://Data/Ping Display Helpers/normal.tres"]
 	var ping = load(pings.pick_random()).duplicate(true)
 	ping.position = body.position
@@ -544,15 +547,19 @@ func _on_found_body(id: int):
 	ping.resetTime()
 	SONAR_PINGS.append(ping)
 	
-	if body.is_planet_with_valid_PA() or body.is_anomaly_with_valid_SA():
-		get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
+	if body.current_body_type == starSystemAPI.BODY_TYPES.PLANET:
+		if body.is_PA_valid():
+			get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
+	elif body.current_body_type == starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
+		if body.is_SA_valid():
+			get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
 	else:
 		get_tree().call_group("audioHandler", "play_once", LIDAR_discovery, 0.0, "SFX")
 	pass
 
 func _on_picker_button_item_selected(index):
-	if follow_body:
-		follow_body.guessed_variation = index
+	if follow_body.current_body_type == starSystemAPI.BODY_TYPES.PLANET:
+		follow_body.set_guessed_variation(index)
 	pass
 
 func _on_add_console_entry(text: String, text_color: Color = Color.WHITE):
@@ -607,7 +614,7 @@ func follow_and_lock_item(item: TreeItem):
 		identifier = item.get_metadata(0)
 	if identifier:
 		var body = system.get_body_from_identifier(identifier)
-		if body.is_theorised_but_not_known() or body.is_known:
+		if body.is_theorised_but_not_known() or body.is_known():
 			emit_signal("updatedLockedBody", body)
 			locked_body = body
 			follow_body = body

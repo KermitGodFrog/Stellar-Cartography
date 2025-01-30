@@ -108,7 +108,7 @@ func _ready():
 		new.generateRandomWeightedEntities()
 		new.generateRendezvousPoint()
 		for body in new.bodies:
-			body.is_known = true
+			body.known = true
 		
 		_on_switch_star_system(new)
 		
@@ -510,7 +510,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 		#print_debug(destination_wormhole)
 		#print_debug(destination_wormhole.rotation)
 		#world.player.position = destination.get_body_from_identifier(destination_wormhole.hook_identifier)
-	destination_wormhole.is_known = true
+	destination_wormhole.known = true
 	
 	#setting whether the new system is a civilized system or not
 	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
@@ -518,7 +518,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 		destination.generateRandomWeightedStations()
 		world.player.resetJumpsRemaining()
 		for body in destination.bodies:
-			body.is_known = true
+			body.known = true
 	
 	#world.player.position = destination_position
 	#world.player.target_position = world.player.position
@@ -885,12 +885,12 @@ func _on_pause_mode_changed(new_mode: game_data.PAUSE_MODES) -> void:
 func _ON_DEBUG_REVEAL_ALL_WORMHOLES():
 	for body in world.player.current_star_system.bodies:
 		if body.is_wormhole():
-			body.is_known = true
+			body.known = true
 	pass
 
 func _ON_DEBUG_REVEAL_ALL_BODIES():
 	for body in world.player.current_star_system.bodies:
-		body.is_known = true
+		body.known = true
 	pass
 
 func _ON_DEBUG_QUICK_ADD_NANITES():

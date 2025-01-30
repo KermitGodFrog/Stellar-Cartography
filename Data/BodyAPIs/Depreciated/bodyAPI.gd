@@ -1,5 +1,5 @@
 extends Resource
-class_name bodyAPI
+class_name oldBodyAPI
 #any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
 @export var identifier: int

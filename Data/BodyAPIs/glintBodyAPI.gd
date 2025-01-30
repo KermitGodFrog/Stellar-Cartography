@@ -1,8 +1,6 @@
-extends newBodyAPI
-class_name customBodyAPI
-
-#unsure what kind of variables this one will have yet:
-#texture pointer for system map, mesh pointer for scopes...
+extends bodyAPI 
+class_name glintBodyAPI
+#for objects which are too small to be visually represented, and are thus shown as the default 'glint' texture on the system map and scopes!
 
 #to inherit this, the class must contain original methods or variables which are
 #A: of a type which you would feel unsafe cramming into metadata - e.g, object or texture

@@ -1,5 +1,5 @@
 extends Resource
-class_name newBodyAPI
+class_name bodyAPI
 #not displayed anywhere in game
 
 @export var current_body_type: starSystemAPI.BODY_TYPES:
@@ -27,17 +27,27 @@ func set_display_name(value) -> void:
 	display_name = value
 	pass
 
-@export var distance: float
+@export var orbit_distance: float
 @export var orbit_speed: float
 
 @export_storage var position: Vector2
 @export_storage var rotation: float
 
 @export var pings_to_be_theorised: int = 3
-@export var is_theorised: bool = false
-@export var is_known: bool = false
+@export var theorised: bool = false:
+	get = is_theorised
+@export var known: bool = false:
+	get = is_known
+@export var hidden: bool = false: #hidden ON SYSTEM LIST and ON SYSTEM MAP
+	get = is_hidden
+func is_theorised() -> bool:
+	return theorised
+func is_known() -> bool:
+	return known
+func is_hidden() -> bool:
+	return hidden
 func is_theorised_not_known() -> bool:
-	if (not is_known) and is_theorised:
+	if (not known) and theorised:
 		return true
 	else:
 		return false

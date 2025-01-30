@@ -1,4 +1,4 @@
-extends newBodyAPI
+extends bodyAPI
 class_name circularBodyAPI
 
 @export var radius: float

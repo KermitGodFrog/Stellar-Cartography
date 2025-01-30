@@ -39,7 +39,7 @@ func set_display_name(new_display_name: String):
 #enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
 #enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
 
-enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ENTITY, SPACE_ANOMALY, RENDEZVOUS_POINT, SPECIAL, OTHER}
+enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, SPECIAL, OTHER}
 
 const star_types = {
 	"M": {"name": "M", "weight": 0.7645629},
@@ -135,9 +135,9 @@ const planet_type_data = {
 	#dwarfs and giants have the same audio data and thus can have the same variation class!
 }
 
-var LOW_VAR = bodyAPI.VARIATIONS.LOW
-var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
-var HIGH_VAR = bodyAPI.VARIATIONS.HIGH
+var LOW_VAR = 0#var LOW_VAR = bodyAPI.VARIATIONS.LOW
+var MED_VAR = 1#var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
+var HIGH_VAR = 2#var HIGH_VAR = bodyAPI.VARIATIONS.HIGH
 #CHIMES, POPS, PULSES, STORM, CUSTOM
 var planet_type_audio_data = {
 	"Chthonian": {LOW_VAR: [-80,-12,0,-80], MED_VAR: [-80,-6,-6,-80], HIGH_VAR: [-80,0,-12,-80]},
@@ -491,7 +491,7 @@ func addBody(id: int, d_name: String, hook_identifier: int, distance: float, orb
 	body.radius = radius
 	if metadata:
 		body.metadata = metadata
-	body.current_variation = bodyAPI.VARIATIONS.values().pick_random()
+	#body.current_variation = bodyAPI.VARIATIONS.values().pick_random()
 	bodies.append(body)
 	return body.get_identifier()
 
@@ -565,7 +565,7 @@ func addStationaryBody(id: int, d_name: String, hook_identifier, radius: float, 
 	body.radius = radius
 	if metadata:
 		body.metadata = metadata
-	body.current_variation = bodyAPI.VARIATIONS.values().pick_random()
+	#body.current_variation = bodyAPI.VARIATIONS.values().pick_random()
 	bodies.append(body)
 	return body.get_identifier()
 
@@ -665,6 +665,13 @@ func get_wormhole_with_destination_system(dest_system: starSystemAPI) -> wormhol
 			if body.destination_system == dest_system:
 				return body
 	return null
+
+func get_bodies_of_body_type(_body_type: BODY_TYPES):
+	var return_bodies: Array = []
+	for body in bodies:
+		if body.get_body_type() == _body_type:
+			return_bodies.append(body)
+	return return_bodies
 
 func is_civilized() -> bool:
 	for body in bodies:
