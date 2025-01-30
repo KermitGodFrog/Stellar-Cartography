@@ -43,7 +43,7 @@ var target_fov: float = 75
 var state_on_photo_held: STATES = STATES.DEFAULT
 
 var system : starSystemAPI
-var current_entity : entityAPI = null
+var current_entity : entityBodyAPI = null
 var player_position: Vector2 = Vector2.ZERO
 
 func _unhandled_input(event):
@@ -151,7 +151,7 @@ func _physics_process(_delta):
 			update_star_dir(Vector3(-star_dir_from_entity.x, 0, -star_dir_from_entity.y))
 	pass
 
-func _on_current_entity_changed(new_entity : entityAPI):
+func _on_current_entity_changed(new_entity : entityBodyAPI):
 	if current_entity != new_entity: # to prevent infinite generation by just re-pressing the go-to button, maybe move to game.gd?
 		no_current_entity_bg.hide()
 		current_entity = new_entity

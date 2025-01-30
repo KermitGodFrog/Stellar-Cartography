@@ -5,7 +5,7 @@ var discovered_entities_matrix: PackedInt32Array = []:
 		discovered_entities_matrix = value
 		_on_discovered_entities_matrix_changed(value)
 
-var current_entity : entityAPI = null
+var current_entity : entityBodyAPI = null
 
 @onready var tabs = $tabs
 @onready var bestiary_list = $tabs/INDEX/bestiary_list
@@ -23,7 +23,7 @@ const ENTITY_CLASSIFICATION_REWARD_WIDGETS = {
 	game_data.ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: {"LONG SHOT (70)": null, "SUBJECTS AROUND FOCAL POINT": null}
 }
 
-func _on_current_entity_changed(new_entity : entityAPI):
+func _on_current_entity_changed(new_entity : entityBodyAPI):
 	update_bestiary_list(discovered_entities_matrix)
 	update_info(new_entity.entity_classification)
 	tabs.set_current_tab(1) #info

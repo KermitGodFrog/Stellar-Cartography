@@ -271,195 +271,191 @@ func _physics_process(delta):
 	pass
 
 func _on_player_theorised_body(theorised_body: bodyAPI):
-	if theorised_body.is_planet():
-		if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-			var theorised_planet = theorised_body
-			var new_query = responseQuery.new()
-			new_query.add("concept", "theorisedBody")
-			new_query.add("id", "planet")
-			new_query.add_tree_access("name", theorised_planet.display_name)
-			get_tree().call_group("dialogueManager", "speak", self, new_query)
-	
-	elif theorised_body is wormholeAPI:
-		if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-			var theorised_wormhole = theorised_body
-			var new_query = responseQuery.new()
-			new_query.add("concept", "theorisedBody")
-			new_query.add("id", "wormhole")
-			new_query.add_tree_access("name", theorised_wormhole.display_name)
-			get_tree().call_group("dialogueManager", "speak", self, new_query)
+	match theorised_body.get_body_type():
+		starSystemAPI.BODY_TYPES.PLANET:
+			if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+				var theorised_planet = theorised_body
+				var new_query = responseQuery.new()
+				new_query.add("concept", "theorisedBody")
+				new_query.add("id", "planet")
+				new_query.add_tree_access("name", theorised_planet.display_name)
+				get_tree().call_group("dialogueManager", "speak", self, new_query)
+		starSystemAPI.BODY_TYPES.WORMHOLE:
+			if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+				var theorised_wormhole = theorised_body
+				var new_query = responseQuery.new()
+				new_query.add("concept", "theorisedBody")
+				new_query.add("id", "wormhole")
+				new_query.add_tree_access("name", theorised_wormhole.display_name)
+				get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
 func _on_player_orbiting_body(orbiting_body: bodyAPI):
-	if orbiting_body.is_planet():
-		if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-			var orbiting_planet = orbiting_body
-			var new_query = responseQuery.new()
-			new_query.add("concept", "orbitingBody")
-			new_query.add("id", "planet")
-			new_query.add_tree_access("name", orbiting_planet.display_name)
-			get_tree().call_group("dialogueManager", "speak", self, new_query)
-	
-	elif orbiting_body is wormholeAPI:
-		if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-			var orbiting_wormhole = orbiting_body
-			var new_query = responseQuery.new()
-			new_query.add("concept", "orbitingBody")
-			new_query.add("id", "wormhole")
-			new_query.add_tree_access("name", orbiting_wormhole.display_name)
-			get_tree().call_group("dialogueManager", "speak", self, new_query)
+	match orbiting_body.get_body_type():
+		starSystemAPI.BODY_TYPES.PLANET:
+			if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+				var orbiting_planet = orbiting_body
+				var new_query = responseQuery.new()
+				new_query.add("concept", "orbitingBody")
+				new_query.add("id", "planet")
+				new_query.add_tree_access("name", orbiting_planet.display_name)
+				get_tree().call_group("dialogueManager", "speak", self, new_query)
+		starSystemAPI.BODY_TYPES.WORMHOLE:
+			if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+				var orbiting_wormhole = orbiting_body
+				var new_query = responseQuery.new()
+				new_query.add("concept", "orbitingBody")
+				new_query.add("id", "wormhole")
+				new_query.add_tree_access("name", orbiting_wormhole.display_name)
+				get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
 func _on_player_following_body(following_body: bodyAPI):
-	if following_body is wormholeAPI:
-		var following_wormhole = following_body #so its not confusing
-		var wormholes = world.player.current_star_system.get_wormholes()
-		var destination = following_wormhole.destination_system
-		
-		#if destination and (not destination == world.player.previous_star_system): #there is special interaction for disabled wormholes, so not having this SHOULDNT be a problem!
-		if destination:
+	match following_body.get_body_type():
+		starSystemAPI.BODY_TYPES.WORMHOLE:
+			var following_wormhole = following_body #so its not confusing
+			var wormholes = world.player.current_star_system.get_wormholes()
+			var destination = following_wormhole.destination_system
 			
-			var new_query = responseQuery.new()
-			new_query.add("concept", "followingBody")
-			new_query.add("id", "wormhole")
-			new_query.add_tree_access("name", following_wormhole.display_name)
-			new_query.add_tree_access("is_wormhole_disabled", following_wormhole.is_disabled)
-			new_query.add_tree_access("pending_audio_profiles", world.get_pending_audio_profiles().size() > 0) #for AV FLAIR
-			get_tree().call_group("dialogueManager", "speak", self, new_query)
-			
-			var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
-			match RETURN_STATE:
-				"ENTER_WORMHOLE":
-					if (not destination == world.player.previous_star_system) and (not following_wormhole.is_disabled): # im a lil paranoid teeehee :3
-						enter_wormhole(following_wormhole, wormholes, destination)
-				_:
-					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_wormhole)
-	
-	elif following_body is stationAPI:
-		var following_station = following_body
-		
-		var is_station_abandoned: bool = following_station.station_classification in [game_data.STATION_CLASSIFICATIONS.ABANDONED, game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS, game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL, game_data.STATION_CLASSIFICATIONS.COVERUP, game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED]
-		var is_station_inhabited: bool = following_station.station_classification in [game_data.STATION_CLASSIFICATIONS.STANDARD, game_data.STATION_CLASSIFICATIONS.PIRATE]
-		
-		if following_station.metadata.get("is_available", true) == true:
-			
-			var new_query = responseQuery.new()
-			new_query.add("concept", "followingBody")
-			new_query.add("id", "station")
-			new_query.add_tree_access("name", following_station.display_name)
-			new_query.add_tree_access("station_classification", str(game_data.STATION_CLASSIFICATIONS.find_key(following_station.station_classification)))
-			new_query.add_tree_access("is_station_abandoned", is_station_abandoned)
-			new_query.add_tree_access("is_station_inhabited", is_station_inhabited)
-			get_tree().call_group("dialogueManager", "speak", self, new_query)
-			
-			var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
-			match RETURN_STATE:
-				"DOCK_WITH_STATION":
-					dock_with_station(following_station)
-				"POST_SALVAGE_LEAVE": #this is for abandoned stations which yield salvage, which should not be repeatable
-					following_station.metadata["is_available"] = false
-					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
-				_:
-					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
-	
-	elif following_body.is_planet():
-		var following_planet = following_body
-		if following_planet.metadata.get("has_planetary_anomaly", false) == true:
-			if following_planet.metadata.get("is_planetary_anomaly_available", false) == true:
+			#if destination and (not destination == world.player.previous_star_system): #there is special interaction for disabled wormholes, so not having this SHOULDNT be a problem!
+			if destination:
+				
 				var new_query = responseQuery.new()
 				new_query.add("concept", "followingBody")
+				new_query.add("id", "wormhole")
+				new_query.add_tree_access("name", following_wormhole.display_name)
+				new_query.add_tree_access("is_wormhole_disabled", following_wormhole.is_disabled)
+				new_query.add_tree_access("pending_audio_profiles", world.get_pending_audio_profiles().size() > 0) #for AV FLAIR
+				get_tree().call_group("dialogueManager", "speak", self, new_query)
 				
-				if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-					new_query.add("id", "planetaryAnomalyTutorialOverride")
-				else:
-					new_query.add("id", "planetaryAnomaly")
+				var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+				match RETURN_STATE:
+					"ENTER_WORMHOLE":
+						if (not destination == world.player.previous_star_system) and (not following_wormhole.is_disabled): # im a lil paranoid teeehee :3
+							enter_wormhole(following_wormhole, wormholes, destination)
+					_:
+						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_wormhole)
+		starSystemAPI.BODY_TYPES.STATION:
+			var following_station = following_body
+			
+			var is_station_abandoned: bool = following_station.station_classification in [game_data.STATION_CLASSIFICATIONS.ABANDONED, game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS, game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL, game_data.STATION_CLASSIFICATIONS.COVERUP, game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED]
+			var is_station_inhabited: bool = following_station.station_classification in [game_data.STATION_CLASSIFICATIONS.STANDARD, game_data.STATION_CLASSIFICATIONS.PIRATE]
+			
+			if following_station.metadata.get("is_available", true) == true:
 				
-				new_query.add_tree_access("name", following_planet.display_name)
-				new_query.add_tree_access("planet_classification", following_planet.metadata.get("planet_classification"))
-				new_query.add_tree_access("planet_type", following_planet.metadata.get("planet_type"))
-				new_query.add_tree_access("custom_seed", following_planet.metadata.get("planetary_anomaly_seed"))
+				var new_query = responseQuery.new()
+				new_query.add("concept", "followingBody")
+				new_query.add("id", "station")
+				new_query.add_tree_access("name", following_station.display_name)
+				new_query.add_tree_access("station_classification", str(game_data.STATION_CLASSIFICATIONS.find_key(following_station.station_classification)))
+				new_query.add_tree_access("is_station_abandoned", is_station_abandoned)
+				new_query.add_tree_access("is_station_inhabited", is_station_inhabited)
+				get_tree().call_group("dialogueManager", "speak", self, new_query)
+				
+				var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+				match RETURN_STATE:
+					"DOCK_WITH_STATION":
+						dock_with_station(following_station)
+					"POST_SALVAGE_LEAVE": #this is for abandoned stations which yield salvage, which should not be repeatable
+						following_station.metadata["is_available"] = false
+						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
+					_:
+						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_station)
+		starSystemAPI.BODY_TYPES.PLANET:
+			var following_planet = following_body
+			if following_planet.metadata.get("has_planetary_anomaly", false) == true:
+				if following_planet.metadata.get("is_planetary_anomaly_available", false) == true:
+					var new_query = responseQuery.new()
+					new_query.add("concept", "followingBody")
+					
+					if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
+						new_query.add("id", "planetaryAnomalyTutorialOverride")
+					else:
+						new_query.add("id", "planetaryAnomaly")
+					
+					new_query.add_tree_access("name", following_planet.display_name)
+					new_query.add_tree_access("planet_classification", following_planet.metadata.get("planet_classification"))
+					new_query.add_tree_access("planet_type", following_planet.metadata.get("planet_type"))
+					new_query.add_tree_access("custom_seed", following_planet.metadata.get("planetary_anomaly_seed"))
+					get_tree().call_group("dialogueManager", "speak", self, new_query)
+					
+					var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+					match RETURN_STATE:
+						"HARD_LEAVE":
+							following_planet.metadata["is_planetary_anomaly_available"] = false
+							_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
+						"SOFT_LEAVE":
+							following_planet.metadata["is_planetary_anomaly_available"] = true
+							_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
+						"HARD_LEAVE_STATION_OVERRIDE": #for planetary settlements
+							following_planet.metadata["is_planetary_anomaly_available"] = false
+							
+							var temp_station: stationBodyAPI = stationBodyAPI.new()
+							temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
+							temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
+							var random = RandomNumberGenerator.new()
+							random.set_seed(following_planet.metadata.get("planetary_anomaly_seed", randi()))
+							temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
+							dock_with_station(temp_station)
+							
+						_:
+							_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
+		starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
+			var following_anomaly = following_body
+			if following_anomaly.metadata.get("is_space_anomaly_available", true) == true:
+				
+				var new_query = responseQuery.new()
+				new_query.add("concept", "followingBody")
+				new_query.add("id", "spaceAnomaly")
+				new_query.add_tree_access("custom_seed", following_anomaly.metadata.get("space_anomaly_seed"))
 				get_tree().call_group("dialogueManager", "speak", self, new_query)
 				
 				var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 				match RETURN_STATE:
 					"HARD_LEAVE":
-						following_planet.metadata["is_planetary_anomaly_available"] = false
-						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
+						following_anomaly.metadata["is_space_anomaly_available"] = false
+						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_anomaly)
 					"SOFT_LEAVE":
-						following_planet.metadata["is_planetary_anomaly_available"] = true
-						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
-					"HARD_LEAVE_STATION_OVERRIDE": #for planetary settlements
-						following_planet.metadata["is_planetary_anomaly_available"] = false
+						following_anomaly.metadata["is_space_anomaly_available"] = true
+						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_anomaly)
+					"HARD_LEAVE_STATION_OVERRIDE": #for outposts
+						following_anomaly.metadata["is_space_anomaly_available"] = false
 						
-						var temp_station: stationAPI = stationAPI.new()
+						var temp_station: stationBodyAPI = stationBodyAPI.new()
 						temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
 						temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
 						var random = RandomNumberGenerator.new()
-						random.set_seed(following_planet.metadata.get("planetary_anomaly_seed", randi()))
+						random.set_seed(following_anomaly.metadata.get("space_anomaly_seed", randi()))
 						temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
 						dock_with_station(temp_station)
 						
 					_:
-						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_planet)
-	
-	elif following_body.is_anomaly():
-		var following_anomaly = following_body
-		if following_anomaly.metadata.get("is_space_anomaly_available", true) == true:
+						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_anomaly)
+		starSystemAPI.BODY_TYPES.SPACE_ENTITY:
+			var following_entity = following_body
+			
+			if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) == true:
+				if world.player.discovered_entities.find(following_entity.entity_classification) == -1:
+					world.player.discovered_entities.append(following_entity.entity_classification)
+				
+				long_range_scopes._on_current_entity_changed(following_entity)
+				lrs_bestiary._on_current_entity_changed(following_entity)
+			
+			await system_map.validUpdatePlayerActionType
+			long_range_scopes._on_current_entity_cleared()
+		starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
+			var following_rendezvous_point = following_body
 			
 			var new_query = responseQuery.new()
 			new_query.add("concept", "followingBody")
-			new_query.add("id", "spaceAnomaly")
-			new_query.add_tree_access("custom_seed", following_anomaly.metadata.get("space_anomaly_seed"))
+			new_query.add("id", "rendezvousPoint")
+			new_query.add_tree_access("custom_seed", following_rendezvous_point.metadata.get("rendezvous_point_seed"))
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
 			
 			var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 			match RETURN_STATE:
-				"HARD_LEAVE":
-					following_anomaly.metadata["is_space_anomaly_available"] = false
-					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_anomaly)
-				"SOFT_LEAVE":
-					following_anomaly.metadata["is_space_anomaly_available"] = true
-					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_anomaly)
-				"HARD_LEAVE_STATION_OVERRIDE": #for outposts
-					following_anomaly.metadata["is_space_anomaly_available"] = false
-					
-					var temp_station: stationAPI = stationAPI.new()
-					temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
-					temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
-					var random = RandomNumberGenerator.new()
-					random.set_seed(following_anomaly.metadata.get("space_anomaly_seed", randi()))
-					temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
-					dock_with_station(temp_station)
-					
 				_:
-					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_anomaly)
-	
-	elif following_body is entityAPI:
-		var following_entity = following_body
-		
-		if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) == true:
-			if world.player.discovered_entities.find(following_entity.entity_classification) == -1:
-				world.player.discovered_entities.append(following_entity.entity_classification)
-			
-			long_range_scopes._on_current_entity_changed(following_entity)
-			lrs_bestiary._on_current_entity_changed(following_entity)
-		
-		await system_map.validUpdatePlayerActionType
-		long_range_scopes._on_current_entity_cleared()
-	
-	elif following_body.is_rendezvous_point():
-		var following_rendezvous_point = following_body
-		
-		var new_query = responseQuery.new()
-		new_query.add("concept", "followingBody")
-		new_query.add("id", "rendezvousPoint")
-		new_query.add_tree_access("custom_seed", following_rendezvous_point.metadata.get("rendezvous_point_seed"))
-		get_tree().call_group("dialogueManager", "speak", self, new_query)
-		
-		var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
-		match RETURN_STATE:
-			_:
-				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_rendezvous_point)
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_rendezvous_point)
 	pass
 
 func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
@@ -501,7 +497,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 		destination.generateRendezvousPoint()
 	
 	#var destination_position: Vector2 = Vector2.ZERO
-	var destination_wormhole: wormholeAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
+	var destination_wormhole: wormholeBodyAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
 	#if destination_wormhole:
 		#destination.updateBodyPosition(destination_wormhole.get_identifier(), 0.01) #REQURIED SO WORMHOLE HAVE A POSITION OTHER THAN 0,0
 		#destination_position = destination_wormhole.position

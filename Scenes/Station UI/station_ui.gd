@@ -23,7 +23,7 @@ func _on_pause_mode_changed(value):
 
 
 
-var station: stationAPI
+var station: stationBodyAPI
 var player_current_value: int
 var player_balance: int
 var player_hull_stress: int 

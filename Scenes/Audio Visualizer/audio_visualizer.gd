@@ -17,9 +17,9 @@ var current_audio_profile: audioProfileHelper #CONTINUOUSLY UPDATED!!!
 var saved_audio_profiles: Array[audioProfileHelper] = []
 var saved_audio_profiles_size_matrix: Array #for storage label / progress bar
 
-var LOW_VAR = bodyAPI.VARIATIONS.LOW
-var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
-var HIGH_VAR = bodyAPI.VARIATIONS.HIGH
+var LOW_VAR = planetBodyAPI.VARIATIONS.LOW
+var MED_VAR = planetBodyAPI.VARIATIONS.MEDIUM
+var HIGH_VAR = planetBodyAPI.VARIATIONS.HIGH
 
 #VISUALIZER STUFF \/\/\/\/\/
 const VU_COUNT = 16
