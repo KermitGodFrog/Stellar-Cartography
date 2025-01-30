@@ -4,7 +4,7 @@ class_name wormholeBodyAPI
 
 @export var destination_system: starSystemAPI
 @export var post_jumps_remaining: int = 0
-@export var is_disabled: bool = false
+@export var disabled: bool = false
 
-func is_wormhole(): #has to be wormhole lol. overrides bodyAPI class
-	return true
+func is_disabled() -> bool:
+	return disabled

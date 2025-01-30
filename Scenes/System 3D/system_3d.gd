@@ -87,7 +87,7 @@ func _physics_process(_delta):
 				var associated_body = system.get_body_from_identifier(child.get_identifier()) #repeat code ?!?!?!?!?!?!?!??!?!?!?!?!??!!
 				if associated_body:
 					var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
-					if detection_scalar < body_detection_range and associated_body.is_known == false:
+					if detection_scalar < body_detection_range and associated_body.is_known() == false:
 						
 						if associated_body.get_display_name() == "Ingress":
 							if TUTORIAL_INGRESS_OVERRIDE == true:
@@ -107,7 +107,7 @@ func _physics_process(_delta):
 	if body:
 		if body.is_known():
 			locked_body_label.set_text(str("LOCKED: ", body.get_display_name()))
-		elif body.is_theorised_but_not_known():
+		elif body.is_theorised_not_known():
 			locked_body_label.set_text("LOCKED: Unknown")
 	elif target_position != Vector2.ZERO:
 		locked_body_label.set_text("LOCKED: MANUAL")
@@ -124,13 +124,13 @@ func spawnBodies():
 		if body is circularBodyAPI:
 			var new_body_3d = body_3d.instantiate()
 			new_body_3d.set_identifier(body.get_identifier())
-			if body.get_body_type() == starSystemAPI.BODY_TYPES.PLANET:
+			if body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
 				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.25)
-			elif body.get_body_type() == starSystemAPI.BODY_TYPES.STAR:
+			elif body.get_type() == starSystemAPI.BODY_TYPES.STAR:
 				new_body_3d.initialize(body.radius * system_scalar, body.surface_color, body.surface_color, 1.0)
 				star_omni_light.light_color = body.surface_color
 				star_omni_light.light_size = body.radius
-			elif body.get_body_type() == starSystemAPI.BODY_TYPES.WORMHOLE:
+			elif body.get_type() == starSystemAPI.BODY_TYPES.WORMHOLE:
 				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
 			add_child(new_body_3d) 
 		elif body is glintBodyAPI:

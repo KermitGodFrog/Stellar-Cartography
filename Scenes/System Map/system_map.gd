@@ -127,7 +127,7 @@ func _physics_process(delta):
 	
 	#INFOR TAB!!!!!!! \/\/\\/\/
 	if follow_body and follow_body.is_known(): follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
-	elif follow_body and follow_body.is_theorised_but_not_known(): follow_body_label.set_text(">>> Unknown")
+	elif follow_body and follow_body.is_theorised_not_known(): follow_body_label.set_text(">>> Unknown")
 	else: follow_body_label.set_text(">>> LOCK BODY FOR INFO")
 	body_attributes_list.clear()
 	if follow_body:
@@ -137,7 +137,7 @@ func _physics_process(delta):
 			body_attributes_list.add_item("mass : %.2f (earth masses)" % (follow_body.mass * 333000))
 		
 		body_attributes_list.add_item("orbital_speed : %.2f (rot/frame)" % follow_body.orbit_speed, null, false)
-		body_attributes_list.add_item("orbital_distance %.2f (solar radii)" % follow_body.distance, null, false)
+		body_attributes_list.add_item("orbital_distance %.2f (solar radii)" % follow_body.orbit_distance, null, false)
 		
 		#metadata
 		var excluding = ["iterations", "color", "value", "has_planetary_anomaly", "is_planetary_anomaly_available", "is_anomaly_available", "planetary_anomaly_seed", "has_missing_AO", "rendezvous_point_seed"]
@@ -151,22 +151,30 @@ func _physics_process(delta):
 					body_attributes_list.add_item("%s : %s" % [entry, parse], null, false)
 	
 	#PICKER UTILITY \/\/\/\/\/
-	if follow_body: if follow_body.current_body_type == starSystemAPI.BODY_TYPES.PLANET: if follow_body.get_current_variation() != -1:
-		var data_for_planet_type = system.planet_type_data.get(follow_body.metadata.get("planet_type"))
-		var variation_class = data_for_planet_type.get("variation_class")
-		if variation_class != null and (follow_body.is_known()) and (follow_body.metadata.get("has_missing_AO", false) == true):
-			picker_label.show()
-			picker_button.show()
-			picker_label.set_text(str(variation_class.capitalize(), " (AUDIO VISUALIZER): "))
-			if follow_body.get_guessed_variation() != -1:
-				picker_button.select(follow_body.get_guessed_variation())
-			else: picker_button.select(-1)
+	if follow_body and follow_body.is_known(): 
+		if follow_body.get_type() == starSystemAPI.BODY_TYPES.PLANET: 
+			if follow_body.get_current_variation() != -1:
+				var data_for_planet_type = system.planet_type_data.get(follow_body.metadata.get("planet_type"))
+				var variation_class = data_for_planet_type.get("variation_class")
+				if variation_class != null and (follow_body.metadata.get("has_missing_AO", false) == true):
+					picker_label.show()
+					picker_button.show()
+					picker_label.set_text(str(variation_class.capitalize(), " (AUDIO VISUALIZER): "))
+					if follow_body.get_guessed_variation() != -1:
+						picker_button.select(follow_body.get_guessed_variation())
+					else: picker_button.select(-1)
+				else:
+					picker_label.hide()
+					picker_button.hide()
+			else:
+				picker_label.hide()
+				picker_button.hide()
 		else:
 			picker_label.hide()
 			picker_button.hide()
 	else:
 		picker_label.hide()
-		picker_button.hide()
+		picker_button.hide() #NEED TO FIX THIS ATROCITY AT SOME POINT!!!!
 	
 	queue_redraw()
 	pass
@@ -190,7 +198,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 		var item: TreeItem = system_list.create_item(parent)
 		item.set_metadata(0, body.get_identifier())
 		
-		if body.is_theorised_but_not_known():
+		if body.is_theorised_not_known():
 			item.set_text(0, "???")
 			
 			if body == follow_body:
@@ -209,7 +217,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 			else:
 				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
 			
-			match body.get_body_type():
+			match body.get_type():
 				starSystemAPI.BODY_TYPES.STAR:
 					item.set_text(0, "%s - %s Class Star" % [body.get_display_name(), body.metadata.get("star_type")])
 					if body.get_identifier() == closest_body_id:
@@ -365,7 +373,7 @@ func draw_map():
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
 				if system.get_body_from_identifier(body.hook_identifier):
-					draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -TAU, TAU, 30, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint), 1.0, false)
+					draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.orbit_distance, -TAU, TAU, 30, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint), 1.0, false)
 					#draw_custom_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -360, 360, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint))
 	
 	for body in system.bodies:
@@ -404,11 +412,11 @@ func draw_map():
 		
 		#batching anomaly map icons:
 		
-		if body.current_body_type == starSystemAPI.BODY_TYPES.PLANET and body.is_known(): 
+		if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_known(): 
 			if body.is_PA_valid():
 				if camera.zoom.length() < system.get_first_star().radius * 100.0:
 					question_mark_icon.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
-		elif body.current_body_type == starSystemAPI.BODY_TYPES.SPACE_ANOMALY and body.is_known(): 
+		elif body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ANOMALY and body.is_known(): 
 			if body.is_SA_valid():
 				if camera.zoom.length() < system.get_first_star().radius * 100.0:
 					question_mark_icon.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
@@ -547,10 +555,10 @@ func _on_found_body(id: int):
 	ping.resetTime()
 	SONAR_PINGS.append(ping)
 	
-	if body.current_body_type == starSystemAPI.BODY_TYPES.PLANET:
+	if body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
 		if body.is_PA_valid():
 			get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
-	elif body.current_body_type == starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
+	elif body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
 		if body.is_SA_valid():
 			get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
 	else:
@@ -558,7 +566,7 @@ func _on_found_body(id: int):
 	pass
 
 func _on_picker_button_item_selected(index):
-	if follow_body.current_body_type == starSystemAPI.BODY_TYPES.PLANET:
+	if follow_body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
 		follow_body.set_guessed_variation(index)
 	pass
 
@@ -614,7 +622,7 @@ func follow_and_lock_item(item: TreeItem):
 		identifier = item.get_metadata(0)
 	if identifier:
 		var body = system.get_body_from_identifier(identifier)
-		if body.is_theorised_but_not_known() or body.is_known():
+		if body.is_theorised_not_known() or body.is_known():
 			emit_signal("updatedLockedBody", body)
 			locked_body = body
 			follow_body = body

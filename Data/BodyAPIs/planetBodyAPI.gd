@@ -10,6 +10,7 @@ enum VARIATIONS {LOW, MEDIUM, HIGH}
 func get_current_variation() -> int:
 	return current_variation
 func set_current_variation(value) -> void:
+	print("CURRENT VARIATION UPDATED! DONT KNOW FROM WHERE THO!")
 	current_variation = value
 	pass
 func get_guessed_variation() -> int:

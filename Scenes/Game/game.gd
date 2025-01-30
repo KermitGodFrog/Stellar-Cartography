@@ -104,9 +104,9 @@ func _ready():
 		for i in range(2):
 			_on_create_new_star_system(new)
 		new.generateWormholes()
-		new.generateRandomWeightedStations()
 		new.generateRandomWeightedEntities()
 		new.generateRendezvousPoint()
+		new.generateRandomWeightedStations()
 		for body in new.bodies:
 			body.known = true
 		
@@ -271,7 +271,7 @@ func _physics_process(delta):
 	pass
 
 func _on_player_theorised_body(theorised_body: bodyAPI):
-	match theorised_body.get_body_type():
+	match theorised_body.get_type():
 		starSystemAPI.BODY_TYPES.PLANET:
 			if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
 				var theorised_planet = theorised_body
@@ -291,7 +291,7 @@ func _on_player_theorised_body(theorised_body: bodyAPI):
 	pass
 
 func _on_player_orbiting_body(orbiting_body: bodyAPI):
-	match orbiting_body.get_body_type():
+	match orbiting_body.get_type():
 		starSystemAPI.BODY_TYPES.PLANET:
 			if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
 				var orbiting_planet = orbiting_body
@@ -311,7 +311,7 @@ func _on_player_orbiting_body(orbiting_body: bodyAPI):
 	pass
 
 func _on_player_following_body(following_body: bodyAPI):
-	match following_body.get_body_type():
+	match following_body.get_type():
 		starSystemAPI.BODY_TYPES.WORMHOLE:
 			var following_wormhole = following_body #so its not confusing
 			var wormholes = world.player.current_star_system.get_wormholes()
@@ -324,14 +324,14 @@ func _on_player_following_body(following_body: bodyAPI):
 				new_query.add("concept", "followingBody")
 				new_query.add("id", "wormhole")
 				new_query.add_tree_access("name", following_wormhole.display_name)
-				new_query.add_tree_access("is_wormhole_disabled", following_wormhole.is_disabled)
+				new_query.add_tree_access("is_wormhole_disabled", following_wormhole.is_disabled())
 				new_query.add_tree_access("pending_audio_profiles", world.get_pending_audio_profiles().size() > 0) #for AV FLAIR
 				get_tree().call_group("dialogueManager", "speak", self, new_query)
 				
 				var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 				match RETURN_STATE:
 					"ENTER_WORMHOLE":
-						if (not destination == world.player.previous_star_system) and (not following_wormhole.is_disabled): # im a lil paranoid teeehee :3
+						if (not destination == world.player.previous_star_system) and (not following_wormhole.is_disabled()): # im a lil paranoid teeehee :3
 							enter_wormhole(following_wormhole, wormholes, destination)
 					_:
 						_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_wormhole)
@@ -652,14 +652,14 @@ func _on_found_body(id: int):
 	if system:
 		var body = system.get_body_from_identifier(id)
 		if body:
-			body.is_known = true
+			body.known = true
 			if body.metadata.has("value"): world.player.current_value += (body.metadata.get("value") * system.get_first_star_discovery_multiplier())
 			system_map._on_found_body(id)
 			var sub_bodies = system.get_bodies_with_hook_identifier(id)
 			if sub_bodies:
 				for sub_body in sub_bodies:
-					if sub_body.is_asteroid_belt():
-						sub_body.is_known = true
+					if sub_body.get_type() == starSystemAPI.BODY_TYPES.ASTEROID_BELT:
+						sub_body.known = true
 	pass
 
 func _on_add_console_entry(entry_text: String, text_color: Color = Color.WHITE): #called via systtem 3d
@@ -880,7 +880,7 @@ func _on_pause_mode_changed(new_mode: game_data.PAUSE_MODES) -> void:
 
 func _ON_DEBUG_REVEAL_ALL_WORMHOLES():
 	for body in world.player.current_star_system.bodies:
-		if body.is_wormhole():
+		if body.get_type() == starSystemAPI.BODY_TYPES.WORMHOLE:
 			body.known = true
 	pass
 

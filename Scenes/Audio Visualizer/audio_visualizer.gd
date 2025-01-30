@@ -44,7 +44,7 @@ func _physics_process(_delta):
 	HEIGHT = owner.size.y / 4
 	
 	#display stuff
-	if current_audio_profile: body_name_label.set_text(current_audio_profile.body.display_name.capitalize())
+	if current_audio_profile: body_name_label.set_text(current_audio_profile.body.get_display_name())
 	if saved_audio_profiles_size_matrix: 
 		storage_ratio_label.set_text(str("(", saved_audio_profiles_size_matrix.front(), "/", saved_audio_profiles_size_matrix.back(), " PROFILES)"))
 		storage_progress_bar.set_max(saved_audio_profiles_size_matrix.back())
@@ -98,7 +98,7 @@ func _on_remove_saved_audio_profile(helper: audioProfileHelper):
 	pass
 
 func _on_locked_body_updated(body: bodyAPI):
-	if body.is_planet() and body.is_known and body.get_current_variation() != null:
+	if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_known(): if body.get_current_variation() != -1:
 		var audio_variations = starSystemAPI.new().planet_type_audio_data.get(body.metadata.get("planet_type"))
 		var mix = audio_variations.get(body.get_current_variation())
 		var helper = audioProfileHelper.new()

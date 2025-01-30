@@ -2,8 +2,8 @@ extends Resource
 class_name bodyAPI
 #not displayed anywhere in game
 
-@export var current_body_type: starSystemAPI.BODY_TYPES:
-	get = get_body_type, set = set_body_type
+@export var current_type: starSystemAPI.BODY_TYPES:
+	get = get_type, set = set_type
 @export var identifier: int:
 	get = get_identifier, set = set_identifier
 @export var display_name: String:
@@ -11,10 +11,10 @@ class_name bodyAPI
 @export var hook_identifier: int
 @export var metadata: Dictionary = {}
 
-func get_body_type() -> starSystemAPI.BODY_TYPES:
-	return current_body_type
-func set_body_type(value) -> void:
-	current_body_type = value
+func get_type() -> starSystemAPI.BODY_TYPES:
+	return current_type
+func set_type(value) -> void:
+	current_type = value
 	pass
 func get_identifier() -> int:
 	return identifier
@@ -29,6 +29,7 @@ func set_display_name(value) -> void:
 
 @export var orbit_distance: float
 @export var orbit_speed: float
+@export var radius: float #this is used for important things like player exclusion zone from bodies in 3d, player orbit distance from body, etc. set to (1.0 / 192.1) as a default (earth size). 
 
 @export_storage var position: Vector2
 @export_storage var rotation: float
