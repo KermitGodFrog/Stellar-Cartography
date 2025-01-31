@@ -128,19 +128,24 @@ func spawnBodies():
 				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
 			add_child(new_body_3d) 
 		elif body is glintBodyAPI:
-			var new_entity_3d = entity_3d.instantiate()
-			new_entity_3d.set_identifier(body.get_identifier())
-			new_entity_3d.initialize(0.03) #pixel size, can be different for stations/anomalies
-			add_child(new_entity_3d)
+			spawn_glint_body_3d_for_identifier(body.get_identifier())
 		elif body is customBodyAPI:
-			
+			if body.mesh_path.is_empty():
+				spawn_glint_body_3d_for_identifier(body.get_identifier())
+				continue
 			#loading mesh
 			#putting mesh in scene
 			#etc
-			
-			
-			pass
 	pass
+
+func spawn_glint_body_3d_for_identifier(id: int):
+	var new_entity_3d = entity_3d.instantiate()
+	new_entity_3d.set_identifier(id)
+	new_entity_3d.initialize(0.03) #pixel size, can be different for stations/anomalies
+	add_child(new_entity_3d)
+	pass
+
+
 
 func reset_locked_body():
 	locked_body_identifier = 0

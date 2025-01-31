@@ -1,10 +1,11 @@
 extends customBodyAPI
 
-var min_distance: float = 0.0
-var max_distance: float = 0.0
+#might be able to make cooldown not @export_storage if too much data in save files
+@export_storage var min_distance: float = 0.0
+@export_storage var max_distance: float = 0.0
 @export_storage var target_distance: float = 0.0
 @export_storage var original_speed: float = 0.0
-var cooldown: float = 0.0
+@export_storage var cooldown: float = 0.0
 
 func initialize():
 	original_speed = orbit_speed

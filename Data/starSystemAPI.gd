@@ -335,7 +335,6 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 				var has_missing_AO: bool = false
 				if randf() >= (1 - missing_AO_chance_per_planet):
 					has_missing_AO = true
-				print(mass)
 				var new_planet = addBody(
 					planetBodyAPI.new(),
 					BODY_TYPES.PLANET,
@@ -523,7 +522,6 @@ func generateRandomWeightedSpecialAnomaly():
 	var radius = get_default_radius_solar_radii()
 	
 	var special_anomaly_classification = global_data.weighted_pick(game_data.get_weighted_special_anomaly_classifications(), "weight")
-	print("[color=red] SPECIAL ANOMALY CLASSIFICATION:[/color] ", special_anomaly_classification)
 	match special_anomaly_classification:
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID:
 			var new_body = addBody(
