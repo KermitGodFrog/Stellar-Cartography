@@ -32,14 +32,16 @@ func set_display_name(new_display_name: String):
 	pass
 
 #universal element enums (grouped by equillibrium condensation temperature)
-enum SUPER_REFRACTORY {Re, Os, W, Zr, Hf}
-enum REFRACTORY {Al, Sc, Ca, Ti, Th, Lu, Tb, Dy, Ho, Er, Tm, Ir, Ru, Mo, U, Sm, Nd, La}
-enum MODERATELY_REFRACTORY {Nb, Be, V, Ce, Yb, Pt, Fe, Co, Ni, Pd, Mg, Eu, Si, Cr}
-enum MODERATELY_VOLATILE {Au, P, Li, Sr, Mn, Cu, Ba}
-enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
-enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
+#enum SUPER_REFRACTORY {Re, Os, W, Zr, Hf}
+#enum REFRACTORY {Al, Sc, Ca, Ti, Th, Lu, Tb, Dy, Ho, Er, Tm, Ir, Ru, Mo, U, Sm, Nd, La}
+#enum MODERATELY_REFRACTORY {Nb, Be, V, Ce, Yb, Pt, Fe, Co, Ni, Pd, Mg, Eu, Si, Cr}
+#enum MODERATELY_VOLATILE {Au, P, Li, Sr, Mn, Cu, Ba}
+#enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
+#enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
 
-var star_types = {
+enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, SPECIAL_ANOMALY}
+
+const star_types = {
 	"M": {"name": "M", "weight": 0.7645629},
 	"K": {"name": "K", "weight": 0.1213592},
 	"G": {"name": "G", "weight": 0.0764563},
@@ -49,7 +51,7 @@ var star_types = {
 	"O": {"name": "O", "weight": 0.0000003}
 }
 
-var star_data = { #MASS IS IN SOLAR MASSES, RADIUS IS IN SOLAR RADII
+const star_data = { #MASS IS IN SOLAR MASSES, RADIUS IS IN SOLAR RADII
 	"M": {"solar_radius_min": 0.1, "solar_radius_max": 0.7, "solar_mass_min": 0.08, "solar_mass_max": 0.45, "luminosity_min": 0.01, "luminosity_max": 0.08, "color": Color.RED},
 	"K": {"solar_radius_min": 0.7, "solar_radius_max": 0.96, "solar_mass_min": 0.45, "solar_mass_max": 0.8, "luminosity_min": 0.08, "luminosity_max": 0.6, "color": Color.ORANGE},
 	"G": {"solar_radius_min": 0.96, "solar_radius_max": 1.15, "solar_mass_min": 0.8, "solar_mass_max": 1.04, "luminosity_min": 0.6, "luminosity_max": 1.5, "color": Color.YELLOW},
@@ -59,19 +61,19 @@ var star_data = { #MASS IS IN SOLAR MASSES, RADIUS IS IN SOLAR RADII
 	"O": {"solar_radius_min": 6.6, "solar_radius_max": 10, "solar_mass_min": 16, "solar_mass_max": 25, "luminosity_min": 30000, "luminosity_max": 50000, "color": Color.BLUE}
 }
 
-var planet_classifications = {
+const planet_classifications = {
 	"Terran": {"name": "Terran", "weight": 0.3},
 	"Neptunian": {"name": "Neptunian", "weight": 0.6},
 	"Jovian": {"name": "Jovian", "weight": 0.15}
 }
 
-var planet_classification_data = { #MASS IS IN EARTH MASSES (DIVIDE BY 333000 FOR SOLAR MASSES), RADIUS IS IN EARTH RADIUS (DIVIDE BY 109.1 FOR SOLAR RADII)
+const planet_classification_data = { #MASS IS IN EARTH MASSES (DIVIDE BY 333000 FOR SOLAR MASSES), RADIUS IS IN EARTH RADIUS (DIVIDE BY 109.1 FOR SOLAR RADII)
 	"Terran": {"earth_radius_min": pow(pow(10, -1.3), 0.28), "earth_radius_max": pow(pow(10, 0.22), 0.28),  "earth_mass_min": pow(10, -1.3), "earth_mass_max": pow(10, 0.22)}, 
 	"Neptunian": {"earth_radius_min": pow(pow(10, 0.22), 0.59), "earth_radius_max": pow(pow(10, 2), 0.59), "earth_mass_min": pow(10, 0.22), "earth_mass_max": pow(10, 2)},
 	"Jovian": {"earth_radius_min": pow(pow(10, 2), 0.4), "earth_radius_max": pow(pow(10, 3.5), 0.4), "earth_mass_min": pow(10, 2), "earth_mass_max": pow(10, 3.5)} #?????????????????????????
 }
 
-var planet_types = {
+const planet_types = {
 	"Terran": [{ # pre hab
 		"Chthonian": {"name": "Chthonian", "weight": 0.1},
 		"Lava": {"name": "Lava", "weight": 0.2}
@@ -109,7 +111,7 @@ var planet_types = {
 	}]
 }
 
-var planet_type_data = {
+const planet_type_data = {
 	"Chthonian": {"color": Color.DARK_RED, "avg_value": 4000, "variation_class": "density"},
 	"Lava": {"color": Color.RED, "avg_value": 3000, "variation_class": "geological_activity"},
 	"Hycean": {"color": Color.BLUE_VIOLET, "avg_value": 10000, "variation_class": "hydrogen_content"},
@@ -133,9 +135,9 @@ var planet_type_data = {
 	#dwarfs and giants have the same audio data and thus can have the same variation class!
 }
 
-var LOW_VAR = bodyAPI.VARIATIONS.LOW
-var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
-var HIGH_VAR = bodyAPI.VARIATIONS.HIGH
+var LOW_VAR = planetBodyAPI.VARIATIONS.LOW #var LOW_VAR = bodyAPI.VARIATIONS.LOW
+var MED_VAR = planetBodyAPI.VARIATIONS.MEDIUM #var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
+var HIGH_VAR = planetBodyAPI.VARIATIONS.HIGH #var HIGH_VAR = bodyAPI.VARIATIONS.HIGH
 #CHIMES, POPS, PULSES, STORM, CUSTOM
 var planet_type_audio_data = {
 	"Chthonian": {LOW_VAR: [-80,-12,0,-80], MED_VAR: [-80,-6,-6,-80], HIGH_VAR: [-80,0,-12,-80]},
@@ -160,43 +162,67 @@ var planet_type_audio_data = {
 	"Helium Giant": {LOW_VAR: [-12,-12,-80,-80], MED_VAR: [-6,-6,-80,-80], HIGH_VAR: [0,0,-80,-80]},
 }
 
-var asteroid_belt_classifications = {
+const asteroid_belt_classifications = {
 	"Silicate": {"name": "Silicate", "weight": 0.3},
 	"Metal-rich": {"name": "Metal-rich", "weight": 0.3},
 	"Carbonaceous": {"name": "Carbonaceous", "weight": 0.3}
 }
 
-func createRandomWeightedPrimaryHookStar():
+func generateBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0) -> void:
+	#generate without stations or wormholes, or any other thing that needs to await data (like wormholes await destination systems to be generated)
+	#generate the essentials ^^^
+	#revised: generate just planets, stars and space anomalies! can be overriden for special systems!
+	var special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(), "weight")
+	match special_system_classification:
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
+			var hook_star = generateRandomWeightedHookStar()
+			generateRandomWeightedPlanets(hook_star, _PA_chance_per_planet, _missing_AO_chance_per_planet)
+			generateRandomAnomalies(_SA_chance_per_candidate)
+	pass
+
+func generateRandomWeightedHookStar():
 	randomize()
 	var star_type = global_data.weighted_pick(star_types, "weight")
 	var data = star_data.get(star_type)
 	
-	var mass: float = global_data.get_randf(data.get("solar_mass_min"), data.get("solar_mass_max"))
 	var radius: float = global_data.get_randf(data.get("solar_radius_min"), data.get("solar_radius_max"))
+	var mass: float = global_data.get_randf(data.get("solar_mass_min"), data.get("solar_mass_max"))
 	var luminosity: float = global_data.get_randf(data.get("luminosity_min"), data.get("luminosity_max")) 
 	
 	var color = data.get("color")
 	
 	var multiplier = get_discovery_multiplier_from_star_type(star_type)
 	
-	var new_body = addStationaryBody(identifier_count, game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STAR, current_name_scheme), null, radius, {"star_type": star_type, "mass": mass, "luminosity": luminosity, "discovery_multiplier": multiplier, "color": color, "iterations": 25})
-	get_body_from_identifier(new_body).is_known = true #so you can see stars on system map before exploring
+	var new_body = addBody(
+		circularBodyAPI.new(),
+		BODY_TYPES.STAR,
+		identifier_count,
+		game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STAR, current_name_scheme),
+		0, #identifier count starts at 1 so this shouldnt be any issue
+		0.0,
+		0.0,
+		radius,
+		{"mass": mass, "surface_color": color},
+		{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25}
+	)
+	
+	get_body_from_identifier(new_body).known = true #so you can see stars on system map before exploring
 	return new_body
 
-func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0):
+func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: float = 0.0, missing_AO_chance_per_planet: float = 0.0):
 	randomize()
 	var hook = get_body_from_identifier(hook_identifier)
 	var remaining: Array = []
 	
 	if hook.metadata: if hook.metadata.has("iterations"):
-		if not hook.is_star(): if randf() >= 0.4: return
+		if not hook.get_type() == BODY_TYPES.STAR: if randf() >= 0.4: return
 		
 		for i in range(hook.metadata.get("iterations")):
 			#SETTING DISTANCE
-			var new_distance: float = hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10.0) * i) #sets a base of the bodies radius + roche limit, increments upwards by 1.5x the bodies radius so subbodies cant touch each other
+			var orbit_distance = get_orbit_distance(hook, i) #sets a base of the bodies radius + roche limit, increments upwards by 1.5x the bodies radius so subbodies cant touch each other
 			var inner_boundry: float #has to be on this level so it can be used later
 			var outer_boundry: float #has to be on this level so it can be used later
-			if hook.is_star():
+			if hook.get_type() == BODY_TYPES.STAR:
 				inner_boundry = (sqrt((hook.metadata.get("luminosity") * 0.53))) * 215 #habitable inner boundry in solar radii (CONVERTED FROM AUs) no it isnt lol
 				outer_boundry = (sqrt((hook.metadata.get("luminosity") * 1.1))) * 215 #habitable outer boundry in solar radii (CONVERTED FROM AUs) no it isnt lol
 				#new_distance = ((inner_boundry + outer_boundry) / 2) * i
@@ -205,18 +231,32 @@ func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: f
 			if randf() <= 0.1:
 				var belt_width = global_data.get_randf(hook.radius * 71, hook.radius * 645) #in solar radii. for reference, asteroid belt in the sol system is 215 solar radii
 				#this works STUPID well /\/\/\/\/\
-				if new_distance > belt_width:
+				if orbit_distance > belt_width:
 					var belt_classification = global_data.weighted_pick(asteroid_belt_classifications, "weight")
-					var new_belt = addStationaryBody(identifier_count, game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.ASTEROID_BELT, current_name_scheme, hook.get_display_name()), hook_identifier, new_distance, {"asteroid_belt_classification": belt_classification, "mass": (global_data.get_randf(pow(10, -1.3) / 333000, pow(10, 0.22) / 333000)), "width": belt_width, "color": Color(0.111765, 0.111765, 0.111765, 0.9), "iterations": (hook.metadata.get("iterations") / 2)})
-					if hook.is_star():
-						get_body_from_identifier(new_belt).is_known = true
+					var belt_mass = global_data.get_randf(pow(10, -1.3) / 333000, pow(10, 0.22) / 333000)
+					
+					var new_belt = addBody(
+						bodyAPI.new(),
+						BODY_TYPES.ASTEROID_BELT,
+						identifier_count, 
+						game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.ASTEROID_BELT, current_name_scheme, hook.get_display_name()),
+						hook.get_identifier(),
+						orbit_distance,
+						0.0,
+						0.0, #cant be interacted with so who cares
+						{"hidden": true},
+						{"asteroid_belt_classification": belt_classification, "belt_width": belt_width, "belt_color": Color(0.111765, 0.111765, 0.111765, 0.9), "belt_mass": belt_mass}
+					)
+					
+					if hook.get_type() == BODY_TYPES.STAR:
+						get_body_from_identifier(new_belt).known = true
 					continue
 			
 			#PICKING PLANET CLASSIFICATION + DECIDING WHETHER TO SPAWN MOONS
 			var generate_sub_bodies: bool = randf() > 0.75 #choose whether to give the new planet (hypothetically) moons, coaloquially known as 'sub bodies'
 			if randf() >= 0.75: #choose whehter to have a planet at all
 				var planet_classification
-				if not hook.is_star():
+				if not hook.get_type() == BODY_TYPES.STAR:
 					var corrected_planet_classifications = planet_classifications.duplicate(true)
 					match hook.metadata.get("planet_classification"):
 						"Terran":
@@ -233,14 +273,14 @@ func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: f
 				var planet_type
 				var categories = planet_types.get(planet_classification)
 				var candidates: Dictionary
-				if hook.is_star():
-					if new_distance < inner_boundry:
+				if hook.get_type() == BODY_TYPES.STAR:
+					if orbit_distance < inner_boundry:
 						candidates = categories[0].duplicate()
 						candidates.merge(categories[3])
-					elif new_distance > inner_boundry and new_distance < outer_boundry:
+					elif orbit_distance > inner_boundry and orbit_distance < outer_boundry:
 						candidates = categories[1].duplicate()
 						candidates.merge(categories[3])
-					elif new_distance > outer_boundry: #unsure of the effect of elif statements here
+					elif orbit_distance > outer_boundry: #unsure of the effect of elif statements here
 						candidates = categories[2].duplicate()
 						candidates.merge(categories[3])
 				else: candidates = categories[3]
@@ -250,9 +290,8 @@ func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: f
 				var mass: float
 				var data = planet_classification_data.get(planet_classification)
 				#var normal_mass_calc = global_data.get_randf(data.get("earth_mass_min"), data.get("earth_mass_max"))
-				
 				#dont forget to use minf and other float functions. integers coudl ruin this thing
-				mass = global_data.get_randf(data.get("earth_mass_min"), minf(data.get("earth_mass_max"), hook.metadata.get("mass") * 333000 * 0.75))
+				mass = global_data.get_randf(data.get("earth_mass_min"), minf(data.get("earth_mass_max"), hook.mass * 333000 * 0.75))
 				#print("------------")
 				#print("MINIMUM MASS (EARTH MASSES): ", data.get("earth_mass_min"))
 				#print("MAXIMUM MASS (EARTH MASSES): ", data.get("earth_mass_max"))
@@ -277,16 +316,7 @@ func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: f
 				#print("------------")
 				
 				#PICKING SPEED
-				var orbit_speed_multiplier: float
-				if hook.orbit_speed > 0: orbit_speed_multiplier = ((hook.orbit_speed * 109.1) + 1)
-				else: orbit_speed_multiplier = 1
-				
-				var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
-				var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
-				#CHANCE FOR THE BODY TO ORBIT RETROGRADE:
-				if randf() >= 0.975:
-					minimum_speed = -minimum_speed
-					maximum_speed = -maximum_speed
+				var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
 				
 				#PICKING COLOR
 				var color = planet_type_data.get(planet_type).get("color")
@@ -298,27 +328,38 @@ func generateRandomWeightedBodies(hook_identifier: int, _PA_chance_per_planet: f
 				#SETTING WHETHER THE BODY HAS A PLANETARY ANOMALY
 				var has_planetary_anomaly: bool = false
 				var is_planetary_anomaly_available: bool = false
-				if randf() >= (1 - _PA_chance_per_planet):
+				if randf() >= (1 - PA_chance_per_planet):
 					has_planetary_anomaly = true
 					is_planetary_anomaly_available = true
 				
 				var has_missing_AO: bool = false
-				if randf() >= (1 - _missing_AO_chance_per_planet):
+				if randf() >= (1 - missing_AO_chance_per_planet):
 					has_missing_AO = true
+				print(mass)
+				var new_planet = addBody(
+					planetBodyAPI.new(),
+					BODY_TYPES.PLANET,
+					identifier_count,
+					game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.PLANET, current_name_scheme, hook.get_display_name(), i, remaining.size()),
+					hook.get_identifier(),
+					orbit_distance,
+					orbit_speed,
+					(radius / 109.1),
+					{"mass": (mass / 333000), "surface_color": color, "current_variation": planetBodyAPI.VARIATIONS.values().pick_random()},
+					{"planet_classification": planet_classification, "planet_type": planet_type, "value": value, "iterations": (hook.metadata.get("iterations") / 2), "has_planetary_anomaly": has_planetary_anomaly, "is_planetary_anomaly_available": is_planetary_anomaly_available, "planetary_anomaly_seed": randi(), "has_missing_AO": has_missing_AO}
+				)
 				
-				#SPAWNING PLANET + PLANET MOONS
-				var new_body = addBody(identifier_count, game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.PLANET, current_name_scheme, hook.get_display_name(), i, remaining.size()), hook_identifier, new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"planet_classification": planet_classification, "planet_type": planet_type, "mass": (mass / 333000), "color": color, "value": value, "iterations": (hook.metadata.get("iterations") / 2), "has_planetary_anomaly": has_planetary_anomaly, "is_planetary_anomaly_available": is_planetary_anomaly_available, "planetary_anomaly_seed": randi(), "has_missing_AO": has_missing_AO})
-				get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
-				
+				get_body_from_identifier(new_planet).rotation = deg_to_rad(global_data.get_randf(0,360))
 				if generate_sub_bodies:
-					generateRandomWeightedBodies(new_body, _PA_chance_per_planet)
+					generateRandomWeightedPlanets(new_planet, PA_chance_per_planet, missing_AO_chance_per_planet)
 			else: remaining.append([hook_identifier, i]) #else condition all the way from the choice to even have a planet. !! does not check if asteroid belt was spawned instead !!
 		
 		#APPENDING POTENTIAL WORMHOLE LOCATION CANDIDATES TO GLOBAL VARIABLE
-		if remaining: post_gen_location_candidates.append_array(remaining)
+		if remaining:
+			post_gen_location_candidates.append_array(remaining)
 	pass
 
-func generateRandomWormholes(): #uses variables post_gen_location_candidates, destination_systems
+func generateWormholes(): #uses variables post_gen_location_candidates, destination_systems
 	randomize()
 	var spawn_systems = destination_systems.duplicate()
 	if previous_system:
@@ -328,216 +369,221 @@ func generateRandomWormholes(): #uses variables post_gen_location_candidates, de
 		var hook = get_body_from_identifier(location.front())
 		var i = location.back()
 		
-		#whole bunch of stuff borrowed from generateRandomWeightedBodies
-		var new_distance: float = hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * i)
-		var orbit_speed_multiplier: float
-		if hook.orbit_speed > 0: orbit_speed_multiplier = ((hook.orbit_speed * 109.1) + 1)
-		else: orbit_speed_multiplier = 1
-		
-		var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
-		var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+		var orbit_distance = get_orbit_distance(hook, i)
+		var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
 		
 		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
 		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 		
-		var new_wormhole = addWormhole(identifier_count, game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.WORMHOLE, current_name_scheme, hook.get_display_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), dest_system, {"color": Color.WEB_PURPLE, "destination_star_type": dest_system.get_first_star().metadata.get("star_type")})
+		var new_wormhole = addBody(
+			wormholeBodyAPI.new(),
+			BODY_TYPES.WORMHOLE,
+			identifier_count,
+			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.WORMHOLE, current_name_scheme, hook.get_display_name()),
+			hook.get_identifier(),
+			orbit_distance,
+			orbit_speed,
+			(radius / 109.1),
+			{"destination_system": dest_system, "mass": 0.0, "surface_color": Color.WEB_PURPLE},
+			{"destination_star_type": dest_system.get_first_star().metadata.get("star_type")}
+		)
+		
 		get_body_from_identifier(new_wormhole).rotation = deg_to_rad(global_data.get_randf(0,360))
 		if dest_system == previous_system:
-			get_body_from_identifier(new_wormhole).is_disabled = true
-		#FORCE SETS WORMHOLE COLOUR TO PURPLE!!!!!!!!!!!!
+			get_body_from_identifier(new_wormhole).disabled = true
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
 func generateRandomWeightedStations():
+	randomize()
 	for station in global_data.get_randi(1, 3):
 		var location = post_gen_location_candidates.pick_random()
 		var hook = get_body_from_identifier(location.front())
 		var i = location.back()
 		
-		#whole bunch of stuff borrowed from generateRandomWeightedBodies
-		var new_distance: float = hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * i)
-		var orbit_speed_multiplier: float
-		if hook.orbit_speed > 0: orbit_speed_multiplier = ((hook.orbit_speed * 109.1) + 1)
-		else: orbit_speed_multiplier = 1
-		
-		var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
-		var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
-		
-		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
-		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
+		var orbit_distance = get_orbit_distance(hook, i)
+		var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
+		var radius = get_default_radius_solar_radii()
 		
 		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
-		
 		var percentage_markup = global_data.get_randi(75, 200)
 		
-		var new_station = addStation(identifier_count, game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, current_name_scheme, hook.get_display_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), station_classification, percentage_markup)
-		get_body_from_identifier(new_station).rotation = deg_to_rad(global_data.get_randf(0,360))
+		var new_station = addBody(
+			stationBodyAPI.new(),
+			BODY_TYPES.STATION,
+			identifier_count,
+			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, current_name_scheme, hook.get_display_name()),
+			hook.get_identifier(),
+			orbit_distance,
+			orbit_speed,
+			radius,
+			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup},
+			{}
+		)
 		
+		get_body_from_identifier(new_station).rotation = deg_to_rad(global_data.get_randf(0,360))
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
-#entities = no dialogue, viewable via long range scopes module
-#anomalies = space anomalies - dialogue, disappear afterwards.
-
-func generateRandomAnomalies(_SA_chance_per_candidate: float = 0.0):
+func generateRandomAnomalies(SA_chance_per_candidate: float = 0.0):
+	randomize()
+	#anomalies = space anomalies - dialogue, disappear afterwards.
 	for anomaly in post_gen_location_candidates.size(): #for this reason, have to generate anomalies LAST
-		if randf() > (1 - _SA_chance_per_candidate):
+		if randf() > (1 - SA_chance_per_candidate):
 			var location = post_gen_location_candidates.pick_random()
 			var hook = get_body_from_identifier(location.front())
 			var i = location.back()
 			
-			var new_distance: float = hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * i)
-			var orbit_speed_multiplier: float
-			if hook.orbit_speed > 0: orbit_speed_multiplier = ((hook.orbit_speed * 109.1) + 1)
-			else: orbit_speed_multiplier = 1
+			var orbit_distance = get_orbit_distance(hook, i) 
+			var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
+			var radius = get_default_radius_solar_radii()
 			
-			var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
-			var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+			var new_anomaly = addBody(
+				spaceAnomalyBodyAPI.new(),
+				BODY_TYPES.SPACE_ANOMALY,
+				identifier_count,
+				game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ANOMALY, current_name_scheme, hook.get_display_name()),
+				hook.get_identifier(),
+				orbit_distance,
+				orbit_speed,
+				radius,
+				{},
+				{"space_anomaly_seed": randi()},
+			)
 			
-			var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
-			
-			var new_anomaly = addAnomaly(identifier_count, game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ANOMALY, current_name_scheme, hook.get_display_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"space_anomaly_seed": randi()}) #dont need to set "is_space_anomaly_available": true, because it defaults to true in every use case.
 			get_body_from_identifier(new_anomaly).rotation = deg_to_rad(global_data.get_randf(0,360))
-			
 			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
 func generateRandomWeightedEntities():
+	randomize()
+	#entities = no dialogue, viewable via long range scopes module
 	for entity in global_data.get_randi(0, 2):
 		var location = post_gen_location_candidates.pick_random()
 		var hook = get_body_from_identifier(location.front())
 		var i = location.back()
 		
-		var new_distance: float = hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * i)
-		var orbit_speed_multiplier: float
-		if hook.orbit_speed > 0: orbit_speed_multiplier = ((hook.orbit_speed * 109.1) + 1)
-		else: orbit_speed_multiplier = 1
-		
-		var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
-		var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
-		
-		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
+		var orbit_distance = get_orbit_distance(hook, i)
+		var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
+		var radius = get_default_radius_solar_radii()
 		
 		var entity_classification = global_data.weighted_pick(game_data.get_weighted_entity_classifications(), "weight")
 		
-		var new_entity = addEntity(identifier_count, game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ENTITY_DEFAULT, current_name_scheme, hook.get_display_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), entity_classification)
-		get_body_from_identifier(new_entity).rotation = deg_to_rad(global_data.get_randf(0,360))
+		var new_entity = addBody(
+			entityBodyAPI.new(),
+			BODY_TYPES.SPACE_ENTITY,
+			identifier_count,
+			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ENTITY_DEFAULT, current_name_scheme, hook.get_display_name()),
+			hook.get_identifier(),
+			orbit_distance,
+			orbit_speed,
+			radius,
+			{"entity_classification": entity_classification},
+			{}
+		)
 		
+		get_body_from_identifier(new_entity).rotation = deg_to_rad(global_data.get_randf(0,360))
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
 func generateRendezvousPoint():
+	randomize()
 	var location = post_gen_location_candidates.pick_random()
 	var hook = get_body_from_identifier(location.front())
 	var i = location.back()
 	
-	#whole bunch of stuff borrowed from generateRandomWeightedBodies
-	var new_distance: float = hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * i)
-	var orbit_speed_multiplier: float
-	if hook.orbit_speed > 0: orbit_speed_multiplier = ((hook.orbit_speed * 109.1) + 1)
-	else: orbit_speed_multiplier = 1
+	var orbit_distance = get_orbit_distance(hook, i)
+	var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
+	var radius = get_default_radius_solar_radii()
 	
-	var minimum_speed: float = ((sqrt(47*(hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
-	var maximum_speed: float = ((sqrt((2*47*hook.metadata.get("mass")) / hook.radius)) / time) / (new_distance / 100) * orbit_speed_multiplier
+	var new_body = addBody(
+		glintBodyAPI.new(),
+		BODY_TYPES.RENDEZVOUS_POINT,
+		identifier_count, 
+		game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.RENDEZVOUS_POINT_DEFAULT, current_name_scheme, hook.get_display_name()), 
+		hook.get_identifier(),
+		orbit_distance, 
+		orbit_speed,
+		radius,
+		{"dialogue_tag": "rendezvousPoint"},
+		{"custom_seed": randi()}
+	)
 	
-	#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
-	var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
-	
-	
-	var new_body = addBody(identifier_count, game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.RENDEZVOUS_POINT_DEFAULT, current_name_scheme, hook.get_display_name()), hook.get_identifier(), new_distance, global_data.get_randf(minimum_speed, maximum_speed), (radius / 109.1), {"rendezvous_point_seed": randi()})
 	get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
-	
 	post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
+	pass
+
+func generateRandomWeightedSpecialAnomaly():
+	var location = post_gen_location_candidates.pick_random()
+	var hook = get_body_from_identifier(location.front())
+	var i = location.back()
+	
+	var orbit_distance = get_orbit_distance(hook, i)
+	var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
+	var radius = get_default_radius_solar_radii()
+	
+	var special_anomaly_classification = global_data.weighted_pick(game_data.get_weighted_special_anomaly_classifications(), "weight")
+	print("[color=red] SPECIAL ANOMALY CLASSIFICATION:[/color] ", special_anomaly_classification)
+	match special_anomaly_classification:
+		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID:
+			var new_body = addBody(
+				load("res://Data/BodyAPIs/Special/SpA_SentientAsteroid.gd").new(),
+				BODY_TYPES.SPECIAL_ANOMALY,
+				identifier_count,
+				"CONTACT-%03d" % i,
+				hook.get_identifier(),
+				orbit_distance,
+				orbit_speed,
+				radius,
+				{"dialogue_tag": "SpA_SentientAsteroid", "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "texture_path": "res://Graphics/question_mark.png", "icon_path": "res://Graphics/question_mark.png"},
+				{}
+			)
+			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
+			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
+		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.NONE:
+			pass
+		
+		#spawn it 
+		#first one of these that I want to do is the sentient asteroid one.
+		#either have additional code for spawning in the match statements, or as a _: fallback, just load a .tres file (if relevant in game_data dictionary) 
 	pass
 
 
 
-func addBody(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, metadata: Dictionary = {}):
-	var body = bodyAPI.new()
+func get_random_orbit_speed(hook: bodyAPI, _orbit_distance: float) -> float:
+	var orbit_speed_multiplier: float = 1.0
+	if hook.orbit_speed > 0:
+		orbit_speed_multiplier = ((hook.orbit_speed * 109.1) + 1)
+	var minimum_speed: float = ((sqrt(47*(hook.mass) / hook.radius)) / time) / (_orbit_distance / 100) * orbit_speed_multiplier
+	var maximum_speed: float = ((sqrt((2*47*hook.mass) / hook.radius)) / time) / (_orbit_distance / 100) * orbit_speed_multiplier
+	#CHANCE FOR THE BODY TO ORBIT RETROGRADE:
+	if randf() >= 0.975:
+		minimum_speed = -minimum_speed
+		maximum_speed = -maximum_speed
+	
+	return global_data.get_randf(minimum_speed, maximum_speed)
+
+func get_orbit_distance(hook: bodyAPI, iteration: int) -> float:
+	return hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * iteration)
+
+func get_default_radius_solar_radii() -> float:
+	return planet_classification_data.get("Terran").get("earth_radius_min") / 109.1
+
+
+
+func addBody(body: bodyAPI, _body_type: BODY_TYPES, id: int, d_name: String, hook_id: int, _orbit_distance: float, _orbit_speed: float, _radius: float, variables: Dictionary, metadata: Dictionary) -> int:
+	body.set_type(_body_type)
+	body.hook_identifier = hook_id
 	body.set_identifier(id)
 	identifier_count += 1
 	body.set_display_name(d_name)
-	body.hook_identifier = hook_identifier
-	body.distance = distance
-	body.orbit_speed = orbit_speed
-	body.radius = radius
-	if metadata:
-		body.metadata = metadata
-	body.current_variation = bodyAPI.VARIATIONS.values().pick_random()
-	bodies.append(body)
-	return body.get_identifier()
-
-func addWormhole(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, destination_system: starSystemAPI, metadata: Dictionary = {}):
-	var wormhole = wormholeAPI.new()
-	wormhole.set_identifier(id)
-	identifier_count += 1
-	wormhole.set_display_name(d_name)
-	wormhole.hook_identifier = hook_identifier
-	wormhole.distance = distance
-	wormhole.orbit_speed = orbit_speed
-	wormhole.radius = radius
-	wormhole.destination_system = destination_system
-	if metadata:
-		wormhole.metadata = metadata
-	bodies.append(wormhole)
-	return wormhole.get_identifier()
-
-func addStation(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, station_classification, sell_percentage_of_market_price, metadata: Dictionary = {}):
-	var station = stationAPI.new()
-	station.set_identifier(id)
-	identifier_count += 1
-	station.set_display_name(d_name)
-	station.hook_identifier = hook_identifier
-	station.distance = distance
-	station.orbit_speed = orbit_speed
-	station.radius = radius
-	station.station_classification = station_classification
-	station.sell_percentage_of_market_price = sell_percentage_of_market_price
-	if metadata:
-		station.metadata = metadata
-	bodies.append(station)
-	return station.get_identifier()
-
-func addAnomaly(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, metadata: Dictionary = {}):
-	var anomaly = anomalyAPI.new()
-	anomaly.set_identifier(id)
-	identifier_count += 1
-	anomaly.set_display_name(d_name)
-	anomaly.hook_identifier = hook_identifier
-	anomaly.distance = distance
-	anomaly.orbit_speed = orbit_speed
-	anomaly.radius = radius
-	if metadata:
-		anomaly.metadata = metadata
-	bodies.append(anomaly)
-	return anomaly.get_identifier()
-
-func addEntity(id: int, d_name: String, hook_identifier: int, distance: float, orbit_speed: float, radius: float, entity_classification, metadata: Dictionary = {}):
-	var entity = entityAPI.new()
-	entity.set_identifier(id)
-	identifier_count += 1
-	entity.set_display_name(d_name)
-	entity.hook_identifier = hook_identifier
-	entity.distance = distance
-	entity.orbit_speed = orbit_speed
-	entity.radius = radius
-	entity.entity_classification = entity_classification
-	if metadata:
-		entity.metadata = metadata
-	bodies.append(entity)
-	return entity.get_identifier()
-
-func addStationaryBody(id: int, d_name: String, hook_identifier, radius: float, metadata: Dictionary = {}):
-	var body = bodyAPI.new()
-	body.set_identifier(id)
-	identifier_count += 1
-	body.set_display_name(d_name)
-	if hook_identifier:
-		body.hook_identifier = hook_identifier
-	body.radius = radius
-	if metadata:
-		body.metadata = metadata
-	body.current_variation = bodyAPI.VARIATIONS.values().pick_random()
+	body.orbit_distance = _orbit_distance
+	body.orbit_speed = _orbit_speed
+	body.radius = _radius
+	for variable in variables:
+		body.set(variable, variables.get(variable))
+	body.set("metadata", metadata)
+	body.initialize()
 	bodies.append(body)
 	return body.get_identifier()
 
@@ -553,10 +599,10 @@ func updateBodyPosition(id: int, delta):
 		var hook = get_body_from_identifier(body.hook_identifier)
 		if hook:
 			body.position = hook.position
-			if body.orbit_speed != 0 and body.distance != 0:
+			if body.orbit_speed != 0 and body.orbit_distance != 0:
 				var dir = Vector2.UP.rotated(body.rotation)
 				body.rotation += body.orbit_speed * delta
-				body.position = body.position + (dir * body.distance)
+				body.position = body.position + (dir * body.orbit_distance)
 	pass
 
 
@@ -568,19 +614,19 @@ func get_random_body():
 func get_random_planet(): #the fuck? why return an array????
 	var planets: Array = []
 	for body in bodies:
-		if body.is_planet():
+		if body.get_type() == BODY_TYPES.PLANET:
 			planets.append(body)
 	return planets
 
 func get_first_star():
 	for body in bodies:
-		if body.is_star():
+		if body.get_type() == BODY_TYPES.STAR:
 			return body
 	return null
 
 func get_first_star_discovery_multiplier() -> float:
 	for body in bodies:
-		if body.is_star():
+		if body.get_type() == BODY_TYPES.STAR:
 			return body.metadata.get("discovery_multiplier")
 	return 1.0
 
@@ -618,28 +664,35 @@ func get_bodies_with_metadata_key(metadata_key: String) -> Array:
 	return return_bodies
 
 func get_wormholes() -> Array:
-	var wormholes: Array[wormholeAPI] = []
+	var wormholes: Array[wormholeBodyAPI] = []
 	for body in bodies:
-		if body is wormholeAPI:
+		if body.get_type() == BODY_TYPES.WORMHOLE:
 			wormholes.append(body)
 	return wormholes
 
 func get_stations() -> Array:
-	var stations: Array[stationAPI] = []
+	var stations: Array[stationBodyAPI] = []
 	for body in bodies:
-		if body is stationAPI:
+		if body.get_type() == BODY_TYPES.STATION:
 			stations.append(body)
 	return stations
 
-func get_wormhole_with_destination_system(dest_system: starSystemAPI) -> wormholeAPI:
+func get_wormhole_with_destination_system(dest_system: starSystemAPI) -> wormholeBodyAPI:
 	for body in bodies:
-		if body.is_wormhole():
+		if body.get_type() == BODY_TYPES.WORMHOLE:
 			if body.destination_system == dest_system:
 				return body
 	return null
 
+func get_bodies_of_body_type(_body_type: BODY_TYPES):
+	var return_bodies: Array = []
+	for body in bodies:
+		if body.get_type() == _body_type:
+			return_bodies.append(body)
+	return return_bodies
+
 func is_civilized() -> bool:
 	for body in bodies:
-		if body is stationAPI:
+		if body.get_type() == BODY_TYPES.STATION:
 			return true
 	return false

@@ -79,27 +79,29 @@ func _physics_process(_delta):
 				var associated_body = system.get_body_from_identifier(child.get_identifier()) #repeat code ?!?!?!?!?!?!?!??!?!?!?!?!??!!
 				if associated_body:
 					var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
-					if detection_scalar < body_detection_range and associated_body.is_known == false:
+					if detection_scalar < body_detection_range and associated_body.is_known() == false:
 						
-						if associated_body.get_display_name() == "Ingress":
+						if associated_body.is_hidden():
+							continue
+						elif associated_body.get_display_name() == "Ingress":
 							if TUTORIAL_INGRESS_OVERRIDE == true:
 								continue
-						if associated_body.get_display_name() == "Omission":
+						elif associated_body.get_display_name() == "Omission":
 							if TUTORIAL_OMISSION_OVERRIDE == true:
 								continue
 						
 						emit_signal("foundBody", child.get_identifier())
 						var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
-						if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.display_name), Color.DARK_GREEN)
-						elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.display_name, " (est. value ", round(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
+						if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name()), Color.DARK_GREEN)
+						elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", round(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
 	
 	#this is broked because when you unlock a body by moving the camera target pos, the locked_body_identifier variable on this script remains the same - thereofore, it always displays that you are locked to a body
 	#setting locked_body_label text
 	var body: bodyAPI = system.get_body_from_identifier(label_locked_body_identifier)
 	if body:
-		if body.is_known:
+		if body.is_known():
 			locked_body_label.set_text(str("LOCKED: ", body.get_display_name()))
-		elif body.is_theorised_but_not_known():
+		elif body.is_theorised_not_known():
 			locked_body_label.set_text("LOCKED: Unknown")
 	elif target_position != Vector2.ZERO:
 		locked_body_label.set_text("LOCKED: MANUAL")
@@ -111,26 +113,33 @@ func spawnBodies():
 	for child in get_children():
 		if child.is_in_group("body_3d"):
 			call_deferred("remove_child", child)
-			#remove_child(child)
 			child.queue_free()
 	for body in system.bodies:
-		if body.is_planet() or body.is_star() or body.is_wormhole():
+		if body is circularBodyAPI:
 			var new_body_3d = body_3d.instantiate()
 			new_body_3d.set_identifier(body.get_identifier())
-			if body.is_planet():
-				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().metadata.get("color"), body.metadata.get("color"), 0.25)
-			elif body.is_star():
-				new_body_3d.initialize(body.radius * system_scalar, body.metadata.get("color"), body.metadata.get("color"), 1.0)
-				star_omni_light.light_color = body.metadata.get("color")
+			if body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
+				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.25)
+			elif body.get_type() == starSystemAPI.BODY_TYPES.STAR:
+				new_body_3d.initialize(body.radius * system_scalar, body.surface_color, body.surface_color, 1.0)
+				star_omni_light.light_color = body.surface_color
 				star_omni_light.light_size = body.radius
-			elif body.is_wormhole():
-				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().metadata.get("color"), body.metadata.get("color"), 0.75, wormhole_shader)
-			add_child(new_body_3d)
-		if body.is_station() or body.is_anomaly() or body.is_entity() or body.is_rendezvous_point():
+			elif body.get_type() == starSystemAPI.BODY_TYPES.WORMHOLE:
+				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
+			add_child(new_body_3d) 
+		elif body is glintBodyAPI:
 			var new_entity_3d = entity_3d.instantiate()
 			new_entity_3d.set_identifier(body.get_identifier())
 			new_entity_3d.initialize(0.03) #pixel size, can be different for stations/anomalies
 			add_child(new_entity_3d)
+		elif body is customBodyAPI:
+			
+			#loading mesh
+			#putting mesh in scene
+			#etc
+			
+			
+			pass
 	pass
 
 func reset_locked_body():

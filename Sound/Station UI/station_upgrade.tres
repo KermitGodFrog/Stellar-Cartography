@@ -9,12 +9,7 @@
 [resource]
 streams_count = 5
 stream_0/stream = ExtResource("1_lww8l")
-stream_0/weight = 1.0
 stream_1/stream = ExtResource("2_18kwq")
-stream_1/weight = 1.0
 stream_2/stream = ExtResource("3_advnp")
-stream_2/weight = 1.0
 stream_3/stream = ExtResource("4_pa8ue")
-stream_3/weight = 1.0
 stream_4/stream = ExtResource("5_6evdr")
-stream_4/weight = 1.0

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="pingDisplayHelperAPI" load_steps=4 format=3 uid="uid://bnwugju4687eg"]
 
-[ext_resource type="Script" path="res://Data/pingDisplayHelperAPI.gd" id="1_l4vua"]
+[ext_resource type="Script" path="res://Data/pingDisplayHelper.gd" id="1_l4vua"]
 
 [sub_resource type="Gradient" id="Gradient_aerku"]
 offsets = PackedFloat32Array(0, 0.5, 0.75, 1)

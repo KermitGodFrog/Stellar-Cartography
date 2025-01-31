@@ -34,13 +34,13 @@ func initialize(helpers: Array[audioProfileHelper]):
 		set_item_metadata(delete_item, [helper, METADATA_TYPE.DELETE])
 	pass
 
-func variation_to_string(variation: bodyAPI.VARIATIONS):
+func variation_to_string(variation: planetBodyAPI.VARIATIONS):
 	match variation:
-		bodyAPI.VARIATIONS.LOW:
+		planetBodyAPI.VARIATIONS.LOW:
 			return "LOW"
-		bodyAPI.VARIATIONS.MEDIUM:
+		planetBodyAPI.VARIATIONS.MEDIUM:
 			return "MEDIUM"
-		bodyAPI.VARIATIONS.HIGH:
+		planetBodyAPI.VARIATIONS.HIGH:
 			return "HIGH"
 		_:
 			return ""

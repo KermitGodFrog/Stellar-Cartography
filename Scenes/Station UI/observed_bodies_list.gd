@@ -14,7 +14,7 @@ func initialize(helpers: Array[audioProfileHelper]):
 	for helper in helpers:
 		helper.body.metadata["has_valid_audio_profile"] = false
 		
-		add_item(helper.body.display_name, null, false)
+		add_item(helper.body.get_display_name(), null, false)
 		if helper.get_variation_class():
 			match helper.is_guessed_variation_correct():
 				true:
@@ -39,13 +39,13 @@ func initialize(helpers: Array[audioProfileHelper]):
 		set_item_metadata(save_item, helper)
 	pass
 
-func variation_to_string(variation: bodyAPI.VARIATIONS):
+func variation_to_string(variation: planetBodyAPI.VARIATIONS):
 	match variation:
-		bodyAPI.VARIATIONS.LOW:
+		planetBodyAPI.VARIATIONS.LOW:
 			return "LOW"
-		bodyAPI.VARIATIONS.MEDIUM:
+		planetBodyAPI.VARIATIONS.MEDIUM:
 			return "MEDIUM"
-		bodyAPI.VARIATIONS.HIGH:
+		planetBodyAPI.VARIATIONS.HIGH:
 			return "HIGH"
 		_:
 			return ""

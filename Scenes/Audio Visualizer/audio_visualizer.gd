@@ -17,9 +17,9 @@ var current_audio_profile: audioProfileHelper #CONTINUOUSLY UPDATED!!!
 var saved_audio_profiles: Array[audioProfileHelper] = []
 var saved_audio_profiles_size_matrix: Array #for storage label / progress bar
 
-var LOW_VAR = bodyAPI.VARIATIONS.LOW
-var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
-var HIGH_VAR = bodyAPI.VARIATIONS.HIGH
+var LOW_VAR = planetBodyAPI.VARIATIONS.LOW
+var MED_VAR = planetBodyAPI.VARIATIONS.MEDIUM
+var HIGH_VAR = planetBodyAPI.VARIATIONS.HIGH
 
 #VISUALIZER STUFF \/\/\/\/\/
 const VU_COUNT = 16
@@ -44,7 +44,7 @@ func _physics_process(_delta):
 	HEIGHT = owner.size.y / 4
 	
 	#display stuff
-	if current_audio_profile: body_name_label.set_text(current_audio_profile.body.display_name.capitalize())
+	if current_audio_profile: body_name_label.set_text(current_audio_profile.body.get_display_name())
 	if saved_audio_profiles_size_matrix: 
 		storage_ratio_label.set_text(str("(", saved_audio_profiles_size_matrix.front(), "/", saved_audio_profiles_size_matrix.back(), " PROFILES)"))
 		storage_progress_bar.set_max(saved_audio_profiles_size_matrix.back())
@@ -65,7 +65,7 @@ func _draw():
 		prev_hz = hz
 	pass
 
-func initialize(chimes_db: float, pops_db: float, pulses_db: float, storm_db: float, custom_audio_stream = null, custom_db = null):
+func initialize(chimes_db: float, pops_db: float, pulses_db: float, storm_db: float, custom_audio_stream = null, custom_db = null): #not going to have custom audio streams (atleast in the long future), so this is useless
 	var pairs = [[chimes, chimes_db], [pops, pops_db], [pulses, pulses_db], [storm, storm_db]]
 	for sound in pairs:
 		sound.front().set_volume_db(sound.back())
@@ -98,13 +98,14 @@ func _on_remove_saved_audio_profile(helper: audioProfileHelper):
 	pass
 
 func _on_locked_body_updated(body: bodyAPI):
-	if body.is_planet() and body.is_known and body.get_current_variation() != null:
-		var audio_variations = starSystemAPI.new().planet_type_audio_data.get(body.metadata.get("planet_type"))
-		var mix = audio_variations.get(body.get_current_variation())
-		var helper = audioProfileHelper.new()
-		helper.body = body
-		helper.mix = mix
-		_on_play_audio_profile(helper)
+	if (body.get_type() == starSystemAPI.BODY_TYPES.PLANET) and (body.is_known()): 
+		if body.get_current_variation() != -1:
+			var audio_variations = starSystemAPI.new().planet_type_audio_data.get(body.metadata.get("planet_type"))
+			var mix = audio_variations.get(body.get_current_variation())
+			var helper = audioProfileHelper.new()
+			helper.body = body
+			helper.mix = mix
+			_on_play_audio_profile(helper)
 	else:
 		current_audio_profile = null
 		deactivate()

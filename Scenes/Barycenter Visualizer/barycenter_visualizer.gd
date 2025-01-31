@@ -29,22 +29,24 @@ func _physics_process(_delta):
 		points[new_point_pos] = 1.0
 	
 	for body in system.bodies:
-		if (body.is_planet() or body.is_star() or body.is_wormhole()) and body.get_identifier() != locked_body_identifier:
+		if body is circularBodyAPI and body.get_identifier() != locked_body_identifier:
 			if locked_body: #display isnt shown if no body is locked to base points around
 				
-				if body.get_display_name() == "Omission":
+				if body.is_hidden():
+					continue
+				elif body.get_display_name() == "Omission":
 					if TUTORIAL_OMISSION_OVERRIDE == true:
 						continue
-				if body.get_display_name() == "Ingress":
+				elif body.get_display_name() == "Ingress":
 					if TUTORIAL_INGRESS_OVERRIDE == true:
 						continue
 				
 				var dir = locked_body.position.direction_to(body.position)
 				var dist = locked_body.position.distance_to(body.position)
-				var mass = body.metadata.get("mass")
+				var mass = body.mass
 				
 				var magnitude: float = global_data.get_randf(0,1)
-				if not body.is_wormhole():
+				if not body.get_type() == starSystemAPI.BODY_TYPES.WORMHOLE:
 					#magnitude = (dist * mass) as dist increase, magnitude increase - bad
 					magnitude = minf(((mass / dist) * 100), 20.0) #20.0 is maximum magnitude
 				
