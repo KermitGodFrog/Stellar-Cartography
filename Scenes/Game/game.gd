@@ -313,7 +313,14 @@ func _on_player_orbiting_body(orbiting_body: bodyAPI):
 		new_query.add_tree_access("orbiting_prev", orbiting_body.metadata.get("orbiting_prev", false))
 		new_query.add_tree_access("custom_seed", orbiting_body.metadata.get("custom_seed", 0))
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
-		orbiting_body.metadata["orbiting_prev"] = true
+		var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+		match RETURN_STATE:
+			"HARD_LEAVE":
+				orbiting_body.metadata["orbiting_prev"] = true
+			"SOFT_LEAVE":
+				pass
+			_:
+				pass
 		return
 	#only bodies or body types with:
 	#a) custom query data;
@@ -348,7 +355,15 @@ func _on_player_following_body(following_body: bodyAPI):
 		new_query.add_tree_access("following_prev", following_body.metadata.get("following_prev", false))
 		new_query.add_tree_access("custom_seed", following_body.metadata.get("custom_seed", 0))
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
-		following_body.metadata["following_prev"] = true
+		var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+		match RETURN_STATE:
+			"HARD_LEAVE":
+				following_body.metadata["following_prev"] = true
+				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+			"SOFT_LEAVE":
+				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+			_:
+				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 		return
 	#only bodies or body types with:
 	#a) custom query data;
@@ -362,7 +377,6 @@ func _on_player_following_body(following_body: bodyAPI):
 			var destination = following_wormhole.destination_system
 			
 			if destination:
-				
 				var new_query = responseQuery.new()
 				new_query.add("concept", "followingBody")
 				new_query.add("id", "wormhole")
