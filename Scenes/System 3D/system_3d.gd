@@ -47,15 +47,7 @@ func _physics_process(_delta):
 			if associated_body:
 				child.position = Vector3(associated_body.position.x * system_scalar, 0, associated_body.position.y * system_scalar)
 				
-				var _radius: float
-				if associated_body is circularBodyAPI:
-					_radius = associated_body.radius
-				elif associated_body is glintBodyAPI:
-					_radius = 1.0
-				
-				
-				
-				var min_dist = ((_radius * system_scalar) * 1.1) + 1.0
+				var min_dist = ((associated_body.radius * system_scalar) * 1.1) + 1.0
 				if camera_offset.position.distance_to(child.position) < min_dist:
 					camera_offset.position = child.position + (child.position.direction_to(camera_offset.position) * min_dist)
 	
@@ -140,6 +132,14 @@ func spawnBodies():
 			new_entity_3d.set_identifier(body.get_identifier())
 			new_entity_3d.initialize(0.03) #pixel size, can be different for stations/anomalies
 			add_child(new_entity_3d)
+		elif body is customBodyAPI:
+			
+			#loading mesh
+			#putting mesh in scene
+			#etc
+			
+			
+			pass
 	pass
 
 func reset_locked_body():

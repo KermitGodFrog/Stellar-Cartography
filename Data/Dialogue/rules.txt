@@ -66,10 +66,10 @@ RP_Fallback,"concept: optionSelected, option: RP_Fallback",,,,populateRP_Options
 RP_RuiSummon,"concept: optionSelected, option: RP_RuiSummon",,,,populateRP_RuiOptions,,,,Dismiss Rui: RP_Fallback,Rui entering ready room message! PLUS important info on trading option
 RP_RuiHelpOption,concept: populateRP_RuiOptions,,#maybe use a function to make the option disabled when applicable?,,,,,,Order Rui to increase morale: RP_RuiHelp,
 RP_RuiHelp,"concept: optionSelected, option: RP_RuiHelp",,,,,,,,Continue: RP_RuiFallback,You ask Rui to increase morale. Give relevant stuff.
-RP_RuiFallback,"concept: optionSelected, option: RP_RuiFallback",,,,populateRP_RuiOptions,,,,,"""Anything else I can do for you?"" Rui asks. (FALLBACK)"
+RP_RuiFallback,"concept: optionSelected, option: RP_RuiFallback",,,,populateRP_RuiOptions,,,,Dismiss Rui: RP_Fallback,"""Anything else I can do for you?"" Rui asks. (FALLBACK)"
 ,,,,,,,,,,
 ,,,,,,,,,,
-,,,,,,,,,,
+SpA_TEST,"concept: followingBody, id: SpA_SentientAsteroid, following_prev: false",,openDialog: null,,,,,,Skedadle:defaultLeave,glubble glubble!
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
@@ -95,8 +95,8 @@ PA_RepairGenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_ANY_reg
 PA_RepairGenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
 PA_RepairGenericNeptunianOpenDialog,"concept: PA_NeptunianPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
 PA_RepairGenericJovianOpenDialog,"concept: PA_JovianPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
-PA_RepairGenericActions,concept: PA_RepairGenericActions,,openDialog: null,defaultApproachMessage,,,,,"Repurpose the nanites for repair: PA_RepairGenericContinue, Leave: PASoftLeave",Sensors detect an abandoned nanite cache in low orbit.
-PA_RepairGenericContinue,"concept: optionSelected, option: PA_RepairGenericContinue",,removeHullStressWithFlair: 15,,,,,,Leave:PAHardLeave,
+PA_RepairGenericActions,concept: PA_RepairGenericActions,,openDialog: null,defaultApproachMessage,,,,,"Program the nanites for repair: PA_RepairGenericContinue, Leave: PASoftLeave","Sensors detect an abandoned nanite cache, with an integrated nanite controller, in low orbit."
+PA_RepairGenericContinue,"concept: optionSelected, option: PA_RepairGenericContinue",,removeHullStressWithFlair: 15,,,,,,Leave:PAHardLeave,The nanites successfully repair your starship.
 ,,,,,,,,,,
 PA_01GenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_ANY_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked.
 PA_01GenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_ANY_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked on its surface.
@@ -217,8 +217,8 @@ SA_Portal,"concept: followingBody, id: spaceAnomaly",,,,,,SA_PortalResponse,,,
 SA_StationGenericOpenDialog,"concept: SA_PortalResponse, player_in_CORE_or_FRONTIER_region: true",,openDialog: null,SAApproachMessage,,,,,"Request Docking Access: SA_StationGenericDockingAccess, Leave:SASoftLeave","An outpost, missing from native starcharts, is detected. You recall that profits at such bases are usually lower than official counterparts. Communications are quickly established."
 SA_StationGenericDockingAccess,"concept: optionSelected, option: SA_StationGenericDockingAccess",,closeDialog: HARD_LEAVE_STATION_OVERRIDE,,,,,,,
 ,,,,,,,,,,
-SA_RepairGenericOpenDialog,"concept: SA_PortalResponse, player_in_ANY_region: true",,openDialog: null,SAApproachMessage,,,,,"Repurpose the nanites for repair: SA_RepairGenericContinue, Leave: SASoftLeave",Sensors detect an abandoned nanite cache.
-SA_RepairGenericContinue,"concept: optionSelected, option: SA_RepairGenericContinue",,removeHullStressWithFlair: 15,,,,,,Leave:SAHardLeave,
+SA_RepairGenericOpenDialog,"concept: SA_PortalResponse, player_in_ANY_region: true",,openDialog: null,SAApproachMessage,,,,,"Program the nanites for repair: SA_RepairGenericContinue, Leave: SASoftLeave","Sensors detect an abandoned nanite cache, with an integrated nanite controller, in low orbit."
+SA_RepairGenericContinue,"concept: optionSelected, option: SA_RepairGenericContinue",,removeHullStressWithFlair: 15,,,,,,Leave:SAHardLeave,The nanites successfully repair your starship.
 ,,,,,,,,,,
 SA_01GenericOpenDialog,"concept: SA_PortalResponse, player_in_ANY_region: true",,openDialog: null,SAApproachMessage,,,,,"Investigate: SA_01GenericContinue, Leave:SASoftLeave",Analysts mark an inconsistent LIDAR return.
 SA_01GenericContinue,"concept: optionSelected, option: SA_01GenericContinue",,,,,,,,Leave:SAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo."

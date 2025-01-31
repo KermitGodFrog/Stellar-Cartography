@@ -24,12 +24,11 @@ const ENTITY_CLASSIFICATION_CURVES = {
 	ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: preload("res://Data/Spawn Data/Entities/lagrange_cloud.tres")
 }
 
-enum SPECIAL_ANOMALY_CLASSIFICATIONS {NONE}
+enum SPECIAL_ANOMALY_CLASSIFICATIONS {NONE, SENTIENT_ASTEROID}
 const SPECIAL_ANOMALY_CLASSIFICATION_CURVES = {
-	SPECIAL_ANOMALY_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/Special Anomalies/none.tres")
-}
-#const SPECIAL_ANOMALY_TEXTURES {} need the special anomalies to be able to point to textures/meshes here so they are not saved locally to the anomaly!
-#const SPECIAL_ANOMALY_MESHES {}
+	SPECIAL_ANOMALY_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/Special Anomalies/none.tres"),
+	SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID: preload("res://Data/Spawn Data/Special Anomalies/sentient_asteroid.tres")
+} #special anomaly textures and meshes shall be saved as String/StringName file paths within the object!
 
 enum SPECIAL_SYSTEM_CLASSIFICATIONS {NONE}
 const SPECIAL_SYSTEM_CLASSIFICATION_CURVES = {

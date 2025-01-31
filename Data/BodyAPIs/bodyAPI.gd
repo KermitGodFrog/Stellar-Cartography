@@ -9,6 +9,9 @@ class_name bodyAPI
 @export var display_name: String:
 	get = get_display_name, set = set_display_name
 @export var hook_identifier: int
+##On interaction (theorised, orbiting, following), the game will set this as the value of the 'id' fact, if configured. Leave empty to let the game search for more complex queries derived from the body type.
+@export var dialogue_tag: String:
+	get = get_dialogue_tag, set = set_dialogue_tag
 @export var metadata: Dictionary = {}
 
 func get_type() -> starSystemAPI.BODY_TYPES:
@@ -20,6 +23,11 @@ func get_identifier() -> int:
 	return identifier
 func set_identifier(value) -> void:
 	identifier = value
+	pass
+func get_dialogue_tag() -> String:
+	return dialogue_tag
+func set_dialogue_tag(value) -> void:
+	dialogue_tag = value
 	pass
 func get_display_name() -> String:
 	return display_name

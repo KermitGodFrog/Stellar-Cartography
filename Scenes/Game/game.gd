@@ -272,6 +272,19 @@ func _physics_process(delta):
 	pass
 
 func _on_player_theorised_body(theorised_body: bodyAPI):
+	if not theorised_body.get_dialogue_tag().is_empty():
+		var new_query = responseQuery.new()
+		new_query.add("concept", "theorisedBody")
+		new_query.add("id", theorised_body.get_dialogue_tag())
+		new_query.add_tree_access("name", theorised_body.get_display_name())
+		new_query.add_tree_access("custom_seed", theorised_body.metadata.get("custom_seed", 0))
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
+		return
+	#only bodies or body types with:
+	#a) custom query data;
+	#b) custom return states;
+	#c) non-dialogue code;
+	#may have their own custom query below \/\/\/\/
 	match theorised_body.get_type():
 		starSystemAPI.BODY_TYPES.PLANET:
 			if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
@@ -292,6 +305,21 @@ func _on_player_theorised_body(theorised_body: bodyAPI):
 	pass
 
 func _on_player_orbiting_body(orbiting_body: bodyAPI):
+	if not orbiting_body.get_dialogue_tag().is_empty():
+		var new_query = responseQuery.new()
+		new_query.add("concept", "orbitingBody")
+		new_query.add("id", orbiting_body.get_dialogue_tag())
+		new_query.add_tree_access("name", orbiting_body.get_display_name())
+		new_query.add_tree_access("orbiting_prev", orbiting_body.metadata.get("orbiting_prev", false))
+		new_query.add_tree_access("custom_seed", orbiting_body.metadata.get("custom_seed", 0))
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
+		orbiting_body.metadata["orbiting_prev"] = true
+		return
+	#only bodies or body types with:
+	#a) custom query data;
+	#b) custom return states;
+	#c) non-dialogue code;
+	#may have their own custom query below \/\/\/\/
 	match orbiting_body.get_type():
 		starSystemAPI.BODY_TYPES.PLANET:
 			if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
@@ -312,13 +340,27 @@ func _on_player_orbiting_body(orbiting_body: bodyAPI):
 	pass
 
 func _on_player_following_body(following_body: bodyAPI):
+	if not following_body.get_dialogue_tag().is_empty():
+		var new_query = responseQuery.new()
+		new_query.add("concept", "followingBody")
+		new_query.add("id", following_body.get_dialogue_tag())
+		new_query.add_tree_access("name", following_body.get_display_name())
+		new_query.add_tree_access("following_prev", following_body.metadata.get("following_prev", false))
+		new_query.add_tree_access("custom_seed", following_body.metadata.get("custom_seed", 0))
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
+		following_body.metadata["following_prev"] = true
+		return
+	#only bodies or body types with:
+	#a) custom query data;
+	#b) custom return states;
+	#c) non-dialogue code;
+	#may have their own custom query below \/\/\/\/
 	match following_body.get_type():
 		starSystemAPI.BODY_TYPES.WORMHOLE:
 			var following_wormhole = following_body #so its not confusing
 			var wormholes = world.player.current_star_system.get_wormholes()
 			var destination = following_wormhole.destination_system
 			
-			#if destination and (not destination == world.player.previous_star_system): #there is special interaction for disabled wormholes, so not having this SHOULDNT be a problem!
 			if destination:
 				
 				var new_query = responseQuery.new()
@@ -444,19 +486,6 @@ func _on_player_following_body(following_body: bodyAPI):
 			
 			await system_map.validUpdatePlayerActionType
 			long_range_scopes._on_current_entity_cleared()
-		starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
-			var following_rendezvous_point = following_body
-			
-			var new_query = responseQuery.new()
-			new_query.add("concept", "followingBody")
-			new_query.add("id", "rendezvousPoint")
-			new_query.add_tree_access("custom_seed", following_rendezvous_point.metadata.get("rendezvous_point_seed"))
-			get_tree().call_group("dialogueManager", "speak", self, new_query)
-			
-			var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
-			match RETURN_STATE:
-				_:
-					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_rendezvous_point)
 	pass
 
 func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):

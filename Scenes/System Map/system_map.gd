@@ -59,8 +59,8 @@ enum BOOST_SOUND_TYPES {START, END}
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
 @onready var entity_icon = preload("res://Graphics/entity_32x.png")
 @onready var audio_visualizer_icon = preload("res://Graphics/audio_visualizer_frame.png")
-@onready var station_frame = load("res://Graphics/station_frame.png")
-@onready var rendezvous_point_frame = load("res://Graphics/rendezvous_point_frame.png")
+@onready var station_frame = preload("res://Graphics/station_frame.png")
+@onready var rendezvous_point_frame = preload("res://Graphics/rendezvous_point_frame.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body : bodyAPI
@@ -267,6 +267,11 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					item.set_text(0, "%s" % body.get_display_name())
 					item.set_icon(0, rendezvous_point_frame)
 					
+				starSystemAPI.BODY_TYPES.SPECIAL_ANOMALY:
+					item.set_text(0, "%s" % body.get_display_name())
+					var icon = load(body.icon_path)
+					item.set_icon(0, icon)
+					
 		
 		var c = collapsed_cache.get(body.get_identifier())
 		if c != null:
@@ -371,7 +376,10 @@ func draw_map():
 		
 		#batch customBodyAPI texture drawing
 		
-		pass
+		if body is customBodyAPI and body.is_known():
+			if camera.zoom.length() < system.get_first_star().radius * 100.0:
+				var texture = load(body.texture_path)
+				texture.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false)
 	
 	for body in system.bodies:
 		

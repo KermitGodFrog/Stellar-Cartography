@@ -531,8 +531,6 @@ func discoverRandomBodyWithFlair() -> void:
 
 
 
-
-
 func _TUTORIALSetIngressOverride(value: bool):
 	emit_signal("TUTORIALSetIngressOverride", value)
 	pass
