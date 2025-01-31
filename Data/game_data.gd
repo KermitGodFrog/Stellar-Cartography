@@ -204,19 +204,6 @@ func get_weighted_special_system_classifications() -> Dictionary:
 
 
 
-func get_closest_body(bodies, pos):
-	if bodies.size() > 0:
-		var distance_to_bodies: Dictionary = {}
-		for body in bodies:
-			distance_to_bodies[body] = pos.distance_to(body.position)
-		
-		var corrected = distance_to_bodies.values()
-		corrected.sort()
-		return distance_to_bodies.find_key(corrected[0])
-	else:
-		return null
-
-
 func loadWorld():
 	print("GAME DATA: LOADING WORLD")
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):

@@ -197,3 +197,15 @@ func get_relevant_input_actions() -> Array[StringName]:
 		if action.begins_with("SC_"):
 			relevant_actions.append(action)
 	return relevant_actions
+
+func get_closest_body(bodies, pos): #'bodies' refers to a group of anything with a 'position' variable
+	if bodies.size() > 0:
+		var distance_to_bodies: Dictionary = {}
+		for body in bodies:
+			distance_to_bodies[body] = pos.distance_to(body.position)
+		
+		var corrected = distance_to_bodies.values()
+		corrected.sort()
+		return distance_to_bodies.find_key(corrected[0])
+	else:
+		return null

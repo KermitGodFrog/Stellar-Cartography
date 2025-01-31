@@ -289,7 +289,7 @@ func clear_system_list_caches() -> void:
 
 func _unhandled_input(event):
 	if event.is_action_pressed("SC_INTERACT2_RIGHT_MOUSE"):
-		var closest_body = game_data.get_closest_body(system.bodies, get_global_mouse_position())
+		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
 		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and closest_body.is_known:
 			emit_signal("updatedLockedBody", closest_body)
 			locked_body = closest_body
@@ -305,7 +305,7 @@ func _unhandled_input(event):
 		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
 	
 	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE"):
-		var closest_body = game_data.get_closest_body(system.bodies, get_global_mouse_position())
+		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
 		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and closest_body.is_known:
 			emit_signal("updatedLockedBody", closest_body)
 			locked_body = closest_body
