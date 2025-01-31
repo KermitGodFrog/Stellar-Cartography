@@ -242,7 +242,7 @@ func _physics_process(delta):
 	if current_bodies:
 		for body in current_bodies:
 			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
-			body.advance() #capacity to do more stuff, can be overriden by classes that inherit bodyAPI
+			body.advance(delta) #capacity to do more stuff, can be overriden by classes that inherit bodyAPI
 	#if world.player.hull_deterioration == 100:
 		#_on_player_death()
 	
@@ -310,13 +310,13 @@ func _on_player_orbiting_body(orbiting_body: bodyAPI):
 		new_query.add("concept", "orbitingBody")
 		new_query.add("id", orbiting_body.get_dialogue_tag())
 		new_query.add_tree_access("name", orbiting_body.get_display_name())
-		new_query.add_tree_access("orbiting_prev", orbiting_body.metadata.get("orbiting_prev", false))
+		new_query.add_tree_access("orbiting_PREV", orbiting_body.metadata.get("orbiting_PREV", false))
 		new_query.add_tree_access("custom_seed", orbiting_body.metadata.get("custom_seed", 0))
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 		var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 		match RETURN_STATE:
 			"HARD_LEAVE":
-				orbiting_body.metadata["orbiting_prev"] = true
+				orbiting_body.metadata["orbiting_PREV"] = true
 			"SOFT_LEAVE":
 				pass
 			_:
@@ -352,13 +352,13 @@ func _on_player_following_body(following_body: bodyAPI):
 		new_query.add("concept", "followingBody")
 		new_query.add("id", following_body.get_dialogue_tag())
 		new_query.add_tree_access("name", following_body.get_display_name())
-		new_query.add_tree_access("following_prev", following_body.metadata.get("following_prev", false))
+		new_query.add_tree_access("following_PREV", following_body.metadata.get("following_PREV", false))
 		new_query.add_tree_access("custom_seed", following_body.metadata.get("custom_seed", 0))
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 		var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 		match RETURN_STATE:
 			"HARD_LEAVE":
-				following_body.metadata["following_prev"] = true
+				following_body.metadata["following_PREV"] = true
 				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 			"SOFT_LEAVE":
 				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)

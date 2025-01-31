@@ -37,6 +37,7 @@ func set_display_name(value) -> void:
 
 @export var orbit_distance: float
 @export var orbit_speed: float
+##Used as the bodies LITERAL radius (for circularBodyAPIs), but is also used in calculations regarding player exclusion zones and player orbital distance.
 @export var radius: float #this is used for important things like player exclusion zone from bodies in 3d, player orbit distance from body, etc. set to (1.0 / 192.1) as a default (earth size). 
 
 @export_storage var position: Vector2
@@ -61,5 +62,9 @@ func is_theorised_not_known() -> bool:
 	else:
 		return false
 
-func advance() -> void:
+
+
+func initialize() -> void:
+	pass
+func advance(_delta) -> void:
 	pass

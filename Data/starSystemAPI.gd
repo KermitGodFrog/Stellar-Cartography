@@ -172,9 +172,12 @@ func generateBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_pla
 	#generate without stations or wormholes, or any other thing that needs to await data (like wormholes await destination systems to be generated)
 	#generate the essentials ^^^
 	#revised: generate just planets, stars and space anomalies! can be overriden for special systems!
-	var hook_star = generateRandomWeightedHookStar()
-	generateRandomWeightedPlanets(hook_star, _PA_chance_per_planet, _missing_AO_chance_per_planet)
-	generateRandomAnomalies(_SA_chance_per_candidate)
+	var special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(), "weight")
+	match special_system_classification:
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
+			var hook_star = generateRandomWeightedHookStar()
+			generateRandomWeightedPlanets(hook_star, _PA_chance_per_planet, _missing_AO_chance_per_planet)
+			generateRandomAnomalies(_SA_chance_per_candidate)
 	pass
 
 func generateRandomWeightedHookStar():
@@ -195,7 +198,7 @@ func generateRandomWeightedHookStar():
 		BODY_TYPES.STAR,
 		identifier_count,
 		game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STAR, current_name_scheme),
-		-1,
+		0, #identifier count starts at 1 so this shouldnt be any issue
 		0.0,
 		0.0,
 		radius,
@@ -240,7 +243,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 						hook.get_identifier(),
 						orbit_distance,
 						0.0,
-						(1.0 / 109.1),
+						0.0, #cant be interacted with so who cares
 						{"hidden": true},
 						{"asteroid_belt_classification": belt_classification, "belt_width": belt_width, "belt_color": Color(0.111765, 0.111765, 0.111765, 0.9), "belt_mass": belt_mass}
 					)
@@ -400,7 +403,7 @@ func generateRandomWeightedStations():
 		
 		var orbit_distance = get_orbit_distance(hook, i)
 		var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
-		var radius = planet_classification_data.get("Terran").get("earth_radius_min") / 109.1
+		var radius = get_default_radius_solar_radii()
 		
 		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
 		var percentage_markup = global_data.get_randi(75, 200)
@@ -433,7 +436,7 @@ func generateRandomAnomalies(SA_chance_per_candidate: float = 0.0):
 			
 			var orbit_distance = get_orbit_distance(hook, i) 
 			var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
-			var radius = planet_classification_data.get("Terran").get("earth_radius_min") / 109.1
+			var radius = get_default_radius_solar_radii()
 			
 			var new_anomaly = addBody(
 				spaceAnomalyBodyAPI.new(),
@@ -462,7 +465,7 @@ func generateRandomWeightedEntities():
 		
 		var orbit_distance = get_orbit_distance(hook, i)
 		var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
-		var radius = planet_classification_data.get("Terran").get("earth_radius_min") / 109.1
+		var radius = get_default_radius_solar_radii()
 		
 		var entity_classification = global_data.weighted_pick(game_data.get_weighted_entity_classifications(), "weight")
 		
@@ -491,7 +494,7 @@ func generateRendezvousPoint():
 	
 	var orbit_distance = get_orbit_distance(hook, i)
 	var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
-	var radius = planet_classification_data.get("Terran").get("earth_radius_min") / 109.1
+	var radius = get_default_radius_solar_radii()
 	
 	var new_body = addBody(
 		glintBodyAPI.new(),
@@ -517,14 +520,14 @@ func generateRandomWeightedSpecialAnomaly():
 	
 	var orbit_distance = get_orbit_distance(hook, i)
 	var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
-	var radius = planet_classification_data.get("Terran").get("earth_radius_min") / 109.1
+	var radius = get_default_radius_solar_radii()
 	
 	var special_anomaly_classification = global_data.weighted_pick(game_data.get_weighted_special_anomaly_classifications(), "weight")
 	print("[color=red] SPECIAL ANOMALY CLASSIFICATION:[/color] ", special_anomaly_classification)
 	match special_anomaly_classification:
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID:
 			var new_body = addBody(
-				customBodyAPI.new(),
+				load("res://Data/BodyAPIs/Special/SpA_SentientAsteroid.gd").new(),
 				BODY_TYPES.SPECIAL_ANOMALY,
 				identifier_count,
 				"CONTACT-%03d" % i,
@@ -532,7 +535,7 @@ func generateRandomWeightedSpecialAnomaly():
 				orbit_distance,
 				orbit_speed,
 				radius,
-				{"dialogue_tag": "SpA_SentientAsteroid", "texture_path": "res://Graphics/question_mark.png", "icon_path": "res://Graphics/question_mark.png"},
+				{"dialogue_tag": "SpA_SentientAsteroid", "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "texture_path": "res://Graphics/question_mark.png", "icon_path": "res://Graphics/question_mark.png"},
 				{}
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
@@ -563,6 +566,8 @@ func get_random_orbit_speed(hook: bodyAPI, _orbit_distance: float) -> float:
 func get_orbit_distance(hook: bodyAPI, iteration: int) -> float:
 	return hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * iteration)
 
+func get_default_radius_solar_radii() -> float:
+	return planet_classification_data.get("Terran").get("earth_radius_min") / 109.1
 
 
 
@@ -578,6 +583,7 @@ func addBody(body: bodyAPI, _body_type: BODY_TYPES, id: int, d_name: String, hoo
 	for variable in variables:
 		body.set(variable, variables.get(variable))
 	body.set("metadata", metadata)
+	body.initialize()
 	bodies.append(body)
 	return body.get_identifier()
 

@@ -414,7 +414,10 @@ func draw_map():
 		
 		if body is glintBodyAPI and body.is_known():
 			if not camera.zoom.length() < system.get_first_star().radius * 100.0:
-				draw_circle(body.position, (1.0 / 192.1), Color.NAVAJO_WHITE) #assuming radius to be 1.0
+				draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
+		if body is customBodyAPI and body.is_known():
+			if not camera.zoom.length() < system.get_first_star().radius * 100.0:
+				draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
 	
 	for body in system.bodies:
 		

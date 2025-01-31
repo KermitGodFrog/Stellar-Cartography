@@ -28,7 +28,7 @@ enum SPECIAL_ANOMALY_CLASSIFICATIONS {NONE, SENTIENT_ASTEROID}
 const SPECIAL_ANOMALY_CLASSIFICATION_CURVES = {
 	SPECIAL_ANOMALY_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/Special Anomalies/none.tres"),
 	SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID: preload("res://Data/Spawn Data/Special Anomalies/sentient_asteroid.tres")
-} #special anomaly textures and meshes shall be saved as String/StringName file paths within the object!
+}
 
 enum SPECIAL_SYSTEM_CLASSIFICATIONS {NONE}
 const SPECIAL_SYSTEM_CLASSIFICATION_CURVES = {
