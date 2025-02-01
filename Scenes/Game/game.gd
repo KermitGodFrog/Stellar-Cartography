@@ -272,19 +272,6 @@ func _physics_process(delta):
 	pass
 
 func _on_player_theorised_body(theorised_body: bodyAPI):
-	if not theorised_body.get_dialogue_tag().is_empty():
-		var new_query = responseQuery.new()
-		new_query.add("concept", "theorisedBody")
-		new_query.add("id", theorised_body.get_dialogue_tag())
-		new_query.add_tree_access("name", theorised_body.get_display_name())
-		new_query.add_tree_access("custom_seed", theorised_body.metadata.get("custom_seed", 0))
-		get_tree().call_group("dialogueManager", "speak", self, new_query)
-		return
-	#only bodies or body types with:
-	#a) custom query data;
-	#b) custom return states;
-	#c) non-dialogue code;
-	#may have their own custom query below \/\/\/\/
 	match theorised_body.get_type():
 		starSystemAPI.BODY_TYPES.PLANET:
 			if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
@@ -302,31 +289,18 @@ func _on_player_theorised_body(theorised_body: bodyAPI):
 				new_query.add("id", "wormhole")
 				new_query.add_tree_access("name", theorised_wormhole.display_name)
 				get_tree().call_group("dialogueManager", "speak", self, new_query)
+		starSystemAPI.BODY_TYPES.CUSTOM:
+			var theorised_custom = theorised_body
+			if not theorised_custom.get_dialogue_tag().is_empty():
+				var new_query = responseQuery.new()
+				new_query.add("concept", "theorisedBody")
+				new_query.add("id", theorised_custom.get_dialogue_tag())
+				new_query.add_tree_access("name", theorised_custom.get_display_name())
+				new_query.add_tree_access("custom_seed", theorised_custom.metadata.get("custom_seed", 0))
+				get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
 func _on_player_orbiting_body(orbiting_body: bodyAPI):
-	if not orbiting_body.get_dialogue_tag().is_empty():
-		var new_query = responseQuery.new()
-		new_query.add("concept", "orbitingBody")
-		new_query.add("id", orbiting_body.get_dialogue_tag())
-		new_query.add_tree_access("name", orbiting_body.get_display_name())
-		new_query.add_tree_access("orbiting_PREV", orbiting_body.metadata.get("orbiting_PREV", false))
-		new_query.add_tree_access("custom_seed", orbiting_body.metadata.get("custom_seed", 0))
-		get_tree().call_group("dialogueManager", "speak", self, new_query)
-		var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
-		match RETURN_STATE:
-			"HARD_LEAVE":
-				orbiting_body.metadata["orbiting_PREV"] = true
-			"SOFT_LEAVE":
-				pass
-			_:
-				pass
-		return
-	#only bodies or body types with:
-	#a) custom query data;
-	#b) custom return states;
-	#c) non-dialogue code;
-	#may have their own custom query below \/\/\/\/
 	match orbiting_body.get_type():
 		starSystemAPI.BODY_TYPES.PLANET:
 			if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
@@ -344,32 +318,27 @@ func _on_player_orbiting_body(orbiting_body: bodyAPI):
 				new_query.add("id", "wormhole")
 				new_query.add_tree_access("name", orbiting_wormhole.display_name)
 				get_tree().call_group("dialogueManager", "speak", self, new_query)
+		starSystemAPI.BODY_TYPES.CUSTOM:
+			var orbiting_custom = orbiting_body
+			if not orbiting_custom.get_dialogue_tag().is_empty():
+				if orbiting_custom.metadata.get("is_orbit_available", true) == true:
+					var new_query = responseQuery.new()
+					new_query.add("concept", "orbitingBody")
+					new_query.add("id", orbiting_custom.get_dialogue_tag())
+					new_query.add_tree_access("name", orbiting_custom.get_display_name())
+					new_query.add_tree_access("custom_seed", orbiting_custom.metadata.get("custom_seed", 0))
+					get_tree().call_group("dialogueManager", "speak", self, new_query)
+					var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+					match RETURN_STATE:
+						"HARD_LEAVE":
+							orbiting_custom.metadata["is_orbit_available"] = false
+						"SOFT_LEAVE":
+							pass
+						_:
+							pass
 	pass
 
 func _on_player_following_body(following_body: bodyAPI):
-	if not following_body.get_dialogue_tag().is_empty():
-		var new_query = responseQuery.new()
-		new_query.add("concept", "followingBody")
-		new_query.add("id", following_body.get_dialogue_tag())
-		new_query.add_tree_access("name", following_body.get_display_name())
-		new_query.add_tree_access("following_PREV", following_body.metadata.get("following_PREV", false))
-		new_query.add_tree_access("custom_seed", following_body.metadata.get("custom_seed", 0))
-		get_tree().call_group("dialogueManager", "speak", self, new_query)
-		var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
-		match RETURN_STATE:
-			"HARD_LEAVE":
-				following_body.metadata["following_PREV"] = true
-				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
-			"SOFT_LEAVE":
-				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
-			_:
-				_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
-		return
-	#only bodies or body types with:
-	#a) custom query data;
-	#b) custom return states;
-	#c) non-dialogue code;
-	#may have their own custom query below \/\/\/\/
 	match following_body.get_type():
 		starSystemAPI.BODY_TYPES.WORMHOLE:
 			var following_wormhole = following_body #so its not confusing
@@ -500,6 +469,25 @@ func _on_player_following_body(following_body: bodyAPI):
 			
 			await system_map.validUpdatePlayerActionType
 			long_range_scopes._on_current_entity_cleared()
+		starSystemAPI.BODY_TYPES.CUSTOM:
+			var following_custom = following_body
+			if not following_custom.get_dialogue_tag().is_empty():
+				if following_custom.metadata.get("is_follow_available", true) == true:
+					var new_query = responseQuery.new()
+					new_query.add("concept", "followingBody")
+					new_query.add("id", following_custom.get_dialogue_tag())
+					new_query.add_tree_access("name", following_custom.get_display_name())
+					new_query.add_tree_access("custom_seed", following_custom.metadata.get("custom_seed", 0))
+					get_tree().call_group("dialogueManager", "speak", self, new_query)
+					var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+					match RETURN_STATE:
+						"HARD_LEAVE":
+							following_custom.metadata["is_follow_available"] = false
+							_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+						"SOFT_LEAVE":
+							_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+						_:
+							_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 	pass
 
 func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):

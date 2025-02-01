@@ -4,6 +4,8 @@ defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,
 defaultApproachMessage,concept: defaultApproachMessage,,,,,,,,,Your ship approaches [i]$name[/i].
 defaultSuccessSound,concept: defaultSuccessSound,,playSoundEffect: dialogue_success.wav,,,,,,,
 defaultFailureSound,concept: defaultFailureSound,,playSoundEffect: dialogue_failure.wav,,,,,,,
+defaultHardLeave,"concept: optionSelected, option: defaultHardLeave",,closeDialog: HARD_LEAVE,,,,,,,
+defaultSoftLeave,"concept: optionSelected, option: defaultSoftLeave",,closeDialog: SOFT_LEAVE,,,,,,,
 ,,,,,,,,,,
 defaultPlayerStartOpenDialog,concept: playerStart,,openDialog: null,,,,,,Continue:defaultPlayerStartContinue,"[i]You are a newly established Captain of a starship on a mission of exploration. You have requested for a route to be calculated into an area of space known as New Eden, which reportedly houses a fragment of human civilisation long forgotten. The journey to New Eden be perilous, and the dangers you will face cannot be predicted. [/i]"
 defaultPlayerStartContinue,"concept: optionSelected, option: defaultPlayerStartContinue",,,,,,,,Step out of the transport:defaultPlayerStartPortal,Your transport attaches to a docking port of your new command with a series of whines. The hatch twists open.
@@ -69,7 +71,7 @@ RP_RuiHelp,"concept: optionSelected, option: RP_RuiHelp",,,,,,,,Continue: RP_Rui
 RP_RuiFallback,"concept: optionSelected, option: RP_RuiFallback",,,,populateRP_RuiOptions,,,,Dismiss Rui: RP_Fallback,"""Anything else I can do for you?"" Rui asks. (FALLBACK)"
 ,,,,,,,,,,
 ,,,,,,,,,,
-SpA_TEST,"concept: followingBody, id: SpA_SentientAsteroid, following_prev: false",,openDialog: null,,,,,,Skedadle:defaultLeave,glubble glubble!
+,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
@@ -231,10 +233,16 @@ SA_02GenericDispatchFailure,concept: SA_02GenericDispatchResponse,,,,,,,,Leave:S
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
+SpA_SentientAsteroidTheorised,"concept: theorisedBody, id: SpA_SentientAsteroid",,openDialog: null,,,,,,Go to flank speed: defaultLeave,"(UNFINISHED EVENT) Called over by staff on bridge as a contact confirmed (theorised) in the last scan is moving via some kind of propulsion system, despite being an asteroid. Decide to chase it down. Message should be written so the player assumes that they have to FOLLOW the contact, rather than orbit it. ""We need to get very close"""
+SpA_SentientAsteroidFollowing,"concept: followingBody, id: SpA_SentientAsteroid, following_PREV: false",,openDialog: null,,populateSpA_SentientAsteroidAnalysisOptions,,,,"Perform a basic analysis: SpA_SentientAsteroidDefaultExpedition, Leave: defaultSoftLeave","(UNFINISHED EVENT) Get close to the contact. Theorise that if your ship has long range scope capability, you might be able to view the asteroid and do other stuff, since more would be known it would be safer to mount an expedition."
+SpA_SentientAsteroidObserveOption,"concept: populateSpA_SentientAsteroidAnalysisOptions, player_LONG_RANGE_SCOPES_unlocked: true",,,,,,,,Observe the contact with Long Range Scopes: SpA_SentientAsteroidObserve,
+SpA_SentientAsteroidObserve,"concept: optionSelected, option: SpA_SentientAsteroidObserve",,,,populateSpA_SentientAsteroidExpeditionOptions,,,,Let it be: SpA_SentientAsteroidDefaultExpedition,(UNFINISHED EVENT) Are able to tell that its an asteroid with no visible method of propulsion. Message about how cool it is. Theorise that its alive and quite intelligent. Talk about potentially obtaining a surface sample.
+SpA_SentientAsteroidFebrisExpeditionOption,"concept: populateSpA_SentientAsteroidExpeditionOptions, player_MEDICAL_OFFICER_alive: true",,,,,,,,Order Febris to lead an expedition - we need a surface sample: SpA_SentientAsteroidFebrisExpedition,
+SpA_SentientAsteroidFebrisExpedition,"concept: optionSelected, option: SpA_SentientAsteroidFebrisExpedition",,,,,,SpA_SentientAsteroidFebrisExpeditionDispatch,,,
+SpA_SentientAsteroidFebrisExpeditionResponseSuccess,concept: SpA_SentientAsteroidFebrisExpeditionDispatch,,addValueWithFlair: 25000,,,,,,Leave: defaultHardLeave,(UNFINISHED EVENT) Febris successfully extracts a sample from the asteroid. You order a recall.
+SpA_SentientAsteroidFebrisExpeditionResponseFailure,concept: SpA_SentientAsteroidFebrisExpeditionDispatch,,"addValueWithFlair: 5000, killCharacterWithFlair: 3",,,,,,Leave: defaultHardLeave,(UNFINISHED EVENT) Febris dies. You order a recall.
+SpA_SentientAsteroidDefaultExpedition,"concept: optionSelected, option: SpA_SentientAsteroidDefaultExpedition",,addValueWithFlair: 2500,,,,,,Leave: defaultHardLeave,(UNFINISHED EVENT) default expedition
+SpA_SentientAsteroidFollowingCancel,"concept: followingBody, id: SpA_SentientAsteroid",,,,,,,,,"(UNFINISHED EVENT) A nice message about how the contact is flying through the void. Lots of descriptive words. Fallback message after event is completed, or the event is discarded."
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,

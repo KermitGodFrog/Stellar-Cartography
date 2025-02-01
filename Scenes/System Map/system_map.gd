@@ -267,9 +267,11 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					item.set_text(0, "%s" % body.get_display_name())
 					item.set_icon(0, rendezvous_point_frame)
 					
-				starSystemAPI.BODY_TYPES.SPECIAL_ANOMALY:
+				starSystemAPI.BODY_TYPES.CUSTOM:
 					item.set_text(0, "%s" % body.get_display_name())
-					var icon = load(body.icon_path)
+					var icon: Object
+					if body.is_interaction_valid(): icon = load(body.icon_path)
+					else: icon = load(body.post_icon_path)
 					item.set_icon(0, icon)
 					
 		
@@ -378,7 +380,9 @@ func draw_map():
 		
 		if body is customBodyAPI and body.is_known():
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
-				var texture = load(body.texture_path)
+				var texture: Object
+				if body.is_interaction_valid(): texture = load(body.texture_path)
+				else: texture = load(body.post_texture_path)
 				texture.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false)
 	
 	for body in system.bodies:
@@ -390,7 +394,6 @@ func draw_map():
 				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
 				if system.get_body_from_identifier(body.hook_identifier):
 					draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.orbit_distance, -TAU, TAU, 30, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint), 1.0, false)
-					#draw_custom_arc(system.get_body_from_identifier(body.hook_identifier).position, body.distance, -360, 360, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint))
 	
 	for body in system.bodies:
 		

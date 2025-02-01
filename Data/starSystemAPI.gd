@@ -39,7 +39,7 @@ func set_display_name(new_display_name: String):
 #enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
 #enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
 
-enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, SPECIAL_ANOMALY}
+enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, CUSTOM}
 
 const star_types = {
 	"M": {"name": "M", "weight": 0.7645629},
@@ -526,7 +526,7 @@ func generateRandomWeightedSpecialAnomaly():
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID:
 			var new_body = addBody(
 				load("res://Data/BodyAPIs/Special/SpA_SentientAsteroid.gd").new(),
-				BODY_TYPES.SPECIAL_ANOMALY,
+				BODY_TYPES.CUSTOM,
 				identifier_count,
 				"CONTACT-%03d" % i,
 				hook.get_identifier(),
@@ -540,10 +540,6 @@ func generateRandomWeightedSpecialAnomaly():
 			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.NONE:
 			pass
-		
-		#spawn it 
-		#first one of these that I want to do is the sentient asteroid one.
-		#either have additional code for spawning in the match statements, or as a _: fallback, just load a .tres file (if relevant in game_data dictionary) 
 	pass
 
 
