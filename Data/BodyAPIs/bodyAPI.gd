@@ -53,7 +53,7 @@ func is_theorised_not_known() -> bool:
 		return true
 	else:
 		return false
-func is_not_known_or_hidden() -> bool:
+func is_not_known_or_is_hidden() -> bool:
 	if (not known) or hidden:
 		return true
 	else:

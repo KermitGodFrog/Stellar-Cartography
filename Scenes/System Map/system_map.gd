@@ -110,7 +110,7 @@ func _physics_process(delta):
 	
 	var camera_position_to_bodies: Dictionary = {}
 	for body in system.bodies:
-		if body.is_not_known_or_hidden():
+		if body.is_not_known_or_is_hidden():
 			continue
 		camera_position_to_bodies[body.get_identifier()] = body.position.distance_to(camera.position)
 	var sorted_values = camera_position_to_bodies.values()
@@ -294,7 +294,7 @@ func clear_system_list_caches() -> void:
 func _unhandled_input(event):
 	if event.is_action_pressed("SC_INTERACT2_RIGHT_MOUSE"):
 		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
-		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and (not closest_body.is_not_known_or_hidden()):
+		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and (not closest_body.is_not_known_or_is_hidden()):
 			emit_signal("updatedLockedBody", closest_body)
 			locked_body = closest_body
 			follow_body = closest_body
@@ -310,7 +310,7 @@ func _unhandled_input(event):
 	
 	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE"):
 		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
-		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and (not closest_body.is_not_known_or_hidden()):
+		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and (not closest_body.is_not_known_or_is_hidden()):
 			emit_signal("updatedLockedBody", closest_body)
 			locked_body = closest_body
 			follow_body = closest_body
@@ -365,7 +365,6 @@ func draw_sonar():
 	pass
 
 func draw_map():
-	print(camera.zoom.length())
 	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT) #not EXACTLY proper but yknow
 	if asteroid_belts: 
 		for belt in asteroid_belts:
