@@ -167,22 +167,40 @@ const asteroid_belt_classifications = {
 	"Carbonaceous": {"name": "Carbonaceous", "weight": 0.3}
 }
 
-func generateBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0) -> void:
-	#generate without stations or wormholes, or any other thing that needs to await data (like wormholes await destination systems to be generated)
-	#generate the essentials ^^^
-	#revised: generate just planets, stars and space anomalies! can be overriden for special systems!
+func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0) -> void:
+	#generate just planets, stars and space anomalies!
+	var hook_star = generateRandomWeightedHookStar()
+	generateRandomWeightedPlanets(hook_star, _PA_chance_per_planet, _missing_AO_chance_per_planet)
+	generateRandomAnomalies(_SA_chance_per_candidate)
+	pass
+
+func createAuxiliaryCivilized() -> void:
+	generateWormholes()
+	generateRandomWeightedStations()
+	generateRandomWeightedEntities()
+	generateRendezvousPoint()
+	for body in bodies:
+		body.known = true
+	pass
+
+func createAuxiliaryUnexplored() -> void:
 	var new_special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(), "weight")
 	special_system_classification = new_special_system_classification
 	
 	var new_system_hazard_classification = global_data.weighted_pick(game_data.get_weighted_system_hazard_classifications(), "weight")
 	system_hazard_classification = new_system_hazard_classification
 	
-	match special_system_classification:
+	match new_special_system_classification:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
-			var hook_star = generateRandomWeightedHookStar()
-			generateRandomWeightedPlanets(hook_star, _PA_chance_per_planet, _missing_AO_chance_per_planet)
-			generateRandomAnomalies(_SA_chance_per_candidate)
+			generateWormholes()
+			generateRandomWeightedEntities()
+			generateRendezvousPoint()
+			generateRandomWeightedSpecialAnomaly()
+			
+		#for example, a completely empty star system could use this match statement to REMOVE all existing bodies (besides the star) and spawn nothing else. Then an event could happen on concept enteringSystem 
 	pass
+
+
 
 func generateRandomWeightedHookStar():
 	randomize()

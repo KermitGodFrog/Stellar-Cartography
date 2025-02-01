@@ -103,12 +103,7 @@ func _ready():
 		var new: starSystemAPI = _on_create_new_star_system()
 		for i in range(2):
 			_on_create_new_star_system(new)
-		new.generateWormholes()
-		new.generateRandomWeightedEntities()
-		new.generateRendezvousPoint()
-		new.generateRandomWeightedStations()
-		for body in new.bodies:
-			body.known = true
+		new.createAuxiliaryCivilized()
 		
 		_on_switch_star_system(new)
 		
@@ -522,9 +517,15 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	if not destination.destination_systems:
 		for i in range(2):
 			_on_create_new_star_system(destination)
-		destination.generateWormholes()
-		destination.generateRandomWeightedEntities()
-		destination.generateRendezvousPoint()
+	#setting whether the new system is a civilized system or not
+	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
+	if world.player.get_jumps_remaining() == 0:
+		world.player.resetJumpsRemaining()
+		destination.createAuxiliaryCivilized()
+	else:
+		destination.createAuxiliaryUnexplored()
+	
+	
 	
 	#var destination_position: Vector2 = Vector2.ZERO
 	var destination_wormhole: wormholeBodyAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
@@ -538,15 +539,6 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 		#world.player.position = destination.get_body_from_identifier(destination_wormhole.hook_identifier)
 	destination_wormhole.known = true
 	
-	#setting whether the new system is a civilized system or not
-	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
-	if not world.player.get_jumps_remaining() == 0:
-		destination.generateRandomWeightedSpecialAnomaly()
-	else:
-		destination.generateRandomWeightedStations()
-		world.player.resetJumpsRemaining()
-		for body in destination.bodies:
-			body.known = true
 	
 	#world.player.position = destination_position
 	#world.player.target_position = world.player.position
@@ -662,7 +654,7 @@ func _on_update_target_position(pos: Vector2):
 func _on_create_new_star_system(for_system: starSystemAPI = null):
 	game_data.SYSTEM_PREFIX = "" #shuldnt be calling game_data from game.gd but whateverrrrrrr
 	var system = world.createStarSystem("random")
-	system.generateBase(world.PA_chance_per_planet, world.missing_AO_chance_per_planet, world.SA_chance_per_candidate)
+	system.createBase(world.PA_chance_per_planet, world.missing_AO_chance_per_planet, world.SA_chance_per_candidate)
 	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
