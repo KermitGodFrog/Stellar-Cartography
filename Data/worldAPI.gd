@@ -19,7 +19,7 @@ class_name worldAPI
 
 func createStarSystem(d_name: String) -> starSystemAPI:
 	var new_system = starSystemAPI.new()
-	new_system.current_name_scheme = game_data.NAME_SCHEMES.values().pick_random()
+	new_system.name_scheme = game_data.NAME_SCHEMES.values().pick_random()
 	new_system.set_identifier(identifier_count)
 	identifier_count += 1
 	new_system.set_display_name(d_name)

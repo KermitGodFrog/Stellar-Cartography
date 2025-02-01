@@ -35,6 +35,11 @@ const SPECIAL_SYSTEM_CLASSIFICATION_CURVES = {
 	SPECIAL_SYSTEM_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/Special Systems/none.tres")
 }
 
+enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE}
+const SYSTEM_HAZARD_CLASSIFICATION_CURVES = {
+	SYSTEM_HAZARD_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/System Hazards/none.tres")
+}
+
 const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
 const NANITE_CONTROLLER_REPAIR_CURVE = preload("res://Data/Spawn Data/nanite_controller_repair_curve.tres")
 
@@ -201,6 +206,9 @@ func get_weighted_special_anomaly_classifications() -> Dictionary:
 
 func get_weighted_special_system_classifications() -> Dictionary:
 	return get_weighted_classifications(SPECIAL_SYSTEM_CLASSIFICATION_CURVES)
+
+func get_weighted_system_hazard_classifications() -> Dictionary:
+	return get_weighted_classifications(SYSTEM_HAZARD_CLASSIFICATION_CURVES)
 
 
 

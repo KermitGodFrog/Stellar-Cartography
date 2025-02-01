@@ -11,22 +11,21 @@ class_name starSystemAPI
 @export var bodies: Array[bodyAPI]
 @export var identifier_count: int = 1
 
-@export var time: int = 1000
-@export var post_gen_location_candidates: Array = []
+const time: int = 1000
+@export_storage var post_gen_location_candidates: Array = []
 # ^^^ can be used for multiple passes of additional things, each pass removes used indexes from the array  
 
-@export var current_name_scheme: game_data.NAME_SCHEMES = game_data.NAME_SCHEMES.STANDARD
+@export var name_scheme: game_data.NAME_SCHEMES = game_data.NAME_SCHEMES.STANDARD
+@export var special_system_classification: game_data.SPECIAL_SYSTEM_CLASSIFICATIONS = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE
+@export var system_hazard_classification: game_data.SYSTEM_HAZARD_CLASSIFICATIONS = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
 
 func get_identifier():
 	return identifier
-
 func set_identifier(new_identifier: int):
 	identifier = new_identifier
 	pass
-
 func get_display_name():
 	return display_name
-
 func set_display_name(new_display_name: String):
 	display_name = new_display_name
 	pass
@@ -172,7 +171,12 @@ func generateBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_pla
 	#generate without stations or wormholes, or any other thing that needs to await data (like wormholes await destination systems to be generated)
 	#generate the essentials ^^^
 	#revised: generate just planets, stars and space anomalies! can be overriden for special systems!
-	var special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(), "weight")
+	var new_special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(), "weight")
+	special_system_classification = new_special_system_classification
+	
+	var new_system_hazard_classification = global_data.weighted_pick(game_data.get_weighted_system_hazard_classifications(), "weight")
+	system_hazard_classification = new_system_hazard_classification
+	
 	match special_system_classification:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
 			var hook_star = generateRandomWeightedHookStar()
@@ -197,7 +201,7 @@ func generateRandomWeightedHookStar():
 		circularBodyAPI.new(),
 		BODY_TYPES.STAR,
 		identifier_count,
-		game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STAR, current_name_scheme),
+		game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STAR, name_scheme),
 		0, #identifier count starts at 1 so this shouldnt be any issue
 		0.0,
 		0.0,
@@ -239,7 +243,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 						bodyAPI.new(),
 						BODY_TYPES.ASTEROID_BELT,
 						identifier_count, 
-						game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.ASTEROID_BELT, current_name_scheme, hook.get_display_name()),
+						game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.ASTEROID_BELT, name_scheme, hook.get_display_name()),
 						hook.get_identifier(),
 						orbit_distance,
 						0.0,
@@ -339,7 +343,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 					planetBodyAPI.new(),
 					BODY_TYPES.PLANET,
 					identifier_count,
-					game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.PLANET, current_name_scheme, hook.get_display_name(), i, remaining.size()),
+					game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.PLANET, name_scheme, hook.get_display_name(), i, remaining.size()),
 					hook.get_identifier(),
 					orbit_distance,
 					orbit_speed,
@@ -378,7 +382,7 @@ func generateWormholes(): #uses variables post_gen_location_candidates, destinat
 			wormholeBodyAPI.new(),
 			BODY_TYPES.WORMHOLE,
 			identifier_count,
-			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.WORMHOLE, current_name_scheme, hook.get_display_name()),
+			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.WORMHOLE, name_scheme, hook.get_display_name()),
 			hook.get_identifier(),
 			orbit_distance,
 			orbit_speed,
@@ -411,7 +415,7 @@ func generateRandomWeightedStations():
 			stationBodyAPI.new(),
 			BODY_TYPES.STATION,
 			identifier_count,
-			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, current_name_scheme, hook.get_display_name()),
+			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, name_scheme, hook.get_display_name()),
 			hook.get_identifier(),
 			orbit_distance,
 			orbit_speed,
@@ -441,7 +445,7 @@ func generateRandomAnomalies(SA_chance_per_candidate: float = 0.0):
 				spaceAnomalyBodyAPI.new(),
 				BODY_TYPES.SPACE_ANOMALY,
 				identifier_count,
-				game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ANOMALY, current_name_scheme, hook.get_display_name()),
+				game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ANOMALY, name_scheme, hook.get_display_name()),
 				hook.get_identifier(),
 				orbit_distance,
 				orbit_speed,
@@ -472,7 +476,7 @@ func generateRandomWeightedEntities():
 			entityBodyAPI.new(),
 			BODY_TYPES.SPACE_ENTITY,
 			identifier_count,
-			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ENTITY_DEFAULT, current_name_scheme, hook.get_display_name()),
+			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ENTITY_DEFAULT, name_scheme, hook.get_display_name()),
 			hook.get_identifier(),
 			orbit_distance,
 			orbit_speed,
@@ -499,7 +503,7 @@ func generateRendezvousPoint():
 		glintBodyAPI.new(),
 		BODY_TYPES.RENDEZVOUS_POINT,
 		identifier_count, 
-		game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.RENDEZVOUS_POINT_DEFAULT, current_name_scheme, hook.get_display_name()), 
+		game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.RENDEZVOUS_POINT_DEFAULT, name_scheme, hook.get_display_name()), 
 		hook.get_identifier(),
 		orbit_distance, 
 		orbit_speed,

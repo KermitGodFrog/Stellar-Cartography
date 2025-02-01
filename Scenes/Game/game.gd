@@ -24,7 +24,7 @@ var world: worldAPI
 func _ready():
 	connect_all_signals()
 	
-	world = await game_data.loadWorld()
+	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
 		world = game_data.createWorld(25, 5, 25, 0.01, 0.05, 0.25)
 		
@@ -493,7 +493,6 @@ func _on_player_following_body(following_body: bodyAPI):
 func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
 	match upgrade_idx:
 		playerAPI.UPGRADE_ID.AUDIO_VISUALIZER:
-			
 			var new_query = responseQuery.new()
 			new_query.add("concept", "moduleTutorial")
 			new_query.add("module", "audioVisualizer")
@@ -501,7 +500,6 @@ func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
 			
 		playerAPI.UPGRADE_ID.NANITE_CONTROLLER:
-			
 			var new_query = responseQuery.new()
 			new_query.add("concept", "moduleTutorial")
 			new_query.add("module", "naniteController")
@@ -509,14 +507,12 @@ func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
 			
 		playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES:
-			
 			var new_query = responseQuery.new()
 			new_query.add("concept", "moduleTutorial")
 			new_query.add("module", "longRangeScopes")
 			new_query.add_tree_access("m_upper", "Long Range Scopes")
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
-
 
 
 func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
@@ -593,6 +589,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	
 	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
 	_on_wormhole_minigame_popup()
+	_on_player_entering_system(destination) #this dialogue is overwritten if the player dies during traversal!
 	pass
 
 func dock_with_station(following_station):
@@ -605,8 +602,15 @@ func dock_with_station(following_station):
 	_on_station_popup()
 	pass
 
+
 func _on_player_death():
 	print("GAME: PLAYER DIED")
+	
+	var new_query = responseQuery.new()
+	new_query.add("concept", "playerDeath")
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 	
 	_on_open_stats_menu(stats_menu.INIT_TYPES.DEATH)
 	pass
@@ -622,6 +626,17 @@ func _on_player_win():
 	
 	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN)
 	pass
+
+func _on_player_entering_system(system: starSystemAPI):
+	#called by _on_switch_star_system - SHOULD await the wormhole minigame closing before starting because of pause modes
+	var new_query = responseQuery.new()
+	new_query.add("concept", "enteringSystem")
+	new_query.add_tree_access("name", system.get_display_name())
+	new_query.add_tree_access("special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(system.special_system_classification)))
+	new_query.add_tree_access("system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(system.system_hazard_classification)))
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	pass
+
 
 func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
 	if not (type == world.player.current_action_type and action_body == world.player.action_body):

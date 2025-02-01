@@ -14,7 +14,6 @@ current_type = 0
 identifier = 1
 display_name = "King"
 hook_identifier = 0
-dialogue_tag = ""
 metadata = {
 "discovery_multiplier": 1.0,
 "iterations": 25,
@@ -41,7 +40,6 @@ current_type = 1
 identifier = 2
 display_name = "Prelude"
 hook_identifier = 1
-dialogue_tag = ""
 metadata = {
 "has_planetary_anomaly": true,
 "is_planetary_anomaly_available": true,
@@ -71,7 +69,6 @@ current_type = 1
 identifier = 3
 display_name = "Omission"
 hook_identifier = 1
-dialogue_tag = ""
 metadata = {
 "iterations": 12,
 "planet_classification": "Neptunian",
@@ -96,9 +93,10 @@ display_name = ""
 destination_systems = Array[ExtResource("2_isoyl")]([])
 bodies = Array[ExtResource("1_cmw3s")]([])
 identifier_count = 1
-time = 1000
 post_gen_location_candidates = []
-current_name_scheme = 0
+name_scheme = 0
+special_system_classification = 0
+system_hazard_classification = 0
 
 [sub_resource type="Resource" id="Resource_wvc64"]
 script = ExtResource("5_1oytx")
@@ -111,7 +109,6 @@ current_type = 3
 identifier = 4
 display_name = "Ingress"
 hook_identifier = 1
-dialogue_tag = ""
 metadata = {
 "destination_star_type": "M"
 }
@@ -132,9 +129,10 @@ display_name = ""
 destination_systems = Array[ExtResource("2_isoyl")]([])
 bodies = Array[ExtResource("1_cmw3s")]([])
 identifier_count = 1
-time = 1000
 post_gen_location_candidates = []
-current_name_scheme = 0
+name_scheme = 0
+special_system_classification = 0
+system_hazard_classification = 0
 
 [sub_resource type="Resource" id="Resource_fn3du"]
 script = ExtResource("2_isoyl")
@@ -143,9 +141,10 @@ display_name = ""
 destination_systems = Array[ExtResource("2_isoyl")]([])
 bodies = Array[ExtResource("1_cmw3s")]([])
 identifier_count = 1
-time = 1000
 post_gen_location_candidates = []
-current_name_scheme = 0
+name_scheme = 0
+special_system_classification = 0
+system_hazard_classification = 0
 
 [resource]
 script = ExtResource("2_isoyl")
@@ -154,6 +153,7 @@ display_name = "tutorial"
 destination_systems = Array[ExtResource("2_isoyl")]([SubResource("Resource_8eyb4"), SubResource("Resource_fn3du")])
 bodies = Array[ExtResource("1_cmw3s")]([SubResource("Resource_ne0u5"), SubResource("Resource_pkjv2"), SubResource("Resource_lw4hu"), SubResource("Resource_wvc64")])
 identifier_count = 1
-time = 1000
 post_gen_location_candidates = []
-current_name_scheme = 0
+name_scheme = 0
+special_system_classification = 0
+system_hazard_classification = 0
