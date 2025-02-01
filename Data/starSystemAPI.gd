@@ -555,7 +555,7 @@ func generateRandomWeightedSpecialAnomaly():
 				orbit_distance,
 				orbit_speed,
 				radius,
-				{"dialogue_tag": "SpA_SentientAsteroid", "_system_time": time, "_hook_mass": hook.mass, "_hook_radius": hook.radius, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "texture_path": "res://Graphics/question_mark.png", "icon_path": "res://Graphics/question_mark.png"},
+				{"dialogue_tag": "SpA_SentientAsteroid", "_system_time": time, "_hook_mass": hook.mass, "_hook_radius": hook.radius, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "icon_path": "res://Graphics/question_mark.png"},
 				{}
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
