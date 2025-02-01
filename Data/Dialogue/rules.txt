@@ -244,10 +244,9 @@ SpA_SentientAsteroidFebrisExpeditionOption,"concept: populateSpA_SentientAsteroi
 SpA_SentientAsteroidFebrisExpedition,"concept: optionSelected, option: SpA_SentientAsteroidFebrisExpedition",,,,,,SpA_SentientAsteroidFebrisExpeditionDispatchResponse,,,
 SpA_SentientAsteroidFebrisExpeditionResponseSuccess,concept: SpA_SentientAsteroidFebrisExpeditionDispatchResponse,,addValueWithFlair: 25000,,,,,,Leave: defaultHardLeave,(UNFINISHED EVENT) Febris successfully extracts a sample from the asteroid. You order a recall.
 SpA_SentientAsteroidFebrisExpeditionResponseFailure,concept: SpA_SentientAsteroidFebrisExpeditionDispatchResponse,,"addValueWithFlair: 5000, killCharacterWithFlair: 3",,,,,,Leave: defaultHardLeave,(UNFINISHED EVENT) Febris dies. You order a recall.
-SpA_SentientAsteroidFebrisExpeditionResponseOversight,concept: SpA_SentientAsteroidFebrisExpeditionDispatchResponse,,"addValueWithFlair: 25000, removeMoraleWithFlair: 10",,,,,,Leave: defaultHardLeave,"(UNFINISHED EVENT) The sample is successfuly extracted, but the living asteroid dies in the process. Morale loss because killing stuff your meant to be researching is usually a bad thing. You order a recall."
 SpA_SentientAsteroidDefaultExpedition,"concept: optionSelected, option: SpA_SentientAsteroidDefaultExpedition",,addValueWithFlair: 2500,,,,,,Leave: defaultHardLeave,(UNFINISHED EVENT) default expedition
 ,,,,,,,,,,
-testSystemOpenDialog,concept: enteringSystem,,openDialog: null,,,,,,Exit: defaultLeave,Entering system! $special_system_classification $system_hazard_classification
+,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,

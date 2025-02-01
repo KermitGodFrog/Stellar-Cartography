@@ -21,6 +21,9 @@ func advance(delta):
 	if (orbit_distance == target_distance) and cooldown == 0.0:
 		cooldown = 10.0
 		randomize_target_distance()
+	
+	if metadata.get("is_available", true) == false:
+		set_display_name("'Sentient Asteroid'")
 	pass
 
 func randomize_target_distance() -> void:

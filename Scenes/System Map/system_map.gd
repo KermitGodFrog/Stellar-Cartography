@@ -270,7 +270,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				starSystemAPI.BODY_TYPES.CUSTOM:
 					item.set_text(0, "%s" % body.get_display_name())
 					var icon: Object
-					if body.is_interaction_valid(): icon = load(body.icon_path)
+					if body.is_available(): icon = load(body.icon_path)
 					else: icon = load(body.post_icon_path)
 					item.set_icon(0, icon)
 					
@@ -381,7 +381,7 @@ func draw_map():
 		if body is customBodyAPI and body.is_known():
 			if camera.zoom.length() < system.get_first_star().radius * 100.0:
 				var texture: Object
-				if body.is_interaction_valid(): texture = load(body.texture_path)
+				if body.is_available(): texture = load(body.texture_path)
 				else: texture = load(body.post_texture_path)
 				texture.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false)
 	

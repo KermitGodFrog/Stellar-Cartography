@@ -331,6 +331,7 @@ func _on_player_orbiting_body(orbiting_body: bodyAPI):
 					var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 					match RETURN_STATE:
 						"HARD_LEAVE":
+							orbiting_custom.metadata["is_available"] = false
 							orbiting_custom.metadata["is_orbit_available"] = false
 						"SOFT_LEAVE":
 							pass
@@ -482,6 +483,7 @@ func _on_player_following_body(following_body: bodyAPI):
 					var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 					match RETURN_STATE:
 						"HARD_LEAVE":
+							following_custom.metadata["is_available"] = false
 							following_custom.metadata["is_follow_available"] = false
 							_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 						"SOFT_LEAVE":

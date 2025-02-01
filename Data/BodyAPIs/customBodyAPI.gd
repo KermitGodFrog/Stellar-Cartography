@@ -23,7 +23,7 @@ func set_dialogue_tag(value) -> void:
 @export var post_icon_path: String
 @export var mesh_path: String
 
-func is_interaction_valid() -> bool:
-	if (metadata.get("is_follow_available", true) == true) and (metadata.get("is_orbit_available", true) == true):
+func is_available() -> bool:
+	if metadata.get("is_available", true) == true:
 		return true
 	return false
