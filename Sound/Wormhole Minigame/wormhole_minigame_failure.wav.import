@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bplalt1pic5f"
+path="res://.godot/imported/wormhole_minigame_failure.wav-bf84c4aa6097c12dab371b933dc0be02.sample"
+
+[deps]
+
+source_file="res://Sound/Wormhole Minigame/wormhole_minigame_failure.wav"
+dest_files=["res://.godot/imported/wormhole_minigame_failure.wav-bf84c4aa6097c12dab371b933dc0be02.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
