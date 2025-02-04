@@ -32,8 +32,8 @@ var awaiting_start: bool = true
 
 @export var window: NodePath
 
-@onready var starship_and_camera = $starship_and_camera
 @onready var star = $star
+@onready var starship_and_camera = $starship_and_camera
 @onready var wormhole_interference = $wormhole_interference
 @onready var deceleration = $deceleration
 @onready var distance_progress = $starship_and_camera/camera/UI_control/distance_container/distance_progress
@@ -42,6 +42,9 @@ var awaiting_start: bool = true
 @onready var press_to_start = $starship_and_camera/camera/UI_control/press_to_start_button
 @onready var brake_button = $starship_and_camera/camera/UI_control/brake_button
 @onready var hull_stress_increase_label = $starship_and_camera/camera/UI_control/hull_stress_increase_label
+
+@onready var failure_sound = preload("res://Sound/Wormhole Minigame/wormhole_minigame_failure.wav")
+@onready var success_sound = preload("res://Sound/Wormhole Minigame/wormhole_minigame_success.wav")
 
 func _physics_process(delta):
 	if not awaiting_start:
@@ -96,8 +99,10 @@ func finish_minigame(result: bool) -> void:
 	match result:
 		true:
 			emit_signal("addPlayerHullStress", hull_stress_wormhole)
+			get_tree().call_group("audioHandler", "play_once", success_sound, -6, "SFX")
 		false:
 			emit_signal("addPlayerHullStress", hull_stress_wormhole * 2)
+			get_tree().call_group("audioHandler", "play_once", failure_sound, -6, "SFX")
 	
 	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	pass

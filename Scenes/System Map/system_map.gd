@@ -52,8 +52,8 @@ var player_audio_visualizer_unlocked: bool = false
 @onready var LIDAR_bounceback = preload("res://Sound/SFX/LIDAR_bounceback.tres")
 @onready var LIDAR_discovery = preload("res://Sound/SFX/LIDAR_discovery.tres")
 @onready var LIDAR_anomaly_discovery = preload("res://Sound/SFX/LIDAR_anomaly_discovery.tres")
-@onready var boost_start_wav = preload("res://Sound/SFX/boost_start.wav")
-@onready var boost_end_wav = preload("res://Sound/SFX/boost_end.wav")
+@onready var boost_start = preload("res://Sound/SFX/boost_start.wav")
+@onready var boost_end = preload("res://Sound/SFX/boost_end.wav")
 enum BOOST_SOUND_TYPES {START, END}
 
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
@@ -333,11 +333,11 @@ func _unhandled_input(event):
 	if event.is_action_pressed("SC_BOOST"):
 		player_is_boosting = true
 		emit_signal("updatePlayerIsBoosting", player_is_boosting)
-		async_play_boost_sound(BOOST_SOUND_TYPES.START)
+		play_boost_sound(BOOST_SOUND_TYPES.START)
 	elif event.is_action_released("SC_BOOST"):
 		player_is_boosting = false
 		emit_signal("updatePlayerIsBoosting", player_is_boosting)
-		async_play_boost_sound(BOOST_SOUND_TYPES.END)
+		play_boost_sound(BOOST_SOUND_TYPES.END)
 	pass
 
 func reset_player_boosting() -> void:
@@ -541,19 +541,12 @@ func async_add_ping(body: bodyAPI) -> void:
 	get_tree().call_group("audioHandler", "play_once", LIDAR_bounceback, 0.0, "SFX")
 	pass
 
-func async_play_boost_sound(sound: BOOST_SOUND_TYPES):
-	var instance = AudioStreamPlayer.new()
-	instance.set_bus("SFX")
-	instance.set_volume_db(-24)
-	match sound:
+func play_boost_sound(sound_type: BOOST_SOUND_TYPES):
+	match sound_type:
 		BOOST_SOUND_TYPES.START:
-			instance.set_stream(boost_start_wav)
+			get_tree().call_group("audioHandler", "play_once", boost_start, -24, "SFX")
 		BOOST_SOUND_TYPES.END:
-			instance.set_stream(boost_end_wav)
-	add_child(instance)
-	instance.play()
-	await instance.finished
-	instance.queue_free()
+			get_tree().call_group("audioHandler", "play_once", boost_end, -24, "SFX")
 	pass
 
 func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2): #for SCAN_PREDICTION upgrade!
@@ -581,12 +574,10 @@ func _on_found_body(id: int):
 	ping.resetTime()
 	SONAR_PINGS.append(ping)
 	
-	if body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
-		if body.is_PA_valid():
-			get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
-	elif body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
-		if body.is_SA_valid():
-			get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
+	if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_PA_valid():
+		get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
+	elif body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ANOMALY and body.is_SA_valid():
+		get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
 	else:
 		get_tree().call_group("audioHandler", "play_once", LIDAR_discovery, 0.0, "SFX")
 	pass
