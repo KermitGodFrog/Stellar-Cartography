@@ -191,7 +191,7 @@ icon_alignment = 1
 expand_icon = true
 script = ExtResource("8_ne0ka")
 texture_node = NodePath("orbit_texture")
-tooltip_title = "'ORBIT' ACTION:"
+tooltip_title = "'ORBIT' ACTION"
 
 [node name="orbit_texture" type="TextureRect" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button"]
 layout_mode = 1
@@ -215,7 +215,7 @@ icon_alignment = 1
 expand_icon = true
 script = ExtResource("8_ne0ka")
 texture_node = NodePath("go_to_texture")
-tooltip_title = "'GO-TO' ACTION:"
+tooltip_title = "'GO-TO' ACTION"
 
 [node name="go_to_texture" type="TextureRect" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button"]
 layout_mode = 1
@@ -239,7 +239,7 @@ icon_alignment = 1
 expand_icon = true
 script = ExtResource("8_ne0ka")
 texture_node = NodePath("stop_texture")
-tooltip_title = "'STOP' ACTION:"
+tooltip_title = "'STOP' ACTION"
 
 [node name="stop_texture" type="TextureRect" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button"]
 layout_mode = 1
@@ -443,7 +443,7 @@ theme = ExtResource("15_534fl")
 text = "50253"
 icon = ExtResource("10_e6b7x")
 script = ExtResource("11_1rwmm")
-tooltip_title = "Nanites:"
+tooltip_title = "Nanites"
 
 [node name="morale_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
 layout_mode = 2
@@ -452,16 +452,15 @@ theme = ExtResource("15_534fl")
 text = "100%"
 icon = ExtResource("13_vaatn")
 script = ExtResource("11_1rwmm")
-tooltip_title = "Morale:"
+tooltip_title = "Morale"
 
 [node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["FOLLOW_UPGRADE_STATE", "playUIClickSFX"]]
 layout_mode = 2
-tooltip_text = "General starship wear-and-tear. Principally may be reduced at a space station in exchange for nanites. Damage over 100% will be transferred to hull deterioration."
 theme = ExtResource("15_534fl")
 text = "100%"
 icon = ExtResource("11_1tiv0")
 script = ExtResource("14_u08qu")
-tooltip_title = "Hull Stress:"
+tooltip_title = "Hull Stress"
 
 [node name="hull_deterioration_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
 layout_mode = 2
@@ -470,7 +469,7 @@ theme = ExtResource("15_534fl")
 text = "100%"
 icon = ExtResource("12_3bh3s")
 script = ExtResource("11_1rwmm")
-tooltip_title = "Hull Deterioration:"
+tooltip_title = "Hull Deterioration"
 
 [node name="core_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll"]
 custom_minimum_size = Vector2(460, 235)

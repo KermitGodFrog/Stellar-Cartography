@@ -3,12 +3,21 @@ extends "res://Scenes/System Map/status_button.gd"
 signal removeHullStressForNanites(amount: int, _nanites_per_percentage: int)
 
 var increase_for_nanites: bool = false
-var nanites_per_percentage: int = 500
+var nanites_per_percentage: int
+const default_tooltip: String = "General starship wear-and-tear. Principally may be reduced at a space station in exchange for nanites. Damage over 100% will be transferred to hull deterioration."
+
+
 
 func _physics_process(_delta):
 	nanites_per_percentage = (game_data.NANITE_CONTROLLER_REPAIR_CURVE.sample(game_data.player_weirdness_index) * 1000) #we are using too many global vars here its not very cool and stuff dont like it feel like im a rookie yknow
-	if is_hovered() and increase_for_nanites == true:
-		set_text("> (-1%) <") 
+	
+	match increase_for_nanites:
+		true:
+			set_tooltip_text("%s \n\n[color=red]Cost of repairing 1%% hull stress: %dn (Nanite Controller) [/color]" % [default_tooltip, nanites_per_percentage])
+			if is_hovered():
+				set_text("> (-1%) <") 
+		false:
+			set_tooltip_text(default_tooltip)
 	pass
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
