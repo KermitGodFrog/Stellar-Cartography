@@ -47,16 +47,25 @@ var _achievements_array: Array[responseAchievement] = []
 
 @onready var dialogue = $dialogue/dialogue_control
 
-func _ready():
+func _ready() -> void:
 	addDialogueMemoryPair.connect(_on_add_dialogue_memory_pair) #im connecitng this signal to its own script because im not sure if it does anything else / is important
+	clear_and_load_rules()
+	pass
+
+func clear_and_load_rules() -> void:
+	rules.clear()
 	
 	var csv_rules = FileAccess.open("res://Data/Dialogue/rules.txt", FileAccess.READ)
 	var current_pointer: POINTERS = POINTERS.RULE
 	var current_line: int = 0
 	var new_rule: responseRule = null
+	var eof_override: bool = true
 	
-	while not csv_rules.eof_reached():
+	while (not csv_rules.eof_reached()) or eof_override:
+		if csv_rules.eof_reached():
+			eof_override = false #setup to read an extra line, as eof_reached() returns true when there is still a line left
 		var line = csv_rules.get_csv_line()
+		
 		current_line += 1
 		if current_line == 1: continue
 		if line.is_empty(): continue
@@ -68,46 +77,52 @@ func _ready():
 						if new_rule.is_configured():
 							rules.append(new_rule)
 							print("ADDING NEW RULE: ", new_rule.get_name())
-					new_rule = responseRule.new()
-					new_rule.set_name(cell)
+					
+					var text = convert_to_string(cell)
+					if not text.is_empty():
+						new_rule = responseRule.new()
+						new_rule.set_name(text)
+					else:
+						new_rule = null
 				"CRITERIA":
 					var dict = convert_to_dictionary(cell)
-					if not dict.is_empty():
+					if not dict.is_empty() and new_rule != null:
 						new_rule.criteria = dict
 				"APPLY_FACTS":
 					var dict = convert_to_dictionary(cell)
-					if not dict.is_empty():
+					if not dict.is_empty() and new_rule != null:
 						new_rule.apply_facts = dict
 				"TRIGGER_FUNCTIONS":
 					var dict = convert_to_dictionary(cell)
-					if not dict.is_empty():
+					if not dict.is_empty() and new_rule != null:
 						new_rule.trigger_functions = dict
 				"TRIGGER_RULES":
 					var array = convert_to_array(cell)
-					if not array.is_empty():
+					if not array.is_empty() and new_rule != null:
 						new_rule.trigger_rules = array
 				"QUERY_ALL_CONCEPT":
 					var array = convert_to_array(cell)
-					if not array.is_empty():
+					if not array.is_empty() and new_rule != null:
 						new_rule.query_all_concept = array
 				"QUERY_BEST_CONCEPT":
 					var array = convert_to_array(cell)
-					if not array.is_empty():
+					if not array.is_empty() and new_rule != null:
 						new_rule.query_best_concept = array
 				"QUERY_RAND_BEST_CONCEPT":
 					var array = convert_to_array(cell)
-					if not array.is_empty():
+					if not array.is_empty() and new_rule != null:
 						new_rule.query_rand_best_concept = array
 				"QUERY_OLD_BEST_CONCEPT":
 					var array = convert_to_array(cell)
-					if not array.is_empty():
+					if not array.is_empty() and new_rule != null:
 						new_rule.query_old_best_concept = array
 				"OPTIONS":
 					var dict = convert_to_dictionary(cell)
-					if not dict.is_empty():
+					if not dict.is_empty() and new_rule != null:
 						new_rule.options = dict
 				"TEXT":
-					if not cell.is_empty():
+					var text = convert_to_string(cell)
+					if not text.is_empty() and new_rule != null:
 						new_rule.text = cell
 			
 			if POINTERS.values()[current_pointer] == POINTERS.values().back(): current_pointer = POINTERS.values().front()
@@ -161,6 +176,12 @@ func convert_to_array(cell : String) -> Array[String]:
 	if not corrected_parts.is_empty():
 		return corrected_parts
 	else: return []
+
+func convert_to_string(cell : String) -> String:
+	if cell.left(1) == "#": return String()
+	return cell
+
+
 
 
 func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = true, type: QUERY_TYPES = QUERY_TYPES.BEST):

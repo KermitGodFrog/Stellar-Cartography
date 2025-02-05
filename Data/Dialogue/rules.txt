@@ -1,8 +1,8 @@
 Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Query Best Concept,Query Rand Best Concept,Query Old Best Concept,Options,Text
 defaultOpenDialog,concept: followingBody,,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,
 defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,,,
-,"#ALL valid concepts: playerStart, tutorialPlayerStart, playerWin, tutorialPlayerWin, playerDeath, moduleTutorial, theorisedBody, orbitingBody, followingBody, enteringSystem",,,,,,,,,
-,"#ALL valid IDs (not including customBodyAPIs): wormhole, station, rendezvousPoint, planetaryAnomaly, planetaryAnomalyTutorialOverride, spaceAnomaly, planet (tutorial exclusive)",,,,,,,,,
+"#ALL valid concepts: playerStart, tutorialPlayerStart, playerWin, tutorialPlayerWin, playerDeath, moduleTutorial, theorisedBody, orbitingBody, followingBody, enteringSystem",,,,,,,,,,
+"#ALL valid IDs (not including customBodyAPIs): wormhole, station, rendezvousPoint, planetaryAnomaly, planetaryAnomalyTutorialOverride, spaceAnomaly, planet (tutorial exclusive)",,,,,,,,,,
 defaultApproachMessage,concept: defaultApproachMessage,,,,,,,,,Your ship approaches [i]$name[/i].
 defaultSuccessSound,concept: defaultSuccessSound,,playSoundEffect: dialogue_success.wav,,,,,,,
 defaultFailureSound,concept: defaultFailureSound,,playSoundEffect: dialogue_failure.wav,,,,,,,
@@ -319,4 +319,3 @@ tutorialAVContinueD,"concept: optionSelected, option: tutorialAVContinueD",,clea
 tutorialNC,"concept: moduleTutorial, module: naniteController",,openDialog: null,moduleTutorialMessage,,,,,"Continue: tutorialNCContinueA, Exit (SKIP TUTORIAL): defaultLeave",
 tutorialNCContinueA,"concept: optionSelected, option: tutorialNCContinueA",,setImage: tutorial_nc_status_panel_example.png,,,,,,Continue: tutorialNCContinueB,1)[i] Click the hull stress button on the status panel to exchange nanites to remove one percent of hull stress (if applicable). [/i]
 tutorialNCContinueB,"concept: optionSelected, option: tutorialNCContinueB",,clearImage: null,,,,,,Exit: defaultLeave,2)[i] The price of removing one percent of hull stress is roughly double the price of removing one percent of hull stress while docked. [/i]
-,,,,,,,,,,
