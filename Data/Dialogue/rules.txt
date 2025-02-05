@@ -246,7 +246,7 @@ SpA_SentientAsteroidFebrisExpeditionResponseSuccess,concept: SpA_SentientAsteroi
 SpA_SentientAsteroidFebrisExpeditionResponseFailure,concept: SpA_SentientAsteroidFebrisExpeditionDispatchResponse,,"addValueWithFlair: 5000, killCharacterWithFlair: 3",,,,,,Leave: defaultHardLeave,(UNFINISHED EVENT) Febris dies. You order a recall.
 SpA_SentientAsteroidDefaultExpedition,"concept: optionSelected, option: SpA_SentientAsteroidDefaultExpedition",,addValueWithFlair: 2500,,,,,,Leave: defaultHardLeave,(UNFINISHED EVENT) default expedition
 ,,,,,,,,,,
-,,,,,,,,,,
+enteringSystemVoidOpenDialog,"concept: enteringSystem, special_system_classification: VOID",,"openDialog: null, addValueWithFlair: 5000",,,,,,Proceed cautiously: defaultLeave,"(UNFINISHED EVENT) You are informed by a Junior officer that the system you are entering is comprised of nothing but the star and its wormholes, to the subatomic level. No dust, no particles, no anything. Completely empty."
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,

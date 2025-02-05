@@ -660,10 +660,11 @@ func _on_create_new_star_system(for_system: starSystemAPI = null):
 	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
-	print("SYSTEM MAP (DEBUG): CREATING NEW STAR SYSTEM")
+	print("GAME (DEBUG): CREATING NEW STAR SYSTEM")
 	return system
 
 func _on_switch_star_system(to_system: starSystemAPI):
+	print_debug("GAME (DEBUG) SWITCHING STAR SYSTEM")
 	#if world.player.current_star_system:
 		#if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1: #this was the thing throwing TypedArray does not inherit from GDScript errors, so I just removed it.... hopefully ok. does not look important at all
 	audio_visualizer._on_clear_button_pressed()

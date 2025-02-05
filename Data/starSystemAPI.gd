@@ -184,6 +184,7 @@ func createAuxiliaryCivilized() -> void:
 	pass
 
 func createAuxiliaryUnexplored() -> void:
+	print_debug("CREATE AUXILIARY UNEXPLORED!!")
 	var new_special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(), "weight")
 	special_system_classification = new_special_system_classification
 	
@@ -196,7 +197,15 @@ func createAuxiliaryUnexplored() -> void:
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
 			generateRandomWeightedSpecialAnomaly()
-			
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
+			#!! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !!
+			var star_identifier = get_first_star().get_identifier()
+			for body in get_bodies_with_hook_identifier(star_identifier):
+				bodies.erase(body)
+			for c in post_gen_location_candidates:
+				if c.front() != star_identifier:
+					post_gen_location_candidates.erase(c)
+			generateWormholes() #i think this backtracking code is reasonable as something like this is one-of-a-kind and i probably wont be manually clearing bodies again
 		#for example, a completely empty star system could use this match statement to REMOVE all existing bodies (besides the star) and spawn nothing else. Then an event could happen on concept enteringSystem 
 	pass
 
@@ -606,7 +615,7 @@ func addBody(body: bodyAPI, _body_type: BODY_TYPES, id: int, d_name: String, hoo
 func removeBody(id: int):
 	for body in bodies:
 		if body.get_identifier() == id:
-			bodies.erase(body.get_identifier())
+			bodies.erase(body)
 	pass
 
 func updateBodyPosition(id: int, delta):

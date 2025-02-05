@@ -30,9 +30,10 @@ const SPECIAL_ANOMALY_CLASSIFICATION_CURVES = {
 	SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID: preload("res://Data/Spawn Data/Special Anomalies/sentient_asteroid.tres")
 }
 
-enum SPECIAL_SYSTEM_CLASSIFICATIONS {NONE}
+enum SPECIAL_SYSTEM_CLASSIFICATIONS {NONE, VOID}
 const SPECIAL_SYSTEM_CLASSIFICATION_CURVES = {
-	SPECIAL_SYSTEM_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/Special Systems/none.tres")
+	SPECIAL_SYSTEM_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/Special Systems/none.tres"),
+	SPECIAL_SYSTEM_CLASSIFICATIONS.VOID: preload("res://Data/Spawn Data/Special Systems/void.tres")
 }
 
 enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE}
