@@ -50,6 +50,16 @@ const star_types = {
 	"O": {"name": "O", "weight": 0.0000003}
 }
 
+const lg_star_types = {
+	"M": {"name": "M", "weight": 0.0000003},
+	"K": {"name": "K", "weight": 0.0012136}, 
+	"G": {"name": "G", "weight": 0.7645629},
+	"F": {"name": "F", "weight": 0.1213592},
+	"A": {"name": "A", "weight": 0.0764563}, 
+	"B": {"name": "B", "weight": 0.0303398}, 
+	"O": {"name": "O", "weight": 0.0060679}
+} #this seems like a good compromise - slighly challenging types like G and F are quite common, the easy types are rare af, and the harder types are still rare
+
 const star_data = { #MASS IS IN SOLAR MASSES, RADIUS IS IN SOLAR RADII
 	"M": {"solar_radius_min": 0.1, "solar_radius_max": 0.7, "solar_mass_min": 0.08, "solar_mass_max": 0.45, "luminosity_min": 0.01, "luminosity_max": 0.08, "color": Color.RED},
 	"K": {"solar_radius_min": 0.7, "solar_radius_max": 0.96, "solar_mass_min": 0.45, "solar_mass_max": 0.8, "luminosity_min": 0.08, "luminosity_max": 0.6, "color": Color.ORANGE},
@@ -214,6 +224,7 @@ func createAuxiliaryUnexplored() -> void:
 
 func generateRandomWeightedHookStar():
 	randomize()
+	
 	var star_type = global_data.weighted_pick(star_types, "weight")
 	var data = star_data.get(star_type)
 	
@@ -537,7 +548,7 @@ func generateRendezvousPoint():
 		orbit_speed,
 		radius,
 		{}, #dialogue content overrides, perhaps?
-		{"custom_seed": randi()}
+		{}
 	)
 	
 	get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
@@ -594,6 +605,14 @@ func get_orbit_distance(hook: bodyAPI, iteration: int) -> float:
 
 func get_default_radius_solar_radii() -> float:
 	return planet_classification_data.get("Terran").get("earth_radius_min") / 109.1
+
+func get_star_types_mixed_weights():
+	#combine the weights of star_types and lg_star_types
+	#and return the resulting dictionary, in the same format, with the combined weights
+	#use game_data.gd weirdness_index rather than passing _weirdness_index as an argument!
+	#make sure to set the return value (->) as Dictionary
+	
+	pass
 
 
 

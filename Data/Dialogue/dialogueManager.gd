@@ -58,6 +58,7 @@ func clear_and_load_rules() -> void:
 	var csv_rules = FileAccess.open("res://Data/Dialogue/rules.txt", FileAccess.READ)
 	var current_pointer: POINTERS = POINTERS.RULE
 	var current_line: int = 0
+	var current_rule: int = 0
 	var new_rule: responseRule = null
 	var eof_override: bool = true
 	
@@ -76,7 +77,8 @@ func clear_and_load_rules() -> void:
 					if new_rule != null:
 						if new_rule.is_configured():
 							rules.append(new_rule)
-							print("ADDING NEW RULE: ", new_rule.get_name())
+							current_rule += 1
+							print("ADDING NEW RULE > %d > %s" % [current_rule, new_rule.get_name()])
 					
 					var text = convert_to_string(cell)
 					if not text.is_empty():

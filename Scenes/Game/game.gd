@@ -468,7 +468,7 @@ func _on_player_following_body(following_body: bodyAPI):
 			await system_map.validUpdatePlayerActionType
 			long_range_scopes._on_current_entity_cleared()
 		starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
-			var following_rendezvous = following_body
+			#var following_rendezvous = following_body
 			
 			var new_query = responseQuery.new()
 			new_query.add("concept", "followingBody")

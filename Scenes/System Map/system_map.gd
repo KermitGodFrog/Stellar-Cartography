@@ -457,15 +457,15 @@ func draw_map():
 	#draw_texture_rect(camera_here_tex, Rect2(Vector2(camera_target_position.x - size_exponent, camera_target_position.y - size_exponent), Vector2(size_exponent,size_exponent)), false)
 	pass
 
-func draw_custom_arc(center, radius, angle_from, angle_to, color): #this is used under the assumption that batching can only occur on polygons/lines/rects, although this info is from godot 3.5 so idk (NO THICKNESS VARIABBLE, NOT SURE HOW TO ADD, ABANDONED THIS)
-	var nb_points = 32
-	var points_arc = PackedVector2Array()
-	for i in range(nb_points + 1):
-		var angle_point = deg_to_rad(angle_from + i * (angle_to-angle_from) / nb_points - 90)
-		points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * radius)
-	for index_point in range(nb_points):
-		draw_line(points_arc[index_point], points_arc[index_point + 1], color)
-	pass
+#func draw_custom_arc(center, radius, angle_from, angle_to, color): #this is used under the assumption that batching can only occur on polygons/lines/rects, although this info is from godot 3.5 so idk (NO THICKNESS VARIABBLE, NOT SURE HOW TO ADD, ABANDONED THIS)
+#	var nb_points = 32
+#	var points_arc = PackedVector2Array()
+#	for i in range(nb_points + 1):
+#		var angle_point = deg_to_rad(angle_from + i * (angle_to-angle_from) / nb_points - 90)
+#		points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * radius)
+#	for index_point in range(nb_points):
+#		draw_line(points_arc[index_point], points_arc[index_point + 1], color)
+#	pass
 
 func _on_go_to_button_pressed():
 	if locked_body:
