@@ -467,6 +467,18 @@ func _on_player_following_body(following_body: bodyAPI):
 			
 			await system_map.validUpdatePlayerActionType
 			long_range_scopes._on_current_entity_cleared()
+		starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
+			var following_rendezvous = following_body
+			
+			var new_query = responseQuery.new()
+			new_query.add("concept", "followingBody")
+			new_query.add("id", "rendezvousPoint")
+			#might want to add some other info, like how long since the player last interacted with a rendezvous point to change dialogue
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+			var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+			match RETURN_STATE:
+				_:
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 		starSystemAPI.BODY_TYPES.CUSTOM:
 			var following_custom = following_body
 			if not following_custom.get_dialogue_tag().is_empty():

@@ -199,12 +199,13 @@ func createAuxiliaryUnexplored() -> void:
 			generateRandomWeightedSpecialAnomaly()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
 			#!! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !!
-			var star_identifier = get_first_star().get_identifier()
+			var star = get_first_star()
+			var star_identifier = star.get_identifier()
 			for body in get_bodies_with_hook_identifier(star_identifier):
 				bodies.erase(body)
-			for c in post_gen_location_candidates:
-				if c.front() != star_identifier:
-					post_gen_location_candidates.erase(c)
+			post_gen_location_candidates.clear()
+			for i in star.metadata.get("iterations", 0):
+				post_gen_location_candidates.append([star_identifier, i])
 			generateWormholes() #i think this backtracking code is reasonable as something like this is one-of-a-kind and i probably wont be manually clearing bodies again
 		#for example, a completely empty star system could use this match statement to REMOVE all existing bodies (besides the star) and spawn nothing else. Then an event could happen on concept enteringSystem 
 	pass
@@ -535,7 +536,7 @@ func generateRendezvousPoint():
 		orbit_distance, 
 		orbit_speed,
 		radius,
-		{"dialogue_tag": "rendezvousPoint"},
+		{}, #dialogue content overrides, perhaps?
 		{"custom_seed": randi()}
 	)
 	
