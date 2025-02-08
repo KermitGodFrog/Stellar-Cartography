@@ -41,24 +41,14 @@ func set_display_name(new_display_name: String):
 enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, CUSTOM}
 
 const star_types = {
-	"M": {"name": "M", "weight": 0.7645629},
-	"K": {"name": "K", "weight": 0.1213592},
-	"G": {"name": "G", "weight": 0.0764563},
-	"F": {"name": "F", "weight": 0.0303398},
-	"A": {"name": "A", "weight": 0.0060679},
-	"B": {"name": "B", "weight": 0.0012136},
-	"O": {"name": "O", "weight": 0.0000003}
+	"M": {"name": "M", "weight_eg": 0.7645629, "weight_lg": 0.0000003},
+	"K": {"name": "K", "weight_eg": 0.1213592, "weight_lg": 0.0012136},
+	"G": {"name": "G", "weight_eg": 0.0764563, "weight_lg": 0.7645629},
+	"F": {"name": "F", "weight_eg": 0.0303398, "weight_lg": 0.1213592},
+	"A": {"name": "A", "weight_eg": 0.0060679, "weight_lg": 0.0764563},
+	"B": {"name": "B", "weight_eg": 0.0012136, "weight_lg": 0.0303398},
+	"O": {"name": "O", "weight_eg": 0.0000003, "weight_lg": 0.0060679}
 }
-
-const lg_star_types = {
-	"M": {"name": "M", "weight": 0.0000003},
-	"K": {"name": "K", "weight": 0.0012136}, 
-	"G": {"name": "G", "weight": 0.7645629},
-	"F": {"name": "F", "weight": 0.1213592},
-	"A": {"name": "A", "weight": 0.0764563}, 
-	"B": {"name": "B", "weight": 0.0303398}, 
-	"O": {"name": "O", "weight": 0.0060679}
-} #this seems like a good compromise - slighly challenging types like G and F are quite common, the easy types are rare af, and the harder types are still rare
 
 const star_data = { #MASS IS IN SOLAR MASSES, RADIUS IS IN SOLAR RADII
 	"M": {"solar_radius_min": 0.1, "solar_radius_max": 0.7, "solar_mass_min": 0.08, "solar_mass_max": 0.45, "luminosity_min": 0.01, "luminosity_max": 0.08, "color": Color.RED},
@@ -225,7 +215,7 @@ func createAuxiliaryUnexplored() -> void:
 func generateRandomWeightedHookStar():
 	randomize()
 	
-	var star_type = global_data.weighted_pick(star_types, "weight")
+	var star_type = global_data.weighted_pick(get_star_types_mixed_weights(), "weight")
 	var data = star_data.get(star_type)
 	
 	var radius: float = global_data.get_randf(data.get("solar_radius_min"), data.get("solar_radius_max"))
@@ -606,19 +596,13 @@ func get_orbit_distance(hook: bodyAPI, iteration: int) -> float:
 func get_default_radius_solar_radii() -> float:
 	return planet_classification_data.get("Terran").get("earth_radius_min") / 109.1
 
-func get_star_types_mixed_weights():
-	for i in star_types:
-		print(i)
-	
-	
-	
-	
-	#combine the weights of star_types and lg_star_types
-	#and return the resulting dictionary, in the same format, with the combined weights
-	#use game_data.gd weirdness_index rather than passing _weirdness_index as an argument!
-	#make sure to set the return value (->) as Dictionary
-	
-	pass
+func get_star_types_mixed_weights() -> Dictionary:
+	var mixed_types: Dictionary = {}
+	for type in star_types:
+		var sub_dict = star_types.get(type)
+		var mixed_weight: float = lerpf(sub_dict.get("weight_eg"), sub_dict.get("weight_lg"), game_data.player_weirdness_index) #using game_data weirdness index seems to be the best call
+		mixed_types[type] = {"name": type, "weight": mixed_weight}
+	return mixed_types
 
 
 
