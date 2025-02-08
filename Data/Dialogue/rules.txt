@@ -102,8 +102,10 @@ PA_RepairGenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_ANY_reg
 PA_RepairGenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
 PA_RepairGenericNeptunianOpenDialog,"concept: PA_NeptunianPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
 PA_RepairGenericJovianOpenDialog,"concept: PA_JovianPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
-PA_RepairGenericActions,concept: PA_RepairGenericActions,,openDialog: null,defaultApproachMessage,,,,,"Program the nanites for repair: PA_RepairGenericContinue, Leave: PASoftLeave","Sensors detect an abandoned nanite cache, with an integrated nanite controller, in low orbit."
-PA_RepairGenericContinue,"concept: optionSelected, option: PA_RepairGenericContinue",,removeHullStressWithFlair: 15,,,,,,Leave:PAHardLeave,The nanites successfully repair your starship.
+PA_RepairGenericActions,concept: PA_RepairGenericActions,,openDialog: null,defaultApproachMessage,,,,,"Program the nanites for repair: PA_RepairGenericDispatch, Leave: PASoftLeave","Sensors detect an abandoned nanite cache, with an integrated nanite controller, in low orbit."
+PA_RepairGenericDispatch,"concept: optionSelected, option: PA_RepairGenericDispatch",,,,,,PA_RepairGenericDispatchResponse,,,
+PA_RepairGenericDispatchSuccess,concept: PA_RepairGenericDispatchResponse,,removeHullStressWithFlair: 15,,,,,,Leave:PAHardLeave,The nanites successfully repair your starship.
+PA_RepairGenericDispatchFailure,concept: PA_RepairGenericDispatchResponse,,,,,,,,Leave:PAHardLeave,The nanites malfunction and shutdown before repairs can be made.
 ,,,,,,,,,,
 PA_01GenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_ANY_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked.
 PA_01GenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_ANY_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked on its surface.
@@ -224,8 +226,10 @@ SA_Portal,"concept: followingBody, id: spaceAnomaly",,,,,,SA_PortalResponse,,,
 SA_StationGenericOpenDialog,"concept: SA_PortalResponse, player_in_CORE_or_FRONTIER_region: true",,openDialog: null,SAApproachMessage,,,,,"Request Docking Access: SA_StationGenericDockingAccess, Leave:SASoftLeave","An outpost, missing from native starcharts, is detected. You recall that profits at such bases are usually lower than official counterparts. Communications are quickly established."
 SA_StationGenericDockingAccess,"concept: optionSelected, option: SA_StationGenericDockingAccess",,closeDialog: HARD_LEAVE_STATION_OVERRIDE,,,,,,,
 ,,,,,,,,,,
-SA_RepairGenericOpenDialog,"concept: SA_PortalResponse, player_in_ANY_region: true",,openDialog: null,SAApproachMessage,,,,,"Program the nanites for repair: SA_RepairGenericContinue, Leave: SASoftLeave","Sensors detect an abandoned nanite cache, with an integrated nanite controller, in low orbit."
-SA_RepairGenericContinue,"concept: optionSelected, option: SA_RepairGenericContinue",,removeHullStressWithFlair: 15,,,,,,Leave:SAHardLeave,The nanites successfully repair your starship.
+SA_RepairGenericOpenDialog,"concept: SA_PortalResponse, player_in_ANY_region: true",,openDialog: null,SAApproachMessage,,,,,"Program the nanites for repair: SA_RepairGenericDispatch, Leave: SASoftLeave","Sensors detect an abandoned nanite cache, with an integrated nanite controller, in low orbit."
+SA_RepairGenericDispatch,"concept: optionSelected, option: SA_RepairGenericDispatch",,,,,,SA_RepairGenericDispatchResponse,,,
+SA_RepairGenericDispatchSuccess,concept: SA_RepairGenericDispatchResponse,,removeHullStressWithFlair: 15,,,,,,Leave:SAHardLeave,The nanites successfully repair your starship.
+SA_RepairGenericDispatchFailure,concept: SA_RepairGenericDispatchResponse,,,,,,,,Leave:SAHardLeave,The nanites malfunction and shutdown before repairs can be made.
 ,,,,,,,,,,
 SA_01GenericOpenDialog,"concept: SA_PortalResponse, player_in_ANY_region: true",,openDialog: null,SAApproachMessage,,,,,"Investigate: SA_01GenericContinue, Leave:SASoftLeave",Analysts mark an inconsistent LIDAR return.
 SA_01GenericContinue,"concept: optionSelected, option: SA_01GenericContinue",,,,,,,,Leave:SAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo."
