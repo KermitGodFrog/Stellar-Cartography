@@ -607,6 +607,12 @@ func get_default_radius_solar_radii() -> float:
 	return planet_classification_data.get("Terran").get("earth_radius_min") / 109.1
 
 func get_star_types_mixed_weights():
+	for i in star_types:
+		print(i)
+	
+	
+	
+	
 	#combine the weights of star_types and lg_star_types
 	#and return the resulting dictionary, in the same format, with the combined weights
 	#use game_data.gd weirdness_index rather than passing _weirdness_index as an argument!
