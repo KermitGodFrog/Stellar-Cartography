@@ -365,23 +365,24 @@ func draw_sonar():
 	pass
 
 func draw_map():
+	var show_overlay: bool = camera.zoom.length() < 100
+	var size_exponent = pow(camera.zoom.length(), -0.5)
+	
+	if show_overlay: map_overlay.show()
+	else: map_overlay.hide()
+	
 	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT) #not EXACTLY proper but yknow
 	if asteroid_belts: 
 		for belt in asteroid_belts:
 			if belt.is_known(): 
 				draw_arc(belt.position, belt.orbit_distance, -10, TAU, 50, belt.metadata.get("belt_color"), belt.metadata.get("belt_width"), false)
 	
-	var size_exponent = pow(camera.zoom.length(), -0.5)
-	
-	if camera.zoom.length() < system.get_first_star().radius * 100.0: map_overlay.show()
-	else: map_overlay.hide()
-	
 	for body in system.bodies:
 		
 		#batch customBodyAPI texture drawing
 		
 		if body is customBodyAPI and body.is_known():
-			if camera.zoom.length() < system.get_first_star().radius * 100.0:
+			if show_overlay:
 				var texture: Object
 				if body.is_available(): texture = load(body.texture_path)
 				else: texture = load(body.post_texture_path)
@@ -392,7 +393,7 @@ func draw_map():
 		#batch orbit line drawing:
 		
 		if body is circularBodyAPI and body.is_known():
-			if camera.zoom.length() < system.get_first_star().radius * 100.0:
+			if show_overlay:
 				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
 				if system.get_body_from_identifier(body.hook_identifier):
 					draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.orbit_distance, -TAU, TAU, 30, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint), 1.0, false)
@@ -402,7 +403,7 @@ func draw_map():
 		#batching circle drawing:
 		
 		if body is circularBodyAPI and body.is_known():
-			if camera.zoom.length() < system.get_first_star().radius * 100.0:
+			if show_overlay:
 				body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
 				
 				if body == follow_body:
@@ -418,10 +419,10 @@ func draw_map():
 				draw_circle(body.position, body_size_multiplier_hint, body.surface_color)
 		
 		if body is glintBodyAPI and body.is_known():
-			if not camera.zoom.length() < system.get_first_star().radius * 100.0:
+			if not show_overlay:
 				draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
 		if body is customBodyAPI and body.is_known():
-			if not camera.zoom.length() < system.get_first_star().radius * 100.0:
+			if not show_overlay:
 				draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
 	
 	for body in system.bodies:
@@ -429,7 +430,7 @@ func draw_map():
 		#batching entity icons:
 		
 		if body is glintBodyAPI and body.is_known():
-			if camera.zoom.length() < system.get_first_star().radius * 100.0:
+			if show_overlay:
 				entity_icon.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false)
 	
 	for body in system.bodies:
@@ -438,11 +439,11 @@ func draw_map():
 		
 		if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_known(): 
 			if body.is_PA_valid():
-				if camera.zoom.length() < system.get_first_star().radius * 100.0:
+				if show_overlay:
 					question_mark_icon.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
 		elif body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ANOMALY and body.is_known(): 
 			if body.is_SA_valid():
-				if camera.zoom.length() < system.get_first_star().radius * 100.0:
+				if show_overlay:
 					question_mark_icon.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
 	
 	#draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
