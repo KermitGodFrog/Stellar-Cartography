@@ -641,7 +641,7 @@ func _on_player_entering_system(system: starSystemAPI):
 	#called by _on_switch_star_system - SHOULD await the wormhole minigame closing before starting because of pause modes
 	var new_query = responseQuery.new()
 	new_query.add("concept", "enteringSystem")
-	new_query.add_tree_access("name", system.get_display_name())
+	#new_query.add_tree_access("name", system.get_display_name()) # no point to do this as the system display name will always be 'random' or 'tutorial' or whatever!
 	new_query.add_tree_access("special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(system.special_system_classification)))
 	new_query.add_tree_access("system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(system.system_hazard_classification)))
 	get_tree().call_group("dialogueManager", "speak", self, new_query)

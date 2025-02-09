@@ -250,7 +250,8 @@ SpA_SentientAsteroidFebrisExpeditionResponseSuccess,concept: SpA_SentientAsteroi
 SpA_SentientAsteroidFebrisExpeditionResponseFailure,concept: SpA_SentientAsteroidFebrisExpeditionDispatchResponse,,"addValueWithFlair: 5000, killCharacterWithFlair: 3",,,,,,Leave: defaultHardLeave,(UNFINISHED EVENT) Febris dies. You order a recall.
 SpA_SentientAsteroidDefaultExpedition,"concept: optionSelected, option: SpA_SentientAsteroidDefaultExpedition",,addValueWithFlair: 2500,,,,,,Leave: defaultHardLeave,(UNFINISHED EVENT) default expedition
 ,,,,,,,,,,
-enteringSystemVoidOpenDialog,"concept: enteringSystem, special_system_classification: VOID",,"openDialog: null, addValueWithFlair: 5000",,,,,,Proceed cautiously: defaultLeave,"(UNFINISHED EVENT) You are informed by a Junior officer that the system you are entering is comprised of nothing but the star and its wormholes, to the subatomic level. No dust, no particles, no anything. Completely empty."
+enteringSystemMessage,concept: enteringSystemMessage,,,,,,,,,Your ship enters the system.
+enteringSystemVoidOpenDialog,"concept: enteringSystem, special_system_classification: VOID",,"openDialog: null, addValueWithFlair: 25000",enteringSystemMessage,,,,,Proceed cautiously: defaultLeave,"As transit is completed, you are flagged by the senior LIDAR technician. He explains that the display is ‘suspiciously clear’ - there are no asteroids, no dust, no particles, no cosmic whirlwinds of material floating through the empty within the new star system. Matter is ejected from its host star normally, yet the residue produced suggests that the star did not exist a mere five minutes prior. The host star, and its three wormholes, stand as survivors to some great voiding, or newborns to some great creation."
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,

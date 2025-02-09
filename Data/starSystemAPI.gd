@@ -201,7 +201,10 @@ func createAuxiliaryUnexplored() -> void:
 			#!! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !!
 			var star = get_first_star()
 			var star_identifier = star.get_identifier()
+			var remove_bodies: Array[bodyAPI] = []
 			for body in get_bodies_with_hook_identifier(star_identifier):
+				remove_bodies.append(body)
+			for body in remove_bodies:
 				bodies.erase(body)
 			post_gen_location_candidates.clear()
 			for i in star.metadata.get("iterations", 0):
