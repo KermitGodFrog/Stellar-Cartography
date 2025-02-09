@@ -464,7 +464,6 @@ func get_send_ranked_achievements(incoming_query) -> void:
 	pass
 
 
-
 func openDialog():
 	clearAll()
 	dialogue.clear_image()

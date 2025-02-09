@@ -49,6 +49,7 @@ func _ready():
 		new_player.connect("orbitingBody", _on_player_orbiting_body)
 		new_player.connect("followingBody", _on_player_following_body)
 		new_player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+		new_player.connect("moraleChanged", _on_player_morale_changed)
 		new_player.connect("dataValueChanged", _on_player_data_value_changed)
 		
 		var new: starSystemAPI = load("res://Data/tutorial_system.tres")
@@ -97,6 +98,7 @@ func _ready():
 		new_player.connect("orbitingBody", _on_player_orbiting_body)
 		new_player.connect("followingBody", _on_player_following_body)
 		new_player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+		new_player.connect("moraleChanged", _on_player_morale_changed)
 		new_player.connect("dataValueChanged", _on_player_data_value_changed)
 		
 		#new game stuff
@@ -146,6 +148,7 @@ func _ready():
 		world.player.connect("orbitingBody", _on_player_orbiting_body)
 		world.player.connect("followingBody", _on_player_following_body)
 		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+		world.player.connect("moraleChanged", _on_player_morale_changed)
 		world.player.connect("dataValueChanged", _on_player_data_value_changed)
 		
 		for i in world.player.current_star_system.destination_systems:
@@ -648,6 +651,24 @@ func _on_player_entering_system(system: starSystemAPI):
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
+func _on_player_mutiny() -> void:
+	print("GAME: PLAYER MUTINY")
+	
+	var new_query = responseQuery.new()
+	new_query.add("concept", "playerMutiny")
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+	match RETURN_STATE:
+		"HARD_LEAVE":
+			_on_player_death()
+		"SOFT_LEAVE":
+			pass
+		_:
+			pass
+	pass
+
+
 
 func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
 	if not (type == world.player.current_action_type and action_body == world.player.action_body):
@@ -941,6 +962,12 @@ func _on_pause_mode_changed(new_mode: game_data.PAUSE_MODES) -> void:
 	system_map.reset_player_boosting() #to stop boosting from being stuck to true, this SHOULD cover ALL grounds!
 	system_map.reset_actions_buttons_pressed() #godot 4.3 migration quick fix
 	pass
+
+func _on_player_morale_changed(new_value: int) -> void:
+	if new_value == 0:
+		_on_player_mutiny()
+	pass
+
 
 
 func _ON_DEBUG_REVEAL_ALL_WORMHOLES():

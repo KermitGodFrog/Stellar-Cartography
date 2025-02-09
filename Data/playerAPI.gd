@@ -5,6 +5,7 @@ class_name playerAPI
 signal orbitingBody(body: bodyAPI)
 signal followingBody(body: bodyAPI)
 signal hullDeteriorationChanged(new_value: int)
+signal moraleChanged(new_value: int)
 signal dataValueChanged(new_value: int)
 
 @export var name: String
@@ -249,8 +250,10 @@ func removeHullDeterioration(amount: int) -> void:
 
 func addMorale(amount: int) -> void:
 	morale = mini(100, morale + amount)
+	emit_signal("moraleChanged", morale)
 	pass
 
 func removeMorale(amount: int) -> void:
 	morale = maxi(0, morale - amount)
+	emit_signal("moraleChanged", morale)
 	pass

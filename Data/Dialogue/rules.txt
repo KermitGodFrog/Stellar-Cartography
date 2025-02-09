@@ -39,8 +39,9 @@ playerWinStoryConclusionResponseGeneric,concept: playerWinStoryConclusionRespons
 playerWinStoryConclusionResponseConglomerate,"concept: playerWinStoryConclusionResponse, is_conglomerate_storyline_complete: true",,,,,,,,,"You think back to the Conglomerate. Evidently, there is a new contender on the galactic stage. The words of the Emissary are still heavy on your mind. You cannot decide if life taking such a form is incredible or horrifying."
 playerWinStoryConclusionResponseDetective,"concept: playerWinStoryConclusionResponse, is_detective_storyline_complete: true",,,,,,,,,"You think back to the Detective. A being which could pause time and evidently change reality, yet refused to truely intefere with your progress towards its physical location. You realise that throughout your travels, you were astronomically lucky. You also realise that you have changed. You wonder whether your journey was truely random chance, or if the Detective actively manipulated it for an unknown motive."
 newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,,,"You have arrived in New Eden, the true frontier of human civilisation."
-defaultPlayerDeathOpenDialog,concept: playerDeath,,openDialog: null,,,,,,Exit:defaultLeave,You are dead.
 ,,,,,,,,,,
+playerDeathOpenDialog,concept: playerDeath,,openDialog: null,,,,,,Exit:defaultLeave,You are dead.
+TEMPplayerMutinyOpenDialog,concept: playerMutiny,,openDialog: null,,,,,,Exit:defaultHardLeave,You are un-ceremoniously assassinated by revolutionary forces as you walk down the hallway towards your bridge.
 ,,,,,,,,,,
 wormholeOpenDialog,"concept: followingBody, id: wormhole",,openDialog: null,defaultApproachMessage,,wormholeTryAVFlair,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
 wormholeTryAVFlairResponse,"concept: wormholeTryAVFlair, system_is_civilized: true, player_AUDIO_VISUALIZER_unlocked: true, pending_audio_profiles: true",,,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the data banks will be purged following the traversal of [i]$name[/i]."
@@ -70,13 +71,20 @@ RP_WalkerOption,"concept: populateRP_Options, player_SECURITY_OFFICER_alive: tru
 RP_FebrisOption,"concept: populateRP_Options, player_MEDICAL_OFFICER_alive: true",,,,,,,,Summon Medical Officer Febris: RP_FebrisSummon,
 RP_Fallback,"concept: optionSelected, option: RP_Fallback",,,,populateRP_Options,,,,Leave:defaultLeave,You consider what to do next.
 ,,,,,,,,,,
-RP_RuiSummon,"concept: optionSelected, option: RP_RuiSummon",,,,populateRP_RuiOptions,,,,Dismiss Rui: RP_Fallback,"Rui enters your ready room and warily takes a seat. You understand that, for the price of [color=red]-10000 nanites[/color] and [color=red]+10% hull stress[/color], Rui would be able to incur [color=green]+10% morale[/color]."
+RP_RuiSummon,"concept: optionSelected, option: RP_RuiSummon",,,,populateRP_RuiOptions,,,,Dismiss Rui: RP_Fallback,"Rui enters your ready room and warily takes a seat. You understand that, for the price of [color=red]-15000 nanites[/color] and [color=red]+30% hull stress[/color], Rui would be able to incur [color=green]+10% morale[/color]."
 RP_RuiHelpOption,"concept: populateRP_RuiOptions, player_balance: >=10000",,,,,,,,Order Rui to increase morale: RP_RuiHelp,
-RP_RuiHelp,"concept: optionSelected, option: RP_RuiHelp",,"decreaseBalanceWithFlair: 10000, addHullStressWithFlair: 10, addMoraleWithFlair: 10",,,,,,Continue: RP_RuiFallback,"You ask Rui to increase morale by any means necessary, using the provided resources. ""Yes $player_prefix,"" he obliges."
-RP_RuiFallback,"concept: optionSelected, option: RP_RuiFallback",,,,populateRP_RuiOptions,,,,Dismiss Rui: RP_Fallback,"""Is there anything else I can do for you, $player_prefix?"" Rui asks."
+RP_RuiHelp,"concept: optionSelected, option: RP_RuiHelp",,"addMoraleWithFlair: 10, decreaseBalanceWithFlair: 10000, addHullStressWithFlair: 10",,,,,,Continue: RP_RuiFallback,"You command Rui to increase morale, using the provided resources. ""Yes $player_prefix,"" he obliges."
+RP_RuiFallback,"concept: optionSelected, option: RP_RuiFallback",,,,populateRP_RuiOptions,,,,Dismiss Rui: RP_Fallback,"""Anything else I can do for you, $player_prefix?"" Rui asks."
 ,,,,,,,,,,
+RP_JiyaSummon,"concept: optionSelected, option: RP_JiyaSummon",,,,populateRP_JiyaOptions,,,,Dismiss Jiya: RP_Fallback,"Jiya enters your ready room and sits down, nonchalantly draping her legs on an angle across your desk. You excuse the old-timers informality. You understand that, for the price of [color=red]-25% morale[/color], Jiya would be able to incur [color=green]-25% hull stress[/color]."
+RP_JiyaHelpOption,"concept: populateRP_JiyaOptions, player_morale: >=25",,,,,,,,Order Jiya to perform emergency repairs: RP_JiyaHelp,
+RP_JiyaHelp,"concept: optionSelected, option: RP_JiyaHelp",,"removeHullStressWithFlair: 25, removeMoraleWithFlair: 25",,,,,,Continue: RP_JiyaFallback,"You command Jiya to perform emergency repairs, at any cost. ""Aye, boss. But I 'on't like it,"" she says."
+RP_JiyaFallback,"concept: optionSelected, option: RP_JiyaFallback",,,,populateRP_JiyaOptions,,,,Dismiss Jiya: RP_Fallback,"""Anything else you want me to do, boss?"" Jiya asks."
 ,,,,,,,,,,
-,,,,,,,,,,
+RP_FebrisSummon,"concept: optionSelected, option: RP_FebrisSummon",,,,populateRP_FebrisOptions,,,,Dismiss Febris: RP_Fallback,"Febris enters your ready room and quickly takes a seat. You understand that, for the price of [color=red]-25% morale[/color], Febris would be able to incur [color=green]+10000 nanites[/color]. "
+RP_FebrisHelpOption,"concept: populateRP_FebrisOptions, player_morale: >=25",,,,,,,,Order Febris to accelerate research: RP_FebrisHelp,
+RP_FebrisHelp,"concept: optionSelected, option: RP_FebrisHelp",,"addValueWithFlair: 10000, removeMoraleWithFlair: 25",,,,,,Continue: RP_FebrisFallback,"You command Febris to accelerate research using the provided nanites. ""Yes, $player_prefix, if you are sure,"" she obliges."
+RP_FebrisFallback,"concept: optionSelected, option: RP_FebrisFallback",,,,populateRP_FebrisOptions,,,,Dismiss Febris: RP_Fallback,"""Is there anything else I can do for you, $player_prefix?"" Febris asks."
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
