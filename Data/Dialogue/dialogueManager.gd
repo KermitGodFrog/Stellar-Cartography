@@ -19,6 +19,7 @@ func _on_pause_mode_changed(value):
 signal onCloseDialog(with_return_state)
 signal addDialogueMemoryPair(key, value)
 
+signal decreasePlayerBalance(amount: int)
 signal addPlayerValue(amount: int)
 signal addPlayerHullStress(amount: int)
 signal removePlayerHullStress(amount: int)
@@ -486,6 +487,11 @@ func clearOptions():
 
 func clearAll():
 	dialogue.clear_all()
+	pass
+
+func decreaseBalanceWithFlair(amount: int):
+	emit_signal("decreasePlayerBalance", amount)
+	dialogue.add_text("[color=red](Lost %d nanites) [/color]" % amount)
 	pass
 
 func addValueWithFlair(amount: int):

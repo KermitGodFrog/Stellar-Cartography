@@ -192,6 +192,7 @@ func connect_all_signals() -> void:
 	system_map.connect("journeyMapPopup", _on_journey_map_popup)
 	system_map.connect("longRangeScopesPopup", _on_long_range_scopes_popup)
 	
+	dialogue_manager.connect("decreasePlayerBalance", _on_decrease_player_balance)
 	dialogue_manager.connect("addPlayerValue", _on_add_player_value)
 	dialogue_manager.connect("addPlayerHullStress", _on_add_player_hull_stress)
 	dialogue_manager.connect("removePlayerHullStress", _on_remove_player_hull_stress)
@@ -786,6 +787,10 @@ func _on_remove_saved_audio_profile(helper: audioProfileHelper):
 func _on_add_saved_audio_profile(helper: audioProfileHelper):
 	world.player.addAudioProfile(helper)
 	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
+	pass
+
+func _on_decrease_player_balance(amount: int) -> void:
+	world.player.decreaseBalance(amount)
 	pass
 
 func _on_add_player_value(amount: int) -> void:
