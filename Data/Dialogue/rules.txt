@@ -1,7 +1,7 @@
 Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Query Best Concept,Query Rand Best Concept,Query Old Best Concept,Options,Text
 defaultOpenDialog,concept: followingBody,,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,
 defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,,,
-"#ALL valid concepts: playerStart, tutorialPlayerStart, playerWin, tutorialPlayerWin, playerDeath, moduleTutorial, theorisedBody, orbitingBody, followingBody, enteringSystem",,,,,,,,,,
+"#ALL valid concepts: playerStart, tutorialPlayerStart, playerWin, tutorialPlayerWin, playerDeath, moduleTutorial, theorisedBody, orbitingBody, followingBody, enteringSystem, playerMutiny",,,,,,,,,,
 "#ALL valid IDs (not including customBodyAPIs): wormhole, station, rendezvousPoint, planetaryAnomaly, planetaryAnomalyTutorialOverride, spaceAnomaly, planet (tutorial exclusive)",,,,,,,,,,
 defaultApproachMessage,concept: defaultApproachMessage,,,,,,,,,Your ship approaches [i]$name[/i].
 defaultSuccessSound,concept: defaultSuccessSound,,playSoundEffect: dialogue_success.wav,,,,,,,
@@ -40,8 +40,8 @@ playerWinStoryConclusionResponseConglomerate,"concept: playerWinStoryConclusionR
 playerWinStoryConclusionResponseDetective,"concept: playerWinStoryConclusionResponse, is_detective_storyline_complete: true",,,,,,,,,"You think back to the Detective. A being which could pause time and evidently change reality, yet refused to truely intefere with your progress towards its physical location. You realise that throughout your travels, you were astronomically lucky. You also realise that you have changed. You wonder whether your journey was truely random chance, or if the Detective actively manipulated it for an unknown motive."
 newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,,,"You have arrived in New Eden, the true frontier of human civilisation."
 ,,,,,,,,,,
+TEMPplayerMutinyOpenDialog,concept: playerMutiny,,openDialog: null,#need to bring in mutiny backing for this,,,,,Exit:defaultHardLeave,You are un-ceremoniously assassinated by revolutionary forces as you walk down the hallway towards your bridge.
 playerDeathOpenDialog,concept: playerDeath,,openDialog: null,,,,,,Exit:defaultLeave,You are dead.
-TEMPplayerMutinyOpenDialog,concept: playerMutiny,,openDialog: null,,,,,,Exit:defaultHardLeave,You are un-ceremoniously assassinated by revolutionary forces as you walk down the hallway towards your bridge.
 ,,,,,,,,,,
 wormholeOpenDialog,"concept: followingBody, id: wormhole",,openDialog: null,defaultApproachMessage,,wormholeTryAVFlair,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
 wormholeTryAVFlairResponse,"concept: wormholeTryAVFlair, system_is_civilized: true, player_AUDIO_VISUALIZER_unlocked: true, pending_audio_profiles: true",,,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the data banks will be purged following the traversal of [i]$name[/i]."

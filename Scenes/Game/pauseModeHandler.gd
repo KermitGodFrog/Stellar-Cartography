@@ -1,6 +1,7 @@
 extends Node
 
 signal pauseModeChanged(new_mode: game_data.PAUSE_MODES)
+signal pauseModeNone #GAME.GD EXCLUSIVE!
 
 var pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE:
 	set(value):
@@ -13,9 +14,6 @@ func _ready():
 	pass
 
 func _process(_delta):
-	#print("PAUSE_MODE: ", pause_mode)
-	#print("PAUSE_QUEUE: ", pause_queue)
-	#print(get_tree().paused)
 	if pause_mode == game_data.PAUSE_MODES.NONE:
 		var new_mode = pause_queue.pop_front()
 		if new_mode != null:
@@ -37,6 +35,7 @@ func _on_pause_mode_changed(new_mode: game_data.PAUSE_MODES) -> void:
 	match new_mode:
 		game_data.PAUSE_MODES.NONE:
 			get_tree().paused = false
+			emit_signal("pauseModeNone")
 		_:
 			get_tree().paused = true
 	pass

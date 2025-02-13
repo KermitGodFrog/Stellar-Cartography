@@ -833,9 +833,15 @@ func _on_remove_player_hull_stress(amount: int) -> void:
 	pass
 
 func _on_player_hull_deterioration_changed(new_value: int) -> void:
-	#print_debug("_ON_PLAYER_HULL_DETERIORATION_CHANGED")
 	if new_value == 100:
+		await pause_mode_handler.pauseModeNone
 		_on_player_death()
+	pass
+
+func _on_player_morale_changed(new_value: int) -> void:
+	if new_value == 0:
+		await pause_mode_handler.pauseModeNone
+		_on_player_mutiny()
 	pass
 
 func _on_kill_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> void:
@@ -961,11 +967,6 @@ func _on_pause_mode_changed(new_mode: game_data.PAUSE_MODES) -> void:
 	
 	system_map.reset_player_boosting() #to stop boosting from being stuck to true, this SHOULD cover ALL grounds!
 	system_map.reset_actions_buttons_pressed() #godot 4.3 migration quick fix
-	pass
-
-func _on_player_morale_changed(new_value: int) -> void:
-	if new_value == 0:
-		_on_player_mutiny()
 	pass
 
 
