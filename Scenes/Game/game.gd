@@ -618,6 +618,7 @@ func dock_with_station(following_station):
 
 
 func _on_player_death():
+	await pause_mode_handler.pauseModeNone
 	print("GAME: PLAYER DIED")
 	
 	var new_query = responseQuery.new()
@@ -652,6 +653,7 @@ func _on_player_entering_system(system: starSystemAPI):
 	pass
 
 func _on_player_mutiny() -> void:
+	await pause_mode_handler.pauseModeNone
 	print("GAME: PLAYER MUTINY")
 	
 	var new_query = responseQuery.new()
@@ -834,13 +836,11 @@ func _on_remove_player_hull_stress(amount: int) -> void:
 
 func _on_player_hull_deterioration_changed(new_value: int) -> void:
 	if new_value == 100:
-		await pause_mode_handler.pauseModeNone
 		_on_player_death()
 	pass
 
 func _on_player_morale_changed(new_value: int) -> void:
 	if new_value == 0:
-		await pause_mode_handler.pauseModeNone
 		_on_player_mutiny()
 	pass
 

@@ -63,4 +63,3 @@ func get_random_character_name_entry() -> String:
 #func removeStanding(amount : int) -> void:
 	#standing = maxi(-100, standing - amount)
 	#pass
-
