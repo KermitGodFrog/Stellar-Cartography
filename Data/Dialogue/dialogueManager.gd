@@ -39,7 +39,6 @@ enum QUERY_TYPES {BEST, ALL, RAND_BEST, OLD_BEST}
 #for populating query data
 var system: starSystemAPI
 var player: playerAPI
-var character_lookup_dictionary: Dictionary = {}
 
 var rules: Array[responseRule] = []
 enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, QUERY_FULL_BEST_CONCEPT, OPTIONS, TEXT}
@@ -523,11 +522,11 @@ func removeMoraleWithFlair(amount: int):
 	playSoundEffect("dialogue_failure.wav")
 	pass
 
-func killCharacterWithFlair(occupation: characterAPI.OCCUPATIONS):
+func killCharacterWithFlair(written_occupation: String):
+	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
 	emit_signal("killCharacterWithOccupation", occupation)
-	print(character_lookup_dictionary)
-	var lookup = character_lookup_dictionary.get(occupation, " ")
-	dialogue.add_text(str("[color=red](", characterAPI.OCCUPATIONS.find_key(occupation).replace("_", " "), " ", lookup, " is dead) [/color]"))
+	var character = player.get_character_with_occupation(occupation)
+	dialogue.add_text(str("[color=red](", characterAPI.OCCUPATIONS.find_key(occupation).capitalize(), " ", character.get_display_name(), " is dead) [/color]"))
 	playSoundEffect("dialogue_failure.wav")
 	pass
 

@@ -35,16 +35,7 @@ func _ready():
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
-		# -> none of this should be necessary but im worried that the game will break if not included as queries might require this data
-		new_player.first_officer = load("res://Data/Characters/rui.tres")
-		new_player.chief_engineer = load("res://Data/Characters/jiya.tres")
-		new_player.security_officer = load("res://Data/Characters/walker.tres")
-		new_player.medical_officer = load("res://Data/Characters/febris.tres")
-		for character in [new_player.first_officer, new_player.chief_engineer, new_player.security_officer, new_player.medical_officer, new_player.linguist, new_player.historian]:
-			if character: dialogue_manager.character_lookup_dictionary[character.current_occupation] = character.display_name
-		
 		new_player.current_storyline = playerAPI.STORYLINES.keys().pick_random()
-		# <-
 		
 		new_player.connect("orbitingBody", _on_player_orbiting_body)
 		new_player.connect("followingBody", _on_player_following_body)
@@ -84,14 +75,6 @@ func _ready():
 			init_data.get("name", "Tanaka"), 
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
-		
-		#CHARACTERS FOR ROGUELIKE:
-		new_player.first_officer = load("res://Data/Characters/rui.tres")
-		new_player.chief_engineer = load("res://Data/Characters/jiya.tres")
-		new_player.security_officer = load("res://Data/Characters/walker.tres")
-		new_player.medical_officer = load("res://Data/Characters/febris.tres")
-		for character in [new_player.first_officer, new_player.chief_engineer, new_player.security_officer, new_player.medical_officer, new_player.linguist, new_player.historian]:
-			if character: dialogue_manager.character_lookup_dictionary[character.current_occupation] = character.display_name
 		
 		new_player.current_storyline = playerAPI.STORYLINES.keys().pick_random()
 		
@@ -152,7 +135,7 @@ func _ready():
 		world.player.connect("dataValueChanged", _on_player_data_value_changed)
 		
 		for i in world.player.current_star_system.destination_systems:
-			i.previous_system = world.player.current_star_system #i call this 'turning the treadmill back on' - do not ask why.
+			i.previous_system = world.player.current_star_system #i call this 'turning the treadmill back on'
 		
 		for upgrade in world.player.unlocked_upgrades:
 			_on_upgrade_state_change(upgrade, true) #this cause bug 
@@ -845,21 +828,9 @@ func _on_player_morale_changed(new_value: int) -> void:
 	pass
 
 func _on_kill_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> void:
-	match occupation:
-		characterAPI.OCCUPATIONS.FIRST_OFFICER:
-			world.player.first_officer.is_alive = false
-		characterAPI.OCCUPATIONS.CHIEF_ENGINEER:
-			world.player.chief_engineer.is_alive = false
-		characterAPI.OCCUPATIONS.SECURITY_OFFICER:
-			world.player.security_officer.is_alive = false
-		characterAPI.OCCUPATIONS.MEDICAL_OFFICER:
-			world.player.medical_officer.is_alive = false
-		characterAPI.OCCUPATIONS.LINGUIST:
-			world.player.linguist.is_alive = false
-		characterAPI.OCCUPATIONS.HISTORIAN:
-			world.player.historian.is_alive = false
-		_:
-			pass
+	var character = world.player.get_character_with_occupation(occupation)
+	if character:
+		character.kill()
 	pass
 
 func _on_update_player_is_boosting(is_boosting: bool):

@@ -10,8 +10,17 @@ func set_display_name(new_display_name: String) -> void:
 	display_name = new_display_name
 	pass
 
-@export var is_alive: bool = true
+@export var alive: bool = true
 #@export var standing: int = 0
+
+func is_alive() -> bool:
+	return alive
+func kill() -> void:
+	alive = false
+func resurrect() -> void:
+	alive = true
+
+
 
 enum GENDERS {M, F, O}
 @export var current_gender: GENDERS
@@ -32,7 +41,7 @@ func set_occupation(new_occupation: OCCUPATIONS) -> void:
 	current_occupation = new_occupation
 	pass
 
-func generateRandomWeighted(force_occupation: OCCUPATIONS) -> void:
+func generateRandomWeighted(force_occupation: OCCUPATIONS) -> void: #DEPRECIATED
 	var entry: String = get_random_character_name_entry()
 	var entry_name = entry.get_slice(" : ", 0)
 	var entry_gender = entry.get_slice(" : ", 1)
@@ -43,7 +52,7 @@ func generateRandomWeighted(force_occupation: OCCUPATIONS) -> void:
 	else: set_occupation(OCCUPATIONS.keys().pick_random())
 	pass
 
-func get_random_character_name_entry() -> String:
+func get_random_character_name_entry() -> String: #DEPRECIATED
 	var name_candidates: Array = []
 	var file = FileAccess.open("res://Data/Name Data/character_names.txt", FileAccess.READ)
 	while not file.eof_reached():

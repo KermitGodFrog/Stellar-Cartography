@@ -69,9 +69,8 @@ func populateWithPlayerData(player: playerAPI):
 		else:
 			add(str("player_", id, "_unlocked"), false)
 	
-	for character: characterAPI in [player.first_officer, player.chief_engineer, player.security_officer, player.medical_officer, player.linguist, player.historian]:
-		if character:
-			add(str("player_", character.OCCUPATIONS.find_key(character.get_occupation()), "_alive"), character.is_alive)
+	for character in player.characters:
+		add(str("player_", characterAPI.OCCUPATIONS.find_key(character.get_occupation()), "_alive"), character.is_alive())
 	pass
 
 func populateWithSystemData(system: starSystemAPI):

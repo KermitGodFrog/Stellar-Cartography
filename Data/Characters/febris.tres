@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_0ny7n")
 display_name = "Febris"
-is_known = true
+alive = true
 current_gender = 1
 current_occupation = 3

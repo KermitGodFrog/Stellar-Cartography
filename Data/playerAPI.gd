@@ -11,9 +11,9 @@ signal dataValueChanged(new_value: int)
 @export var name: String
 @export var prefix: String
 
-@export var position: Vector2 = Vector2.ZERO
-@export var current_star_system: starSystemAPI
-@export var previous_star_system: starSystemAPI
+@export_storage var position: Vector2 = Vector2.ZERO
+@export_storage var current_star_system: starSystemAPI
+@export_storage var previous_star_system: starSystemAPI
 
 @export var speed: int = 3 :
 	get:
@@ -39,8 +39,8 @@ var total_score: int = 0:
 @export var max_jumps: int
 @export var hull_stress_wormhole: int
 
-@export var jumps_remaining: int = 0
-@export var systems_traversed: int = 0
+@export_storage var jumps_remaining: int = 0
+@export_storage var systems_traversed: int = 0
 var weirdness_index :
 	get:
 		return remap(systems_traversed, 0, total_systems, 0.0, 1.0)
@@ -48,9 +48,9 @@ var weirdness_index :
 enum STORYLINES {THE_DETECTIVE, THE_CONGLOMERATE}
 @export var current_storyline: STORYLINES
 
-@export var hull_deterioration: int = 0
-@export var hull_stress: int = 0
-@export var morale: int = 95
+@export_storage var hull_deterioration: int = 0
+@export_storage var hull_stress: int = 0
+@export_storage var morale: int = 95
 
 enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES, SCAN_PREDICTION}
 @export var unlocked_upgrades: Array[UPGRADE_ID] = []
@@ -60,21 +60,25 @@ enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RA
 
 @export var discovered_entities: PackedInt32Array = [] #int enum identifier from game.gd, e.g - [0,5,9]
 
-#characters \/\/\/\/\/\/
-@export var first_officer: characterAPI
-@export var chief_engineer: characterAPI
-@export var security_officer: characterAPI
-@export var medical_officer: characterAPI
-@export var linguist: characterAPI
-@export var historian: characterAPI
+@export var characters: Array[characterAPI] = [
+	preload("res://Data/Characters/rui.tres"),
+	preload("res://Data/Characters/jiya.tres"),
+	preload("res://Data/Characters/walker.tres"),
+	preload("res://Data/Characters/febris.tres")
+	]
+func get_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> characterAPI:
+	for c in characters:
+		if c.get_occupation() == occupation:
+			return c
+	return null
 
 #stuff ported from old system_map.gd - no idea how it works so dont ask me hahahahhaah good luck
 var rotation_hint: float #used for orbiting mechanics
-@export var target_position: Vector2 = Vector2.ZERO
+@export_storage var target_position: Vector2 = Vector2.ZERO
 enum ACTION_TYPES {NONE, GO_TO, ORBIT}
-@export var current_action_type: ACTION_TYPES = ACTION_TYPES.NONE
-@export var pending_action_body : bodyAPI
-@export var action_body : bodyAPI
+@export_storage var current_action_type: ACTION_TYPES = ACTION_TYPES.NONE
+@export_storage var pending_action_body : bodyAPI
+@export_storage var action_body : bodyAPI
 
 func get_jumps_remaining():
 	return jumps_remaining
@@ -161,7 +165,6 @@ func updateActionBodyState():
 					action_body = pending_action_body
 					pending_action_body = null
 	pass
-
 
 
 
