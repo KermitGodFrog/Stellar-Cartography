@@ -138,7 +138,7 @@ func _ready():
 			i.previous_system = world.player.current_star_system #i call this 'turning the treadmill back on'
 		
 		for upgrade in world.player.unlocked_upgrades:
-			_on_upgrade_state_change(upgrade, true) #this cause bug 
+			_on_upgrade_state_change(upgrade, true)
 		
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
