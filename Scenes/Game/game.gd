@@ -186,6 +186,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("removePlayerMorale", _on_remove_player_morale)
 	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
 	dialogue_manager.connect("foundBody", _on_found_body)
+	dialogue_manager.connect("addPlayerMutinyBacking", _on_add_player_mutiny_backing)
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
@@ -915,6 +916,10 @@ func _on_stats_menu_quit(_init_type: int) -> void:
 
 func _on_player_data_value_changed(new_value: int):
 	system_map._on_player_data_value_changed(new_value)
+	pass
+
+func _on_add_player_mutiny_backing(amount : int) -> void:
+	world.player.addMutinyBacking(amount)
 	pass
 
 

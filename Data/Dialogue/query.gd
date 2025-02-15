@@ -19,7 +19,6 @@ func populateWithLocalData():
 func populateWithPlayerData(player: playerAPI):
 	add("player_name", player.name)
 	add("player_prefix", player.prefix)
-	add("player_prefix_lower", player.prefix.to_lower())
 	
 	add("player_speed", player.speed)
 	add("player_balance", player.balance)
@@ -35,6 +34,7 @@ func populateWithPlayerData(player: playerAPI):
 	add("player_hull_deterioration", player.hull_deterioration)
 	add("player_hull_stress", player.hull_stress)
 	add("player_morale", player.morale)
+	add("player_mutiny_backing", player.mutiny_backing)
 	
 	var in_CORE_region: bool = false
 	var in_FRONTIER_region: bool = false
@@ -70,7 +70,8 @@ func populateWithPlayerData(player: playerAPI):
 			add(str("player_", id, "_unlocked"), false)
 	
 	for character in player.characters:
-		add(str("player_", characterAPI.OCCUPATIONS.find_key(character.get_occupation()), "_alive"), character.is_alive())
+		add("player_%s_alive" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.is_alive())
+		add("player_%s_standing" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.get_standing())
 	pass
 
 func populateWithSystemData(system: starSystemAPI):

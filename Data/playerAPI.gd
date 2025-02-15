@@ -51,6 +51,7 @@ enum STORYLINES {THE_DETECTIVE, THE_CONGLOMERATE}
 @export_storage var hull_deterioration: int = 0
 @export_storage var hull_stress: int = 0
 @export_storage var morale: int = 95
+@export_storage var mutiny_backing: int = 0
 
 enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES, SCAN_PREDICTION}
 @export var unlocked_upgrades: Array[UPGRADE_ID] = []
@@ -259,4 +260,13 @@ func addMorale(amount: int) -> void:
 func removeMorale(amount: int) -> void:
 	morale = maxi(0, morale - amount)
 	emit_signal("moraleChanged", morale)
+	pass
+
+
+func addMutinyBacking(amount: int) -> void:
+	mutiny_backing = mini(100, mutiny_backing + amount)
+	pass
+
+func removeMutinyBacking(amount: int) -> void:
+	mutiny_backing = maxi(0, mutiny_backing - amount)
 	pass

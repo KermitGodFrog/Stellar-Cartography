@@ -27,6 +27,7 @@ signal addPlayerMorale(amount: int)
 signal removePlayerMorale(amount: int)
 signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
 signal foundBody(id: int)
+signal addPlayerMutinyBacking(amount: int)
 
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
@@ -554,6 +555,12 @@ func discoverRandomBodyWithFlair() -> void:
 		playSoundEffect("dialogue_success.wav") #easier than putting it in every single rule?
 	else:
 		dialogue.add_text(str("[color=green](Gained no new scan data) [/color]"))
+	pass
+
+func addMutinyBackingWithFlair(amount: int):
+	emit_signal("addPlayerMutinyBacking", amount)
+	dialogue.add_text("[color=green](Plus %d%% mutiny backing) [/color]" % amount)
+	playSoundEffect("dialogue_strange.wav")
 	pass
 
 
