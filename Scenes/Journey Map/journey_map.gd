@@ -2,11 +2,13 @@ extends Node2D
 
 signal map_updated
 
+var jumps_remaining: int = 0
 var systems_traversed: int = 0
 var systems: Array = []
 const label_font = preload("res://Graphics/Fonts/RobotoMono Medium.ttf")
 var draw_landmarks: Dictionary = {"The Core": -(0 * 100), "The Frontier": -(5 * 100), "The Abyss": -(15 * 100), "New Eden": -(25 * 100)}
 
+@onready var station_frame = preload("res://Graphics/station_frame.png")
 
 func _ready():
 	connect("map_updated", _on_map_updated)
@@ -21,8 +23,6 @@ func _draw():
 	for system in systems:
 		draw_circle(system, 10, Color.WHITE)
 	
-	
-	
 	var lowest_pos = get_viewport_transform().x - get_viewport_transform().origin
 	var highest_pos = get_viewport_transform().x + get_viewport_transform().origin
 	
@@ -30,19 +30,11 @@ func _draw():
 		draw_line(Vector2(lowest_pos.x, draw_landmarks.get(landmark)), Vector2(highest_pos.x, draw_landmarks.get(landmark)), Color.DARK_SLATE_GRAY, 10)
 		draw_string(label_font, Vector2(lowest_pos.x,draw_landmarks.get(landmark)), landmark, HORIZONTAL_ALIGNMENT_CENTER, -1, 16)
 	
+	var station_v_offset = -(systems_traversed + jumps_remaining) * 100.0
+	var station_size: int = 32
 	
-	
-	
-	
-	
-	#draw_string(label_font, Vector2(lowest_pos.x,50), "The Core", HORIZONTAL_ALIGNMENT_CENTER, -1, 16)
-	#draw_string(label_font, Vector2(lowest_pos.x,-1500), "The Frontier", HORIZONTAL_ALIGNMENT_CENTER, -1, 16)
-	#draw_string(label_font, Vector2(lowest_pos.x,-2625), "The Abyss", HORIZONTAL_ALIGNMENT_CENTER, -1, 16)
-	#draw_string(label_font, Vector2(lowest_pos.x,-3325), "New Eden", HORIZONTAL_ALIGNMENT_CENTER, -1, 16)
-	
-	
-	
-	
+	draw_line(Vector2(highest_pos.x, station_v_offset), Vector2(highest_pos.x - station_size, station_v_offset), Color.GREEN, 3.0)
+	station_frame.draw_rect(get_canvas_item(), Rect2((highest_pos.x - station_size * 2) - station_size / 2, station_v_offset - station_size / 2, station_size, station_size), false, Color.GREEN)
 	pass
 
 func _on_map_updated():

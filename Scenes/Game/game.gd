@@ -530,7 +530,6 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 		destination.createAuxiliaryUnexplored()
 	
 	
-	
 	#var destination_position: Vector2 = Vector2.ZERO
 	var destination_wormhole: wormholeBodyAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
 	#if destination_wormhole:
@@ -701,6 +700,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	system_3d.spawnBodies()
 	system_3d.reset_locked_body()
 	journey_map.add_new_system(world.player.systems_traversed)
+	journey_map.jumps_remaining = world.player.get_jumps_remaining() #required as it needs to update when the players system on game startup is loaded, not just wormhole traversal!
 	return to_system
 
 func _on_locked_body_updated(body: bodyAPI):
