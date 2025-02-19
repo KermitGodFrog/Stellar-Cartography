@@ -1,0 +1,60 @@
+[gd_scene load_steps=8 format=3 uid="uid://rxjmiaa4kdop"]
+
+[ext_resource type="Script" path="res://Data/Dialogue/dialogue_option.gd" id="1_sumuu"]
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="2_qoyp0"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="3_t047s"]
+[ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://Graphics/Fonts/RobotoMono Bold.ttf" id="4_uyogt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3xbd0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nj2bj"]
+bg_color = Color(0.615686, 0.615686, 0.615686, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xoltw"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.733333, 0.733333, 0.733333, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[node name="dialogue_option" type="Button" groups=["playUIClickSFX"]]
+custom_minimum_size = Vector2(1000, 40)
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_3xbd0")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_nj2bj")
+theme_override_styles/normal = SubResource("StyleBoxFlat_xoltw")
+script = ExtResource("1_sumuu")
+
+[node name="option_margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="option_text" type="RichTextLabel" parent="option_margin"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/font_selected_color = Color(0.117647, 0.117647, 0.117647, 1)
+theme_override_fonts/normal_font = ExtResource("2_qoyp0")
+theme_override_fonts/italics_font = ExtResource("3_t047s")
+theme_override_fonts/bold_font = ExtResource("4_uyogt")
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
