@@ -1,0 +1,17 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=7 format=3 uid="uid://vjo3btfmm2me"]
+
+[ext_resource type="AudioStream" uid="uid://v4nc0u5uqltk" path="res://Sound/Music/ambience1.wav" id="1_631pv"]
+[ext_resource type="AudioStream" uid="uid://cku4d8tw2cajp" path="res://Sound/Music/ambience2.wav" id="2_t18nu"]
+[ext_resource type="AudioStream" uid="uid://cu5vu17sts25g" path="res://Sound/Music/ambience3.wav" id="3_j2mf1"]
+[ext_resource type="AudioStream" uid="uid://oenxmfqy2kac" path="res://Sound/Music/ambience4.wav" id="4_jnf0v"]
+[ext_resource type="AudioStream" uid="uid://cl2t8klaj22iy" path="res://Sound/Music/ambience5.wav" id="5_ebogx"]
+[ext_resource type="AudioStream" uid="uid://bmb6iip6wr554" path="res://Sound/Music/ambience6.wav" id="6_l8enn"]
+
+[resource]
+streams_count = 6
+stream_0/stream = ExtResource("1_631pv")
+stream_1/stream = ExtResource("2_t18nu")
+stream_2/stream = ExtResource("3_j2mf1")
+stream_3/stream = ExtResource("4_jnf0v")
+stream_4/stream = ExtResource("5_ebogx")
+stream_5/stream = ExtResource("6_l8enn")
