@@ -43,6 +43,7 @@ const SYSTEM_HAZARD_CLASSIFICATION_CURVES = {
 
 const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
 const NANITE_CONTROLLER_REPAIR_CURVE = preload("res://Data/Spawn Data/nanite_controller_repair_curve.tres")
+const MORALE_INCREASE_CURVE = preload("res://Data/Spawn Data/morale_increase_curve.tres")
 
 enum NAME_SCHEMES {STANDARD, SCIENTIFIC, TREK}
 enum NAME_VARIETIES {STAR, PLANET, GENERIC_FLAIR, ASTEROID_BELT, WORMHOLE, WORMHOLE_FLAIR, STATION, STATION_FLAIR, SPACE_ANOMALY, SPACE_ANOMALY_FLAIR, SPACE_ENTITY_DEFAULT, RENDEZVOUS_POINT_DEFAULT} #SPACE_ENTITY_DEFAULT exists because SCIENTIFIC name scheme will give a space entity something like "SF-1058" while STANDARD name scheme will give a space entity "stellar_phenomena"
