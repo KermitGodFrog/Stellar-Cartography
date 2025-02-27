@@ -249,7 +249,9 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("SC_DEBUG_MISC"):
 		dialogue_manager.clear_and_load_rules()
 	if Input.is_action_just_pressed("SC_DEBUG_MISC2"):
-		world.player.current_star_system.get_star_types_mixed_weights()
+		var new_query = responseQuery.new()
+		new_query.add("concept", "DEBUG_printTest")
+		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	#DEBUG \/\//\/\/\//\/\\/
 	#if Input.is_action_just_pressed("SC_DEBUG_MISC"):

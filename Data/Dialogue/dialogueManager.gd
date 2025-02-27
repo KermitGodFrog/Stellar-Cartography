@@ -437,10 +437,32 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 	pass
 
 func convert_text_with_custom_tags(text: String, query: responseQuery) -> String:
-	#i feel like this is veryyy slloooowwwwwwwww.......
+	var a: PackedStringArray = []
 	for fact in query.facts:
-		text = text.replace("$%s" % fact, "%s" % query.facts.get(fact, "ERR"))
-	#text = text.replace("$PLANET_NAME", query.facts.get("planet_name", "CONVERT_TEXT_WITH_CUSTOM_TAGS_ERR"))
+		a.append(fact)
+	
+	var regex_args = "|\\$".join(a)
+	var formatted_regex_args = "%s%s" % ["\\$", regex_args]
+	var pattern = "(%s)(?![_\\w])" % formatted_regex_args
+	
+	var regex = RegEx.new()
+	regex.compile(pattern)
+	print(pattern)
+	
+	var results = regex.search_all(text)
+	var offset: int = 0
+	for result in results:
+		var start: int = result.get_start()
+		var end: int = result.get_end()
+		var length: int = end - start
+		var fact = result.get_string().right(-1)
+		var replacement = query.facts.get(fact)
+		
+		var new_text: String = str(text.substr(0, start + offset), replacement, text.substr(end + offset))
+		
+		offset += str(replacement).length() - length
+		text = new_text
+	
 	return text
 
 func _on_add_dialogue_memory_pair(key,value) -> void: #im connecitng this signal to its own script because im not sure if it does anything else / is important
