@@ -447,7 +447,6 @@ func convert_text_with_custom_tags(text: String, query: responseQuery) -> String
 	
 	var regex = RegEx.new()
 	regex.compile(pattern)
-	print(pattern)
 	
 	var results = regex.search_all(text)
 	var offset: int = 0

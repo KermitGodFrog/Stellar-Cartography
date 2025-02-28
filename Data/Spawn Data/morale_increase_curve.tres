@@ -2,5 +2,5 @@
 
 [resource]
 max_value = 1000.0
-_data = [Vector2(0, 20000), 0.0, 0.0, 0, 0, Vector2(1, 40000), 0.0, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0, 20000), 0.0, 0.0, 0, 0, Vector2(0.35, 40000), 0.0, 0.0, 0, 0, Vector2(1, 55000), 0.0, 0.0, 0, 0]
+point_count = 3
