@@ -13,9 +13,9 @@ var achievements_array: Array[responseAchievement] = []:
 const default_achievements: Dictionary = {
 	preload("res://Data/Achievement/Achievements/optionSelectedTutorialWin.tres"): false,
 	preload("res://Data/Achievement/Achievements/anyTutorialOmissionOrbitingPREV.tres"): false,
-	preload("res://Data/Achievement/Achievements/playerWinOneMillionScore.tres"): false,
-	preload("res://Data/Achievement/Achievements/playerWinTwoMillionScore.tres"): false,
-	preload("res://Data/Achievement/Achievements/playerWinThreeMillionScore.tres"): false,
+	preload("res://Data/Achievement/Achievements/playerWinTenMillionScore.tres"): false,
+	preload("res://Data/Achievement/Achievements/playerWinFifteenMillionScore.tres"): false,
+	preload("res://Data/Achievement/Achievements/playerWinTwentyMillionScore.tres"): false,
 	preload("res://Data/Achievement/Achievements/playerWinAllCharactersAlive.tres"): false,
 	preload("res://Data/Achievement/Achievements/anyAllModulesUnlocked.tres"): false,
 	preload("res://Data/Achievement/Achievements/anyAudioVisualizerUnlocked.tres"): false,
