@@ -263,10 +263,14 @@ func removeMorale(amount: int) -> void:
 	pass
 
 
-#func addMutinyBacking(amount: int) -> void:
-#	mutiny_backing = mini(100, mutiny_backing + amount)
-#	pass
+func increaseCharacterStanding(occupation: characterAPI.OCCUPATIONS, amount: int) -> void:
+	var c = get_character_with_occupation(occupation)
+	if c:
+		c.addStanding(amount)
+	pass
 
-#func removeMutinyBacking(amount: int) -> void:
-#	mutiny_backing = maxi(0, mutiny_backing - amount)
-#	pass
+func decreaseCharacterStanding(occupation: characterAPI.OCCUPATIONS, amount: int) -> void:
+	var c = get_character_with_occupation(occupation)
+	if c:
+		c.removeStanding(amount)
+	pass

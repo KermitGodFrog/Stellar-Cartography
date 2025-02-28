@@ -325,26 +325,26 @@ func get_rule_matches(rule, incoming_query) -> int: #I should be executed for th
 	for fact in incoming_query.facts:
 		if rule.criteria.has(fact):
 			if typeof(rule.criteria.get(fact)) == TYPE_STRING:
+				var converted_value = replace_fact_flags(rule.criteria.get(fact), incoming_query)
 				
-				
-				if rule.criteria.get(fact).begins_with("<="):
-					if incoming_query.facts.get(fact) <= rule.criteria.get(fact).trim_prefix("<=").to_float():
+				if converted_value.begins_with("<="):
+					if incoming_query.facts.get(fact) <= converted_value.trim_prefix("<=").to_float():
 						matches += 1
 					else: continue
-				elif rule.criteria.get(fact).begins_with(">="):
-					if incoming_query.facts.get(fact) >= rule.criteria.get(fact).trim_prefix(">=").to_float():
+				elif converted_value.begins_with(">="):
+					if incoming_query.facts.get(fact) >= converted_value.trim_prefix(">=").to_float():
 						matches += 1
 					else: continue
-				elif rule.criteria.get(fact).begins_with("<"):
-					if incoming_query.facts.get(fact) < rule.criteria.get(fact).trim_prefix("<").to_float():
+				elif converted_value.begins_with("<"):
+					if incoming_query.facts.get(fact) < converted_value.trim_prefix("<").to_float():
 						matches += 1
 					else: continue
-				elif rule.criteria.get(fact).begins_with(">"):
-					if incoming_query.facts.get(fact) > rule.criteria.get(fact).trim_prefix(">").to_float():
+				elif converted_value.begins_with(">"):
+					if incoming_query.facts.get(fact) > converted_value.trim_prefix(">").to_float():
 						matches += 1
 					else: continue
 				else:
-					if incoming_query.facts.get(fact) == rule.criteria.get(fact):
+					if incoming_query.facts.get(fact) == converted_value:
 						matches += 1
 					else: continue
 					
@@ -372,12 +372,6 @@ func get_relevant_rules(incoming_query: responseQuery) -> Array[responseRule]:
 		print_debug("!! ERROR: NO RELEVANT RULES, RETURNING ALL RULES !!")
 		return rules
 
-func convert_string_number(string_number: String):
-	if string_number.is_valid_int():
-		return string_number.to_int()
-	elif string_number.is_valid_float():
-		return string_number.to_float()
-	return string_number
 
 
 func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQuery):
@@ -393,12 +387,9 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 			var values = rule.trigger_functions.get(trigger_function)
 			if values != null: 
 				match typeof(values):
-					TYPE_ARRAY:
-						print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
-						call(trigger_function, values)
 					TYPE_STRING:
 						print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
-						call(trigger_function, convert_text_with_custom_tags(values, incoming_query))
+						call(trigger_function, replace_fact_flags(values, incoming_query))
 					_:
 						print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
 						call(trigger_function, values)
@@ -432,11 +423,11 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 		speak(calling, new_query, true, QUERY_TYPES.OLD_BEST)
 	
 	#text & options \\\\\\\\\\\\\
-	if rule.text: dialogue.add_text(convert_text_with_custom_tags(rule.text, incoming_query))
+	if rule.text: dialogue.add_text(replace_fact_flags(rule.text, incoming_query))
 	if rule.options: dialogue.add_options(rule.options)
 	pass
 
-func convert_text_with_custom_tags(text: String, query: responseQuery) -> String:
+func replace_fact_flags(text: String, query: responseQuery) -> String:
 	var a: PackedStringArray = []
 	for fact in query.facts:
 		a.append(fact)
@@ -464,11 +455,10 @@ func convert_text_with_custom_tags(text: String, query: responseQuery) -> String
 	
 	return text
 
+
 func _on_add_dialogue_memory_pair(key,value) -> void: #im connecitng this signal to its own script because im not sure if it does anything else / is important
 	dialogue_memory[key] = value
 	pass
-
-
 
 func receive_updated_achievements_array(updated_achievements_array: Array[responseAchievement]):
 	_achievements_array = updated_achievements_array
@@ -509,7 +499,9 @@ func clearAll():
 	dialogue.clear_all()
 	pass
 
-func decreaseBalanceWithFlair(amount: int):
+func decreaseBalanceWithFlair(amount):
+	if typeof(amount) == TYPE_STRING:
+		amount = amount.to_int()
 	emit_signal("decreasePlayerBalance", amount)
 	dialogue.add_text("[color=red](Lost %d nanites) [/color]" % amount)
 	pass
@@ -578,11 +570,17 @@ func discoverRandomBodyWithFlair() -> void:
 		dialogue.add_text(str("[color=green](Gained no new scan data) [/color]"))
 	pass
 
-#func addMutinyBackingWithFlair(amount: int):
-#	emit_signal("addPlayerMutinyBacking", amount)
-#	dialogue.add_text("[color=green](Plus %d%% mutiny backing) [/color]" % amount)
-#	playSoundEffect("dialogue_strange.wav")
-#	pass
+
+func increaseSecurityOfficerStanding(_amount: int) -> void:
+	player.increaseCharacterStanding(characterAPI.OCCUPATIONS.SECURITY_OFFICER, _amount)
+	pass
+
+func decreaseSecurityOfficerStanding(_amount: int) -> void:
+	player.decreaseCharacterStanding(characterAPI.OCCUPATIONS.SECURITY_OFFICER, _amount)
+	pass
+
+
+
 
 
 
