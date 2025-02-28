@@ -558,8 +558,8 @@ func playSoundEffect(path: String) -> void:
 func discoverRandomBodyWithFlair() -> void:
 	var undiscovered_bodies: Array[bodyAPI] = []
 	for body in system.bodies:
-		if not (body.is_star() or body.is_station()):
-			if not body.is_known:
+		if not (body.get_type() == starSystemAPI.BODY_TYPES.STAR or body.get_type() == starSystemAPI.BODY_TYPES.STATION):
+			if not body.is_known():
 				undiscovered_bodies.append(body)
 	if undiscovered_bodies.size() > 0:
 		var body: bodyAPI = undiscovered_bodies.pick_random()
