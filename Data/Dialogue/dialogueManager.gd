@@ -325,7 +325,7 @@ func get_rule_matches(rule, incoming_query) -> int: #I should be executed for th
 	for fact in incoming_query.facts:
 		if rule.criteria.has(fact):
 			if typeof(rule.criteria.get(fact)) == TYPE_STRING:
-				var converted_value = replace_fact_flags(rule.criteria.get(fact), incoming_query)
+				var converted_value = replace_fact_references(rule.criteria.get(fact), incoming_query)
 				
 				if converted_value.begins_with("<="):
 					if incoming_query.facts.get(fact) <= converted_value.trim_prefix("<=").to_float():
@@ -389,7 +389,7 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 				match typeof(values):
 					TYPE_STRING:
 						print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
-						call(trigger_function, replace_fact_flags(values, incoming_query))
+						call(trigger_function, replace_fact_references(values, incoming_query))
 					_:
 						print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
 						call(trigger_function, values)
@@ -423,11 +423,11 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 		speak(calling, new_query, true, QUERY_TYPES.OLD_BEST)
 	
 	#text & options \\\\\\\\\\\\\
-	if rule.text: dialogue.add_text(replace_fact_flags(rule.text, incoming_query))
+	if rule.text: dialogue.add_text(replace_fact_references(rule.text, incoming_query))
 	if rule.options: dialogue.add_options(rule.options)
 	pass
 
-func replace_fact_flags(text: String, query: responseQuery) -> String:
+func replace_fact_references(text: String, query: responseQuery) -> String:
 	var a: PackedStringArray = []
 	for fact in query.facts:
 		a.append(fact)
