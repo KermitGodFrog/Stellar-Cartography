@@ -35,7 +35,7 @@ func populateWithPlayerData(player: playerAPI):
 	add("player_hull_deterioration", player.hull_deterioration)
 	add("player_hull_stress", player.hull_stress)
 	add("player_morale", player.morale)
-	add("morale_increase_cost", game_data.MORALE_INCREASE_CURVE.sample(game_data.player_weirdness_index))
+	add("morale_increase_cost", roundi(game_data.MORALE_INCREASE_CURVE.sample(game_data.player_weirdness_index)))
 	
 	var in_CORE_region: bool = false
 	var in_FRONTIER_region: bool = false
