@@ -88,7 +88,7 @@ RP_FebrisScoutOption,"concept: populateRP_FebrisOptions, player_morale: >=25",,,
 RP_FebrisScout,"concept: optionSelected, option: RP_FebrisScout",,"discoverRandomBodyWithFlair: null, removeMoraleWithFlair: 25",,,,,,Continue: RP_FebrisFallback,"You command Febris to find an undiscovered body. ""Yes, $player_prefix, if you are sure,"" she obliges."
 RP_FebrisFallback,"concept: optionSelected, option: RP_FebrisFallback",,,,populateRP_FebrisOptions,,,,Dismiss Febris: RP_Fallback,"""Is there anything else I can do for you, $player_prefix?"" Febris asks."
 ,,,,,,,,,,
-RP_WalkerSummon,"concept: optionSelected, option: RP_WalkerSummon",,,,populateRP_WalkerOptions,,,,Dismiss Walker: RP_Fallback,"Walker enters your ready room, salutes, asks for permission to sit and does so when given. You understand that your standing with Walker dictates your chance to survive a mutiny."""
+RP_WalkerSummon,"concept: optionSelected, option: RP_WalkerSummon",,,,populateRP_WalkerOptions,,,,Dismiss Walker: RP_Fallback,"Walker enters your ready room, salutes, asks for permission to sit and does so when given. You understand that your standing with Walker dictates your chance to survive a mutiny."
 RP_WalkerFallback,"concept: optionSelected, option: RP_WalkerFallback",,,,populateRP_WalkerOptions,,,,Dismiss Walker: RP_Fallback,"""$player_prefix, anything else that I can do for you, $player_prefix?"" Walker asks."
 ,,,,,,,,,,
 ,,,,,,,,,,
