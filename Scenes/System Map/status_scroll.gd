@@ -18,6 +18,7 @@ func _physics_process(_delta):
 	for i in player_status_matrix.size():
 		if last_player_status_matrix[i] != player_status_matrix[i]:
 			order[i].value_change_flash()
+			order[i].update_danger(player_status_matrix[i])
 	
 	nanites.text = "%s" % player_status_matrix[0]
 	hull_stress.text = str("%s" % player_status_matrix[1], "%")

@@ -443,6 +443,7 @@ theme = ExtResource("15_534fl")
 text = "50253"
 icon = ExtResource("10_e6b7x")
 script = ExtResource("11_1rwmm")
+current_danger_rule = 2
 tooltip_title = "Nanites"
 
 [node name="morale_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
@@ -452,6 +453,7 @@ theme = ExtResource("15_534fl")
 text = "100%"
 icon = ExtResource("13_vaatn")
 script = ExtResource("11_1rwmm")
+current_danger_rule = 1
 tooltip_title = "Morale"
 
 [node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["FOLLOW_UPGRADE_STATE", "playUIClickSFX"]]
