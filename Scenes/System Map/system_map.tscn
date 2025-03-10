@@ -462,6 +462,7 @@ theme = ExtResource("15_534fl")
 text = "100%"
 icon = ExtResource("11_1tiv0")
 script = ExtResource("14_u08qu")
+current_danger_rule = 2
 tooltip_title = "Hull Stress"
 
 [node name="hull_deterioration_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
