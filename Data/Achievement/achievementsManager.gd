@@ -23,6 +23,7 @@ const default_achievements: Dictionary = {
 	preload("res://Data/Achievement/Achievements/followingBodyWormholeInFrontier.tres"): false,
 	preload("res://Data/Achievement/Achievements/followingBodyWormholeInAbyss.tres"): false,
 	preload("res://Data/Achievement/Achievements/anyHullDeteriorationFifty.tres"): false,
+	preload("res://Data/Achievement/Achievements/enteringSystemStarTypeO.tres"): false
 	#preload("res://Data/Achievement/Achievements/anyIsWarCriminal.tres"): false
 	#preload("res://Data/Achievement/Achievements/anyLRSAndAVUnlockedDEBUG.tres"): false
 }
