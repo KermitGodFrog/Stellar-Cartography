@@ -134,6 +134,30 @@ const planet_type_data = {
 	#dwarfs and giants have the same audio data and thus can have the same variation class!
 }
 
+const planet_descriptions = {
+	"Chthonian": "A solid planet which is, in itself, a metallic core. Result of a massive gravitational pull stripping the atmosphere of a Neptunian or Jovian world, leaving only the core behind.",
+	"Lava": "A solid planet composed of silicate, carbon and trace rare elements, with extensive sulfur concentrated near the surface due to constant active volcanism. Metallic core.",
+#	"Hycean":
+#	"Desert":
+#	"Ocean":
+#	"Earth-like":
+	"Ice": "A solid planet composed of silicate, water and carbon, with huge reservoirs of water, methane, ammonia and nitrogen at the surface. Metallic core.",
+	"Iron": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by an iron core.",
+	"Nickel": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by a nickel or iron-nickel core.",
+	"Sulfur": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by a sulfur or iron-sulfur core.",
+	"Coreless": "A solid planet composed of silicate, water, carbon and trace rare elements which is notably devoid of a core. Comparatively greater water content than Iron, Nickel and Sulfur planets.",
+	"Carbon": "A solid planet composed of carbon in quantity, with trace amounts of silicate and rare elements, while being entirely devoid of water. Metallic core."
+#	"Fire Dwarf":
+#	"Gas Dwarf":
+#	"Ice Dwarf":
+#	"Helium Dwarf":
+#	"Fire Giant":
+#	"Gas Giant":
+#	"Ice Giant":
+#	"Helium Giant":
+}
+
+
 var LOW_VAR = planetBodyAPI.VARIATIONS.LOW #var LOW_VAR = bodyAPI.VARIATIONS.LOW
 var MED_VAR = planetBodyAPI.VARIATIONS.MEDIUM #var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
 var HIGH_VAR = planetBodyAPI.VARIATIONS.HIGH #var HIGH_VAR = bodyAPI.VARIATIONS.HIGH
