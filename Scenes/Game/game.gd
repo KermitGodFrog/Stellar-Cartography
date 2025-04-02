@@ -580,9 +580,10 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	
 	system_map._on_clear_console_entries()
 	_on_switch_star_system(destination)
-	barycenter_visualizer.locked_body_identifier = destination_wormhole.get_identifier() #this is a bugfix (really?)
+	barycenter_visualizer.locked_body_identifier = 0
 	
 	#removed from the late _on_movement_lock_timer_start function - probably does nothing but im too scared to not add it here just in case
+	system_map.follow_body = null
 	system_map.locked_body = null
 	system_map.action_body = null
 	

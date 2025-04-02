@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://b75u7e1b1ddb2"]
+
+[node name="gas_layer_surveyor_window" type="Window"]
+title = "Gas Layer Surveyor"
+size = Vector2i(500, 500)

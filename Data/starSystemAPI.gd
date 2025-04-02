@@ -138,9 +138,9 @@ const planet_descriptions = {
 	"Chthonian": "A solid planet which is, in itself, a metallic core. Result of a massive gravitational pull stripping the atmosphere of a Neptunian or Jovian world, leaving only the core behind.",
 	"Lava": "A solid planet composed of silicate, carbon and trace rare elements, with extensive sulfur concentrated near the surface due to constant active volcanism. Metallic core.",
 #	"Hycean":
-#	"Desert":
-#	"Ocean":
-#	"Earth-like":
+	"Desert": "A solid planet with a human suitable nitrogen-oxygen atmosphere.",
+	"Ocean": "A solid planet with a human suitable nitrogen-oxygen atmosphere.",
+	"Earth-like": "A solid planet with a human suitable nitrogen-oxygen atmosphere.",
 	"Ice": "A solid planet composed of silicate, water and carbon, with huge reservoirs of water, methane, ammonia and nitrogen at the surface. Metallic core.",
 	"Iron": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by an iron core.",
 	"Nickel": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by a nickel or iron-nickel core.",
