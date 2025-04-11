@@ -68,28 +68,18 @@ tonemap_white = 0.5
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_12p7g"]
 streams_count = 5
 stream_0/stream = ExtResource("10_0oh6i")
-stream_0/weight = 1.0
 stream_1/stream = ExtResource("11_o2hra")
-stream_1/weight = 1.0
 stream_2/stream = ExtResource("12_5dcf7")
-stream_2/weight = 1.0
 stream_3/stream = ExtResource("13_qubtr")
-stream_3/weight = 1.0
 stream_4/stream = ExtResource("14_ki1nd")
-stream_4/weight = 1.0
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_cnul4"]
 streams_count = 5
 stream_0/stream = ExtResource("15_5wp05")
-stream_0/weight = 1.0
 stream_1/stream = ExtResource("16_qd8eo")
-stream_1/weight = 1.0
 stream_2/stream = ExtResource("17_olq2m")
-stream_2/weight = 1.0
 stream_3/stream = ExtResource("18_5iyy6")
-stream_3/weight = 1.0
 stream_4/stream = ExtResource("19_qvp7y")
-stream_4/weight = 1.0
 
 [node name="long_range_scopes_window" type="Window"]
 process_mode = 3
@@ -121,6 +111,7 @@ current_tab = 1
 visible = false
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
+metadata/_tab_index = 0
 
 [node name="bestiary_list" type="ItemList" parent="split/bestiary/tabs/INDEX"]
 layout_mode = 2
@@ -130,6 +121,7 @@ theme_override_fonts/font = ExtResource("3_drepj")
 [node name="INFO" type="VBoxContainer" parent="split/bestiary/tabs"]
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="info_title" type="Label" parent="split/bestiary/tabs/INFO"]
 custom_minimum_size = Vector2(280, 30)
@@ -181,9 +173,9 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_njahj")
+theme_override_colors/font_selected_color = Color(0.627451, 0.627451, 0.627451, 1)
 theme_override_colors/font_color = Color(0.627451, 0.627451, 0.627451, 1)
 theme_override_colors/font_hovered_color = Color(0.627451, 0.627451, 0.627451, 1)
-theme_override_colors/font_selected_color = Color(0.627451, 0.627451, 0.627451, 1)
 theme_override_styles/focus = SubResource("StyleBoxEmpty_563vd")
 theme_override_styles/hovered = SubResource("StyleBoxEmpty_q3qh3")
 theme_override_styles/selected = SubResource("StyleBoxEmpty_nbh7a")

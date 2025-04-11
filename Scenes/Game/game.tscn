@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://o18qlgh0vvwn"]
+[gd_scene load_steps=14 format=3 uid="uid://o18qlgh0vvwn"]
 
 [ext_resource type="Script" path="res://Scenes/Game/game.gd" id="1_mtv75"]
 [ext_resource type="PackedScene" uid="uid://bhroagne3v4wq" path="res://Scenes/System Map/system_map.tscn" id="2_jilbx"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://ckd75fjfh7urh" path="res://Data/Dialogue/dialogueManager.tscn" id="8_egtoq"]
 [ext_resource type="PackedScene" uid="uid://cu8n2e53bgc37" path="res://Scenes/Pause Menu/pauseMenu.tscn" id="8_s4gh6"]
 [ext_resource type="PackedScene" uid="uid://kmp3sfk18y2" path="res://Scenes/Stats Menu/statsMenu.tscn" id="9_m7la7"]
+[ext_resource type="PackedScene" uid="uid://b75u7e1b1ddb2" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor.tscn" id="9_slh27"]
 [ext_resource type="PackedScene" uid="uid://b0frxj5cysipi" path="res://Scenes/Long Range Scopes/long_range_scopes.tscn" id="10_q6rur"]
 [ext_resource type="PackedScene" uid="uid://p275r5sfhnj5" path="res://Sound/audioHandler.tscn" id="12_adxnc"]
 
@@ -34,6 +35,8 @@ script = ExtResource("2_jx1f0")
 [node name="long_range_scopes_window" parent="." instance=ExtResource("10_q6rur")]
 own_world_3d = true
 handle_input_locally = false
+
+[node name="gas_layer_surveyor_window" parent="." instance=ExtResource("9_slh27")]
 
 [node name="dialogueManager" parent="." instance=ExtResource("8_egtoq")]
 

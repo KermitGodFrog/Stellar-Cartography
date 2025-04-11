@@ -20,6 +20,7 @@ var world: worldAPI
 @onready var wormhole_minigame = $wormhole_minigame_window/minigame_container/minigame_viewport/wormhole_minigame
 @onready var pause_mode_handler = $pauseModeHandler
 @onready var audio_handler = $audioHandler
+@onready var gas_layer_surveyor = $gas_layer_surveyor_window/gas_layer_surveyor
 
 func _ready():
 	connect_all_signals()
@@ -177,6 +178,7 @@ func connect_all_signals() -> void:
 	system_map.connect("audioVisualizerPopup", _on_audio_visualizer_popup)
 	system_map.connect("journeyMapPopup", _on_journey_map_popup)
 	system_map.connect("longRangeScopesPopup", _on_long_range_scopes_popup)
+	system_map.connect("gasLayerSurveyorPopup", _on_gas_layer_surveyor_popup)
 	
 	dialogue_manager.connect("decreasePlayerBalance", _on_decrease_player_balance)
 	dialogue_manager.connect("addPlayerValue", _on_add_player_value)
@@ -1006,4 +1008,14 @@ func _on_long_range_scopes_popup():
 		$long_range_scopes_window.move_to_center()
 		$long_range_scopes_window.popup()
 		_on_add_console_entry("Opening long range scopes.", Color("353535"))
+	pass
+
+func _on_gas_layer_surveyor_popup():
+	gas_layer_surveyor._on_popup()
+	if $gas_layer_surveyor_window.is_visible():
+		$gas_layer_surveyor_window.hide()
+	else:
+		$gas_layer_surveyor_window.move_to_center()
+		$gas_layer_surveyor_window.popup()
+		_on_add_console_entry("Opening gas layer surveyor.", Color("353535"))
 	pass

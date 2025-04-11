@@ -1,5 +1,58 @@
-[gd_scene format=3 uid="uid://b75u7e1b1ddb2"]
+[gd_scene load_steps=7 format=3 uid="uid://b75u7e1b1ddb2"]
+
+[ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor.gd" id="1_retla"]
+[ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="2_w05nt"]
+[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="3_jrbch"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kvjs5"]
+shader = ExtResource("2_w05nt")
+shader_parameter/source_panorama = ExtResource("3_jrbch")
+
+[sub_resource type="Sky" id="Sky_4kfpl"]
+sky_material = SubResource("ShaderMaterial_kvjs5")
+
+[sub_resource type="Environment" id="Environment_kocyj"]
+background_mode = 2
+background_energy_multiplier = 0.75
+sky = SubResource("Sky_4kfpl")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.1
+reflected_light_source = 1
+tonemap_mode = 1
+tonemap_exposure = 2.0
+tonemap_white = 0.5
 
 [node name="gas_layer_surveyor_window" type="Window"]
 title = "Gas Layer Surveyor"
+position = Vector2i(0, 36)
 size = Vector2i(500, 500)
+visible = false
+
+[node name="gas_layer_surveyor" type="Node3D" parent="."]
+script = ExtResource("1_retla")
+
+[node name="camera_offset" type="Node3D" parent="gas_layer_surveyor"]
+
+[node name="camera" type="Camera3D" parent="gas_layer_surveyor/camera_offset"]
+
+[node name="control" type="Control" parent="gas_layer_surveyor/camera_offset/camera"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="press_to_start_button" type="Button" parent="gas_layer_surveyor/camera_offset/camera/control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "CLICK TO START"
+
+[node name="world_environment" type="WorldEnvironment" parent="gas_layer_surveyor"]
+environment = SubResource("Environment_kocyj")
