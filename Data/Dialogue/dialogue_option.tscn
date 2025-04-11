@@ -22,9 +22,10 @@ corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
 [node name="dialogue_option" type="Button" groups=["playUIClickSFX"]]
-custom_minimum_size = Vector2(1000, 40)
+custom_minimum_size = Vector2(0, 35)
 offset_right = 8.0
 offset_bottom = 8.0
+size_flags_horizontal = 3
 theme_override_styles/focus = SubResource("StyleBoxEmpty_3xbd0")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_nj2bj")
 theme_override_styles/normal = SubResource("StyleBoxFlat_xoltw")

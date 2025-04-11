@@ -1,8 +1,8 @@
 extends Control
 
-@onready var image = $margin/panel/panel_margin/content_scroll/image
-@onready var text = $margin/panel/panel_margin/content_scroll/text
-@onready var options_scroll = $margin/panel/panel_margin/content_scroll/options_scroll
+@onready var image = $margin/panel/main_scroll/content/content_scroll/image
+@onready var text = $margin/panel/main_scroll/interaction/interaction_scroll/text
+@onready var options_scroll = $margin/panel/main_scroll/interaction/interaction_scroll/scroll/options_scroll
 @onready var sfx = $sfx
 @onready var music = $music
 @onready var option = preload("res://Data/Dialogue/dialogue_option.tscn")
