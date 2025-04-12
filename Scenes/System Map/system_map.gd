@@ -1,6 +1,25 @@
 extends Node2D
 #updates a map and object list based on data it is fed by the game component. updates camera position for some reason
 
+var _pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE:
+	set(value):
+		_pause_mode = value
+		_on_pause_mode_changed(value)
+signal queuePauseMode(new_mode: game_data.PAUSE_MODES)
+signal setPauseMode(new_mode: game_data.PAUSE_MODES)
+func _on_pause_mode_changed(value):
+	match value:
+		game_data.PAUSE_MODES.NONE:
+			canvas.show()
+		game_data.PAUSE_MODES.DIALOGUE:
+			canvas.hide()
+	pass
+
+
+
+
+
+
 signal updatePlayerActionType(type: playerAPI.ACTION_TYPES, action_body)
 signal validUpdatePlayerActionType(type: playerAPI.ACTION_TYPES, action_body) #used for checking if the player is no longer orbiting a body in game.gd!
 signal updatePlayerIsBoosting(is_boosting: bool)
@@ -34,6 +53,7 @@ var player_is_boosting: bool = false
 var player_audio_visualizer_unlocked: bool = false
 
 @onready var camera = $camera
+@onready var canvas = $camera/canvas
 @onready var system_list = $camera/canvas/control/tabs/OVERVIEW/system_list
 @onready var follow_body_label = $camera/canvas/control/tabs/INFO/follow_body_label
 @onready var body_attributes_list = $camera/canvas/control/tabs/INFO/body_attributes_list

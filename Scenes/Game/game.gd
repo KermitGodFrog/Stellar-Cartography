@@ -208,12 +208,14 @@ func connect_all_signals() -> void:
 	station_ui.connect("queuePauseMode", _on_queue_pause_mode)
 	wormhole_minigame.connect("queuePauseMode", _on_queue_pause_mode)
 	audio_handler.connect("queuePauseMode", _on_queue_pause_mode) #audio handler doesnt TECHNICALLY need pause control
+	system_map.connect("queuePauseMode", _on_queue_pause_mode) #for hiding when in dialogue
 	stats_menu.connect("setPauseMode", _on_set_pause_mode)
 	pause_menu.connect("setPauseMode", _on_set_pause_mode)
 	dialogue_manager.connect("setPauseMode", _on_set_pause_mode)
 	station_ui.connect("setPauseMode", _on_set_pause_mode)
 	wormhole_minigame.connect("setPauseMode", _on_set_pause_mode)
 	audio_handler.connect("setPauseMode", _on_set_pause_mode) #audio handler doesnt TECHNICALLY need pause control
+	system_map.connect("setPauseMode", _on_set_pause_mode) #for hiding when in dialogue
 	pass
 
 func _physics_process(delta):
@@ -946,6 +948,7 @@ func _on_pause_mode_changed(new_mode: game_data.PAUSE_MODES) -> void:
 	station_ui._pause_mode = new_mode
 	wormhole_minigame._pause_mode = new_mode
 	audio_handler._pause_mode = new_mode #audio handler doesnt TECHNICALLY need pause control
+	system_map._pause_mode = new_mode #for hiding when in dialogue
 	
 	system_map.reset_player_boosting() #to stop boosting from being stuck to true, this SHOULD cover ALL grounds!
 	system_map.reset_actions_buttons_pressed() #godot 4.3 migration quick fix
