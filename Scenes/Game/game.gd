@@ -86,7 +86,8 @@ func _ready():
 		new_player.connect("dataValueChanged", _on_player_data_value_changed)
 		
 		#new game stuff
-		var new: starSystemAPI = _on_create_new_star_system()
+		var ghost: starSystemAPI = _on_create_new_star_system()
+		var new: starSystemAPI = _on_create_new_star_system(ghost)
 		for i in range(2):
 			_on_create_new_star_system(new)
 		new.createAuxiliaryCivilized()
@@ -136,7 +137,7 @@ func _ready():
 		world.player.connect("dataValueChanged", _on_player_data_value_changed)
 		
 		for i in world.player.current_star_system.destination_systems:
-			i.previous_system = world.player.current_star_system #i call this 'turning the treadmill back on'
+			i.previous_system = world.player.current_star_system #really important  actually
 		
 		for upgrade in world.player.unlocked_upgrades:
 			_on_upgrade_state_change(upgrade, true)
