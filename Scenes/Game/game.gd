@@ -537,24 +537,9 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 		destination.createAuxiliaryUnexplored()
 	
 	
-	#var destination_position: Vector2 = Vector2.ZERO
 	var destination_wormhole: wormholeBodyAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
-	#if destination_wormhole:
-		#destination.updateBodyPosition(destination_wormhole.get_identifier(), 0.01) #REQURIED SO WORMHOLE HAVE A POSITION OTHER THAN 0,0
-		#destination_position = destination_wormhole.position
-		#_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, destination_wormhole)
-		#system_3d.locked_body_identifier = destination_wormhole.get_identifier() #diesnt seem to work?!
-		#print_debug(destination_wormhole)
-		#print_debug(destination_wormhole.rotation)
-		#world.player.position = destination.get_body_from_identifier(destination_wormhole.hook_identifier)
 	destination_wormhole.known = true
 	
-	
-	#world.player.position = destination_position
-	#world.player.target_position = world.player.position
-	#system_map._on_start_movement_lock_timer()
-	
-	#no idea if anything below this point actually works so be careful \/\/\/\/
 	
 	#removing other possible systems to traverse from previous system
 	for w in wormholes:
@@ -634,7 +619,7 @@ func _on_player_win():
 	pass
 
 func _on_player_entering_system(system: starSystemAPI):
-	#called by _on_switch_star_system - SHOULD await the wormhole minigame closing before starting because of pause modes
+	#called by enter_wormhole - SHOULD await the wormhole minigame closing before starting because of pause modes
 	var new_query = responseQuery.new()
 	new_query.add("concept", "enteringSystem")
 	#new_query.add_tree_access("name", system.get_display_name()) # no point to do this as the system display name will always be 'random' or 'tutorial' or whatever!
