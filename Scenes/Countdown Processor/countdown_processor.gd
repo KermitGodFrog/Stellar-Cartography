@@ -7,9 +7,11 @@ signal countdownTimeout
 
 @onready var countdown = $countdown
 
-var time_total: float = 0.0
+var system_id: int
+var time_total: float
 
-func initialize(_title: String, _description: String, _hull_stress: int, _time_total: float, _time_current: float):
+func initialize(_system_id: int, _title: String, _description: String, _hull_stress: int, _time_total: float, _time_current: float):
+	system_id = _system_id
 	time_total = _time_total
 	countdown.wait_time = _time_current
 	countdown.start()
@@ -18,10 +20,9 @@ func initialize(_title: String, _description: String, _hull_stress: int, _time_t
 
 func _on_countdown_timeout() -> void:
 	countdown.start(time_total)
-	emit_signal("countdownTimeout")
+	emit_signal("countdownTimeout", system_id)
 	pass
 
-
 func _on_update_timeout() -> void:
-	emit_signal("countdownTick", countdown.get_time_left())
+	emit_signal("countdownTick", countdown.get_time_left(), system_id)
 	pass

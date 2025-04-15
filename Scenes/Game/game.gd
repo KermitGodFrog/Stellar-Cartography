@@ -232,8 +232,6 @@ func _physics_process(delta):
 		for body in current_bodies:
 			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
 			body.advance(delta) #capacity to do more stuff, can be overriden by classes that inherit bodyAPI
-	#if world.player.hull_deterioration == 100:
-		#_on_player_death()
 	
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
@@ -264,6 +262,9 @@ func _physics_process(delta):
 		#var new_query = responseQuery.new()
 		#new_query.add("concept", "DEBUGfalseMatchTest")
 		#get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	#ultra miscellanious:
+	_on_update_countdown_overlay_shown(countdown_processor != null)
 	pass
 
 func _on_player_theorised_body(theorised_body: bodyAPI):
@@ -703,26 +704,26 @@ func _on_switch_star_system(to_system: starSystemAPI):
 func _on_process_system_hazard(system: starSystemAPI):
 	#clear prior system hazard utility
 	if countdown_processor != null:
-		call_deferred("remove_child", countdown_processor)
 		countdown_processor.queue_free()
-		countdown_processor = null
 	#process new hazard
 	var hazard = system.system_hazard_classification
 	var metadata = system.system_hazard_metadata
 	match hazard:
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION:
+			
 			var time_total = metadata.get_or_add("CME_time_total", clamp(randfn(120, 30) - (game_data.player_weirdness_index * 30.0), 30.0, 240.0))
 			var time_current = metadata.get_or_add("CME_time_current", time_total)
 			
 			var processor = load("res://Scenes/Countdown Processor/countdown_processor.tscn")
-			var instance = processor.instantiate()
-			add_child(instance)
-			countdown_processor = instance
-			instance.updateCountdownOverlay.connect(_on_update_countdown_overlay_info) # display
-			instance.countdownTick.connect(_on_update_countdown_overlay_time) # display
-			instance.countdownTick.connect(_on_CME_time_current_updated) # real
-			instance.countdownTimeout.connect(_on_CME_timeout) # real
-			instance.initialize("WARNING", "CORONAL MASS EJECTION", world.player.hull_stress_CME, time_total, time_current)
+			var CDP = processor.instantiate()
+			add_child(CDP)
+			countdown_processor = CDP
+			CDP.updateCountdownOverlay.connect(_on_update_countdown_overlay_info) # display
+			CDP.countdownTick.connect(_on_update_countdown_overlay_time.unbind(1)) # display
+			CDP.countdownTick.connect(_on_CME_time_current_updated) # real
+			CDP.countdownTimeout.connect(_on_CME_timeout) # real
+			CDP.initialize(system.get_identifier(), "WARNING", "CORONAL MASS EJECTION", world.player.hull_stress_CME, time_total, time_current)
+			
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
 			pass
 	pass
@@ -946,11 +947,12 @@ func _on_add_player_mutiny_backing(amount : int) -> void:
 	world.player.addMutinyBacking(amount)
 	pass
 
-func _on_CME_time_current_updated(_time_current: float):
-	world.player.current_star_system.system_hazard_metadata["CME_time_current"] = _time_current
+func _on_CME_time_current_updated(_time_current: float, _system_id: int):
+	world.get_system_from_identifier(_system_id).system_hazard_metadata["CME_time_current"] = _time_current
 	pass
 
-func _on_CME_timeout():
+func _on_CME_timeout(_system_id: int):
+	#_system_id is appended here incase you want to physically change something in system as an effect or soemthing
 	_on_add_player_hull_stress(world.player.hull_stress_CME)
 	#psecial effects and shit
 	pass
@@ -963,7 +965,9 @@ func _on_update_countdown_overlay_time(_time: float):
 	system_map._on_update_countdown_overlay_time(_time)
 	pass
 
-
+func _on_update_countdown_overlay_shown(_shown: bool):
+	system_map._on_update_countdown_overlay_shown(_shown)
+	pass
 
 
 #the epic handshake between game.gd and pauseModeHandler.gd

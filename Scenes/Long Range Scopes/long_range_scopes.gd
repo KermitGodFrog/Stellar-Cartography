@@ -213,7 +213,7 @@ func _on_current_entity_changed(new_entity : entityBodyAPI):
 func _on_current_entity_cleared():
 	no_current_entity_bg.show()
 	current_entity = null
-	captures_remaining_label.text = str("")
+	captures_remaining_label.text = String()
 	
 	for prop in get_tree().get_nodes_in_group("long_range_scopes_prop"):
 		prop.queue_free()

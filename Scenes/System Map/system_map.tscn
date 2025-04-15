@@ -114,6 +114,7 @@ script = ExtResource("4_cfo3w")
 autostart = true
 
 [node name="countdown_overlay" type="Control" parent="system/camera/canvas"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -150,6 +151,7 @@ mouse_filter = 2
 
 [node name="title_label" type="Label" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll"]
 layout_mode = 2
+text = "------"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -161,6 +163,7 @@ alignment = 1
 custom_minimum_size = Vector2(100, 75)
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
+text = "---"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -175,11 +178,13 @@ custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/normal = SubResource("StyleBoxTexture_wr1u4")
+text = "+-%"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="description_label" type="Label" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll"]
 layout_mode = 2
+text = "------"
 horizontal_alignment = 1
 vertical_alignment = 1
 

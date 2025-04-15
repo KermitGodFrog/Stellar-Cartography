@@ -632,7 +632,9 @@ func _on_update_countdown_overlay_time(time: float):
 	countdown_overlay.update_time(time)
 	pass
 
-
+func _on_update_countdown_overlay_shown(shown: bool):
+	countdown_overlay.set_visible(shown)
+	pass
 
 
 
