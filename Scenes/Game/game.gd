@@ -21,13 +21,14 @@ var world: worldAPI
 @onready var pause_mode_handler = $pauseModeHandler
 @onready var audio_handler = $audioHandler
 @onready var gas_layer_surveyor = $gas_layer_surveyor_window/gas_layer_surveyor
+@onready var countdown_processor: Node #quantum state of existing and not existing
 
 func _ready():
 	connect_all_signals()
 	
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 25, 0.01, 0.05, 0.25)
+		world = game_data.createWorld(25, 5, 25, 15, 0.01, 0.05, 0.25)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -68,7 +69,7 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 25, 0.01, 0.05, 0.25)
+		world = game_data.createWorld(25, 5, 25, 15, 0.01, 0.05, 0.25)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -619,6 +620,7 @@ func _on_player_win():
 	pass
 
 func _on_player_entering_system(system: starSystemAPI):
+	#only called when entering a system for the first time, not for loading the system
 	#called by enter_wormhole - SHOULD await the wormhole minigame closing before starting because of pause modes
 	var new_query = responseQuery.new()
 	new_query.add("concept", "enteringSystem")
@@ -695,7 +697,35 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	system_3d.reset_locked_body()
 	journey_map.add_new_system(world.player.systems_traversed)
 	journey_map.jumps_remaining = world.player.get_jumps_remaining() #required as it needs to update when the players system on game startup is loaded, not just wormhole traversal!
+	_on_process_system_hazard(to_system)
 	return to_system
+
+func _on_process_system_hazard(system: starSystemAPI):
+	#clear prior system hazard utility
+	if countdown_processor != null:
+		call_deferred("remove_child", countdown_processor)
+		countdown_processor.queue_free()
+		countdown_processor = null
+	#process new hazard
+	var hazard = system.system_hazard_classification
+	var metadata = system.system_hazard_metadata
+	match hazard:
+		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION:
+			var time_total = metadata.get_or_add("CME_time_total", clamp(randfn(120, 30) - (game_data.player_weirdness_index * 30.0), 30.0, 240.0))
+			var time_current = metadata.get_or_add("CME_time_current", time_total)
+			
+			var processor = load("res://Scenes/Countdown Processor/countdown_processor.tscn")
+			var instance = processor.instantiate()
+			add_child(instance)
+			countdown_processor = instance
+			instance.updateCountdownOverlay.connect(_on_update_countdown_overlay_info) # display
+			instance.countdownTick.connect(_on_update_countdown_overlay_time) # display
+			instance.countdownTick.connect(_on_CME_time_current_updated) # real
+			instance.countdownTimeout.connect(_on_CME_timeout) # real
+			instance.initialize("WARNING", "CORONAL MASS EJECTION", world.player.hull_stress_CME, time_total, time_current)
+		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
+			pass
+	pass
 
 func _on_locked_body_updated(body: bodyAPI):
 	system_3d.set("locked_body_identifier", body.get_identifier())
@@ -915,6 +945,24 @@ func _on_player_data_value_changed(new_value: int):
 func _on_add_player_mutiny_backing(amount : int) -> void:
 	world.player.addMutinyBacking(amount)
 	pass
+
+func _on_CME_time_current_updated(_time_current: float):
+	world.player.current_star_system.system_hazard_metadata["CME_time_current"] = _time_current
+	pass
+
+func _on_CME_timeout():
+	_on_add_player_hull_stress(world.player.hull_stress_CME)
+	#psecial effects and shit
+	pass
+
+func _on_update_countdown_overlay_info(_title: String, _description: String, _hull_stress: int):
+	system_map._on_update_countdown_overlay_info(_title, _description, _hull_stress)
+	pass
+
+func _on_update_countdown_overlay_time(_time: float):
+	system_map._on_update_countdown_overlay_time(_time)
+	pass
+
 
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=49 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" path="res://Scenes/System Map/ui_tabs.gd" id="4_27qwa"]
 [ext_resource type="Script" path="res://Scenes/System Map/map_overlay.gd" id="4_cfo3w"]
 [ext_resource type="Texture2D" uid="uid://dn8ug1anbuwpu" path="res://Graphics/orbit_icon.png" id="5_hp0se"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://Scenes/master_theme.tres" id="5_yv8xl"]
+[ext_resource type="Script" path="res://Scenes/System Map/countdown_overlay.gd" id="6_1p25s"]
 [ext_resource type="Theme" uid="uid://br33hy3pgvm14" path="res://Scenes/System Map/system_map_APPS_theme.tres" id="8_a7cgy"]
 [ext_resource type="Script" path="res://Scenes/System Map/action_button.gd" id="8_ne0ka"]
 [ext_resource type="Script" path="res://Scenes/System Map/console.gd" id="8_oaj06"]
@@ -33,11 +35,21 @@
 [ext_resource type="Texture2D" uid="uid://bkvwgdists7up" path="res://Graphics/Mouse/mouse_left.png" id="27_0ojpo"]
 [ext_resource type="Texture2D" uid="uid://c3n7r80d4bem1" path="res://Graphics/Mouse/mouse_right.png" id="28_81ibq"]
 [ext_resource type="Script" path="res://Scenes/System Map/scan_prediction_upgrade.gd" id="31_k5t5q"]
-[ext_resource type="PackedScene" uid="uid://b123mkpiev56i" path="res://Scenes/Countdown Overlay/countdown_overlay.tscn" id="33_2fklq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ciwjv"]
 atlas = ExtResource("3_bft1b")
 region = Rect2(0, 0, 200, 112)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mljhq"]
+bg_color = Color(0.0666667, 0.0666667, 0.0666667, 0.627451)
+border_width_left = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wr1u4"]
+texture = ExtResource("11_1tiv0")
+modulate_color = Color(0.211765, 0.211765, 0.211765, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ee55b"]
 content_margin_left = 25.0
@@ -100,6 +112,76 @@ script = ExtResource("4_cfo3w")
 
 [node name="frame_update" type="Timer" parent="system/camera/canvas/map_overlay"]
 autostart = true
+
+[node name="countdown_overlay" type="Control" parent="system/camera/canvas"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("5_yv8xl")
+script = ExtResource("6_1p25s")
+
+[node name="main_panel" type="PanelContainer" parent="system/camera/canvas/countdown_overlay"]
+custom_minimum_size = Vector2(375, 140)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -187.5
+offset_right = 187.5
+offset_bottom = 127.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mljhq")
+
+[node name="main_margin" type="MarginContainer" parent="system/camera/canvas/countdown_overlay/main_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="main_scroll" type="VBoxContainer" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="title_label" type="Label" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="info_scroll" type="HBoxContainer" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll"]
+layout_mode = 2
+alignment = 1
+
+[node name="time_label" type="Label" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll/info_scroll"]
+custom_minimum_size = Vector2(100, 75)
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="arrow_texture" type="TextureRect" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll/info_scroll"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+texture = ExtResource("12_6oeqo")
+stretch_mode = 5
+
+[node name="hull_stress_increase_label" type="Label" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll/info_scroll"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_wr1u4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="description_label" type="Label" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="control" type="Control" parent="system/camera/canvas"]
 layout_mode = 3
@@ -597,8 +679,6 @@ item_0/text = "Quick Lock"
 item_0/icon = ExtResource("27_0ojpo")
 item_1/text = "Quick Orbit"
 item_1/icon = ExtResource("28_81ibq")
-
-[node name="countdown_overlay" parent="system/camera/canvas" instance=ExtResource("33_2fklq")]
 
 [node name="scan_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
 show_behind_parent = true

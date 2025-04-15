@@ -68,6 +68,7 @@ var player_audio_visualizer_unlocked: bool = false
 @onready var map_overlay = $camera/canvas/map_overlay
 @onready var data_value_increase_label = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/data_value_increase_label
 @onready var scan_prediction_upgrade = $scan_prediction_upgrade
+@onready var countdown_overlay = $camera/canvas/countdown_overlay
 
 @onready var LIDAR_ping = preload("res://Sound/SFX/LIDAR_ping.tres")
 @onready var LIDAR_bounceback = preload("res://Sound/SFX/LIDAR_bounceback.tres")
@@ -623,17 +624,27 @@ func _on_player_data_value_changed(new_value: int):
 		data_value_increase_label.blink()
 	pass
 
+func _on_update_countdown_overlay_info(title: String, description: String, hull_stress: int):
+	countdown_overlay.update_info(title, description, hull_stress)
+	pass
+
+func _on_update_countdown_overlay_time(time: float):
+	countdown_overlay.update_time(time)
+	pass
 
 
-func _on_audio_visualizer_button_pressed():
+
+
+
+func _on_audio_visualizer_button_pressed() -> void:
 	emit_signal("audioVisualizerPopup")
 	pass
 
-func _on_journey_map_button_pressed():
+func _on_journey_map_button_pressed() -> void:
 	emit_signal("journeyMapPopup")
 	pass 
 
-func _on_long_range_scopes_button_pressed():
+func _on_long_range_scopes_button_pressed() -> void:
 	emit_signal("longRangeScopesPopup")
 	pass
 
