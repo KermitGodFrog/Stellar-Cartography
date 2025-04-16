@@ -636,6 +636,10 @@ func _on_update_countdown_overlay_shown(shown: bool):
 	countdown_overlay.set_visible(shown)
 	pass
 
+func _on_CME_timeout(system_id: int):
+	countdown_overlay._on_CME_timeout(system_id)
+	pass
+
 
 
 func _on_audio_visualizer_button_pressed() -> void:

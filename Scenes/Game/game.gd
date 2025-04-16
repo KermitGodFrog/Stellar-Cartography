@@ -711,9 +711,12 @@ func _on_process_system_hazard(system: starSystemAPI):
 	match hazard:
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION:
 			
-			var time_total = metadata.get_or_add("CME_time_total", clamp(randfn(120, 30) - (game_data.player_weirdness_index * 30.0), 30.0, 240.0))
-			var time_current = metadata.get_or_add("CME_time_current", time_total)
+			#DEBUG
+			#var random_time = clamp(randfn(120, 30) - (game_data.player_weirdness_index * 30.0), 30.0, 240.0)
+			var random_time = 20.0
 			
+			var time_total = metadata.get_or_add("CME_time_total", random_time)
+			var time_current = metadata.get_or_add("CME_time_current", time_total)
 			var processor = load("res://Scenes/Countdown Processor/countdown_processor.tscn")
 			var CDP = processor.instantiate()
 			add_child(CDP)
@@ -763,9 +766,6 @@ func _on_add_console_entry(entry_text: String, text_color: Color = Color.WHITE):
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	print("GAME (DEBUG): PINGING")
 	system_map._on_sonar_ping(ping_width, ping_length, ping_direction)
-	#var incurred_hull_stress = round(remap(ping_width, 9, 90, 0, world.player.hull_stress_highest_arc))
-	#_on_add_player_hull_stress(incurred_hull_stress)
-	#can have multiple results here depending on what upgrades the player has related to the LIDAR
 	pass
 
 func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2):
@@ -949,12 +949,18 @@ func _on_add_player_mutiny_backing(amount : int) -> void:
 
 func _on_CME_time_current_updated(_time_current: float, _system_id: int):
 	world.get_system_from_identifier(_system_id).system_hazard_metadata["CME_time_current"] = _time_current
+	if _time_current <= 10:
+		get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/tick_high.wav"), -24, "SFX")
+	else:
+		get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/tick_low.wav"), -24, "SFX")
 	pass
 
 func _on_CME_timeout(_system_id: int):
 	#_system_id is appended here incase you want to physically change something in system as an effect or soemthing
 	_on_add_player_hull_stress(world.player.hull_stress_CME)
-	#psecial effects and shit
+	get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/coronal_mass_ejection.wav"), 0.0, "SFX")
+	#call countdown overlay for special effects - has to be in this function as the effects are CME specific so it shouldnt be a general coutndown overlay thing!
+	system_map._on_CME_timeout(_system_id)
 	pass
 
 func _on_update_countdown_overlay_info(_title: String, _description: String, _hull_stress: int):
@@ -963,11 +969,13 @@ func _on_update_countdown_overlay_info(_title: String, _description: String, _hu
 
 func _on_update_countdown_overlay_time(_time: float):
 	system_map._on_update_countdown_overlay_time(_time)
+	#tick sound is played in system map
 	pass
 
 func _on_update_countdown_overlay_shown(_shown: bool):
 	system_map._on_update_countdown_overlay_shown(_shown)
 	pass
+
 
 
 #the epic handshake between game.gd and pauseModeHandler.gd

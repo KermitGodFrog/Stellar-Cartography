@@ -125,6 +125,16 @@ mouse_filter = 2
 theme = ExtResource("5_yv8xl")
 script = ExtResource("6_1p25s")
 
+[node name="flash" type="ColorRect" parent="system/camera/canvas/countdown_overlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
 [node name="main_panel" type="PanelContainer" parent="system/camera/canvas/countdown_overlay"]
 custom_minimum_size = Vector2(375, 140)
 layout_mode = 1

@@ -5,6 +5,11 @@ extends Control
 @onready var hull_stress_label = $main_panel/main_margin/main_scroll/info_scroll/hull_stress_increase_label
 @onready var title_label = $main_panel/main_margin/main_scroll/title_label
 @onready var description_label = $main_panel/main_margin/main_scroll/description_label
+@onready var flash = $flash
+
+func _physics_process(delta: float) -> void:
+	flash.color = flash.color.lerp(Color(Color.WHITE, 0.0), delta)
+	pass
 
 func update_info(_title: String, _description: String, _hull_stress: int):
 	title_label.set_text(_title)
@@ -14,5 +19,8 @@ func update_info(_title: String, _description: String, _hull_stress: int):
 
 func update_time(_time: float):
 	time_label.set_text("%03d" % roundi(_time))
-	#special effects and shit if the time is LOW (VISUAL ONLY)
+	pass
+
+func _on_CME_timeout(_system_id: int): #ONLY happens when CME takes over countdown overlay and calls this, not every time!!!
+	flash.set_color(Color.WHITE)
 	pass
