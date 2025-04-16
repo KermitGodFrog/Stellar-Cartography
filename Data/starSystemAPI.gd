@@ -18,6 +18,7 @@ const time: int = 1000
 @export var name_scheme: game_data.NAME_SCHEMES = game_data.NAME_SCHEMES.STANDARD
 @export var special_system_classification: game_data.SPECIAL_SYSTEM_CLASSIFICATIONS = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE
 @export var system_hazard_classification: game_data.SYSTEM_HAZARD_CLASSIFICATIONS = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
+@export var system_hazard_metadata: Dictionary = {}
 
 func get_identifier():
 	return identifier

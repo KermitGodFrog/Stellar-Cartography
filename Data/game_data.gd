@@ -36,9 +36,10 @@ const SPECIAL_SYSTEM_CLASSIFICATION_CURVES = {
 	SPECIAL_SYSTEM_CLASSIFICATIONS.VOID: preload("res://Data/Spawn Data/Special Systems/void.tres")
 }
 
-enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE}
+enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE, CORONAL_MASS_EJECTION}
 const SYSTEM_HAZARD_CLASSIFICATION_CURVES = {
-	SYSTEM_HAZARD_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/System Hazards/none.tres")
+	SYSTEM_HAZARD_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/System Hazards/none.tres"),
+	SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION: preload("res://Data/Spawn Data/System Hazards/coronal_mass_ejection.tres")
 }
 
 const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
@@ -228,12 +229,13 @@ func saveWorld(world: worldAPI) -> void:
 	print("ERROR CODE: ", error)
 	pass
 
-func createWorld(_total_systems: int, _max_jumps: int, _hull_stress_wormhole: int, _SA_chance_per_candidate: float, _PA_chance_per_planet: float, _missing_AO_chance_per_planet: float) -> worldAPI:
+func createWorld(_total_systems: int, _max_jumps: int, _hull_stress_wormhole: int, _hull_stress_CME: int, _SA_chance_per_candidate: float, _PA_chance_per_planet: float, _missing_AO_chance_per_planet: float) -> worldAPI:
 	print("GAME DATA: CREATING WORLD")
 	var world = worldAPI.new()
 	world._max_jumps = _max_jumps
 	world._total_systems = _total_systems
 	world._hull_stress_wormhole = _hull_stress_wormhole
+	world._hull_stress_CME = _hull_stress_CME
 	world.SA_chance_per_candidate = _SA_chance_per_candidate
 	world.PA_chance_per_planet = _PA_chance_per_planet
 	world.missing_AO_chance_per_planet = _missing_AO_chance_per_planet

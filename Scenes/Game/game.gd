@@ -21,13 +21,14 @@ var world: worldAPI
 @onready var pause_mode_handler = $pauseModeHandler
 @onready var audio_handler = $audioHandler
 @onready var gas_layer_surveyor = $gas_layer_surveyor_window/gas_layer_surveyor
+@onready var countdown_processor: Node #quantum state of existing and not existing
 
 func _ready():
 	connect_all_signals()
 	
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 25, 0.01, 0.05, 0.25)
+		world = game_data.createWorld(25, 5, 25, 15, 0.01, 0.05, 0.25)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -68,7 +69,7 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 25, 0.01, 0.05, 0.25)
+		world = game_data.createWorld(25, 5, 25, 15, 0.01, 0.05, 0.25)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -231,8 +232,6 @@ func _physics_process(delta):
 		for body in current_bodies:
 			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
 			body.advance(delta) #capacity to do more stuff, can be overriden by classes that inherit bodyAPI
-	#if world.player.hull_deterioration == 100:
-		#_on_player_death()
 	
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
@@ -263,6 +262,9 @@ func _physics_process(delta):
 		#var new_query = responseQuery.new()
 		#new_query.add("concept", "DEBUGfalseMatchTest")
 		#get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	#ultra miscellanious:
+	_on_update_countdown_overlay_shown(countdown_processor != null)
 	pass
 
 func _on_player_theorised_body(theorised_body: bodyAPI):
@@ -537,24 +539,9 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 		destination.createAuxiliaryUnexplored()
 	
 	
-	#var destination_position: Vector2 = Vector2.ZERO
 	var destination_wormhole: wormholeBodyAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
-	#if destination_wormhole:
-		#destination.updateBodyPosition(destination_wormhole.get_identifier(), 0.01) #REQURIED SO WORMHOLE HAVE A POSITION OTHER THAN 0,0
-		#destination_position = destination_wormhole.position
-		#_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, destination_wormhole)
-		#system_3d.locked_body_identifier = destination_wormhole.get_identifier() #diesnt seem to work?!
-		#print_debug(destination_wormhole)
-		#print_debug(destination_wormhole.rotation)
-		#world.player.position = destination.get_body_from_identifier(destination_wormhole.hook_identifier)
 	destination_wormhole.known = true
 	
-	
-	#world.player.position = destination_position
-	#world.player.target_position = world.player.position
-	#system_map._on_start_movement_lock_timer()
-	
-	#no idea if anything below this point actually works so be careful \/\/\/\/
 	
 	#removing other possible systems to traverse from previous system
 	for w in wormholes:
@@ -634,7 +621,8 @@ func _on_player_win():
 	pass
 
 func _on_player_entering_system(system: starSystemAPI):
-	#called by _on_switch_star_system - SHOULD await the wormhole minigame closing before starting because of pause modes
+	#only called when entering a system for the first time, not for loading the system
+	#called by enter_wormhole - SHOULD await the wormhole minigame closing before starting because of pause modes
 	var new_query = responseQuery.new()
 	new_query.add("concept", "enteringSystem")
 	#new_query.add_tree_access("name", system.get_display_name()) # no point to do this as the system display name will always be 'random' or 'tutorial' or whatever!
@@ -710,7 +698,35 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	system_3d.reset_locked_body()
 	journey_map.add_new_system(world.player.systems_traversed)
 	journey_map.jumps_remaining = world.player.get_jumps_remaining() #required as it needs to update when the players system on game startup is loaded, not just wormhole traversal!
+	_on_process_system_hazard(to_system)
 	return to_system
+
+func _on_process_system_hazard(system: starSystemAPI):
+	#clear prior system hazard utility
+	if countdown_processor != null:
+		countdown_processor.queue_free()
+	#process new hazard
+	var hazard = system.system_hazard_classification
+	var metadata = system.system_hazard_metadata
+	match hazard:
+		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION:
+			
+			var time_random = clamp(randfn(120, 30) - (game_data.player_weirdness_index * 30.0), 30.0, 240.0)
+			var time_total = metadata.get_or_add("CME_time_total", time_random)
+			var time_current = metadata.get_or_add("CME_time_current", time_total)
+			var processor = load("res://Scenes/Countdown Processor/countdown_processor.tscn")
+			var CDP = processor.instantiate()
+			add_child(CDP)
+			countdown_processor = CDP
+			CDP.updateCountdownOverlay.connect(_on_update_countdown_overlay_info) # display
+			CDP.countdownTick.connect(_on_update_countdown_overlay_time.unbind(1)) # display
+			CDP.countdownTick.connect(_on_CME_time_current_updated) # real
+			CDP.countdownTimeout.connect(_on_CME_timeout) # real
+			CDP.initialize(system.get_identifier(), "WARNING", "CORONAL MASS EJECTION", world.player.hull_stress_CME, time_total, time_current)
+			
+		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
+			pass
+	pass
 
 func _on_locked_body_updated(body: bodyAPI):
 	system_3d.set("locked_body_identifier", body.get_identifier())
@@ -747,9 +763,6 @@ func _on_add_console_entry(entry_text: String, text_color: Color = Color.WHITE):
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	print("GAME (DEBUG): PINGING")
 	system_map._on_sonar_ping(ping_width, ping_length, ping_direction)
-	#var incurred_hull_stress = round(remap(ping_width, 9, 90, 0, world.player.hull_stress_highest_arc))
-	#_on_add_player_hull_stress(incurred_hull_stress)
-	#can have multiple results here depending on what upgrades the player has related to the LIDAR
 	pass
 
 func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2):
@@ -929,6 +942,35 @@ func _on_player_data_value_changed(new_value: int):
 
 func _on_add_player_mutiny_backing(amount : int) -> void:
 	world.player.addMutinyBacking(amount)
+	pass
+
+func _on_CME_time_current_updated(_time_current: float, _system_id: int):
+	world.get_system_from_identifier(_system_id).system_hazard_metadata["CME_time_current"] = _time_current
+	if _time_current <= 10:
+		get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/tick_high.wav"), -24, "SFX")
+	else:
+		get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/tick_low.wav"), -24, "SFX")
+	pass
+
+func _on_CME_timeout(_system_id: int):
+	#_system_id is appended here incase you want to physically change something in system as an effect or soemthing
+	_on_add_player_hull_stress(world.player.hull_stress_CME)
+	get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/coronal_mass_ejection.wav"), 0.0, "SFX")
+	#call countdown overlay for special effects - has to be in this function as the effects are CME specific so it shouldnt be a general coutndown overlay thing!
+	system_map._on_CME_timeout(_system_id)
+	pass
+
+func _on_update_countdown_overlay_info(_title: String, _description: String, _hull_stress: int):
+	system_map._on_update_countdown_overlay_info(_title, _description, _hull_stress)
+	pass
+
+func _on_update_countdown_overlay_time(_time: float):
+	system_map._on_update_countdown_overlay_time(_time)
+	#tick sound is played in system map
+	pass
+
+func _on_update_countdown_overlay_shown(_shown: bool):
+	system_map._on_update_countdown_overlay_shown(_shown)
 	pass
 
 

@@ -1,4 +1,5 @@
 Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Query Best Concept,Query Rand Best Concept,Query Old Best Concept,Options,Text
+# defaults,,,,,,,,,,
 DEBUG_printTestOpenDialog,concept: DEBUG_printTest,,openDialog: null,,,,,,$player_name: defaultLeave,"$concept $player_name $player_prefix $player_prefix_lower $player_speed $player_balance $player_current_value $player_total_score $player_max_jumps $player_jumps_remaining $player_weirdness_index ... $player_in_ANY_region , $player_in_ABYSS_region +++ $player_CHIEF_ENGINEER_alive yjiodsgiogs $randf"
 defaultOpenDialog,concept: followingBody,,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,
 defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,,,
@@ -10,6 +11,7 @@ defaultFailureSound,concept: defaultFailureSound,,playSoundEffect: dialogue_fail
 defaultHardLeave,"concept: optionSelected, option: defaultHardLeave",,closeDialog: HARD_LEAVE,,,,,,,
 defaultSoftLeave,"concept: optionSelected, option: defaultSoftLeave",,closeDialog: SOFT_LEAVE,,,,,,,
 ,,,,,,,,,,
+"# player start, win, death and story",,,,,,,,,,
 defaultPlayerStartOpenDialog,concept: playerStart,,openDialog: null,,,,,,Continue:defaultPlayerStartContinue,"[i]You are a newly established Captain of a starship on a mission of exploration. You have requested for a route to be calculated into an area of space known as New Eden, which reportedly houses a fragment of human civilisation long forgotten. The journey to New Eden be perilous, and the dangers you will face cannot be predicted. [/i]"
 defaultPlayerStartContinue,"concept: optionSelected, option: defaultPlayerStartContinue",,,,,,,,Step out of the transport:defaultPlayerStartPortal,Your transport attaches to a docking port of your new command with a series of whines. The hatch twists open.
 defaultPlayerStartPortal,"concept: optionSelected, option: defaultPlayerStartPortal",,,,,,defaultPlayerStartPortalResponse,,,
@@ -44,6 +46,7 @@ newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,,,"You have arrived in
 playerMutinyOpenDialog,concept: playerMutiny,,"openDialog: null, playSoundEffect: dialogue_gunshot.wav",,,,,,Exit:defaultHardLeave,You are killed in a mutiny.
 playerDeathOpenDialog,concept: playerDeath,,openDialog: null,,,,,,Exit:defaultLeave,You are dead.
 ,,,,,,,,,,
+# core entity interactions,,,,,,,,,,
 wormholeOpenDialog,"concept: followingBody, id: wormhole",,openDialog: null,defaultApproachMessage,,wormholeTryAVFlair,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
 wormholeTryAVFlairResponse,"concept: wormholeTryAVFlair, system_is_civilized: true, player_AUDIO_VISUALIZER_unlocked: true, pending_audio_profiles: true",,,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the data banks will be purged following the traversal of [i]$name[/i]."
 enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENTER_WORMHOLE,,,,,,,
@@ -63,7 +66,7 @@ stationDockingAccess,"concept: optionSelected, option: stationDockingAccess",,cl
 postSalvageLeave,"concept: optionSelected, option: postSalvageLeave",,closeDialog: POST_SALVAGE_LEAVE,,,,,,,
 stationSalvageDispatchResponse,"concept: optionSelected, option: stationSalvageDispatch",,addValueWithFlair: 5000,,,,,,Leave:postSalvageLeave,Useful data is aquired. 
 ,,,,,,,,,,
-,,,,,,,,,,
+#rendezvous points,,,,,,,,,,
 RP_OpenDialog,"concept: followingBody, id: rendezvousPoint",,openDialog: null,,populateRP_Options,,,,Leave:defaultLeave,Your ship approaches the rendezvous point. Your hand hovers over the intra-ship communications console in your ready room.
 RP_RuiOption,"concept: populateRP_Options, player_FIRST_OFFICER_alive: true",,,,,,,,Summon First Officer Rui: RP_RuiSummon,
 RP_JiyaOption,"concept: populateRP_Options, player_CHIEF_ENGINEER_alive: true",,,,,,,,Summon Chief Engineer Jiya: RP_JiyaSummon,
@@ -92,11 +95,10 @@ RP_WalkerSummon,"concept: optionSelected, option: RP_WalkerSummon",,,,populateRP
 RP_WalkerFallback,"concept: optionSelected, option: RP_WalkerFallback",,,,populateRP_WalkerOptions,,,,Dismiss Walker: RP_Fallback,"""$player_prefix, anything else that I can do for you, $player_prefix?"" Walker asks."
 ,,,,,,,,,,
 ,,,,,,,,,,
-,,,,,,,,,,
+# planetary anomalies,,,,,,,,,,
 gasSiphoningMessage,concept: gasSiphoningMessage,,,,,gasSiphoningMessageDispatch,,,,
 gasSiphoningNeptunianMessage,"concept: gasSiphoningMessageDispatch, planet_classification: Neptunian, gasSiphoningNeptunianMessagePREV: false",gasSiphoningNeptunianMessagePREV: true,,,,,,,,"[color=darkgray]Delving deep into the atmosphere of Neptunian and Jovian worlds in order to extract pressure-forged rare gasses has been a dangerous, yet profitable practice since the early days of space flight. On Neptunian worlds, this is often achieved via high altitude extraction depots, which extract more common gasses at high volumes. [/color]"
 gasSiphoningJovianMessage,"concept: gasSiphoningMessageDispatch, planet_classification: Jovian, gasSiphoningJovianMessagePREV: false",gasSiphoningJovianMessagePREV: true,,,,,,,,"[color=darkgray]Delving deep into the atmosphere of Neptunian and Jovian worlds in order to extract pressure-forged rare gasses has been a dangerous, yet profitable practice since the early days of space flight. On Jovian worlds, this is often achieved via specialised extraction ships, which glide deep before dropping weight to escape with a small yield of extremely profitable gas. [/color]"
-,,,,,,,,,,
 ,,,,,,,,,,
 PAHardLeave,"concept: optionSelected, option: PAHardLeave",,closeDialog: HARD_LEAVE,,,,,,,
 PASoftLeave,"concept: optionSelected, option: PASoftLeave",,closeDialog: SOFT_LEAVE,,,,,,,
@@ -227,7 +229,7 @@ PA_04HollowGiantLeave,"concept: optionSelected, option: PA_04HollowGiantLeave",,
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
-,,,,,,,,,,
+#space anomalies,,,,,,,,,,
 SAHardLeave,"concept: optionSelected, option: SAHardLeave",,closeDialog: HARD_LEAVE,,,,,,,
 SASoftLeave,"concept: optionSelected, option: SASoftLeave",,closeDialog: SOFT_LEAVE,,,,,,,
 ,,,,,,,,,,
@@ -252,7 +254,7 @@ SA_02GenericDispatchFailure,concept: SA_02GenericDispatchResponse,,,,,,,,Leave:S
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
-,,,,,,,,,,
+# special anomalies and special systems,,,,,,,,,,
 SpA_SentientAsteroidTheorised,"concept: theorisedBody, id: SpA_SentientAsteroid",,openDialog: null,,,,,,Go to flank speed: defaultLeave,"(UNFINISHED EVENT) Called over by staff on bridge as a contact confirmed (theorised) in the last scan is moving via some kind of propulsion system, despite being an asteroid. Decide to chase it down. Message should be written so the player assumes that they have to FOLLOW the contact, rather than orbit it. ""We need to get very close"""
 SpA_SentientAsteroidFollowing,"concept: followingBody, id: SpA_SentientAsteroid",,openDialog: null,,populateSpA_SentientAsteroidOptions,,,,"Collect telemetry data from afar: SpA_SentientAsteroidDefaultExpedition, Leave: defaultSoftLeave","(UNFINISHED EVENT) Get close to the asteroid. Deliberate as to whether to let it be or to send someone sufficienciently qualified (if available) over to get a sample. ""If someone sufficiently qualified was on the ship..."""
 SpA_SentientAsteroidFebrisExpeditionOption,"concept: populateSpA_SentientAsteroidOptions, player_MEDICAL_OFFICER_alive: true",,,,,,,,Order Febris to lead an expedition - we need a surface sample: SpA_SentientAsteroidFebrisExpedition,
@@ -262,7 +264,8 @@ SpA_SentientAsteroidFebrisExpeditionResponseFailure,concept: SpA_SentientAsteroi
 SpA_SentientAsteroidDefaultExpedition,"concept: optionSelected, option: SpA_SentientAsteroidDefaultExpedition",,addValueWithFlair: 2500,,,,,,Leave: defaultHardLeave,(UNFINISHED EVENT) default expedition
 ,,,,,,,,,,
 enteringSystemMessage,concept: enteringSystemMessage,,,,,,,,,Your ship enters the system.
-enteringSystemVoidOpenDialog,"concept: enteringSystem, special_system_classification: VOID",,"openDialog: null, addValueWithFlair: 25000",enteringSystemMessage,,,,,Proceed cautiously: defaultLeave,"As transit is completed, you are flagged by the senior LIDAR technician. He explains that the display is ‘suspiciously clear’ - there are no asteroids, no dust, no particles, no cosmic whirlwinds of material floating through the empty within the new star system. Matter is ejected from its host star normally, yet the residue produced suggests that the star did not exist a mere five minutes prior. The host star, and its three wormholes, stand as survivors to some great voiding, or newborns to some great creation."
+enteringSystemVoid,"concept: enteringSystem, special_system_classification: VOID",,openDialog: null,enteringSystemMessage,,,,,Proceed cautiously: defaultLeave,"As transit is completed, you are flagged by the senior LIDAR technician. He explains that the display is ‘suspiciously clear’ - there are no asteroids, no dust, no particles, no cosmic whirlwinds of material floating through the empty within the new star system. Matter is ejected from its host star normally, yet the residue produced suggests that the star did not exist a mere five minutes prior. The host star, and its three wormholes, stand as survivors to some great voiding, or newborns to some great creation."
+enteringSystemCME,"concept: enteringSystem, system_hazard_classification: CORONAL_MASS_EJECTION, enteringSystemCME_PREV: false",enteringSystemCME_PREV: true,openDialog: null,enteringSystemMessage,,,,,Proceed hastily: defaultLeave,"A post-transit checklist reveals that the primary star in-system is highly unstable. Closer observation depicts the telltale signs of an upcoming coronal mass ejection: a localized decrease in high-energy EM emissions, the presence of eruptive prominences and an uptick in solar flares. As EUV wave outflow begins to rise, navigation gets to work calculating the time permitted before the next ejection - you resign yourself to the fact that your ship will suffer damage to its electrical grid if not elsewhere by the initial acceleration."
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
@@ -270,8 +273,7 @@ enteringSystemVoidOpenDialog,"concept: enteringSystem, special_system_classifica
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
-,,,,,,,,,,
-,,,,,,,,,,
+# tutorials,,,,,,,,,,
 tutorialPlayerStart,concept: tutorialPlayerStart,"tutorialPreludeOrbitingPREV: false, tutorialIngressOrbitingPREV: false","openDialog: null, _TUTORIALSetIngressOverride: true, _TUTORIALSetOmissionOverride: true",,,,,,Continue:tutorialPlayerStartContinueA,"A voice crackles within your earpiece. “Okay. My name is Dawn; I will be supervising this session. Is that understood?” You acknowledge, and the voice continues. “Good. You've been briefed on the mission - get it done.”"
 tutorialPlayerStartContinueA,"concept: optionSelected, option: tutorialPlayerStartContinueA",,,,,,,,Continue:tutorialPlayerStartContinueB,"1)[i] Test the central board: W, A, S and D to move the camera, Q or E (or scroll) to zoom the camera in or out. The red sphere is a M-class star, the white square is your starship. [/i]"
 tutorialPlayerStartContinueB,"concept: optionSelected, option: tutorialPlayerStartContinueB",,setImage: tutorial_LIDAR_example.png,,,,,,Exit:defaultLeave,"2)[i] Mark a body by pinging it three times: Refer to the LIDAR module in the lower right of the interface - adjust the scan direction so it points towards the star by left clicking, set the arc to its maximum with the slider, and press the ‘PING’ button. [/i]"

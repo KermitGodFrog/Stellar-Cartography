@@ -11,6 +11,7 @@ class_name worldAPI
 @export var _total_systems: int 
 @export var _max_jumps: int
 @export var _hull_stress_wormhole: int
+@export var _hull_stress_CME: int
 
 @export var SA_chance_per_candidate: float
 @export var PA_chance_per_planet: float
@@ -41,6 +42,7 @@ func createPlayer(name: String, prefix: String) -> playerAPI:
 	new_player.max_jumps = _max_jumps
 	new_player.total_systems = _total_systems
 	new_player.hull_stress_wormhole = _hull_stress_wormhole
+	new_player.hull_stress_CME = _hull_stress_CME
 	
 	player = new_player
 	return new_player
