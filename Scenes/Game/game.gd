@@ -711,11 +711,8 @@ func _on_process_system_hazard(system: starSystemAPI):
 	match hazard:
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION:
 			
-			#DEBUG
-			#var random_time = clamp(randfn(120, 30) - (game_data.player_weirdness_index * 30.0), 30.0, 240.0)
-			var random_time = 20.0
-			
-			var time_total = metadata.get_or_add("CME_time_total", random_time)
+			var time_random = clamp(randfn(120, 30) - (game_data.player_weirdness_index * 30.0), 30.0, 240.0)
+			var time_total = metadata.get_or_add("CME_time_total", time_random)
 			var time_current = metadata.get_or_add("CME_time_current", time_total)
 			var processor = load("res://Scenes/Countdown Processor/countdown_processor.tscn")
 			var CDP = processor.instantiate()
