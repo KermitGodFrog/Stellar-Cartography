@@ -21,7 +21,6 @@ var music_linear_volume_target: float = 1.0
 var enable_music_votes: Array = []
 
 func _process(delta):
-	print(enable_music_votes)
 	enable_music_votes.append(_pause_mode == game_data.PAUSE_MODES.NONE)
 	
 	var enable_music: bool = enable_music_votes.all(equal_to_true)
