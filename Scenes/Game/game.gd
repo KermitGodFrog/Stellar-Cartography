@@ -244,8 +244,8 @@ func _physics_process(delta):
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
 	lrs_bestiary.set("discovered_entities_matrix", world.player.discovered_entities)
-	audio_handler.enable_music_votes.append(! $audio_visualizer_window.is_visible()) #there should not be green here
-	audio_handler.enable_music_votes.append(! countdown_processor != null)
+	audio_handler.enable_music_criteria["audio_visualizer_not_visible"] = !$audio_visualizer_window.is_visible()
+	audio_handler.enable_music_criteria["countdown_processor_not_active"] = !countdown_processor != null
 	
 	game_data.player_weirdness_index = world.player.weirdness_index #really hacky solution which should not have been done this way but im too tired to change the entire game now to accomodate it.
 	

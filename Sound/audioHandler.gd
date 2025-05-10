@@ -18,18 +18,17 @@ func _on_pause_mode_changed(value):
 
 
 var music_linear_volume_target: float = 1.0
-var enable_music_votes: Array = []
+var enable_music_criteria: Dictionary = {}
 
 func _process(delta):
-	enable_music_votes.append(_pause_mode == game_data.PAUSE_MODES.NONE)
+	enable_music_criteria["pause_mode_none"] = _pause_mode == game_data.PAUSE_MODES.NONE
 	
-	var enable_music: bool = enable_music_votes.all(equal_to_true)
+	var enable_music: bool = enable_music_criteria.values().all(equal_to_true)
 	match enable_music:
 		true:
 			music_linear_volume_target = 1.0
 		false:
 			music_linear_volume_target = 0.0
-	enable_music_votes.clear()
 	
 	#print("MUSIC LINEAR VOLUME TARGET: ", music_linear_volume_target)
 	#print("MUSIC REAL VOLUME (DB): ", music.volume_db)
