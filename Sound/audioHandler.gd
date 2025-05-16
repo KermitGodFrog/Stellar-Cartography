@@ -15,8 +15,6 @@ func _on_pause_mode_changed(value):
 @onready var music = $music
 @onready var intermission = $intermission
 
-
-
 var music_linear_volume_target: float = 1.0
 var enable_music_criteria: Dictionary = {}
 
