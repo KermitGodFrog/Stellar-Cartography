@@ -78,11 +78,9 @@ var player_audio_visualizer_unlocked: bool = false
 @onready var boost_end = preload("res://Sound/SFX/boost_end.wav")
 enum BOOST_SOUND_TYPES {START, END}
 
+@onready var entity_texture = preload("res://Graphics/entity_32x.png")
 @onready var question_mark_icon = preload("res://Graphics/question_mark.png")
-@onready var entity_icon = preload("res://Graphics/entity_32x.png")
-@onready var audio_visualizer_icon = preload("res://Graphics/audio_visualizer_frame.png")
-@onready var station_frame = preload("res://Graphics/station_frame.png")
-@onready var rendezvous_point_frame = preload("res://Graphics/rendezvous_point_frame.png")
+@onready var empty_frame = preload("res://Graphics/empty_frame.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body : bodyAPI
@@ -241,23 +239,30 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 			else:
 				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
 			
+			item.set_text(0, body.get_display_name())
+			item.set_icon(0, empty_frame)
+			
 			match body.get_type():
 				starSystemAPI.BODY_TYPES.STAR:
-					item.set_text(0, "%s - %s Class Star" % [body.get_display_name(), body.metadata.get("star_type")])
+					#item.set_text(0, "%s - %s Class Star" % [body.get_display_name(), body.metadata.get("star_type")])
+					item.set_icon(0, load("res://Graphics/new-system-list/star_frame.png"))
 					if body.get_identifier() == closest_body_id:
 						item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416).lightened(0.2))
 					else:
 						item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416))
 					
 				starSystemAPI.BODY_TYPES.PLANET:
-					item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
+					#item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
+					item.set_icon(0, get_planet_frame(body.metadata.get("planet_classification")))
+					
 					if (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
-						item.set_icon(0, audio_visualizer_icon)
+						item.set_icon(0, load("res://Graphics/audio_visualizer_frame.png"))
 					elif (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
 						item.set_icon(0, question_mark_icon)
 					
 				starSystemAPI.BODY_TYPES.WORMHOLE:
-					item.set_text(0, "%s - Wormhole" % body.get_display_name())
+					item.set_icon(0, load("res://Graphics/new-system-list/wormhole_frame.png"))
+					
 					match body.is_disabled(): #is_disabled() will be a function in new wormholeAPI
 						true:
 							if body == follow_body:
@@ -275,24 +280,20 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 								item.set_custom_bg_color(0, Color.WEB_PURPLE)
 					
 				starSystemAPI.BODY_TYPES.STATION:
-					item.set_text(0, "%s - Station" % body.get_display_name())
-					item.set_icon(0, station_frame)
+					item.set_icon(0, load("res://Graphics/station_frame.png"))
 					
 				starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
-					item.set_text(0, "%s" % body.get_display_name())
 					if body.metadata.get("is_space_anomaly_available", true) == true:
 						item.set_icon(0, question_mark_icon)
 					
 				starSystemAPI.BODY_TYPES.SPACE_ENTITY:
-					item.set_text(0, "%s" % game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
+					item.set_text(0, game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
 					item.set_icon(0, get_entity_frame(body.entity_classification))
 					
 				starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
-					item.set_text(0, "%s" % body.get_display_name())
-					item.set_icon(0, rendezvous_point_frame)
+					item.set_icon(0, load("res://Graphics/rendezvous_point_frame.png"))
 					
 				starSystemAPI.BODY_TYPES.CUSTOM:
-					item.set_text(0, "%s" % body.get_display_name())
 					var icon: Object
 					if body.is_available(): icon = load(body.icon_path)
 					else: icon = load(body.post_icon_path)
@@ -360,6 +361,8 @@ func _unhandled_input(event):
 		player_is_boosting = false
 		emit_signal("updatePlayerIsBoosting", player_is_boosting)
 		play_boost_sound(BOOST_SOUND_TYPES.END)
+	
+	
 	pass
 
 func reset_player_boosting() -> void:
@@ -453,7 +456,7 @@ func draw_map():
 		
 		if body is glintBodyAPI and body.is_known():
 			if show_overlay:
-				entity_icon.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false)
+				entity_texture.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false)
 	
 	for body in system.bodies:
 		
@@ -588,6 +591,16 @@ func get_entity_frame(classification: game_data.ENTITY_CLASSIFICATIONS) -> Resou
 		game_data.ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: return load("res://Graphics/lagrange_cloud_frame.png")
 		
 		_: return load("res://Graphics/empty_frame.png")
+
+func get_planet_frame(classification: String) -> Resource:
+	match classification:
+		"Terran":
+			return load("res://Graphics/new-system-list/terran_planet_frame.png")
+		"Neptunian":
+			return load("res://Graphics/new-system-list/neptunian_planet_frame.png")
+		"Jovian":
+			return load("res://Graphics/new-system-list/jovian_planet_frame.png")
+	return null
 
 func _on_found_body(id: int):
 	var body = system.get_body_from_identifier(id)
