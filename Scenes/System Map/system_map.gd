@@ -79,7 +79,8 @@ var player_audio_visualizer_unlocked: bool = false
 enum BOOST_SOUND_TYPES {START, END}
 
 @onready var entity_texture = preload("res://Graphics/entity_32x.png")
-@onready var question_mark_icon = preload("res://Graphics/question_mark.png")
+@onready var question_mark_frame = preload("res://Graphics/question_mark_frame.png")
+@onready var question_mark_texture = preload("res://Graphics/question_mark.png")
 @onready var empty_frame = preload("res://Graphics/empty_frame.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
@@ -258,7 +259,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					if (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
 						item.set_icon(0, load("res://Graphics/audio_visualizer_frame.png"))
 					elif (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
-						item.set_icon(0, question_mark_icon)
+						item.set_icon(0, question_mark_frame)
 					
 				starSystemAPI.BODY_TYPES.WORMHOLE:
 					item.set_icon(0, load("res://Graphics/new-system-list/wormhole_frame.png"))
@@ -284,7 +285,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					
 				starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
 					if body.metadata.get("is_space_anomaly_available", true) == true:
-						item.set_icon(0, question_mark_icon)
+						item.set_icon(0, question_mark_frame)
 					
 				starSystemAPI.BODY_TYPES.SPACE_ENTITY:
 					item.set_text(0, game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
@@ -361,8 +362,6 @@ func _unhandled_input(event):
 		player_is_boosting = false
 		emit_signal("updatePlayerIsBoosting", player_is_boosting)
 		play_boost_sound(BOOST_SOUND_TYPES.END)
-	
-	
 	pass
 
 func reset_player_boosting() -> void:
@@ -465,11 +464,11 @@ func draw_map():
 		if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_known(): 
 			if body.is_PA_valid():
 				if show_overlay:
-					question_mark_icon.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
+					question_mark_texture.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
 		elif body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ANOMALY and body.is_known(): 
 			if body.is_SA_valid():
 				if show_overlay:
-					question_mark_icon.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
+					question_mark_texture.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
 	
 	#draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
 	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, size_exponent)
