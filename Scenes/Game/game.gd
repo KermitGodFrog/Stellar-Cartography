@@ -115,6 +115,8 @@ func _ready():
 		
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
 		
+		get_tree().call_group("audioHandler", "play_once", load("res://Sound/Music/intro.wav"), 0.0, "Music")
+		
 		#var debug = responseQuery.new()
 		#debug.add("concept", "followingBody")
 		#debug.add("id", "planetaryAnomaly")
@@ -244,7 +246,9 @@ func _physics_process(delta):
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
 	lrs_bestiary.set("discovered_entities_matrix", world.player.discovered_entities)
-	audio_handler.set("audio_visualizer_visible", $audio_visualizer_window.is_visible()) # for music ducking, but there shouldnt be GREEN here so fix later!
+	
+	audio_handler.enable_music_criteria["audio_visualizer_not_visible"] = !$audio_visualizer_window.is_visible()
+	audio_handler.enable_music_criteria["countdown_processor_not_active"] = !countdown_processor != null
 	
 	game_data.player_weirdness_index = world.player.weirdness_index #really hacky solution which should not have been done this way but im too tired to change the entire game now to accomodate it.
 	

@@ -9,37 +9,34 @@ var _pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE:
 signal queuePauseMode(new_mode: game_data.PAUSE_MODES)
 signal setPauseMode(new_mode: game_data.PAUSE_MODES)
 func _on_pause_mode_changed(value):
-	match value:
-		game_data.PAUSE_MODES.NONE:
-			music_linear_volume_target = 1.0
-		_:
-			music_linear_volume_target = 0.0
 	pass
 
 @onready var UI_click_generic = preload("res://Sound/SFX/UI_click_generic.tres")
 @onready var music = $music
 @onready var intermission = $intermission
 
-#for ducking music when audio visualizer is open!
-var audio_visualizer_visible: bool = false:
-	set(value):
-		audio_visualizer_visible = value
-		_on_av_visibility_changed(value)
-func _on_av_visibility_changed(value):
-	match value:
-		true:
-			music_linear_volume_target = 0.0
-		false:
-			music_linear_volume_target = 1.0
-	pass
-
 var music_linear_volume_target: float = 1.0
+var enable_music_criteria: Dictionary = {}
 
 func _process(delta):
+	enable_music_criteria["pause_mode_none"] = _pause_mode == game_data.PAUSE_MODES.NONE
+	
+	var enable_music: bool = enable_music_criteria.values().all(equal_to_true)
+	match enable_music:
+		true:
+			music_linear_volume_target = 1.0
+		false:
+			music_linear_volume_target = 0.0
+	
 	#print("MUSIC LINEAR VOLUME TARGET: ", music_linear_volume_target)
 	#print("MUSIC REAL VOLUME (DB): ", music.volume_db)
 	music.volume_db = maxf(-80, move_toward(music.volume_db, linear_to_db(music_linear_volume_target), 100.0 * delta))
 	pass
+
+func equal_to_true(element: bool) -> bool:
+	return element == true
+
+
 
 func _ready():
 	music.connect("finished", _on_music_finished)

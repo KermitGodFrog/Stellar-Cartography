@@ -1,0 +1,8 @@
+{
+    "godotTools.editorPath.godot4": "/Users/kaden/Desktop/Godot 4.3.app",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/*.import": true
+    }
+}
