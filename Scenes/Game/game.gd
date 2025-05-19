@@ -115,7 +115,7 @@ func _ready():
 		
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
 		
-		get_tree().call_group("audioHandler", "play_once", load("res://Sound/Music/intro.wav"), 0.0, "Music")
+		get_tree().call_group("audioHandler", "queue_music", "res://Sound/Music/intro.wav")
 		
 		#var debug = responseQuery.new()
 		#debug.add("concept", "followingBody")
@@ -634,6 +634,11 @@ func _on_player_entering_system(system: starSystemAPI):
 	new_query.add_tree_access("system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(system.system_hazard_classification)))
 	new_query.add_tree_access("system_star_type", system.get_first_star().metadata.get("star_type"))
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	#not awaiting onCloseDialog because wacky shtuff happens!!!!!!! audioHandler should only play it when pause_mode is NONE anyway
+	
+	if system.is_civilized():
+		get_tree().call_group("audioHandler", "queue_music", "res://Sound/Music/motif.tres")
 	pass
 
 func _on_player_mutiny() -> void:

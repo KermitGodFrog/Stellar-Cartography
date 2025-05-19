@@ -17,20 +17,28 @@ func _on_pause_mode_changed(value):
 
 var music_linear_volume_target: float = 1.0
 var enable_music_criteria: Dictionary = {}
+var music_queue: Array[String] = []
 
 func _process(delta):
 	enable_music_criteria["pause_mode_none"] = _pause_mode == game_data.PAUSE_MODES.NONE
 	
 	var enable_music: bool = enable_music_criteria.values().all(equal_to_true)
 	match enable_music:
-		true:
-			music_linear_volume_target = 1.0
-		false:
-			music_linear_volume_target = 0.0
+		true: music_linear_volume_target = 1.0
+		false: music_linear_volume_target = 0.0
 	
 	#print("MUSIC LINEAR VOLUME TARGET: ", music_linear_volume_target)
 	#print("MUSIC REAL VOLUME (DB): ", music.volume_db)
 	music.volume_db = maxf(-80, move_toward(music.volume_db, linear_to_db(music_linear_volume_target), 100.0 * delta))
+	
+	if not music.is_playing():
+		if music_queue.size() > 0:
+			if _pause_mode == game_data.PAUSE_MODES.NONE:
+				var new_path = music_queue.pop_front()
+				print("(AUDIO HANDLER) PLAYING NEW MUSIC PATH: ", new_path)
+				var new = load(new_path)
+				music.set_stream(new)
+				music.play()
 	pass
 
 func equal_to_true(element: bool) -> bool:
@@ -39,9 +47,8 @@ func equal_to_true(element: bool) -> bool:
 
 
 func _ready():
-	music.connect("finished", _on_music_finished)
-	intermission.connect("timeout", _on_intermission_finished)
-	_on_music_finished()
+	intermission.connect("timeout", _on_intermission_timeout)
+	restart_intermission()
 	
 	for node in get_tree().get_nodes_in_group("playUIClickSFX"):
 		if node is Button:
@@ -52,19 +59,32 @@ func _ready():
 			node.connect("item_selected", _on_play_once_UI_click_SFX.unbind(1))
 	pass
 
-func _on_music_finished() -> void:
+
+
+
+
+
+
+
+func restart_intermission() -> void:
 	intermission.set_wait_time(
-		maxi(0, randfn(60.0, 15.0))
+		maxi(0, randfn(120.0, 30.0))
 		)
 	intermission.start()
 	pass
 
-func _on_intermission_finished() -> void:
+func _on_intermission_timeout() -> void:
 	if _pause_mode == game_data.PAUSE_MODES.NONE:
-		music.play()
-	else:
-		_on_music_finished()
+		music_queue.append("res://Sound/Music/ambience.tres")
+	restart_intermission()
 	pass
+
+
+
+
+
+
+
 
 func _on_play_once_UI_click_SFX() -> void:
 	play_once(UI_click_generic, -12.0, "SFX")
@@ -82,4 +102,9 @@ func play_once(stream: AudioStream, volume_db: float = 0.0, bus: StringName = "M
 
 func _on_play_once_player_finished(player: AudioStreamPlayer) -> void:
 	player.call_deferred("queue_free")
+	pass
+
+func queue_music(path: String) -> void:
+	music_queue.append(path)
+	print("(AUDIO HANDLER) PATH ADDED TO MUSIC QUEUE: ", path)
 	pass
