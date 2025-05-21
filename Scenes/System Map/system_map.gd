@@ -256,12 +256,12 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					#item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
 					item.set_icon(0, get_planet_frame(body.metadata.get("planet_classification")))
 					
-					if (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
-						item.set_icon(0, load("res://Graphics/audio_visualizer_frame.png"))
-						item.set_icon_modulate(0, Color.GREEN)
-					elif (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
+					if (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
 						item.set_icon(0, question_mark_frame)
 						ping_item_icon_color(item, Color.GREEN)
+					elif (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
+						item.set_icon(0, load("res://Graphics/audio_visualizer_frame.png"))
+						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					
 				starSystemAPI.BODY_TYPES.WORMHOLE:
 					item.set_icon(0, load("res://Graphics/new-system-list/wormhole_frame.png"))
