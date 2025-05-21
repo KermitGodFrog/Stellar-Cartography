@@ -258,8 +258,10 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					
 					if (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
 						item.set_icon(0, load("res://Graphics/audio_visualizer_frame.png"))
+						item.set_icon_modulate(0, Color.GREEN)
 					elif (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
 						item.set_icon(0, question_mark_frame)
+						ping_item_icon_color(item, Color.GREEN)
 					
 				starSystemAPI.BODY_TYPES.WORMHOLE:
 					item.set_icon(0, load("res://Graphics/new-system-list/wormhole_frame.png"))
@@ -286,6 +288,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
 					if body.metadata.get("is_space_anomaly_available", true) == true:
 						item.set_icon(0, question_mark_frame)
+						ping_item_icon_color(item, Color.GREEN)
 					
 				starSystemAPI.BODY_TYPES.SPACE_ENTITY:
 					item.set_text(0, game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
@@ -311,6 +314,10 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 func clear_system_list_caches() -> void:
 	#print("SYSTEM MAP (DEBUG): CLEARING SYSTEM LIST CACHES")
 	collapsed_cache.clear()
+	pass
+
+func ping_item_icon_color(item: TreeItem, color: Color, c: int = 0) -> void:
+	item.set_icon_modulate(c, color * maxf(sin(Time.get_unix_time_from_system()), 0.75))
 	pass
 
 
