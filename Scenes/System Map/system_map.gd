@@ -247,6 +247,8 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				starSystemAPI.BODY_TYPES.STAR:
 					#item.set_text(0, "%s - %s Class Star" % [body.get_display_name(), body.metadata.get("star_type")])
 					item.set_icon(0, load("res://Graphics/new-system-list/star_frame.png"))
+					item.set_tooltip_text(0, "%s - %s Class" % [item.get_text(0), body.metadata.get("star_type")])
+					
 					if body.get_identifier() == closest_body_id:
 						item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416).lightened(0.2))
 					else:
@@ -255,10 +257,11 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				starSystemAPI.BODY_TYPES.PLANET:
 					#item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
 					item.set_icon(0, get_planet_frame(body.metadata.get("planet_classification")))
+					item.set_tooltip_text(0, "%s - %s" % [item.get_text(0), body.metadata.get("planet_type")])
 					
 					if (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
 						item.set_icon(0, question_mark_frame)
-						ping_item_icon_color(item, Color.GREEN)
+						oscillate_item_icon_color(item, Color.GREEN)
 					elif (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
 						item.set_icon(0, load("res://Graphics/audio_visualizer_frame.png"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
@@ -288,7 +291,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
 					if body.metadata.get("is_space_anomaly_available", true) == true:
 						item.set_icon(0, question_mark_frame)
-						ping_item_icon_color(item, Color.GREEN)
+						oscillate_item_icon_color(item, Color.GREEN)
 					
 				starSystemAPI.BODY_TYPES.SPACE_ENTITY:
 					item.set_text(0, game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
@@ -316,7 +319,7 @@ func clear_system_list_caches() -> void:
 	collapsed_cache.clear()
 	pass
 
-func ping_item_icon_color(item: TreeItem, color: Color, c: int = 0) -> void:
+func oscillate_item_icon_color(item: TreeItem, color: Color, c: int = 0) -> void:
 	item.set_icon_modulate(c, color * maxf(sin(Time.get_unix_time_from_system()), 0.75))
 	pass
 
