@@ -111,7 +111,7 @@ layout_mode = 2
 theme_type_variation = &"ButtonDull"
 script = ExtResource("5_nlbm1")
 cost = 7500
-description = "Advanced scanning capability. Allows the ‘INFO’ tab on the central board to be utilised. The ‘INFO’ tab is able to display useful information about a locked body, depending on the type of locked body."
+description = "Advanced scanning capability. Increases the chance to detect planetary anomalies."
 
 [node name="4" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
@@ -264,7 +264,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
-text = "UNAVAILABLE : Install proprietary 'audio visualizer' software at your nearest Evil & Co or subsidiary vendor."
+text = "UNAVAILABLE : Collected no audio profiles as audio visualizer software is not installed."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
@@ -288,7 +288,6 @@ item_3/icon = ExtResource("5_oh1b1")
 item_4/text = "Eisegesis"
 item_5/text = "HIGH WIND SPEEDS"
 item_5/icon = ExtResource("7_pt3w3")
-item_6/text = ""
 item_7/text = "SAVE"
 item_7/icon = ExtResource("5_oh1b1")
 script = ExtResource("4_ng3on")

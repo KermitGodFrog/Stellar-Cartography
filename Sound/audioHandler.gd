@@ -8,7 +8,7 @@ var _pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE:
 		_on_pause_mode_changed(value)
 signal queuePauseMode(new_mode: game_data.PAUSE_MODES)
 signal setPauseMode(new_mode: game_data.PAUSE_MODES)
-func _on_pause_mode_changed(value):
+func _on_pause_mode_changed(_value):
 	pass
 
 @onready var UI_click_generic = preload("res://Sound/SFX/UI_click_generic.tres")
