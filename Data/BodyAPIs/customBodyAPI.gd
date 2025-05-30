@@ -1,7 +1,7 @@
 extends bodyAPI
 class_name customBodyAPI
 
-##On interaction (theorised, orbiting, following), the game will set this as the value of the 'id' fact, if configured. Leave empty to let the game search for more complex queries derived from the body type.
+##On interaction (theorised, orbiting, following), the game will set this as the value of the 'custom_id' fact, if configured. Leave empty to let the game search for more complex queries derived from the body type.
 @export var dialogue_tag: String:
 	get = get_dialogue_tag, set = set_dialogue_tag
 
