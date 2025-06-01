@@ -47,13 +47,14 @@ playerMutinyOpenDialog,concept: playerMutiny,,"openDialog: null, playSoundEffect
 playerDeathOpenDialog,concept: playerDeath,,openDialog: null,,,,,,Exit:defaultLeave,You are dead.
 ,,,,,,,,,,
 # core entity interactions,,,,,,,,,,
-wormholeOpenDialog,"concept: followingBody, type: WORMHOLE",,openDialog: null,defaultApproachMessage,,wormholeTryAVFlair,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
+wormholeOpenDialog,"concept: followingBody, type: WORMHOLE",,openDialog: null,defaultApproachMessage,,wormholeTryAVFlair,,,"Enter the wormhole:enterWormhole, Leave:defaultLeave",
 wormholeTryAVFlairResponse,"concept: wormholeTryAVFlair, system_civilized: true, player_AUDIO_VISUALIZER_unlocked: true, pending_audio_profiles: true",,,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the data banks will be purged following the traversal of [i]$name[/i]."
 enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENTER_WORMHOLE,,,,,,,
 wormholeDisabledOpenDialog,"concept: followingBody, type: WORMHOLE, wormhole_disabled: true",,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,"""This wormhole leads to our previous star system,"" the navigator on-deck informs you. ""At its present stability, we cannot risk traversal."""
 ,,,,,,,,,,
 spaceEntityOverride,"concept: followingBody, type: SPACE_ENTITY, player_LONG_RANGE_SCOPES_unlocked: true",,closeDialog: LONG_RANGE_SCOPES_OVERRIDE,,,,,,,
-spaceEntityOpenDialog,"concept: followingBody, type: SPACE_ENTITY, player_LONG_RANGE_SCOPES_unlocked: false",,openDialog: null,,,,,,Leave:defaultLeave,cant do that $player_prefix_lower no LRS module dumbfuck
+spaceEntityOpenDialog,"concept: followingBody, type: SPACE_ENTITY, player_LONG_RANGE_SCOPES_unlocked: false",,openDialog: null,defaultApproachMessage,,,,,Ask if it can be made clearer:spaceEntityContinue,A scope view of the phenomena is present on a junior officers console. The sight to behold is a collection of fuzzy white dots against a parallax of stars.
+spaceEntityContinue,"concept: optionSelected, option: spaceEntityContinue",,,,,,,,Leave:defaultLeave,"You ask if the scopes can be re-calibrated for a more distinct display. ""No, $player_prefix_lower,"" the junior officer replies, ""this is the sharpest we have been able to make it with the scopes on board... of course, we could get closer, but the Codex says otherwise."" You note that the aquisition of [color=yellow]long range scope technology[/color] would allow for data to be collected from the phenomena. "
 ,,,,,,,,,,
 planetOpenDialog,"concept: followingBody, type: PLANET",,"openDialog: null, getPlanetDescriptionWithFlair: $planet_type",defaultApproachMessage,,,,,Leave:defaultLeave,
 ,,,,,,,,,,
