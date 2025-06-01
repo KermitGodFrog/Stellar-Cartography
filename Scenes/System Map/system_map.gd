@@ -162,7 +162,7 @@ func _physics_process(delta):
 		body_attributes_list.add_item("orbital_distance %.2f (solar radii)" % follow_body.orbit_distance, null, false)
 		
 		#metadata
-		var excluding = ["iterations", "color", "value", "has_planetary_anomaly", "is_planetary_anomaly_available", "is_anomaly_available", "planetary_anomaly_seed", "has_missing_AO", "rendezvous_point_seed", "space_anomaly_seed", "is_space_anomaly_available"]
+		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "seed", "custom_available", "custom_follow_available", "custom_orbit_available"]
 		if follow_body.is_known():
 			for entry in follow_body.metadata:
 				if excluding.find(entry) == -1:
@@ -178,7 +178,7 @@ func _physics_process(delta):
 			if follow_body.get_current_variation() != -1:
 				var data_for_planet_type = system.planet_type_data.get(follow_body.metadata.get("planet_type"))
 				var variation_class = data_for_planet_type.get("variation_class")
-				if variation_class != null and (follow_body.metadata.get("has_missing_AO", false) == true):
+				if variation_class != null and (follow_body.metadata.get("missing_AO", false) == true):
 					picker_label.show()
 					picker_button.show()
 					picker_label.set_text(str(variation_class.capitalize(), " (AUDIO VISUALIZER): "))
@@ -258,10 +258,10 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					item.set_icon(0, get_planet_frame(body.metadata.get("planet_classification")))
 					item.set_tooltip_text(0, "%s - %s" % [item.get_text(0), body.metadata.get("planet_type")])
 					
-					if (body.metadata.get("has_planetary_anomaly", false) == true) and (body.metadata.get("is_planetary_anomaly_available", false) == true):
+					if (body.metadata.get("planetary_anomaly", false) == true) and (body.metadata.get("planetary_anomaly_available", false) == true):
 						item.set_icon(0, question_mark_frame)
 						oscillate_item_icon_color(item, Color.GREEN)
-					elif (body.metadata.get("has_missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
+					elif (body.metadata.get("missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
 						item.set_icon(0, load("res://Graphics/audio_visualizer_frame.png"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					
@@ -288,7 +288,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					item.set_icon(0, load("res://Graphics/station_frame.png"))
 					
 				starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
-					if body.metadata.get("is_space_anomaly_available", true) == true:
+					if body.metadata.get("space_anomaly_available", true) == true:
 						item.set_icon(0, question_mark_frame)
 						oscillate_item_icon_color(item, Color.GREEN)
 					

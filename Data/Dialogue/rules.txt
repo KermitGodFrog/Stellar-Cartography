@@ -4,7 +4,7 @@ DEBUG_printTestOpenDialog,concept: DEBUG_printTest,,openDialog: null,,,,,,$playe
 defaultOpenDialog,concept: followingBody,,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,
 defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,,,
 "#ALL valid concepts: playerStart, tutorialPlayerStart, playerWin, tutorialPlayerWin, playerDeath, moduleTutorial, theorisedBody, orbitingBody, followingBody, enteringSystem, playerMutiny",,,,,,,,,,
-"#ALL valid IDs (not including customBodyAPIs): wormhole, station, rendezvousPoint, planetaryAnomaly, planetaryAnomalyTutorialOverride, spaceAnomaly, planet (tutorial exclusive)",,,,,,,,,,
+"#ALL valid types: STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, CUSTOM",,,,,,,,,,
 defaultApproachMessage,concept: defaultApproachMessage,,,,,,,,,Your ship approaches [i]$name[/i].
 defaultSuccessSound,concept: defaultSuccessSound,,playSoundEffect: dialogue_success.wav,,,,,,,
 defaultFailureSound,concept: defaultFailureSound,,playSoundEffect: dialogue_failure.wav,,,,,,,
@@ -47,27 +47,30 @@ playerMutinyOpenDialog,concept: playerMutiny,,"openDialog: null, playSoundEffect
 playerDeathOpenDialog,concept: playerDeath,,openDialog: null,,,,,,Exit:defaultLeave,You are dead.
 ,,,,,,,,,,
 # core entity interactions,,,,,,,,,,
-wormholeOpenDialog,"concept: followingBody, id: wormhole",,openDialog: null,defaultApproachMessage,,wormholeTryAVFlair,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
-wormholeTryAVFlairResponse,"concept: wormholeTryAVFlair, system_is_civilized: true, player_AUDIO_VISUALIZER_unlocked: true, pending_audio_profiles: true",,,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the data banks will be purged following the traversal of [i]$name[/i]."
+wormholeOpenDialog,"concept: followingBody, type: WORMHOLE",,openDialog: null,defaultApproachMessage,,wormholeTryAVFlair,,,"Enter the Wormhole:enterWormhole, Leave:defaultLeave",
+wormholeTryAVFlairResponse,"concept: wormholeTryAVFlair, system_civilized: true, player_AUDIO_VISUALIZER_unlocked: true, pending_audio_profiles: true",,,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the data banks will be purged following the traversal of [i]$name[/i]."
 enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENTER_WORMHOLE,,,,,,,
-wormholeDisabledOpenDialog,"concept: followingBody, id: wormhole, is_wormhole_disabled: true",,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,"""This wormhole leads to our previous star system,"" the navigator on-deck informs you. ""At its present stability, we cannot risk traversal."""
+wormholeDisabledOpenDialog,"concept: followingBody, type: WORMHOLE, wormhole_disabled: true",,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,"""This wormhole leads to our previous star system,"" the navigator on-deck informs you. ""At its present stability, we cannot risk traversal."""
+,,,,,,,,,,
+spaceEntityOverride,"concept: followingBody, type: SPACE_ENTITY, player_LONG_RANGE_SCOPES_unlocked: true",,closeDialog: LONG_RANGE_SCOPES_OVERRIDE,,,,,,,
+spaceEntityOpenDialog,"concept: followingBody, type: SPACE_ENTITY, player_LONG_RANGE_SCOPES_unlocked: false",,openDialog: null,,,,,,Leave:defaultLeave,cant do that $player_prefix_lower no LRS module dumbfuck
 ,,,,,,,,,,
 stationApproachMessage,concept: stationApproachMessage,,,,,,,,,Your ship approaches the location of a space station defined in native star charts.
-stationOpenDialog,"concept: followingBody, id: station",,openDialog: null,stationApproachMessage,populateStationOptions,addStationFlair,,,Leave:defaultLeave,
+stationOpenDialog,"concept: followingBody, type: STATION, station_available: true",,openDialog: null,stationApproachMessage,populateStationOptions,addStationFlair,,,Leave:defaultLeave,
 ,,,,,,,,,,
 stationFlairStandard,"concept: addStationFlair, station_classification: STANDARD",,,,,,,,,[i]$name[/i] quickly establishes communications.
 stationFlairPirate,"concept: addStationFlair, station_classification: PIRATE",,,,,,,,,[i]$name[/i] quickly establishes communications.
-stationFlairAbandoned,"concept: addStationFlair, is_station_abandoned: true",,,,,,,,,[i]$name[/i] does not attempt to establish communications.
+stationFlairAbandoned,"concept: addStationFlair, station_abandoned: true",,,,,,,,,[i]$name[/i] does not attempt to establish communications.
 stationFlairDebris,"concept: addStationFlair, station_classification: DEBRIS",,,,,,,,,Sensors soon detect an expanding debris field.
 ,,,,,,,,,,
-stationDockingAccessOption,"concept: populateStationOptions, is_station_inhabited: true",,,,,,,,Request Docking Access: stationDockingAccess,
-stationSalvageOption,"concept: populateStationOptions, is_station_abandoned: true",,,,,,,,Scout for Salvage: stationSalvageDispatch,
+stationDockingAccessOption,"concept: populateStationOptions, station_inhabited: true",,,,,,,,Request Docking Access: stationDockingAccess,
+stationSalvageOption,"concept: populateStationOptions, station_abandoned: true",,,,,,,,Scout for Salvage: stationSalvageDispatch,
 stationDockingAccess,"concept: optionSelected, option: stationDockingAccess",,closeDialog: DOCK_WITH_STATION,,,,,,,
 postSalvageLeave,"concept: optionSelected, option: postSalvageLeave",,closeDialog: POST_SALVAGE_LEAVE,,,,,,,
 stationSalvageDispatchResponse,"concept: optionSelected, option: stationSalvageDispatch",,addValueWithFlair: 5000,,,,,,Leave:postSalvageLeave,Useful data is aquired. 
 ,,,,,,,,,,
 #rendezvous points,,,,,,,,,,
-RP_OpenDialog,"concept: followingBody, id: rendezvousPoint",,openDialog: null,,populateRP_Options,,,,Leave:defaultLeave,Your ship approaches the rendezvous point. Your hand hovers over the intra-ship communications console in your ready room.
+RP_OpenDialog,"concept: followingBody, type: RENDEZVOUS_POINT",,openDialog: null,,populateRP_Options,,,,Leave:defaultLeave,Your ship approaches the rendezvous point. Your hand hovers over the intra-ship communications console in your ready room.
 RP_RuiOption,"concept: populateRP_Options, player_FIRST_OFFICER_alive: true",,,,,,,,Summon First Officer Rui: RP_RuiSummon,
 RP_JiyaOption,"concept: populateRP_Options, player_CHIEF_ENGINEER_alive: true",,,,,,,,Summon Chief Engineer Jiya: RP_JiyaSummon,
 RP_WalkerOption,"concept: populateRP_Options, player_SECURITY_OFFICER_alive: true",,,,,,,,Summon Security Officer Walker: RP_WalkerSummon,
@@ -103,10 +106,10 @@ gasSiphoningJovianMessage,"concept: gasSiphoningMessageDispatch, planet_classifi
 PAHardLeave,"concept: optionSelected, option: PAHardLeave",,closeDialog: HARD_LEAVE,,,,,,,
 PASoftLeave,"concept: optionSelected, option: PASoftLeave",,closeDialog: SOFT_LEAVE,,,,,,,
 ,,,,,,,,,,
-PA_GenericPortal,"concept: followingBody, id: planetaryAnomaly",,,,,,PA_GenericPortalResponse,,,
-PA_TerranPortal,"concept: followingBody, id: planetaryAnomaly, planet_classification: Terran",,,,,,PA_TerranPortalResponse,,,
-PA_NeptunianPortal,"concept: followingBody, id: planetaryAnomaly, planet_classification: Neptunian",,,,,,PA_NeptunianPortalResponse,,,
-PA_JovianPortal,"concept: followingBody, id: planetaryAnomaly, planet_classification: Jovian",,,,,,PA_JovianPortalResponse,,,
+PA_GenericPortal,"concept: followingBody, type: PLANET, planetary_anomaly: true, planetary_anomaly_available: true",,,,,,PA_GenericPortalResponse,,,
+PA_TerranPortal,"concept: followingBody, type: PLANET, planet_classification: Terran, planetary_anomaly: true, planetary_anomaly_available: true",,,,,,PA_TerranPortalResponse,,,
+PA_NeptunianPortal,"concept: followingBody, type: PLANET, planet_classification: Neptunian, planetary_anomaly: true, planetary_anomaly_available: true",,,,,,PA_NeptunianPortalResponse,,,
+PA_JovianPortal,"concept: followingBody, type: PLANET, planet_classification: Jovian, planetary_anomaly: true, planetary_anomaly_available: true",,,,,,PA_JovianPortalResponse,,,
 ,,,,,,,,,,
 PA_StationGenericOpenDialog,"concept: PA_TerranPortalResponse, player_in_CORE_or_FRONTIER_region: true",,openDialog: null,defaultApproachMessage,,,,,"Request Docking Access: PA_StationGenericDockingAccess, Leave:PASoftLeave","There appears to be an occupied settlement, missing from native starcharts, on the surface of the planet. You recall that profits at such bases are usually lower than official counterparts. Communications are quickly established. "
 PA_StationGenericDockingAccess,"concept: optionSelected, option: PA_StationGenericDockingAccess",,closeDialog: HARD_LEAVE_STATION_OVERRIDE,,,,,,,
@@ -234,7 +237,7 @@ SAHardLeave,"concept: optionSelected, option: SAHardLeave",,closeDialog: HARD_LE
 SASoftLeave,"concept: optionSelected, option: SASoftLeave",,closeDialog: SOFT_LEAVE,,,,,,,
 ,,,,,,,,,,
 SAApproachMessage,concept: SAApproachMessage,,,,,,,,,Your ship approaches the location of a stable point in space.
-SA_Portal,"concept: followingBody, id: spaceAnomaly",,,,,,SA_PortalResponse,,,
+SA_Portal,"concept: followingBody, type: SPACE_ANOMALY, space_anomaly_available: true",,,,,,SA_PortalResponse,,,
 ,,,,,,,,,,
 SA_StationGenericOpenDialog,"concept: SA_PortalResponse, player_in_CORE_or_FRONTIER_region: true",,openDialog: null,SAApproachMessage,,,,,"Request Docking Access: SA_StationGenericDockingAccess, Leave:SASoftLeave","An outpost, missing from native starcharts, is detected. You recall that profits at such bases are usually lower than official counterparts. Communications are quickly established."
 SA_StationGenericDockingAccess,"concept: optionSelected, option: SA_StationGenericDockingAccess",,closeDialog: HARD_LEAVE_STATION_OVERRIDE,,,,,,,
@@ -255,8 +258,8 @@ SA_02GenericDispatchFailure,concept: SA_02GenericDispatchResponse,,,,,,,,Leave:S
 ,,,,,,,,,,
 ,,,,,,,,,,
 # special anomalies and special systems,,,,,,,,,,
-SpA_SentientAsteroidTheorised,"concept: theorisedBody, id: SpA_SentientAsteroid",,openDialog: null,,,,,,Go to flank speed: defaultLeave,"(UNFINISHED EVENT) Called over by staff on bridge as a contact confirmed (theorised) in the last scan is moving via some kind of propulsion system, despite being an asteroid. Decide to chase it down. Message should be written so the player assumes that they have to FOLLOW the contact, rather than orbit it. ""We need to get very close"""
-SpA_SentientAsteroidFollowing,"concept: followingBody, id: SpA_SentientAsteroid",,openDialog: null,,populateSpA_SentientAsteroidOptions,,,,"Collect telemetry data from afar: SpA_SentientAsteroidDefaultExpedition, Leave: defaultSoftLeave","(UNFINISHED EVENT) Get close to the asteroid. Deliberate as to whether to let it be or to send someone sufficienciently qualified (if available) over to get a sample. ""If someone sufficiently qualified was on the ship..."""
+SpA_SentientAsteroidTheorised,"concept: theorisedBody, type: CUSTOM, custom_id: SpA_SentientAsteroid",,openDialog: null,,,,,,Go to flank speed: defaultLeave,"(UNFINISHED EVENT) Called over by staff on bridge as a contact confirmed (theorised) in the last scan is moving via some kind of propulsion system, despite being an asteroid. Decide to chase it down. Message should be written so the player assumes that they have to FOLLOW the contact, rather than orbit it. ""We need to get very close"""
+SpA_SentientAsteroidFollowing,"concept: followingBody, type: CUSTOM, custom_id: SpA_SentientAsteroid, custom_available: true",,openDialog: null,,populateSpA_SentientAsteroidOptions,,,,"Collect telemetry data from afar: SpA_SentientAsteroidDefaultExpedition, Leave: defaultSoftLeave","(UNFINISHED EVENT) Get close to the asteroid. Deliberate as to whether to let it be or to send someone sufficienciently qualified (if available) over to get a sample. ""If someone sufficiently qualified was on the ship..."""
 SpA_SentientAsteroidFebrisExpeditionOption,"concept: populateSpA_SentientAsteroidOptions, player_MEDICAL_OFFICER_alive: true",,,,,,,,Order Febris to lead an expedition - we need a surface sample: SpA_SentientAsteroidFebrisExpedition,
 SpA_SentientAsteroidFebrisExpedition,"concept: optionSelected, option: SpA_SentientAsteroidFebrisExpedition",,,,,,SpA_SentientAsteroidFebrisExpeditionDispatchResponse,,,
 SpA_SentientAsteroidFebrisExpeditionResponseSuccess,concept: SpA_SentientAsteroidFebrisExpeditionDispatchResponse,,addValueWithFlair: 25000,,,,,,Leave: defaultHardLeave,(UNFINISHED EVENT) Febris successfully extracts a sample from the asteroid. You order a recall.
@@ -278,46 +281,47 @@ tutorialPlayerStart,concept: tutorialPlayerStart,"tutorialPreludeOrbitingPREV: f
 tutorialPlayerStartContinueA,"concept: optionSelected, option: tutorialPlayerStartContinueA",,,,,,,,Continue:tutorialPlayerStartContinueB,"1)[i] Test the central board: W, A, S and D to move the camera, Q or E (or scroll) to zoom the camera in or out. The red sphere is a M-class star, the white square is your starship. [/i]"
 tutorialPlayerStartContinueB,"concept: optionSelected, option: tutorialPlayerStartContinueB",,setImage: tutorial_LIDAR_example.png,,,,,,Exit:defaultLeave,"2)[i] Mark a body by pinging it three times: Refer to the LIDAR module in the lower right of the interface - adjust the scan direction so it points towards the star by left clicking, set the arc to its maximum with the slider, and press the ‘PING’ button. [/i]"
 ,,,,,,,,,,
-tutorialPreludeTheorised,"concept: theorisedBody, id: planet, name: Prelude",,openDialog: null,,,,,,Continue:tutorialPreludeTheorisedContinueA,You watch over the shoulder of your mock senior analyst as they report the third bounce-back. Their composure is a desperate attempt of professional under the bizarreness of the simulation room. Distinctly cadet. 
+tutorialPreludeTheorised,"concept: theorisedBody, type: PLANET, name: Prelude, tutorial: true",,openDialog: null,,,,,,Continue:tutorialPreludeTheorisedContinueA,You watch over the shoulder of your mock senior analyst as they report the third bounce-back. Their composure is a desperate attempt of professional under the bizarreness of the simulation room. Distinctly cadet. 
 tutorialPreludeTheorisedContinueA,"concept: optionSelected, option: tutorialPreludeTheorisedContinueA",,setImage: tutorial_orbit_example.png,,,,,,Continue:tutorialPreludeTheorisedContinueB,"1)[i] Discover a body by visually acquiring it: Click on the marked body (the triple question mark) on the system list to lock, and then press the orbit button in the lower left of the interface. Hover over buttons to bring up their tooltip. [/i]"
 tutorialPreludeTheorisedContinueB,"concept: optionSelected, option: tutorialPreludeTheorisedContinueB",,setImage: tutorial_scopes_example.png,,,,,,Exit:defaultLeave,2)[i] Click and drag up or down (or scroll) on the scopes - the 3D view in the lower right of the interface - to zoom in or out. Zooming in allows bodies to be visually acquired sooner. [/i]
 ,,,,,,,,,,
-tutorialPreludeOrbitingPortal,"concept: orbitingBody, id: planet, name: Prelude",,,,,tutorialPreludeOrbitingPortalResponse,,,,
+tutorialPreludeOrbitingPortal,"concept: orbitingBody, type: PLANET, name: Prelude, tutorial: true",,,,,tutorialPreludeOrbitingPortalResponse,,,,
 tutorialPreludeOrbiting,concept: tutorialPreludeOrbitingPortalResponse,tutorialPreludeOrbitingPREV: true,openDialog: null,,,,,,Continue:tutorialPreludeOrbitingContinue,1)[i] The question mark next to $name on the system list symbolises that it has an undocumented anomaly - these can result in rewards or tragedy. [/i]
 tutorialPreludeOrbitingContinue,"concept: optionSelected, option:tutorialPreludeOrbitingContinue",,setImage: tutorial_goto_example.png,,,,,,Exit:defaultLeave,"2)[i] Click on $name on the system list to lock, and then press the go-to button in the lower left of the interface. Wormholes, space stations, planetary anomalies, and other phenomena are all interacted with via the go-to button. [/i]"
 tutorialPreludeOrbitingCancel,"concept: tutorialPreludeOrbitingPortalResponse, tutorialPreludeOrbitingPREV: true",,,,,,,,,
 ,,,,,,,,,,
-tutorialPreludeFollowingPortal,"concept: followingBody, id: planetaryAnomalyTutorialOverride, name: Prelude",,,,,tutorialPreludeFollowingPortalResponse,,,,
+tutorialPreludeFollowingPortal,"concept: followingBody, type: PLANET, name: Prelude, tutorial: true, planetary_anomaly: true, planetary_anomaly_available: true",,,,,tutorialPreludeFollowingPortalResponse,,,,
 tutorialPreludeFollowing,concept: tutorialPreludeFollowingPortalResponse,tutorialPreludeFollowingPREV: true,"openDialog: null, _TUTORIALSetIngressOverride: false",defaultApproachMessage,,,,,Continue:tutorialPreludeFollowingContinueA,You run some mock transport launch drills to investigate a supposed anomaly on the surface.
 tutorialPreludeFollowingContinueA,"concept: optionSelected, option:tutorialPreludeFollowingContinueA",,,,,,,,Continue:tutorialPreludeFollowingContinueB,"1)[i] On the system map: Right click to lay in a course to your mouse pointer. Left click to direct your starships scopes towards your mouse pointer. Right click on a body to quick orbit, left click on a body to quick lock. [/i]"
 tutorialPreludeFollowingContinueB,"concept: optionSelected, option:tutorialPreludeFollowingContinueB",,setImage: tutorial_barycenter_example.png,,,,,,Exit:PAHardLeave,"2)[i] The barycenter visualizer - in the lower right of the interface - displays the direction of other bodies from the locked body with a blip. Mark the nearby wormhole: Lock $name, adjust your LIDAR direction so it matches the direction of the blip which is oscillating (only wormholes oscillate), use a smaller scan arc, and press the 'PING' button. Dark red blips are beyond your current scan arc. [/i]"
-tutorialPreludeFollowingCancel,"concept: tutorialPreludeFollowingPortalResponse, tutorialPreludeFollowingPREV: true",,,,,,,,,
+,,,,,,,,,,
 tutorialPreludeFollowingPlotCancel,"concept: tutorialPreludeFollowingPortalResponse, tutorialPreludeOrbitingPREV: false",,openDialog: null,defaultApproachMessage,,,,,Apologise and enter orbit:defaultLeave,"""Captain, you were meant to orbit $name,"" Dawn utters, annoyed."
 ,,,,,,,,,,
-tutorialIngressTheorised,"concept: theorisedBody, id: wormhole, name: Ingress",,"openDialog: null, _TUTORIALSetOmissionOverride: false",,,,,,Continue:tutorialIngressTheorisedContinueA,"Dawn speaks up. ""Seems like there has been a scheduling mistake - another team needs to use your simulation room, Captain. Enter orbit of the wormhole."""
+tutorialIngressTheorised,"concept: theorisedBody, type: WORMHOLE, name: Ingress, tutorial: true",,"openDialog: null, _TUTORIALSetOmissionOverride: false",,,,,,Continue:tutorialIngressTheorisedContinueA,"Dawn speaks up. ""Seems like there has been a scheduling mistake - another team needs to use your simulation room, Captain. Enter orbit of the wormhole."""
 tutorialIngressTheorisedContinueA,"concept: optionSelected, option: tutorialIngressTheorisedContinueA",,setImage: tutorial_orbit_example.png,,,,,,Continue:tutorialIngressTheorisedContinueB,"1)[i] Again: Click on the marked body (the triple question mark) on the system list to lock, and then press the orbit button in the lower left of the interface. [/i]"
 tutorialIngressTheorisedContinueB,"concept: optionSelected, option: tutorialIngressTheorisedContinueB",,clearImage: null,,,,,,Exit:defaultLeave,2)[i] Hold LSHIFT to boost. This will significantly shorten a journey at no cost to your starship. [/i]
 ,,,,,,,,,,
-tutorialIngressOrbitingPortal,"concept: orbitingBody, id: wormhole, name: Ingress",,,,,tutorialIngressOrbitingPortalResponse,,,,
+tutorialIngressOrbitingPortal,"concept: orbitingBody, type: WORMHOLE, name: Ingress, tutorial: true",,,,,tutorialIngressOrbitingPortalResponse,,,,
 tutorialIngressOrbiting,concept: tutorialIngressOrbitingPortalResponse,tutorialIngressOrbitingPREV: true,openDialog: null,,,,,,Attend to your duties:tutorialIngressOrbitingContinueA,"The wormhole glows a dull purple; its surface depicts the space around another star. Anti-protons are ejected in thin flux ropes, but no sooner snatched back into the distortion. Instruments go haywire as your starship enters orbit. ""Analyse and then enter the wormhole,"" Dawn commands."
 tutorialIngressOrbitingContinueA,"concept: optionSelected, option: tutorialIngressOrbitingContinueA",,setImage: tutorial_apps_dock_example.png,,,,,,Continue:tutorialIngressOrbitingContinueB,"1)[i] Check your exploration progress with the Journey Map on the apps dock in the far lower right of the interface. Click to open, click and drag up or down (or scroll) to offset the map. Bought modules also appear in the apps dock. [/i]"
 tutorialIngressOrbitingContinueB,"concept: optionSelected, option: tutorialIngressOrbitingContinueB",,setImage: tutorial_info_example.png,,,,,,Continue:tutorialIngressOrbitingContinueC,"2)[i] Analyse the wormhole: Click on the wormhole on the system list to lock, and then press the 'INFO' tab in the top left of the interface. The 'INFO' tab can display useful information about the locked body, depending on its type. [/i]"
 tutorialIngressOrbitingContinueC,"concept: optionSelected, option: tutorialIngressOrbitingContinueC",,setImage: tutorial_goto_example.png,,,,,,Exit:defaultLeave,"3)[i] Again: Click on the wormhole on the system list to lock, and then press the go-to button in the lower left of the interface when ready. [/i]"
 tutorialIngressOrbitingCancel,"concept: tutorialIngressOrbitingPortalResponse, tutorialIngressOrbitingPREV: true",,,,,,,,,
 ,,,,,,,,,,
-tutorialIngressFollowingPortal,"concept: followingBody, id: wormhole, name: Ingress",,,defaultApproachMessage,,tutorialIngressFollowingPortalResponse,,,,
+tutorialIngressFollowingPortal,"concept: followingBody, type: WORMHOLE, name: Ingress, tutorial: true",,,defaultApproachMessage,,tutorialIngressFollowingPortalResponse,,,,
 tutorialIngressFollowing,concept: tutorialIngressFollowingPortalResponse,tutorialIngressFollowingPREV: true,openDialog: null,,,,,,Continue:tutorialIngressFollowingContinueA,"""Great job,"" Dawn says. ""Shutting down."""
 tutorialIngressFollowingContinueA,"concept: optionSelected, option: tutorialIngressFollowingContinueA",,,,,,,,Continue:tutorialIngressFollowingContinueB,1)[i] Trade in discoveries for nanites at space stations: Buy modules and upgrades with nanites in order to survive and increase the value of your exploration. [/i]
 tutorialIngressFollowingContinueB,"concept: optionSelected, option: tutorialIngressFollowingContinueB",,setImage: tutorial_status_panel_example.png,,,,,,Enter the Wormhole:tutorialPlayerWin,2)[i] Refer to the tooltips on the status panel in the lower middle of the interface for survival information. [/i]
 tutorialIngressFollowingCancel,"concept: tutorialIngressFollowingPortalResponse, tutorialIngressFollowingPREV: true",,,,,,,,,
 tutorialIngressFollowingPlotCancel,"concept: tutorialIngressFollowingPortalResponse, tutorialIngressOrbitingPREV: false",,openDialog: null,,,,,,Apologise and enter orbit:defaultLeave,"Dawn speaks up, exasperated. ""Captain! You were meant to orbit $name."""
 ,,,,,,,,,,
-tutorialOmissionTheorisedCancel,"concept: theorisedBody, id: planet, name: Omission",,,,,,,,,
-tutorialOmissionOrbitingPortal,"concept: orbitingBody, id: planet, name: Omission",,,,,tutorialOmissionOrbitingPortalResponse,,,,
+tutorialOmissionTheorisedCancel,"concept: theorisedBody, type: PLANET, name: Omission, tutorial: true",,,,,,,,,
+tutorialOmissionOrbitingPortal,"concept: orbitingBody, type: PLANET, name: Omission, tutorial: true",,,,,tutorialOmissionOrbitingPortalResponse,,,,
 tutorialOmissionOrbiting,concept: tutorialOmissionOrbitingPortalResponse,tutorialOmissionOrbitingPREV: true,openDialog: null,,,,,,Exit:defaultLeave,"Dawn speaks up, obviously unhappy. ""Brilliant job, Captain. You have truely gone above and beyond,"" she sneers. ""Now get back to the wormhole."""
 tutorialOmissionOrbitingCancel,"concept: tutorialOmissionOrbitingPortalResponse, tutorialOmissionOrbitingPREV: true",,,,,,,,,
 ,,,,,,,,,,
 tutorialPlayerWin,"concept: optionSelected, option: tutorialPlayerWin",,"closeDialog: null, _TUTORIALPlayerWin: null",,,,,,,
+,,,,,,,,,,
 ,,,,,,,,,,
 moduleTutorialMessage,concept: moduleTutorialMessage,,,,,,,,,You are informed that instructions for the newly aquired $m_upper module are being sent to on-board databanks. You have them forwarded to the display in your quarters. 
 ,,,,,,,,,,

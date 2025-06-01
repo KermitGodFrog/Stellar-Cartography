@@ -76,7 +76,7 @@ func populateWithPlayerData(player: playerAPI):
 	pass
 
 func populateWithSystemData(system: starSystemAPI):
-	add("system_is_civilized", system.is_civilized())
+	add("system_civilized", system.is_civilized())
 	pass
 
 func populateWithWorldData():

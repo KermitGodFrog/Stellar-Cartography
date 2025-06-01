@@ -406,7 +406,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 					orbit_speed,
 					(radius / 109.1),
 					{"mass": (mass / 333000), "surface_color": color, "current_variation": planetBodyAPI.VARIATIONS.values().pick_random()},
-					{"planet_classification": planet_classification, "planet_type": planet_type, "value": value, "iterations": (hook.metadata.get("iterations") / 2), "has_planetary_anomaly": has_planetary_anomaly, "is_planetary_anomaly_available": is_planetary_anomaly_available, "planetary_anomaly_seed": randi(), "has_missing_AO": has_missing_AO}
+					{"planet_classification": planet_classification, "planet_type": planet_type, "value": value, "iterations": (hook.metadata.get("iterations") / 2), "planetary_anomaly": has_planetary_anomaly, "planetary_anomaly_available": is_planetary_anomaly_available, "seed": randi(), "missing_AO": has_missing_AO}
 				)
 				
 				get_body_from_identifier(new_planet).rotation = deg_to_rad(global_data.get_randf(0,360))
@@ -508,7 +508,7 @@ func generateRandomAnomalies(SA_chance_per_candidate: float = 0.0):
 				orbit_speed,
 				radius,
 				{},
-				{"space_anomaly_seed": randi()},
+				{"seed": randi()},
 			)
 			
 			get_body_from_identifier(new_anomaly).rotation = deg_to_rad(global_data.get_randf(0,360))

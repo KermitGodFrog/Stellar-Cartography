@@ -18,6 +18,6 @@ func set_guessed_variation(value) -> void:
 	guessed_variation = value
 
 func is_PA_valid() -> bool:
-	if ((metadata.get("has_planetary_anomaly", false) == true) and (metadata.get("is_planetary_anomaly_available", false) == true)):
+	if ((metadata.get("planetary_anomaly", false) == true) and (metadata.get("planetary_anomaly_available", false) == true)):
 		return true
 	return false
