@@ -41,12 +41,12 @@ identifier = 2
 display_name = "Prelude"
 hook_identifier = 1
 metadata = {
-"has_planetary_anomaly": true,
-"is_planetary_anomaly_available": true,
 "iterations": 12,
 "planet_classification": "Terran",
 "planet_type": "Iron",
-"planetary_anomaly_seed": 0,
+"planetary_anomaly": true,
+"planetary_anomaly_available": true,
+"seed": 0,
 "value": 514
 }
 orbit_distance = 20.322
@@ -73,7 +73,7 @@ metadata = {
 "iterations": 12,
 "planet_classification": "Neptunian",
 "planet_type": "Ice Dwarf",
-"planetary_anomaly_seed": 0,
+"seed": 0,
 "value": 3029
 }
 orbit_distance = 132.267
@@ -97,6 +97,7 @@ post_gen_location_candidates = []
 name_scheme = 0
 special_system_classification = 0
 system_hazard_classification = 0
+system_hazard_metadata = {}
 
 [sub_resource type="Resource" id="Resource_wvc64"]
 script = ExtResource("5_1oytx")
@@ -133,6 +134,7 @@ post_gen_location_candidates = []
 name_scheme = 0
 special_system_classification = 0
 system_hazard_classification = 0
+system_hazard_metadata = {}
 
 [sub_resource type="Resource" id="Resource_fn3du"]
 script = ExtResource("2_isoyl")
@@ -145,6 +147,7 @@ post_gen_location_candidates = []
 name_scheme = 0
 special_system_classification = 0
 system_hazard_classification = 0
+system_hazard_metadata = {}
 
 [resource]
 script = ExtResource("2_isoyl")
@@ -157,3 +160,4 @@ post_gen_location_candidates = []
 name_scheme = 0
 special_system_classification = 0
 system_hazard_classification = 0
+system_hazard_metadata = {}
