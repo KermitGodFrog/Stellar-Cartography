@@ -135,10 +135,11 @@ const planet_type_data = {
 	#dwarfs and giants have the same audio data and thus can have the same variation class!
 }
 
-const planet_descriptions = {
+
+const planet_descriptions = { #currently accessed by: go-to interactions
 	"Chthonian": "A solid planet which is, in itself, a metallic core. Result of a massive gravitational pull stripping the atmosphere of a Neptunian or Jovian world, leaving only the core behind.",
 	"Lava": "A solid planet composed of silicate, carbon and trace rare elements, with extensive sulfur concentrated near the surface due to constant active volcanism. Metallic core.",
-#	"Hycean": ,
+	"Hycean": "NO DESCRIPTION YET",
 	"Desert": "A solid planet with a human suitable nitrogen-oxygen atmosphere.",
 	"Ocean": "A solid planet with a human suitable nitrogen-oxygen atmosphere.",
 	"Earth-like": "A solid planet with a human suitable nitrogen-oxygen atmosphere.",
@@ -147,15 +148,25 @@ const planet_descriptions = {
 	"Nickel": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by a nickel or iron-nickel core.",
 	"Sulfur": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by a sulfur or iron-sulfur core.",
 	"Coreless": "A solid planet composed of silicate, water, carbon and trace rare elements which is notably devoid of a core. Comparatively greater water content than Iron, Nickel and Sulfur planets.",
-	"Carbon": "A solid planet composed of carbon in quantity, with trace amounts of silicate and rare elements, while being entirely devoid of water. Metallic core."
-#	"Fire Dwarf": ,
-#	"Gas Dwarf": ,
-#	"Ice Dwarf": ,
-#	"Helium Dwarf": ,
-#	"Fire Giant": ,
-#	"Gas Giant": ,
-#	"Ice Giant": ,
-#	"Helium Giant": ,
+	"Carbon": "A solid planet composed of carbon in quantity, with trace amounts of silicate and rare elements, while being entirely devoid of water. Metallic core.",
+	"Fire Dwarf": "NO DESCRIPTION YET",
+	"Gas Dwarf": "NO DESCRIPTION YET",
+	"Ice Dwarf": "NO DESCRIPTION YET",
+	"Helium Dwarf": "NO DESCRIPTION YET",
+	"Fire Giant": "NO DESCRIPTION YET",
+	"Gas Giant": "NO DESCRIPTION YET",
+	"Ice Giant": "NO DESCRIPTION YET",
+	"Helium Giant": "NO DESCRIPTION YET"
+}
+
+const star_descriptions = { #currently accessed by: go-to interactions
+	"M": "NO DESCRIPTION YET",
+	"K": "NO DESCRIPTION YET",
+	"G": "NO DESCRIPTION YET",
+	"F": "NO DESCRIPTION YET",
+	"A": "NO DESCRIPTION YET",
+	"B": "NO DESCRIPTION YET",
+	"O": "NO DESCRIPTION YET"
 }
 
 

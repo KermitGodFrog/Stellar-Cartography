@@ -570,7 +570,6 @@ func discoverRandomBodyWithFlair() -> void:
 		dialogue.add_text(str("[color=green](Gained no new scan data) [/color]"))
 	pass
 
-
 func increaseSecurityOfficerStanding(_amount: int) -> void:
 	player.increaseCharacterStanding(characterAPI.OCCUPATIONS.SECURITY_OFFICER, _amount)
 	pass
@@ -579,7 +578,15 @@ func decreaseSecurityOfficerStanding(_amount: int) -> void:
 	player.decreaseCharacterStanding(characterAPI.OCCUPATIONS.SECURITY_OFFICER, _amount)
 	pass
 
+func getPlanetDescriptionWithFlair(planet_type: String):
+	var description: String = system.planet_descriptions.get(planet_type, String())
+	dialogue.add_text("[color=darkgray]%s [/color]" % description)
+	pass
 
+func getStarDescriptionWithFlair(star_type: String):
+	var description: String = system.star_descriptions.get(star_type, String())
+	dialogue.add_text("[color=darkgray]%s [/color]" % description)
+	pass
 
 
 

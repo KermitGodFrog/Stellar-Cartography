@@ -349,6 +349,8 @@ func _on_player_following_body(following_body: bodyAPI):
 				lrs_bestiary._on_current_entity_changed(following_body)
 				if world.player.discovered_entities.find(following_body.entity_classification) == -1:
 					world.player.discovered_entities.append(following_body.entity_classification)
+		starSystemAPI.BODY_TYPES.STAR:
+			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
 	
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
