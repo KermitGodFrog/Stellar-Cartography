@@ -280,7 +280,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			
 			if rules_with_max_matches.size() > 0:
 				var random = RandomNumberGenerator.new()
-				random.set_seed(incoming_query.facts.get("custom_seed", randi()))
+				random.set_seed(incoming_query.facts.get("seed", randi()))
 				var random_index = random.randi_range(0, rules_with_max_matches.size() - 1)
 				
 				var matched_rule: responseRule = rules_with_max_matches[random_index]
