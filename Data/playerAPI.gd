@@ -62,6 +62,8 @@ enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RA
 
 @export var discovered_entities: PackedInt32Array = [] #int enum identifier from game.gd, e.g - [0,5,9]
 
+@export_storage var CME_immune: bool = false #didnt know where to put this
+
 @export var characters: Array[characterAPI] = [
 	preload("res://Data/Characters/rui.tres"),
 	preload("res://Data/Characters/jiya.tres"),

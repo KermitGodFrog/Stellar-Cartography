@@ -28,6 +28,7 @@ signal updateTargetPosition(pos: Vector2)
 signal updatedLockedBody(body: bodyAPI)
 signal lockedBodyDepreciated
 signal theorisedBody(id: int)
+signal playerBelowCMERingRadius
 
 signal audioVisualizerPopup
 signal journeyMapPopup
@@ -83,7 +84,7 @@ enum BOOST_SOUND_TYPES {START, END}
 @onready var empty_frame = preload("res://Graphics/empty_frame.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
-var follow_body_modifier : bodyAPI #used for drawing scope direction imdicator
+var follow_body_modifier : bodyAPI #used for drawing scope direction imdicator accurately and nothinh eklse
 var follow_body : bodyAPI
 var locked_body : bodyAPI
 var action_body : bodyAPI
@@ -95,6 +96,11 @@ var body_size_multiplier_hint: float = 0.0
 var SONAR_PINGS: Array[pingDisplayHelper]
 var SONAR_POLYGON: PackedVector2Array
 var SONAR_POLYGON_DISPLAY_TIME: float = 0
+
+#to display CME data
+var CME_RING_RADIUS: int = 0
+var CME_RING_SHOWN: bool = false
+const CME_MAX_RING_RADIUS: int = 1000
 
 #system list
 var collapsed_cache: Dictionary = {}
@@ -147,6 +153,14 @@ func _physics_process(delta):
 			ping.updateTime(delta)
 			if ping.time == 0:
 				SONAR_PINGS.erase(ping)
+	
+	#CME shenanigans
+	if CME_RING_SHOWN:
+		CME_RING_RADIUS = mini(CME_MAX_RING_RADIUS, CME_RING_RADIUS + 1)
+		if player_position_matrix[0].distance_to(system.get_first_star().position) < CME_RING_RADIUS:
+			_on_player_below_CME_ring_radius()
+		if CME_RING_RADIUS == CME_MAX_RING_RADIUS:
+			CME_RING_SHOWN = false
 	
 	#INFOR TAB!!!!!!! \/\/\\/\/
 	if follow_body and follow_body.is_known(): follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
@@ -391,6 +405,7 @@ func reset_actions_buttons_pressed() -> void: #godot 4.3 migration issue quickfi
 func _draw():
 	draw_map()
 	draw_sonar()
+	draw_CME()
 	pass
 
 func draw_sonar():
@@ -399,6 +414,11 @@ func draw_sonar():
 	for ping in SONAR_PINGS:
 		ping.updateDisplay()
 		draw_circle(ping.position, ping.current_radius, ping.current_color)
+	pass
+
+func draw_CME():
+	if CME_RING_SHOWN:
+		draw_circle(Vector2.ZERO, CME_RING_RADIUS, Color.WHITE.darkened(remap(float(CME_RING_RADIUS), float(), float(CME_MAX_RING_RADIUS), 0.0, 1.0)), false, 10)
 	pass
 
 func draw_map():
@@ -493,10 +513,6 @@ func draw_map():
 		draw_circle(camera_target_position, size_exponent * 1.5, Color.LIGHT_SKY_BLUE)
 		draw_line(player_position_matrix[0], player_position_matrix[0] + (player_position_matrix[0].direction_to(camera_target_position) * 100.0), Color.LIGHT_SKY_BLUE, size_exponent)
 	#draw_texture_rect(camera_here_tex, Rect2(Vector2(camera_target_position.x - size_exponent, camera_target_position.y - size_exponent), Vector2(size_exponent,size_exponent)), false)
-	pass
-
-func draw_CME():
-	#this is a good idea
 	pass
 
 #func draw_custom_arc(center, radius, angle_from, angle_to, color): #this is used under the assumption that batching can only occur on polygons/lines/rects, although this info is from godot 3.5 so idk (NO THICKNESS VARIABBLE, NOT SURE HOW TO ADD, ABANDONED THIS)
@@ -665,10 +681,18 @@ func _on_update_countdown_overlay_shown(shown: bool):
 	countdown_overlay.set_visible(shown)
 	pass
 
-func _on_CME_timeout(system_id: int):
-	countdown_overlay._on_CME_timeout(system_id)
+func _on_CME_timeout(_system_id: int):
+	CME_RING_RADIUS = int()
+	CME_RING_SHOWN = true
 	pass
 
+func _on_player_below_CME_ring_radius():
+	emit_signal("playerBelowCMERingRadius")
+	pass
+
+func _on_countdown_overlay_CME_flash() -> void:
+	countdown_overlay._on_CME_flash()
+	pass
 
 
 func _on_audio_visualizer_button_pressed() -> void:

@@ -157,6 +157,7 @@ func connect_all_signals() -> void:
 	system_map.connect("lockedBodyDepreciated", _on_locked_body_depreciated)
 	system_map.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	system_map.connect("theorisedBody", _on_theorised_body)
+	system_map.connect("playerBelowCMERingRadius", _on_player_below_CME_ring_radius)
 	system_map.connect("DEBUG_REVEAL_ALL_WORMHOLES", _ON_DEBUG_REVEAL_ALL_WORMHOLES)
 	system_map.connect("DEBUG_REVEAL_ALL_BODIES", _ON_DEBUG_REVEAL_ALL_BODIES)
 	system_map.connect("DEBUG_QUICK_ADD_NANITES", _ON_DEBUG_QUICK_ADD_NANITES)
@@ -909,10 +910,18 @@ func _on_CME_time_current_updated(_time_current: float, _system_id: int):
 
 func _on_CME_timeout(_system_id: int):
 	#_system_id is appended here incase you want to physically change something in system as an effect or soemthing
-	_on_add_player_hull_stress(world.player.hull_stress_CME)
-	get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/coronal_mass_ejection.wav"), 0.0, "SFX")
-	#call countdown overlay for special effects - has to be in this function as the effects are CME specific so it shouldnt be a general coutndown overlay thing!
+	world.player.CME_immune = false
 	system_map._on_CME_timeout(_system_id)
+	#call countdown overlay for special effects - has to be in this function as the effects are CME specific so it shouldnt be a general coutndown overlay thing!
+	pass
+
+func _on_player_below_CME_ring_radius():
+	if not world.player.CME_immune:
+		world.player.CME_immune = true
+		
+		_on_add_player_hull_stress(world.player.hull_stress_CME)
+		get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/coronal_mass_ejection.wav"), 0.0, "SFX")
+		system_map._on_countdown_overlay_CME_flash()
 	pass
 
 func _on_update_countdown_overlay_info(_title: String, _description: String, _hull_stress: int):

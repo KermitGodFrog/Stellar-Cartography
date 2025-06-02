@@ -21,6 +21,6 @@ func update_time(_time: float):
 	time_label.set_text("%03d" % roundi(_time))
 	pass
 
-func _on_CME_timeout(_system_id: int): #ONLY happens when CME takes over countdown overlay and calls this, not every time!!!
+func _on_CME_flash(): #ONLY happens when CME takes over countdown overlay and calls this, not every time!!!
 	flash.set_color(Color.WHITE)
 	pass
