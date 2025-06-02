@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=52 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -28,6 +28,9 @@
 [ext_resource type="Texture2D" uid="uid://ce1et15cnh5ao" path="res://Graphics/morale_icon.png" id="13_vaatn"]
 [ext_resource type="Script" path="res://Scenes/System Map/hull_stress_button.gd" id="14_u08qu"]
 [ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://Scenes/Custom Tooltip/custom_tooltip_host.tres" id="15_534fl"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="15_y0hnn"]
+[ext_resource type="Script" path="res://Scenes/System Map/current_action_label.gd" id="16_vo58t"]
+[ext_resource type="Script" path="res://Scenes/System Map/travel_modifier_label.gd" id="17_ow1c8"]
 [ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://Graphics/journey_map_icon.png" id="19_36y85"]
 [ext_resource type="Texture2D" uid="uid://dka6vwu04ir6e" path="res://Graphics/long_range_scopes_icon.png" id="22_sph0q"]
 [ext_resource type="Theme" uid="uid://bmu4r6ao4lfps" path="res://Scenes/controls_help_theme.tres" id="26_737wk"]
@@ -67,6 +70,9 @@ bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w1mgb"]
 bg_color = Color(0.211765, 0.211765, 0.211765, 0.415686)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s0dtd"]
+bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r4cqc"]
 
@@ -216,19 +222,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="tabs" type="TabContainer" parent="system/camera/canvas/control"]
-custom_minimum_size = Vector2(450, 900)
+[node name="tabs_and_ca_scroll" type="HBoxContainer" parent="system/camera/canvas/control"]
+custom_minimum_size = Vector2(650, 900)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 450.0
 grow_vertical = 2
+
+[node name="tabs" type="TabContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll"]
+custom_minimum_size = Vector2(450, 900)
+layout_mode = 2
+size_flags_horizontal = 0
 mouse_filter = 0
 theme = ExtResource("3_djc4s")
 tab_alignment = 2
 current_tab = 0
 
-[node name="OVERVIEW" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
+[node name="OVERVIEW" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs"]
 custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
 mouse_filter = 0
@@ -236,7 +246,7 @@ mouse_default_cursor_shape = 1
 theme = ExtResource("3_djc4s")
 metadata/_tab_index = 0
 
-[node name="system_list" type="Tree" parent="system/camera/canvas/control/tabs/OVERVIEW"]
+[node name="system_list" type="Tree" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW"]
 custom_minimum_size = Vector2(450, 700)
 layout_mode = 2
 size_flags_vertical = 3
@@ -247,19 +257,19 @@ allow_search = false
 enable_recursive_folding = false
 scroll_horizontal_enabled = false
 
-[node name="actions_panel" type="Panel" parent="system/camera/canvas/control/tabs/OVERVIEW"]
+[node name="actions_panel" type="Panel" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW"]
 custom_minimum_size = Vector2(450, 100)
 layout_mode = 2
 theme = ExtResource("3_djc4s")
 
-[node name="actions_scroll" type="HBoxContainer" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel"]
+[node name="actions_scroll" type="HBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel"]
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 alignment = 1
 
-[node name="orbit_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
+[node name="orbit_button" type="Button" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 tooltip_text = "Orbit the locked body."
@@ -270,7 +280,7 @@ script = ExtResource("8_ne0ka")
 texture_node = NodePath("orbit_texture")
 tooltip_title = "'ORBIT' ACTION"
 
-[node name="orbit_texture" type="TextureRect" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button"]
+[node name="orbit_texture" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -283,7 +293,7 @@ mouse_filter = 2
 texture = ExtResource("5_hp0se")
 stretch_mode = 5
 
-[node name="go_to_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
+[node name="go_to_button" type="Button" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 tooltip_text = "Go-to (follow) the locked body. "
@@ -294,7 +304,7 @@ script = ExtResource("8_ne0ka")
 texture_node = NodePath("go_to_texture")
 tooltip_title = "'GO-TO' ACTION"
 
-[node name="go_to_texture" type="TextureRect" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button"]
+[node name="go_to_texture" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -307,7 +317,7 @@ mouse_filter = 2
 texture = ExtResource("10_xhqpl")
 stretch_mode = 5
 
-[node name="stop_button" type="Button" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll"]
+[node name="stop_button" type="Button" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 tooltip_text = "Cancel 'GO-TO' and/or 'ORBIT' orders for the locked body. "
@@ -318,7 +328,7 @@ script = ExtResource("8_ne0ka")
 texture_node = NodePath("stop_texture")
 tooltip_title = "'STOP' ACTION"
 
-[node name="stop_texture" type="TextureRect" parent="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button"]
+[node name="stop_texture" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -331,7 +341,7 @@ mouse_filter = 2
 texture = ExtResource("11_vquxl")
 stretch_mode = 5
 
-[node name="INFO" type="VBoxContainer" parent="system/camera/canvas/control/tabs"]
+[node name="INFO" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs"]
 visible = false
 custom_minimum_size = Vector2(450, 850)
 layout_mode = 2
@@ -339,7 +349,7 @@ mouse_filter = 0
 theme = ExtResource("3_djc4s")
 metadata/_tab_index = 1
 
-[node name="follow_body_label" type="Label" parent="system/camera/canvas/control/tabs/INFO"]
+[node name="follow_body_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme = ExtResource("3_djc4s")
@@ -350,25 +360,25 @@ text = "CBCBCBCBCB"
 vertical_alignment = 1
 clip_text = true
 
-[node name="body_attributes_list" type="ItemList" parent="system/camera/canvas/control/tabs/INFO"]
+[node name="body_attributes_list" type="ItemList" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO"]
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("3_djc4s")
 allow_search = false
 
-[node name="picker_header" type="Label" parent="system/camera/canvas/control/tabs/INFO"]
+[node name="picker_header" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_hhsj4")
 text = "- ADDITIONAL OBSERVATIONS -"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="picker_panel" type="Panel" parent="system/camera/canvas/control/tabs/INFO"]
+[node name="picker_panel" type="Panel" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO"]
 custom_minimum_size = Vector2(450, 200)
 layout_mode = 2
 
-[node name="picker_margin" type="MarginContainer" parent="system/camera/canvas/control/tabs/INFO/picker_panel"]
+[node name="picker_margin" type="MarginContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -380,16 +390,16 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="picker_scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin"]
+[node name="picker_scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel/picker_margin"]
 layout_mode = 2
 
-[node name="picker_label" type="Label" parent="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll"]
+[node name="picker_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll"]
 visible = false
 layout_mode = 2
 text = "VARIATION:"
 vertical_alignment = 1
 
-[node name="picker_button" type="OptionButton" parent="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll"]
+[node name="picker_button" type="OptionButton" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll"]
 visible = false
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -405,6 +415,43 @@ popup/item_1/text = "MEDIUM"
 popup/item_1/id = 1
 popup/item_2/text = "HIGH"
 popup/item_2/id = 2
+
+[node name="ca_panel" type="PanelContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_s0dtd")
+
+[node name="margin" type="MarginContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel/margin"]
+layout_mode = 2
+
+[node name="current_action_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel/margin/scroll"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("15_y0hnn")
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 2
+text_overrun_behavior = 4
+script = ExtResource("16_vo58t")
+
+[node name="travel_modifier_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel/margin/scroll"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_vertical = 8
+size_flags_stretch_ratio = 0.5
+theme_override_fonts/font = ExtResource("15_y0hnn")
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 2
+script = ExtResource("17_ow1c8")
 
 [node name="console" type="RichTextLabel" parent="system/camera/canvas/control"]
 custom_minimum_size = Vector2(500, 200)
@@ -679,13 +726,13 @@ show_behind_parent = true
 script = ExtResource("31_k5t5q")
 
 [connection signal="timeout" from="system/camera/canvas/map_overlay/frame_update" to="system/camera/canvas/map_overlay" method="_on_frame_update_timeout"]
-[connection signal="item_collapsed" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_collapsed"]
-[connection signal="item_mouse_selected" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_mouse_selected"]
-[connection signal="item_selected" from="system/camera/canvas/control/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_selected"]
-[connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_pressed"]
-[connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_pressed"]
-[connection signal="pressed" from="system/camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]
-[connection signal="item_selected" from="system/camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button" to="system" method="_on_picker_button_item_selected"]
+[connection signal="item_collapsed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_collapsed"]
+[connection signal="item_mouse_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_mouse_selected"]
+[connection signal="item_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_selected"]
+[connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]
+[connection signal="item_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button" to="system" method="_on_picker_button_item_selected"]
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" to="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" method="_on_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/journey_map_button" to="system" method="_on_journey_map_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_pressed"]

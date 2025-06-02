@@ -44,6 +44,7 @@ func _ready():
 		new_player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
 		new_player.connect("moraleChanged", _on_player_morale_changed)
 		new_player.connect("dataValueChanged", _on_player_data_value_changed)
+		new_player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
 		
 		var new: starSystemAPI = load("res://Data/tutorial_system.tres")
 		world.star_systems.append(new)
@@ -83,6 +84,7 @@ func _ready():
 		new_player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
 		new_player.connect("moraleChanged", _on_player_morale_changed)
 		new_player.connect("dataValueChanged", _on_player_data_value_changed)
+		new_player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
 		
 		#new game stuff
 		var ghost: starSystemAPI = _on_create_new_star_system()
@@ -136,6 +138,7 @@ func _ready():
 		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
 		world.player.connect("moraleChanged", _on_player_morale_changed)
 		world.player.connect("dataValueChanged", _on_player_data_value_changed)
+		world.player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
 		
 		for i in world.player.current_star_system.destination_systems:
 			i.previous_system = world.player.current_star_system #really important  actually
@@ -158,7 +161,7 @@ func connect_all_signals() -> void:
 	system_map.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	system_map.connect("theorisedBody", _on_theorised_body)
 	system_map.connect("playerBelowCMERingRadius", _on_player_below_CME_ring_radius)
-	system_map.connect("playerInAsteroidBeltUpdated", _on_player_in_asteroid_belt_updated)
+	system_map.connect("updatePlayerInAsteroidBelt", _on_update_player_in_asteroid_belt)
 	system_map.connect("DEBUG_REVEAL_ALL_WORMHOLES", _ON_DEBUG_REVEAL_ALL_WORMHOLES)
 	system_map.connect("DEBUG_REVEAL_ALL_BODIES", _ON_DEBUG_REVEAL_ALL_BODIES)
 	system_map.connect("DEBUG_QUICK_ADD_NANITES", _ON_DEBUG_QUICK_ADD_NANITES)
@@ -938,8 +941,13 @@ func _on_update_countdown_overlay_shown(_shown: bool):
 	system_map._on_update_countdown_overlay_shown(_shown)
 	pass
 
-func _on_player_in_asteroid_belt_updated(player_in_asteroid_belt: bool):
+func _on_update_player_in_asteroid_belt(player_in_asteroid_belt: bool):
 	world.player.in_asteroid_belt = player_in_asteroid_belt
+	pass
+
+func _on_player_action_type_pending_or_completed(type: playerAPI.ACTION_TYPES, body: bodyAPI, pending: bool):
+	#funny how this is the ONLY use case so far...
+	system_map._on_update_current_action_display(type, body, pending)
 	pass
 
 
