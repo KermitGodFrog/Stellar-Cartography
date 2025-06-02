@@ -83,6 +83,7 @@ enum BOOST_SOUND_TYPES {START, END}
 @onready var empty_frame = preload("res://Graphics/empty_frame.png")
 
 var camera_target_position: Vector2 = Vector2.ZERO
+var follow_body_modifier : bodyAPI #used for drawing scope direction imdicator
 var follow_body : bodyAPI
 var locked_body : bodyAPI
 var action_body : bodyAPI
@@ -117,7 +118,7 @@ func _physics_process(delta):
 	
 	#camera_target_position is position for system3d to look at
 	#incredibly out of plcace!!!!!
-	if camera.follow_body:
+	if follow_body_modifier != null:
 		camera_target_position = Vector2.ZERO
 	
 	#disabling certain movement buttons when no locked body
@@ -332,6 +333,7 @@ func _unhandled_input(event):
 			locked_body = closest_body
 			follow_body = closest_body
 			camera.follow_body = closest_body
+			follow_body_modifier = closest_body
 			action_body = closest_body
 			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
 			return
@@ -348,9 +350,11 @@ func _unhandled_input(event):
 			locked_body = closest_body
 			follow_body = closest_body
 			camera.follow_body = closest_body
+			follow_body_modifier = closest_body
 			return
 		
 		camera_target_position = get_global_mouse_position()
+		follow_body_modifier = null
 		emit_signal("updateTargetPosition", get_global_mouse_position())
 		emit_signal("lockedBodyDepreciated")
 	
@@ -489,6 +493,10 @@ func draw_map():
 		draw_circle(camera_target_position, size_exponent * 1.5, Color.LIGHT_SKY_BLUE)
 		draw_line(player_position_matrix[0], player_position_matrix[0] + (player_position_matrix[0].direction_to(camera_target_position) * 100.0), Color.LIGHT_SKY_BLUE, size_exponent)
 	#draw_texture_rect(camera_here_tex, Rect2(Vector2(camera_target_position.x - size_exponent, camera_target_position.y - size_exponent), Vector2(size_exponent,size_exponent)), false)
+	pass
+
+func draw_CME():
+	#this is a good idea
 	pass
 
 #func draw_custom_arc(center, radius, angle_from, angle_to, color): #this is used under the assumption that batching can only occur on polygons/lines/rects, although this info is from godot 3.5 so idk (NO THICKNESS VARIABBLE, NOT SURE HOW TO ADD, ABANDONED THIS)
@@ -708,4 +716,5 @@ func follow_and_lock_item(item: TreeItem):
 			locked_body = body
 			follow_body = body
 			camera.follow_body = follow_body
+			follow_body_modifier = follow_body
 	pass
