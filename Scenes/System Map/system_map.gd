@@ -30,7 +30,7 @@ signal lockedBodyDepreciated
 signal theorisedBody(id: int)
 signal removeHullStressForNanites(amount: int, nanites_per_percentage: int)
 signal playerBelowCMERingRadius
-signal playerInAsteroidBeltUpdated(_player_in_asteroid_belt: bool)
+signal updatePlayerInAsteroidBelt(_player_in_asteroid_belt: bool)
 
 signal audioVisualizerPopup
 signal journeyMapPopup
@@ -55,20 +55,21 @@ var player_audio_visualizer_unlocked: bool = false
 
 @onready var camera = $camera
 @onready var canvas = $camera/canvas
-@onready var system_list = $camera/canvas/control/tabs/OVERVIEW/system_list
-@onready var follow_body_label = $camera/canvas/control/tabs/INFO/follow_body_label
-@onready var body_attributes_list = $camera/canvas/control/tabs/INFO/body_attributes_list
-@onready var orbit_button = $camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button
-@onready var go_to_button = $camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button
-@onready var stop_button = $camera/canvas/control/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button
-@onready var picker_label = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_label
-@onready var picker_button = $camera/canvas/control/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
+@onready var system_list = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/system_list
+@onready var follow_body_label = $camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/follow_body_label
+@onready var body_attributes_list = $camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/body_attributes_list
+@onready var orbit_button = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button
+@onready var go_to_button = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button
+@onready var stop_button = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button
+@onready var picker_label = $camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_label
+@onready var picker_button = $camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
 @onready var console = $camera/canvas/control/console
 @onready var status_scroll = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll
 @onready var map_overlay = $camera/canvas/map_overlay
 @onready var data_value_increase_label = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/data_value_increase_label
 @onready var scan_prediction_upgrade = $scan_prediction_upgrade
 @onready var countdown_overlay = $camera/canvas/countdown_overlay
+@onready var current_action_label = $camera/canvas/control/tabs_and_ca_scroll/ca_panel/scroll/current_action_label
 
 @onready var LIDAR_ping = preload("res://Sound/SFX/LIDAR_ping.tres")
 @onready var LIDAR_bounceback = preload("res://Sound/SFX/LIDAR_bounceback.tres")
@@ -111,7 +112,7 @@ var closest_body_id: int
 var player_in_asteroid_belt: bool = false:
 	set(value):
 		if player_in_asteroid_belt != value:
-			emit_signal("playerInAsteroidBeltUpdated", value)
+			emit_signal("updatePlayerInAsteroidBelt", value)
 		player_in_asteroid_belt = value
 
 
@@ -123,6 +124,7 @@ func _physics_process(delta):
 	status_scroll.player_status_matrix = _player_status_matrix
 	scan_prediction_upgrade._player_position_matrix = player_position_matrix
 	scan_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME
+	current_action_label._player_position_matrix = player_position_matrix
 	#If body clicked on in system list, follow the body with the camera (follow body).
 	#If body clicked on in system list, actions can itneract with the body (locked body).
 	#If actions pressed, perform on locked body (action body).
@@ -721,6 +723,11 @@ func _on_player_below_CME_ring_radius():
 func _on_countdown_overlay_CME_flash() -> void:
 	countdown_overlay._on_CME_flash()
 	pass
+
+func _on_update_current_action_display(_type: playerAPI.ACTION_TYPES, _body: bodyAPI, _pending: bool) -> void:
+	current_action_label.update(_type, _body, _pending)
+	pass
+
 
 
 func _on_audio_visualizer_button_pressed() -> void:

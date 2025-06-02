@@ -7,6 +7,7 @@ signal followingBody(body: bodyAPI)
 signal hullDeteriorationChanged(new_value: int)
 signal moraleChanged(new_value: int)
 signal dataValueChanged(new_value: int)
+signal actionTypePendingOrCompleted(_type: ACTION_TYPES, _body: bodyAPI, _pending: bool) #unlike the system_map.gd updatePlayerActionType signal, this one includes whether the action type is pending or not, e.g. it updates again once the action is achieved
 
 @export var name: String
 @export var prefix: String
@@ -82,8 +83,14 @@ var rotation_hint: float #used for orbiting mechanics
 @export_storage var target_position: Vector2 = Vector2.ZERO
 enum ACTION_TYPES {NONE, GO_TO, ORBIT}
 @export_storage var current_action_type: ACTION_TYPES = ACTION_TYPES.NONE
-@export_storage var pending_action_body : bodyAPI
-@export_storage var action_body : bodyAPI
+@export_storage var pending_action_body : bodyAPI:
+	set(value):
+		pending_action_body = value
+		emit_signal("actionTypePendingOrCompleted", current_action_type, pending_action_body, true)
+@export_storage var action_body : bodyAPI:
+	set(value):
+		action_body = value
+		emit_signal("actionTypePendingOrCompleted", current_action_type, action_body, false)
 
 func get_jumps_remaining():
 	return jumps_remaining
@@ -138,7 +145,7 @@ func updatePosition(delta): #dont ask bro
 				pos = pos + (dir * ((3 * action_body.radius) + 1.0))
 				position = pos
 				target_position = pos #not actually used for moving, just for drawing where the player is moving to
-	if (not pending_action_body) and (not action_body):
+	else:
 		if not position.distance_to(target_position) < speed:
 			position += position.direction_to(target_position) * speed * delta
 		else:
@@ -159,16 +166,23 @@ func updateActionBodyState():
 				var pos = pending_action_body.position
 				if position.distance_to(pos) < (pending_action_body.radius + 1.0):
 					emit_signal("followingBody", pending_action_body)
-					action_body = pending_action_body
+					var temp = pending_action_body #ugly but necessary for current action display to work (temp)
 					pending_action_body = null
+					action_body = temp
 			ACTION_TYPES.ORBIT:
 				var dir = Vector2.UP.rotated(rotation_hint)
 				var pos = pending_action_body.position
 				pos = pos + (dir * ((3 * pending_action_body.radius) + 1.0))
 				if position.distance_to(pos) < (pending_action_body.radius + 1.0):
 					emit_signal("orbitingBody", pending_action_body)
-					action_body = pending_action_body
+					var temp = pending_action_body #ugly but necessary for current action display to work (temp)
 					pending_action_body = null
+					action_body = temp
+	elif action_body: #ugly but necessary for current action display to work - i still have no ufcking idea what is going on here DO NOT TOUCH IT 
+		match current_action_type:
+			ACTION_TYPES.NONE:
+				pending_action_body = null
+				action_body = null
 	pass
 
 
