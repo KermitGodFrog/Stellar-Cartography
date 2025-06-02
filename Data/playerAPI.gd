@@ -17,11 +17,12 @@ signal dataValueChanged(new_value: int)
 
 @export var speed: int = 3 :
 	get:
-		if is_boosting:
-			return speed * 5
+		if boosting:
+			return speed * 5 * (1 + (-int(in_asteroid_belt) * 0.5))
 		else:
-			return speed
-var is_boosting: bool = false
+			return speed * (1 + (-int(in_asteroid_belt) * 0.5))
+var boosting: bool = false
+var in_asteroid_belt: bool = false
 
 @export var balance: int = 0
 @export var current_value: int = 0:

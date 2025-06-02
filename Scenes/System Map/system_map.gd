@@ -28,14 +28,14 @@ signal updateTargetPosition(pos: Vector2)
 signal updatedLockedBody(body: bodyAPI)
 signal lockedBodyDepreciated
 signal theorisedBody(id: int)
+signal removeHullStressForNanites(amount: int, nanites_per_percentage: int)
 signal playerBelowCMERingRadius
+signal playerInAsteroidBeltUpdated(_player_in_asteroid_belt: bool)
 
 signal audioVisualizerPopup
 signal journeyMapPopup
 signal longRangeScopesPopup
 signal gasLayerSurveyorPopup
-
-signal removeHullStressForNanites(amount: int, nanites_per_percentage: int)
 
 signal DEBUG_REVEAL_ALL_WORMHOLES
 signal DEBUG_REVEAL_ALL_BODIES
@@ -107,6 +107,14 @@ var collapsed_cache: Dictionary = {}
 var selected_cache: Dictionary = {} #CURRENTLY DOES NOTHING BECAUSE I CANT FIGURE OUT HOW TO MAKE IT WORK!
 var closest_body_id: int
 
+#asteroid belt slowdown
+var player_in_asteroid_belt: bool = false:
+	set(value):
+		if player_in_asteroid_belt != value:
+			emit_signal("playerInAsteroidBeltUpdated", value)
+		player_in_asteroid_belt = value
+
+
 func _ready():
 	status_scroll.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	pass
@@ -144,6 +152,7 @@ func _physics_process(delta):
 	sorted_values.sort()
 	closest_body_id = camera_position_to_bodies.find_key(sorted_values.front()) #FOR SYSTEM LIST, create_item_for_body()
 	
+	calculate_asteroid_belt_slowdown()
 	generate_system_list()
 	
 	#updating sonar ping visualization time values & sonar polygon display time
@@ -214,6 +223,25 @@ func _physics_process(delta):
 		picker_button.hide() #NEED TO FIX THIS ATROCITY AT SOME POINT!!!!
 	
 	queue_redraw()
+	pass
+
+
+
+func calculate_asteroid_belt_slowdown():
+	var i: int = 0
+	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT)
+	if asteroid_belts:
+		for belt in asteroid_belts:
+			var lower_echelon = belt.orbit_distance - belt.metadata.get("belt_width") / 2
+			var upper_echelon = belt.orbit_distance + belt.metadata.get("belt_width") / 2
+			var distance = player_position_matrix[0].distance_to(belt.position)
+			if distance > lower_echelon and distance < upper_echelon:
+				i += 1
+				break
+	if i == 0:
+		player_in_asteroid_belt = false
+	elif i > 0:
+		player_in_asteroid_belt = true
 	pass
 
 

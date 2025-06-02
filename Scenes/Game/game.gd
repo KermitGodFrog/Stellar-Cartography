@@ -158,6 +158,7 @@ func connect_all_signals() -> void:
 	system_map.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	system_map.connect("theorisedBody", _on_theorised_body)
 	system_map.connect("playerBelowCMERingRadius", _on_player_below_CME_ring_radius)
+	system_map.connect("playerInAsteroidBeltUpdated", _on_player_in_asteroid_belt_updated)
 	system_map.connect("DEBUG_REVEAL_ALL_WORMHOLES", _ON_DEBUG_REVEAL_ALL_WORMHOLES)
 	system_map.connect("DEBUG_REVEAL_ALL_BODIES", _ON_DEBUG_REVEAL_ALL_BODIES)
 	system_map.connect("DEBUG_QUICK_ADD_NANITES", _ON_DEBUG_QUICK_ADD_NANITES)
@@ -813,7 +814,7 @@ func _on_kill_character_with_occupation(occupation: characterAPI.OCCUPATIONS) ->
 	pass
 
 func _on_update_player_is_boosting(is_boosting: bool):
-	world.player.is_boosting = is_boosting
+	world.player.boosting = is_boosting
 	pass
 
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void: #both station ui and system map
@@ -935,6 +936,10 @@ func _on_update_countdown_overlay_time(_time: float):
 
 func _on_update_countdown_overlay_shown(_shown: bool):
 	system_map._on_update_countdown_overlay_shown(_shown)
+	pass
+
+func _on_player_in_asteroid_belt_updated(player_in_asteroid_belt: bool):
+	world.player.in_asteroid_belt = player_in_asteroid_belt
 	pass
 
 
