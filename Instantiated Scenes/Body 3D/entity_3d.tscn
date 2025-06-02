@@ -5,7 +5,7 @@
 
 [node name="entity_3d" type="Sprite3D" groups=["body_3d"]]
 cast_shadow = 0
-pixel_size = 0.0025
+pixel_size = 0.001
 billboard = 1
 texture = ExtResource("1_oht8w")
 script = ExtResource("1_4cbx5")
