@@ -39,6 +39,7 @@ func set_image(path: String):
 	var new_image = load("res://Graphics/Dialogue/%s" % path)
 	if new_image:
 		var texture = ImageTexture.create_from_image(new_image) #IMAGES MUST BE IMPORTED AS 'IMAGE' TYPE!
+		texture.set_size_override(Vector2i(450, 250))
 		image.set_texture(texture)
 	pass
 
