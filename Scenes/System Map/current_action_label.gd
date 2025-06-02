@@ -8,8 +8,7 @@ const type_prefixes = {
 
 var _player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 
-func update(type: playerAPI.ACTION_TYPES, body: bodyAPI, pending: bool):
-	print("UPDATED")
+func update(type: playerAPI.ACTION_TYPES, body: bodyAPI, pending: bool) -> void:
 	var scenarios = type_prefixes.get(type)
 	var prefix = scenarios.get(pending)
 	

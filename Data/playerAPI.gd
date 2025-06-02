@@ -103,6 +103,8 @@ func set_max_jumps(value: int):
 	pass
 
 
+
+
 func updatePosition(delta): #dont ask bro
 	rotation_hint += delta
 	if pending_action_body:
@@ -179,6 +181,11 @@ func updateActionBodyState():
 					pending_action_body = null
 					action_body = temp
 	elif action_body: #ugly but necessary for current action display to work - i still have no ufcking idea what is going on here DO NOT TOUCH IT 
+		match current_action_type:
+			ACTION_TYPES.NONE:
+				pending_action_body = null
+				action_body = null
+	else: #ugly but necessary for current action display to work
 		match current_action_type:
 			ACTION_TYPES.NONE:
 				pending_action_body = null

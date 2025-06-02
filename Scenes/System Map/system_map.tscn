@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=52 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -30,6 +30,7 @@
 [ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://Scenes/Custom Tooltip/custom_tooltip_host.tres" id="15_534fl"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="15_y0hnn"]
 [ext_resource type="Script" path="res://Scenes/System Map/current_action_label.gd" id="16_vo58t"]
+[ext_resource type="Script" path="res://Scenes/System Map/travel_modifier_label.gd" id="17_ow1c8"]
 [ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://Graphics/journey_map_icon.png" id="19_36y85"]
 [ext_resource type="Texture2D" uid="uid://dka6vwu04ir6e" path="res://Graphics/long_range_scopes_icon.png" id="22_sph0q"]
 [ext_resource type="Theme" uid="uid://bmu4r6ao4lfps" path="res://Scenes/controls_help_theme.tres" id="26_737wk"]
@@ -422,28 +423,35 @@ size_flags_horizontal = 0
 size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_s0dtd")
 
-[node name="scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel"]
+[node name="margin" type="MarginContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel/margin"]
 layout_mode = 2
 
-[node name="current_action_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel/scroll"]
-custom_minimum_size = Vector2(200, 0)
+[node name="current_action_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel/margin/scroll"]
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("15_y0hnn")
 theme_override_font_sizes/font_size = 12
-text = "Going to GU-PU-SU-TY-265 W-256 (250R☉) "
 autowrap_mode = 2
 text_overrun_behavior = 4
 script = ExtResource("16_vo58t")
 
-[node name="travel_modifier_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel/scroll"]
-custom_minimum_size = Vector2(200, 0)
+[node name="travel_modifier_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel/margin/scroll"]
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 size_flags_vertical = 8
+size_flags_stretch_ratio = 0.5
 theme_override_fonts/font = ExtResource("15_y0hnn")
 theme_override_font_sizes/font_size = 12
-text = "Asteroid field (0.5xR☉/s)"
 autowrap_mode = 2
+script = ExtResource("17_ow1c8")
 
 [node name="console" type="RichTextLabel" parent="system/camera/canvas/control"]
 custom_minimum_size = Vector2(500, 200)
