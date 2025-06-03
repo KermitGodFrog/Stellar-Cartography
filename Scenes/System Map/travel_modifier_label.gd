@@ -4,7 +4,7 @@ extends Label
 var modifiers: Dictionary = {}
 var last_modifiers: Dictionary = {}
 var displays: PackedStringArray = []
-
+var old_displays: PackedStringArray = []
 func separate_modifier_displays() -> void:
 	displays.clear()
 	for d in modifiers.values():
