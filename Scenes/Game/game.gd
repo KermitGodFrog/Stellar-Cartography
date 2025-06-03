@@ -450,7 +450,7 @@ func body_query_add_shared(query: responseQuery, body: bodyAPI) -> void:
 	pass
 
 func body_query_add_custom_type_shared(query: responseQuery, body: bodyAPI) -> void: #shared between theorisedBody, orbitingBody, followingBody
-	query.add("custom_id", body.get_dialogue_tag())
+	query.add("custom_tag", body.get_dialogue_tag())
 	query.add("custom_available", body.metadata.get("custom_available", true))
 	query.add_tree_access("seed", body.metadata.get("seed", 0))
 	pass

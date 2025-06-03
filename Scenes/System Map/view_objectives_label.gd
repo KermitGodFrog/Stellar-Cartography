@@ -24,10 +24,6 @@ func _physics_process(delta: float) -> void:
 
 
 
-
-
-
-
 func convert_events_to_readable(input_array: Array[InputEvent]) -> String: #this is NEARLY the function in keybind_option.gd (besides the brackets and spacing) - might want to have both functions in game_data or smth later. kinda a temp fix
 	var s: String = ""
 	for event in input_array:
