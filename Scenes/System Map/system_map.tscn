@@ -27,6 +27,7 @@
 [ext_resource type="Script" path="res://Scenes/System Map/value_increase_label.gd" id="13_6i2x8"]
 [ext_resource type="Texture2D" uid="uid://ce1et15cnh5ao" path="res://Graphics/morale_icon.png" id="13_vaatn"]
 [ext_resource type="Script" path="res://Scenes/System Map/hull_stress_button.gd" id="14_u08qu"]
+[ext_resource type="Texture2D" uid="uid://m857xad6154v" path="res://Graphics/double_tall_arrow.png" id="15_4xoy6"]
 [ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://Scenes/Custom Tooltip/custom_tooltip_host.tres" id="15_534fl"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://Graphics/Fonts/RobotoMono Medium Italic.ttf" id="15_y0hnn"]
 [ext_resource type="Script" path="res://Scenes/System Map/current_action_label.gd" id="16_vo58t"]
@@ -69,9 +70,6 @@ bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w1mgb"]
 bg_color = Color(0.211765, 0.211765, 0.211765, 0.415686)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s0dtd"]
-bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r4cqc"]
 
@@ -222,7 +220,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="tabs_and_ca_scroll" type="HBoxContainer" parent="system/camera/canvas/control"]
-custom_minimum_size = Vector2(650, 900)
+custom_minimum_size = Vector2(658, 900)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -415,41 +413,50 @@ popup/item_1/id = 1
 popup/item_2/text = "HIGH"
 popup/item_2/id = 2
 
-[node name="ca_panel" type="PanelContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll"]
-custom_minimum_size = Vector2(200, 100)
+[node name="arrow_and_ca_scroll" type="HBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="arrow_texture" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll"]
+modulate = Color(0.180392, 0.180392, 0.180392, 0.415686)
+custom_minimum_size = Vector2(13, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("15_4xoy6")
+
+[node name="ca_panel" type="PanelContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll"]
+custom_minimum_size = Vector2(187, 100)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
-theme_override_styles/panel = SubResource("StyleBoxFlat_s0dtd")
 
-[node name="margin" type="MarginContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel"]
+[node name="margin" type="MarginContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel/margin"]
+[node name="scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin"]
 layout_mode = 2
 
-[node name="current_action_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel/margin/scroll"]
-custom_minimum_size = Vector2(190, 0)
+[node name="current_action_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll"]
+custom_minimum_size = Vector2(177, 0)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("15_y0hnn")
 theme_override_font_sizes/font_size = 12
-autowrap_mode = 2
+autowrap_mode = 3
 text_overrun_behavior = 4
 script = ExtResource("16_vo58t")
 
-[node name="travel_modifier_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/ca_panel/margin/scroll"]
-custom_minimum_size = Vector2(190, 0)
+[node name="travel_modifier_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll"]
+custom_minimum_size = Vector2(177, 0)
 layout_mode = 2
-size_flags_vertical = 8
-size_flags_stretch_ratio = 0.5
+size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("15_y0hnn")
 theme_override_font_sizes/font_size = 12
-autowrap_mode = 2
+autowrap_mode = 3
 script = ExtResource("17_ow1c8")
 
 [node name="console" type="RichTextLabel" parent="system/camera/canvas/control"]
