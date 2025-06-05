@@ -1,11 +1,14 @@
-[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://bqudjnrrg3yyk"]
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://56yy7wnilipu"]
 
 [ext_resource type="Script" path="res://Data/objectiveAPI.gd" id="1_41kco"]
 
 [resource]
 script = ExtResource("1_41kco")
+parent = "test1"
+written_identifier = ""
 current_state = 0
-title = ""
-description = ""
-categories = Array[String]([])
-sub_objectives = Array[ExtResource("1_41kco")]([])
+title = "Test 2 "
+description = "gjspgsdipgsig;d"
+categories = []
+sub_objectives = []
+time = 0.0

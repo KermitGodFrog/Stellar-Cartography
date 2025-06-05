@@ -28,6 +28,7 @@ script = ExtResource("2_jx1f0")
 [node name="dialogueManager" parent="." instance=ExtResource("8_egtoq")]
 
 [node name="objectivesManager" type="Node" parent="." groups=["objectivesManager"]]
+process_mode = 3
 script = ExtResource("3_7b58c")
 
 [node name="system_window" parent="." instance=ExtResource("2_jilbx")]

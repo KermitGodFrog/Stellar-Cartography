@@ -22,6 +22,7 @@ var world: worldAPI
 @onready var audio_handler = $audioHandler
 @onready var gas_layer_surveyor = $gas_layer_surveyor_window/gas_layer_surveyor
 @onready var countdown_processor: Node #quantum state of existing and not existing
+@onready var objectives_manager = $objectivesManager
 
 func _ready():
 	connect_all_signals()
@@ -208,6 +209,8 @@ func connect_all_signals() -> void:
 	
 	wormhole_minigame.connect("addPlayerHullStress", _on_add_player_hull_stress)
 	
+	objectives_manager.connect("updateObjectivesPanel", _on_update_objectives_panel)
+	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
 	pause_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -216,6 +219,7 @@ func connect_all_signals() -> void:
 	wormhole_minigame.connect("queuePauseMode", _on_queue_pause_mode)
 	audio_handler.connect("queuePauseMode", _on_queue_pause_mode) #audio handler doesnt TECHNICALLY need pause control
 	system_map.connect("queuePauseMode", _on_queue_pause_mode) #for hiding when in dialogue
+	objectives_manager.connect("queuePauseMode", _on_queue_pause_mode) #not for anything beyond pausing objective time variable incrase and sending updated objectives - not best practice
 	stats_menu.connect("setPauseMode", _on_set_pause_mode)
 	pause_menu.connect("setPauseMode", _on_set_pause_mode)
 	dialogue_manager.connect("setPauseMode", _on_set_pause_mode)
@@ -223,6 +227,7 @@ func connect_all_signals() -> void:
 	wormhole_minigame.connect("setPauseMode", _on_set_pause_mode)
 	audio_handler.connect("setPauseMode", _on_set_pause_mode) #audio handler doesnt TECHNICALLY need pause control
 	system_map.connect("setPauseMode", _on_set_pause_mode) #for hiding when in dialogue
+	objectives_manager.connect("setPauseMode", _on_set_pause_mode) #not for anything beyond pausing objective time variable incrase and sending updated objectives - not best practice
 	pass
 
 func _physics_process(delta):
@@ -950,6 +955,10 @@ func _on_player_action_type_pending_or_completed(type: playerAPI.ACTION_TYPES, b
 	system_map._on_update_current_action_display(type, body, pending)
 	pass
 
+func _on_update_objectives_panel(_parsed_objectives: Dictionary) -> void:
+	pause_menu._on_update_objectives_panel(_parsed_objectives)
+	pass
+
 
 
 #the epic handshake between game.gd and pauseModeHandler.gd
@@ -969,6 +978,7 @@ func _on_pause_mode_changed(new_mode: game_data.PAUSE_MODES) -> void:
 	wormhole_minigame._pause_mode = new_mode
 	audio_handler._pause_mode = new_mode #audio handler doesnt TECHNICALLY need pause control
 	system_map._pause_mode = new_mode #for hiding when in dialogue
+	objectives_manager._pause_mode = new_mode
 	
 	system_map.reset_player_boosting() #to stop boosting from being stuck to true, this SHOULD cover ALL grounds!
 	system_map.reset_actions_buttons_pressed() #godot 4.3 migration quick fix

@@ -12,7 +12,7 @@ defaultHardLeave,"concept: optionSelected, option: defaultHardLeave",,closeDialo
 defaultSoftLeave,"concept: optionSelected, option: defaultSoftLeave",,closeDialog: SOFT_LEAVE,,,,,,,
 ,,,,,,,,,,
 "# player start, win, death and story",,,,,,,,,,
-defaultPlayerStartOpenDialog,concept: playerStart,,openDialog: null,,,,,,Continue:defaultPlayerStartContinue,"[i]You are a newly established Captain of a starship on a mission of exploration. You have requested for a route to be calculated into an area of space known as New Eden, which reportedly houses a fragment of human civilisation long forgotten. The journey to New Eden be perilous, and the dangers you will face cannot be predicted. [/i]"
+defaultPlayerStartOpenDialog,concept: playerStart,,"openDialog: null, markOCActive: clear_ReachNewEden",,,,,,Continue:defaultPlayerStartContinue,"[i]You are a newly established Captain of a starship on a mission of exploration. You have requested for a route to be calculated into an area of space known as New Eden, which reportedly houses a fragment of human civilisation long forgotten. The journey to New Eden be perilous, and the dangers you will face cannot be predicted. [/i]"
 defaultPlayerStartContinue,"concept: optionSelected, option: defaultPlayerStartContinue",,,,,,,,Step out of the transport:defaultPlayerStartPortal,Your transport attaches to a docking port of your new command with a series of whines. The hatch twists open.
 defaultPlayerStartPortal,"concept: optionSelected, option: defaultPlayerStartPortal",,,,,,defaultPlayerStartPortalResponse,,,
 ,,,,,,,,,,

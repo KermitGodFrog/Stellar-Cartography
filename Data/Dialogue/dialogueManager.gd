@@ -587,6 +587,17 @@ func getStarDescriptionWithFlair(star_type: String):
 	dialogue.add_text("[color=darkgray]%s [/color]" % description)
 	pass
 
+func markOCActive(category: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_category_active", category)
+	pass
+
+func markOCSuccess(category: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_category_success", category)
+	pass
+
+func markOCFailure(category: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_category_failure", category)
+	pass
 
 
 
