@@ -1,11 +1,11 @@
 extends Resource
 class_name objectiveAPI
 
-@export var display_name: String:
-	get = get_display_name, set = set_display_name
+enum STATES {INACTIVE, ACTIVE, SUCCESS, FAILURE}
+@export_storage var current_state: STATES = STATES.INACTIVE
 
-func get_display_name() -> String:
-	return display_name
-func set_display_name(value) -> void:
-	display_name = value
-	pass
+@export var title: String = String()
+@export_multiline var description = String()
+
+@export var categories: Array[String] = [] #game checks for all objectives in a category and bulk performs actions on em when asked to
+@export var sub_objectives: Array[objectiveAPI] = [] #

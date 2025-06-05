@@ -28,7 +28,6 @@ signal removePlayerMorale(amount: int)
 signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
 signal foundBody(id: int)
 signal addPlayerMutinyBacking(amount: int)
-
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
@@ -587,6 +586,8 @@ func getStarDescriptionWithFlair(star_type: String):
 	var description: String = system.star_descriptions.get(star_type, String())
 	dialogue.add_text("[color=darkgray]%s [/color]" % description)
 	pass
+
+
 
 
 

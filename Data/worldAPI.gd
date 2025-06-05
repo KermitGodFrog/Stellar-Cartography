@@ -5,7 +5,9 @@ class_name worldAPI
 @export var star_systems: Array[starSystemAPI]
 @export var player: playerAPI
 @export_storage var identifier_count: int = 1
+
 @export var dialogue_memory: Dictionary = {}
+@export var objectives: Dictionary = {}
 
 #KEY CUSTOMIZATION
 @export var _total_systems: int 

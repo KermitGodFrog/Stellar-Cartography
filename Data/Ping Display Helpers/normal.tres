@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="pingDisplayHelperAPI" load_steps=4 format=3 uid="uid://bnwugju4687eg"]
+[gd_resource type="Resource" script_class="pingDisplayHelper" load_steps=4 format=3 uid="uid://bnwugju4687eg"]
 
 [ext_resource type="Script" path="res://Data/pingDisplayHelper.gd" id="1_l4vua"]
 
