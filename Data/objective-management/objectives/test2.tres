@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://56yy7wnilipu"]
 
-[ext_resource type="Script" path="res://Data/objectiveAPI.gd" id="1_41kco"]
+[ext_resource type="Script" path="res://Data/objective-management/objectiveAPI.gd" id="1_41kco"]
 
 [resource]
 script = ExtResource("1_41kco")

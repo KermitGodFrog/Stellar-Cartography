@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scenes/Pause Menu/pauseMenu.gd" id="1_u73yd"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://Scenes/master_theme.tres" id="2_r6vbf"]
 [ext_resource type="PackedScene" uid="uid://df1xq5fo2rlje" path="res://Scenes/Options Menu/optionsMenu.tscn" id="2_vsgfh"]
-[ext_resource type="Script" path="res://Scenes/Pause Menu/objectives_panel.gd" id="3_77jva"]
+[ext_resource type="Script" path="res://Data/objective-management/objectives_panel.gd" id="3_77jva"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yykag"]
 bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)

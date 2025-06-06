@@ -15,7 +15,6 @@ func _on_pause_mode_changed(value):
 signal activeObjectivesChanged(_active_objectives: Array[objectiveAPI])
 signal updateObjectivesPanel(_active_objectives: Array[objectiveAPI])
 
-
 var bank_objectives: Dictionary = {} # {wID: path}
 var bank_categories: Dictionary = {} # {wID: path}
 
@@ -28,18 +27,17 @@ func _ready() -> void:
 	pass
 
 func start_construct_banks() -> void: #called by game.gd when the game is NEW
-	var objective_paths = global_data.get_all_files("res://Data/objectives", "tres")
+	var objective_paths = global_data.get_all_files("res://Data/objective-management/objectives", "tres")
 	for path: String in objective_paths:
 		var wID = path.get_file().trim_suffix(".tres")
 		bank_objectives[wID] = path
-	var category_paths = global_data.get_all_files("res://Data/categories", "tres")
+	var category_paths = global_data.get_all_files("res://Data/objective-management/categories", "tres")
 	for path: String in category_paths:
 		var wID = path.get_file().trim_suffix(".tres")
 		bank_categories[wID] = path
 	pass
 
 func start_receive_active_objectives(_active_objectives: Array[objectiveAPI]) -> void: #called by game.gd when the game is LOADED
-	print("ARRAY: ", _active_objectives)
 	for i in _active_objectives:
 		print("wID: ", i.get_wID())
 		print("STATE: ", i.get_state())
@@ -87,6 +85,7 @@ func mark_category(wID: String, state: objectiveAPI.STATES) -> void:
 
 
 func load_objective(wID: String) -> objectiveAPI:
+#	push_error("LOAD OBJECTIVE wID: ", wID)
 	for o in active_objectives:
 		if o.get_wID() == wID:
 			return o
@@ -99,6 +98,7 @@ func load_objective(wID: String) -> objectiveAPI:
 	return null
 
 func load_category(wID: String) -> categoryAPI:
+#	push_error("LOAD CATEGORY wID: ", wID)
 	var path = bank_categories.get(wID)
 	if path != null:
 		var new = load(path)

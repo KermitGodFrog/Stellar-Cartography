@@ -2,7 +2,7 @@ extends PanelContainer
 
 @onready var item_anchor = $margin/item_anchor
 
-@onready var objective_item = preload("res://Scenes/Pause Menu/objective_item.tscn")
+@onready var objective_item = preload("res://Data/objective-management/objective_item.tscn")
 @onready var _confirm_texture = preload("res://Graphics/Misc/confirm_no_shadow.png")
 @onready var _denied_texture = preload("res://Graphics/Misc/denied.png")
 

@@ -218,14 +218,14 @@ func get_weighted_system_hazard_classifications() -> Dictionary:
 func loadWorld():
 	print("GAME DATA: LOADING WORLD")
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
-		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_data.res", "", ResourceLoader.CACHE_MODE_IGNORE)
+		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_data.res", "", ResourceLoader.CACHE_MODE_REUSE)
 		return resource
 	return null
 
 func saveWorld(world: worldAPI) -> void:
 	print("GAME DATA: SAVING WORLD")
 	world.take_over_path("user://stellar_cartographer_data.res")
-	var error = ResourceSaver.save(world, "user://stellar_cartographer_data.res", ResourceSaver.FLAG_REPLACE_SUBRESOURCE_PATHS)
+	var error = ResourceSaver.save(world, "user://stellar_cartographer_data.res", ResourceSaver.FLAG_NONE)
 	print("ERROR CODE: ", error)
 	pass
 

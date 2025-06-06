@@ -959,7 +959,9 @@ func _on_player_action_type_pending_or_completed(type: playerAPI.ACTION_TYPES, b
 	pass
 
 func _on_active_objectives_changed(_active_objectives: Array[objectiveAPI]) -> void:
-	world.active_objectives = _active_objectives
+	world.active_objectives.clear()
+	for o in _active_objectives:
+		world.active_objectives.append(o.duplicate(true))
 	system_map._on_active_objectives_changed(_active_objectives)
 	pass
 
