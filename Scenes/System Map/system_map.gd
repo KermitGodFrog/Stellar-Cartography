@@ -76,6 +76,7 @@ var player_audio_visualizer_unlocked: bool = false
 @onready var countdown_overlay = $camera/canvas/countdown_overlay
 @onready var current_action_label = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll/current_action_label
 @onready var travel_modifier_label = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll/travel_modifier_label
+@onready var view_objective_label = $camera/canvas/control/view_objectives_label
 
 @onready var LIDAR_ping = preload("res://Sound/SFX/LIDAR_ping.tres")
 @onready var LIDAR_bounceback = preload("res://Sound/SFX/LIDAR_bounceback.tres")
@@ -717,6 +718,7 @@ func _on_update_countdown_overlay_time(time: float):
 
 func _on_update_countdown_overlay_shown(shown: bool):
 	countdown_overlay.set_visible(shown)
+	view_objective_label._on_update_countdown_overlay_shown(shown)
 	pass
 
 func _on_CME_timeout(_system_id: int):
@@ -734,6 +736,10 @@ func _on_countdown_overlay_CME_flash() -> void:
 
 func _on_update_current_action_display(_type: playerAPI.ACTION_TYPES, _body: bodyAPI, _pending: bool) -> void:
 	current_action_label.update(_type, _body, _pending)
+	pass
+
+func _on_active_objectives_changed(_active_objectives: Array[objectiveAPI]):
+	view_objective_label._on_active_objectives_changed()
 	pass
 
 

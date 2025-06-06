@@ -149,6 +149,8 @@ func _ready():
 		
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
+		objectives_manager.start_receive_active_objectives(world.active_objectives)
+		
 		_on_switch_star_system(world.player.current_star_system)
 	pass
 
@@ -209,6 +211,7 @@ func connect_all_signals() -> void:
 	
 	wormhole_minigame.connect("addPlayerHullStress", _on_add_player_hull_stress)
 	
+	objectives_manager.connect("activeObjectivesChanged", _on_active_objectives_changed)
 	objectives_manager.connect("updateObjectivesPanel", _on_update_objectives_panel)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
@@ -955,9 +958,15 @@ func _on_player_action_type_pending_or_completed(type: playerAPI.ACTION_TYPES, b
 	system_map._on_update_current_action_display(type, body, pending)
 	pass
 
-func _on_update_objectives_panel(_parsed_objectives: Dictionary) -> void:
-	pause_menu._on_update_objectives_panel(_parsed_objectives)
+func _on_active_objectives_changed(_active_objectives: Array[objectiveAPI]) -> void:
+	world.active_objectives = _active_objectives
+	system_map._on_active_objectives_changed(_active_objectives)
 	pass
+
+func _on_update_objectives_panel(_active_objectives: Array[objectiveAPI]) -> void:
+	pause_menu._on_update_objectives_panel(_active_objectives)
+	pass
+
 
 
 

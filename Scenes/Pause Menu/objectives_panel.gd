@@ -1,33 +1,26 @@
 extends PanelContainer
 
-@onready var tree = $objectives_tree
+@onready var item_anchor = $margin/item_anchor
 
-var parsed_objectives: Dictionary = {}
+@onready var objective_item = preload("res://Scenes/Pause Menu/objective_item.tscn")
+@onready var _confirm_texture = preload("res://Graphics/Misc/confirm_no_shadow.png")
+@onready var _denied_texture = preload("res://Graphics/Misc/denied.png")
 
-func update(_parsed_objectives: Dictionary) -> void: #{file name: objectiveAPI}
-	parsed_objectives = _parsed_objectives
+var active_objectives: Array[objectiveAPI] = []
+
+func _on_update_objectives_panel(_active_objectives: Array[objectiveAPI]) -> void: #{file name: objectiveAPI}
+	active_objectives = _active_objectives
 	generate()
 	pass
 
 func generate():
-	tree.clear()
-	var root = tree.create_item()
-	for wid in parsed_objectives:
-		var o = parsed_objectives.get(wid)
-		if o.parent.is_empty():
-			recursive_add(o, root)
+	var children = item_anchor.get_children()
+	for child in children:
+		child.queue_free()
+	for o in active_objectives:
+		var instance = objective_item.instantiate()
+		item_anchor.add_child(instance)
+		instance.confirm_texture = _confirm_texture
+		instance.denied_texture = _denied_texture
+		instance.initialize(o.title, o.description, o.get_state())
 	pass
-
-func recursive_add(objective: objectiveAPI, parent: TreeItem):
-	var new = create_item_for_objective(objective, parent)
-	for s in objective.sub_objectives:
-		var wid = parsed_objectives.find_key(s)
-		if wid != null:
-			var sub = parsed_objectives.get(wid)
-			create_item_for_objective(sub, new)
-	pass
-
-func create_item_for_objective(objective: objectiveAPI, parent: TreeItem):
-	var item = tree.create_item(parent)
-	item.set_text(0, objective.title)
-	return item

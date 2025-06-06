@@ -1,22 +1,17 @@
 extends Resource
 class_name objectiveAPI
 
-@export var parent: String = String() #written identifier
-
 @export_storage var written_identifier: String = String(): #AUTO GENERATED FROM FILE NAME, DO NOT TOUCH
-	get = get_wid, set = set_wid
+	get = get_wID, set = set_wID
 
-enum STATES {INACTIVE, ACTIVE, SUCCESS, FAILURE}
-@export_storage var current_state: STATES = STATES.INACTIVE:
+enum STATES {NONE, SUCCESS, FAILURE}
+@export_storage var current_state: STATES = STATES.NONE:
 	get = get_state, set = set_state
 
 @export var title: String = String()
 @export_multiline var description = String()
 
-@export var categories: PackedStringArray = [] #game checks for all objectives in a category and bulk performs actions on em when asked to
-@export var sub_objectives: PackedStringArray = [] #file names of sub objectives
-
-@export var time: float = 0:
+@export_storage var time: float = 0:
 	get = get_time, set = set_time
 
 func get_state() -> STATES:
@@ -33,8 +28,8 @@ func set_time(amount: float) -> void:
 func get_time() -> float:
 	return time
 
-func get_wid() -> String:
+func get_wID() -> String:
 	return written_identifier
-func set_wid(value) -> void:
+func set_wID(value) -> void:
 	written_identifier = value
 	pass

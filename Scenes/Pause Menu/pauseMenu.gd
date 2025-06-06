@@ -74,6 +74,6 @@ func _on_settings_button_pressed():
 	options_menu.visible = !options_menu.visible
 	pass
 
-func _on_update_objectives_panel(_parsed_objectives: Dictionary):
-	objectives_panel.update(_parsed_objectives)
+func _on_update_objectives_panel(_active_objectives: Array[objectiveAPI]) -> void:
+	objectives_panel._on_update_objectives_panel(_active_objectives)
 	pass

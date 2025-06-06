@@ -587,19 +587,29 @@ func getStarDescriptionWithFlair(star_type: String):
 	dialogue.add_text("[color=darkgray]%s [/color]" % description)
 	pass
 
-func markOCActive(category: String) -> void:
-	get_tree().call_group("objectivesManager", "mark_category_active", category)
+func markCategoryNone(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.NONE)
 	pass
 
-func markOCSuccess(category: String) -> void:
-	get_tree().call_group("objectivesManager", "mark_category_success", category)
+func markCategorySuccess(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.SUCCESS)
 	pass
 
-func markOCFailure(category: String) -> void:
-	get_tree().call_group("objectivesManager", "mark_category_failure", category)
+func markCategoryFailure(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.FAILURE)
 	pass
 
+func markObjectiveNone(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.NONE)
+	pass
 
+func markObjectiveSuccess(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.SUCCESS)
+	pass
+
+func markObjectiveFailure(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.FAILURE)
+	pass
 
 
 

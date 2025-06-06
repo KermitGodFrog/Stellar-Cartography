@@ -7,7 +7,7 @@ class_name worldAPI
 @export_storage var identifier_count: int = 1
 
 @export var dialogue_memory: Dictionary = {}
-@export var objectives: Dictionary = {}
+@export var active_objectives: Array[objectiveAPI] = []
 
 #KEY CUSTOMIZATION
 @export var _total_systems: int 

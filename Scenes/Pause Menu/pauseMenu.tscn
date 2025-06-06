@@ -85,16 +85,22 @@ grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_yykag")
 
 [node name="objectives_panel" type="PanelContainer" parent="pause_canvas/pause_control/console_cover_panel"]
-custom_minimum_size = Vector2(450, 80)
+custom_minimum_size = Vector2(450, 200)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_2jwyw")
 script = ExtResource("3_77jva")
 
-[node name="objectives_tree" type="Tree" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel"]
+[node name="margin" type="MarginContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel"]
 layout_mode = 2
-hide_root = true
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="item_anchor" type="VBoxContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel/margin"]
+layout_mode = 2
 
 [node name="options_menu" parent="pause_canvas" instance=ExtResource("2_vsgfh")]
 visible = false

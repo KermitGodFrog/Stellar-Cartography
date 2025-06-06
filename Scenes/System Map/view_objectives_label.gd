@@ -2,10 +2,16 @@ extends Label
 
 @onready var curve = preload("res://Scenes/System Map/view_objectives_label_fade_out.tres") #consider this to be necessary as it has quite a weird curve that i am uncertain i can replicate in code
 
+var countdown_overlay_shown: bool = false
+
 var time: float = 0.0
 
 const starting_color: Color = Color.WHITE
-const max_time: float = 50
+const max_time: float = 25.0
+
+func _on_active_objectives_changed():
+	time = float()
+	pass
 
 func _physics_process(delta: float) -> void:
 	time += delta
@@ -20,7 +26,12 @@ func _physics_process(delta: float) -> void:
 		set_text("Press %s to view objectives" % r)
 	elif time > max_time:
 		hide()
+	
+	if countdown_overlay_shown:
+		hide()
 	pass
+
+
 
 
 
@@ -38,3 +49,8 @@ func convert_events_to_readable(input_array: Array[InputEvent]) -> String: #this
 		if event is InputEventMouseButton:
 			s += "[MOUSE_%s]" % event.button_index
 	return s
+
+
+func _on_update_countdown_overlay_shown(shown: bool):
+	countdown_overlay_shown = shown
+	pass

@@ -1,0 +1,73 @@
+[gd_scene load_steps=5 format=3 uid="uid://c4inc2m5l36fl"]
+
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://Scenes/master_theme.tres" id="1_2h8s7"]
+[ext_resource type="Script" path="res://Scenes/Pause Menu/objective_item.gd" id="2_k760f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0qwd7"]
+bg_color = Color(0.117647, 0.117647, 0.117647, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7gmd"]
+bg_color = Color(0.0862745, 0.109804, 0.2, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0588235, 0.0784314, 0.14902, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="objective_item" type="PanelContainer"]
+theme = ExtResource("1_2h8s7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_0qwd7")
+script = ExtResource("2_k760f")
+
+[node name="margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="vertical_scroll" type="VBoxContainer" parent="margin"]
+layout_mode = 2
+
+[node name="horizontal_scroll" type="HBoxContainer" parent="margin/vertical_scroll"]
+layout_mode = 2
+
+[node name="checkbox_panel" type="Panel" parent="margin/vertical_scroll/horizontal_scroll"]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_h7gmd")
+
+[node name="checkbox_texture_rect" type="TextureRect" parent="margin/vertical_scroll/horizontal_scroll/checkbox_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="title_label" type="RichTextLabel" parent="margin/vertical_scroll/horizontal_scroll"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="description_label" type="RichTextLabel" parent="margin/vertical_scroll"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+fit_content = true
+scroll_active = false

@@ -4,11 +4,8 @@
 
 [resource]
 script = ExtResource("1_41kco")
-parent = "test1"
 written_identifier = ""
 current_state = 0
 title = "Test 2 "
-description = "gjspgsdipgsig;d"
-categories = []
-sub_objectives = []
+description = "gooble"
 time = 0.0
