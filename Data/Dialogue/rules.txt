@@ -1,6 +1,6 @@
 Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Query Best Concept,Query Rand Best Concept,Query Old Best Concept,Options,Text
 # defaults,,,,,,,,,,
-DEBUG_printTestOpenDialog,concept: DEBUG_printTest,,"openDialog: null, markCategoryFailure: test_category",,,,,,$player_name: defaultLeave,"$concept $player_name $player_prefix $player_prefix_lower $player_speed $player_balance $player_current_value $player_total_score $player_max_jumps $player_jumps_remaining $player_weirdness_index ... $player_in_ANY_region , $player_in_ABYSS_region +++ $player_CHIEF_ENGINEER_alive yjiodsgiogs $randf"
+DEBUG_printTestOpenDialog,concept: DEBUG_printTest,,openDialog: null,,,,,,$player_name: defaultLeave,"$concept $player_name $player_prefix $player_prefix_lower $player_speed $player_balance $player_current_value $player_total_score $player_max_jumps $player_jumps_remaining $player_weirdness_index ... $player_in_ANY_region , $player_in_ABYSS_region +++ $player_CHIEF_ENGINEER_alive yjiodsgiogs $randf"
 defaultOpenDialog,concept: followingBody,,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,
 defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,,,
 "#ALL valid concepts: playerStart, tutorialPlayerStart, playerWin, tutorialPlayerWin, playerDeath, moduleTutorial, theorisedBody, orbitingBody, followingBody, enteringSystem, playerMutiny",,,,,,,,,,
@@ -12,7 +12,7 @@ defaultHardLeave,"concept: optionSelected, option: defaultHardLeave",,closeDialo
 defaultSoftLeave,"concept: optionSelected, option: defaultSoftLeave",,closeDialog: SOFT_LEAVE,,,,,,,
 ,,,,,,,,,,
 "# player start, win, death and story",,,,,,,,,,
-defaultPlayerStartOpenDialog,concept: playerStart,,"openDialog: null, markCategorySuccess: test_category",,,,,,Continue:defaultPlayerStartContinue,"[i]You are a newly established Captain of a starship on a mission of exploration. You have requested for a route to be calculated into an area of space known as New Eden, which reportedly houses a fragment of human civilisation long forgotten. The journey to New Eden be perilous, and the dangers you will face cannot be predicted. [/i]"
+defaultPlayerStartOpenDialog,concept: playerStart,,"openDialog: null, objectiveActive: reachNewEden",,,,,,Continue:defaultPlayerStartContinue,"[i]You are a newly established Captain of a starship on a mission of exploration. You have requested for a route to be calculated into an area of space known as New Eden, which reportedly houses a fragment of human civilisation long forgotten. The journey to New Eden be perilous, and the dangers you will face cannot be predicted. [/i]"
 defaultPlayerStartContinue,"concept: optionSelected, option: defaultPlayerStartContinue",,,,,,,,Step out of the transport:defaultPlayerStartPortal,Your transport attaches to a docking port of your new command with a series of whines. The hatch twists open.
 defaultPlayerStartPortal,"concept: optionSelected, option: defaultPlayerStartPortal",,,,,,defaultPlayerStartPortalResponse,,,
 ,,,,,,,,,,
@@ -36,7 +36,7 @@ defaultPlayerStartFebrisOptionA,"concept: optionSelected, option: defaultPlayerS
 defaultPlayerStartFebrisOptionB,"concept: optionSelected, option: defaultPlayerStartFebrisOptionB",,addMoraleWithFlair: 5,,,,,,Continue: defaultPlayerStartFebrisContinue,"She easily describes the fundamentals of her research. However, once you begin asking more specific questions, her knowledge quickly fails; she deliberates over which type of protein was integral to the third phase of her process, the exact impact of certain stimuli on the interventional trial, et al. You end up completing her sentences, and she quickly grows flustered. You note that she does not have the best memory."
 defaultPlayerStartFebrisContinue,"concept: optionSelected, option: defaultPlayerStartFebrisContinue",,,,,,,,Exit:defaultLeave,"Febris takes you around the hearts of the main subdivisions aboard - besides sick bay, which she seemingly forgets. You meet Chief Engineer Jiya in main engineering, Security Officer Walker in the armoury and First Officer Rui on the bridge. "
 ,,,,,,,,,,
-defaultPlayerWinOpenDialog,concept: playerWin,,openDialog: null,,,addNewEdenArrivalFlair,,,Continue:playerWinStoryConclusion,"Comms reports that AIS has identified ‘a lot of starships’. It does not take long for several space installations to insist on clarification regarding your ships details. You suspect that if it wasn’t for the uptick in explorers entering New Eden, guns would already be pointed at you. You order the manifest to be sent. "
+defaultPlayerWinOpenDialog,concept: playerWin,,"openDialog: null, objectiveSuccess: reachNewEden",,,addNewEdenArrivalFlair,,,Continue:playerWinStoryConclusion,"Comms reports that AIS has identified ‘a lot of starships’. It does not take long for several space installations to insist on clarification regarding your ships details. You suspect that if it wasn’t for the uptick in explorers entering New Eden, guns would already be pointed at you. You order the manifest to be sent. "
 playerWinStoryConclusionDispatch,"concept: optionSelected, option: playerWinStoryConclusion",,,,,playerWinStoryConclusionResponse,,,Exit:defaultLeave,
 playerWinStoryConclusionResponseGeneric,concept: playerWinStoryConclusionResponse,,,,,,,,,You think back to all you have seen on your journey.
 playerWinStoryConclusionResponseConglomerate,"concept: playerWinStoryConclusionResponse, is_conglomerate_storyline_complete: true",,,,,,,,,"You think back to the Conglomerate. Evidently, there is a new contender on the galactic stage. The words of the Emissary are still heavy on your mind. You cannot decide if life taking such a form is incredible or horrifying."
@@ -44,10 +44,10 @@ playerWinStoryConclusionResponseDetective,"concept: playerWinStoryConclusionResp
 newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,,,"You have arrived in New Eden, the true frontier of human civilisation."
 ,,,,,,,,,,
 playerMutinyOpenDialog,concept: playerMutiny,,"openDialog: null, playSoundEffect: dialogue_gunshot.wav",,,,,,Exit:defaultHardLeave,You are killed in a mutiny.
-playerDeathOpenDialog,concept: playerDeath,,openDialog: null,,,,,,Exit:defaultLeave,You are dead.
+playerDeathOpenDialog,concept: playerDeath,,"openDialog: null, objectiveFailure: reachNewEden",,,,,,Exit:defaultLeave,You are dead.
 ,,,,,,,,,,
 # core entity interactions,,,,,,,,,,
-wormholeOpenDialog,"concept: followingBody, type: WORMHOLE",,"openDialog: null, clearCategory: test_category",defaultApproachMessage,,wormholeTryAVFlair,,,"Enter the wormhole:enterWormhole, Leave:defaultLeave",
+wormholeOpenDialog,"concept: followingBody, type: WORMHOLE",,openDialog: null,defaultApproachMessage,,wormholeTryAVFlair,,,"Enter the wormhole:enterWormhole, Leave:defaultLeave",
 wormholeTryAVFlairResponse,"concept: wormholeTryAVFlair, system_civilized: true, player_AUDIO_VISUALIZER_unlocked: true, pending_audio_profiles: true",,,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the data banks will be purged following the traversal of [i]$name[/i]."
 enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENTER_WORMHOLE,,,,,,,
 wormholeDisabledOpenDialog,"concept: followingBody, type: WORMHOLE, wormhole_disabled: true",,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,"""This wormhole leads to our previous star system,"" the navigator on-deck informs you. ""At its present stability, we cannot risk traversal."""
@@ -56,7 +56,7 @@ spaceEntityOverride,"concept: followingBody, type: SPACE_ENTITY, player_LONG_RAN
 spaceEntityOpenDialog,"concept: followingBody, type: SPACE_ENTITY, player_LONG_RANGE_SCOPES_unlocked: false",,openDialog: null,defaultApproachMessage,,,,,"Ask if it can be made clearer:spaceEntityContinue, Leave: defaultLeave",A scope view of the phenomena is present on a junior officers console. The sight to behold is a collection of fuzzy white dots against a parallax of stars.
 spaceEntityContinue,"concept: optionSelected, option: spaceEntityContinue",,,,,,,,Leave:defaultLeave,"You ask if the scopes can be re-calibrated for a more distinct display. ""No, $player_prefix_lower,"" the junior officer replies, ""this is the sharpest we have been able to make it with the scopes on board... of course, we could get closer, but the Codex says otherwise."" You note that the aquisition of [color=yellow]long range scope technology[/color] would allow for data to be collected from the phenomena. "
 ,,,,,,,,,,
-planetOpenDialog,"concept: followingBody, type: PLANET",,"openDialog: null, getPlanetDescriptionWithFlair: $planet_type, markCategoryNone: test_category",defaultApproachMessage,,,,,Leave:defaultLeave,
+planetOpenDialog,"concept: followingBody, type: PLANET",,"openDialog: null, getPlanetDescriptionWithFlair: $planet_type",defaultApproachMessage,,,,,Leave:defaultLeave,
 ,,,,,,,,,,
 starOpenDialog,"concept: followingBody, type: STAR",,"openDialog: null, getStarDescriptionWithFlair: $star_type",defaultApproachMessage,,,,,Leave:defaultLeave,
 ,,,,,,,,,,

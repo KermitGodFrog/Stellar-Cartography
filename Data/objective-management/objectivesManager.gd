@@ -16,25 +16,43 @@ signal activeObjectivesChanged(_active_objectives: Array[objectiveAPI])
 signal updateObjectivesPanel(_active_objectives: Array[objectiveAPI])
 
 var bank_objectives: Dictionary = { #wID: [title, description] (so its quick)
-	"test1": ["Test 1", "jeeble"],
-	"test2": ["Test 2", "gooble"]
+#	"tutorial1_1": [], #mark the nearby body with the ping button ::: dont copy/paste words - keywords will probably allow the player to take info from their STM
+#	"tutorial1_2": [], #OPTIONAL test the central board. (objective never successful, use italics)
+#	"tutorial2_1": [], # orbit the body
+#	"tutorial2_2": [] #OPTIONAL zoom up/down using the scopes
 }
+#construct in objective-management/objectives ^^^
 
-var bank_categories: Dictionary = { #wID: [objective_wIDs]
-	"test_category": ["test1", "test2"]
-}
+var bank_categories: Dictionary = {} #wID: [objective_wIDs]
+#construct in objective-management/categories ^^^
 
 var active_objectives: Array[objectiveAPI] = []:
 	set(value):
 		active_objectives = value
 		print("ACTIVE OBJECTIVES CHANGED: ", active_objectives)
 
+
+func _ready() -> void:
+	start_construct_banks()
+	pass
+
+
+func start_construct_banks() -> void: #called by game.gd when the game is NEW
+	var objective_paths = global_data.get_all_files("res://Data/objective-management/objectives", "tres")
+	for path: String in objective_paths:
+		var wID = path.get_file().trim_suffix(".tres")
+		var objective: objectiveAPI = load(path)
+		bank_objectives[wID] = [objective.title, objective.description]
+	var category_paths = global_data.get_all_files("res://Data/objective-management/categories", "tres")
+	for path: String in category_paths:
+		var wID = path.get_file().trim_suffix(".tres")
+		var category: categoryAPI = load(path)
+		bank_categories[wID] = category.objective_wIDs
+	pass
+
+
+
 func start_receive_active_objectives(_active_objectives: Array[objectiveAPI]) -> void: #called by game.gd when the game is LOADED
-	for i in _active_objectives:
-		print("wID: ", i.get_wID())
-		print("STATE: ", i.get_state())
-		print("TITLE: ", i.title)
-		print("DESCRIPTION: ", i.description)
 	active_objectives.append_array(_active_objectives)
 	pass
 
@@ -108,3 +126,11 @@ func load_category(wID: String) -> categoryAPI:
 		new.objective_wIDs = _objective_wIDs
 		return new
 	return null
+
+func get_active_objectives_in_states(states: Array[objectiveAPI.STATES]) -> Array:
+	var valid: Array = []
+	for o in active_objectives:
+		for s in states:
+			if o.get_state() == s:
+				valid.append(o)
+	return valid

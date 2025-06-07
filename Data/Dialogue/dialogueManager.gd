@@ -587,35 +587,35 @@ func getStarDescriptionWithFlair(star_type: String):
 	dialogue.add_text("[color=darkgray]%s [/color]" % description)
 	pass
 
-func markCategoryNone(wID: String) -> void:
+func categoryActive(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.NONE)
 	pass
 
-func markCategorySuccess(wID: String) -> void:
+func categorySuccess(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.SUCCESS)
 	pass
 
-func markCategoryFailure(wID: String) -> void:
+func categoryFailure(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.FAILURE)
 	pass
 
-func clearCategory(wID: String) -> void:
+func categoryClear(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "clear_category", wID)
 	pass
 
-func markObjectiveNone(wID: String) -> void:
+func objectiveActive(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.NONE)
 	pass
 
-func markObjectiveSuccess(wID: String) -> void:
+func objectiveSuccess(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.SUCCESS)
 	pass
 
-func markObjectiveFailure(wID: String) -> void:
+func objectiveFailure(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.FAILURE)
 	pass
 
-func clearObjective(wID: String) -> void:
+func objectiveClear(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "clear_objective", wID)
 	pass
 
