@@ -4,11 +4,7 @@
 
 [resource]
 script = ExtResource("1_cf7b3")
-parent = ""
 written_identifier = ""
 current_state = 0
 title = "Test 1"
 description = "jeeble"
-categories = ["clear_ReachNewEden"]
-sub_objectives = ["test2"]
-time = 0.0

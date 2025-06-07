@@ -599,6 +599,10 @@ func markCategoryFailure(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.FAILURE)
 	pass
 
+func clearCategory(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "clear_category_if_applicable", wID)
+	pass
+
 func markObjectiveNone(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.NONE)
 	pass
@@ -609,6 +613,10 @@ func markObjectiveSuccess(wID: String) -> void:
 
 func markObjectiveFailure(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.FAILURE)
+	pass
+
+func clearObjective(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "clear_objective_if_applicable", wID)
 	pass
 
 
