@@ -6,16 +6,6 @@ class_name categoryAPI
 
 @export var objective_wIDs: PackedStringArray = []
 
-
-
-
-
-
-
-
-
-
-
 func get_wID() -> String:
 	return written_identifier
 func set_wID(value) -> void:
