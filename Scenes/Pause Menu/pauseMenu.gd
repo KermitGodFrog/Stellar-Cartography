@@ -9,10 +9,8 @@ signal setPauseMode(new_mode: game_data.PAUSE_MODES)
 func _on_pause_mode_changed(value):
 	match value:
 		game_data.PAUSE_MODES.NONE:
-			print("PAUSE MENU: CLOSING PAUSE MENU")
 			pause_canvas.hide()
 		game_data.PAUSE_MODES.PAUSE_MENU:
-			print("PAUSE MENU: OPENING PAUSE MENU")
 			can_unpause = false
 			unpause_possible_timer.start()
 			pause_canvas.show()

@@ -26,16 +26,11 @@ var bank_objectives: Dictionary = { #wID: [title, description] (so its quick)
 var bank_categories: Dictionary = {} #wID: [objective_wIDs]
 #construct in objective-management/categories ^^^
 
-var active_objectives: Array[objectiveAPI] = []:
-	set(value):
-		active_objectives = value
-		print("ACTIVE OBJECTIVES CHANGED: ", active_objectives)
-
+var active_objectives: Array[objectiveAPI] = []
 
 func _ready() -> void:
 	start_construct_banks()
 	pass
-
 
 func start_construct_banks() -> void: #called by game.gd when the game is NEW
 	var objective_paths = global_data.get_all_files("res://Data/objective-management/objectives", "tres")
@@ -49,8 +44,6 @@ func start_construct_banks() -> void: #called by game.gd when the game is NEW
 		var category: categoryAPI = load(path)
 		bank_categories[wID] = category.objective_wIDs
 	pass
-
-
 
 func start_receive_active_objectives(_active_objectives: Array[objectiveAPI]) -> void: #called by game.gd when the game is LOADED
 	active_objectives.append_array(_active_objectives)

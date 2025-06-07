@@ -11,11 +11,9 @@ signal setPauseMode(new_mode: game_data.PAUSE_MODES)
 func _on_pause_mode_changed(value):
 	match value:
 		game_data.PAUSE_MODES.NONE:
-			print("STATION UI: CLOSING STATION UI")
 			has_sold_previously = false
 			get_node(window).hide()
 		game_data.PAUSE_MODES.STATION_UI:
-			print("STATION UI: OPENING STATION UI")
 			get_node(window).popup()
 			get_node(window).move_to_center()
 			_on_popup()

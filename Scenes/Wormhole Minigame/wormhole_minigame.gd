@@ -10,10 +10,8 @@ signal setPauseMode(new_mode: game_data.PAUSE_MODES)
 func _on_pause_mode_changed(value):
 	match value:
 		game_data.PAUSE_MODES.NONE:
-			print("WORMHOLE MINIGAME: CLOSING WORMHOLE MINIGAME")
 			get_node(window).hide()
 		game_data.PAUSE_MODES.WORMHOLE_MINIGAME:
-			print("WORMHOLE MINIGAME: OPENING WORMHOLE MINIGAME")
 			get_node(window).popup()
 			get_node(window).move_to_center()
 	pass
