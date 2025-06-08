@@ -587,6 +587,8 @@ func getStarDescriptionWithFlair(star_type: String):
 	dialogue.add_text("[color=darkgray]%s [/color]" % description)
 	pass
 
+
+
 func categoryActive(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.NONE)
 	pass
@@ -617,6 +619,11 @@ func objectiveFailure(wID: String) -> void:
 
 func objectiveClear(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "clear_objective", wID)
+	pass
+
+func cycleAll(written_state: String) -> void:
+	var change_state = objectiveAPI.STATES.get(written_state)
+	get_tree().call_group("objectivesManager", "cycle_all", change_state)
 	pass
 
 

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="categoryAPI" load_steps=2 format=3 uid="uid://jb1txfe77bjs"]
+
+[ext_resource type="Script" path="res://Data/objective-management/categoryAPI.gd" id="1_mpgvh"]
+
+[resource]
+script = ExtResource("1_mpgvh")
+written_identifier = ""
+objective_wIDs = ["tutorialOptionalMoveCamera", "tutorialMarkBody"]

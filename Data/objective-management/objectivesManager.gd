@@ -85,7 +85,21 @@ func clear_category(wID: String) -> void:
 	emit_signal("activeObjectivesChanged", active_objectives)
 	pass
 
-
+func cycle_all(change_state: objectiveAPI.STATES) -> void:
+	var clear_queue: Array[String] = []
+	for o in active_objectives:
+		if o.get_state() == objectiveAPI.STATES.NONE:
+			match change_state:
+				objectiveAPI.STATES.SUCCESS:
+					mark_objective(o.get_wID(), objectiveAPI.STATES.SUCCESS)
+				objectiveAPI.STATES.FAILURE:
+					mark_objective(o.get_wID(), objectiveAPI.STATES.FAILURE)
+		else:
+			clear_queue.append(o.get_wID())
+	for clear_wID in clear_queue:
+		clear_objective(clear_wID)
+	emit_signal("activeObjectivesChanged", active_objectives)
+	pass
 
 
 
@@ -96,7 +110,7 @@ func get_objective(wID: String, loading_allowed: bool) -> objectiveAPI:
 			return o
 	if loading_allowed:
 		var new = load_objective(wID)
-		active_objectives.append(new)
+		active_objectives.push_front(new)
 		return new
 	return null
 

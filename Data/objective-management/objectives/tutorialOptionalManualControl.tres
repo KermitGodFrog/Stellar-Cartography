@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://v636pfdquvwv"]
+
+[ext_resource type="Script" path="res://Data/objective-management/objectiveAPI.gd" id="1_dssi5"]
+
+[resource]
+script = ExtResource("1_dssi5")
+written_identifier = ""
+current_state = 0
+title = "(Optional) Set Course Manually"
+description = "Lay in courses, direct scopes, quick orbit bodies and quick lock bodies by using the system map."
