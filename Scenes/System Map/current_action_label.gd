@@ -8,6 +8,21 @@ const type_prefixes = {
 
 var _player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 
+var current_text: String = String()
+var prev_body: bodyAPI
+var prev_type: playerAPI.ACTION_TYPES
+
+
+func _physics_process(delta: float) -> void:
+	
+	
+	
+	
+	
+	pass
+
+
+
 func update(type: playerAPI.ACTION_TYPES, body: bodyAPI, pending: bool) -> void:
 	var scenarios = type_prefixes.get(type)
 	var prefix = scenarios.get(pending)

@@ -141,7 +141,7 @@ func spawnBodies():
 func spawn_glint_body_3d_for_identifier(id: int):
 	var new_entity_3d = entity_3d.instantiate()
 	new_entity_3d.set_identifier(id)
-	new_entity_3d.initialize(0.03) #pixel size, can be different for stations/anomalies
+	new_entity_3d.initialize(pow(pow(10, -1.3), 0.28) / 128) #pixel size, can be different for stations/anomalies
 	add_child(new_entity_3d)
 	pass
 
