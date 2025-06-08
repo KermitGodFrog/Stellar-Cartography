@@ -9,34 +9,26 @@ const type_prefixes = {
 var _player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 
 var current_text: String = String()
-var prev_body: bodyAPI
-var prev_type: playerAPI.ACTION_TYPES
+
+var prev_body: bodyAPI = null
+var prev_type: playerAPI.ACTION_TYPES = playerAPI.ACTION_TYPES.NONE
 
 
-func _physics_process(delta: float) -> void:
-	
-	
-	
-	
-	
+func _physics_process(_delta: float) -> void:
+	if (prev_type != playerAPI.ACTION_TYPES.NONE) and (prev_body != null):
+		var body_distance = _player_position_matrix[0].distance_to(prev_body.position)
+		set_text("%s (%.fR%c)" % [current_text, body_distance, "☉"])
+	else:
+		set_text(current_text)
 	pass
-
-
 
 func update(type: playerAPI.ACTION_TYPES, body: bodyAPI, pending: bool) -> void:
 	var scenarios = type_prefixes.get(type)
 	var prefix = scenarios.get(pending)
-	
 	var supplementary = String()
+	if body != null: supplementary = body.get_display_name()
+	current_text = "%s %s" % [prefix, supplementary]
 	
-	if body != null:
-		var body_name = body.get_display_name()
-		#var body_distance = _player_position_matrix[0].distance_to(body.position)
-		#supplementary = "%s (%.f%c)" % [body_name, body_distance, "☉"]
-		supplementary = body_name
-		# ^^^ a tragedy... i didny want to run ts in physics process...
-	
-	var new_text = "%s %s" % [prefix, supplementary]
-	
-	set_text(new_text)
+	prev_body = body
+	prev_type = type
 	pass
