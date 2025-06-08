@@ -9,10 +9,8 @@ signal setPauseMode(new_mode: game_data.PAUSE_MODES)
 func _on_pause_mode_changed(value):
 	match value:
 		game_data.PAUSE_MODES.NONE:
-			print("STATS MENU: CLOSING STATS MENU")
 			stats_control.hide()
 		game_data.PAUSE_MODES.STATS_MENU:
-			print("STATS MENU: OPENING STATS MENU")
 			match init_type:
 				INIT_TYPES.DEATH:
 					init_type_label.set_text("YOU ARE DEAD")

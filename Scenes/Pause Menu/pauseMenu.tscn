@@ -1,8 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://cu8n2e53bgc37"]
+[gd_scene load_steps=7 format=3 uid="uid://cu8n2e53bgc37"]
 
 [ext_resource type="Script" path="res://Scenes/Pause Menu/pauseMenu.gd" id="1_u73yd"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://Scenes/master_theme.tres" id="2_r6vbf"]
 [ext_resource type="PackedScene" uid="uid://df1xq5fo2rlje" path="res://Scenes/Options Menu/optionsMenu.tscn" id="2_vsgfh"]
+[ext_resource type="Script" path="res://Data/objective-management/objectives_panel.gd" id="3_77jva"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yykag"]
+bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
+skew = Vector2(-0.2, 0)
+expand_margin_left = 20.0
+expand_margin_right = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2jwyw"]
+bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
+skew = Vector2(-0.2, 0)
+expand_margin_left = 10.0
+expand_margin_right = 10.0
 
 [node name="pauseMenu" type="Node"]
 process_mode = 2
@@ -59,6 +72,35 @@ text = "SAVE AND QUIT TO MAIN MENU"
 layout_mode = 2
 theme_type_variation = &"ButtonDull"
 text = "EXIT TO MAIN MENU"
+
+[node name="console_cover_panel" type="PanelContainer" parent="pause_canvas/pause_control"]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yykag")
+
+[node name="objectives_panel" type="PanelContainer" parent="pause_canvas/pause_control/console_cover_panel"]
+custom_minimum_size = Vector2(450, 200)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2jwyw")
+script = ExtResource("3_77jva")
+
+[node name="margin" type="MarginContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="item_anchor" type="VBoxContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel/margin"]
+layout_mode = 2
 
 [node name="options_menu" parent="pause_canvas" instance=ExtResource("2_vsgfh")]
 visible = false

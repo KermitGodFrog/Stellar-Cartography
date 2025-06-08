@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://5wxdhu0wnhap"]
+
+[ext_resource type="Script" path="res://Data/objective-management/objectiveAPI.gd" id="1_ugkbx"]
+
+[resource]
+script = ExtResource("1_ugkbx")
+written_identifier = ""
+current_state = 0
+title = "Mark a Body"
+description = "Mark a body by using the LIDAR module to ping it three times."

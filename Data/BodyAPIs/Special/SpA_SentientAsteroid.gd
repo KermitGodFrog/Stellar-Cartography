@@ -22,7 +22,7 @@ func advance(delta):
 		cooldown = 10.0
 		randomize_target_distance()
 	
-	if metadata.get("is_available", true) == false:
+	if metadata.get("custom_available", true) == false:
 		set_display_name("'Sentient Asteroid'")
 	pass
 

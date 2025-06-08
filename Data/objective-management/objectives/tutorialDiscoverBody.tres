@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://cxbj8sq4uh7qe"]
+
+[ext_resource type="Script" path="res://Data/objective-management/objectiveAPI.gd" id="1_mvkac"]
+
+[resource]
+script = ExtResource("1_mvkac")
+written_identifier = ""
+current_state = 0
+title = "Discover a Body"
+description = "Discover a body by visually aquiring it using the scopes. This requires orbiting the body by pressing the appropriate button beforehand to be in visual range."

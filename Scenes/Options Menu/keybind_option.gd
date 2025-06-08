@@ -49,4 +49,3 @@ func convert_events_to_readable(input_array: Array[InputEvent]) -> String:
 func _on_last_input_event_changed():
 	update_display()
 	pass
-

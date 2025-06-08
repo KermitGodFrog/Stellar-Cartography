@@ -9,10 +9,8 @@ signal setPauseMode(new_mode: game_data.PAUSE_MODES)
 func _on_pause_mode_changed(value):
 	match value:
 		game_data.PAUSE_MODES.NONE:
-			print("PAUSE MENU: CLOSING PAUSE MENU")
 			pause_canvas.hide()
 		game_data.PAUSE_MODES.PAUSE_MENU:
-			print("PAUSE MENU: OPENING PAUSE MENU")
 			can_unpause = false
 			unpause_possible_timer.start()
 			pause_canvas.show()
@@ -33,7 +31,7 @@ var is_open = false
 @onready var save_and_quit_button = $pause_canvas/pause_control/pause_scroll/save_and_quit_button
 @onready var options_menu = $pause_canvas/options_menu
 @onready var pause_canvas = $pause_canvas
-
+@onready var objectives_panel = $pause_canvas/pause_control/console_cover_panel/objectives_panel
 
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("SC_PAUSE"):
@@ -72,4 +70,8 @@ func _on_unpause_possible_timer_timeout():
 func _on_settings_button_pressed():
 	options_menu.initialize()
 	options_menu.visible = !options_menu.visible
+	pass
+
+func _on_update_objectives_panel(_active_objectives: Array[objectiveAPI]) -> void:
+	objectives_panel._on_update_objectives_panel(_active_objectives)
 	pass

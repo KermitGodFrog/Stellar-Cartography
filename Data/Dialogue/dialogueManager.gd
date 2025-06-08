@@ -28,7 +28,6 @@ signal removePlayerMorale(amount: int)
 signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
 signal foundBody(id: int)
 signal addPlayerMutinyBacking(amount: int)
-
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
@@ -588,6 +587,44 @@ func getStarDescriptionWithFlair(star_type: String):
 	dialogue.add_text("[color=darkgray]%s [/color]" % description)
 	pass
 
+
+
+func categoryActive(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.NONE)
+	pass
+
+func categorySuccess(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.SUCCESS)
+	pass
+
+func categoryFailure(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.FAILURE)
+	pass
+
+func categoryClear(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "clear_category", wID)
+	pass
+
+func objectiveActive(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.NONE)
+	pass
+
+func objectiveSuccess(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.SUCCESS)
+	pass
+
+func objectiveFailure(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.FAILURE)
+	pass
+
+func objectiveClear(wID: String) -> void:
+	get_tree().call_group("objectivesManager", "clear_objective", wID)
+	pass
+
+func cycleAll(written_state: String) -> void:
+	var change_state = objectiveAPI.STATES.get(written_state)
+	get_tree().call_group("objectivesManager", "cycle_all", change_state)
+	pass
 
 
 
