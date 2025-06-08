@@ -13,7 +13,6 @@ var current_text: String = String()
 var prev_body: bodyAPI = null
 var prev_type: playerAPI.ACTION_TYPES = playerAPI.ACTION_TYPES.NONE
 
-
 func _physics_process(_delta: float) -> void:
 	if (prev_type != playerAPI.ACTION_TYPES.NONE) and (prev_body != null):
 		var body_distance = _player_position_matrix[0].distance_to(prev_body.position)
