@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://ddvcc8y4cgxcq"]
+
+[ext_resource type="Script" path="res://Data/objective-management/objectiveAPI.gd" id="1_nqk4o"]
+
+[resource]
+script = ExtResource("1_nqk4o")
+written_identifier = ""
+current_state = 0
+title = "The Crazy Test Objective"
+description = "ts is such a test LOL"

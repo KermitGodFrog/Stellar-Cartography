@@ -54,7 +54,7 @@ func start_receive_active_objectives(_active_objectives: Array[objectiveAPI]) ->
 
 
 func mark_objective(wID: String, state: objectiveAPI.STATES) -> void:
-	var o = get_objective(wID)
+	var o = get_objective(wID, state == objectiveAPI.STATES.NONE)
 	if o != null:
 		o.set_state(state)
 	emit_signal("activeObjectivesChanged", active_objectives)
@@ -90,13 +90,15 @@ func clear_category(wID: String) -> void:
 
 
 
-func get_objective(wID: String) -> objectiveAPI:
+func get_objective(wID: String, loading_allowed: bool) -> objectiveAPI:
 	for o in active_objectives:
 		if o.get_wID() == wID:
 			return o
-	var new = load_objective(wID)
-	active_objectives.append(new)
-	return new
+	if loading_allowed:
+		var new = load_objective(wID)
+		active_objectives.append(new)
+		return new
+	return null
 
 func load_objective(wID: String) -> objectiveAPI:
 	var data = bank_objectives.get(wID) as PackedStringArray
