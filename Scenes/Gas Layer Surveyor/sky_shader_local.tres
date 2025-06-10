@@ -1,0 +1,17 @@
+[gd_resource type="Shader" format=3 uid="uid://b7fgc6csn4ykm"]
+
+[resource]
+code = "shader_type sky;
+render_mode use_half_res_pass, use_debanding;
+
+uniform sampler2D noise;
+
+uniform sampler2D source_panorama : filter_linear, source_color, hint_default_black;
+
+void sky() {
+	vec4 noise_texture = texture(noise, vec2(SKY_COORDS.x, SKY_COORDS.y));
+	vec3 stars = texture(source_panorama, vec2(SKY_COORDS.x, SKY_COORDS.y)).rgb;
+	COLOR += stars;
+	COLOR += noise_texture.rgb;
+}
+"

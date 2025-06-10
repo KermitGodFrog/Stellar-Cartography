@@ -1,0 +1,36 @@
+[gd_resource type="Environment" load_steps=7 format=3 uid="uid://6jnjxqc5yhk1"]
+
+[ext_resource type="Shader" uid="uid://b7fgc6csn4ykm" path="res://Scenes/Gas Layer Surveyor/sky_shader_local.tres" id="1_y5axs"]
+[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="2_0j8xc"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_j7he6"]
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_v8hx6"]
+in_3d_space = true
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_j7he6")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_77pv1"]
+shader = ExtResource("1_y5axs")
+shader_parameter/noise = SubResource("NoiseTexture2D_v8hx6")
+shader_parameter/source_panorama = ExtResource("2_0j8xc")
+
+[sub_resource type="Sky" id="Sky_fdcw4"]
+sky_material = SubResource("ShaderMaterial_77pv1")
+
+[resource]
+background_mode = 2
+background_energy_multiplier = 0.75
+sky = SubResource("Sky_fdcw4")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.1
+reflected_light_source = 1
+tonemap_mode = 1
+tonemap_exposure = 2.0
+tonemap_white = 0.5
+glow_intensity = 7.08
+fog_height_density = 12.2528
