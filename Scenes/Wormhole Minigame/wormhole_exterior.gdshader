@@ -11,9 +11,9 @@ void fragment() {
 	vec4 star_texture = texture(stars, UV);
 	ALBEDO = color.rgb * noise_texture.rgb;
 	// + star_texture.rgb
-	
+
 	NORMAL_MAP = texture(normal_map, UV).rgb;
-	
+
 	ROUGHNESS = 0.0;
 	METALLIC = 0.25;
 	RIM = 0.5;

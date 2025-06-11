@@ -1,4 +1,80 @@
 extends Node3D
 
+@onready var world_environment = $world_environment
+
+const layer_data = { #name: properties
+	"default": {
+		"bg_color": Color.WHITE,
+		"bg_time_divisor": 100.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_basic.tres"),
+		"fog_albedo": Color.WHITE,
+		"fog_emission": Color.BLACK,
+		"fog_density": 0.035,
+		"fog_anisotropy": 0.6,
+		"fog_length": 30.0
+	},
+	"orange-basic": {
+		"bg_color": Color("ff8000"), 
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ping_pong.tres"), 
+		"fog_albedo": Color("ffc98a"), 
+		"fog_emission": Color("ffa500"),
+	}
+}
+
+var current_layer: String = "default"
+
+var target_color: Color = Color.WHITE
+var target_time_divisor: float = 100.0
+
+func apply_new_layer(layer_name: String = "default") -> void: #default is always applied first, allowing 'carving' of properties from the base
+	var environment = world_environment.get_environment()
+	var shader_material = environment.get_sky().get_material()
+	
+	var properties = layer_data.get(layer_name)
+	if properties != null:
+		current_layer = layer_name
+		for p in properties:
+			var value = properties.get(p)
+			match p:
+				"bg_color":
+					target_color = value
+				"bg_time_divisor":
+					target_time_divisor = value
+				"bg_sampler":
+					shader_material.set_shader_parameter("sampler", value)
+				"fog_albedo":
+					environment.set("volumetric_fog_albedo", value)
+				"fog_emission":
+					environment.set("volumetric_fog_emission", value)
+				"fog_density":
+					environment.set("volumetric_fog_density", value)
+				"fog_anisotropy":
+					environment.set("volumetric_fog_anisotropy", value)
+				"fog_length":
+					environment.set("volumetric_fog_length", value)
+	pass
+
+func get_current_layer() -> String:
+	return current_layer
+
+func _ready() -> void:
+	apply_new_layer()
+	apply_new_layer("orange-basic")
+	pass
+
+func _process(delta: float) -> void:
+	var shader_material = world_environment.get_environment().get_sky().get_material()
+	
+	var current_color = shader_material.get_shader_parameter("color") as Color
+	var current_time_divisor = shader_material.get_shader_parameter("time_divisor") as float
+	
+	shader_material.set_shader_parameter("color", current_color.lerp(target_color, delta))
+	shader_material.set_shader_parameter("time_divisor", move_toward(current_time_divisor, target_time_divisor, delta))
+	pass
+
+
+
+
+
 func _on_popup() -> void:
 	pass

@@ -42,7 +42,6 @@ script = ExtResource("3_7b58c")
 [node name="journey_map_window" parent="." instance=ExtResource("5_4mkmd")]
 
 [node name="long_range_scopes_window" parent="." instance=ExtResource("10_q6rur")]
-own_world_3d = true
 handle_input_locally = false
 
 [node name="gas_layer_surveyor_window" parent="." instance=ExtResource("9_slh27")]

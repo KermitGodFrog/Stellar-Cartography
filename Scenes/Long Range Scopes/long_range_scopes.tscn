@@ -83,6 +83,7 @@ stream_4/stream = ExtResource("19_qvp7y")
 
 [node name="long_range_scopes_window" type="Window"]
 process_mode = 3
+own_world_3d = true
 title = "Long Range Scopes"
 position = Vector2i(0, 36)
 size = Vector2i(820, 500)

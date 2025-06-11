@@ -1,14 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://b75u7e1b1ddb2"]
+[gd_scene load_steps=6 format=3 uid="uid://b75u7e1b1ddb2"]
 
 [ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor.gd" id="1_retla"]
 [ext_resource type="Environment" uid="uid://6jnjxqc5yhk1" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor_environment.tres" id="3_sw2d4"]
 [ext_resource type="PackedScene" uid="uid://bak0fnuot1dmr" path="res://Instantiated Scenes/gas-harvesting-spaceship/gas_harvesting_spaceship.glb" id="4_lwqlg"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trmsn"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_dwqov"]
+material = SubResource("StandardMaterial3D_trmsn")
+radius = 0.005
+
 [node name="gas_layer_surveyor_window" type="Window"]
+own_world_3d = true
+handle_input_locally = false
 title = "Gas Layer Surveyor"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
-visible = false
 
 [node name="gas_layer_surveyor" type="Node3D" parent="."]
 script = ExtResource("1_retla")
@@ -18,7 +27,7 @@ script = ExtResource("1_retla")
 [node name="camera_offset" type="Node3D" parent="gas_layer_surveyor"]
 
 [node name="camera" type="Camera3D" parent="gas_layer_surveyor/camera_offset"]
-transform = Transform3D(0.577938, -0.745263, 0.332522, 0, 0.407463, 0.913222, -0.81608, -0.527786, 0.235488, 2.01448, 9.51746, -0.83369)
+transform = Transform3D(0.00523596, 0.999986, 4.37108e-08, 0, -4.37114e-08, 1, 0.999986, -0.00523596, -2.28871e-10, 1.6, 9.564, -1.368)
 
 [node name="control" type="Control" parent="gas_layer_surveyor/camera_offset/camera"]
 layout_mode = 3
@@ -29,6 +38,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="press_to_start_button" type="Button" parent="gas_layer_surveyor/camera_offset/camera/control"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -42,13 +52,15 @@ environment = ExtResource("3_sw2d4")
 
 [node name="directional_light" type="DirectionalLight3D" parent="gas_layer_surveyor"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-light_energy = 0.5
 
-[node name="layer_back_light" type="DirectionalLight3D" parent="gas_layer_surveyor"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
-light_color = Color(1, 0, 1, 1)
-sky_mode = 1
-
-[node name="CPUParticles3D" type="CPUParticles3D" parent="gas_layer_surveyor"]
+[node name="speed_lines" type="CPUParticles3D" parent="gas_layer_surveyor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
-visible = false
+amount = 20
+lifetime = 2.5
+mesh = SubResource("TubeTrailMesh_dwqov")
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 1.0
+emission_ring_radius = 7.0
+emission_ring_inner_radius = 6.0
+gravity = Vector3(0, 10, 0)
