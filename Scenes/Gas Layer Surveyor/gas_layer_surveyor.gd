@@ -13,7 +13,7 @@ const layer_data = { #name: properties
 		"fog_anisotropy": 0.6,
 		"fog_length": 30.0
 	},
-	"orange-basic": {
+	"yellow-basic": {
 		"bg_color": Color("ff8000"), 
 		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ping_pong.tres"), 
 		"fog_albedo": Color("ffc98a"), 
