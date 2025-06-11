@@ -6,7 +6,7 @@ const layer_data = { #name: properties
 	"default": {
 		"bg_color": Color.WHITE,
 		"bg_time_divisor": 100.0,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_basic.tres"),
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_simple.tres"),
 		"fog_albedo": Color.WHITE,
 		"fog_emission": Color.BLACK,
 		"fog_density": 0.035,
@@ -18,6 +18,12 @@ const layer_data = { #name: properties
 		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ping_pong.tres"), 
 		"fog_albedo": Color("ffc98a"), 
 		"fog_emission": Color("ffa500"),
+	},
+	"blue-fast": {
+		"bg_color": Color("6192ff"),
+		"bg_time_divisor": 10.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/blue_fast.tres"),
+		"fog_albedo": Color("83a6f6"),
 	}
 }
 
@@ -27,6 +33,14 @@ var target_color: Color = Color.WHITE
 var target_time_divisor: float = 100.0
 
 func apply_new_layer(layer_name: String = "default") -> void: #default is always applied first, allowing 'carving' of properties from the base
+	if not layer_name == "default":
+		set_layer_values() #reset to default
+		set_layer_values(layer_name)
+	else:
+		set_layer_values() #reset to default
+	pass
+
+func set_layer_values(layer_name: String = "default") -> void: 
 	var environment = world_environment.get_environment()
 	var shader_material = environment.get_sky().get_material()
 	
@@ -58,7 +72,6 @@ func get_current_layer() -> String:
 	return current_layer
 
 func _ready() -> void:
-	apply_new_layer()
 	apply_new_layer("orange-basic")
 	pass
 
