@@ -21,9 +21,14 @@ const layer_data = { #name: properties
 	},
 	"blue-fast": {
 		"bg_color": Color("6192ff"),
-		"bg_time_divisor": 10.0,
+		"bg_time_divisor": 30.0,
 		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/blue_fast.tres"),
 		"fog_albedo": Color("83a6f6"),
+	},
+	"green-bacterium": {
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
+		"fog_albedo": Color("00dd2e"),
+		"fog_emission": Color("00803c")
 	}
 }
 
@@ -72,7 +77,7 @@ func get_current_layer() -> String:
 	return current_layer
 
 func _ready() -> void:
-	apply_new_layer("orange-basic")
+	apply_new_layer()
 	pass
 
 func _process(delta: float) -> void:
@@ -82,7 +87,7 @@ func _process(delta: float) -> void:
 	var current_time_divisor = shader_material.get_shader_parameter("time_divisor") as float
 	
 	shader_material.set_shader_parameter("color", current_color.lerp(target_color, delta))
-	shader_material.set_shader_parameter("time_divisor", move_toward(current_time_divisor, target_time_divisor, delta))
+	shader_material.set_shader_parameter("time_divisor", lerpf(current_time_divisor, target_time_divisor, delta))
 	pass
 
 

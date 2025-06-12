@@ -1,20 +1,13 @@
-[gd_resource type="Environment" load_steps=6 format=3 uid="uid://6jnjxqc5yhk1"]
+[gd_resource type="Environment" load_steps=5 format=3 uid="uid://6jnjxqc5yhk1"]
 
 [ext_resource type="Shader" uid="uid://b7fgc6csn4ykm" path="res://Scenes/Gas Layer Surveyor/sky_shader_local.tres" id="1_y5axs"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_nr178"]
-frequency = 0.0125
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3reck"]
-in_3d_space = true
-seamless = true
-noise = SubResource("FastNoiseLite_nr178")
+[ext_resource type="Texture2D" uid="uid://cl1xpnpxmyr11" path="res://Scenes/Gas Layer Surveyor/bg_bacterium.tres" id="2_0gffm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_77pv1"]
 shader = ExtResource("1_y5axs")
-shader_parameter/color = Color(0.85836, 0.000764124, 0.887884, 1)
-shader_parameter/time_divisor = 50.0
-shader_parameter/sampler = SubResource("NoiseTexture2D_3reck")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/time_divisor = 100.0
+shader_parameter/sampler = ExtResource("2_0gffm")
 
 [sub_resource type="Sky" id="Sky_fdcw4"]
 sky_material = SubResource("ShaderMaterial_77pv1")
@@ -29,8 +22,8 @@ glow_intensity = 7.08
 fog_height_density = 12.2528
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.035
-volumetric_fog_albedo = Color(0.503033, 0.64361, 0.961853, 1)
-volumetric_fog_emission = Color(0.123888, 0.282509, 0.677347, 1)
+volumetric_fog_albedo = Color(0, 0.865669, 0.179584, 1)
+volumetric_fog_emission = Color(2.76752e-06, 0.501717, 0.234546, 1)
 volumetric_fog_anisotropy = 0.6
 volumetric_fog_length = 30.0
 volumetric_fog_ambient_inject = 16.0

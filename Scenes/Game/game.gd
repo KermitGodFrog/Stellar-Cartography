@@ -272,10 +272,7 @@ func _physics_process(delta):
 		new_query.add("concept", "DEBUG_printTest")
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	if Input.is_action_just_pressed("SC_DEBUG_QUICK_ADD_NANITES"):
-		if gas_layer_surveyor.get_current_layer() == "yellow-basic":
-			gas_layer_surveyor.apply_new_layer("blue-fast")
-		elif gas_layer_surveyor.get_current_layer() == "blue-fast":
-			gas_layer_surveyor.apply_new_layer("yellow-basic")
+		gas_layer_surveyor.apply_new_layer(gas_layer_surveyor.layer_data.keys()[gas_layer_surveyor.layer_data.keys().find(gas_layer_surveyor.get_current_layer()) - 1])
 	
 	#DEBUG \/\//\/\/\//\/\\/
 	#if Input.is_action_just_pressed("SC_DEBUG_MISC"):
