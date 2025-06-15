@@ -114,7 +114,6 @@ gasSiphoningJovianMessage,"concept: gasSiphoningMessageDispatch, planet_classifi
 PAHardLeave,"concept: optionSelected, option: PAHardLeave",,closeDialog: HARD_LEAVE,,,,,,,
 PASoftLeave,"concept: optionSelected, option: PASoftLeave",,closeDialog: SOFT_LEAVE,,,,,,,
 ,,,,,,,,,,
-PA_GenericPortal,"concept: followingBody, type: PLANET, planetary_anomaly: true, planetary_anomaly_available: true",,,,,,PA_GenericPortalResponse,,,
 PA_TerranPortal,"concept: followingBody, type: PLANET, planet_classification: Terran, planetary_anomaly: true, planetary_anomaly_available: true",,,,,,PA_TerranPortalResponse,,,
 PA_NeptunianPortal,"concept: followingBody, type: PLANET, planet_classification: Neptunian, planetary_anomaly: true, planetary_anomaly_available: true",,,,,,PA_NeptunianPortalResponse,,,
 PA_JovianPortal,"concept: followingBody, type: PLANET, planet_classification: Jovian, planetary_anomaly: true, planetary_anomaly_available: true",,,,,,PA_JovianPortalResponse,,,
@@ -122,7 +121,6 @@ PA_JovianPortal,"concept: followingBody, type: PLANET, planet_classification: Jo
 PA_StationGenericOpenDialog,"concept: PA_TerranPortalResponse, player_in_CORE_or_FRONTIER_region: true",,openDialog: null,defaultApproachMessage,,,,,"Request Docking Access: PA_StationGenericDockingAccess, Leave:PASoftLeave","There appears to be an occupied settlement, missing from native starcharts, on the surface of the planet. You recall that profits at such bases are usually lower than official counterparts. Communications are quickly established. "
 PA_StationGenericDockingAccess,"concept: optionSelected, option: PA_StationGenericDockingAccess",,closeDialog: HARD_LEAVE_STATION_OVERRIDE,,,,,,,
 ,,,,,,,,,,
-PA_RepairGenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
 PA_RepairGenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
 PA_RepairGenericNeptunianOpenDialog,"concept: PA_NeptunianPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
 PA_RepairGenericJovianOpenDialog,"concept: PA_JovianPortalResponse, player_in_ANY_region: true",,,,,PA_RepairGenericActions,,,,
@@ -131,14 +129,12 @@ PA_RepairGenericDispatch,"concept: optionSelected, option: PA_RepairGenericDispa
 PA_RepairGenericDispatchSuccess,concept: PA_RepairGenericDispatchResponse,,removeHullStressWithFlair: 15,,,,,,Leave:PAHardLeave,The nanites successfully repair your starship.
 PA_RepairGenericDispatchFailure,concept: PA_RepairGenericDispatchResponse,,,,,,,,Leave:PAHardLeave,The nanites malfunction and shutdown before repairs can be made.
 ,,,,,,,,,,
-PA_01GenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_ANY_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked.
 PA_01GenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_ANY_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked on its surface.
 PA_01GenericNeptunianOpenDialog,"concept: PA_NeptunianPortalResponse, player_in_ANY_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked within its atmosphere.
 PA_01GenericJovianOpenDialog,"concept: PA_JovianPortalResponse, player_in_ANY_region: true",,,,,PA_01GenericActions,,,,An inconsistent LIDAR return is marked within the upper fringes of its atmosphere.
 PA_01GenericActions,concept: PA_01GenericActions,,openDialog: null,defaultApproachMessage,,,,,"Investigate:PA_01GenericContinue, Leave:PASoftLeave",
 PA_01GenericContinue,"concept: optionSelected, option: PA_01GenericContinue",,addValueWithFlair: 5000,,,,,,Leave:PAHardLeave,"Upon further analysis and several additional pings, it becomes clear that the inconsistent return was merely a false echo. The higher resolution scan data will yield marginal value."
 ,,,,,,,,,,
-PA_02GenericOpenDialog,"concept: PA_GenericPortalResponse, player_in_FRONTIER_region: true",,,,,PA_02GenericActions,,,,
 PA_02GenericTerranOpenDialog,"concept: PA_TerranPortalResponse, player_in_FRONTIER_region: true",,,,,PA_02GenericActions,,,,
 PA_02GenericNeptunianOpenDialog,"concept: PA_NeptunianPortalResponse, player_in_FRONTIER_region: true",,,,,PA_02GenericActions,,,,
 PA_02GenericJovianOpenDialog,"concept: PA_JovianPortalResponse, player_in_FRONTIER_region: true",,,,,PA_02GenericActions,,,,
