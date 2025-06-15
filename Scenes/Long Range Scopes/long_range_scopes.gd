@@ -168,7 +168,7 @@ func _on_current_entity_changed(new_entity : entityBodyAPI):
 			print("GENERATING NEW BASIS")
 		
 		GENERATION_POSITIONS = current_entity.stored_generation_positions
-		REVERSE_GENERATION_POSITIONS = GENERATION_POSITIONS
+		REVERSE_GENERATION_POSITIONS = GENERATION_POSITIONS.duplicate()
 		REVERSE_GENERATION_POSITIONS.reverse()
 		GENERATION_BASIS = current_entity.stored_generation_basis
 		

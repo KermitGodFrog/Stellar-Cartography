@@ -448,9 +448,10 @@ func _on_player_following_body(following_body: bodyAPI):
 		_:
 			_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 	
-	if following_body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ENTITY:
-		await system_map.validUpdatePlayerActionType
-		long_range_scopes._on_current_entity_cleared()
+#	if following_body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ENTITY:
+#		await system_map.validUpdatePlayerActionType
+#		push_error("ON CURRENT ENTITY CLEARED")
+#		long_range_scopes._on_current_entity_cleared()
 	pass
 
 func body_query_add_shared(query: responseQuery, body: bodyAPI) -> void:
@@ -624,7 +625,7 @@ func _on_player_mutiny() -> void:
 
 func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
 	if not (type == world.player.current_action_type and action_body == world.player.action_body):
-		system_map.emit_signal("validUpdatePlayerActionType", type, action_body) #used for checking if the player is no longer orbiting a body in game.gd!
+		long_range_scopes._on_current_entity_cleared()
 	
 	world.player.current_action_type = type
 	if action_body != null:
