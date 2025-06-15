@@ -409,9 +409,17 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 					has_missing_AO = true
 				
 				var has_missing_GL: bool = false
-				if planet_classification in ["Neptunian", "Jovian"]:
-					if randf() >= (1 - missing_GL_chance_per_relevant_planet):
-						has_missing_GL = true
+				var gas_layers_sum: int = -1
+				if randf() >= (1 - missing_GL_chance_per_relevant_planet):
+					match planet_classification:
+						"Terran":
+							pass
+						"Neptunian":
+							has_missing_GL = true
+							gas_layers_sum = global_data.get_randi(2, 5)
+						"Jovian":
+							has_missing_GL = true
+							gas_layers_sum = global_data.get_randi(4, 9)
 				
 				var new_planet = addBody(
 					planetBodyAPI.new(),
@@ -422,7 +430,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 					orbit_distance,
 					orbit_speed,
 					(radius / 109.1),
-					{"mass": (mass / 333000), "surface_color": color, "current_variation": planetBodyAPI.VARIATIONS.values().pick_random()},
+					{"mass": (mass / 333000), "surface_color": color, "current_variation": planetBodyAPI.VARIATIONS.values().pick_random(), "layers": gas_layers_sum},
 					{"planet_classification": planet_classification, "planet_type": planet_type, "value": value, "iterations": (hook.metadata.get("iterations") / 2), "planetary_anomaly": has_planetary_anomaly, "planetary_anomaly_available": is_planetary_anomaly_available, "seed": randi(), "missing_AO": has_missing_AO, "missing_GL": has_missing_GL}
 				)
 				
