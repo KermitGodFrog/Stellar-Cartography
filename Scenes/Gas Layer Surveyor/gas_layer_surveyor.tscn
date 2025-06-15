@@ -10,9 +10,11 @@ material = ExtResource("4_lygh8")
 radius = 0.005
 
 [node name="gas_layer_surveyor_window" type="Window"]
+own_world_3d = true
 title = "Gas Layer Surveyor"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
+visible = false
 
 [node name="gas_layer_surveyor" type="Node3D" parent="."]
 script = ExtResource("1_retla")
@@ -59,3 +61,5 @@ emission_ring_height = 1.0
 emission_ring_radius = 7.0
 emission_ring_inner_radius = 6.0
 gravity = Vector3(0, 10, 0)
+
+[connection signal="close_requested" from="." to="gas_layer_surveyor" method="_on_gas_layer_surveyor_window_close_requested"]

@@ -203,10 +203,10 @@ const asteroid_belt_classifications = {
 	"Carbonaceous": {"name": "Carbonaceous", "weight": 0.3}
 }
 
-func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0) -> void:
+func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0, _missing_GL_chance_per_relevant_planet: float = 0.0) -> void:
 	#generate just planets, stars and space anomalies!
 	var hook_star = generateRandomWeightedHookStar()
-	generateRandomWeightedPlanets(hook_star, _PA_chance_per_planet, _missing_AO_chance_per_planet)
+	generateRandomWeightedPlanets(hook_star, _PA_chance_per_planet, _missing_AO_chance_per_planet, _missing_GL_chance_per_relevant_planet)
 	generateRandomAnomalies(_SA_chance_per_candidate)
 	pass
 
@@ -281,7 +281,7 @@ func generateRandomWeightedHookStar():
 	get_body_from_identifier(new_body).known = true #so you can see stars on system map before exploring
 	return new_body
 
-func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: float = 0.0, missing_AO_chance_per_planet: float = 0.0):
+func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: float = 0.0, missing_AO_chance_per_planet: float = 0.0, missing_GL_chance_per_relevant_planet: float = 0.0):
 	randomize()
 	var hook = get_body_from_identifier(hook_identifier)
 	var remaining: Array = []
@@ -407,6 +407,12 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 				var has_missing_AO: bool = false
 				if randf() >= (1 - missing_AO_chance_per_planet):
 					has_missing_AO = true
+				
+				var has_missing_GL: bool = false
+				if planet_classification in ["Neptunian", "Jovian"]:
+					if randf() >= (1 - missing_GL_chance_per_relevant_planet):
+						has_missing_GL = true
+				
 				var new_planet = addBody(
 					planetBodyAPI.new(),
 					BODY_TYPES.PLANET,
@@ -417,7 +423,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 					orbit_speed,
 					(radius / 109.1),
 					{"mass": (mass / 333000), "surface_color": color, "current_variation": planetBodyAPI.VARIATIONS.values().pick_random()},
-					{"planet_classification": planet_classification, "planet_type": planet_type, "value": value, "iterations": (hook.metadata.get("iterations") / 2), "planetary_anomaly": has_planetary_anomaly, "planetary_anomaly_available": is_planetary_anomaly_available, "seed": randi(), "missing_AO": has_missing_AO}
+					{"planet_classification": planet_classification, "planet_type": planet_type, "value": value, "iterations": (hook.metadata.get("iterations") / 2), "planetary_anomaly": has_planetary_anomaly, "planetary_anomaly_available": is_planetary_anomaly_available, "seed": randi(), "missing_AO": has_missing_AO, "missing_GL": has_missing_GL}
 				)
 				
 				get_body_from_identifier(new_planet).rotation = deg_to_rad(global_data.get_randf(0,360))

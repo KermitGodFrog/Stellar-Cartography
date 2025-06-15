@@ -145,6 +145,14 @@ upgrade = 3
 cost = 35000
 description = "Long Range Scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid to photos of quality, which take the photography style for different phenomena into account."
 
+[node name="5" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+script = ExtResource("5_nlbm1")
+upgrade = 5
+cost = 35000
+description = "Gas Layer Surveyor."
+
 [node name="disclaimer_label" type="Label" parent="station_control/upgrade_container"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12

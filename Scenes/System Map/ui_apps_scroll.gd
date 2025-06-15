@@ -8,4 +8,6 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 			$audio_visualizer_button.set_visible(state)
 		playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES:
 			$long_range_scopes_button.set_visible(state)
+		playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR:
+			$gas_layer_surveyor_button.set_visible(state)
 	pass

@@ -104,4 +104,10 @@ func _process(delta: float) -> void:
 
 
 func _on_popup() -> void:
+	print("ON POPUP!!!")
+	pass
+
+
+func _on_gas_layer_surveyor_window_close_requested() -> void:
+	owner.hide()
 	pass
