@@ -165,6 +165,7 @@ func connect_all_signals() -> void:
 	system_map.connect("theorisedBody", _on_theorised_body)
 	system_map.connect("playerBelowCMERingRadius", _on_player_below_CME_ring_radius)
 	system_map.connect("updatePlayerInAsteroidBelt", _on_update_player_in_asteroid_belt)
+	
 	system_map.connect("DEBUG_REVEAL_ALL_WORMHOLES", _ON_DEBUG_REVEAL_ALL_WORMHOLES)
 	system_map.connect("DEBUG_REVEAL_ALL_BODIES", _ON_DEBUG_REVEAL_ALL_BODIES)
 	system_map.connect("DEBUG_QUICK_ADD_NANITES", _ON_DEBUG_QUICK_ADD_NANITES)
@@ -250,6 +251,7 @@ func _physics_process(delta):
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_map.set("_player_status_matrix", [world.player.balance, world.player.hull_stress, world.player.hull_deterioration, world.player.morale])
 	system_map.set("player_audio_visualizer_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.AUDIO_VISUALIZER) != -1))
+	system_map.set("player_gas_layer_surveyor_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) != -1))
 	system_3d.set("player_position", world.player.position)
 	long_range_scopes.set("player_position", world.player.position)
 	barycenter_visualizer.set("_player_position", world.player.position)
@@ -354,6 +356,8 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add_tree_access("planet_classification", following_body.metadata.get("planet_classification"))
 			new_query.add_tree_access("planet_type", following_body.metadata.get("planet_type"))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
+			new_query.add_tree_access("missing_AO", following_body.metadata.get("missing_AO", false))
+			new_query.add_tree_access("missing_GL", following_body.metadata.get("missing_GL", false))
 		starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
 			new_query.add("space_anomaly_available", following_body.metadata.get("space_anomaly_available", true))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
@@ -416,6 +420,9 @@ func _on_player_following_body(following_body: bodyAPI):
 					random.set_seed(following_body.metadata.get("seed", randi()))
 					temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
 					dock_with_station(temp_station)
+				"GAS_LAYER_SURVEYOR_OVERRIDE":
+					if not $gas_layer_surveyor_window.is_visible():
+						_on_gas_layer_surveyor_popup()
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 		starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
@@ -447,11 +454,6 @@ func _on_player_following_body(following_body: bodyAPI):
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 		_:
 			_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
-	
-#	if following_body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ENTITY:
-#		await system_map.validUpdatePlayerActionType
-#		push_error("ON CURRENT ENTITY CLEARED")
-#		long_range_scopes._on_current_entity_cleared()
 	pass
 
 func body_query_add_shared(query: responseQuery, body: bodyAPI) -> void:
@@ -645,7 +647,7 @@ func _on_update_target_position(pos: Vector2):
 func _on_create_new_star_system(for_system: starSystemAPI = null):
 	game_data.SYSTEM_PREFIX = "" #shuldnt be calling game_data from game.gd but whateverrrrrrr
 	var system = world.createStarSystem("random")
-	system.createBase(world.PA_chance_per_planet, world.missing_AO_chance_per_planet, world.SA_chance_per_candidate)
+	system.createBase(world.PA_chance_per_planet, world.missing_AO_chance_per_planet, world.SA_chance_per_candidate, world.missing_GL_chance_per_relevant_planet)
 	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
@@ -1057,7 +1059,6 @@ func _on_long_range_scopes_popup():
 	pass
 
 func _on_gas_layer_surveyor_popup():
-	gas_layer_surveyor._on_popup()
 	if $gas_layer_surveyor_window.is_visible():
 		$gas_layer_surveyor_window.hide()
 	else:

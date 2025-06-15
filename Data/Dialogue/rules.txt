@@ -56,7 +56,10 @@ spaceEntityOverride,"concept: followingBody, type: SPACE_ENTITY, player_LONG_RAN
 spaceEntityOpenDialog,"concept: followingBody, type: SPACE_ENTITY, player_LONG_RANGE_SCOPES_unlocked: false",,openDialog: null,defaultApproachMessage,,,,,"Ask if it can be made clearer:spaceEntityContinue, Leave: defaultLeave",A scope view of the phenomena is present on a junior officers console. The sight to behold is a collection of fuzzy white dots against a parallax of stars.
 spaceEntityContinue,"concept: optionSelected, option: spaceEntityContinue",,,,,,,,Leave:defaultLeave,"You ask if the scopes can be re-calibrated for a more distinct display. ""No, $player_prefix_lower,"" the junior officer replies, ""this is the sharpest we have been able to make it with the scopes on board... of course, we could get closer, but the Codex says otherwise."" You note that the aquisition of [color=yellow]long range scope technology[/color] would allow for data to be collected from the phenomena. "
 ,,,,,,,,,,
-planetOpenDialog,"concept: followingBody, type: PLANET",,"openDialog: null, getPlanetDescriptionWithFlair: $planet_type",defaultApproachMessage,,,,,Leave:defaultLeave,
+planetGLSOverride,"concept: followingBody, type: PLANET, missing_GL: true, player_GAS_LAYER_SURVEYOR_unlocked: true",,closeDialog: GAS_LAYER_SURVEYOR_OVERRIDE,,,,,,,
+planetOpenDialog,"concept: followingBody, type: PLANET",,"openDialog: null, getPlanetDescriptionWithFlair: $planet_type",defaultApproachMessage,planetTryFlairs,,,,Leave:defaultLeave,
+planetTryAVFlairResponse,"concept: planetTryFlairs, missing_AO: true",,,,,,,,,(UNFINISHED) you are informed that using audio visualizer on this planet will be good
+planetTryGLSFlairResponse,"concept: planetTryFlairs, missing_GL: true",,,,,,,,,(UNFINISHED) you are informed by a junior officer that if we had gas layer surveyor module we could totally send a probe down or something aha
 ,,,,,,,,,,
 starOpenDialog,"concept: followingBody, type: STAR",,"openDialog: null, getStarDescriptionWithFlair: $star_type",defaultApproachMessage,,,,,Leave:defaultLeave,
 ,,,,,,,,,,

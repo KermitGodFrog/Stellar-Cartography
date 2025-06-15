@@ -1,6 +1,7 @@
 extends Node3D
 
 @onready var world_environment = $world_environment
+@onready var no_current_planet_bg = $camera_offset/camera/canvas_layer/no_current_planet_bg
 
 const layer_data = { #name: properties
 	"default": {
@@ -40,10 +41,10 @@ const layer_data = { #name: properties
 	}
 }
 
-var current_layer: String = "default"
 
+var current_planet: planetBodyAPI = null
+var current_layer: String = "default"
 var target_color: Color = Color.WHITE
-#var target_time_divisor: float = 100.0
 
 func apply_new_layer(layer_name: String = "default") -> void: #default is always applied first, allowing 'carving' of properties from the base
 	if not layer_name == "default":
@@ -91,21 +92,34 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	var shader_material = world_environment.get_environment().get_sky().get_material()
-	
 	var current_color = shader_material.get_shader_parameter("color") as Color
-	#var current_time_divisor = shader_material.get_shader_parameter("time_divisor") as float
-	
 	shader_material.set_shader_parameter("color", current_color.lerp(target_color, delta))
-	#shader_material.set_shader_parameter("time_divisor", lerpf(current_time_divisor, target_time_divisor, delta))
+	pass
+
+
+
+func _on_current_planet_changed(new_planet : planetBodyAPI):
+	if current_planet != new_planet:
+		no_current_planet_bg.hide()
+		current_planet = new_planet
+		
+		
+		
+		
+	pass
+
+func _on_current_planet_cleared():
+	no_current_planet_bg.show()
+	#put on the black screen + prevent player from EVER doing the minigame again for this planet, or from picking the gas layers 
+	
 	pass
 
 
 
 
 
-func _on_popup() -> void:
-	print("ON POPUP!!!")
-	pass
+
+
 
 
 func _on_gas_layer_surveyor_window_close_requested() -> void:

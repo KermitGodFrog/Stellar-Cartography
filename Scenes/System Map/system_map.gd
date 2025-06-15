@@ -56,6 +56,7 @@ var player_is_boosting: bool = false:
 			travel_modifier_label.check_modifier("boosting", "Boosting", value)
 		player_is_boosting = value
 var player_audio_visualizer_unlocked: bool = false
+var player_gas_layer_surveyor_unlocked: bool = false
 
 @onready var camera = $camera
 @onready var canvas = $camera/canvas
@@ -314,6 +315,9 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					if (body.metadata.get("planetary_anomaly", false) == true) and (body.metadata.get("planetary_anomaly_available", false) == true):
 						item.set_icon(0, question_mark_frame)
 						oscillate_item_icon_color(item, Color.GREEN)
+					elif (body.metadata.get("missing_GL", false) == true) and (player_gas_layer_surveyor_unlocked == true):
+						item.set_icon(0, load("res://Graphics/gas_layer_surveyor_frame.png"))
+						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					elif (body.metadata.get("missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
 						item.set_icon(0, load("res://Graphics/audio_visualizer_frame.png"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))

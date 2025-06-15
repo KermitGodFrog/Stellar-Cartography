@@ -19,7 +19,7 @@ var saved_audio_profiles_size_matrix: Array #for storage label / progress bar
 
 var LOW_VAR = planetBodyAPI.VARIATIONS.LOW
 var MED_VAR = planetBodyAPI.VARIATIONS.MEDIUM
-var HIGH_VAR = planetBodyAPI.VARIATIONS.HIGH
+var HIGH_VAR = planetBodyAPI.VARIATIONS.HIGH 
 
 #VISUALIZER STUFF \/\/\/\/\/
 const VU_COUNT = 16
