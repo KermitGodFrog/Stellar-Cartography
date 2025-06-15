@@ -19,7 +19,6 @@ const layer_data = { #name: properties
 		"bg_color": Color("ff8000"), 
 		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ping_pong.tres"), 
 		"fog_albedo": Color("ffc98a"), 
-		"fog_emission": Color("ffa500"),
 	},
 	"blue-fast": {
 		"bg_color": Color("6192ff"),
@@ -29,16 +28,15 @@ const layer_data = { #name: properties
 	},
 	"green-bacterium": {
 		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
-		"fog_albedo": Color("00dd2e"),
+		"fog_albedo": Color("00610e"),
 		"fog_emission": Color("00803c")
 	},
 	"pink-cells": {
 		"bg_color": Color("9801fd"),
 		"bg_time_divisor": 150,
 		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/pink_cells.tres"),
-		"fog_albedo": Color("ff5df0"),
-		"fog_density": 0.05,
-		"fog_length": 15
+		"fog_albedo": Color("ae00a4"),
+		"fog_length": 15.0
 	}
 }
 
