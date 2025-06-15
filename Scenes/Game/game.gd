@@ -355,19 +355,14 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add("planetary_anomaly_available", following_body.metadata.get("planetary_anomaly_available", false))
 			new_query.add_tree_access("planet_classification", following_body.metadata.get("planet_classification"))
 			new_query.add_tree_access("planet_type", following_body.metadata.get("planet_type"))
-			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 			new_query.add_tree_access("missing_AO", following_body.metadata.get("missing_AO", false))
 			new_query.add_tree_access("missing_GL", following_body.metadata.get("missing_GL", false))
+			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 		starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
 			new_query.add("space_anomaly_available", following_body.metadata.get("space_anomaly_available", true))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 		starSystemAPI.BODY_TYPES.SPACE_ENTITY:
 			new_query.add_tree_access("space_entity_type", str(game_data.ENTITY_CLASSIFICATIONS.find_key(following_body.entity_classification)))
-			if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) == true:
-				long_range_scopes._on_current_entity_changed(following_body)
-				lrs_bestiary._on_current_entity_changed(following_body)
-				if world.player.discovered_entities.find(following_body.entity_classification) == -1:
-					world.player.discovered_entities.append(following_body.entity_classification)
 		starSystemAPI.BODY_TYPES.STAR:
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
 	
@@ -421,8 +416,10 @@ func _on_player_following_body(following_body: bodyAPI):
 					temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
 					dock_with_station(temp_station)
 				"GAS_LAYER_SURVEYOR_OVERRIDE":
-					if not $gas_layer_surveyor_window.is_visible():
-						_on_gas_layer_surveyor_popup()
+					if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) == true:
+						gas_layer_surveyor._on_current_planet_changed(following_body)
+						if not $gas_layer_surveyor_window.is_visible():
+							_on_gas_layer_surveyor_popup()
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 		starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
@@ -448,8 +445,13 @@ func _on_player_following_body(following_body: bodyAPI):
 		starSystemAPI.BODY_TYPES.SPACE_ENTITY:
 			match RETURN_STATE:
 				"LONG_RANGE_SCOPES_OVERRIDE":
-					if not $long_range_scopes_window.is_visible():
-						_on_long_range_scopes_popup()
+					if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) == true:
+						long_range_scopes._on_current_entity_changed(following_body)
+						lrs_bestiary._on_current_entity_changed(following_body)
+						if world.player.discovered_entities.find(following_body.entity_classification) == -1:
+							world.player.discovered_entities.append(following_body.entity_classification)
+						if not $long_range_scopes_window.is_visible():
+							_on_long_range_scopes_popup()
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 		_:
@@ -628,6 +630,7 @@ func _on_player_mutiny() -> void:
 func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
 	if not (type == world.player.current_action_type and action_body == world.player.action_body):
 		long_range_scopes._on_current_entity_cleared()
+		gas_layer_surveyor._on_current_planet_cleared()
 	
 	world.player.current_action_type = type
 	if action_body != null:

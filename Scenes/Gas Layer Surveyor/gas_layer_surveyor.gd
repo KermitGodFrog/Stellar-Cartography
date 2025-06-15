@@ -43,6 +43,7 @@ const layer_data = { #name: properties
 
 
 var current_planet: planetBodyAPI = null
+
 var current_layer: String = "default"
 var target_color: Color = Color.WHITE
 
