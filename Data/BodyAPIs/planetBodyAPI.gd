@@ -1,6 +1,7 @@
 extends circularBodyAPI
 class_name planetBodyAPI
 
+#Audio Visualizer
 enum VARIATIONS {LOW, MEDIUM, HIGH}
 @export var current_variation: int = -1:
 	get = get_current_variation, set = set_current_variation

@@ -2,6 +2,7 @@ extends Node3D
 
 @onready var world_environment = $world_environment
 @onready var no_current_planet_bg = $camera_offset/camera/canvas_layer/no_current_planet_bg
+@onready var press_to_start = $camera_offset/camera/canvas_layer/press_to_start_button
 
 const layer_data = { #name: properties
 	"default": {
@@ -41,11 +42,13 @@ const layer_data = { #name: properties
 	}
 }
 
-
 var current_planet: planetBodyAPI = null
 
 var current_layer: String = "default"
 var target_color: Color = Color.WHITE
+
+var awaiting_start: bool = true
+var depth: float = 0.0
 
 func apply_new_layer(layer_name: String = "default") -> void: #default is always applied first, allowing 'carving' of properties from the base
 	if not layer_name == "default":
@@ -92,6 +95,9 @@ func _ready() -> void:
 	pass
 
 func _process(delta: float) -> void:
+	if not awaiting_start:
+		depth += delta
+	
 	var shader_material = world_environment.get_environment().get_sky().get_material()
 	var current_color = shader_material.get_shader_parameter("color") as Color
 	shader_material.set_shader_parameter("color", current_color.lerp(target_color, delta))
@@ -104,13 +110,31 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 		no_current_planet_bg.hide()
 		current_planet = new_planet
 		
+		press_to_start.show()
+		awaiting_start = true
+		
+#		var layers = new_planet.get_gas_layers_sum()
+		
+		#construct layer distances
+		#put them on the depth indicator (not made yet)
+		#profit
+		
+		
+		
 		
 		
 		
 	pass
 
+func finish() -> void: #called when depth is at the max or above the max
+	awaiting_start = true
+	depth = float()
+	pass
+
 func _on_current_planet_cleared():
+	finish()
 	no_current_planet_bg.show()
+	press_to_start.hide()
 	#put on the black screen + prevent player from EVER doing the minigame again for this planet, or from picking the gas layers 
 	
 	pass
@@ -125,4 +149,10 @@ func _on_current_planet_cleared():
 
 func _on_gas_layer_surveyor_window_close_requested() -> void:
 	owner.hide()
+	pass
+
+
+func _on_press_to_start_button_pressed() -> void:
+	press_to_start.hide()
+	awaiting_start = false
 	pass

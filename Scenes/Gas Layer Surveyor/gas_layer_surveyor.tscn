@@ -75,3 +75,4 @@ emission_ring_inner_radius = 6.0
 gravity = Vector3(0, 10, 0)
 
 [connection signal="close_requested" from="." to="gas_layer_surveyor" method="_on_gas_layer_surveyor_window_close_requested"]
+[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/press_to_start_button" to="gas_layer_surveyor" method="_on_press_to_start_button_pressed"]
