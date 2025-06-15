@@ -197,7 +197,7 @@ func _physics_process(delta):
 		body_attributes_list.add_item("orbital_distance %.2f (solar radii)" % follow_body.orbit_distance, null, false)
 		
 		#metadata
-		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "seed", "custom_available", "custom_follow_available", "custom_orbit_available"]
+		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "missing_GL", "seed", "custom_available", "custom_follow_available", "custom_orbit_available"]
 		if follow_body.is_known():
 			for entry in follow_body.metadata:
 				if excluding.find(entry) == -1:
