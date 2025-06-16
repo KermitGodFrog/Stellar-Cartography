@@ -47,34 +47,38 @@ playerMutinyOpenDialog,concept: playerMutiny,,"openDialog: null, playSoundEffect
 playerDeathOpenDialog,concept: playerDeath,,"openDialog: null, objectiveFailure: reachNewEden",,,,,,Exit:defaultLeave,You are dead.
 ,,,,,,,,,,
 # core entity interactions,,,,,,,,,,
-wormholeOpenDialog,"concept: followingBody, type: WORMHOLE",,openDialog: null,defaultApproachMessage,,wormholeTryAVFlair,,,"Enter the wormhole:enterWormhole, Leave:defaultLeave",
-wormholeTryAVFlairResponse,"concept: wormholeTryAVFlair, system_civilized: true, player_AUDIO_VISUALIZER_unlocked: true, pending_audio_profiles: true",,,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the data banks will be purged following the traversal of [i]$name[/i]."
+wormholeOpenDialog,"concept: followingBody, type: WORMHOLE",,openDialog: null,defaultApproachMessage,,tryWormholeAVFlair,,,"Enter the wormhole:enterWormhole, Leave:defaultLeave",
+wormholeTryAVFlairResponse,"concept: tryWormholeAVFlair, system_civilized: true, player_AUDIO_VISUALIZER_unlocked: true, pending_audio_profiles: true",,,,,,,,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the databanks will be purged following the traversal of [i]$name[/i]."
 enterWormhole,"concept: optionSelected, option: enterWormhole",,closeDialog: ENTER_WORMHOLE,,,,,,,
 wormholeDisabledOpenDialog,"concept: followingBody, type: WORMHOLE, wormhole_disabled: true",,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,"""This wormhole leads to our previous star system,"" the navigator on-deck informs you. ""At its present stability, we cannot risk traversal."""
 ,,,,,,,,,,
 spaceEntityOverride,"concept: followingBody, type: SPACE_ENTITY, player_LONG_RANGE_SCOPES_unlocked: true",,closeDialog: LONG_RANGE_SCOPES_OVERRIDE,,,,,,,
-spaceEntityOpenDialog,"concept: followingBody, type: SPACE_ENTITY, player_LONG_RANGE_SCOPES_unlocked: false",,openDialog: null,defaultApproachMessage,,,,,"Ask if it can be made clearer:spaceEntityContinue, Leave: defaultLeave",A scope view of the phenomena is present on a junior officers console. The sight to behold is a collection of fuzzy white dots against a parallax of stars.
+spaceEntityOpenDialog,"concept: followingBody, type: SPACE_ENTITY, player_LONG_RANGE_SCOPES_unlocked: false",,openDialog: null,defaultApproachMessage,,,,,"Ask if it can be made sharper:spaceEntityContinue, Leave: defaultLeave",A scope view of the phenomena is present on a junior officers console. The sight to behold is a collection of fuzzy white dots against a parallax of stars.
 spaceEntityContinue,"concept: optionSelected, option: spaceEntityContinue",,,,,,,,Leave:defaultLeave,"You ask if the scopes can be re-calibrated for a more distinct display. ""No, $player_prefix_lower,"" the junior officer replies, ""this is the sharpest we have been able to make it with the scopes on board... of course, we could get closer, but the Codex says otherwise."" You note that the aquisition of [color=yellow]long range scope technology[/color] would allow for data to be collected from the phenomena. "
 ,,,,,,,,,,
 planetGLSOverride,"concept: followingBody, type: PLANET, missing_GL: true, player_GAS_LAYER_SURVEYOR_unlocked: true",,closeDialog: GAS_LAYER_SURVEYOR_OVERRIDE,,,,,,,
-planetOpenDialog,"concept: followingBody, type: PLANET",,"openDialog: null, getPlanetDescriptionWithFlair: $planet_type",defaultApproachMessage,planetTryFlairs,,,,Leave:defaultLeave,
-planetTryAVFlairResponse,"concept: planetTryFlairs, missing_AO: true",,,,,,,,,(UNFINISHED) you are informed that using audio visualizer on this planet will be good
-planetTryGLSFlairResponse,"concept: planetTryFlairs, missing_GL: true",,,,,,,,,(UNFINISHED) you are informed by a junior officer that if we had gas layer surveyor module we could totally send a probe down or something aha
+planetOpenDialog,"concept: followingBody, type: PLANET",,"openDialog: null, getPlanetDescriptionWithFlair: $planet_type",defaultApproachMessage,tryPlanetFlairs,,,,Leave:defaultLeave,
+planetTryAVFlairResponse,"concept: tryPlanetFlairs, missing_AO: true",,,,,,,,,"You are informed that the planet is emitting anomalous waveforms, and note that it would thus be a quality target for [color=yellow]audio visualization technology[/color], which could allow for a deeper analysis into it's class. "
+planetTryGLSFlairResponse,"concept: tryPlanetFlairs, missing_GL: true",,,,,,,,,You are informed that sensors are having difficulty penetrating the planet's upper atmosphere. You note that the aquisition of [color=yellow]gas layer surveying technology[/color] would allow for a deeper analysis into the composition and layout of it's stratosphere.
 ,,,,,,,,,,
 starOpenDialog,"concept: followingBody, type: STAR",,"openDialog: null, getStarDescriptionWithFlair: $star_type",defaultApproachMessage,,,,,Leave:defaultLeave,
 ,,,,,,,,,,
 stationApproachMessage,concept: stationApproachMessage,,,,,,,,,Your ship approaches the location of a space station defined in native star charts.
 stationOpenDialog,"concept: followingBody, type: STATION, station_available: true",,openDialog: null,stationApproachMessage,populateStationOptions,addStationFlair,,,Leave:defaultLeave,
 ,,,,,,,,,,
-stationFlairStandard,"concept: addStationFlair, station_classification: STANDARD",,,,,,,,,[i]$name[/i] quickly establishes communications.
-stationFlairPirate,"concept: addStationFlair, station_classification: PIRATE",,,,,,,,,[i]$name[/i] quickly establishes communications.
-stationFlairAbandoned,"concept: addStationFlair, station_abandoned: true",,,,,,,,,[i]$name[/i] does not attempt to establish communications.
-stationFlairDebris,"concept: addStationFlair, station_classification: DEBRIS",,,,,,,,,Sensors soon detect an expanding debris field.
+stationFlairGenericInhabited,"concept: addStationFlair, station_inhabited: true",,,,,,,,,[i]$name[/i] establishes communications.
+stationFlairStandard,"concept: addStationFlair, station_classification: STANDARD",,,,,,,,,"[i]$name[/i] establishes communications. It is a behemoth port glistening with power and influence, representing one of rare successful colonisation initatives of the Late Proliferation Period. It's inhabitants are well aware of Arata's theorem, and may even be a member of the provisional assembly. In any case, they are willing to trade nanites for repairs and use of their on-board synthesis manufactories, at a markup."
+stationFlairPirate,"concept: addStationFlair, station_classification: PIRATE",,,,,,,,,"[i]$name[/i] establishes communications. It is a large port which appears war-torn and designed purely out of necessity, representing one of few semi-successful colonisation initatives of the Late Proliferation Period. It's inhabitants are well aware of Arata's theorem and the provisional government, but are too smothered by infighting to take advantage of either. Nontheless, they may be willing to trade nanites for repairs and use of their on-board synthesis manufactories, at a markup. You note that by trading, you run the risk of being caught in the crossfire."
+stationFlairGenericAbandoned,"concept: addStationFlair, station_abandoned: true",,,,,,,,,[i]$name[/i] does not attempt to establish communications. 
+stationFlairDebris,"concept: addStationFlair, station_classification: DEBRIS",,,,,,,,,[i]$name[/i] does not attempt to establish communications. Sensors soon detect an expanding debris field. The remains of this port represents the numerous failed colonisation initatives of the Late Proliferation Period.
 ,,,,,,,,,,
 stationDockingAccessOption,"concept: populateStationOptions, station_inhabited: true",,,,,,,,Request Docking Access: stationDockingAccess,
 stationSalvageOption,"concept: populateStationOptions, station_abandoned: true",,,,,,,,Scout for Salvage: stationSalvageDispatch,
 stationDockingAccess,"concept: optionSelected, option: stationDockingAccess",,closeDialog: DOCK_WITH_STATION,,,,,,,
 postSalvageLeave,"concept: optionSelected, option: postSalvageLeave",,closeDialog: POST_SALVAGE_LEAVE,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
 stationSalvageDispatchResponse,"concept: optionSelected, option: stationSalvageDispatch",,addValueWithFlair: 5000,,,,,,Leave:postSalvageLeave,Useful data is aquired. 
 ,,,,,,,,,,
 #rendezvous points,,,,,,,,,,

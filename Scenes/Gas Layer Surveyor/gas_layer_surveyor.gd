@@ -48,6 +48,8 @@ var target_color: Color = Color.WHITE
 var awaiting_start: bool = true
 var depth: float = 0.0
 
+const MAX_DEPTH: float = 30.0
+
 func apply_new_layer(layer_name: String = "default") -> void: #default is always applied first, allowing 'carving' of properties from the base
 	if not layer_name == "default":
 		set_layer_values() #reset to default
@@ -111,7 +113,11 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 		press_to_start.show()
 		awaiting_start = true
 		
-#		var layers = new_planet.get_gas_layers_sum()
+		var layers = new_planet.get_gas_layers_sum()
+		
+		
+		
+		
 		
 		#construct layer distances
 		#put them on the depth indicator (not made yet)
