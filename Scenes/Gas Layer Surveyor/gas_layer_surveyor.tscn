@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://b75u7e1b1ddb2"]
+[gd_scene load_steps=9 format=3 uid="uid://b75u7e1b1ddb2"]
 
 [ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor.gd" id="1_retla"]
+[ext_resource type="Texture2D" uid="uid://dmutb3ak7n4l2" path="res://Graphics/gas_layer_surveyor_frame.png" id="3_iy7ju"]
 [ext_resource type="Environment" uid="uid://6jnjxqc5yhk1" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor_environment.tres" id="3_sw2d4"]
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="4_kerqb"]
 [ext_resource type="PackedScene" uid="uid://bak0fnuot1dmr" path="res://Instantiated Scenes/gas-harvesting-spaceship/gas_harvesting_spaceship.glb" id="4_lwqlg"]
 [ext_resource type="Material" uid="uid://cbp5moi45ijjg" path="res://Scenes/Gas Layer Surveyor/speed_line_texture.tres" id="4_lygh8"]
 
@@ -16,7 +18,6 @@ own_world_3d = true
 title = "Gas Layer Surveyor"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
-visible = false
 
 [node name="gas_layer_surveyor" type="Node3D" parent="."]
 script = ExtResource("1_retla")
@@ -74,7 +75,6 @@ grow_vertical = 2
 text = "CLICK TO START"
 
 [node name="no_current_planet_bg" type="ColorRect" parent="gas_layer_surveyor/camera_offset/camera/control"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -83,6 +83,26 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
+[node name="gas_layer_surveyor_frame" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/control/no_current_planet_bg"]
+modulate = Color(0.211765, 0.211765, 0.211765, 1)
+texture_filter = 1
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_iy7ju")
+expand_mode = 4
+stretch_mode = 5
+
 [node name="directions_label" type="Label" parent="gas_layer_surveyor/camera_offset/camera/control/no_current_planet_bg"]
 layout_mode = 1
 anchors_preset = 15
@@ -90,6 +110,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_kerqb")
+theme_override_font_sizes/font_size = 16
 text = "FOLLOW A VALID PLANET TO BEGIN"
 horizontal_alignment = 1
 vertical_alignment = 1
