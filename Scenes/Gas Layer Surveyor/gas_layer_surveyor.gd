@@ -6,7 +6,8 @@ signal state_changed(new_state: STATES)
 @onready var no_current_planet_bg = $camera_offset/camera/control/no_current_planet_bg
 @onready var press_to_start = $camera_offset/camera/control/press_to_start_button
 @onready var depth_indicator = $camera_offset/camera/control/depth_margin/depth_panel/depth_indicator
-
+@onready var selection_screen = $camera_offset/camera/control/selection_screen
+@onready var speed_lines = $speed_lines
 
 const layer_data = { #name: properties
 	"default": {
@@ -66,6 +67,7 @@ const MAX_DEPTH: float = 30.0
 const MINIMUM_OFFSET: float = 2.5
 
 
+
 func apply_new_layer(layer_name: String = "default") -> void: #default is always applied first, allowing 'carving' of properties from the base
 	if not layer_name == "default":
 		set_layer_values() #reset to default
@@ -110,8 +112,8 @@ func get_active_layer() -> String:
 
 func _ready() -> void:
 	state_changed.connect(_on_state_changed)
-	apply_new_layer()
 	state = STATES.INVALID
+	apply_new_layer()
 	pass
 
 func _process(delta: float) -> void:
@@ -126,6 +128,9 @@ func _process(delta: float) -> void:
 			if depth >= MAX_DEPTH:
 				state = STATES.SELECTING
 	
+	
+	
+	#graphics
 	var shader_material = world_environment.get_environment().get_sky().get_material()
 	var current_color = shader_material.get_shader_parameter("color") as Color
 	shader_material.set_shader_parameter("color", current_color.lerp(target_color, delta))
@@ -183,7 +188,6 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 			var key = reduced_layer_keys.pick_random()
 			current_layers.append(key)
 			reduced_layer_keys.erase(key)
-		
 	pass
 
 func _on_current_planet_cleared():
@@ -193,28 +197,22 @@ func _on_current_planet_cleared():
 
 
 
-func _on_state_changed(new_state: STATES) -> void: #only for setting variable values, not more comples behaviour
+func _on_state_changed(new_state: STATES) -> void:
+	no_current_planet_bg.visible = new_state == STATES.INVALID
+	press_to_start.visible = new_state == STATES.WAITING
+	selection_screen.visible = new_state == STATES.SELECTING
+	speed_lines.emitting = new_state == STATES.SURVEYING
+	
 	match new_state:
 		STATES.INVALID:
 			current_planet = null
 			depth = float()
-			no_current_planet_bg.show()
-			press_to_start.hide()
-			#hide selection screen
 		STATES.WAITING:
 			depth = float()
-			no_current_planet_bg.hide()
-			press_to_start.show()
-			#hide selection screen
 		STATES.SURVEYING:
-			press_to_start.hide()
-			no_current_planet_bg.hide()
-			#hide selection screen
+			pass
 		STATES.SELECTING:
 			depth = float()
-			press_to_start.hide()
-			no_current_planet_bg.hide()
-			#show selection screen
 	pass
 
 func _on_press_to_start_button_pressed() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b75u7e1b1ddb2"]
+[gd_scene load_steps=10 format=3 uid="uid://b75u7e1b1ddb2"]
 
 [ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor.gd" id="1_retla"]
 [ext_resource type="Texture2D" uid="uid://dmutb3ak7n4l2" path="res://Graphics/gas_layer_surveyor_frame.png" id="3_iy7ju"]
@@ -9,6 +9,9 @@
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_isjh6"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6om7d"]
+bg_color = Color(0.211765, 0.211765, 0.211765, 1)
+
 [sub_resource type="TubeTrailMesh" id="TubeTrailMesh_dwqov"]
 material = ExtResource("4_lygh8")
 radius = 0.005
@@ -18,6 +21,7 @@ own_world_3d = true
 title = "Gas Layer Surveyor"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
+visible = false
 
 [node name="gas_layer_surveyor" type="Node3D" parent="."]
 script = ExtResource("1_retla")
@@ -75,6 +79,7 @@ grow_vertical = 2
 text = "CLICK TO START"
 
 [node name="no_current_planet_bg" type="ColorRect" parent="gas_layer_surveyor/camera_offset/camera/control"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -115,6 +120,16 @@ theme_override_font_sizes/font_size = 16
 text = "FOLLOW A VALID PLANET TO BEGIN"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="selection_screen" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6om7d")
 
 [node name="world_environment" type="WorldEnvironment" parent="gas_layer_surveyor"]
 environment = ExtResource("3_sw2d4")
