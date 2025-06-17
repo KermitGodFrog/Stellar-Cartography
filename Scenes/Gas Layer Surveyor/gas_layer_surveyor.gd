@@ -5,7 +5,7 @@ signal state_changed(new_state: STATES)
 @onready var world_environment = $world_environment
 @onready var no_current_planet_bg = $camera_offset/camera/control/no_current_planet_bg
 @onready var press_to_start = $camera_offset/camera/control/press_to_start_button
-@onready var depth_indicator = $camera_offset/camera/control/margin/panel/depth_indicator
+@onready var depth_indicator = $camera_offset/camera/control/depth_margin/depth_panel/depth_indicator
 
 
 const layer_data = { #name: properties
@@ -137,8 +137,6 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 		state = STATES.WAITING #has to be first or current_planet will be set to null
 		current_planet = new_planet
 		
-		
-		
 		var layers = new_planet.get_gas_layers_sum()
 		
 		var optimal_distance = MAX_DEPTH / layers
@@ -184,16 +182,6 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 			var key = reduced_layer_keys.pick_random()
 			current_layers.append(key)
 			reduced_layer_keys.erase(key)
-		
-		#construct layer distances
-		#put them on the depth indicator (not made yet)
-		#depth indicator uses raw offsets from gradient 1d texture
-		#profit
-		
-		
-		
-		
-		
 		
 	pass
 

@@ -300,7 +300,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				starSystemAPI.BODY_TYPES.STAR:
 					#item.set_text(0, "%s - %s Class Star" % [body.get_display_name(), body.metadata.get("star_type")])
 					item.set_icon(0, load("res://Graphics/new-system-list/star_frame.png"))
-					item.set_tooltip_text(0, "%s - %s Class" % [item.get_text(0), body.metadata.get("star_type")])
+					item.set_tooltip_text(0, "%s - %s Class Star" % [item.get_text(0), body.metadata.get("star_type")])
 					
 					if body.get_identifier() == closest_body_id:
 						item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416).lightened(0.2))
@@ -310,7 +310,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				starSystemAPI.BODY_TYPES.PLANET:
 					#item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
 					item.set_icon(0, get_planet_frame(body.metadata.get("planet_classification")))
-					item.set_tooltip_text(0, "%s - %s" % [item.get_text(0), body.metadata.get("planet_type")])
+					item.set_tooltip_text(0, "%s - %s Planet" % [item.get_text(0), body.metadata.get("planet_type")])
 					
 					if (body.metadata.get("planetary_anomaly", false) == true) and (body.metadata.get("planetary_anomaly_available", false) == true):
 						item.set_icon(0, question_mark_frame)

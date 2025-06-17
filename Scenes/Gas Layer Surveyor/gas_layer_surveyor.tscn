@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bak0fnuot1dmr" path="res://Instantiated Scenes/gas-harvesting-spaceship/gas_harvesting_spaceship.glb" id="4_lwqlg"]
 [ext_resource type="Material" uid="uid://cbp5moi45ijjg" path="res://Scenes/Gas Layer Surveyor/speed_line_texture.tres" id="4_lygh8"]
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_stirp"]
+[sub_resource type="CanvasTexture" id="CanvasTexture_isjh6"]
 
 [sub_resource type="TubeTrailMesh" id="TubeTrailMesh_dwqov"]
 material = ExtResource("4_lygh8")
@@ -16,7 +16,6 @@ own_world_3d = true
 title = "Gas Layer Surveyor"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
-visible = false
 
 [node name="gas_layer_surveyor" type="Node3D" parent="."]
 script = ExtResource("1_retla")
@@ -36,7 +35,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/control"]
+[node name="depth_margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/control"]
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 1
 anchors_preset = 12
@@ -51,16 +50,16 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="panel" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/control/margin"]
+[node name="depth_panel" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/control/depth_margin"]
 layout_mode = 2
 
-[node name="depth_indicator" type="TextureProgressBar" parent="gas_layer_surveyor/camera_offset/camera/control/margin/panel"]
+[node name="depth_indicator" type="TextureProgressBar" parent="gas_layer_surveyor/camera_offset/camera/control/depth_margin/depth_panel"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_vertical = 4
 step = 0.01
 nine_patch_stretch = true
-texture_progress = SubResource("PlaceholderTexture2D_stirp")
+texture_progress = SubResource("CanvasTexture_isjh6")
 texture_progress_offset = Vector2(0, -10)
 
 [node name="press_to_start_button" type="Button" parent="gas_layer_surveyor/camera_offset/camera/control"]
