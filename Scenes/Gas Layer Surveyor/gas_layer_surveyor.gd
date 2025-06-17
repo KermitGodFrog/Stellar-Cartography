@@ -51,8 +51,8 @@ var current_offsets: PackedFloat32Array = []
 var current_layers: PackedStringArray = []
 
 
-var current_layer: String = "default"
-var current_checkpoint: int = 0
+var active_layer: String = "default"
+var checkpoint: int = 0
 var target_color: Color = Color.WHITE
 
 enum STATES {WAITING, SURVEYING, SELECTING, INVALID}
@@ -80,7 +80,7 @@ func set_layer_values(layer_name: String = "default") -> void:
 	
 	var properties = layer_data.get(layer_name)
 	if properties != null:
-		current_layer = layer_name
+		active_layer = layer_name
 		for p in properties:
 			var value = properties.get(p)
 			match p:
@@ -103,14 +103,15 @@ func set_layer_values(layer_name: String = "default") -> void:
 					environment.set("volumetric_fog_length", value)
 	pass
 
-func get_current_layer() -> String:
-	return current_layer
+func get_active_layer() -> String:
+	return active_layer
 
 
 
 func _ready() -> void:
 	state_changed.connect(_on_state_changed)
 	apply_new_layer()
+	state = STATES.INVALID
 	pass
 
 func _process(delta: float) -> void:
@@ -118,10 +119,10 @@ func _process(delta: float) -> void:
 		STATES.SURVEYING:
 			depth += delta
 			depth_indicator.set_value(remap(depth, 0.0, MAX_DEPTH, 0.0, 100.0))
-			if current_checkpoint < current_offsets.size():
-				if depth > current_offsets[current_checkpoint]:
-					apply_new_layer(current_layers[current_checkpoint])
-					current_checkpoint += 1
+			if checkpoint < current_offsets.size():
+				if depth > current_offsets[checkpoint]:
+					apply_new_layer(current_layers[checkpoint])
+					checkpoint += 1
 			if depth >= MAX_DEPTH:
 				state = STATES.SELECTING
 	
