@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://b75u7e1b1ddb2"]
+[gd_scene load_steps=7 format=3 uid="uid://b75u7e1b1ddb2"]
 
 [ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor.gd" id="1_retla"]
 [ext_resource type="Environment" uid="uid://6jnjxqc5yhk1" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor_environment.tres" id="3_sw2d4"]
 [ext_resource type="PackedScene" uid="uid://bak0fnuot1dmr" path="res://Instantiated Scenes/gas-harvesting-spaceship/gas_harvesting_spaceship.glb" id="4_lwqlg"]
 [ext_resource type="Material" uid="uid://cbp5moi45ijjg" path="res://Scenes/Gas Layer Surveyor/speed_line_texture.tres" id="4_lygh8"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_stirp"]
 
 [sub_resource type="TubeTrailMesh" id="TubeTrailMesh_dwqov"]
 material = ExtResource("4_lygh8")
@@ -26,10 +28,44 @@ script = ExtResource("1_retla")
 [node name="camera" type="Camera3D" parent="gas_layer_surveyor/camera_offset"]
 transform = Transform3D(-4.37114e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, 4.37114e-08, 1.91069e-15, 1.6, 9.564, -1.368)
 
-[node name="canvas_layer" type="CanvasLayer" parent="gas_layer_surveyor/camera_offset/camera"]
+[node name="control" type="Control" parent="gas_layer_surveyor/camera_offset/camera"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="press_to_start_button" type="Button" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer"]
+[node name="margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/control"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -75.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="panel" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/control/margin"]
+layout_mode = 2
+
+[node name="depth_indicator" type="TextureProgressBar" parent="gas_layer_surveyor/camera_offset/camera/control/margin/panel"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_vertical = 4
+step = 0.01
+nine_patch_stretch = true
+texture_progress = SubResource("PlaceholderTexture2D_stirp")
+texture_progress_offset = Vector2(0, -10)
+
+[node name="press_to_start_button" type="Button" parent="gas_layer_surveyor/camera_offset/camera/control"]
 visible = false
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -37,7 +73,9 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "CLICK TO START"
 
-[node name="no_current_planet_bg" type="ColorRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer"]
+[node name="no_current_planet_bg" type="ColorRect" parent="gas_layer_surveyor/camera_offset/camera/control"]
+visible = false
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -45,7 +83,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="directions_label" type="Label" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/no_current_planet_bg"]
+[node name="directions_label" type="Label" parent="gas_layer_surveyor/camera_offset/camera/control/no_current_planet_bg"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -75,4 +113,4 @@ emission_ring_inner_radius = 6.0
 gravity = Vector3(0, 10, 0)
 
 [connection signal="close_requested" from="." to="gas_layer_surveyor" method="_on_gas_layer_surveyor_window_close_requested"]
-[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/press_to_start_button" to="gas_layer_surveyor" method="_on_press_to_start_button_pressed"]
+[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/control/press_to_start_button" to="gas_layer_surveyor" method="_on_press_to_start_button_pressed"]

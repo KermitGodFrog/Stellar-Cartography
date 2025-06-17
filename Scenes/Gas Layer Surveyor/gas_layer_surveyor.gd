@@ -1,8 +1,12 @@
 extends Node3D
 
+signal state_changed(new_state: STATES)
+
 @onready var world_environment = $world_environment
-@onready var no_current_planet_bg = $camera_offset/camera/canvas_layer/no_current_planet_bg
-@onready var press_to_start = $camera_offset/camera/canvas_layer/press_to_start_button
+@onready var no_current_planet_bg = $camera_offset/camera/control/no_current_planet_bg
+@onready var press_to_start = $camera_offset/camera/control/press_to_start_button
+@onready var depth_indicator = $camera_offset/camera/control/margin/panel/depth_indicator
+
 
 const layer_data = { #name: properties
 	"default": {
@@ -42,13 +46,25 @@ const layer_data = { #name: properties
 
 var current_planet: planetBodyAPI = null
 
+
+var current_offsets: PackedFloat32Array = []
+var current_layers: PackedStringArray = []
+
+
 var current_layer: String = "default"
+var current_checkpoint: int = 0
 var target_color: Color = Color.WHITE
 
-var awaiting_start: bool = true
-var depth: float = 0.0
+enum STATES {WAITING, SURVEYING, SELECTING, INVALID}
+var state: STATES = STATES.INVALID:
+	set(value):
+		state = value
+		emit_signal("state_changed", state)
 
+var depth: float = 0.0
 const MAX_DEPTH: float = 30.0
+const MINIMUM_OFFSET: float = 2.5
+
 
 func apply_new_layer(layer_name: String = "default") -> void: #default is always applied first, allowing 'carving' of properties from the base
 	if not layer_name == "default":
@@ -90,13 +106,24 @@ func set_layer_values(layer_name: String = "default") -> void:
 func get_current_layer() -> String:
 	return current_layer
 
+
+
 func _ready() -> void:
+	state_changed.connect(_on_state_changed)
 	apply_new_layer()
 	pass
 
 func _process(delta: float) -> void:
-	if not awaiting_start:
-		depth += delta
+	match state:
+		STATES.SURVEYING:
+			depth += delta
+			depth_indicator.set_value(remap(depth, 0.0, MAX_DEPTH, 0.0, 100.0))
+			if current_checkpoint < current_offsets.size():
+				if depth > current_offsets[current_checkpoint]:
+					apply_new_layer(current_layers[current_checkpoint])
+					current_checkpoint += 1
+			if depth >= MAX_DEPTH:
+				state = STATES.SELECTING
 	
 	var shader_material = world_environment.get_environment().get_sky().get_material()
 	var current_color = shader_material.get_shader_parameter("color") as Color
@@ -107,20 +134,60 @@ func _process(delta: float) -> void:
 
 func _on_current_planet_changed(new_planet : planetBodyAPI):
 	if current_planet != new_planet:
-		no_current_planet_bg.hide()
+		state = STATES.WAITING #has to be first or current_planet will be set to null
 		current_planet = new_planet
 		
-		press_to_start.show()
-		awaiting_start = true
+		
 		
 		var layers = new_planet.get_gas_layers_sum()
 		
+		var optimal_distance = MAX_DEPTH / layers
 		
+		var offsets: PackedFloat32Array = []
+		for l in layers: offsets.append(optimal_distance * l)
+		offsets.append(MAX_DEPTH)
 		
+		for i_ in offsets.size(): #forwards pass
+			if (i_ < offsets.size() - 1) and (i_ != 0):
+				var o = offsets[i_] #lower
+				var next = offsets[i_ + 1] #higher
+				var new = clampf(global_data.get_randf(o, next), o, next - MINIMUM_OFFSET)
+				offsets.set(i_, new)
+		for _i in offsets.size(): #backwards pass
+			if (_i > 0) and (_i != offsets.size() - 1):
+				var previous = offsets[_i - 1] #lower
+				var o = offsets[_i] #higher
+				var new = clampf(global_data.get_randf(previous, o), previous + MINIMUM_OFFSET, o)
+				offsets.set(_i, new)
 		
+		offsets.remove_at(offsets.size() - 1) #remove MAX_DEPTH from PackedFloat32Array
+		
+		current_offsets = offsets
+		print("CURRENT OFFSETS: ", current_offsets)
+		
+		var gradient = Gradient.new()
+		gradient.set_interpolation_mode(Gradient.GRADIENT_INTERPOLATE_CONSTANT)
+		var remapped = Array(offsets).map(func(o): return remap(o, 0.0, MAX_DEPTH, 0.0, 1.0))
+		gradient.set_color(1, Color.BLACK) #auto generates with two offsets and two colors - offsets: [0, 1] , colors: [Color.BLACK, Color.WHITE]
+		
+		for o in remapped:
+			gradient.add_point(o, Color.WHITE)
+			gradient.add_point(o + (1.0 / 100.0), Color.BLACK)
+		
+		var texture = GradientTexture1D.new()
+		texture.set_gradient(gradient)
+		depth_indicator.set_under_texture(texture)
+		
+		var reduced_layer_keys = layer_data.keys().duplicate()
+		reduced_layer_keys.erase("default")
+		for i in current_offsets.size():
+			var key = reduced_layer_keys.pick_random()
+			current_layers.append(key)
+			reduced_layer_keys.erase(key)
 		
 		#construct layer distances
 		#put them on the depth indicator (not made yet)
+		#depth indicator uses raw offsets from gradient 1d texture
 		#profit
 		
 		
@@ -130,33 +197,41 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 		
 	pass
 
-func finish() -> void: #called when depth is at the max or above the max
-	awaiting_start = true
-	depth = float()
-	pass
-
 func _on_current_planet_cleared():
-	finish()
-	no_current_planet_bg.show()
-	press_to_start.hide()
 	#put on the black screen + prevent player from EVER doing the minigame again for this planet, or from picking the gas layers 
-	
+	state = STATES.INVALID
 	pass
 
 
 
+func _on_state_changed(new_state: STATES) -> void: #only for setting variable values, not more comples behaviour
+	match new_state:
+		STATES.INVALID:
+			current_planet = null
+			depth = float()
+			no_current_planet_bg.show()
+			press_to_start.hide()
+			#hide selection screen
+		STATES.WAITING:
+			depth = float()
+			no_current_planet_bg.hide()
+			press_to_start.show()
+			#hide selection screen
+		STATES.SURVEYING:
+			press_to_start.hide()
+			no_current_planet_bg.hide()
+			#hide selection screen
+		STATES.SELECTING:
+			depth = float()
+			press_to_start.hide()
+			no_current_planet_bg.hide()
+			#show selection screen
+	pass
 
-
-
-
-
+func _on_press_to_start_button_pressed() -> void:
+	state = STATES.SURVEYING
+	pass
 
 func _on_gas_layer_surveyor_window_close_requested() -> void:
 	owner.hide()
-	pass
-
-
-func _on_press_to_start_button_pressed() -> void:
-	press_to_start.hide()
-	awaiting_start = false
 	pass

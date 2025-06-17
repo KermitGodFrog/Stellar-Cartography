@@ -416,7 +416,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 							pass
 						"Neptunian":
 							has_missing_GL = true
-							gas_layers_sum = global_data.get_randi(2, 5)
+							gas_layers_sum = global_data.get_randi(3, 5)
 						"Jovian":
 							has_missing_GL = true
 							gas_layers_sum = global_data.get_randi(4, 9)
