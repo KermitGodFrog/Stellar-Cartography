@@ -124,7 +124,6 @@ func set_layer_values(layer_name: String = "default") -> void:
 				"bg_color":
 					target_color = value
 				"bg_time_divisor":
-					#target_time_divisor = value
 					shader_material.set_shader_parameter("time_divisor", value)
 				"bg_sampler":
 					shader_material.set_shader_parameter("sampler", value)
@@ -226,6 +225,8 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 	pass
 
 func _on_current_planet_cleared():
+	if current_planet != null:
+		current_planet.metadata["missing_GL"] = false
 	#put on the black screen + prevent player from EVER doing the minigame again for this planet, or from picking the gas layers 
 	state = STATES.INVALID
 	pass
@@ -255,5 +256,6 @@ func _on_press_to_start_button_pressed() -> void:
 	pass
 
 func _on_gas_layer_surveyor_window_close_requested() -> void:
+	_on_current_planet_cleared()
 	owner.hide()
 	pass
