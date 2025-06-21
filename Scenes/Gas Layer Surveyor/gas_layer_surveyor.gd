@@ -9,7 +9,7 @@ signal state_changed(new_state: STATES)
 @onready var selection_screen = $camera_offset/camera/control/selection_screen
 @onready var speed_lines = $speed_lines
 
-const layer_data = { #name: properties
+const layer_data = { #name (color(s)-noise-property): properties
 	"default": {
 		"bg_color": Color.WHITE,
 		"bg_time_divisor": 100.0,
@@ -20,37 +20,72 @@ const layer_data = { #name: properties
 		"fog_anisotropy": 0.6,
 		"fog_length": 30.0
 	},
-	"yellow-basic": {
-		"bg_color": Color("ff8000"), 
-#		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ping_pong.tres"), 
-		"fog_albedo": Color("ffc98a"), 
-	},
-	"blue-fast": {
-		"bg_color": Color("6192ff"),
-		"bg_time_divisor": 30.0,
-#		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/blue_fast.tres"),
-		"fog_albedo": Color("83a6f6"),
-	},
-	"green-bacterium": {
-#		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
-		"fog_albedo": Color("00610e"),
-		"fog_emission": Color("00803c")
-	},
-	"pink-cells": {
-		"bg_color": Color("9801fd"),
-		"bg_time_divisor": 150,
-#		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/pink_cells.tres"),
-		"fog_albedo": Color("ae00a4"),
+	"red-pink-splotches": {
+		"bg_color": Color.RED,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_splotches.tres"),
+		"fog_albedo": Color("ff5df0"),
+		"fog_emission": Color("0000ba"),
 		"fog_length": 15.0
+	},
+	"yellow-orange-splotches": {
+		"bg_color": Color.YELLOW,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_splotches.tres"),
+		"fog_albedo": Color("d16600"),
+		"fog_emission": Color.RED,
+	},
+	"green-splotches-slow": {
+		"bg_color": Color.GREEN,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_splotches.tres"),
+		"bg_time_divisor": 180.0,
+		"fog_albedo": Color("254925"),
+	},
+	"green-splotches-fast": {
+		"bg_color": Color.GREEN,
+		"bg_time_divisor": 50.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_splotches.tres"),
+		"fog_albedo": Color("60aa60"),
+		"fog_emission": Color("00006b")
+	},
+	"blue-splotches": {
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_splotches.tres"),
+		"fog_albedo": Color("008388"),
+		"fog_emission": Color("2e69ff")
+	},
+	"red-bacterium-slow": {
+		"bg_color": Color("ff3f30"),
+		"bg_time_divisor": 150.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
+		"fog_albedo": Color("330000"),
+		"fog_emission": Color("800000"),
+		"fog_density": 0.05
+	},
+	"red-blue-bacterium-fast": {
+		"bg_color": Color("ff3f30"),
+		"bg_time_divisor": 50.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
+		"fog_albedo": Color("1c1c5b"),
+		"fog_emission": Color("000068"),
+		"fog_density": 0.05
+	},
+	"blue-bacterium": {
+		"bg_color": Color.BLUE,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
+		"fog_albedo": Color.BLACK,
+		"fog_emission": Color("00004d")
+	},
+	"purple-bacterium": {
+		"bg_color": Color("4e00ff"),
+		"bg_time_divisor": 70.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
+		"fog_albedo": Color("002b2b"),
+		"fog_emission": Color("27007d")
 	}
 }
 
 var current_planet: planetBodyAPI = null
 
-
 var current_offsets: PackedFloat32Array = []
 var current_layers: PackedStringArray = []
-
 
 var active_layer: String = "default"
 var checkpoint: int = 0
