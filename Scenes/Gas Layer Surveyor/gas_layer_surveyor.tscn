@@ -21,12 +21,12 @@ own_world_3d = true
 title = "Gas Layer Surveyor"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
-visible = false
 
 [node name="gas_layer_surveyor" type="Node3D" parent="."]
 script = ExtResource("1_retla")
 
 [node name="gas_harvesting_spaceship" parent="gas_layer_surveyor" instance=ExtResource("4_lwqlg")]
+visible = false
 
 [node name="camera_offset" type="Node3D" parent="gas_layer_surveyor"]
 
@@ -122,7 +122,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="selection_screen" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/control"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -130,6 +129,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_6om7d")
+
+[node name="margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="world_environment" type="WorldEnvironment" parent="gas_layer_surveyor"]
 environment = ExtResource("3_sw2d4")
