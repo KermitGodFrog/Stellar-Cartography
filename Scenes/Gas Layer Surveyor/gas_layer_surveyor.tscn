@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b75u7e1b1ddb2"]
+[gd_scene load_steps=13 format=3 uid="uid://b75u7e1b1ddb2"]
 
 [ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor.gd" id="1_retla"]
 [ext_resource type="Texture2D" uid="uid://dmutb3ak7n4l2" path="res://Graphics/gas_layer_surveyor_frame.png" id="3_iy7ju"]
@@ -6,11 +6,16 @@
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="4_kerqb"]
 [ext_resource type="PackedScene" uid="uid://bak0fnuot1dmr" path="res://Instantiated Scenes/gas-harvesting-spaceship/gas_harvesting_spaceship.glb" id="4_lwqlg"]
 [ext_resource type="Material" uid="uid://cbp5moi45ijjg" path="res://Scenes/Gas Layer Surveyor/speed_line_texture.tres" id="4_lygh8"]
+[ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/selection_screen.gd" id="5_kjlie"]
+[ext_resource type="Texture2D" uid="uid://wj8xwuug1m0o" path="res://Graphics/tree_arrow.png" id="5_rwvyv"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_isjh6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6om7d"]
-bg_color = Color(0.211765, 0.211765, 0.211765, 1)
+bg_color = Color(0.117647, 0.117647, 0.117647, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w817a"]
+bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
 
 [sub_resource type="TubeTrailMesh" id="TubeTrailMesh_dwqov"]
 material = ExtResource("4_lygh8")
@@ -22,6 +27,7 @@ title = "Gas Layer Surveyor"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
 visible = false
+min_size = Vector2i(500, 500)
 
 [node name="gas_layer_surveyor" type="Node3D" parent="."]
 script = ExtResource("1_retla")
@@ -129,13 +135,66 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_6om7d")
+script = ExtResource("5_kjlie")
 
 [node name="margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen"]
 layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="tabs" type="TabContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_w817a")
+current_tab = 0
+
+[node name="REPORT" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="scroll" type="HBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="hierachy_texture" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT/scroll"]
+clip_contents = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+texture = ExtResource("5_rwvyv")
+stretch_mode = 1
+
+[node name="hierachy_margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT/scroll/hierachy_texture"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
+theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+
+[node name="hierachy_list" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT/scroll/hierachy_texture/hierachy_margin"]
+layout_mode = 2
+
+[node name="separator" type="VSeparator" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT/scroll"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="choices_list" type="HFlowContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="confirm" type="Button" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT"]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+text = "CONFIRM"
+
+[node name="ENCYCLOPEDIA" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="world_environment" type="WorldEnvironment" parent="gas_layer_surveyor"]
 environment = ExtResource("3_sw2d4")

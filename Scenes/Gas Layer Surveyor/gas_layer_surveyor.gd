@@ -146,6 +146,7 @@ func get_active_layer() -> String:
 
 func _ready() -> void:
 	state_changed.connect(_on_state_changed)
+	selection_screen._layer_data = layer_data
 	state = STATES.INVALID
 	apply_new_layer()
 	pass
@@ -227,7 +228,6 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 func _on_current_planet_cleared():
 	if current_planet != null:
 		current_planet.metadata["missing_GL"] = false
-	#put on the black screen + prevent player from EVER doing the minigame again for this planet, or from picking the gas layers 
 	state = STATES.INVALID
 	pass
 
@@ -248,6 +248,7 @@ func _on_state_changed(new_state: STATES) -> void:
 		STATES.SURVEYING:
 			pass
 		STATES.SELECTING:
+			selection_screen.initialize(current_layers)
 			depth = float()
 	pass
 
