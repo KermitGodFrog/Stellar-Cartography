@@ -259,6 +259,7 @@ func _physics_process(delta):
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
 	lrs_bestiary.set("discovered_entities_matrix", world.player.discovered_entities)
+	gas_layer_surveyor.set("_discovered_gas_layers_matrix", world.player.discovered_gas_layers)
 	
 	audio_handler.enable_music_criteria["audio_visualizer_not_visible"] = !$audio_visualizer_window.is_visible()
 	audio_handler.enable_music_criteria["countdown_processor_not_active"] = !countdown_processor != null
@@ -418,6 +419,10 @@ func _on_player_following_body(following_body: bodyAPI):
 				"GAS_LAYER_SURVEYOR_OVERRIDE":
 					if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) == true:
 						gas_layer_surveyor._on_current_planet_changed(following_body)
+						for tag in gas_layer_surveyor.current_layers:
+							var idx = gas_layer_surveyor.layer_data.keys().find(tag)
+							if world.player.discovered_gas_layers.find(idx) == -1:
+								world.player.discovered_gas_layers.append(idx)
 						if not $gas_layer_surveyor_window.is_visible():
 							_on_gas_layer_surveyor_popup()
 				_:

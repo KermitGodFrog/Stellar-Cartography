@@ -2,6 +2,8 @@ extends Node3D
 
 signal state_changed(new_state: STATES)
 
+var _discovered_gas_layers_matrix: PackedInt32Array = []
+
 @onready var world_environment = $world_environment
 @onready var no_current_planet_bg = $camera_offset/camera/control/no_current_planet_bg
 @onready var press_to_start = $camera_offset/camera/control/press_to_start_button
@@ -169,6 +171,11 @@ func _process(delta: float) -> void:
 	var shader_material = world_environment.get_environment().get_sky().get_material()
 	var current_color = shader_material.get_shader_parameter("color") as Color
 	shader_material.set_shader_parameter("color", current_color.lerp(target_color, delta))
+	
+	
+	
+	#misc
+	selection_screen.set("discovered_gas_layers_matrix", _discovered_gas_layers_matrix)
 	pass
 
 
