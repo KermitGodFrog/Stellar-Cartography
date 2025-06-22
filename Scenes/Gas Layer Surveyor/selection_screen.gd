@@ -13,6 +13,7 @@ var current_planet_value: int = 0
 @onready var choices_list = $margin/tabs/REPORT/scroll/choices_list
 @onready var encyclopedia = $margin/tabs/ENCYCLOPEDIA
 @onready var tabs = $margin/tabs
+@onready var confirm_button = $margin/tabs/REPORT/confirm
 #ENTRY tab
 @onready var tag_label = $margin/tabs/ENTRY/tag_label
 @onready var noise_texture = $margin/tabs/ENTRY/noise_texture
@@ -22,7 +23,10 @@ var current_planet_value: int = 0
 
 var _layer_data: Dictionary = {}
 var _current_layers: PackedStringArray = []
-var confirmed_prev: bool = false
+var confirmed_prev: bool = false:
+	set(value):
+		confirmed_prev = value
+		confirm_button.oscillate = value
 
 func _ready() -> void:
 	tabs.set_tab_hidden(2, true)
@@ -129,7 +133,7 @@ func switch_to_entry(tag: String) -> void:
 func _on_confirm_pressed() -> void:
 	if not confirmed_prev:
 		var total: int = 0
-		var layer_value: int = current_planet_value / 5
+		var average_value = int(current_planet_value / 6)
 		
 		var hierachy_children = hierachy_list.get_children()
 		if _current_layers.size() == hierachy_children.size():
@@ -139,12 +143,14 @@ func _on_confirm_pressed() -> void:
 				var confirmed_tag = _current_layers[idx]
 				var child = hierachy_children[idx]
 				if confirmed_tag == child.tag:
-					total += layer_value
-					child.set_status(STATUSES.CONFIRMED, layer_value)
+					var real_value = maxi(0, randfn(average_value, 50))
+					total += real_value
+					child.set_status(STATUSES.CONFIRMED, real_value)
 				else:
 					child.set_status(STATUSES.DENIED)
-			
 			emit_signal("addPlayerValue", total)
+		else:
+			confirm_button.blink(Color.RED)
 	else:
 		emit_signal("confirmedTwice")
 	pass

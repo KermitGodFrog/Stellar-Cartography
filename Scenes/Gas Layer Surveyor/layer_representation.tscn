@@ -27,6 +27,7 @@ stretch_mode = 6
 script = ExtResource("1_4tpes")
 
 [node name="status_texture" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
