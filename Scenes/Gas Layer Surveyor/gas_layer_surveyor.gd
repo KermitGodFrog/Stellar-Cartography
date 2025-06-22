@@ -246,14 +246,16 @@ func _on_state_changed(new_state: STATES) -> void:
 	press_to_start.visible = new_state == STATES.WAITING
 	selection_screen.visible = new_state == STATES.SELECTING
 	speed_lines.emitting = new_state == STATES.SURVEYING
-	spaceship_model.visible = new_state == STATES.SURVEYING
+	spaceship_model.visible = new_state == STATES.SURVEYING or new_state == STATES.WAITING
 	
 	match new_state:
 		STATES.INVALID:
 			current_planet = null
-			depth = float()
+			current_offsets = []
+			current_layers = []
 			active_layer = "default"
 			checkpoint = int()
+			depth = float()
 		STATES.WAITING:
 			depth = float()
 		STATES.SURVEYING:
@@ -270,9 +272,6 @@ func _on_gas_layer_surveyor_window_close_requested() -> void:
 	_on_current_planet_cleared()
 	owner.hide()
 	pass
-
-
-
 
 
 

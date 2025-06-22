@@ -3,6 +3,8 @@ enum LISTS {HIERACHY, CHOICES}
 enum ACTIONS {SWITCH_COLUMN, VIEW_IN_ENCYCLOPEDIA}
 enum STATUSES {NONE, CONFIRMED, DENIED}
 
+enum STATES {WAITING, SURVEYING, SELECTING, INVALID}
+
 signal addPlayerValue(amount: int)
 signal confirmedTwice()
 
@@ -56,6 +58,7 @@ func initialize(current_layers: PackedStringArray) -> void:
 	pass
 
 
+
 #REPORT
 func add_layer_instance(tag: String, list: LISTS):
 	var layer_instance = layer_representation.instantiate()
@@ -95,6 +98,7 @@ func _on_layer_instance_activated(tag: String, list: LISTS, action: ACTIONS):
 	pass
 
 
+
 #ENCYCLOPEDIA
 func _on_encyclopedia_item_activated(index: int) -> void:
 	var tag = encyclopedia.get_item_metadata(index)
@@ -107,22 +111,21 @@ func switch_to_entry(tag: String) -> void:
 	noise_texture.set_texture(data.get("bg_sampler", load("res://Scenes/Gas Layer Surveyor/bg_default.tres")))
 	attributes_list.clear()
 	
-	var current_idx: int = 0
+	attributes_list.add_item("TIME")
+	attributes_list.add_item("%.f" % data.get("bg_time_divisor", 100.0))
 	
-	attributes_list.add_item("SPEED")
-	attributes_list.add_item("%.f" % remap(data.get("bg_time_divisor", 100.0), 0, 250, 250, 0))
-	
-	attributes_list.add_item("COLOR")
-	current_idx = attributes_list.add_item(String())
-	attributes_list.set_item_custom_bg_color(current_idx, data.get("bg_color", Color.WHITE))
-	
-	attributes_list.add_item("ALBEDO")
-	current_idx = attributes_list.add_item(String())
-	attributes_list.set_item_custom_bg_color(current_idx, data.get("fog_albedo", Color.WHITE))
-	
-	attributes_list.add_item("EMISSION")
-	current_idx = attributes_list.add_item(String())
-	attributes_list.set_item_custom_bg_color(current_idx, data.get("fog_emission", Color.BLACK))
+	var color_properties: Dictionary = {"bg_color": Color.WHITE, "fog_albedo": Color.WHITE, "fog_emission": Color.BLACK}
+	for property in color_properties:
+		var color = data.get(property, color_properties.get(property))
+		var text: String = String()
+		match property:
+			"bg_color": text = "COLOR"
+			"fog_albedo": text = "ALBEDO"
+			"fog_emission": text = "EMISSION"
+		attributes_list.add_item(text)
+		var idx = attributes_list.add_item(color.to_html())
+		attributes_list.set_item_custom_bg_color(idx, color)
+		attributes_list.set_item_custom_fg_color(idx, color.inverted())
 	
 	tabs.set_current_tab(2)
 	pass
@@ -133,7 +136,7 @@ func switch_to_entry(tag: String) -> void:
 func _on_confirm_pressed() -> void:
 	if not confirmed_prev:
 		var total: int = 0
-		var average_value = int(current_planet_value / 6)
+		var average_value = int(current_planet_value / 9)
 		
 		var hierachy_children = hierachy_list.get_children()
 		if _current_layers.size() == hierachy_children.size():
