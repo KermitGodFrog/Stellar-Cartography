@@ -215,6 +215,8 @@ func connect_all_signals() -> void:
 	objectives_manager.connect("activeObjectivesChanged", _on_active_objectives_changed)
 	objectives_manager.connect("updateObjectivesPanel", _on_update_objectives_panel)
 	
+	gas_layer_surveyor.connect("addPlayerValue", _on_add_player_value)
+	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
 	pause_menu.connect("queuePauseMode", _on_queue_pause_mode)

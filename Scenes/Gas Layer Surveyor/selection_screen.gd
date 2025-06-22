@@ -1,8 +1,13 @@
 extends PanelContainer
 enum LISTS {HIERACHY, CHOICES}
 enum ACTIONS {SWITCH_COLUMN, VIEW_IN_ENCYCLOPEDIA}
+enum STATUSES {NONE, CONFIRMED, DENIED}
+
+signal addPlayerValue(amount: int)
+signal confirmedTwice()
 
 var discovered_gas_layers_matrix: PackedInt32Array = []
+var current_planet_value: int = 0
 
 @onready var hierachy_list = $margin/tabs/REPORT/scroll/hierachy_texture/hierachy_margin/hierachy_list
 @onready var choices_list = $margin/tabs/REPORT/scroll/choices_list
@@ -13,16 +18,21 @@ var discovered_gas_layers_matrix: PackedInt32Array = []
 @onready var noise_texture = $margin/tabs/ENTRY/noise_texture
 @onready var attributes_list = $margin/tabs/ENTRY/attributes_list 
 
-
 @onready var layer_representation = preload("res://Scenes/Gas Layer Surveyor/layer_representation.tscn")
 
 var _layer_data: Dictionary = {}
+var _current_layers: PackedStringArray = []
+var confirmed_prev: bool = false
 
 func _ready() -> void:
 	tabs.set_tab_hidden(2, true)
 	pass
 
-func initialize(_current_layers: PackedStringArray) -> void:
+func initialize(current_layers: PackedStringArray) -> void:
+	#clearing and resetting misc
+	_current_layers = current_layers
+	confirmed_prev = false
+	
 	#clear and populate REPORT
 	for c in choices_list.get_children(): c.queue_free()
 	for c in hierachy_list.get_children(): c.queue_free()
@@ -42,7 +52,7 @@ func initialize(_current_layers: PackedStringArray) -> void:
 	pass
 
 
-
+#REPORT
 func add_layer_instance(tag: String, list: LISTS):
 	var layer_instance = layer_representation.instantiate()
 	layer_instance.connect("activated", _on_layer_instance_activated)
@@ -81,10 +91,8 @@ func _on_layer_instance_activated(tag: String, list: LISTS, action: ACTIONS):
 	pass
 
 
-
-
-
-func _on_encyclopedia_item_selected(index: int) -> void:
+#ENCYCLOPEDIA
+func _on_encyclopedia_item_activated(index: int) -> void:
 	var tag = encyclopedia.get_item_metadata(index)
 	switch_to_entry(tag)
 	pass 
@@ -113,4 +121,30 @@ func switch_to_entry(tag: String) -> void:
 	attributes_list.set_item_custom_bg_color(current_idx, data.get("fog_emission", Color.BLACK))
 	
 	tabs.set_current_tab(2)
+	pass
+
+
+
+#FINISHING THE DAMN MINIGAME
+func _on_confirm_pressed() -> void:
+	if not confirmed_prev:
+		var total: int = 0
+		var layer_value: int = current_planet_value / 5
+		
+		var hierachy_children = hierachy_list.get_children()
+		if _current_layers.size() == hierachy_children.size():
+			confirmed_prev = true
+			
+			for idx in _current_layers.size():
+				var confirmed_tag = _current_layers[idx]
+				var child = hierachy_children[idx]
+				if confirmed_tag == child.tag:
+					total += layer_value
+					child.set_status(STATUSES.CONFIRMED, layer_value)
+				else:
+					child.set_status(STATUSES.DENIED)
+			
+			emit_signal("addPlayerValue", total)
+	else:
+		emit_signal("confirmedTwice")
 	pass

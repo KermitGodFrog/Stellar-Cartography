@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b75u7e1b1ddb2"]
+[gd_scene load_steps=18 format=3 uid="uid://b75u7e1b1ddb2"]
 
 [ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor.gd" id="1_retla"]
 [ext_resource type="Texture2D" uid="uid://dmutb3ak7n4l2" path="res://Graphics/gas_layer_surveyor_frame.png" id="3_iy7ju"]
@@ -9,6 +9,7 @@
 [ext_resource type="Material" uid="uid://cbp5moi45ijjg" path="res://Scenes/Gas Layer Surveyor/speed_line_texture.tres" id="4_lygh8"]
 [ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/selection_screen.gd" id="5_kjlie"]
 [ext_resource type="Texture2D" uid="uid://wj8xwuug1m0o" path="res://Graphics/tree_arrow.png" id="5_rwvyv"]
+[ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/confirm_button.gd" id="8_3jywn"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_isjh6"]
 
@@ -197,6 +198,7 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 text = "CONFIRM"
+script = ExtResource("8_3jywn")
 
 [node name="ENCYCLOPEDIA" type="ItemList" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs"]
 visible = false
@@ -251,4 +253,5 @@ gravity = Vector3(0, 10, 0)
 
 [connection signal="close_requested" from="." to="gas_layer_surveyor" method="_on_gas_layer_surveyor_window_close_requested"]
 [connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/control/press_to_start_button" to="gas_layer_surveyor" method="_on_press_to_start_button_pressed"]
-[connection signal="item_selected" from="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENCYCLOPEDIA" to="gas_layer_surveyor/camera_offset/camera/control/selection_screen" method="_on_encyclopedia_item_selected"]
+[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT/confirm" to="gas_layer_surveyor/camera_offset/camera/control/selection_screen" method="_on_confirm_pressed"]
+[connection signal="item_activated" from="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENCYCLOPEDIA" to="gas_layer_surveyor/camera_offset/camera/control/selection_screen" method="_on_encyclopedia_item_activated"]

@@ -1,6 +1,7 @@
 extends Node3D
 
 signal state_changed(new_state: STATES)
+signal addPlayerValue(amount: int)
 
 var _discovered_gas_layers_matrix: PackedInt32Array = []
 
@@ -149,6 +150,8 @@ func get_active_layer() -> String:
 
 func _ready() -> void:
 	state_changed.connect(_on_state_changed)
+	selection_screen.connect("addPlayerValue", _on_add_player_value)
+	selection_screen.connect("confirmedTwice", _on_selection_screen_confirmed_twice)
 	selection_screen._layer_data = layer_data
 	state = STATES.INVALID
 	apply_new_layer()
@@ -166,17 +169,14 @@ func _process(delta: float) -> void:
 			if depth >= MAX_DEPTH:
 				state = STATES.SELECTING
 	
-	
-	
 	#graphics
 	var shader_material = world_environment.get_environment().get_sky().get_material()
 	var current_color = shader_material.get_shader_parameter("color") as Color
 	shader_material.set_shader_parameter("color", current_color.lerp(target_color, delta))
 	
-	
-	
 	#misc
 	selection_screen.set("discovered_gas_layers_matrix", _discovered_gas_layers_matrix)
+	if current_planet != null: selection_screen.set("current_planet_value", current_planet.metadata.get("value", int()))
 	pass
 
 
@@ -269,4 +269,19 @@ func _on_press_to_start_button_pressed() -> void:
 func _on_gas_layer_surveyor_window_close_requested() -> void:
 	_on_current_planet_cleared()
 	owner.hide()
+	pass
+
+
+
+
+
+
+func _on_add_player_value(amount: int) -> void:
+	emit_signal("addPlayerValue", amount)
+	pass
+
+func _on_selection_screen_confirmed_twice() -> void:
+	if current_planet != null:
+		current_planet.metadata["missing_GL"] = false
+	state = STATES.INVALID
 	pass
