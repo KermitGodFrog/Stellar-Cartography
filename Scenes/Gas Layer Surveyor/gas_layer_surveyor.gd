@@ -10,6 +10,7 @@ var _discovered_gas_layers_matrix: PackedInt32Array = []
 @onready var depth_indicator = $camera_offset/camera/control/depth_margin/depth_panel/depth_indicator
 @onready var selection_screen = $camera_offset/camera/control/selection_screen
 @onready var speed_lines = $speed_lines
+@onready var spaceship_model = $gas_harvesting_spaceship
 
 const layer_data = { #name (color(s)-noise-property): properties
 	"default": {
@@ -245,18 +246,20 @@ func _on_state_changed(new_state: STATES) -> void:
 	press_to_start.visible = new_state == STATES.WAITING
 	selection_screen.visible = new_state == STATES.SELECTING
 	speed_lines.emitting = new_state == STATES.SURVEYING
+	spaceship_model.visible = new_state == STATES.SURVEYING
 	
 	match new_state:
 		STATES.INVALID:
 			current_planet = null
 			depth = float()
+			active_layer = "default"
+			checkpoint = int()
 		STATES.WAITING:
 			depth = float()
 		STATES.SURVEYING:
 			pass
 		STATES.SELECTING:
 			selection_screen.initialize(current_layers)
-			depth = float()
 	pass
 
 func _on_press_to_start_button_pressed() -> void:

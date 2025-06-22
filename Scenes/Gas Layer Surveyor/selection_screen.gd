@@ -22,7 +22,6 @@ func _ready() -> void:
 	tabs.set_tab_hidden(2, true)
 	pass
 
-
 func initialize(_current_layers: PackedStringArray) -> void:
 	#clear and populate REPORT
 	for c in choices_list.get_children(): c.queue_free()
