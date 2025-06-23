@@ -23,7 +23,7 @@ var current_planet_value: int = 0
 
 @onready var layer_representation = preload("res://Scenes/Gas Layer Surveyor/layer_representation.tscn")
 
-var _layer_data: Dictionary = {}
+var _layer_data: Dictionary = {} # set on game start
 var _current_layers: PackedStringArray = []
 var confirmed_prev: bool = false:
 	set(value):
@@ -132,7 +132,7 @@ func switch_to_entry(tag: String) -> void:
 
 
 
-#FINISHING THE DAMN MINIGAME
+#FINISHING THE HECKING MINIGAME
 func _on_confirm_pressed() -> void:
 	if not confirmed_prev:
 		var total: int = 0

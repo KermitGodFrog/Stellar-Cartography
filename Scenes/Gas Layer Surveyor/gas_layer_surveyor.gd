@@ -209,7 +209,7 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 		
 		offsets.remove_at(offsets.size() - 1) #remove MAX_DEPTH from PackedFloat32Array
 		
-		current_offsets = offsets
+		current_offsets.append_array(offsets)
 		print("CURRENT OFFSETS: ", current_offsets)
 		
 		var gradient = Gradient.new()

@@ -5,8 +5,8 @@ enum STATUSES {NONE, CONFIRMED, DENIED}
 
 signal activated(_tag: String, _list: LISTS, _action: ACTIONS)
 
-@onready var confirm = preload("res://Graphics/Misc/confirm_no_shadow.png")
-@onready var denied = preload("res://Graphics/Misc/denied.png")
+@onready var confirm = preload("res://Graphics/Misc/confirm_outline.png")
+@onready var denied = preload("res://Graphics/Misc/denied_outline.png")
 @onready var status_texture = $status_texture
 @onready var status_label = $status_label
 
