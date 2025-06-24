@@ -19,6 +19,9 @@ func _on_pause_mode_changed(value):
 signal onCloseDialog(with_return_state)
 signal addDialogueMemoryPair(key, value)
 
+signal openLRS
+signal openGLS
+
 signal decreasePlayerBalance(amount: int)
 signal addPlayerValue(amount: int)
 signal addPlayerHullStress(amount: int)
@@ -478,6 +481,16 @@ func openDialog():
 	clearAll()
 	dialogue.clear_image()
 	emit_signal("queuePauseMode", game_data.PAUSE_MODES.DIALOGUE)
+	pass
+
+func openLRSApplicable():
+	print("openLRSApplicable")
+	emit_signal("openLRS")
+	pass
+
+func openGLSApplicable():
+	print("openGLSApplicable")
+	emit_signal("openGLS")
 	pass
 
 func closeDialog(with_return_state = null):
