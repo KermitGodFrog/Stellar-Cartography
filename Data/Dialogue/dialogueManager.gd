@@ -484,12 +484,10 @@ func openDialog():
 	pass
 
 func openLRSApplicable():
-	print("openLRSApplicable")
 	emit_signal("openLRS")
 	pass
 
 func openGLSApplicable():
-	print("openGLSApplicable")
 	emit_signal("openGLS")
 	pass
 
