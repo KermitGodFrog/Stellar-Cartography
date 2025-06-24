@@ -63,13 +63,25 @@ func initialize(current_layers: PackedStringArray) -> void:
 func add_layer_instance(tag: String, list: LISTS):
 	var layer_instance = layer_representation.instantiate()
 	layer_instance.connect("activated", _on_layer_instance_activated)
-	layer_instance.initialize(tag, _layer_data.get(tag), list)
+	layer_instance.initialize(tag, _layer_data.get(tag), list, get_tag_cover_path(tag))
 	match list:
 		LISTS.CHOICES:
 			choices_list.add_child(layer_instance)
 		LISTS.HIERACHY:
 			hierachy_list.add_child(layer_instance)
 	pass
+
+func get_tag_cover_path(_tag: String) -> String:
+	match Array(_tag.split("-")).back():
+		"bacterium":
+			return "res://Graphics/gas-layer-surveyor/cover_bacterium.png"
+		"complex":
+			return "res://Graphics/gas-layer-surveyor/cover_complex.png"
+		"ridges":
+			return "res://Graphics/gas-layer-surveyor/cover_ridges.png"
+		"splotches":
+			return "res://Graphics/gas-layer-surveyor/cover_splotches.png"
+	return "res://Graphics/gas-layer-surveyor/cover_default.png"
 
 func remove_layer_instance(tag: String, list: LISTS):
 	match list:
@@ -125,7 +137,6 @@ func switch_to_entry(tag: String) -> void:
 		attributes_list.add_item(text)
 		var idx = attributes_list.add_item(color.to_html())
 		attributes_list.set_item_custom_bg_color(idx, color)
-		attributes_list.set_item_custom_fg_color(idx, color.inverted())
 	
 	tabs.set_current_tab(2)
 	pass

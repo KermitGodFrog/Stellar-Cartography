@@ -37,13 +37,13 @@ const layer_data = { #name (color(s)-noise-property): properties
 		"fog_albedo": Color("d16600"),
 		"fog_emission": Color.RED,
 	},
-	"green-splotches-slow": {
+	"green-slow-splotches": {
 		"bg_color": Color.GREEN,
 		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_splotches.tres"),
 		"bg_time_divisor": 180.0,
 		"fog_albedo": Color("254925"),
 	},
-	"green-splotches-fast": {
+	"green-fast-splotches": {
 		"bg_color": Color.GREEN,
 		"bg_time_divisor": 50.0,
 		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_splotches.tres"),
@@ -55,7 +55,7 @@ const layer_data = { #name (color(s)-noise-property): properties
 		"fog_albedo": Color("008388"),
 		"fog_emission": Color("2e69ff")
 	},
-	"red-bacterium-slow": {
+	"red-slow-bacterium": {
 		"bg_color": Color("ff3f30"),
 		"bg_time_divisor": 150.0,
 		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
@@ -63,7 +63,7 @@ const layer_data = { #name (color(s)-noise-property): properties
 		"fog_emission": Color("800000"),
 		"fog_density": 0.05
 	},
-	"red-blue-bacterium-fast": {
+	"red-blue-fast-bacterium": {
 		"bg_color": Color("ff3f30"),
 		"bg_time_divisor": 50.0,
 		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
@@ -258,6 +258,7 @@ func _on_state_changed(new_state: STATES) -> void:
 			depth = float()
 		STATES.WAITING:
 			depth = float()
+			depth_indicator.value = float()
 		STATES.SURVEYING:
 			pass
 		STATES.SELECTING:

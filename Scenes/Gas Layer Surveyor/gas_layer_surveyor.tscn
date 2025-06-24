@@ -48,7 +48,6 @@ own_world_3d = true
 title = "Gas Layer Surveyor"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
-visible = false
 min_size = Vector2i(500, 500)
 
 [node name="gas_layer_surveyor" type="Node3D" parent="."]
@@ -226,7 +225,6 @@ visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hovered_color = Color(0.560784, 1, 1, 1)
-theme_override_constants/v_separation = 25
 theme_override_styles/focus = SubResource("StyleBoxEmpty_5ayti")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_cp8i3")
 metadata/_tab_index = 1
@@ -255,8 +253,10 @@ stretch_mode = 5
 [node name="attributes_list" type="ItemList" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hovered_color = Color(0.560784, 1, 1, 1)
+theme_override_constants/outline_size = 5
 theme_override_styles/focus = SubResource("StyleBoxEmpty_uddrg")
 theme_override_styles/panel = SubResource("StyleBoxFlat_fd8bf")
 allow_search = false

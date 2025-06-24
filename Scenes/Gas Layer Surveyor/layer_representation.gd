@@ -9,16 +9,19 @@ signal activated(_tag: String, _list: LISTS, _action: ACTIONS)
 @onready var denied = preload("res://Graphics/Misc/denied_outline.png")
 @onready var status_texture = $status_texture
 @onready var status_label = $status_label
+@onready var cover = $cover
 
 var current_list: LISTS
 var current_status: STATUSES
 var tag: String = String()
 var data: Dictionary = Dictionary()
+var cover_path: String = String()
 
-func initialize(_tag: String, _data: Dictionary, _list: LISTS) -> void:
+func initialize(_tag: String, _data: Dictionary, _list: LISTS, _cover_path: String) -> void:
 	tag = _tag
 	data = _data
 	current_list = _list
+	cover_path = _cover_path
 	pass
 
 func _ready() -> void:
@@ -26,6 +29,8 @@ func _ready() -> void:
 	tooltip_title = tag.to_upper()
 	texture_normal.gradient.set_color(0, data.get("bg_color", Color.WHITE))
 	texture_normal.gradient.set_color(1, data.get("fog_albedo", Color.WHITE))
+	if cover_path.is_absolute_path():
+		cover.set_texture(load(cover_path))
 	pass
 
 
