@@ -17,9 +17,9 @@ var current_planet_value: int = 0
 @onready var tabs = $margin/tabs
 @onready var confirm_button = $margin/tabs/REPORT/confirm
 #ENTRY tab
-@onready var tag_label = $margin/tabs/ENTRY/tag_label
-@onready var noise_texture = $margin/tabs/ENTRY/noise_texture
-@onready var attributes_list = $margin/tabs/ENTRY/attributes_list 
+@onready var tag_label = $margin/tabs/ENTRY/scroll/tag_label
+@onready var noise_texture = $margin/tabs/ENTRY/scroll/noise_texture
+@onready var attributes_list = $margin/tabs/ENTRY/scroll/attributes_list 
 
 @onready var layer_representation = preload("res://Scenes/Gas Layer Surveyor/layer_representation.tscn")
 
@@ -143,7 +143,7 @@ func switch_to_entry(tag: String) -> void:
 
 
 
-#FINISHING THE HECKING MINIGAME
+#FINISHING THE MINIGAME
 func _on_confirm_pressed() -> void:
 	if not confirmed_prev:
 		var total: int = 0
@@ -167,4 +167,8 @@ func _on_confirm_pressed() -> void:
 			confirm_button.blink(Color.RED)
 	else:
 		emit_signal("confirmedTwice")
+	pass
+
+func _on_back_button_pressed() -> void:
+	tabs.set_current_tab(tabs.get_previous_tab())
 	pass

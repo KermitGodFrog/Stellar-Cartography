@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://b75u7e1b1ddb2"]
+[gd_scene load_steps=25 format=3 uid="uid://b75u7e1b1ddb2"]
 
 [ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor.gd" id="1_retla"]
 [ext_resource type="Texture2D" uid="uid://dmutb3ak7n4l2" path="res://Graphics/gas_layer_surveyor_frame.png" id="3_iy7ju"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://wj8xwuug1m0o" path="res://Graphics/tree_arrow.png" id="5_rwvyv"]
 [ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/confirm_button.gd" id="8_3jywn"]
 [ext_resource type="Texture2D" uid="uid://hr0rrky8ghq6" path="res://Scenes/Gas Layer Surveyor/bg_splotches.tres" id="9_8ov42"]
+[ext_resource type="Texture2D" uid="uid://daimftgepff4u" path="res://Graphics/mouse_pointer_movement.png" id="9_e8ikj"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_isjh6"]
 
@@ -229,20 +230,28 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_5ayti")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_cp8i3")
 metadata/_tab_index = 1
 
-[node name="ENTRY" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs"]
+[node name="ENTRY" type="Control" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs"]
 visible = false
 layout_mode = 2
-theme_override_constants/separation = 10
 metadata/_tab_index = 2
 
-[node name="tag_label" type="Label" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY"]
+[node name="scroll" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 5
+
+[node name="tag_label" type="Label" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY/scroll"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_vertical = 0
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="noise_texture" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY"]
+[node name="noise_texture" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY/scroll"]
 custom_minimum_size = Vector2(130, 130)
 layout_mode = 2
 size_flags_vertical = 0
@@ -250,7 +259,7 @@ texture = ExtResource("9_8ov42")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="attributes_list" type="ItemList" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY"]
+[node name="attributes_list" type="ItemList" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY/scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -263,6 +272,13 @@ allow_search = false
 max_columns = 2
 same_column_width = true
 fixed_column_width = 100
+
+[node name="back_button" type="TextureButton" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY"]
+layout_mode = 1
+offset_right = 40.0
+offset_bottom = 40.0
+texture_normal = ExtResource("9_e8ikj")
+flip_h = true
 
 [node name="world_environment" type="WorldEnvironment" parent="gas_layer_surveyor"]
 environment = ExtResource("3_sw2d4")
@@ -286,3 +302,4 @@ gravity = Vector3(0, 10, 0)
 [connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/control/press_to_start_button" to="gas_layer_surveyor" method="_on_press_to_start_button_pressed"]
 [connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT/confirm" to="gas_layer_surveyor/camera_offset/camera/control/selection_screen" method="_on_confirm_pressed"]
 [connection signal="item_activated" from="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENCYCLOPEDIA" to="gas_layer_surveyor/camera_offset/camera/control/selection_screen" method="_on_encyclopedia_item_activated"]
+[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY/back_button" to="gas_layer_surveyor/camera_offset/camera/control/selection_screen" method="_on_back_button_pressed"]
