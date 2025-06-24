@@ -1,0 +1,15 @@
+[gd_resource type="Shader" format=3 uid="uid://b7fgc6csn4ykm"]
+
+[resource]
+code = "shader_type sky;
+render_mode use_half_res_pass, use_debanding;
+
+uniform sampler2D sampler : filter_linear;
+uniform vec3 color : source_color;
+uniform float time_divisor : hint_range(0.0, 250.0, 10.0);
+
+void sky() {
+	vec4 sampler_texture = texture(sampler, vec2(SKY_COORDS.x, SKY_COORDS.y) + (TIME / time_divisor));
+	COLOR += sampler_texture.rgb * color;
+}
+"

@@ -587,6 +587,25 @@ func getStarDescriptionWithFlair(star_type: String):
 	dialogue.add_text("[color=darkgray]%s [/color]" % description)
 	pass
 
+const reward_types = {
+	"STRESS": {"LOW": 5, "MEDIUM": 15, "HIGH": 25},
+	"VALUE": {"LOW": 2500, "MEDIUM": 5000, "HIGH": 25000},
+	"DISCOVERY": {"LOW": 1, "MEDIUM": 2, "HIGH": 3}
+}
+func addRandomRewardWithFlair(rarity: String = "LOW") -> void:
+	var reward = reward_types.keys().pick_random()
+	match reward:
+		"STRESS":
+			removeHullStressWithFlair(reward_types.get(reward).get(rarity))
+		"VALUE":
+			addValueWithFlair(reward_types.get(reward).get(rarity))
+		"DISCOVERY":
+			for i in reward_types.get(reward).get(rarity) - 1:
+				discoverRandomBodyWithFlair()
+	pass
+
+
+
 
 
 func categoryActive(wID: String) -> void:

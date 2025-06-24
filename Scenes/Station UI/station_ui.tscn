@@ -143,7 +143,15 @@ theme_type_variation = &"ButtonDull"
 script = ExtResource("5_nlbm1")
 upgrade = 3
 cost = 35000
-description = "Long Range Scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid to photos of quality, which take the photography style for different phenomena into account."
+description = "Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."
+
+[node name="5" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+script = ExtResource("5_nlbm1")
+upgrade = 5
+cost = 35000
+description = "Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."
 
 [node name="disclaimer_label" type="Label" parent="station_control/upgrade_container"]
 layout_mode = 2

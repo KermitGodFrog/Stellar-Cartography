@@ -21,7 +21,6 @@ func _on_pause_mode_changed(value):
 
 
 signal updatePlayerActionType(type: playerAPI.ACTION_TYPES, action_body)
-signal validUpdatePlayerActionType(type: playerAPI.ACTION_TYPES, action_body) #used for checking if the player is no longer orbiting a body in game.gd!
 signal updatePlayerIsBoosting(is_boosting: bool)
 signal updatePlayerTargetPosition(pos: Vector2)
 signal updateTargetPosition(pos: Vector2)
@@ -57,6 +56,7 @@ var player_is_boosting: bool = false:
 			travel_modifier_label.check_modifier("boosting", "Boosting", value)
 		player_is_boosting = value
 var player_audio_visualizer_unlocked: bool = false
+var player_gas_layer_surveyor_unlocked: bool = false
 
 @onready var camera = $camera
 @onready var canvas = $camera/canvas
@@ -197,7 +197,7 @@ func _physics_process(delta):
 		body_attributes_list.add_item("orbital_distance %.2f (solar radii)" % follow_body.orbit_distance, null, false)
 		
 		#metadata
-		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "seed", "custom_available", "custom_follow_available", "custom_orbit_available"]
+		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "missing_GL", "seed", "custom_available", "custom_follow_available", "custom_orbit_available"]
 		if follow_body.is_known():
 			for entry in follow_body.metadata:
 				if excluding.find(entry) == -1:
@@ -300,7 +300,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				starSystemAPI.BODY_TYPES.STAR:
 					#item.set_text(0, "%s - %s Class Star" % [body.get_display_name(), body.metadata.get("star_type")])
 					item.set_icon(0, load("res://Graphics/new-system-list/star_frame.png"))
-					item.set_tooltip_text(0, "%s - %s Class" % [item.get_text(0), body.metadata.get("star_type")])
+					item.set_tooltip_text(0, "%s - %s Class Star" % [item.get_text(0), body.metadata.get("star_type")])
 					
 					if body.get_identifier() == closest_body_id:
 						item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416).lightened(0.2))
@@ -310,11 +310,14 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				starSystemAPI.BODY_TYPES.PLANET:
 					#item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
 					item.set_icon(0, get_planet_frame(body.metadata.get("planet_classification")))
-					item.set_tooltip_text(0, "%s - %s" % [item.get_text(0), body.metadata.get("planet_type")])
+					item.set_tooltip_text(0, "%s - %s Planet" % [item.get_text(0), body.metadata.get("planet_type")])
 					
 					if (body.metadata.get("planetary_anomaly", false) == true) and (body.metadata.get("planetary_anomaly_available", false) == true):
 						item.set_icon(0, question_mark_frame)
 						oscillate_item_icon_color(item, Color.GREEN)
+					elif (body.metadata.get("missing_GL", false) == true) and (player_gas_layer_surveyor_unlocked == true):
+						item.set_icon(0, load("res://Graphics/gas_layer_surveyor_frame.png"))
+						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					elif (body.metadata.get("missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
 						item.set_icon(0, load("res://Graphics/audio_visualizer_frame.png"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))

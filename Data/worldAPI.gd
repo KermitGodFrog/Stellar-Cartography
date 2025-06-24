@@ -18,6 +18,7 @@ class_name worldAPI
 @export var SA_chance_per_candidate: float
 @export var PA_chance_per_planet: float
 @export var missing_AO_chance_per_planet: float
+@export var missing_GL_chance_per_relevant_planet: float
 # in order to justify why thsi is here - what if the player wants to update key customization while playing? this would be useful to ahndle it
 
 func createStarSystem(d_name: String) -> starSystemAPI:

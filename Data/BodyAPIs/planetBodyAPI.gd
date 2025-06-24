@@ -1,6 +1,7 @@
 extends circularBodyAPI
 class_name planetBodyAPI
 
+#Audio Visualizer
 enum VARIATIONS {LOW, MEDIUM, HIGH}
 @export var current_variation: int = -1:
 	get = get_current_variation, set = set_current_variation
@@ -21,3 +22,13 @@ func is_PA_valid() -> bool:
 	if ((metadata.get("planetary_anomaly", false) == true) and (metadata.get("planetary_anomaly_available", false) == true)):
 		return true
 	return false
+
+#Gas Layer Surveyor
+@export_storage var layers: int = -1:
+	get = get_gas_layers_sum, set = set_gas_layers_sum
+
+func get_gas_layers_sum() -> int:
+	return layers
+func set_gas_layers_sum(value) -> void:
+	layers = value
+	pass
