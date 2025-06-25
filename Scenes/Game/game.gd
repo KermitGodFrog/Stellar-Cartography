@@ -963,7 +963,8 @@ func _on_update_objectives_panel(_active_objectives: Array[objectiveAPI]) -> voi
 	pass
 
 func _on_open_LRS():
-	var following_body = system_map.follow_body
+	await get_tree().physics_frame
+	var following_body = world.player.action_body
 	if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) == true:
 		long_range_scopes._on_current_entity_changed(following_body)
 		lrs_bestiary._on_current_entity_changed(following_body)
@@ -974,7 +975,8 @@ func _on_open_LRS():
 	pass
 
 func _on_open_GLS():
-	var following_body = system_map.follow_body
+	await get_tree().physics_frame
+	var following_body = world.player.action_body
 	if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) == true:
 		gas_layer_surveyor._on_current_planet_changed(following_body)
 		for tag in gas_layer_surveyor.current_layers:

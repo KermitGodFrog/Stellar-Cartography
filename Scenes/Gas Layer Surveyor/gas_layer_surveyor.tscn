@@ -62,7 +62,18 @@ script = ExtResource("1_retla")
 [node name="camera" type="Camera3D" parent="gas_layer_surveyor/camera_offset"]
 transform = Transform3D(-4.37114e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, 4.37114e-08, 1.91069e-15, 1.6, 9.564, -1.368)
 
-[node name="control" type="Control" parent="gas_layer_surveyor/camera_offset/camera"]
+[node name="canvas_layer" type="CanvasLayer" parent="gas_layer_surveyor/camera_offset/camera"]
+
+[node name="post_process" type="ColorRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer"]
+visible = false
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="control" type="Control" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -71,7 +82,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_lxufc")
 
-[node name="depth_margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/control"]
+[node name="depth_margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control"]
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 1
 anchors_preset = 12
@@ -86,10 +97,10 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="depth_panel" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/control/depth_margin"]
+[node name="depth_panel" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/depth_margin"]
 layout_mode = 2
 
-[node name="depth_indicator" type="TextureProgressBar" parent="gas_layer_surveyor/camera_offset/camera/control/depth_margin/depth_panel"]
+[node name="depth_indicator" type="TextureProgressBar" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/depth_margin/depth_panel"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_vertical = 4
@@ -98,7 +109,7 @@ nine_patch_stretch = true
 texture_progress = SubResource("CanvasTexture_isjh6")
 texture_progress_offset = Vector2(0, -10)
 
-[node name="press_to_start_button" type="Button" parent="gas_layer_surveyor/camera_offset/camera/control"]
+[node name="press_to_start_button" type="Button" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -108,7 +119,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "CLICK TO START"
 
-[node name="no_current_planet_bg" type="ColorRect" parent="gas_layer_surveyor/camera_offset/camera/control"]
+[node name="no_current_planet_bg" type="ColorRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -118,7 +129,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="gas_layer_surveyor_frame" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/control/no_current_planet_bg"]
+[node name="gas_layer_surveyor_frame" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/no_current_planet_bg"]
 modulate = Color(0.211765, 0.211765, 0.211765, 1)
 texture_filter = 1
 custom_minimum_size = Vector2(128, 0)
@@ -138,7 +149,7 @@ texture = ExtResource("3_iy7ju")
 expand_mode = 4
 stretch_mode = 5
 
-[node name="directions_label" type="Label" parent="gas_layer_surveyor/camera_offset/camera/control/no_current_planet_bg"]
+[node name="directions_label" type="Label" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/no_current_planet_bg"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -151,7 +162,8 @@ text = "FOLLOW A VALID PLANET TO BEGIN"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="selection_screen" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/control"]
+[node name="selection_screen" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -161,36 +173,36 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_6om7d")
 script = ExtResource("5_kjlie")
 
-[node name="margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen"]
+[node name="margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="tabs" type="TabContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin"]
+[node name="tabs" type="TabContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin"]
 layout_mode = 2
 theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_5y72e")
 theme_override_styles/tabbar_background = SubResource("StyleBoxFlat_2cj0f")
 theme_override_styles/panel = SubResource("StyleBoxFlat_w817a")
 current_tab = 0
 
-[node name="REPORT" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs"]
+[node name="REPORT" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="scroll" type="HBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT"]
+[node name="scroll" type="HBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="hierachy_texture" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT/scroll"]
+[node name="hierachy_texture" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT/scroll"]
 clip_contents = true
 custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
 texture = ExtResource("5_rwvyv")
 stretch_mode = 1
 
-[node name="hierachy_margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT/scroll/hierachy_texture"]
+[node name="hierachy_margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT/scroll/hierachy_texture"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -201,19 +213,19 @@ theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 10
 
-[node name="hierachy_list" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT/scroll/hierachy_texture/hierachy_margin"]
+[node name="hierachy_list" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT/scroll/hierachy_texture/hierachy_margin"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="separator" type="VSeparator" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT/scroll"]
+[node name="separator" type="VSeparator" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT/scroll"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="choices_list" type="HFlowContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT/scroll"]
+[node name="choices_list" type="HFlowContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT/scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="confirm" type="Button" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT"]
+[node name="confirm" type="Button" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT"]
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -222,7 +234,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_fy5f7")
 text = "CONFIRM"
 script = ExtResource("8_3jywn")
 
-[node name="ENCYCLOPEDIA" type="ItemList" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs"]
+[node name="ENCYCLOPEDIA" type="ItemList" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs"]
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -231,12 +243,12 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_5ayti")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_cp8i3")
 metadata/_tab_index = 1
 
-[node name="ENTRY" type="Control" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs"]
+[node name="ENTRY" type="Control" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="scroll" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY"]
+[node name="scroll" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENTRY"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -245,14 +257,14 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 5
 
-[node name="tag_label" type="Label" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY/scroll"]
+[node name="tag_label" type="Label" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENTRY/scroll"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_vertical = 0
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="noise_texture" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY/scroll"]
+[node name="noise_texture" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENTRY/scroll"]
 custom_minimum_size = Vector2(130, 130)
 layout_mode = 2
 size_flags_vertical = 0
@@ -260,7 +272,7 @@ texture = ExtResource("9_8ov42")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="attributes_list" type="ItemList" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY/scroll"]
+[node name="attributes_list" type="ItemList" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENTRY/scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -274,7 +286,7 @@ max_columns = 2
 same_column_width = true
 fixed_column_width = 100
 
-[node name="back_button" type="TextureButton" parent="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY"]
+[node name="back_button" type="TextureButton" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENTRY"]
 layout_mode = 1
 offset_right = 40.0
 offset_bottom = 40.0
@@ -300,7 +312,7 @@ emission_ring_inner_radius = 6.0
 gravity = Vector3(0, 10, 0)
 
 [connection signal="close_requested" from="." to="gas_layer_surveyor" method="_on_gas_layer_surveyor_window_close_requested"]
-[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/control/press_to_start_button" to="gas_layer_surveyor" method="_on_press_to_start_button_pressed"]
-[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/REPORT/confirm" to="gas_layer_surveyor/camera_offset/camera/control/selection_screen" method="_on_confirm_pressed"]
-[connection signal="item_activated" from="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENCYCLOPEDIA" to="gas_layer_surveyor/camera_offset/camera/control/selection_screen" method="_on_encyclopedia_item_activated"]
-[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/control/selection_screen/margin/tabs/ENTRY/back_button" to="gas_layer_surveyor/camera_offset/camera/control/selection_screen" method="_on_back_button_pressed"]
+[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/press_to_start_button" to="gas_layer_surveyor" method="_on_press_to_start_button_pressed"]
+[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT/confirm" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen" method="_on_confirm_pressed"]
+[connection signal="item_activated" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENCYCLOPEDIA" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen" method="_on_encyclopedia_item_activated"]
+[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENTRY/back_button" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen" method="_on_back_button_pressed"]

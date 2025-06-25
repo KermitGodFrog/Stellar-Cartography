@@ -6,10 +6,10 @@ signal addPlayerValue(amount: int)
 var _discovered_gas_layers_matrix: PackedInt32Array = []
 
 @onready var world_environment = $world_environment
-@onready var no_current_planet_bg = $camera_offset/camera/control/no_current_planet_bg
-@onready var press_to_start = $camera_offset/camera/control/press_to_start_button
-@onready var depth_indicator = $camera_offset/camera/control/depth_margin/depth_panel/depth_indicator
-@onready var selection_screen = $camera_offset/camera/control/selection_screen
+@onready var no_current_planet_bg = $camera_offset/camera/canvas_layer/control/no_current_planet_bg
+@onready var press_to_start = $camera_offset/camera/canvas_layer/control/press_to_start_button
+@onready var depth_indicator = $camera_offset/camera/canvas_layer/control/depth_margin/depth_panel/depth_indicator
+@onready var selection_screen = $camera_offset/camera/canvas_layer/control/selection_screen
 @onready var speed_lines = $speed_lines
 @onready var spaceship_model = $gas_harvesting_spaceship
 
