@@ -191,6 +191,8 @@ func connect_all_signals() -> void:
 	system_map.connect("longRangeScopesPopup", _on_long_range_scopes_popup)
 	system_map.connect("gasLayerSurveyorPopup", _on_gas_layer_surveyor_popup)
 	
+	dialogue_manager.connect("openLRS", _on_open_LRS)
+	dialogue_manager.connect("openGLS", _on_open_GLS)
 	dialogue_manager.connect("decreasePlayerBalance", _on_decrease_player_balance)
 	dialogue_manager.connect("addPlayerValue", _on_add_player_value)
 	dialogue_manager.connect("addPlayerHullStress", _on_add_player_hull_stress)
@@ -416,15 +418,6 @@ func _on_player_following_body(following_body: bodyAPI):
 					random.set_seed(following_body.metadata.get("seed", randi()))
 					temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
 					dock_with_station(temp_station)
-				"GAS_LAYER_SURVEYOR_OVERRIDE":
-					if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) == true:
-						gas_layer_surveyor._on_current_planet_changed(following_body)
-						for tag in gas_layer_surveyor.current_layers:
-							var idx = gas_layer_surveyor.layer_data.keys().find(tag)
-							if world.player.discovered_gas_layers.find(idx) == -1:
-								world.player.discovered_gas_layers.append(idx)
-						if not $gas_layer_surveyor_window.is_visible():
-							_on_gas_layer_surveyor_popup()
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 		starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
@@ -445,18 +438,6 @@ func _on_player_following_body(following_body: bodyAPI):
 					random.set_seed(following_body.metadata.get("seed", randi()))
 					temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
 					dock_with_station(temp_station)
-				_:
-					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
-		starSystemAPI.BODY_TYPES.SPACE_ENTITY:
-			match RETURN_STATE:
-				"LONG_RANGE_SCOPES_OVERRIDE":
-					if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) == true:
-						long_range_scopes._on_current_entity_changed(following_body)
-						lrs_bestiary._on_current_entity_changed(following_body)
-						if world.player.discovered_entities.find(following_body.entity_classification) == -1:
-							world.player.discovered_entities.append(following_body.entity_classification)
-						if not $long_range_scopes_window.is_visible():
-							_on_long_range_scopes_popup()
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 		_:
@@ -979,6 +960,29 @@ func _on_active_objectives_changed(_active_objectives: Array[objectiveAPI]) -> v
 
 func _on_update_objectives_panel(_active_objectives: Array[objectiveAPI]) -> void:
 	pause_menu._on_update_objectives_panel(_active_objectives)
+	pass
+
+func _on_open_LRS():
+	var following_body = system_map.follow_body
+	if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) == true:
+		long_range_scopes._on_current_entity_changed(following_body)
+		lrs_bestiary._on_current_entity_changed(following_body)
+		if world.player.discovered_entities.find(following_body.entity_classification) == -1:
+			world.player.discovered_entities.append(following_body.entity_classification)
+		if not $long_range_scopes_window.is_visible():
+			_on_long_range_scopes_popup()
+	pass
+
+func _on_open_GLS():
+	var following_body = system_map.follow_body
+	if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) == true:
+		gas_layer_surveyor._on_current_planet_changed(following_body)
+		for tag in gas_layer_surveyor.current_layers:
+			var idx = gas_layer_surveyor.layer_data.keys().find(tag)
+			if world.player.discovered_gas_layers.find(idx) == -1:
+				world.player.discovered_gas_layers.append(idx)
+		if not $gas_layer_surveyor_window.is_visible():
+			_on_gas_layer_surveyor_popup()
 	pass
 
 
