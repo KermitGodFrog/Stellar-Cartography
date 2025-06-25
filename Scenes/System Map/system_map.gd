@@ -302,7 +302,9 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					item.set_icon(0, load("res://Graphics/new-system-list/star_frame.png"))
 					item.set_tooltip_text(0, "%s - %s Class Star" % [item.get_text(0), body.metadata.get("star_type")])
 					
-					if body.get_identifier() == closest_body_id:
+					if body == follow_body:
+						item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416).lightened(0.5))
+					elif body.get_identifier() == closest_body_id:
 						item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416).lightened(0.2))
 					else:
 						item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416))
