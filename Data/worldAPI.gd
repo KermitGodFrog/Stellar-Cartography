@@ -95,3 +95,16 @@ func get_pending_audio_profiles() -> Array[audioProfileHelper]:
 						helper.body = b
 						pending_audio_profiles.append(helper)
 	return pending_audio_profiles
+
+const advanced_scanning_multiplier: float = 1.1
+func get_adjusted_SA_chance(advanced_scanning_unlocked: bool) -> float:
+	if advanced_scanning_unlocked:
+		return SA_chance_per_candidate * advanced_scanning_multiplier
+	else:
+		return SA_chance_per_candidate
+
+func get_adjusted_PA_chance(advanced_scanning_unlocked: bool) -> float:
+	if advanced_scanning_unlocked:
+		return PA_chance_per_planet * advanced_scanning_multiplier
+	else:
+		return PA_chance_per_planet

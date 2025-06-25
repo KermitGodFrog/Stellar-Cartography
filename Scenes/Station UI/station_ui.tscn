@@ -111,7 +111,7 @@ layout_mode = 2
 theme_type_variation = &"ButtonDull"
 script = ExtResource("5_nlbm1")
 cost = 7500
-description = "Advanced scanning capability. Increases the chance to detect planetary anomalies."
+description = "Advanced scanning capability. Increases the chance to detect planetary and space anomalies by 10%."
 
 [node name="4" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
