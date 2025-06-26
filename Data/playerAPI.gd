@@ -58,6 +58,15 @@ enum STORYLINES {THE_DETECTIVE, THE_CONGLOMERATE}
 
 enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES, SCAN_PREDICTION, GAS_LAYER_SURVEYOR}
 @export var unlocked_upgrades: Array[UPGRADE_ID] = []
+const SPL_upgrade_IDs: PackedInt32Array = [UPGRADE_ID.AUDIO_VISUALIZER, UPGRADE_ID.LONG_RANGE_SCOPES, UPGRADE_ID.GAS_LAYER_SURVEYOR]
+var current_SPL_upgrades: int = 0:
+	get(): #recalculate
+		current_SPL_upgrades = int()
+		for idx in unlocked_upgrades:
+			if SPL_upgrade_IDs.has(idx):
+				current_SPL_upgrades += 1
+		return current_SPL_upgrades
+@export var max_SPL_upgrades: int = 2
 
 @export var saved_audio_profiles: Array[audioProfileHelper] = []
 @export var max_saved_audio_profiles: int = 10
@@ -209,26 +218,40 @@ func addJumpsRemaining(amount: int):
 	pass
 
 
-func unlockUpgrade(upgrade_idx: UPGRADE_ID):
+
+func unlockUpgrade(upgrade_idx: UPGRADE_ID) -> int:
 	if not unlocked_upgrades.has(upgrade_idx):
 		unlocked_upgrades.append(upgrade_idx)
 		return upgrade_idx
 	return -1
 
-func lockUpgrade(upgrade_idx: UPGRADE_ID):
+func lockUpgrade(upgrade_idx: UPGRADE_ID) -> int:
 	if unlocked_upgrades.has(upgrade_idx):
 		unlocked_upgrades.erase(upgrade_idx)
 		return upgrade_idx
 	return -1
 
-func get_unlocked_upgrades():
+func get_unlocked_upgrades() -> Array[UPGRADE_ID]:
 	return unlocked_upgrades
 
-func get_upgrade_unlocked_state(upgrade_idx: UPGRADE_ID):
+func get_upgrade_unlocked_state(upgrade_idx: UPGRADE_ID) -> bool:
 	if unlocked_upgrades.has(upgrade_idx):
 		return true
 	else:
 		return false
+
+func is_upgrade_unlock_valid(upgrade_idx: UPGRADE_ID) -> bool:
+	var unlocked: bool = get_upgrade_unlocked_state(upgrade_idx) #must be false
+	var SPL_above_max: bool = false #must be false
+	if SPL_upgrade_IDs.has(upgrade_idx):
+		if current_SPL_upgrades >= max_SPL_upgrades:
+			SPL_above_max = true
+	
+	if (unlocked == false) and (SPL_above_max == false):
+		return true
+	else:
+		return false
+
 
 
 func increaseBalance(amount: int):

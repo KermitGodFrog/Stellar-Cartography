@@ -121,14 +121,6 @@ upgrade = 4
 cost = 7500
 description = "Scan prediction algorithms. Allow LIDAR scan arcs to be visible on the central board, by the system map, before the 'PING' button is pressed."
 
-[node name="1" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
-layout_mode = 2
-theme_type_variation = &"ButtonDull"
-script = ExtResource("5_nlbm1")
-upgrade = 1
-cost = 35000
-description = "Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."
-
 [node name="2" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
 theme_type_variation = &"ButtonDull"
@@ -137,13 +129,21 @@ upgrade = 2
 cost = 25000
 description = "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost."
 
+[node name="1" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+script = ExtResource("5_nlbm1")
+upgrade = 1
+cost = 35000
+description = "(SPECIAL) Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."
+
 [node name="3" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
 theme_type_variation = &"ButtonDull"
 script = ExtResource("5_nlbm1")
 upgrade = 3
 cost = 35000
-description = "Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."
+description = "(SPECIAL) Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."
 
 [node name="5" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
@@ -151,7 +151,14 @@ theme_type_variation = &"ButtonDull"
 script = ExtResource("5_nlbm1")
 upgrade = 5
 cost = 35000
-description = "Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."
+description = "(SPECIAL) Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."
+
+[node name="SPL_disclaimer_label" type="Label" parent="station_control/upgrade_container"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "(0/0 SPECIAL UPGRADES)"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="disclaimer_label" type="Label" parent="station_control/upgrade_container"]
 layout_mode = 2

@@ -22,9 +22,10 @@ func _on_pause_mode_changed(value):
 
 
 var station: stationBodyAPI
-var player_current_value: int
-var player_balance: int
-var player_hull_stress: int 
+var player_current_value: int = 0
+var player_balance: int = 0
+var player_hull_stress: int = 0
+var player_SPL_upgrades_matrix: Array = [] #current, max
 var nanites_per_percentage: int = 100
 
 #FOR AUDIO VISUALIZER \/\/\/\/\/
@@ -51,6 +52,7 @@ signal addPlayerValue(amount: int)
 #upgrade shtuff
 @onready var description_label = $upgrade_container/description_label
 @onready var disclaimer_label = $upgrade_container/disclaimer_label
+@onready var SPL_disclaimer_label = $upgrade_container/SPL_disclaimer_label
 @onready var UPGRADES = $upgrade_container/UPGRADES
 
 @onready var hull_stress_label = $repair_container/hull_stress_label
@@ -86,6 +88,8 @@ func _physics_process(_delta):
 		
 		repair_single_button.set_text(str("REPAIR 1% (", nanites_per_percentage, "n)"))
 		repair_all_button.set_text(str("REPAIR ", player_hull_stress, "% (", (player_hull_stress * nanites_per_percentage), "n)"))
+		
+		SPL_disclaimer_label.set_text("(%.f/%.f SPECIAL UPGRADES)" % [player_SPL_upgrades_matrix[0], player_SPL_upgrades_matrix[1]])
 	
 	#saved audio profiles control:
 	if player_saved_audio_profiles_size_matrix:
@@ -149,13 +153,15 @@ func _on_upgrade_mouse_entered(description: String) -> void:
 func _on_upgrade_pressed(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	if station: 
 		if not station.is_module_store_disabled:
+			print("MODULE STORE != DISABLED")
 			emit_signal("upgradeShip", upgrade_idx, cost)
 		else:
+			print("MODULE STORE == DISABLED")
 			disclaimer_label.blink(Color.RED)
 	pass
 
 func _on_disable_module_store() -> void:
-	if station: 
-		station.is_module_store_disabled = true
+	if station:
+		station.set("is_module_store_disabled", true)
 		get_tree().call_group("audioHandler", "play_once", station_upgrade, 0.0, "SFX") #assumes that every time the module store is disabled, its ALWAYS because a module is bought. pay attention to this 
 	pass

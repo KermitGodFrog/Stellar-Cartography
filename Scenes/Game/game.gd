@@ -545,6 +545,8 @@ func dock_with_station(following_station):
 	station_ui.player_current_value = world.player.current_value
 	station_ui.player_balance = world.player.balance
 	station_ui.player_hull_stress = world.player.hull_stress
+	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades]
+	
 	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	station_ui.set("pending_audio_profiles", world.get_pending_audio_profiles())
 	_on_station_popup()
@@ -748,11 +750,13 @@ func _on_sell_exploration_data(sell_percentage_of_market_price: int):
 
 func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	print("STATION_UI (DEBUG): UPGRADING SHIP")
-	if world.player.balance >= cost and (world.player.get_upgrade_unlocked_state(upgrade_idx) != true):
+	if world.player.balance >= cost and (world.player.is_upgrade_unlock_valid(upgrade_idx)):
 		world.player.decreaseBalance(cost)
 		_on_unlock_upgrade(upgrade_idx)
 		station_ui._on_disable_module_store() #i really dont know..... shouldnt do anything if not at a station because of 'if station' keywords in thingi fubhodgifaphjdlghruoetaifjpdvghruaeofisdh
+	
 	station_ui.player_balance = world.player.balance
+	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades] #current, max
 	pass
 
 func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
