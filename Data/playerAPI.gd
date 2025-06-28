@@ -16,12 +16,13 @@ signal actionTypePendingOrCompleted(_type: ACTION_TYPES, _body: bodyAPI, _pendin
 @export_storage var current_star_system: starSystemAPI
 @export_storage var previous_star_system: starSystemAPI
 
-@export var speed: int = 3 :
-	get:
-		if boosting:
-			return speed * 5 * (1 + (-int(in_asteroid_belt) * 0.5))
-		else:
-			return speed * (1 + (-int(in_asteroid_belt) * 0.5))
+@export var speed: int = 3
+func get_adjusted_speed() -> int:
+	if boosting:
+		return speed * 5 * (1 + (-int(in_asteroid_belt) * 0.5))
+	else:
+		return speed * (1 + (-int(in_asteroid_belt) * 0.5))
+
 var boosting: bool = false
 var in_asteroid_belt: bool = false
 
@@ -120,14 +121,14 @@ func updatePosition(delta): #dont ask bro
 	if pending_action_body:
 		match current_action_type:
 			ACTION_TYPES.NONE:
-				if not position.distance_to(target_position) < speed:
-					position += position.direction_to(target_position) * speed * delta
+				if not position.distance_to(target_position) < get_adjusted_speed():
+					position += position.direction_to(target_position) * get_adjusted_speed() * delta
 				else:
 					position += position.direction_to(target_position) * position.distance_to(target_position) * delta
 			ACTION_TYPES.GO_TO:
 				var pos = pending_action_body.position
 				if not position.distance_to(pos) < (pending_action_body.radius):
-					position += position.direction_to(pos) * speed * delta
+					position += position.direction_to(pos) * get_adjusted_speed() * delta
 				else:
 					position = pos
 				target_position = pos #not actually used for moving, just for drawing where the player is moving to
@@ -136,15 +137,15 @@ func updatePosition(delta): #dont ask bro
 				var pos = pending_action_body.position
 				pos = pos + (dir * ((3 * pending_action_body.radius) + 1.0))
 				if not position.distance_to(pos) < (pending_action_body.radius):
-					position += position.direction_to(pos) * speed * delta
+					position += position.direction_to(pos) * get_adjusted_speed() * delta
 				else:
 					position = pos
 				target_position = pos #not actually used for moving, just for drawing where the player is moving to
 	elif action_body:
 		match current_action_type:
 			ACTION_TYPES.NONE:
-				if not position.distance_to(target_position) < speed:
-					position += position.direction_to(target_position) * speed * delta
+				if not position.distance_to(target_position) < get_adjusted_speed():
+					position += position.direction_to(target_position) * get_adjusted_speed() * delta
 				else:
 					position += position.direction_to(target_position) * position.distance_to(target_position) * delta
 			ACTION_TYPES.GO_TO:
@@ -158,8 +159,8 @@ func updatePosition(delta): #dont ask bro
 				position = pos
 				target_position = pos #not actually used for moving, just for drawing where the player is moving to
 	else:
-		if not position.distance_to(target_position) < speed:
-			position += position.direction_to(target_position) * speed * delta
+		if not position.distance_to(target_position) < get_adjusted_speed():
+			position += position.direction_to(target_position) * get_adjusted_speed() * delta
 		else:
 			position += position.direction_to(target_position) * position.distance_to(target_position) * delta
 	pass
