@@ -13,6 +13,7 @@ var _discovered_gas_layers_matrix: PackedInt32Array = []
 @onready var speed_lines = $speed_lines
 @onready var spaceship_model = $gas_harvesting_spaceship
 @onready var post_process = $camera_offset/camera/canvas_layer/post_process
+@onready var camera = $camera_offset/camera
 
 const layer_data = { #name (color(s)-noise-property): properties
 	"default": {
@@ -86,6 +87,12 @@ const layer_data = { #name (color(s)-noise-property): properties
 		"fog_emission": Color("27007d")
 	}
 }
+
+const camera_transforms = [
+	Transform3D(Basis(Vector3(0,1,0), Vector3(0,0,1), Vector3(1,0,0)), Vector3(1.6, 9.564, -1.368)),
+	Transform3D(Basis(Vector3(0,1,0), Vector3(0,0,1), Vector3(1,0,0)), Vector3(2.388, 7.415, 0.0)),
+	Transform3D(Basis(Vector3(0.908, 0.288, -0.304), Vector3(0, 0.726, 0.688), Vector3(0.419, -0.625, 0.659)), Vector3(-2.128, 9.735, 0.145))
+]
 
 var current_planet: planetBodyAPI = null
 
@@ -246,6 +253,10 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 					var value = properties.get(p)
 					if p == "bg_sampler":
 						value.get_noise().set_seed(randi())
+		
+		#setting camera transform
+		camera.set_identity()
+		camera.set_global_transform(camera_transforms.pick_random())
 	pass
 
 func _on_current_planet_cleared():

@@ -56,7 +56,6 @@ material = ExtResource("4_lygh8")
 radius = 0.005
 
 [node name="gas_layer_surveyor_window" type="Window"]
-own_world_3d = true
 title = "Gas Layer Surveyor"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
@@ -71,7 +70,7 @@ script = ExtResource("1_retla")
 [node name="camera_offset" type="Node3D" parent="gas_layer_surveyor"]
 
 [node name="camera" type="Camera3D" parent="gas_layer_surveyor/camera_offset"]
-transform = Transform3D(-4.37114e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, 4.37114e-08, 1.91069e-15, 1.6, 9.564, -1.368)
+rotation_edit_mode = 2
 
 [node name="canvas_layer" type="CanvasLayer" parent="gas_layer_surveyor/camera_offset/camera"]
 
