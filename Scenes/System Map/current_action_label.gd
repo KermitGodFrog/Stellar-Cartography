@@ -25,7 +25,9 @@ func update(type: playerAPI.ACTION_TYPES, body: bodyAPI, pending: bool) -> void:
 	var scenarios = type_prefixes.get(type)
 	var prefix = scenarios.get(pending)
 	var supplementary = String()
-	if body != null: supplementary = body.get_display_name()
+	if body != null: 
+		if body.is_known(): supplementary = body.get_display_name()
+		elif body.is_theorised_not_known(): supplementary = "Unknown"
 	current_text = "%s %s" % [prefix, supplementary]
 	
 	prev_body = body
