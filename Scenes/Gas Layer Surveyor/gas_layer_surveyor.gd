@@ -94,6 +94,7 @@ var current_layers: PackedStringArray = []
 var active_layer: String = "default"
 var checkpoint: int = 0
 var target_color: Color = Color.WHITE
+var target_time_divisor: float = 100.0
 
 enum STATES {WAITING, SURVEYING, SELECTING, INVALID}
 var state: STATES = STATES.INVALID:
@@ -128,7 +129,7 @@ func set_layer_values(layer_name: String = "default") -> void:
 				"bg_color":
 					target_color = value
 				"bg_time_divisor":
-					shader_material.set_shader_parameter("time_divisor", value)
+					target_time_divisor = value
 				"bg_sampler":
 					shader_material.set_shader_parameter("sampler", value)
 				"fog_albedo":
@@ -173,7 +174,8 @@ func _process(delta: float) -> void:
 	var shader_material = world_environment.get_environment().get_sky().get_material()
 	var current_color = shader_material.get_shader_parameter("color") as Color
 	shader_material.set_shader_parameter("color", current_color.lerp(target_color, delta))
-	
+	var current_time_divisor = shader_material.get_shader_parameter("time_divisor") as float
+	shader_material.set_shader_parameter("time_divisor", lerpf(current_time_divisor, target_time_divisor, delta * 10.0))
 	#misc
 	selection_screen.set("discovered_gas_layers_matrix", _discovered_gas_layers_matrix)
 	if current_planet != null: selection_screen.set("current_planet_value", current_planet.metadata.get("value", int()))
