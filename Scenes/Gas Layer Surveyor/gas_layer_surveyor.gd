@@ -85,6 +85,72 @@ const layer_data = { #name (color(s)-noise-property): properties
 		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
 		"fog_albedo": Color("002b2b"),
 		"fog_emission": Color("27007d")
+	},
+	"brown-slow-complex": {
+		"bg_color": Color("642613"),
+		"bg_time_divisor": 200.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"fog_albedo": Color("3c3c3c"),
+		"fog_emission": Color("642613"),
+		"fog_length": 10.0
+	},
+	"gray-fast-complex": {
+		"bg_color": Color("464646"),
+		"bg_time_divisor": 50.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"fog_albedo": Color("444444"),
+		"fog_anisotropy": 0.8
+	},
+	"purple-pink-complex": {
+		"bg_color": Color("833cff"),
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"fog_albedo": Color("f300c1"),
+		"fog_emission": Color("d69bff"),
+		"fog_density": 0.01,
+		"fog_anisotropy": 0.8
+	},
+	"orange-yellow-fast-complex": {
+		"bg_color": Color("ff6721"),
+		"bg_time_divisor": 20.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"fog_albedo": Color("a7a700"),
+		"fog_anisotropy": -0.8
+	},
+	"green-complex": {
+		"bg_color": Color.GREEN,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"fog_albedo": Color("254925")
+	},
+	"white-pink-ridges": {
+		"bg_color": Color.WHITE,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"fog_albedo": Color.BLACK,
+		"fog_emission": Color("ff00ff")
+	},
+	"pink-fast-ridges": {
+		"bg_color": Color("ff83bd"),
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"fog_albedo": Color("320032"),
+		"fog_emission": Color("4c3d63"),
+		"fog_density": 0.05
+	},
+	"brown-purple-ridges": {
+		"bg_color": Color("642613"),
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"fog_albedo": Color("360031"),
+		"fog_emission": Color("642613")
+	},
+	"gray-slow-ridges": {
+		"bg_color": Color("464646"),
+		"bg_time_divisor": 180.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"fog_albedo": Color("141414"),
+	},
+	"yellow-red-ridges": {
+		"bg_color": Color.YELLOW,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"fog_albedo": Color("851414"),
+		"fog_length": 60.0
 	}
 }
 
@@ -245,7 +311,7 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 		
 		
 		
-		#randomizing seed (I DONT LIKE THIS JUST LOAD THE INDIVIDUAL RESOURCES AND SET THE SEED FROM THERE INSTEAD!!! PLEASE , FUTURE ME!!!!!!)
+		#randomizing seed (I DONT LIKE THIS JUST LOAD THE INDIVIDUAL RESOURCES AND SET THE SEED FROM THERE INSTEAD!!! PLEASE FUTURE ME!!!!!!)
 		for layer_name in layer_data:
 			var properties = layer_data.get(layer_name)
 			if properties != null:
