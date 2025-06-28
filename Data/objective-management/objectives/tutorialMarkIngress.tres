@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://cxcjrx4wwvy4q"]
+
+[ext_resource type="Script" path="res://Data/objective-management/objectiveAPI.gd" id="1_m5vyk"]
+
+[resource]
+script = ExtResource("1_m5vyk")
+written_identifier = ""
+current_state = 0
+title = "Mark Ingress"
+description = "A wormhole named Ingress is situated in a higher orbit around King.
+The barycenter visualizer - in the lower right of the interface - displays the direction of other bodies from the locked body with a blip. Mark the nearby wormhole: Lock Prelude, adjust your LIDAR direction so it matches the direction of the blip which is oscillating (only wormholes oscillate), use a smaller scan arc, and press the 'PING' button. Dark red blips are beyond your current scan arc. Remember to ping three times to mark.
+[img=75%x75%]res://Graphics/objective-management/tutorial_barycenter_example.png[/img]"

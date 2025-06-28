@@ -15,15 +15,12 @@ func _on_pause_mode_changed(value):
 signal activeObjectivesChanged(_active_objectives: Array[objectiveAPI])
 signal updateObjectivesPanel(_active_objectives: Array[objectiveAPI])
 
-var bank_objectives: Dictionary = { #wID: [title, description] (so its quick)
-#	"tutorial1_1": [], #mark the nearby body with the ping button ::: dont copy/paste words - keywords will probably allow the player to take info from their STM
-#	"tutorial1_2": [], #OPTIONAL test the central board. (objective never successful, use italics)
-#	"tutorial2_1": [], # orbit the body
-#	"tutorial2_2": [] #OPTIONAL zoom up/down using the scopes
+var bank_objectives: Dictionary = { #wID: [title, description]
 }
 #construct in objective-management/objectives ^^^
 
-var bank_categories: Dictionary = {} #wID: [objective_wIDs]
+var bank_categories: Dictionary = { #wID: [objective_wIDs]
+}
 #construct in objective-management/categories ^^^
 
 var active_objectives: Array[objectiveAPI] = []

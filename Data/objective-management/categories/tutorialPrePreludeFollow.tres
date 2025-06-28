@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_pi5vc")
 written_identifier = ""
-objective_wIDs = ["tutorialFollowBody"]
+objective_wIDs = ["tutorialFollowPrelude"]

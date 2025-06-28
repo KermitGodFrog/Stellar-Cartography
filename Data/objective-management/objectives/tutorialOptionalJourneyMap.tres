@@ -7,4 +7,4 @@ script = ExtResource("1_2asna")
 written_identifier = ""
 current_state = 0
 title = "(Optional) Check the Journey Map"
-description = "Open and explore the journey map by pressing the appropriate button."
+description = "Check your exploration progress with the Journey Map on the apps dock in the far lower right of the interface. Click to open, click and drag up or down (or scroll) to offset the map. Bought modules also appear in the apps dock."

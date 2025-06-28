@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_mpgvh")
 written_identifier = ""
-objective_wIDs = ["tutorialOptionalMoveCamera", "tutorialMarkBody"]
+objective_wIDs = ["tutorialOptionalTestSystemMap", "tutorialMarkPrelude"]

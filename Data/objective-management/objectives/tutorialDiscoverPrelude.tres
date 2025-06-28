@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://so8s8metb3oc"]
+
+[ext_resource type="Script" path="res://Data/objective-management/objectiveAPI.gd" id="1_im1q5"]
+
+[resource]
+script = ExtResource("1_im1q5")
+written_identifier = ""
+current_state = 0
+title = "Discover Prelude"
+description = "The location of Prelude has been added to the system list. However, it has not yet been discovered.
+Discover a body by visually acquiring it. Click on Prelude (the triple question mark) on the system list to lock, and then press the orbit button in the lower left of the interface.
+[img]res://Graphics/orbit_icon.png[/img]"

@@ -7,4 +7,4 @@ script = ExtResource("1_dssi5")
 written_identifier = ""
 current_state = 0
 title = "(Optional) Set Course Manually"
-description = "Lay in courses, direct scopes, quick orbit bodies and quick lock bodies by using the system map."
+description = "On the system map: Right click to lay in a course to your mouse pointer. Left click to direct your starships scopes towards your mouse pointer. Right click on a body to quick orbit, left click on a body to quick lock. "
