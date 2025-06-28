@@ -12,6 +12,8 @@ var _discovered_gas_layers_matrix: PackedInt32Array = []
 @onready var selection_screen = $camera_offset/camera/canvas_layer/control/selection_screen
 @onready var speed_lines = $speed_lines
 @onready var spaceship_model = $gas_harvesting_spaceship
+@onready var post_process = $camera_offset/camera/canvas_layer/post_process
+@onready var camera = $camera_offset/camera
 
 const layer_data = { #name (color(s)-noise-property): properties
 	"default": {
@@ -83,8 +85,80 @@ const layer_data = { #name (color(s)-noise-property): properties
 		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
 		"fog_albedo": Color("002b2b"),
 		"fog_emission": Color("27007d")
+	},
+	"brown-slow-complex": {
+		"bg_color": Color("642613"),
+		"bg_time_divisor": 200.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"fog_albedo": Color("3c3c3c"),
+		"fog_emission": Color("642613"),
+		"fog_length": 10.0
+	},
+	"gray-fast-complex": {
+		"bg_color": Color("464646"),
+		"bg_time_divisor": 50.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"fog_albedo": Color("444444"),
+		"fog_anisotropy": 0.8
+	},
+	"purple-pink-complex": {
+		"bg_color": Color("833cff"),
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"fog_albedo": Color("f300c1"),
+		"fog_emission": Color("d69bff"),
+		"fog_density": 0.01,
+		"fog_anisotropy": 0.8
+	},
+	"orange-yellow-fast-complex": {
+		"bg_color": Color("ff6721"),
+		"bg_time_divisor": 20.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"fog_albedo": Color("a7a700"),
+		"fog_anisotropy": -0.8
+	},
+	"green-complex": {
+		"bg_color": Color.GREEN,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"fog_albedo": Color("254925")
+	},
+	"white-pink-ridges": {
+		"bg_color": Color.WHITE,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"fog_albedo": Color.BLACK,
+		"fog_emission": Color("ff00ff")
+	},
+	"pink-fast-ridges": {
+		"bg_color": Color("ff83bd"),
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"fog_albedo": Color("320032"),
+		"fog_emission": Color("4c3d63"),
+		"fog_density": 0.05
+	},
+	"brown-purple-ridges": {
+		"bg_color": Color("642613"),
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"fog_albedo": Color("360031"),
+		"fog_emission": Color("642613")
+	},
+	"gray-slow-ridges": {
+		"bg_color": Color("464646"),
+		"bg_time_divisor": 180.0,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"fog_albedo": Color("141414"),
+	},
+	"yellow-red-ridges": {
+		"bg_color": Color.YELLOW,
+		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"fog_albedo": Color("851414"),
+		"fog_length": 60.0
 	}
 }
+
+#const camera_transforms = [ #ditched the idea to save development time sorry future me :3
+#	Transform3D(Basis(Vector3(0,1,0), Vector3(0,0,1), Vector3(1,0,0)), Vector3(1.6, 9.564, -1.368)),
+#	Transform3D(Basis(Vector3(0,1,0), Vector3(0,0,1), Vector3(1,0,0)), Vector3(2.388, 7.415, 0.0)),
+#	Transform3D(Basis(Vector3(0.908, 0.288, -0.304), Vector3(0, 0.726, 0.688), Vector3(0.419, -0.625, 0.659)), Vector3(-2.128, 9.735, 0.145))
+#]
 
 var current_planet: planetBodyAPI = null
 
@@ -169,10 +243,13 @@ func _process(delta: float) -> void:
 			if depth >= MAX_DEPTH:
 				state = STATES.SELECTING
 	
-	#graphics
-	var shader_material = world_environment.get_environment().get_sky().get_material()
-	var current_color = shader_material.get_shader_parameter("color") as Color
-	shader_material.set_shader_parameter("color", current_color.lerp(target_color, delta))
+	#sky
+	var sky_shader = world_environment.get_environment().get_sky().get_material()
+	var current_color = sky_shader.get_shader_parameter("color") as Color
+	sky_shader.set_shader_parameter("color", current_color.lerp(target_color, delta))
+	#post process
+	var post_shader = post_process.get_material()
+	post_shader.set_shader_parameter("alpha", minf(0.25, ease(remap(depth, 0.0, MAX_DEPTH, 0.0, 1.0), MAX_DEPTH)))
 	
 	#misc
 	selection_screen.set("discovered_gas_layers_matrix", _discovered_gas_layers_matrix)
@@ -231,6 +308,17 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 			var key = reduced_layer_keys.pick_random()
 			current_layers.append(key)
 			reduced_layer_keys.erase(key)
+		
+		
+		
+		#randomizing seed (I DONT LIKE THIS JUST LOAD THE INDIVIDUAL RESOURCES AND SET THE SEED FROM THERE INSTEAD!!! PLEASE FUTURE ME!!!!!!)
+		for layer_name in layer_data:
+			var properties = layer_data.get(layer_name)
+			if properties != null:
+				for p in properties:
+					var value = properties.get(p)
+					if p == "bg_sampler":
+						value.get_noise().set_seed(randi())
 	pass
 
 func _on_current_planet_cleared():
