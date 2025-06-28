@@ -70,6 +70,7 @@ script = ExtResource("1_retla")
 [node name="camera_offset" type="Node3D" parent="gas_layer_surveyor"]
 
 [node name="camera" type="Camera3D" parent="gas_layer_surveyor/camera_offset"]
+transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, 1.6, 9.564, -1.368)
 rotation_edit_mode = 2
 
 [node name="canvas_layer" type="CanvasLayer" parent="gas_layer_surveyor/camera_offset/camera"]

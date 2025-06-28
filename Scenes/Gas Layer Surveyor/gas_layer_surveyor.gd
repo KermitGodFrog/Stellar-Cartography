@@ -88,11 +88,11 @@ const layer_data = { #name (color(s)-noise-property): properties
 	}
 }
 
-const camera_transforms = [
-	Transform3D(Basis(Vector3(0,1,0), Vector3(0,0,1), Vector3(1,0,0)), Vector3(1.6, 9.564, -1.368)),
-	Transform3D(Basis(Vector3(0,1,0), Vector3(0,0,1), Vector3(1,0,0)), Vector3(2.388, 7.415, 0.0)),
-	Transform3D(Basis(Vector3(0.908, 0.288, -0.304), Vector3(0, 0.726, 0.688), Vector3(0.419, -0.625, 0.659)), Vector3(-2.128, 9.735, 0.145))
-]
+#const camera_transforms = [ #ditched the idea to save development time sorry future me :3
+#	Transform3D(Basis(Vector3(0,1,0), Vector3(0,0,1), Vector3(1,0,0)), Vector3(1.6, 9.564, -1.368)),
+#	Transform3D(Basis(Vector3(0,1,0), Vector3(0,0,1), Vector3(1,0,0)), Vector3(2.388, 7.415, 0.0)),
+#	Transform3D(Basis(Vector3(0.908, 0.288, -0.304), Vector3(0, 0.726, 0.688), Vector3(0.419, -0.625, 0.659)), Vector3(-2.128, 9.735, 0.145))
+#]
 
 var current_planet: planetBodyAPI = null
 
@@ -245,7 +245,7 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 		
 		
 		
-		#randomizing seed
+		#randomizing seed (I DONT LIKE THIS JUST LOAD THE INDIVIDUAL RESOURCES AND SET THE SEED FROM THERE INSTEAD!!! PLEASE , FUTURE ME!!!!!!)
 		for layer_name in layer_data:
 			var properties = layer_data.get(layer_name)
 			if properties != null:
@@ -253,10 +253,6 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 					var value = properties.get(p)
 					if p == "bg_sampler":
 						value.get_noise().set_seed(randi())
-		
-		#setting camera transform
-		camera.set_identity()
-		camera.set_global_transform(camera_transforms.pick_random())
 	pass
 
 func _on_current_planet_cleared():
