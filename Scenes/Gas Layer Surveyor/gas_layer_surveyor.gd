@@ -12,6 +12,7 @@ var _discovered_gas_layers_matrix: PackedInt32Array = []
 @onready var selection_screen = $camera_offset/camera/canvas_layer/control/selection_screen
 @onready var speed_lines = $speed_lines
 @onready var spaceship_model = $gas_harvesting_spaceship
+@onready var post_process = $camera_offset/camera/canvas_layer/post_process
 
 const layer_data = { #name (color(s)-noise-property): properties
 	"default": {
@@ -94,7 +95,6 @@ var current_layers: PackedStringArray = []
 var active_layer: String = "default"
 var checkpoint: int = 0
 var target_color: Color = Color.WHITE
-var target_time_divisor: float = 100.0
 
 enum STATES {WAITING, SURVEYING, SELECTING, INVALID}
 var state: STATES = STATES.INVALID:
@@ -129,7 +129,7 @@ func set_layer_values(layer_name: String = "default") -> void:
 				"bg_color":
 					target_color = value
 				"bg_time_divisor":
-					target_time_divisor = value
+					shader_material.set_shader_parameter("time_divisor", value)
 				"bg_sampler":
 					shader_material.set_shader_parameter("sampler", value)
 				"fog_albedo":
@@ -170,12 +170,14 @@ func _process(delta: float) -> void:
 			if depth >= MAX_DEPTH:
 				state = STATES.SELECTING
 	
-	#graphics
-	var shader_material = world_environment.get_environment().get_sky().get_material()
-	var current_color = shader_material.get_shader_parameter("color") as Color
-	shader_material.set_shader_parameter("color", current_color.lerp(target_color, delta))
-	var current_time_divisor = shader_material.get_shader_parameter("time_divisor") as float
-	shader_material.set_shader_parameter("time_divisor", lerpf(current_time_divisor, target_time_divisor, delta * 10.0))
+	#sky
+	var sky_shader = world_environment.get_environment().get_sky().get_material()
+	var current_color = sky_shader.get_shader_parameter("color") as Color
+	sky_shader.set_shader_parameter("color", current_color.lerp(target_color, delta))
+	#post process
+	var post_shader = post_process.get_material()
+	post_shader.set_shader_parameter("alpha", minf(0.25, ease(remap(depth, 0.0, MAX_DEPTH, 0.0, 1.0), MAX_DEPTH)))
+	
 	#misc
 	selection_screen.set("discovered_gas_layers_matrix", _discovered_gas_layers_matrix)
 	if current_planet != null: selection_screen.set("current_planet_value", current_planet.metadata.get("value", int()))
@@ -233,6 +235,17 @@ func _on_current_planet_changed(new_planet : planetBodyAPI):
 			var key = reduced_layer_keys.pick_random()
 			current_layers.append(key)
 			reduced_layer_keys.erase(key)
+		
+		
+		
+		#randomizing seed
+		for layer_name in layer_data:
+			var properties = layer_data.get(layer_name)
+			if properties != null:
+				for p in properties:
+					var value = properties.get(p)
+					if p == "bg_sampler":
+						value.get_noise().set_seed(randi())
 	pass
 
 func _on_current_planet_cleared():

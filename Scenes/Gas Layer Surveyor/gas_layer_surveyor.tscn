@@ -1,9 +1,10 @@
-[gd_scene load_steps=25 format=3 uid="uid://b75u7e1b1ddb2"]
+[gd_scene load_steps=27 format=3 uid="uid://b75u7e1b1ddb2"]
 
 [ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor.gd" id="1_retla"]
 [ext_resource type="Texture2D" uid="uid://dmutb3ak7n4l2" path="res://Graphics/gas_layer_surveyor_frame.png" id="3_iy7ju"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://Scenes/master_theme.tres" id="3_lxufc"]
 [ext_resource type="Environment" uid="uid://6jnjxqc5yhk1" path="res://Scenes/Gas Layer Surveyor/gas_layer_surveyor_environment.tres" id="3_sw2d4"]
+[ext_resource type="Shader" path="res://Scenes/glitch_shader.gdshader" id="3_xevoq"]
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="4_kerqb"]
 [ext_resource type="PackedScene" uid="uid://bak0fnuot1dmr" path="res://Instantiated Scenes/gas-harvesting-spaceship/gas_harvesting_spaceship.glb" id="4_lwqlg"]
 [ext_resource type="Material" uid="uid://cbp5moi45ijjg" path="res://Scenes/Gas Layer Surveyor/speed_line_texture.tres" id="4_lygh8"]
@@ -12,6 +13,16 @@
 [ext_resource type="Script" path="res://Scenes/Gas Layer Surveyor/confirm_button.gd" id="8_3jywn"]
 [ext_resource type="Texture2D" uid="uid://hr0rrky8ghq6" path="res://Scenes/Gas Layer Surveyor/bg_splotches.tres" id="9_8ov42"]
 [ext_resource type="Texture2D" uid="uid://daimftgepff4u" path="res://Graphics/mouse_pointer_movement.png" id="9_e8ikj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vbc6n"]
+shader = ExtResource("3_xevoq")
+shader_parameter/pixel = 1.0
+shader_parameter/red_offset = Vector2(0, 0)
+shader_parameter/green_offset = Vector2(0, 0)
+shader_parameter/blue_offset = Vector2(0, 0)
+shader_parameter/alpha = 0.0
+shader_parameter/rand_strength = 4.0
+shader_parameter/affected = Vector4(0, 0, 1, 1)
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_isjh6"]
 
@@ -65,8 +76,8 @@ transform = Transform3D(-4.37114e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, 4.3
 [node name="canvas_layer" type="CanvasLayer" parent="gas_layer_surveyor/camera_offset/camera"]
 
 [node name="post_process" type="ColorRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer"]
-visible = false
 texture_filter = 1
+material = SubResource("ShaderMaterial_vbc6n")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
