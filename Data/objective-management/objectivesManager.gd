@@ -14,6 +14,7 @@ func _on_pause_mode_changed(value):
 
 signal activeObjectivesChanged(_active_objectives: Array[objectiveAPI])
 signal updateObjectivesPanel(_active_objectives: Array[objectiveAPI])
+signal addConsoleEntry(_entry_text: String, _text_color: Color)
 
 var bank_objectives: Dictionary = { #wID: [title, description]
 }
@@ -51,9 +52,16 @@ func start_receive_active_objectives(_active_objectives: Array[objectiveAPI]) ->
 
 
 func mark_objective(wID: String, state: objectiveAPI.STATES) -> void:
-	var o = get_objective(wID, state == objectiveAPI.STATES.NONE)
+	var o = get_objective(wID, state == objectiveAPI.STATES.NONE) #proposition (==)
 	if o != null:
 		o.set_state(state)
+		
+		match state:
+			objectiveAPI.STATES.SUCCESS:
+				emit_signal("addConsoleEntry", "Objective complete: [i]%s[/i]." % o.title, Color("353535"))
+			objectiveAPI.STATES.FAILURE:
+				emit_signal("addConsoleEntry", "Objective failed: [i]%s[/i]." % o.title, Color("353535"))
+	
 	emit_signal("activeObjectivesChanged", active_objectives)
 	pass
 
