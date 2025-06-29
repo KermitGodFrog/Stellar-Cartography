@@ -7,4 +7,4 @@ script = ExtResource("1_3m57b")
 written_identifier = ""
 current_state = 0
 title = "(Optional) Check Body Info"
-description = "Open and explore body info by pressing the appropriate button."
+description = "The 'INFO' tab can display useful information about the locked body, depending on its type. Click on Ingress on the SYSTEM LIST to lock, and then press the 'INFO' tab at the top of SYSTEM LIST."

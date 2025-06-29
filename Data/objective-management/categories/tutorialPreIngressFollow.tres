@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_y108j")
 written_identifier = ""
-objective_wIDs = ["tutorialOptionalJourneyMap", "tutorialOptionalInfo", "tutorialFollowBody"]
+objective_wIDs = ["tutorialOptionalJourneyMap", "tutorialOptionalInfo", "tutorialFollowIngress"]

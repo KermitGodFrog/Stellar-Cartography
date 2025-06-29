@@ -154,4 +154,5 @@ func reset_locked_body():
 
 func _on_target_FOV_change(fov: float):
 	target_fov = fov
+	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "scopes_fov_change")
 	pass

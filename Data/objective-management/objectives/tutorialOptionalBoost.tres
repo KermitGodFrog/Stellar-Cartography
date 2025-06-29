@@ -6,5 +6,5 @@
 script = ExtResource("1_qedng")
 written_identifier = ""
 current_state = 0
-title = "(Optional) Boost to Destination"
-description = "Boost by using the appropriate controls."
+title = "(Optional) Boost"
+description = "Hold [KEY_LSHIFT] to boost. This will significantly shorten a journey at no cost to your starship."

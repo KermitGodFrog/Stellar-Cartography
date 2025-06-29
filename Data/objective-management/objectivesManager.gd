@@ -1,5 +1,7 @@
 extends Node
 
+@onready var events_handler = $eventsHandler
+
 var _pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE:
 	set(value):
 		_pause_mode = value
@@ -14,21 +16,20 @@ func _on_pause_mode_changed(value):
 
 signal activeObjectivesChanged(_active_objectives: Array[objectiveAPI])
 signal updateObjectivesPanel(_active_objectives: Array[objectiveAPI])
+signal addConsoleEntry(_entry_text: String, _text_color: Color)
 
-var bank_objectives: Dictionary = { #wID: [title, description] (so its quick)
-#	"tutorial1_1": [], #mark the nearby body with the ping button ::: dont copy/paste words - keywords will probably allow the player to take info from their STM
-#	"tutorial1_2": [], #OPTIONAL test the central board. (objective never successful, use italics)
-#	"tutorial2_1": [], # orbit the body
-#	"tutorial2_2": [] #OPTIONAL zoom up/down using the scopes
+var bank_objectives: Dictionary = { #wID: [title, description]
 }
 #construct in objective-management/objectives ^^^
 
-var bank_categories: Dictionary = {} #wID: [objective_wIDs]
+var bank_categories: Dictionary = { #wID: [objective_wIDs]
+}
 #construct in objective-management/categories ^^^
 
 var active_objectives: Array[objectiveAPI] = []
 
 func _ready() -> void:
+	events_handler.connect("markObjective", mark_objective)
 	start_construct_banks()
 	pass
 
@@ -49,14 +50,23 @@ func start_receive_active_objectives(_active_objectives: Array[objectiveAPI]) ->
 	active_objectives.append_array(_active_objectives)
 	pass
 
+func start_receive_init_type(_init_type: int):
+	events_handler.init_type = _init_type
+	pass
 
 
 
 
 func mark_objective(wID: String, state: objectiveAPI.STATES) -> void:
-	var o = get_objective(wID, state == objectiveAPI.STATES.NONE)
+	var o = get_objective(wID, state == objectiveAPI.STATES.NONE) #proposition (==)
 	if o != null:
-		o.set_state(state)
+		if o.get_state() != state:
+			match state:
+				objectiveAPI.STATES.SUCCESS:
+					emit_signal("addConsoleEntry", "Objective complete: [i]%s[/i]." % o.title, Color("353535"))
+				objectiveAPI.STATES.FAILURE:
+					emit_signal("addConsoleEntry", "Objective failed: [i]%s[/i]." % o.title, Color("353535"))
+		o.set_state(state) # the actually important bit
 	emit_signal("activeObjectivesChanged", active_objectives)
 	pass
 

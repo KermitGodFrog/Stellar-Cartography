@@ -77,6 +77,8 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var current_action_label = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll/current_action_label
 @onready var travel_modifier_label = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll/travel_modifier_label
 @onready var view_objective_label = $camera/canvas/control/view_objectives_label
+@onready var help_overlay = $camera/canvas/help_overlay
+@onready var tabs = $camera/canvas/control/tabs_and_ca_scroll/tabs
 
 @onready var LIDAR_ping = preload("res://Sound/SFX/LIDAR_ping.tres")
 @onready var LIDAR_bounceback = preload("res://Sound/SFX/LIDAR_bounceback.tres")
@@ -400,6 +402,7 @@ func _unhandled_input(event):
 		action_body = null
 		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
 		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
+		get_tree().call_group("eventsHandler", "speak", self, "player_target_position_update")
 	
 	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE"):
 		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
@@ -429,10 +432,17 @@ func _unhandled_input(event):
 		player_is_boosting = true
 		emit_signal("updatePlayerIsBoosting", player_is_boosting)
 		play_boost_sound(BOOST_SOUND_TYPES.START)
+		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "player_boosting_start")
 	elif event.is_action_released("SC_BOOST"):
 		player_is_boosting = false
 		emit_signal("updatePlayerIsBoosting", player_is_boosting)
 		play_boost_sound(BOOST_SOUND_TYPES.END)
+	
+	if event.is_action_pressed("SC_OPEN_HELP_OVERLAY"):
+		help_overlay.show()
+		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "help_overlay_show")
+	elif event.is_action_released("SC_OPEN_HELP_OVERLAY"):
+		help_overlay.hide()
 	pass
 
 func reset_player_boosting() -> void:
@@ -697,6 +707,7 @@ func _on_found_body(id: int):
 func _on_picker_button_item_selected(index):
 	if follow_body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
 		follow_body.set_guessed_variation(index)
+	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "AV_picker_select")
 	pass
 
 func _on_add_console_entry(text: String, text_color: Color = Color.WHITE):
@@ -744,7 +755,7 @@ func _on_update_current_action_display(_type: playerAPI.ACTION_TYPES, _body: bod
 	pass
 
 func _on_active_objectives_changed(_active_objectives: Array[objectiveAPI]):
-	view_objective_label._on_active_objectives_changed()
+	view_objective_label._on_active_objectives_changed(_active_objectives)
 	pass
 
 
@@ -755,6 +766,7 @@ func _on_audio_visualizer_button_pressed() -> void:
 
 func _on_journey_map_button_pressed() -> void:
 	emit_signal("journeyMapPopup")
+	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "journey_map_open")
 	pass 
 
 func _on_long_range_scopes_button_pressed() -> void:
@@ -795,4 +807,10 @@ func follow_and_lock_item(item: TreeItem):
 			follow_body = body
 			camera.follow_body = follow_body
 			follow_body_modifier = follow_body
+	pass
+
+
+func _on_tabs_tab_changed(tab: int) -> void:
+	if tabs.get_tab_title(tab) == "INFO":
+		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "system_list_info_tab_select")
 	pass

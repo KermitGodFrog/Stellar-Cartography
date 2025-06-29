@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://o18qlgh0vvwn"]
+[gd_scene load_steps=16 format=3 uid="uid://o18qlgh0vvwn"]
 
 [ext_resource type="Script" path="res://Scenes/Game/game.gd" id="1_mtv75"]
 [ext_resource type="PackedScene" uid="uid://bhroagne3v4wq" path="res://Scenes/System Map/system_map.tscn" id="2_jilbx"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dt0crabynqgvv" path="res://Scenes/Journey Map/journey_map.tscn" id="5_4mkmd"]
 [ext_resource type="PackedScene" uid="uid://c2upluruwt8c" path="res://Scenes/Wormhole Minigame/wormhole_minigame.tscn" id="5_43eyq"]
 [ext_resource type="PackedScene" uid="uid://dtbagvxj5to3" path="res://Scenes/Station UI/station_ui.tscn" id="6_g2s4t"]
+[ext_resource type="Script" path="res://Data/objective-management/eventsHandler.gd" id="6_jujr0"]
 [ext_resource type="PackedScene" uid="uid://bwlfi3x5r51fo" path="res://Scenes/Audio Visualizer/audio_visualizer.tscn" id="7_uparo"]
 [ext_resource type="PackedScene" uid="uid://ckd75fjfh7urh" path="res://Data/Dialogue/dialogueManager.tscn" id="8_egtoq"]
 [ext_resource type="PackedScene" uid="uid://cu8n2e53bgc37" path="res://Scenes/Pause Menu/pauseMenu.tscn" id="8_s4gh6"]
@@ -30,6 +31,9 @@ script = ExtResource("2_jx1f0")
 [node name="objectivesManager" type="Node" parent="." groups=["objectivesManager"]]
 process_mode = 3
 script = ExtResource("3_7b58c")
+
+[node name="eventsHandler" type="Node" parent="objectivesManager" groups=["eventsHandler"]]
+script = ExtResource("6_jujr0")
 
 [node name="system_window" parent="." instance=ExtResource("2_jilbx")]
 

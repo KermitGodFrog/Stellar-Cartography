@@ -15,7 +15,7 @@ expand_margin_right = 20.0
 bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
 skew = Vector2(-0.2, 0)
 expand_margin_left = 10.0
-expand_margin_right = 10.0
+expand_margin_right = 20.0
 
 [node name="pauseMenu" type="Node"]
 process_mode = 2
@@ -99,8 +99,16 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="item_anchor" type="VBoxContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel/margin"]
+[node name="scroll_container" type="ScrollContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel/margin"]
 layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="item_anchor" type="VBoxContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel/margin/scroll_container"]
+custom_minimum_size = Vector2(422, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="options_menu" parent="pause_canvas" instance=ExtResource("2_vsgfh")]
 visible = false

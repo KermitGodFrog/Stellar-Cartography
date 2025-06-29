@@ -9,8 +9,18 @@ var time: float = 0.0
 const starting_color: Color = Color.WHITE
 const max_time: float = 25.0
 
-func _on_active_objectives_changed():
-	time = float()
+var previous_hash: String = String()
+
+func _on_active_objectives_changed(active_objectives: Array[objectiveAPI]):
+	var new_hash: String = String()
+	for o in active_objectives:
+		new_hash += str(hash(o.get_wID()))
+		new_hash += str(hash(o.get_state()))
+	
+	if new_hash != previous_hash:
+		time = float()
+	
+	previous_hash = new_hash
 	pass
 
 func _physics_process(delta: float) -> void:
@@ -49,7 +59,6 @@ func convert_events_to_readable(input_array: Array[InputEvent]) -> String: #this
 		if event is InputEventMouseButton:
 			s += "[MOUSE_%s]" % event.button_index
 	return s
-
 
 func _on_update_countdown_overlay_shown(shown: bool):
 	countdown_overlay_shown = shown

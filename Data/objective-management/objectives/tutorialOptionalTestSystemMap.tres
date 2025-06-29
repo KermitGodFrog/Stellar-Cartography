@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://d0hnbqj31h6gt"]
+
+[ext_resource type="Script" path="res://Data/objective-management/objectiveAPI.gd" id="1_0lwex"]
+
+[resource]
+script = ExtResource("1_0lwex")
+written_identifier = ""
+current_state = 0
+title = "(Optional) Test the System Map"
+description = "Use W, A, S and D to move the camera and Q or E (or scroll) to zoom the camera in or out. The red sphere is King, the white square is your starship."

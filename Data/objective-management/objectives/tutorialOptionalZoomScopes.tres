@@ -7,4 +7,4 @@ script = ExtResource("1_p2xhs")
 written_identifier = ""
 current_state = 0
 title = "(Optional) Calibrate the Scopes"
-description = "Zoom in or out on the scopes to increase or decrease visual range. "
+description = "Click and drag up or down (or scroll) on SCOPES to zoom in or out. Zooming in allows bodies to be visually acquired sooner."
