@@ -77,6 +77,7 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var current_action_label = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll/current_action_label
 @onready var travel_modifier_label = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll/travel_modifier_label
 @onready var view_objective_label = $camera/canvas/control/view_objectives_label
+@onready var help_overlay = $camera/canvas/help_overlay
 
 @onready var LIDAR_ping = preload("res://Sound/SFX/LIDAR_ping.tres")
 @onready var LIDAR_bounceback = preload("res://Sound/SFX/LIDAR_bounceback.tres")
@@ -433,6 +434,11 @@ func _unhandled_input(event):
 		player_is_boosting = false
 		emit_signal("updatePlayerIsBoosting", player_is_boosting)
 		play_boost_sound(BOOST_SOUND_TYPES.END)
+	
+	if event.is_action_pressed("SC_OPEN_HELP_OVERLAY"):
+		help_overlay.show()
+	elif event.is_action_released("SC_OPEN_HELP_OVERLAY"):
+		help_overlay.hide()
 	pass
 
 func reset_player_boosting() -> void:

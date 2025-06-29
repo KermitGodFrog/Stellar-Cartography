@@ -8,5 +8,5 @@ written_identifier = ""
 current_state = 0
 title = "Mark Prelude"
 description = "A planet named Prelude is situated in low orbit around a nearby M-Class star named King.
-Mark a body by pinging it three times. Refer to the LIDAR module in the lower right of the interface - adjust the scan direction so it points towards the star by clicking, set the arc to its maximum with the slider, and press the ‘PING’ button.
+Mark a body by pinging it three times. Adjust the LIDAR scan direction so it points towards the star by clicking, set the arc to its maximum with the slider, and press the ‘PING’ button.
 [img=75%x75%]res://Graphics/objective-management/tutorial_LIDAR_example.png[/img]"

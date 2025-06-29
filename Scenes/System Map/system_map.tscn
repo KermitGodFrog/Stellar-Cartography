@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=53 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" path="res://Scenes/System Map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" path="res://Scenes/System Map/camera.gd" id="2_miyro"]
@@ -38,6 +38,7 @@
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://Graphics/Fonts/RobotoMono Medium.ttf" id="34_6kjaj"]
 [ext_resource type="Script" path="res://Scenes/System Map/view_objectives_label.gd" id="35_1xeuo"]
 [ext_resource type="Texture2D" uid="uid://dtpw5k24arv17" path="res://Graphics/gas_layer_surveyor_icon.png" id="35_digdi"]
+[ext_resource type="PackedScene" uid="uid://b2o2eo8ls2ldp" path="res://Scenes/System Map/help_overlay_label.tscn" id="38_6mn7q"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ciwjv"]
 atlas = ExtResource("3_bft1b")
@@ -723,6 +724,76 @@ text = "Press [UNSET] to view objectives"
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("35_1xeuo")
+
+[node name="help_overlay" type="Control" parent="system/camera/canvas"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="scopes" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "scopes"
+track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
+
+[node name="apps_dock" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "apps dock"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel")
+
+[node name="system_list" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "system list"
+track = NodePath("../../control/tabs_and_ca_scroll/tabs")
+
+[node name="actions_panel" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "actions panel"
+track = NodePath("../../control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel")
+
+[node name="current_action_panel" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "current action panel"
+track = NodePath("../../control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel")
+
+[node name="status_panel" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "status panel"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel")
+
+[node name="barycenter_visualizer" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "barycenter visualizer"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container")
+
+[node name="LIDAR" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "LIDAR"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container")
+
+[node name="console" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "console"
+track = NodePath("../../control/console")
+
+[node name="system_map" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.5
+offset_top = -8.5
+offset_right = 36.5
+offset_bottom = 8.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "system map"
 
 [node name="scan_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
 show_behind_parent = true
