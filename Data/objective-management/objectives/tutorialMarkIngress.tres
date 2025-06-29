@@ -8,5 +8,5 @@ written_identifier = ""
 current_state = 0
 title = "Mark Ingress"
 description = "A wormhole named Ingress is situated in a higher orbit around King.
-The barycenter visualizer - in the lower right of the interface - displays the direction of other bodies from the locked body with a blip. Mark the nearby wormhole: Lock Prelude, adjust your LIDAR direction so it matches the direction of the blip which is oscillating (only wormholes oscillate), use a smaller scan arc, and press the 'PING' button. Dark red blips are beyond your current scan arc. Remember to ping three times to mark.
-[img=75%x75%]res://Graphics/objective-management/tutorial_barycenter_example.png[/img]"
+The BARYCENTER VISUALIZER displays the direction of other bodies from the locked body with a blip. Click on Prelude on the SYSTEM LIST to lock, adjust your LIDAR direction so it matches the direction of the blip which is oscillating (only wormholes oscillate), use a smaller scan arc, and press the 'PING' button. Dark red blips are beyond your current scan arc. Remember to ping three times to mark.
+[img=150%x75%]res://Graphics/objective-management/tutorial_barycenter_example.png[/img]"

@@ -1,6 +1,6 @@
 extends PanelContainer
 
-@onready var item_anchor = $margin/item_anchor
+@onready var item_anchor = $margin/scroll_container/item_anchor
 
 @onready var objective_item = preload("res://Data/objective-management/objective_item.tscn")
 @onready var _confirm_texture = preload("res://Graphics/Misc/confirm_no_shadow.png")
