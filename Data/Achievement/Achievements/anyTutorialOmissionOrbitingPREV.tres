@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_24p6r")
 name = "Omission"
-description = "Fail to follow orders during the tutorial."
+description = "Fail to follow objectives during the tutorial."
 dialogue_criteria = {
 "tutorialOmissionOrbitingPREV": true
 }
