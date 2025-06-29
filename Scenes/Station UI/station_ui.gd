@@ -153,10 +153,8 @@ func _on_upgrade_mouse_entered(description: String) -> void:
 func _on_upgrade_pressed(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	if station: 
 		if not station.is_module_store_disabled:
-			print("MODULE STORE != DISABLED")
 			emit_signal("upgradeShip", upgrade_idx, cost)
 		else:
-			print("MODULE STORE == DISABLED")
 			disclaimer_label.blink(Color.RED)
 	pass
 

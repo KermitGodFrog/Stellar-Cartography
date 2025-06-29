@@ -32,7 +32,7 @@ func speak(_calling: Node, _incoming_wID: String, _incoming_value: Variant = nul
 			process_campaign_event(_calling, _incoming_wID, _incoming_value)
 	pass
 
-func process_tutorial_event(calling: Node, incoming_wID: String, incoming_value: Variant = null) -> void:
+func process_tutorial_event(_calling: Node, incoming_wID: String, _incoming_value: Variant = null) -> void:
 	match incoming_wID:
 		"help_overlay_show":
 			emit_signal("markObjective", "tutorialOptionalHelpOverlay", objectiveAPI.STATES.SUCCESS)
@@ -50,5 +50,5 @@ func process_tutorial_event(calling: Node, incoming_wID: String, incoming_value:
 			emit_signal("markObjective", "tutorialOptionalInfo", objectiveAPI.STATES.SUCCESS)
 	pass
 
-func process_campaign_event(calling: Node, incoming_wID: String, incoming_value: Variant = null) -> void:
+func process_campaign_event(_calling: Node, _incoming_wID: String, _incoming_value: Variant = null) -> void:
 	pass
