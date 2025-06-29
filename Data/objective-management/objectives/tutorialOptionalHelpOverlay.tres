@@ -7,4 +7,4 @@ script = ExtResource("1_a0hot")
 written_identifier = ""
 current_state = 0
 title = "(Optional) Show Help Overlay"
-description = "Press and hold [KEY_1] to show the help overlay. The help overlay displays UI component names referenced in this tutorial."
+description = "Press and hold [KEY_1] to show the help overlay. The help overlay displays the name of each UI component referenced in this tutorial."
