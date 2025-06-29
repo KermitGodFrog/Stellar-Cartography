@@ -105,6 +105,7 @@ horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
 [node name="item_anchor" type="VBoxContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel/margin/scroll_container"]
+custom_minimum_size = Vector2(422, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

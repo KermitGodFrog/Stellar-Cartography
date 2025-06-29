@@ -1,6 +1,7 @@
 extends PanelContainer
 
 @onready var item_anchor = $margin/scroll_container/item_anchor
+@onready var scroll_container = $margin/scroll_container
 
 @onready var objective_item = preload("res://Data/objective-management/objective_item.tscn")
 @onready var _confirm_texture = preload("res://Graphics/Misc/confirm_no_shadow.png")
@@ -23,4 +24,6 @@ func generate():
 		instance.confirm_texture = _confirm_texture
 		instance.denied_texture = _denied_texture
 		instance.initialize(o.title, o.description, o.get_state())
+	
+	scroll_container.set_v_scroll(int())
 	pass

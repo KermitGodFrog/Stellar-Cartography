@@ -755,7 +755,7 @@ func _on_update_current_action_display(_type: playerAPI.ACTION_TYPES, _body: bod
 	pass
 
 func _on_active_objectives_changed(_active_objectives: Array[objectiveAPI]):
-	view_objective_label._on_active_objectives_changed()
+	view_objective_label._on_active_objectives_changed(_active_objectives)
 	pass
 
 
