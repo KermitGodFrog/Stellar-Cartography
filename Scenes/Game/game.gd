@@ -62,6 +62,8 @@ func _ready():
 		
 		pause_menu.disableSaving() # so savefile cannto be overwriten
 		
+		objectives_manager.start_receive_init_type(init_type)
+		
 		await get_tree().create_timer(1.0, true).timeout
 		
 		var new_query = responseQuery.new()
@@ -97,6 +99,8 @@ func _ready():
 		_on_switch_star_system(new)
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
+		
+		objectives_manager.start_receive_init_type(init_type)
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
@@ -150,6 +154,7 @@ func _ready():
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
 		objectives_manager.start_receive_active_objectives(world.active_objectives)
+		objectives_manager.start_receive_init_type(init_type)
 		
 		_on_switch_star_system(world.player.current_star_system)
 	pass

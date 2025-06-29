@@ -1,5 +1,7 @@
 extends Node
 
+@onready var events_handler = $eventsHandler
+
 var _pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE:
 	set(value):
 		_pause_mode = value
@@ -47,6 +49,9 @@ func start_receive_active_objectives(_active_objectives: Array[objectiveAPI]) ->
 	active_objectives.append_array(_active_objectives)
 	pass
 
+func start_receive_init_type(_init_type: int):
+	events_handler.init_type = _init_type
+	pass
 
 
 
