@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://mpv0wqfwp7df"
+path="res://.godot/imported/tutorial_nc_status_panel_example.png-6ba97af7e031f5e9878b6a88e61c3789.image"
+
+[deps]
+
+source_file="res://Graphics/Dialogue/tutorial_nc_status_panel_example.png"
+dest_files=["res://.godot/imported/tutorial_nc_status_panel_example.png-6ba97af7e031f5e9878b6a88e61c3789.image"]
+
+[params]
+

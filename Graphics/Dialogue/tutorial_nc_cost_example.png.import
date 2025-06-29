@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://brka4f1uxyqyh"
+path="res://.godot/imported/tutorial_nc_cost_example.png-0753ddbf795458ff5d5bd3df32bd1eea.image"
+
+[deps]
+
+source_file="res://Graphics/Dialogue/tutorial_nc_cost_example.png"
+dest_files=["res://.godot/imported/tutorial_nc_cost_example.png-0753ddbf795458ff5d5bd3df32bd1eea.image"]
+
+[params]
+
