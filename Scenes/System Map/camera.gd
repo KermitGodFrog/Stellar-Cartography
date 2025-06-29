@@ -5,6 +5,7 @@ var follow_body: bodyAPI
 
 var mouse_slide_fixed_point: Vector2 = Vector2(0,0)
 
+var previous_move_vector: Vector2 = Vector2.ZERO
 func _physics_process(delta):
 	if follow_body: position = follow_body.position
 	
@@ -16,6 +17,10 @@ func _physics_process(delta):
 	if input:
 		position += input * movement_multiplier * pow(zoom.length(), -0.5) * delta
 		follow_body = null
+		previous_move_vector = input
+	elif previous_move_vector != Vector2.ZERO:
+		previous_move_vector = Vector2.ZERO
+		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "system_map_camera_move")
 	
 	if Input.is_action_just_pressed("SC_PAN"):
 		mouse_slide_fixed_point = get_viewport().get_mouse_position()
