@@ -307,6 +307,7 @@ func _on_state_changed(new_state: STATES):
 			photo_texture.texture = image_texture
 			
 			get_tree().create_timer(1.0).timeout.connect(_on_state_display_photo_advance)
+			get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "LRS_display_photo")
 			
 		STATES.DISPLAY_RANGEFINDER:
 			rangefinder.draw_rangefinder(_DRAW_MATRICIES)

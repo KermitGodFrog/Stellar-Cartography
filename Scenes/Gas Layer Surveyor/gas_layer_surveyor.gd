@@ -263,6 +263,7 @@ func _on_state_changed(new_state: STATES) -> void:
 			pass
 		STATES.SELECTING:
 			selection_screen.initialize(current_layers)
+			get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "GLS_state_selecting")
 	pass
 
 func _on_press_to_start_button_pressed() -> void:

@@ -9,6 +9,8 @@ signal markObjective(_wID: String, _state: objectiveAPI.STATES)
 
 #REGISTERED FOR CAMPAIGN:
 #AV_picker_select
+#GLS_state_selecting
+#LRS_display_photo
 
 #REGISTERED FOR TUTORIAL:
 #player_boosting_start
@@ -22,7 +24,7 @@ signal markObjective(_wID: String, _state: objectiveAPI.STATES)
 var init_type: int #FROM GLOBAL DATA INIT TYPES
 
 func speak(_calling: Node, _incoming_wID: String, _incoming_value: Variant = null) -> void:
-	print("EVENTS HANDLER: ", _calling, " EVENT ", _incoming_wID)
+	#print("EVENTS HANDLER: ", _calling, " EVENT ", _incoming_wID)
 	match init_type:
 		global_data.GAME_INIT_TYPES.TUTORIAL:
 			process_tutorial_event(_calling, _incoming_wID, _incoming_value)
