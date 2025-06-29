@@ -86,8 +86,8 @@ stationSalvage_ABANDONED,"concept: stationSalvage, station_classification: ABAND
 stationSalvage_COVERUP,"concept: stationSalvage, station_classification: COVERUP",,,,populateCOVERUPOptions,,,,,"Aboard the station, a vague disaster appears to have occurred. Scouts can find no bodies, and it appears that each compartment has been deliberately and carefully depressurized. The decision is made to recall the scouts early, to not risk tampering with evidence."
 COVERUPWalkerOption,"concept: populateCOVERUPOptions, player_SECURITY_OFFICER_alive: true",,,,,,,,Order Walker to lead an away team: COVERUPWalkerTrip,
 COVERUPDefaultOption,concept: populateCOVERUPOptions,,,,,,,,Send an away team: COVERUPDefaultTrip,
-COVERUPWalkerTrip,concept: COVERUPWalkerTrip,,,,,,addCOVERUPScenario,,Leave:postSalvageLeave,
-COVERUPDefaultTrip,concept: COVERUPDefaultTrip,,,,,,addCOVERUPScenario,,Leave:postSalvageLeave,
+COVERUPWalkerTrip,concept: COVERUPWalkerTrip,,addValueWithFlair: 5000,,,,addCOVERUPScenario,,Leave:postSalvageLeave,
+COVERUPDefaultTrip,concept: COVERUPDefaultTrip,,addValueWithFlair: 5000,,,,addCOVERUPScenario,,Leave:postSalvageLeave,
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
