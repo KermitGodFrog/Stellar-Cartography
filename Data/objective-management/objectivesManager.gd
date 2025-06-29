@@ -29,6 +29,7 @@ var bank_categories: Dictionary = { #wID: [objective_wIDs]
 var active_objectives: Array[objectiveAPI] = []
 
 func _ready() -> void:
+	events_handler.connect("markObjective", mark_objective)
 	start_construct_banks()
 	pass
 
@@ -59,13 +60,15 @@ func start_receive_init_type(_init_type: int):
 func mark_objective(wID: String, state: objectiveAPI.STATES) -> void:
 	var o = get_objective(wID, state == objectiveAPI.STATES.NONE) #proposition (==)
 	if o != null:
-		o.set_state(state)
 		
-		match state:
-			objectiveAPI.STATES.SUCCESS:
-				emit_signal("addConsoleEntry", "Objective complete: [i]%s[/i]." % o.title, Color("353535"))
-			objectiveAPI.STATES.FAILURE:
-				emit_signal("addConsoleEntry", "Objective failed: [i]%s[/i]." % o.title, Color("353535"))
+		if o.get_state() != state:
+			match state:
+				objectiveAPI.STATES.SUCCESS:
+					emit_signal("addConsoleEntry", "Objective complete: [i]%s[/i]." % o.title, Color("353535"))
+				objectiveAPI.STATES.FAILURE:
+					emit_signal("addConsoleEntry", "Objective failed: [i]%s[/i]." % o.title, Color("353535"))
+		
+		o.set_state(state) # the actually important bit
 	
 	emit_signal("activeObjectivesChanged", active_objectives)
 	pass

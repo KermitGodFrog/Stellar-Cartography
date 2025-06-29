@@ -6,7 +6,7 @@
 script = ExtResource("1_di0mm")
 written_identifier = ""
 current_state = 0
-title = "Follow Ingress"
+title = "Go-to Ingress"
 description = "Wormholes allow for travel between star systems. Traversing a wormhole requires interacting with it.
 Click on Ingress on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. Wormholes, space stations, planetary anomalies, and other phenomena are all interacted with through the 'GO-TO' action. 
 [img]res://Graphics/go_to_icon.png[/img]"
