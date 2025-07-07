@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bdotk8rm2p7df"]
+[gd_scene load_steps=5 format=3 uid="uid://bdotk8rm2p7df"]
 
 [ext_resource type="Script" path="res://Instantiated Scenes/Body 3D/body_3d.gd" id="1_bqpsf"]
+[ext_resource type="AudioStream" uid="uid://b0o4on2y11tpn" path="res://Sound/System 3D/body_flyby.wav" id="2_h0stc"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_gsmqo"]
 
@@ -13,3 +14,11 @@ cast_shadow = 0
 mesh = SubResource("SphereMesh_gsmqo")
 surface_material_override/0 = SubResource("StandardMaterial3D_qi0h7")
 script = ExtResource("1_bqpsf")
+
+[node name="body_flyby" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_h0stc")
+attenuation_model = 1
+autoplay = true
+max_distance = 30.0
+bus = &"SFX"
+doppler_tracking = 2

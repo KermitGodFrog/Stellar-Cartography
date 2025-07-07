@@ -40,7 +40,9 @@ tonemap_mode = 2
 tonemap_exposure = 2.0
 
 [node name="system_3d_window" type="SubViewport"]
+own_world_3d = true
 canvas_item_default_texture_filter = 0
+audio_listener_enable_3d = true
 size = Vector2i(300, 300)
 
 [node name="system_3d" type="Node3D" parent="."]
