@@ -344,20 +344,7 @@ tutorialOmissionOrbitingCancel,"concept: tutorialOmissionOrbitingPortalResponse,
 tutorialPlayerWin,"concept: optionSelected, option: tutorialPlayerWin",,"closeDialog: null, _TUTORIALPlayerWin: null",,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
-moduleTutorialMessage,concept: moduleTutorialMessage,,,,,,,,,You are informed that instructions for the newly aquired $m_upper module are being sent to on-board databanks. You have them forwarded to the display in your quarters. 
-,,,,,,,,,,
-tutorialLRS,"concept: moduleTutorial, module: longRangeScopes",,openDialog: null,moduleTutorialMessage,,,,,"Continue: tutorialLRSContinueA, Exit (SKIP TUTORIAL): defaultLeave",
-tutorialLRSContinueA,"concept: optionSelected, option: tutorialLRSContinueA",,,,,,,,Continue: tutorialLRSContinueB,1)[i] Lock Stellar Phenomena and press the go-to button to view with Long Range Scopes (when open). [/i]
-tutorialLRSContinueB,"concept: optionSelected, option: tutorialLRSContinueB",,setImage: tutorial_lrs_view_boundary_example.png,,,,,,Continue: tutorialLRSContinueC,"2)[i] By default: click on the view boundaries to rotate the camera, press Enter to take a photo, and press QuoteLeft to use the rangefinder. When range-finding or viewing photos, press any key to return to taking photos. [/i]"
-tutorialLRSContinueC,"concept: optionSelected, option: tutorialLRSContinueC",,setImage: tutorial_lrs_rangefinding_example.png,,,,,,Continue: tutorialLRSContinueD,3)[i] Any values under ‘PHOTOS SOUGHT WITH’ are in the units displayed when range-finding. [/i]
-tutorialLRSContinueD,"concept: optionSelected, option: tutorialLRSContinueD",,clearImage: null,,,,,,Exit: defaultLeave,4)[i] You may only take three photos per phenomena. [/i]
-,,,,,,,,,,
-tutorialAV,"concept: moduleTutorial, module: audioVisualizer",,openDialog: null,moduleTutorialMessage,,,,,"Continue: tutorialAVContinueA, Exit (SKIP TUTORIAL): defaultLeave",
-tutorialAVContinueA,"concept: optionSelected, option: tutorialAVContinueA",,setImage: tutorial_av_system_list_example.png,,,,,,Continue: tutorialAVContinueB,1)[i] Lock planets with the appropriate icon in the system list to listen with the Audio Visualizer (when open). [/i]
-tutorialAVContinueB,"concept: optionSelected, option: tutorialAVContinueB",,clearImage: null,,,,,,Continue: tutorialAVContinueC,"2)[i] Each planet type (e.g, Carbon) has a factor of their composition which can be estimated via the Audio Visualizer (e.g, Carbon Content). Different planets of the same type have different levels (variations) of their shared factor. The noise a factor produces follows a logical progression (e.g, low Carbon Content is less audible than high Carbon Content, or vice versa). [/i]"
-tutorialAVContinueC,"concept: optionSelected, option: tutorialAVContinueC",,setImage: tutorial_av_additional_observations_example.png,,,,,,Continue: tutorialAVContinueD,3)[i] Decide and select whether the composition of a locked body contains a ‘HIGH’ or ‘MEDIUM’ or ‘LOW’ amount of its factor via the ‘ADDITIONAL OBSERVATIONS’ section in the ‘INFO’ tab on the central board. [/i]
-tutorialAVContinueD,"concept: optionSelected, option: tutorialAVContinueD",,clearImage: null,,,,,,Exit: defaultLeave,"4)[i] Sell exploration data while docked to gain nanites from correctly guessed variations and to save audio profiles, whose sound and details (whether the correct variation was chosen) can be used as a reference to decide the variation of future planets of the same type. [/i]"
-,,,,,,,,,,
-tutorialNC,"concept: moduleTutorial, module: naniteController",,openDialog: null,moduleTutorialMessage,,,,,"Continue: tutorialNCContinueA, Exit (SKIP TUTORIAL): defaultLeave",
-tutorialNCContinueA,"concept: optionSelected, option: tutorialNCContinueA",,setImage: tutorial_nc_status_panel_example.png,,,,,,Continue: tutorialNCContinueB,1)[i] Click on the hull stress button in the status panel to remove one percent of hull stress for nanites (if applicable). [/i]
-tutorialNCContinueB,"concept: optionSelected, option: tutorialNCContinueB",,setImage: tutorial_nc_cost_example.png,,,,,,Exit: defaultLeave,"2)[i] Hover over the hull stress button to view its tooltip, which illustrates the cost of repair. [/i]"
+tutorialLRS,"concept: moduleTutorial, module: longRangeScopes",,objectiveActive: moduleTutorialLRS,,,,,,,
+tutorialAV,"concept: moduleTutorial, module: audioVisualizer",,objectiveActive: moduleTutorialAV,,,,,,,
+tutorialNC,"concept: moduleTutorial, module: naniteController",,objectiveActive: moduleTutorialNC,,,,,,,
+tutorialGLS,"concept: moduleTutorial, module: gasLayerSurveyor",,objectiveActive: moduleTutorialGLS,,,,,,,

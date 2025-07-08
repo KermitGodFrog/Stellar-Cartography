@@ -29,4 +29,5 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 func _on_pressed():
 	if increase_for_nanites:
 		emit_signal("removeHullStressForNanites", 1, nanites_per_percentage)
+		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "NC_use")
 	pass 

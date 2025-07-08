@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://5ocbo5c4dm6b"]
+
+[ext_resource type="Script" path="res://Data/objective-management/objectiveAPI.gd" id="1_nl7u5"]
+
+[resource]
+script = ExtResource("1_nl7u5")
+written_identifier = ""
+current_state = 0
+title = "Collect an Audio Profile"
+description = "- Audio Visualizer icons next to planets on the SYSTEM LIST symbolise missing audio profiles. 
+[img=200%x36%]res://Graphics/objective-management/module_tutorial_av_system_list_example.png[/img]
+- Click on any planet with missing audio profiles on the SYSTEM LIST to lock, and then click to open Audio Visualizer in the APPS DOCK to analyse.
+- Press the 'INFO' tab at the top of SYSTEM LIST and select whether the composition of the planet contains a ‘HIGH’ or ‘MEDIUM’ or ‘LOW’ amount of its factor via the ‘ADDITIONAL OBSERVATIONS’ section.
+- Each planet type (e.g, Carbon) has a factor of its composition which can be estimated via the Audio Visualizer (e.g, Carbon Content). Different planets of the same type have different variations of their shared factor. The noise a factor produces follows a logical progression (e.g, low Carbon Content is less audible than high Carbon Content, or vice versa).
+- Sell exploration data at port to gain nanites from correctly guessed variations and to save audio profiles, whose sound and details can be used as a reference to decide the variation of future planets of the same type.
+[img=200%x100%]res://Graphics/objective-management/module_tutorial_av_additional_observations_example.png[/img]"

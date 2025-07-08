@@ -4,6 +4,7 @@ extends Node
 #incoming_wIDs must be in the present tense >>>> [name][state]
 #must be called with flags and subsequently UNIQUE and DEFERRED
 #cannot be called every frame nontheless
+#SHOULD ONLY BE USED TO MARK OBJECTIVES, NOT CLEAR THEM
 
 signal markObjective(_wID: String, _state: objectiveAPI.STATES)
 
@@ -11,6 +12,7 @@ signal markObjective(_wID: String, _state: objectiveAPI.STATES)
 #AV_picker_select
 #GLS_state_selecting
 #LRS_display_photo
+#NC_use
 
 #REGISTERED FOR TUTORIAL:
 #player_boosting_start
@@ -51,4 +53,13 @@ func process_tutorial_event(_calling: Node, incoming_wID: String, _incoming_valu
 	pass
 
 func process_campaign_event(_calling: Node, _incoming_wID: String, _incoming_value: Variant = null) -> void:
+	match _incoming_wID:
+		"LRS_display_photo":
+			emit_signal("markObjective", "moduleTutorialLRS", objectiveAPI.STATES.SUCCESS)
+		"AV_picker_select":
+			emit_signal("markObjective", "moduleTutorialAV", objectiveAPI.STATES.SUCCESS)
+		"NC_use":
+			emit_signal("markObjective", "moduleTutorialNC", objectiveAPI.STATES.SUCCESS)
+		"GLS_state_selecting":
+			emit_signal("markObjective", "moduleTutorialGLS", objectiveAPI.STATES.SUCCESS)
 	pass

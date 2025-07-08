@@ -464,26 +464,30 @@ func body_query_add_custom_type_shared(query: responseQuery, body: bodyAPI) -> v
 
 func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
 	match upgrade_idx:
+		playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES:
+			var new_query = responseQuery.new()
+			new_query.add("concept", "moduleTutorial")
+			new_query.add("module", "longRangeScopes")
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+		
 		playerAPI.UPGRADE_ID.AUDIO_VISUALIZER:
 			var new_query = responseQuery.new()
 			new_query.add("concept", "moduleTutorial")
 			new_query.add("module", "audioVisualizer")
-			new_query.add_tree_access("m_upper", "Audio Visualizer")
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
 			
 		playerAPI.UPGRADE_ID.NANITE_CONTROLLER:
 			var new_query = responseQuery.new()
 			new_query.add("concept", "moduleTutorial")
 			new_query.add("module", "naniteController")
-			new_query.add_tree_access("m_upper", "Nanite Controller")
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
 			
-		playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES:
+		playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR:
 			var new_query = responseQuery.new()
 			new_query.add("concept", "moduleTutorial")
-			new_query.add("module", "longRangeScopes")
-			new_query.add_tree_access("m_upper", "Long Range Scopes")
+			new_query.add("module", "gasLayerSurveyor")
 			get_tree().call_group("dialogueManager", "speak", self, new_query)
+		
 	pass
 
 
