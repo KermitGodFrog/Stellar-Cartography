@@ -248,8 +248,8 @@ func _process(delta: float) -> void:
 	var current_color = sky_shader.get_shader_parameter("color") as Color
 	sky_shader.set_shader_parameter("color", current_color.lerp(target_color, delta))
 	#post process
-	var post_shader = post_process.get_material()
-	post_shader.set_shader_parameter("alpha", minf(0.25, ease(remap(depth, 0.0, MAX_DEPTH, 0.0, 1.0), MAX_DEPTH)))
+	#var post_shader = post_process.get_material()
+	#post_shader.set_shader_parameter("alpha", minf(0.25, ease(remap(depth, 0.0, MAX_DEPTH, 0.0, 1.0), MAX_DEPTH)))
 	
 	#misc
 	selection_screen.set("discovered_gas_layers_matrix", _discovered_gas_layers_matrix)
