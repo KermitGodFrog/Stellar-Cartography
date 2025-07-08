@@ -147,7 +147,7 @@ func switch_to_entry(tag: String) -> void:
 func _on_confirm_pressed() -> void:
 	if not confirmed_prev:
 		var total: int = 0
-		var average_value = int(current_planet_value / 9)
+		var average_value = int(current_planet_value / 4)
 		
 		var hierachy_children = hierachy_list.get_children()
 		if _current_layers.size() == hierachy_children.size():
