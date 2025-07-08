@@ -597,6 +597,7 @@ func _on_player_entering_system(system: starSystemAPI):
 	new_query.add_tree_access("special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(system.special_system_classification)))
 	new_query.add_tree_access("system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(system.system_hazard_classification)))
 	new_query.add_tree_access("system_star_type", system.get_first_star().metadata.get("star_type"))
+	new_query.add_tree_access("system_civilized", system.is_civilized())
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	#not awaiting onCloseDialog because wacky shtuff happens!!!!!!! audioHandler should only play it when pause_mode is NONE anyway

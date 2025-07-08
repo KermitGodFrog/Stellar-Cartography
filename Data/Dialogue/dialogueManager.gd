@@ -651,7 +651,7 @@ func objectiveClear(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "clear_objective", wID)
 	pass
 
-func cycleAll(written_state: String) -> void:
+func cycleAll(written_state: String) -> void: #dont use ts
 	var change_state = objectiveAPI.STATES.get(written_state)
 	get_tree().call_group("objectivesManager", "cycle_all", change_state)
 	pass
