@@ -3,7 +3,6 @@ extends Control
 @onready var image = $margin/panel/main_scroll/content/content_scroll/image
 @onready var text = $margin/panel/main_scroll/interaction/interaction_scroll/text
 @onready var options_scroll = $margin/panel/main_scroll/interaction/interaction_scroll/scroll/options_scroll
-@onready var sfx = $sfx
 @onready var music = $music
 @onready var option = preload("res://Data/Dialogue/dialogue_option.tscn")
 
@@ -65,6 +64,15 @@ func clear_options():
 
 func play_sound_effect(path: String):
 	get_tree().call_group("audioHandler", "play_once", load("res://Sound/Dialogue/%s" % path), 0.0, "SFX")
+	pass
+
+func play_music(path: String) -> void:
+	music.set_stream(load("res://Sound/Dialogue/%s" % path))
+	music.play()
+	pass
+
+func stop_music() -> void:
+	music.stop()
 	pass
 
 func _on_option_selected(rule: String, _text: String):
