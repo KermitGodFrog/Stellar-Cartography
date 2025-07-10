@@ -62,12 +62,12 @@ func clear_options():
 		o.queue_free()
 	pass
 
-func play_sound_effect(path: String):
-	get_tree().call_group("audioHandler", "play_once", load("res://Sound/Dialogue/%s" % path), 0.0, "SFX")
+func play_sound_effect(path: String) -> void:
+	get_tree().call_group("audioHandler", "play_once", load("res://Sound/dialogue/sfx/%s" % path), 0.0, "SFX")
 	pass
 
 func play_music(path: String) -> void:
-	music.set_stream(load("res://Sound/Dialogue/%s" % path))
+	music.set_stream(load("res://Sound/dialogue/music/%s" % path))
 	music.play()
 	pass
 

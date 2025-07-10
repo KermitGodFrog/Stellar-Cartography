@@ -6,8 +6,8 @@ defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,
 "#ALL valid concepts: playerStart, tutorialPlayerStart, playerWin, tutorialPlayerWin, playerDeath, moduleTutorial, theorisedBody, orbitingBody, followingBody, enteringSystem, playerMutiny",,,,,,,,,,
 "#ALL valid types: STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, CUSTOM",,,,,,,,,,
 defaultApproachMessage,concept: defaultApproachMessage,,,,,,,,,Your ship approaches [i]$name[/i].
-defaultSuccessSound,concept: defaultSuccessSound,,playSoundEffect: dialogue_success.wav,,,,,,,
-defaultFailureSound,concept: defaultFailureSound,,playSoundEffect: dialogue_failure.wav,,,,,,,
+defaultSuccessSound,concept: defaultSuccessSound,,playSoundEffect: success.wav,,,,,,,
+defaultFailureSound,concept: defaultFailureSound,,playSoundEffect: failure.wav,,,,,,,
 defaultHardLeave,"concept: optionSelected, option: defaultHardLeave",,closeDialog: HARD_LEAVE,,,,,,,
 defaultSoftLeave,"concept: optionSelected, option: defaultSoftLeave",,closeDialog: SOFT_LEAVE,,,,,,,
 ,,,,,,,,,,
@@ -43,7 +43,7 @@ playerWinStoryConclusionResponseConglomerate,"concept: playerWinStoryConclusionR
 playerWinStoryConclusionResponseDetective,"concept: playerWinStoryConclusionResponse, is_detective_storyline_complete: true",,,,,,,,,"You think back to the Detective. A being which could pause time and evidently change reality, yet refused to truely intefere with your progress towards its physical location. You realise that throughout your travels, you were astronomically lucky. You also realise that you have changed. You wonder whether your journey was truely random chance, or if the Detective actively manipulated it for an unknown motive."
 newEdenArrivalFlair,concept: addNewEdenArrivalFlair,,,,,,,,,"You have arrived in New Eden, the true frontier of human civilisation."
 ,,,,,,,,,,
-playerMutinyOpenDialog,concept: playerMutiny,,"openDialog: null, playSoundEffect: dialogue_gunshot.wav",,,,,,Exit:defaultHardLeave,You are killed in a mutiny.
+playerMutinyOpenDialog,concept: playerMutiny,,"openDialog: null, playSoundEffect: gunshot.wav",,,,,,Exit:defaultHardLeave,You are killed in a mutiny.
 playerDeathOpenDialog,concept: playerDeath,,"openDialog: null, objectiveFailure: reachNewEden",,,,,,Exit:defaultLeave,You are dead.
 ,,,,,,,,,,
 # core entity interactions,,,,,,,,,,
@@ -249,7 +249,7 @@ PA_03TheResearcherJuniorOfficerCaveDispatchSuccess,concept: PA_03TheResearcherJu
 PA_03TheResearcherJuniorOfficerCaveDispatchFailure,concept: PA_03TheResearcherJuniorOfficerCaveDispatchResponse,,"addValueWithFlair: 2500, removeMoraleWithFlair: 10",,,,,,Order a recall:PA_03TheResearcherReturnFailure,"You watch the Junior Officers progress on your heads-up-display. They travel through several large caverns, and the passageways between them, before finding an intricate pattern upon a rock face with the consistency of chalk - a simple, bacteria-analogue life-form. Despite all odds on a dead world, with next to none of the prerequisite building blocks, life found a way to exist - or was made to exist. The pattern, you decide, is beautiful. They move to take a sample, but a distant resonance and then a low rumble starts on approach. You watch in horror as your Junior Officer begins sprinting for the passageway towards the surface. Dust falls around them. Their signal is severed."
 PA_03TheResearcherReturnSuccess,"concept: optionSelected, option: PA_03TheResearcherReturnSuccess",,,,,,,,Return to the transport: PA_03TheResearcherLeave,"The sample is secured, and your people return to the vessel. You find the old man sitting under the veranda. You talk legal, asking whether an examination of the sample you aquired may be published. It quickly becomes obvious that the man wants nothing more than to share his planet with others; you promise that he will have visitors from research craft in the near future."
 PA_03TheResearcherReturnFailure,"concept: optionSelected, option: PA_03TheResearcherReturnFailure",,,,,,,,"Have the old man eliminated - he is obviously responsible: PA_03TheResearcherEliminate, Return to the transport: PA_03TheResearcherLeave","With measured calmness, you ask the marine in charge of the seismic scan to double-check the legitimacy of its results. As soon as human error is ruled out, you trek back to the vessel to confront the old man. You find him sitting under the veranda. You explain the situation, ending with a comment about the unusual resonance prior to the cave-in. He is, or acts, unaffiliated with the event."
-PA_03TheResearcherEliminate,"concept: optionSelected, option: PA_03TheResearcherEliminate",,"addValueWithFlair: 2500, removeMoraleWithFlair: 10, increaseSecurityOfficerStanding: 25, playSoundEffect: dialogue_gunshot.wav",,,,,,Return to the transport: PA_03TheResearcherLeave,You discretely signal for your marine escort to kill him. They nod nonchalantly and drag the man away while he flails hopelessly.
+PA_03TheResearcherEliminate,"concept: optionSelected, option: PA_03TheResearcherEliminate",,"addValueWithFlair: 2500, removeMoraleWithFlair: 10, increaseSecurityOfficerStanding: 25, playSoundEffect: gunshot.wav",,,,,,Return to the transport: PA_03TheResearcherLeave,You discretely signal for your marine escort to kill him. They nod nonchalantly and drag the man away while he flails hopelessly.
 PA_03TheResearcherLeave,"concept: optionSelected, option: PA_03TheResearcherLeave",,,,,,,,Leave: PAHardLeave,"You return to the landing zone. Following fifteen minutes of delays and comm chatter, the transport takes off on an interception course with your starship."
 ,,,,,,,,,,
 PA_04HollowGiant,"concept: PA_JovianPortalResponse, player_in_ABYSS_region: true, PA_04HollowGiantPREV: false",PA_04HollowGiantPREV: true,openDialog: null,defaultApproachMessage,,,,,Dispatch a probe: PA_04HollowGiantContinueA,(UNFINISHED EVENT) intro message
@@ -343,6 +343,15 @@ tutorialOmissionOrbiting,concept: tutorialOmissionOrbitingPortalResponse,tutoria
 tutorialOmissionOrbitingCancel,"concept: tutorialOmissionOrbitingPortalResponse, tutorialOmissionOrbitingPREV: true",,,,,,,,,
 ,,,,,,,,,,
 tutorialPlayerWin,"concept: optionSelected, option: tutorialPlayerWin",,"closeDialog: null, _TUTORIALPlayerWin: null",,,,,,,
+,,,,,,,,,,
+tutorialAnteMessageApproach,concept: tutorialAnteMessageApproach,,,,,,,,,Base description of Ante.
+tutorialAntePortal,"concept: followingBody, type: PLANET, name: Ante, tutorial: true",tutorialAntePortal_PREV: true,"openDialog: null, playMusic: ante.wav",,,tutorialAntePortalDispatch,,,,
+tutorialAnteResponseValid,"concept: tutorialAntePortalDispatch, tutorialAntePortal_PREV: false",,,,,,,,,
+tutorialAnteResponseInvalid,"concept: tutorialAntePortalDispatch, tutorialAntePortal_PREV: true",,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
 tutorialLRS,"concept: moduleTutorial, module: longRangeScopes",,objectiveActive: moduleTutorialLRS,,,,,,,

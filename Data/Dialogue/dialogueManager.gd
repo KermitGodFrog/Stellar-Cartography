@@ -626,8 +626,6 @@ func addRandomRewardWithFlair(rarity: String = "LOW") -> void:
 
 
 
-
-
 func categoryActive(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.NONE)
 	pass
