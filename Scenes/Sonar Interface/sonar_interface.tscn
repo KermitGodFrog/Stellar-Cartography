@@ -87,6 +87,7 @@ one_shot = true
 wait_time = 0.25
 autostart = true
 
+[connection signal="drag_ended" from="sonar_control/info_panel/scroll_vertical/ping_width_slider" to="sonar_control" method="_on_ping_width_slider_drag_ended"]
 [connection signal="value_changed" from="sonar_control/info_panel/scroll_vertical/ping_width_slider" to="sonar_control" method="_on_ping_width_slider_value_changed"]
 [connection signal="pressed" from="sonar_control/info_panel/scroll_vertical/ping_button" to="sonar_control" method="_on_ping_button_pressed"]
 [connection signal="pressed" from="sonar_control/reset_button" to="sonar_control" method="_on_reset_button_pressed"]

@@ -11,6 +11,9 @@ var ping_direction: Vector2 = Vector2.ZERO
 @onready var ping_cooldown_timer = $ping_cooldown_timer
 @onready var cooldown_label = $cooldown_label
 
+@onready var LIDAR_arc_change = preload("res://Sound/SFX/LIDAR_arc_change.wav")
+@onready var LIDAR_rotate = preload("res://Sound/SFX/LIDAR_rotate.wav")
+
 func _physics_process(_delta):
 	ping_width = ping_width_slider.value
 	
@@ -26,6 +29,7 @@ func _gui_input(event):
 	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE"):
 		ping_direction = get_screen_centre().direction_to(get_global_mouse_position())
 		emit_signal("sonarValuesChanged", ping_width, ping_length, ping_direction)
+		get_tree().call_group("audioHandler", "play_once", LIDAR_rotate, 0.0, "SFX")
 	pass
 
 func _draw():
@@ -65,9 +69,12 @@ func _on_width_value_changed_cooldown_timeout():
 	width_value_changed_recently = false
 	pass
 
-
-
 func _on_reset_button_pressed():
 	ping_direction = Vector2.ZERO
 	emit_signal("sonarValuesChanged", ping_width, ping_length, ping_direction)
+	pass
+
+
+func _on_ping_width_slider_drag_ended(value_changed: bool) -> void:
+	if value_changed: get_tree().call_group("audioHandler", "play_once", LIDAR_arc_change, 0.0, "SFX")
 	pass
