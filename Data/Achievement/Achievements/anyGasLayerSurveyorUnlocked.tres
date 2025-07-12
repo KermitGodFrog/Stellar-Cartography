@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_8c4h0")
 name = "Pressure Sealed"
-description = "Buy the special Gas Layer Surveyor module at a port during a run."
+description = "Unlock the special Gas Layer Surveyor module during a run."
 dialogue_criteria = {
 "player_GAS_LAYER_SURVEYOR_unlocked": true
 }
