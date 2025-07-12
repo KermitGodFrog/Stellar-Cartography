@@ -1,6 +1,7 @@
 Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Query Best Concept,Query Rand Best Concept,Query Old Best Concept,Options,Text
 # defaults,,,,,,,,,,
-DEBUG_printTestOpenDialog,concept: DEBUG_printTest,,"openDialog: null, unlockRandomUpgradeWithFlair: null",,,,,,$player_name: defaultLeave,"$concept $player_name $player_prefix $player_prefix_lower $player_speed $player_balance $player_current_value $player_total_score $player_max_jumps $player_jumps_remaining $player_weirdness_index ... $player_in_ANY_region , $player_in_ABYSS_region +++ $player_CHIEF_ENGINEER_alive yjiodsgiogs $randf"
+#DEBUG_printTestOpenDialog,concept: DEBUG_printTest,,"openDialog: null, unlockRandomUpgradeWithFlair: null",,,,,,$player_name: defaultLeave,"$concept $player_name $player_prefix $player_prefix_lower $player_speed $player_balance $player_current_value $player_total_score $player_max_jumps $player_jumps_remaining $player_weirdness_index ... $player_in_ANY_region , $player_in_ABYSS_region +++ $player_CHIEF_ENGINEER_alive yjiodsgiogs $randf"
+DEBUG_printTestOpenDialog,concept: DEBUG_printTest,,,SA_02NavBuoy,,,,,,
 defaultOpenDialog,concept: followingBody,,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,
 defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,,,
 "#ALL valid concepts: playerStart, tutorialPlayerStart, playerWin, tutorialPlayerWin, playerDeath, moduleTutorial, theorisedBody, orbitingBody, followingBody, enteringSystem, playerMutiny",,,,,,,,,,
@@ -290,6 +291,12 @@ SA_02GenericDispatchFailure,concept: SA_02GenericDispatchResponse,,,,,,,,Leave:S
 ,,,,,,,,,,
 SA_01StarRing,"concept: SA_PortalResponse, player_in_ABYSS_region: true, player_FIRST_OFFICER_alive: true, SA_01StarRingPREV: false",SA_01StarRingPREV: true,openDialog: null,SAApproachMessage,,,,,Order a closer analysis: SA_01StarRingContinue,The helmsman on duty claims to have found an 'anomaly' while performing a passive sensor sweep.
 SA_01StarRingContinue,"concept: optionSelected, option: SA_01StarRingContinue",,addValueWithFlair: 10000,,,,,,Leave:SAHardLeave,"Upon further analysis, you are presented with several sets of information. All of the data depicts the same 'anomaly': a set of eight identical stars equidistant in a circular orbit around another identical star. ""Humans will never go there,"" Rui decides after gazing at the details for a few moments, ""the chances with Arata's theorem are too low, and it's too far away for conventional travel. Besides, we are all too horrified of the forces at play above our own heads."" You have the data stored."
+,,,,,,,,,,
+SA_02NavBuoy,"concept: SA_PortalResponse, player_in_CORE_or_FRONTIER_region: true",,openDialog: null,SAApproachMessage,,,,,"Investigate: SA_02NavBuoyContinue, Leave: SASoftLeave","A navigation buoy is detected. These small spherical devices are dropped by passing starships to communicate danger or simply as a tradition. Powered by the prolonged half life of specific radioactive isotopes, they can blare waves of information into space for thousands of years."
+SA_02NavBuoyContinue,"concept: optionSelected, option: SA_02NavBuoyContinue",,getNavBuoyOutcomeWithFlair: $seed,,,,,,Leave:SAHardLeave,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
 # special anomalies and special systems,,,,,,,,,,

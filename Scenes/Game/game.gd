@@ -208,6 +208,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("foundBody", _on_found_body)
 	dialogue_manager.connect("addPlayerMutinyBacking", _on_add_player_mutiny_backing)
 	dialogue_manager.connect("upgradeShip", _on_upgrade_ship)
+	dialogue_manager.connect("rollNavBuoy", _on_roll_nav_buoy)
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
@@ -284,6 +285,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("SC_DEBUG_MISC2"):
 		var new_query = responseQuery.new()
 		new_query.add("concept", "DEBUG_printTest")
+		new_query.add_tree_access("seed", randi())
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	#DEBUG \/\//\/\/\//\/\\/
@@ -979,6 +981,10 @@ func _on_update_objectives_panel(_active_objectives: Array[objectiveAPI]) -> voi
 	pause_menu._on_update_objectives_panel(_active_objectives)
 	pass
 
+func _on_roll_nav_buoy(_anomaly_seed: int) -> void: # i mean, technically its LEGAL?
+	dialogue_manager._on_receive_nav_buoy_roll(world.roll_nav_buoy(_anomaly_seed))
+	pass
+
 func _on_open_LRS():
 	await get_tree().physics_frame
 	var following_body = world.player.action_body #should be set as playerAPI setting action_body calls _on_player_following_body, which calls dialogue, which calls this.
@@ -1007,7 +1013,7 @@ func _on_open_GLS():
 
 
 
-#the epic handshake between game.gd and pauseModeHandler.gd
+#handshake between game.gd and pauseModeHandler.gd
 func _on_queue_pause_mode(new_mode: game_data.PAUSE_MODES) -> void:
 	pause_mode_handler._on_queue_pause_mode(new_mode)
 	pass

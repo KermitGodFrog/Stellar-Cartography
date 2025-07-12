@@ -21,6 +21,9 @@ class_name worldAPI
 @export var missing_GL_chance_per_relevant_planet: float
 # in order to justify why thsi is here - what if the player wants to update key customization while playing? this would be useful to ahndle it
 
+@export var nav_buoy_tag: String = "" #for nav buoy space anomaly - i had no better place to put this!
+
+
 func createStarSystem(d_name: String) -> starSystemAPI:
 	var new_system = starSystemAPI.new()
 	new_system.name_scheme = game_data.NAME_SCHEMES.values().pick_random()
@@ -108,3 +111,18 @@ func get_adjusted_PA_chance(advanced_scanning_unlocked: bool) -> float:
 		return PA_chance_per_planet * advanced_scanning_multiplier
 	else:
 		return PA_chance_per_planet
+
+func roll_nav_buoy(anomaly_seed: int) -> Array: #had no beter place to put this
+	var new_tag = "%s-%03d" % [game_data.GRAPHEMES.keys().pick_random(), global_data.get_randi(0, 999)]
+	var random = RandomNumberGenerator.new()
+	random.set_seed(anomaly_seed)
+	
+	if nav_buoy_tag == "":
+		nav_buoy_tag = new_tag
+		return [nav_buoy_tag, true]
+	else:
+		if random.randf() >= 0.5:
+			return [nav_buoy_tag, false]
+		else:
+			nav_buoy_tag = new_tag
+			return [nav_buoy_tag, true]

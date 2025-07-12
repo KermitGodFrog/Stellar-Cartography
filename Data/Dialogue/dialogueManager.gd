@@ -19,8 +19,8 @@ func _on_pause_mode_changed(value):
 signal onCloseDialog(with_return_state)
 signal addDialogueMemoryPair(key, value)
 
-signal openLRS
-signal openGLS
+signal openLRS()
+signal openGLS()
 
 signal decreasePlayerBalance(amount: int)
 signal addPlayerValue(amount: int)
@@ -32,6 +32,7 @@ signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
 signal foundBody(id: int)
 signal addPlayerMutinyBacking(amount: int)
 signal upgradeShip(_upgrade_idx: playerAPI.UPGRADE_ID, _cost: int)
+signal rollNavBuoy(anomaly_seed: int)
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
@@ -527,7 +528,7 @@ func addValueWithFlair(amount: int):
 func addHullStressWithFlair(amount: int):
 	emit_signal("addPlayerHullStress", amount)
 	dialogue.add_text(str("[color=red](Plus ", amount, "% hull stress) [/color]"))
-	playSoundEffect("dialogue_failure.wav")
+	playSoundEffect("failure.wav")
 	pass
 
 func removeHullStressWithFlair(amount: int):
@@ -545,7 +546,7 @@ func addMoraleWithFlair(amount: int):
 func removeMoraleWithFlair(amount: int):
 	emit_signal("removePlayerMorale", amount)
 	dialogue.add_text(str("[color=red](Minus ", amount, "% morale) [/color]"))
-	playSoundEffect("dialogue_failure.wav")
+	playSoundEffect("failure.wav")
 	pass
 
 func killCharacterWithFlair(written_occupation: String):
@@ -553,7 +554,7 @@ func killCharacterWithFlair(written_occupation: String):
 	emit_signal("killCharacterWithOccupation", occupation)
 	var character = player.get_character_with_occupation(occupation)
 	dialogue.add_text(str("[color=red](", characterAPI.OCCUPATIONS.find_key(occupation).capitalize(), " ", character.get_display_name(), " is dead) [/color]"))
-	playSoundEffect("dialogue_failure.wav")
+	playSoundEffect("failure.wav")
 	pass
 
 func setImage(path: String):
@@ -645,6 +646,24 @@ func is_available(ID: int, _unlocked_upgrades: Array[playerAPI.UPGRADE_ID]) -> b
 	if _unlocked_upgrades.find(ID) == -1:
 		return true
 	return false
+
+func getNavBuoyOutcomeWithFlair(anomaly_seed: String) -> void: # for nav buoy space anomaly, have to input String anomaly_seed as fact reference substitution obviously doesnt convert to int, and thats fine
+	emit_signal("rollNavBuoy", int(anomaly_seed)) #continued in _on_receive_nav_buoy_roll
+	pass
+func _on_receive_nav_buoy_roll(roll: Array) -> void:
+	var nav_buoy_tag = roll.front()
+	var nav_buoy_updated = roll.back()
+	
+	var base_message = "Analysts decode and log the faint pulses of data emanating from the buoy. The motherships transponder code is found to be [color=yellow]%s[/color]." % nav_buoy_tag
+	
+	match nav_buoy_updated:
+		true:
+			addValueWithFlair(2500)
+			dialogue.add_text(base_message)
+		false:
+			addValueWithFlair(25000)
+			dialogue.add_text("%s This transponder code is already present in on-board databanks; the extremely low probability of encountering the heritage of the same ship more than once so deep in space makes the data valuable for understanding the nature of wormhole travel." % base_message)
+	pass
 
 
 
