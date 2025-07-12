@@ -62,6 +62,7 @@ signal addPlayerValue(amount: int)
 @onready var background_animation = $background_center/background_container/background_viewport/station_ui_background/animation_player
 
 @onready var station_upgrade = preload("res://Sound/Station UI/station_upgrade.tres")
+@onready var station_sell_data = preload("res://Sound/Station UI/station_sell_data.tres")
 
 var has_sold_previously: bool = false
 
@@ -101,6 +102,7 @@ func _on_sell_data_button_pressed():
 	if station and not has_sold_previously:
 		has_sold_previously = true
 		emit_signal("sellExplorationData", station.sell_percentage_of_market_price)
+		get_tree().call_group("audioHandler", "play_once", station_sell_data, 0.0, "SFX")
 		
 		if pending_audio_profiles:
 			observed_bodies_list.initialize(pending_audio_profiles)
