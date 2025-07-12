@@ -119,7 +119,7 @@ theme_type_variation = &"ButtonDull"
 script = ExtResource("5_nlbm1")
 upgrade = 4
 cost = 7500
-description = "Scan prediction algorithms. Allow LIDAR scan arcs to be visible on the central board, by the system map, before the 'PING' button is pressed."
+description = "Scan prediction algorithms. Allow LIDAR scan arcs to be visible on the SYSTEM MAP before the 'PING' button is pressed."
 
 [node name="2" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
