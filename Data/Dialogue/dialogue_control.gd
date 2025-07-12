@@ -25,12 +25,12 @@ func add_text(new_text: String):
 	pass
 
 func add_options(new_options: Dictionary):
-	for option_string in new_options:
+	for option_text in new_options:
 		options_added += 1
 		var option_instance = option.instantiate() as Button
-		var rule = new_options.get(option_string, "defaultLeave")
-		option_instance.initialize(options_added, option_string)
-		option_instance.pressed.connect(_on_option_selected.bind(rule, option_string))
+		var rule = new_options.get(option_text, "defaultLeave")
+		option_instance.initialize(rule, option_text, options_added)
+		option_instance.pressed.connect(_on_option_selected.bind(rule, option_text))
 		options_scroll.add_child(option_instance)
 	pass
 
@@ -75,15 +75,32 @@ func stop_music() -> void:
 	music.stop()
 	pass
 
-func _on_option_selected(rule: String, _text: String):
+func _on_option_selected(option_rule: String, option_text: String):
 	text.push_paragraph(HORIZONTAL_ALIGNMENT_LEFT)
 	text.push_color(Color.DARK_SLATE_BLUE)
-	text.append_text("\n>>> %s" % _text)
+	text.append_text("\n>>> %s" % option_text)
 	text.pop_all()
 	
 	var new_query = responseQuery.new()
 	new_query.add("concept", "optionSelected")
-	new_query.add("option", rule)
+	new_query.add("option", option_rule)
 	clear_options() #options are always cleared in rules.csv when an option is selected anyway
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	#play 'selected something' sound effect
+	pass
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.is_pressed():
+			if event.keycode >= 49 and event.keycode <= 57:
+				var selecting = int(OS.get_keycode_string(event.keycode))
+				
+				for option_instance in options_scroll.get_children():
+					if selecting == option_instance.iteration:
+						_on_option_selected(option_instance.rule, option_instance._text)
+						return
+				
+				#play 'couldnt select anything' sound effect because obviously there isnt anything to select at this point
 	pass
