@@ -207,6 +207,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
 	dialogue_manager.connect("foundBody", _on_found_body)
 	dialogue_manager.connect("addPlayerMutinyBacking", _on_add_player_mutiny_backing)
+	dialogue_manager.connect("upgradeShip", _on_upgrade_ship)
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)

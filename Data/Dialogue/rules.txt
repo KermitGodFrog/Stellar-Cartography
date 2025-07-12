@@ -1,6 +1,6 @@
 Rule,Criteria,Apply Facts,Trigger Functions,Trigger Rules,Query All Concept,Query Best Concept,Query Rand Best Concept,Query Old Best Concept,Options,Text
 # defaults,,,,,,,,,,
-DEBUG_printTestOpenDialog,concept: DEBUG_printTest,,openDialog: null,,,,,,$player_name: defaultLeave,"$concept $player_name $player_prefix $player_prefix_lower $player_speed $player_balance $player_current_value $player_total_score $player_max_jumps $player_jumps_remaining $player_weirdness_index ... $player_in_ANY_region , $player_in_ABYSS_region +++ $player_CHIEF_ENGINEER_alive yjiodsgiogs $randf"
+DEBUG_printTestOpenDialog,concept: DEBUG_printTest,,"openDialog: null, unlockRandomUpgradeWithFlair: null",,,,,,$player_name: defaultLeave,"$concept $player_name $player_prefix $player_prefix_lower $player_speed $player_balance $player_current_value $player_total_score $player_max_jumps $player_jumps_remaining $player_weirdness_index ... $player_in_ANY_region , $player_in_ABYSS_region +++ $player_CHIEF_ENGINEER_alive yjiodsgiogs $randf"
 defaultOpenDialog,concept: followingBody,,openDialog: null,defaultApproachMessage,,,,,Leave:defaultLeave,
 defaultLeave,"concept: optionSelected, option: defaultLeave",,closeDialog: null,,,,,,,
 "#ALL valid concepts: playerStart, tutorialPlayerStart, playerWin, tutorialPlayerWin, playerDeath, moduleTutorial, theorisedBody, orbitingBody, followingBody, enteringSystem, playerMutiny",,,,,,,,,,
@@ -345,9 +345,33 @@ tutorialOmissionOrbitingCancel,"concept: tutorialOmissionOrbitingPortalResponse,
 tutorialPlayerWin,"concept: optionSelected, option: tutorialPlayerWin",,"closeDialog: null, _TUTORIALPlayerWin: null",,,,,,,
 ,,,,,,,,,,
 tutorialAnteMessageApproach,concept: tutorialAnteMessageApproach,,,,,,,,,Base description of Ante.
-tutorialAntePortal,"concept: followingBody, type: PLANET, name: Ante, tutorial: true",tutorialAntePortal_PREV: true,"openDialog: null, playMusic: ante.wav",,,tutorialAntePortalDispatch,,,,
-tutorialAnteResponseValid,"concept: tutorialAntePortalDispatch, tutorialAntePortal_PREV: false",,,,,,,,,
-tutorialAnteResponseInvalid,"concept: tutorialAntePortalDispatch, tutorialAntePortal_PREV: true",,,,,,,,,
+tutorialAntePortal,"concept: followingBody, type: PLANET, name: Ante, tutorial: true",tutorialAntePortal_PREV: true,"openDialog: null, playMusic: ante.wav",tutorialAnteMessageApproach,,tutorialAntePortalDispatch,,,,
+tutorialAnteResponseValid,"concept: tutorialAntePortalDispatch, tutorialAntePortal_PREV: false",,,,,,,,Lead an away team: tutorialAnteTrip,Description of the Capital and the ecology of Ante.
+tutorialAnteResponseInvalid,"concept: tutorialAntePortalDispatch, tutorialAntePortal_PREV: true",,,,,,,,Leave:defaultLeave,
+#ante exploration council walk,,,,,,,,,,
+tutorialAnteTrip,"concept: optionSelected, option: tutorialAnteTrip",,stopMusic: null,,,,,,Exit the transport: tutorialAnteCouncilWalkA,"Transport landing. Duty officer yells for everyone to get out, and to make way for the 'seniors'."
+tutorialAnteCouncilWalkA,"concept: optionSelected, option: tutorialAnteCouncilWalkA",,,,,,,,Walk: tutorialAnteCouncilWalkB,"Planet surface shock. >>> ""Its been a while,"" you say. Rui nods and checks his footing."
+tutorialAnteCouncilWalkB,"concept: optionSelected, option: tutorialAnteCouncilWalkB",,,,,,,,Walk: tutorialAnteCouncilWalkC,"Description of the trip from the spaceport to the city centre near the Provisional Executive headquarters - also describe the headquarters itself. >>> ""...You find yourself..."""
+tutorialAnteCouncilWalkC,"concept: optionSelected, option: tutorialAnteCouncilWalkC",,,,,,,,"Sign it: tutorialAnteCouncilWalkD, Don't sign it: tutorialAnteCouncilWalkD",Pass a protest and are asked to sign a petition to make small manufactured goods free by a 'young civilian girl'. Use player prefix.
+tutorialAnteCouncilWalkD,"concept: optionSelected, option: tutorialAnteCouncilWalkD",,,,,,,,Walk: tutorialAnteCouncilWalkE,"The 'young civilian girl' is ushered away from you by her supervisor, who thanks you for your service. "
+tutorialAnteCouncilWalkE,"concept: optionSelected, option: tutorialAnteCouncilWalkE",,,,,,,,Sit down: tutorialAnteChairWaitA,"Arriving at the Exploration Council - time summary from its appearance, going through the front door and signing in."
+#ante exploration council wait ,,,,,,,,,,
+tutorialAnteChairWaitA,"concept: optionSelected, option: tutorialAnteChairWaitA",,,,,,,,"Listen to the broadcast: tutorialAnteChairWaitB, Tune out: tutorialAnteChairWaitE","Description of your surroundings, the bureacracy, and more information about the Provisional Executive sub-bodies. Note that Rui also sits down nearby, and that a broadcast is playing on a wall mounted viewscreen."
+tutorialAnteChairWaitB,"concept: optionSelected, option: tutorialAnteChairWaitB",,,,,,,,"Continue: tutorialAnteChairWaitC, Tune out: tutorialAnteChairWaitE",News report on the age polarisation in polls for the upcoming Karkesh Republic presidential election. >>> You sigh while wondering what you could possibly spend your commission on.
+tutorialAnteChairWaitC,"concept: optionSelected, option: tutorialAnteChairWaitC",,,,,,,,"Continue: tutorialAnteChairWaitD, Tune out: tutorialAnteChairWaitE",News report on the age polarisation in polls for the upcoming Karkesh Republic presidential election.
+tutorialAnteChairWaitD,"concept: optionSelected, option: tutorialAnteChairWaitD",,,,,,,,Tune out: tutorialAnteChairWaitE,News report on the age polarisation in polls for the upcoming Karkesh Republic presidential election.
+tutorialAnteChairWaitE,"concept: optionSelected, option: tutorialAnteChairWaitE",,,,,,,,Enter: tutorialAnteBriefingA,Informed that the chair of the Resolution 289 Standing Committee is ready to see you by a lady from the Secretariat - she leads you and Rui to a giant door somewhere.
+#ante mission briefing,,,,,,,,,,
+tutorialAnteBriefingA,"concept: optionSelected, option: tutorialAnteBriefingA",,,,,,,,"""I think we've changed"": tutorialAnteBriefingYes, ""I don't think I'll be out of the job"": tutorialAnteBriefingNo","The Chair of Resolution 289 Standing Committee greets you and then asks you to sit down - Rui remains standing a few paces behind. Description of the Chairs build, note that a name badge identifies the him as 'Tristan'. He asks you if you think the late proliferation period has done anything meaningful to humanity."
+tutorialAnteBriefingYes,"concept: optionSelected, option: tutorialAnteBriefingYes",,,,,,,,"""Why?"": tutorialAnteBriefingClarification, ""I understand"": tutorialAnteBriefingB",Tristan says that you are in the majority. He then mentions that he personally thinks that humanity has advanced as a species.
+tutorialAnteBriefingNo,"concept: optionSelected, option: tutorialAnteBriefingNo",,,,,,,,"""Why?"": tutorialAnteBriefingClarification, ""I understand"": tutorialAnteBriefingB","Tristan says that you are in the minority, and brings up that you are technically already out of the job after being transferred from the Security Council to the Exploration Council - he says this as he reads your documents. He then mentions that he personally thinks that humanity has advanced as a species."
+tutorialAnteBriefingClarification,"concept: optionSelected, option: tutorialAnteBriefingClarification",,,,,,,,Continue: tutorialAnteBriefingB,"Tristan rants about how the Late Proliferation Period has changed humanity in a way that sounds recited. >>> “Why? Why, because humanity has been humbled by it’s isolation. For thousands of years, humans have read the autobiographies of distant stars during the Passing, and have tried to imagine life in those other pockets of civilisation. Isolation has surrounded our distant relatives with importance and a fleeting want for connection. And for as long as humans are human, children will now be taught the tragedy of the Late Proliferation and how lucky we are to be interconnected so readily. We have matured, and this maturity will carry us into a new age of peace and prosperity.”"
+tutorialAnteBriefingB,"concept: optionSelected, option: tutorialAnteBriefingB",,,,,,,,Continue: tutorialAnteBriefingC,Explanation of the mission.
+tutorialAnteBriefingC,"concept: optionSelected, option: tutorialAnteBriefingC",,,,,,,,Continue: tutorialAnteBriefingD,Tristain gives you the Codex Ethica from the Contact Guidelines Committee and says that you now have an on-board committee to be accountable to.
+tutorialAnteBriefingD,"concept: optionSelected, option: tutorialAnteBriefingD",,,,,,,,,"You thank Tristain and leave the Exploration Council. Explanation of thoughts while leaving the place, and that you now have free time to do other things before departing the planet."
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,

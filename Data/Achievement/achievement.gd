@@ -6,4 +6,4 @@ class_name responseAchievement
 ##Description syntax: short phrase for flair (if applicable), short phrase describing all of the criteria necessary to be unlocked.
 @export_multiline var description = ""
 @export var dialogue_criteria: Dictionary = {}
-@export var index: int
+@export var index: int #i dont think this does anything??

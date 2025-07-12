@@ -31,6 +31,7 @@ signal removePlayerMorale(amount: int)
 signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
 signal foundBody(id: int)
 signal addPlayerMutinyBacking(amount: int)
+signal upgradeShip(_upgrade_idx: playerAPI.UPGRADE_ID, _cost: int)
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
@@ -520,7 +521,7 @@ func decreaseBalanceWithFlair(amount):
 func addValueWithFlair(amount: int):
 	emit_signal("addPlayerValue", amount)
 	dialogue.add_text(str("[color=green](Gained ", amount, " nanites in data value) [/color]"))
-	playSoundEffect("dialogue_success.wav") #easier than putting it in every single rule?
+	playSoundEffect("success.wav") #easier than putting it in every single rule?
 	pass
 
 func addHullStressWithFlair(amount: int):
@@ -532,13 +533,13 @@ func addHullStressWithFlair(amount: int):
 func removeHullStressWithFlair(amount: int):
 	emit_signal("removePlayerHullStress", amount)
 	dialogue.add_text(str("[color=green](Minus ", amount, "% hull stress) [/color]"))
-	playSoundEffect("dialogue_success.wav")
+	playSoundEffect("success.wav")
 	pass
 
 func addMoraleWithFlair(amount: int):
 	emit_signal("addPlayerMorale", amount)
 	dialogue.add_text(str("[color=green](Plus ", amount, "% morale) [/color]"))
-	playSoundEffect("dialogue_success.wav")
+	playSoundEffect("success.wav")
 	pass
 
 func removeMoraleWithFlair(amount: int):
@@ -584,7 +585,7 @@ func discoverRandomBodyWithFlair() -> void:
 		var body: bodyAPI = undiscovered_bodies.pick_random()
 		emit_signal("foundBody", body.get_identifier())
 		dialogue.add_text(str("[color=green](Gained scan data for ", body.get_display_name(), ") [/color]"))
-		playSoundEffect("dialogue_success.wav") #easier than putting it in every single rule?
+		playSoundEffect("success.wav") #easier than putting it in every single rule?
 	else:
 		dialogue.add_text(str("[color=green](Gained no new scan data) [/color]"))
 	pass
@@ -597,12 +598,12 @@ func decreaseSecurityOfficerStanding(_amount: int) -> void:
 	player.decreaseCharacterStanding(characterAPI.OCCUPATIONS.SECURITY_OFFICER, _amount)
 	pass
 
-func getPlanetDescriptionWithFlair(planet_type: String):
+func getPlanetDescriptionWithFlair(planet_type: String) -> void:
 	var description: String = system.planet_descriptions.get(planet_type, String())
 	dialogue.add_text("[color=darkgray]%s [/color]" % description)
 	pass
 
-func getStarDescriptionWithFlair(star_type: String):
+func getStarDescriptionWithFlair(star_type: String) -> void:
 	var description: String = system.star_descriptions.get(star_type, String())
 	dialogue.add_text("[color=darkgray]%s [/color]" % description)
 	pass
@@ -623,6 +624,27 @@ func addRandomRewardWithFlair(rarity: String = "LOW") -> void:
 			for i in reward_types.get(reward).get(rarity) - 1:
 				discoverRandomBodyWithFlair()
 	pass
+
+func unlockRandomUpgradeWithFlair() -> void:
+	var IDs: Array[playerAPI.UPGRADE_ID] = []
+	for ID in player.UPGRADE_ID:
+		IDs.append(player.UPGRADE_ID.get(ID))
+	
+	var available_IDs = IDs.filter(is_available.bind(player.unlocked_upgrades))
+	
+	if available_IDs.size() > 0:
+		var random_ID = available_IDs.pick_random()
+		if player.is_upgrade_unlock_valid(random_ID):
+			emit_signal("upgradeShip", random_ID, int())
+			dialogue.add_text("[color=green](Unlocked %s) [/color]" % player.UPGRADE_ID.find_key(random_ID).capitalize())
+			playSoundEffect("success.wav")
+			return
+	dialogue.add_text("[color=green](Unlocked no new module) [/color]")
+	pass
+func is_available(ID: int, _unlocked_upgrades: Array[playerAPI.UPGRADE_ID]) -> bool:
+	if _unlocked_upgrades.find(ID) == -1:
+		return true
+	return false
 
 
 
