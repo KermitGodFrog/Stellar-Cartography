@@ -20,6 +20,7 @@ const default_achievements: Dictionary = {
 	preload("res://Data/Achievement/Achievements/anyAllModulesUnlocked.tres"): false,
 	preload("res://Data/Achievement/Achievements/anyAudioVisualizerUnlocked.tres"): false,
 	preload("res://Data/Achievement/Achievements/anyLongRangeScopesUnlocked.tres"): false,
+	preload("res://Data/Achievement/Achievements/anyGasLayerSurveyorUnlocked.tres"): false,
 	preload("res://Data/Achievement/Achievements/followingBodyWormholeInFrontier.tres"): false,
 	preload("res://Data/Achievement/Achievements/followingBodyWormholeInAbyss.tres"): false,
 	preload("res://Data/Achievement/Achievements/anyHullDeteriorationFifty.tres"): false,

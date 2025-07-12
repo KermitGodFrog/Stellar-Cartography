@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_n1br8")
 name = "I Spy"
-description = "Buy the Long Range Scopes module at a port during a run."
+description = "Buy the special Long Range Scopes module at a port during a run."
 dialogue_criteria = {
 "player_LONG_RANGE_SCOPES_unlocked": true
 }

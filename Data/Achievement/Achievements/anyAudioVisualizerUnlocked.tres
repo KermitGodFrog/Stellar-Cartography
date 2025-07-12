@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_qur7m")
 name = "Electromagnetic Vibrations"
-description = "Buy the Audio Visualizer module at a port during a run."
+description = "Buy the special Audio Visualizer module at a port during a run."
 dialogue_criteria = {
 "player_AUDIO_VISUALIZER_unlocked": true
 }

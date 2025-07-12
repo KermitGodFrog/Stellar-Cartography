@@ -9,6 +9,7 @@ description = "Buy all modules sold at ports in one run."
 dialogue_criteria = {
 "player_ADVANCED_SCANNING_unlocked": true,
 "player_AUDIO_VISUALIZER_unlocked": true,
+"player_GAS_LAYER_SURVEYOR_unlocked": true,
 "player_LONG_RANGE_SCOPES_unlocked": true,
 "player_NANITE_CONTROLLER_unlocked": true,
 "player_SCAN_PREDICTION_unlocked": true

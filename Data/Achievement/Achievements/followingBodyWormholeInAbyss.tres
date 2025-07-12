@@ -8,7 +8,7 @@ name = "Destination: The Unknown"
 description = "Go-to a wormhole in the Abyss region during a run. Some things are better left unknown."
 dialogue_criteria = {
 "concept": "followingBody",
-"id": "wormhole",
-"player_in_ABYSS_region": true
+"player_in_ABYSS_region": true,
+"type": "WORMHOLE"
 }
-index = 10
+index = 11

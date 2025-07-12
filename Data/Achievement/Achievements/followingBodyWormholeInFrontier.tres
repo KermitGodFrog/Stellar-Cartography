@@ -8,7 +8,7 @@ name = "Destination: Pirate Haven"
 description = "Go-to a wormhole in the treacherous Frontier region during a run."
 dialogue_criteria = {
 "concept": "followingBody",
-"id": "wormhole",
-"player_in_FRONTIER_region": true
+"player_in_FRONTIER_region": true,
+"type": "WORMHOLE"
 }
-index = 9
+index = 10
