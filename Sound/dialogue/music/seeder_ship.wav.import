@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://bfmy76ov17s5y"
-path="res://.godot/imported/generation_ship.wav-aaf45ef24f376f77e2c3a8d65f091bdc.sample"
+path="res://.godot/imported/seeder_ship.wav-8bb1a160e0df8eeda100904123f1f5bb.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/music/generation_ship.wav"
-dest_files=["res://.godot/imported/generation_ship.wav-aaf45ef24f376f77e2c3a8d65f091bdc.sample"]
+source_file="res://Sound/dialogue/music/seeder_ship.wav"
+dest_files=["res://.godot/imported/seeder_ship.wav-8bb1a160e0df8eeda100904123f1f5bb.sample"]
 
 [params]
 
