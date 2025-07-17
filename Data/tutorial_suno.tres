@@ -1,0 +1,187 @@
+[gd_resource type="Resource" script_class="starSystemAPI" load_steps=15 format=3 uid="uid://bhqtlq0blu17n"]
+
+[ext_resource type="Script" path="res://Data/BodyAPIs/bodyAPI.gd" id="1_wqt4h"]
+[ext_resource type="Script" path="res://Data/BodyAPIs/circularBodyAPI.gd" id="2_ayvjj"]
+[ext_resource type="Script" path="res://Data/starSystemAPI.gd" id="2_svsgr"]
+[ext_resource type="Script" path="res://Data/BodyAPIs/planetBodyAPI.gd" id="3_5alrp"]
+[ext_resource type="Resource" uid="uid://bpiesga64f2aj" path="res://Data/tutorial_ghost.tres" id="4_6a20n"]
+[ext_resource type="Script" path="res://Data/BodyAPIs/wormholeBodyAPI.gd" id="5_h2sx4"]
+
+[sub_resource type="Resource" id="Resource_2k4rg"]
+script = ExtResource("2_ayvjj")
+mass = 0.236
+surface_color = Color(0, 0, 0, 1)
+current_type = 0
+identifier = 1
+display_name = ""
+hook_identifier = 0
+metadata = {
+"discovery_multiplier": 1.0,
+"iterations": 25,
+"luminosity": 0.047,
+"star_type": "M"
+}
+orbit_distance = 0.0
+orbit_speed = 0.0
+radius = 0.399
+position = Vector2(0, 0)
+rotation = 0.0
+pings_to_be_theorised = 3
+theorised = false
+known = true
+hidden = false
+
+[sub_resource type="Resource" id="Resource_uenxk"]
+script = ExtResource("3_5alrp")
+current_variation = 1
+guessed_variation = -1
+layers = -1
+mass = 0.0
+surface_color = Color(0, 1, 0, 1)
+current_type = 1
+identifier = 2
+display_name = "Ante"
+hook_identifier = 1
+metadata = {
+"iterations": 12,
+"planet_classification": "Terran",
+"planet_type": "Earth-like",
+"seed": 0,
+"value": 16784
+}
+orbit_distance = 37.271
+orbit_speed = 0.017
+radius = 0.004
+position = Vector2(0, 0)
+rotation = 5.799
+pings_to_be_theorised = 3
+theorised = false
+known = true
+hidden = false
+
+[sub_resource type="Resource" id="Resource_h7vb3"]
+script = ExtResource("3_5alrp")
+current_variation = 0
+guessed_variation = -1
+layers = -1
+mass = 0.0
+surface_color = Color(1, 1, 1, 1)
+current_type = 1
+identifier = 3
+display_name = "Arata"
+hook_identifier = 1
+metadata = {
+"iterations": 12,
+"planet_classification": "Terran",
+"planet_type": "Ice",
+"seed": 0,
+"value": 1873
+}
+orbit_distance = 93.072
+orbit_speed = 0.007
+radius = 0.006
+position = Vector2(0, 0)
+rotation = 3.817
+pings_to_be_theorised = 3
+theorised = false
+known = true
+hidden = false
+
+[sub_resource type="Resource" id="Resource_kf63k"]
+script = ExtResource("5_h2sx4")
+destination_system = ExtResource("4_6a20n")
+post_jumps_remaining = 0
+disabled = true
+mass = 0.0
+surface_color = Color(0.502, 0, 0.502, 1)
+current_type = 3
+identifier = 4
+display_name = "Egress"
+hook_identifier = 1
+metadata = {
+"destination_star_type": "M"
+}
+orbit_distance = 45.252
+orbit_speed = 0.015
+radius = 0.005
+position = Vector2(0, 0)
+rotation = 6.284
+pings_to_be_theorised = 3
+theorised = false
+known = true
+hidden = false
+
+[sub_resource type="Resource" id="Resource_y01rm"]
+script = ExtResource("2_svsgr")
+identifier = 0
+display_name = ""
+destination_systems = Array[ExtResource("2_svsgr")]([])
+bodies = Array[ExtResource("1_wqt4h")]([])
+identifier_count = 1
+post_gen_location_candidates = []
+name_scheme = 0
+special_system_classification = 0
+system_hazard_classification = 0
+system_hazard_metadata = {}
+
+[sub_resource type="Resource" id="Resource_bk4fa"]
+script = ExtResource("5_h2sx4")
+destination_system = SubResource("Resource_y01rm")
+post_jumps_remaining = 0
+disabled = false
+mass = 0.0
+surface_color = Color(0.502, 0, 0.502, 1)
+current_type = 3
+identifier = 5
+display_name = "Peregrination"
+hook_identifier = 1
+metadata = {}
+orbit_distance = 103.573
+orbit_speed = 0.011
+radius = 0.004
+position = Vector2(0, 0)
+rotation = 2.587
+pings_to_be_theorised = 3
+theorised = false
+known = true
+hidden = false
+
+[sub_resource type="Resource" id="Resource_q12d6"]
+script = ExtResource("2_svsgr")
+identifier = 0
+display_name = ""
+destination_systems = Array[ExtResource("2_svsgr")]([])
+bodies = Array[ExtResource("1_wqt4h")]([])
+identifier_count = 1
+post_gen_location_candidates = []
+name_scheme = 0
+special_system_classification = 0
+system_hazard_classification = 0
+system_hazard_metadata = {}
+
+[sub_resource type="Resource" id="Resource_8j7or"]
+script = ExtResource("2_svsgr")
+identifier = 0
+display_name = ""
+destination_systems = Array[ExtResource("2_svsgr")]([])
+bodies = Array[ExtResource("1_wqt4h")]([])
+identifier_count = 1
+post_gen_location_candidates = []
+name_scheme = 0
+special_system_classification = 0
+system_hazard_classification = 0
+system_hazard_metadata = {}
+
+[resource]
+script = ExtResource("2_svsgr")
+identifier = 1
+display_name = "tutorial_suno"
+previous_system = ExtResource("4_6a20n")
+destination_systems = Array[ExtResource("2_svsgr")]([SubResource("Resource_q12d6"), SubResource("Resource_8j7or")])
+bodies = Array[ExtResource("1_wqt4h")]([SubResource("Resource_2k4rg"), SubResource("Resource_uenxk"), SubResource("Resource_h7vb3"), SubResource("Resource_kf63k"), SubResource("Resource_bk4fa")])
+identifier_count = 1
+post_gen_location_candidates = []
+name_scheme = 0
+special_system_classification = 0
+system_hazard_classification = 0
+system_hazard_metadata = {}

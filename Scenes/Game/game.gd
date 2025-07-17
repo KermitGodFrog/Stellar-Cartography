@@ -47,13 +47,15 @@ func _ready():
 		new_player.connect("dataValueChanged", _on_player_data_value_changed)
 		new_player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
 		
-		var new: starSystemAPI = load("res://Data/tutorial_system.tres")
-		world.star_systems.append(new)
+		var king: starSystemAPI = load("res://Data/tutorial_king.tres")
+		var suno: starSystemAPI = load("res://Data/tutorial_suno.tres")
+		world.star_systems.append(king)
+		world.star_systems.append(suno)
 		
 		world.player.systems_traversed = 4
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
-		_on_switch_star_system(new)
+		_on_switch_star_system(king)
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 		world.player.position = Vector2(60, 0)
