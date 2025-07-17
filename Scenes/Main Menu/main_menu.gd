@@ -25,7 +25,7 @@ var SHOW_ACHIEVEMENTS_LIST_POPUP: bool = false:
 			achievements_list_popup.hide()
 
 const background_images: Array = [
-	preload("res://Graphics/Dialogue/SA_01_generation_ship_OFF.png"),
+	preload("res://Graphics/Dialogue/SA03G_seeder_ship_OFF.png"),
 	preload("res://Graphics/Dialogue/PA_04_missing_core.png")
 ]
 
