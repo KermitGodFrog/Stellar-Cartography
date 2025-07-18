@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="starSystemAPI" load_steps=13 format=3 uid="uid://bhqtlq0blu17n"]
+[gd_resource type="Resource" script_class="starSystemAPI" load_steps=15 format=3 uid="uid://bhqtlq0blu17n"]
 
 [ext_resource type="Script" path="res://Data/BodyAPIs/bodyAPI.gd" id="1_wqt4h"]
 [ext_resource type="Script" path="res://Data/BodyAPIs/circularBodyAPI.gd" id="2_ayvjj"]
 [ext_resource type="Script" path="res://Data/starSystemAPI.gd" id="2_svsgr"]
 [ext_resource type="Script" path="res://Data/BodyAPIs/planetBodyAPI.gd" id="3_5alrp"]
 [ext_resource type="Script" path="res://Data/BodyAPIs/wormholeBodyAPI.gd" id="5_h2sx4"]
+[ext_resource type="Script" path="res://Data/BodyAPIs/stationBodyAPI.gd" id="6_sgroa"]
 
 [sub_resource type="Resource" id="Resource_2k4rg"]
 script = ExtResource("2_ayvjj")
@@ -160,12 +161,32 @@ theorised = false
 known = true
 hidden = false
 
+[sub_resource type="Resource" id="Resource_g738h"]
+script = ExtResource("6_sgroa")
+station_classification = 0
+sell_percentage_of_market_price = 200
+is_module_store_disabled = false
+current_type = 4
+identifier = 6
+display_name = "Tomo Sewi Locus"
+hook_identifier = 2
+metadata = {}
+orbit_distance = 2.592
+orbit_speed = 0.01
+radius = 0.004
+position = Vector2(0, 0)
+rotation = 1.106
+pings_to_be_theorised = 3
+theorised = false
+known = true
+hidden = false
+
 [resource]
 script = ExtResource("2_svsgr")
 identifier = 1
 display_name = "tutorial_suno"
 destination_systems = Array[ExtResource("2_svsgr")]([])
-bodies = Array[ExtResource("1_wqt4h")]([SubResource("Resource_2k4rg"), SubResource("Resource_uenxk"), SubResource("Resource_h7vb3"), SubResource("Resource_kf63k"), SubResource("Resource_bk4fa")])
+bodies = Array[ExtResource("1_wqt4h")]([SubResource("Resource_2k4rg"), SubResource("Resource_uenxk"), SubResource("Resource_h7vb3"), SubResource("Resource_kf63k"), SubResource("Resource_bk4fa"), SubResource("Resource_g738h")])
 identifier_count = 1
 post_gen_location_candidates = []
 name_scheme = 0
