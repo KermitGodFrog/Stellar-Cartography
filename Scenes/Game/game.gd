@@ -214,6 +214,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
+	dialogue_manager.connect("TUTORIALEnterIngress", _on_tutorial_enter_ingress)
 	
 	pause_menu.connect("saveWorld", _on_save_world)
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
@@ -900,6 +901,34 @@ func _on_tutorial_set_omission_override(value: bool):
 
 func _on_tutorial_player_win():
 	_on_open_stats_menu(stats_menu.INIT_TYPES.TUTORIAL)
+	pass
+
+func _on_tutorial_enter_ingress(): #override for INGRESS, not a return value so i dont clog up _on_player_following_body
+	#hard coded because i cant be fucking bothered
+	var suno = world.get_system_from_identifier(1)
+	var egress = suno.get_body_from_identifier(4)
+	
+	world.player.previous_star_system = world.player.current_star_system
+	world.player.systems_traversed += 1
+	
+	_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+	for body in suno.bodies:
+		suno.updateBodyPosition(body.get_identifier(), get_physics_process_delta_time())
+	world.player.position = egress.position
+	world.player.setTargetPosition(world.player.position)
+	world.player.updatePosition(get_physics_process_delta_time())
+	
+	system_map._on_clear_console_entries()
+	_on_switch_star_system(suno)
+	barycenter_visualizer.locked_body_identifier = 0
+	
+	system_map.follow_body = null
+	system_map.locked_body = null
+	system_map.action_body = null
+	
+	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
+	_on_wormhole_minigame_popup()
+	_on_player_entering_system(suno)
 	pass
 
 func _on_add_player_morale(amount : int) -> void:

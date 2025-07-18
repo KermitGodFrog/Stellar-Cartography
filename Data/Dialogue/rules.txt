@@ -343,7 +343,8 @@ tutorialIngressOrbiting,concept: tutorialIngressOrbitingPortalResponse,tutorialI
 tutorialIngressOrbitingCancel,"concept: tutorialIngressOrbitingPortalResponse, tutorialIngressOrbitingPREV: true",,,,,,,,,
 ,,,,,,,,,,
 tutorialIngressFollowingPortal,"concept: followingBody, type: WORMHOLE, name: Ingress, tutorial: true",,,,,tutorialIngressFollowingPortalResponse,,,,
-tutorialIngressFollowing,concept: tutorialIngressFollowingPortalResponse,tutorialIngressFollowingPREV: true,"openDialog: null, objectiveSuccess: tutorialFollowIngress",defaultApproachMessage,,,,,Enter the Wormhole:enterWormhole,"The wormhole glows a dull purple; its surface depicts the space around another star. Anti-protons are ejected in thin flux ropes, but no sooner snatched back into the distortion. Instruments go haywire as your starship approaches."
+tutorialIngressFollowing,concept: tutorialIngressFollowingPortalResponse,tutorialIngressFollowingPREV: true,"openDialog: null, objectiveSuccess: tutorialFollowIngress",defaultApproachMessage,,,,,Enter the Wormhole:tutorialIngressEnterCarry,"The wormhole glows a dull purple; its surface depicts the space around another star. Anti-protons are ejected in thin flux ropes, but no sooner snatched back into the distortion. Instruments go haywire as your starship approaches."
+tutorialIngressEnterCarry,"concept: optionSelected, option: tutorialIngressEnterCarry",,"closeDialog: null, _TUTORIALEnterIngress: null",,,,,,,
 tutorialIngressFollowingCancel,"concept: tutorialIngressFollowingPortalResponse, tutorialIngressFollowingPREV: true",,,,,,,,,
 tutorialIngressFollowingPlotCancel,"concept: tutorialIngressFollowingPortalResponse, tutorialIngressOrbitingPREV: false",,openDialog: null,defaultApproachMessage,,,,,Apologise and enter orbit:defaultLeave,"The helmsman on duty looks exasperated. ""Captain, I apologise,"" he begins, ""but I was under the impression that we would first enter orbit."" He pauses to steady himself. ""We have not completed all of the calculations - if we enter the wormhole now, the ship will get torn apart."""
 ,,,,,,,,,,
@@ -391,9 +392,9 @@ tutorialAnteRespitePortal,concept: tutorialAnteRespitePortal,,,,tutorialAnteResp
 tutorialAnteTransportWalkA,"concept: optionSelected, option: tutorialAnteTransportWalkA",,,,,,,,Launch: tutorialAnteTransportWalkB,"Several complications prevent your return to the transport before Suno falls below the horizon, much to the chagrin of yourself and your spine struggling under the high gravity. As you and Rui once again walk down Unity Pathway, a shuttle takes off in the distance. The light from its drive plume flares harsh shadows across the flagpoles, the flora, and the marine twenty steps in front of you. The following shockwave nearly knocks the beret off of your first officers head. You mutter something about it being 'easy to be a saint in paradise', and he agrees. You reach the transport about halfway through the planets night cycle."
 tutorialAnteTransportWalkB,"concept: optionSelected, option: tutorialAnteTransportWalkB",,,,,,,,Leave: defaultLeave,"The transport lifts off from a flooded launchpad following another round of discipline from the duty officer, a lengthy preflight checklist, and your personal confirmation. Spiriten quickly falls away during the orbital insertion burn. According to the timepiece aboard your starship, a full day has passed by the time the transport docks."
 ,,,,,,,,,,
-tutorialPeregrinationFollowing,"concept: followingBody, type: WORMHOLE, name: Peregrination, tutorial: true",,openDialog: null,defaultApproachMessage,,,,,Enter the Wormhole:tutorialPlayerWin,
+tutorialPeregrinationFollowing,"concept: followingBody, type: WORMHOLE, name: Peregrination, tutorial: true",,openDialog: null,defaultApproachMessage,,,,,Enter the Wormhole:tutorialPeregrinationEnterCarry,
+tutorialPeregrinationEnterCarry,"concept: optionSelected, option: tutorialPeregrinationEnterCarry",,"closeDialog: null, _TUTORIALPlayerWin: null",,,,,,,
 ,,,,,,,,,,
-tutorialPlayerWin,"concept: optionSelected, option: tutorialPlayerWin",,"closeDialog: null, _TUTORIALPlayerWin: null",,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,

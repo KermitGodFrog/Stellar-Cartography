@@ -36,6 +36,7 @@ signal rollNavBuoy(anomaly_seed: int)
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
+signal TUTORIALEnterIngress()
 
 var dialogue_memory: Dictionary = {} #memory that is added by any query, and is always accessible indefinitely. from worldAPI dialogue_memory which is sent via game.gd
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
@@ -716,4 +717,8 @@ func _TUTORIALSetOmissionOverride(value: bool):
 
 func _TUTORIALPlayerWin():
 	emit_signal("TUTORIALPlayerWin")
+	pass
+
+func _TUTORIALEnterIngress():
+	emit_signal("TUTORIALEnterIngress")
 	pass
