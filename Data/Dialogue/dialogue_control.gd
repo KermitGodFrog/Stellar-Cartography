@@ -6,7 +6,7 @@ extends Control
 @onready var music = $music
 @onready var option = preload("res://Data/Dialogue/dialogue_option.tscn")
 
-const TYPING_SPEED: int = 350.0 #could have this in settings! good test for a slider option!
+const TYPING_SPEED: int = 500 #could have this in settings! good test for a slider option!
 var typing_position: float = 0.0
 var options_added: int = 0 #added since last clear
 func _process(delta):
