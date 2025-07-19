@@ -47,7 +47,7 @@ var system: starSystemAPI
 var player: playerAPI
 
 var rules: Array[responseRule] = []
-enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, QUERY_FULL_BEST_CONCEPT, OPTIONS, TEXT}
+enum POINTERS {RULE, CRITERIA, TRIGGER_FUNCTIONS, TRIGGER_RULES, TEXT, OPTIONS, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, QUERY_OLD_BEST_CONCEPT, APPLY_FACTS}
 
 var _achievements_array: Array[responseAchievement] = []
 
@@ -96,10 +96,6 @@ func clear_and_load_rules() -> void:
 					var dict = convert_to_dictionary(cell)
 					if not dict.is_empty() and new_rule != null:
 						new_rule.criteria = dict
-				"APPLY_FACTS":
-					var dict = convert_to_dictionary(cell)
-					if not dict.is_empty() and new_rule != null:
-						new_rule.apply_facts = dict
 				"TRIGGER_FUNCTIONS":
 					var dict = convert_to_dictionary(cell)
 					if not dict.is_empty() and new_rule != null:
@@ -108,6 +104,14 @@ func clear_and_load_rules() -> void:
 					var array = convert_to_array(cell)
 					if not array.is_empty() and new_rule != null:
 						new_rule.trigger_rules = array
+				"TEXT": #not in execution order
+					var text = convert_to_string(cell)
+					if not text.is_empty() and new_rule != null:
+						new_rule.text = cell
+				"OPTIONS": #not in execution order
+					var dict = convert_to_dictionary(cell)
+					if not dict.is_empty() and new_rule != null:
+						new_rule.options = dict
 				"QUERY_ALL_CONCEPT":
 					var array = convert_to_array(cell)
 					if not array.is_empty() and new_rule != null:
@@ -124,14 +128,10 @@ func clear_and_load_rules() -> void:
 					var array = convert_to_array(cell)
 					if not array.is_empty() and new_rule != null:
 						new_rule.query_old_best_concept = array
-				"OPTIONS":
+				"APPLY_FACTS": #not in execution order
 					var dict = convert_to_dictionary(cell)
 					if not dict.is_empty() and new_rule != null:
-						new_rule.options = dict
-				"TEXT":
-					var text = convert_to_string(cell)
-					if not text.is_empty() and new_rule != null:
-						new_rule.text = cell
+						new_rule.apply_facts = dict
 			
 			if POINTERS.values()[current_pointer] == POINTERS.values().back(): current_pointer = POINTERS.values().front()
 			else: current_pointer = POINTERS.values()[current_pointer + 1]
@@ -381,7 +381,8 @@ func get_relevant_rules(incoming_query: responseQuery) -> Array[responseRule]:
 
 func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQuery):
 	print("QUERY HANDLER: ", calling, " TRIGGERING RULE ", rule.get_name())
-	#apply_facts: \\\\\\\\\\\\\
+	
+	#apply_facts: \\\\\\\\\\\\\ BEFORE EVERYTHING THAT REFRESHES DIALOGUE MEMORY \/\/\/\/ (MESSES WITH ACTUAL COLUMN ORDER IN THE DOC)
 	for fact in rule.apply_facts:
 		emit_signal("addDialogueMemoryPair", fact, rule.apply_facts.get(fact))
 		print("QUERY HANDLER: ", calling, " APPLYING FACT ", fact)
@@ -427,9 +428,9 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 		new_query.add("concept", concept)
 		speak(calling, new_query, true, QUERY_TYPES.OLD_BEST)
 	
-	#text & options \\\\\\\\\\\\\
+	#text & options \\\\\\\\\\\\\ (MESSES WITH ACTUAL COLUMN ORDER IN THE DOC)
 	if rule.text: dialogue.add_text(replace_fact_references(rule.text, incoming_query))
-	if rule.options: dialogue.add_options(rule.options)
+	if rule.options: dialogue.add_options(rule.options) #last so the order doesnt get muddled. too late in development to refactor.
 	pass
 
 func replace_fact_references(text: String, query: responseQuery) -> String:
