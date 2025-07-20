@@ -33,6 +33,7 @@ signal foundBody(id: int)
 signal addPlayerMutinyBacking(amount: int)
 signal upgradeShip(_upgrade_idx: playerAPI.UPGRADE_ID, _cost: int)
 signal rollNavBuoy(anomaly_seed: int)
+signal superchargePlayerForJumps(jumps: int) #saying superchargePlayerForJumps is like saying addPlayerValueForPlayerInternalValueCounter
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
@@ -671,6 +672,12 @@ func _on_receive_nav_buoy_roll(roll: Array) -> void:
 		false:
 			addValueWithFlair(25000)
 			dialogue.add_text("%s This transponder code is already present in on-board databanks; the extremely low probability of encountering the heritage of the same ship more than once so deep in space makes the data valuable for understanding the nature of wormhole travel." % base_message)
+	pass
+
+func superchargeForJumpsWithFlair(jumps: int) -> void:
+	emit_signal("superchargePlayerForJumps", jumps)
+	dialogue.add_text("[color=green](Supercharged for plus %.f jumps) [/color]" % jumps)
+	playSoundEffect("success.wav")
 	pass
 
 

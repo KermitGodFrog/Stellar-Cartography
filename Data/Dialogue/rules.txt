@@ -1,9 +1,10 @@
 Rule,Criteria,Trigger Functions,Trigger Rules,Text,Options,Query All Concept,Query Best Concept,Query Rand Best Concept,Query Old Best Concept,Apply Facts
 # defaults,,,,,,,,,,
-DEBUG_printTestOpenDialog,concept: DEBUG_printTest,openDialog: null,,"$concept $player_name $player_prefix $player_prefix_lower $player_speed $player_balance $player_current_value $player_total_score $player_max_jumps $player_jumps_remaining $player_weirdness_index ... $player_in_ANY_region , $player_in_ABYSS_region +++ $player_CHIEF_ENGINEER_alive yjiodsgiogs $randf","gooble: DEBUG_printTestGooble, $player_name: defaultLeave",,DEBUG_printTestSwitch,,,
+DEBUG_printTestOpenDialog,concept: DEBUG_printTest,openDialog: null,,"$concept $player_name $player_prefix $player_prefix_lower $player_speed $player_balance $player_current_value $player_total_score $player_max_jumps $player_jumps_remaining $player_weirdness_index ... $player_in_ANY_region , $player_in_ABYSS_region +++ $player_CHIEF_ENGINEER_alive yjiodsgiogs $randf","gooble: DEBUG_printTestGooble, globble: DEBUG_printTestGlobble, Leave: defaultLeave",,DEBUG_printTestSwitch,,,
 DEBUG_printTestA,"concept: DEBUG_printTestSwitch, APPLIED_FACT: true",,,"if you are reading this, the applied fact is true",,,,,,
 DEBUG_printTestB,concept: DEBUG_printTestSwitch,,,"if you are reading this, the applied fact is false",,,,,,APPLIED_FACT: true
-DEBUG_printTestGooble,"concept: optionSelected, option: DEBUG_printTestGooble",clearFact: APPLIED_FACT,,,,,,,,
+DEBUG_printTestGooble,"concept: optionSelected, option: DEBUG_printTestGooble",clearFact: APPLIED_FACT,,glooble,Leave:defaultLeave,,,,,
+DEBUG_printTestGlobble,"concept: optionSelected, option: DEBUG_printTestGlobble",superchargeForJumpsWithFlair: 1,,globble,Leave:defaultLeave,,,,,
 ,,,,,,,,,,
 defaultOpenDialog,concept: followingBody,openDialog: null,defaultApproachMessage,,Leave:defaultLeave,,,,,
 defaultLeave,"concept: optionSelected, option: defaultLeave",closeDialog: null,,,,,,,,

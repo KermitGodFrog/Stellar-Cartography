@@ -211,6 +211,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("addPlayerMutinyBacking", _on_add_player_mutiny_backing)
 	dialogue_manager.connect("upgradeShip", _on_upgrade_ship)
 	dialogue_manager.connect("rollNavBuoy", _on_roll_nav_buoy)
+	dialogue_manager.connect("superchargePlayerForJumps", _on_supercharge_player_for_jumps)
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
@@ -680,6 +681,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	system_3d.reset_locked_body()
 	journey_map.add_new_system(world.player.systems_traversed)
 	journey_map.jumps_remaining = world.player.get_jumps_remaining() #required as it needs to update when the players system on game startup is loaded, not just wormhole traversal!
+	system_map.player_supercharged = world.player.supercharged #also updated when player supercharge_jumps_remaining is updated
 	_on_process_system_hazard(to_system)
 	return to_system
 
@@ -1009,6 +1011,11 @@ func _on_update_objectives_panel(_active_objectives: Array[objectiveAPI]) -> voi
 
 func _on_roll_nav_buoy(_anomaly_seed: int) -> void: # i mean, technically its LEGAL?
 	dialogue_manager._on_receive_nav_buoy_roll(world.roll_nav_buoy(_anomaly_seed))
+	pass
+
+func _on_supercharge_player_for_jumps(jumps: int):
+	world.player.supercharge_jumps_remaining += jumps
+	system_map.player_supercharged = world.player.supercharged #also updated when the player enters a new system
 	pass
 
 func _on_open_LRS():

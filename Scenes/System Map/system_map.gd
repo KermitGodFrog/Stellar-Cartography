@@ -125,6 +125,10 @@ var player_in_asteroid_belt: bool = false:
 			#travel_modifier_label.check_modifier("asteroid_belt", "Asteroid belt (0.5x R%c/s)" % "☉", value)
 			travel_modifier_label.check_modifier("asteroid_belt", "Asteroid belt", value)
 		player_in_asteroid_belt = value
+var player_supercharged: bool = false:
+	set(value):
+		player_supercharged = value
+		travel_modifier_label.check_modifier("supercharged", "Supercharged", value)
 
 
 func _ready():

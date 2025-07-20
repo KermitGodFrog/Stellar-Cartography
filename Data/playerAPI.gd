@@ -19,12 +19,17 @@ signal actionTypePendingOrCompleted(_type: ACTION_TYPES, _body: bodyAPI, _pendin
 @export var speed: int = 3
 func get_adjusted_speed() -> int:
 	if boosting:
-		return speed * 5 * (1 + (-int(in_asteroid_belt) * 0.5))
+		return speed * 5 * (1 + (-int(in_asteroid_belt) * 0.5)) * (1 + int(supercharged))
 	else:
-		return speed * (1 + (-int(in_asteroid_belt) * 0.5))
+		return speed * (1 + (-int(in_asteroid_belt) * 0.5)) * (1 + int(supercharged))
 
 var boosting: bool = false
 var in_asteroid_belt: bool = false
+var supercharged: bool = false:
+	get():
+		if supercharge_jumps_remaining > 0:
+			return true
+		return false
 
 @export var balance: int = 0
 @export var current_value: int = 0:
@@ -76,6 +81,7 @@ var current_SPL_upgrades: int = 0:
 @export var discovered_gas_layers: PackedInt32Array = []
 
 @export_storage var CME_immune: bool = false #didnt know where to put this
+@export_storage var supercharge_jumps_remaining: int = 0
 
 @export var characters: Array[characterAPI] = [
 	preload("res://Data/Characters/rui.tres"),
@@ -212,11 +218,13 @@ func resetJumpsRemaining():
 
 func removeJumpsRemaining(amount: int):
 	jumps_remaining = maxi(0, jumps_remaining - amount)
+	supercharge_jumps_remaining = maxi(0, supercharge_jumps_remaining - amount)
 	pass
 
 func addJumpsRemaining(amount: int):
 	jumps_remaining = mini(max_jumps, jumps_remaining + amount)
 	pass
+
 
 
 
@@ -252,6 +260,7 @@ func is_upgrade_unlock_valid(upgrade_idx: UPGRADE_ID) -> bool:
 		return true
 	else:
 		return false
+
 
 
 
