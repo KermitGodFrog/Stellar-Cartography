@@ -853,11 +853,6 @@ func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int
 	station_ui.player_hull_stress = world.player.hull_stress
 	pass
 
-func _on_add_dialogue_memory_pair(key, value):
-	world.dialogue_memory[key] = value
-	dialogue_manager.dialogue_memory = world.dialogue_memory
-	pass
-
 func _on_open_pause_menu():
 	pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.PAUSE_MENU)
 	pass

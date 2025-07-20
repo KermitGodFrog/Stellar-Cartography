@@ -6,7 +6,7 @@ class_name worldAPI
 @export var player: playerAPI
 @export_storage var identifier_count: int = 1
 
-@export var dialogue_memory: Dictionary = {}
+@export var dialogue_memory: Dictionary = {} #how the fuck does it akways have access to the updated version of this???
 @export var active_objectives: Array[objectiveAPI] = []
 
 #KEY CUSTOMIZATION

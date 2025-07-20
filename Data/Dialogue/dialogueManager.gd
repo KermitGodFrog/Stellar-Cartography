@@ -38,7 +38,7 @@ signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
 signal TUTORIALEnterIngress()
 
-var dialogue_memory: Dictionary = {} #memory that is added by any query, and is always accessible indefinitely. from worldAPI dialogue_memory which is sent via game.gd
+var dialogue_memory: Dictionary = {} #memory that is added by any query, and is always accessible indefinitely. from worldAPI dialogue_memory which is sent via game.gd HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
 enum QUERY_TYPES {BEST, ALL, RAND_BEST, OLD_BEST}
 
@@ -54,7 +54,7 @@ var _achievements_array: Array[responseAchievement] = []
 @onready var dialogue = $dialogue/dialogue_control
 
 func _ready() -> void:
-	addDialogueMemoryPair.connect(_on_add_dialogue_memory_pair) #im connecitng this signal to its own script because im not sure if it does anything else / is important
+	addDialogueMemoryPair.connect(_on_add_dialogue_memory_pair) #how the fuck does this work
 	clear_and_load_rules()
 	pass
 
@@ -501,6 +501,12 @@ func closeDialog(with_return_state = null):
 	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	dialogue.stop_music()
 	pass
+
+func clearFact(key: String) -> void:
+	dialogue_memory.erase(key)
+	pass
+
+
 
 func clearText():
 	dialogue.clear_text()
