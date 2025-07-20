@@ -33,11 +33,14 @@ signal foundBody(id: int)
 signal addPlayerMutinyBacking(amount: int)
 signal upgradeShip(_upgrade_idx: playerAPI.UPGRADE_ID, _cost: int)
 signal rollNavBuoy(anomaly_seed: int)
+signal superchargePlayerForJumps(jumps: int) #saying superchargePlayerForJumps is like saying addPlayerValueForPlayerInternalValueCounter
+signal modifyCharacterStanding(occupation: characterAPI.OCCUPATIONS, amount: int, _increase: bool)
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
+signal TUTORIALEnterIngress()
 
-var dialogue_memory: Dictionary = {} #memory that is added by any query, and is always accessible indefinitely. from worldAPI dialogue_memory which is sent via game.gd
+var dialogue_memory: Dictionary = {} #memory that is added by any query, and is always accessible indefinitely. from worldAPI dialogue_memory which is sent via game.gd HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
 enum QUERY_TYPES {BEST, ALL, RAND_BEST, OLD_BEST}
 
@@ -46,14 +49,14 @@ var system: starSystemAPI
 var player: playerAPI
 
 var rules: Array[responseRule] = []
-enum POINTERS {RULE, CRITERIA, APPLY_FACTS, TRIGGER_FUNCTIONS, TRIGGER_RULES, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, QUERY_FULL_BEST_CONCEPT, OPTIONS, TEXT}
+enum POINTERS {RULE, CRITERIA, TRIGGER_FUNCTIONS, TRIGGER_RULES, TEXT, OPTIONS, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, QUERY_OLD_BEST_CONCEPT, APPLY_FACTS}
 
 var _achievements_array: Array[responseAchievement] = []
 
 @onready var dialogue = $dialogue/dialogue_control
 
 func _ready() -> void:
-	addDialogueMemoryPair.connect(_on_add_dialogue_memory_pair) #im connecitng this signal to its own script because im not sure if it does anything else / is important
+	addDialogueMemoryPair.connect(_on_add_dialogue_memory_pair) #how the fuck does this work
 	clear_and_load_rules()
 	pass
 
@@ -95,10 +98,6 @@ func clear_and_load_rules() -> void:
 					var dict = convert_to_dictionary(cell)
 					if not dict.is_empty() and new_rule != null:
 						new_rule.criteria = dict
-				"APPLY_FACTS":
-					var dict = convert_to_dictionary(cell)
-					if not dict.is_empty() and new_rule != null:
-						new_rule.apply_facts = dict
 				"TRIGGER_FUNCTIONS":
 					var dict = convert_to_dictionary(cell)
 					if not dict.is_empty() and new_rule != null:
@@ -107,6 +106,14 @@ func clear_and_load_rules() -> void:
 					var array = convert_to_array(cell)
 					if not array.is_empty() and new_rule != null:
 						new_rule.trigger_rules = array
+				"TEXT": #not in execution order
+					var text = convert_to_string(cell)
+					if not text.is_empty() and new_rule != null:
+						new_rule.text = cell
+				"OPTIONS": #not in execution order
+					var dict = convert_to_dictionary(cell)
+					if not dict.is_empty() and new_rule != null:
+						new_rule.options = dict
 				"QUERY_ALL_CONCEPT":
 					var array = convert_to_array(cell)
 					if not array.is_empty() and new_rule != null:
@@ -123,14 +130,10 @@ func clear_and_load_rules() -> void:
 					var array = convert_to_array(cell)
 					if not array.is_empty() and new_rule != null:
 						new_rule.query_old_best_concept = array
-				"OPTIONS":
+				"APPLY_FACTS": #not in execution order
 					var dict = convert_to_dictionary(cell)
 					if not dict.is_empty() and new_rule != null:
-						new_rule.options = dict
-				"TEXT":
-					var text = convert_to_string(cell)
-					if not text.is_empty() and new_rule != null:
-						new_rule.text = cell
+						new_rule.apply_facts = dict
 			
 			if POINTERS.values()[current_pointer] == POINTERS.values().back(): current_pointer = POINTERS.values().front()
 			else: current_pointer = POINTERS.values()[current_pointer + 1]
@@ -380,7 +383,8 @@ func get_relevant_rules(incoming_query: responseQuery) -> Array[responseRule]:
 
 func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQuery):
 	print("QUERY HANDLER: ", calling, " TRIGGERING RULE ", rule.get_name())
-	#apply_facts: \\\\\\\\\\\\\
+	
+	#apply_facts: \\\\\\\\\\\\\ BEFORE EVERYTHING THAT REFRESHES DIALOGUE MEMORY \/\/\/\/ (MESSES WITH ACTUAL COLUMN ORDER IN THE DOC)
 	for fact in rule.apply_facts:
 		emit_signal("addDialogueMemoryPair", fact, rule.apply_facts.get(fact))
 		print("QUERY HANDLER: ", calling, " APPLYING FACT ", fact)
@@ -426,9 +430,9 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 		new_query.add("concept", concept)
 		speak(calling, new_query, true, QUERY_TYPES.OLD_BEST)
 	
-	#text & options \\\\\\\\\\\\\
+	#text & options \\\\\\\\\\\\\ (MESSES WITH ACTUAL COLUMN ORDER IN THE DOC)
 	if rule.text: dialogue.add_text(replace_fact_references(rule.text, incoming_query))
-	if rule.options: dialogue.add_options(rule.options)
+	if rule.options: dialogue.add_options(rule.options) #last so the order doesnt get muddled. too late in development to refactor.
 	pass
 
 func replace_fact_references(text: String, query: responseQuery) -> String:
@@ -499,6 +503,12 @@ func closeDialog(with_return_state = null):
 	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	dialogue.stop_music()
 	pass
+
+func clearFact(key: String) -> void:
+	dialogue_memory.erase(key)
+	pass
+
+
 
 func clearText():
 	dialogue.clear_text()
@@ -591,14 +601,6 @@ func discoverRandomBodyWithFlair() -> void:
 		dialogue.add_text(str("[color=green](Gained no new scan data) [/color]"))
 	pass
 
-func increaseSecurityOfficerStanding(_amount: int) -> void:
-	player.increaseCharacterStanding(characterAPI.OCCUPATIONS.SECURITY_OFFICER, _amount)
-	pass
-
-func decreaseSecurityOfficerStanding(_amount: int) -> void:
-	player.decreaseCharacterStanding(characterAPI.OCCUPATIONS.SECURITY_OFFICER, _amount)
-	pass
-
 func getPlanetDescriptionWithFlair(planet_type: String) -> void:
 	var description: String = system.planet_descriptions.get(planet_type, String())
 	dialogue.add_text("[color=darkgray]%s [/color]" % description)
@@ -665,6 +667,30 @@ func _on_receive_nav_buoy_roll(roll: Array) -> void:
 			dialogue.add_text("%s This transponder code is already present in on-board databanks; the extremely low probability of encountering the heritage of the same ship more than once so deep in space makes the data valuable for understanding the nature of wormhole travel." % base_message)
 	pass
 
+func superchargeForJumpsWithFlair(jumps: int) -> void:
+	emit_signal("superchargePlayerForJumps", jumps)
+	dialogue.add_text("[color=green](Supercharged for plus %.f jumps) [/color]" % jumps)
+	playSoundEffect("success.wav")
+	pass
+
+func increaseCharacterStandingBy25(written_occupation: String) -> void:
+	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
+	emit_signal("modifyCharacterStanding", occupation, 25, true)
+	pass
+
+func decreaseCharacterStandingBy25(written_occupation: String) -> void:
+	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
+	emit_signal("modifyCharacterStanding", occupation, 25, false)
+	pass
+
+func increaseSecurityOfficerStanding(amount: int) -> void: #keeping this so i dont have to refactor rules.txt to not use it lmao
+	emit_signal("modifyCharacterStanding", characterAPI.OCCUPATIONS.SECURITY_OFFICER, amount, true)
+	pass
+
+func decreaseSecurityOfficerStanding(amount: int) -> void: #keeping this so i dont have to refactor rules.txt to not use it lmao
+	emit_signal("modifyCharacterStanding", characterAPI.OCCUPATIONS.SECURITY_OFFICER, amount, false)
+	pass
+
 
 
 func categoryActive(wID: String) -> void:
@@ -716,4 +742,8 @@ func _TUTORIALSetOmissionOverride(value: bool):
 
 func _TUTORIALPlayerWin():
 	emit_signal("TUTORIALPlayerWin")
+	pass
+
+func _TUTORIALEnterIngress():
+	emit_signal("TUTORIALEnterIngress")
 	pass

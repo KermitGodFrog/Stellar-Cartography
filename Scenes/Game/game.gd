@@ -47,13 +47,15 @@ func _ready():
 		new_player.connect("dataValueChanged", _on_player_data_value_changed)
 		new_player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
 		
-		var new: starSystemAPI = load("res://Data/tutorial_system.tres")
-		world.star_systems.append(new)
+		var king: starSystemAPI = load("res://Data/tutorial_king.tres")
+		var suno: starSystemAPI = load("res://Data/tutorial_suno.tres")
+		world.star_systems.append(king)
+		world.star_systems.append(suno)
 		
 		world.player.systems_traversed = 4
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
-		_on_switch_star_system(new)
+		_on_switch_star_system(king)
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 		world.player.position = Vector2(60, 0)
@@ -209,9 +211,12 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("addPlayerMutinyBacking", _on_add_player_mutiny_backing)
 	dialogue_manager.connect("upgradeShip", _on_upgrade_ship)
 	dialogue_manager.connect("rollNavBuoy", _on_roll_nav_buoy)
+	dialogue_manager.connect("superchargePlayerForJumps", _on_supercharge_player_for_jumps)
+	dialogue_manager.connect("modifyCharacterStanding", _on_modify_character_standing)
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
+	dialogue_manager.connect("TUTORIALEnterIngress", _on_tutorial_enter_ingress)
 	
 	pause_menu.connect("saveWorld", _on_save_world)
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
@@ -677,6 +682,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	system_3d.reset_locked_body()
 	journey_map.add_new_system(world.player.systems_traversed)
 	journey_map.jumps_remaining = world.player.get_jumps_remaining() #required as it needs to update when the players system on game startup is loaded, not just wormhole traversal!
+	system_map.player_supercharged = world.player.supercharged #also updated when player supercharge_jumps_remaining is updated
 	_on_process_system_hazard(to_system)
 	return to_system
 
@@ -850,11 +856,6 @@ func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int
 	station_ui.player_hull_stress = world.player.hull_stress
 	pass
 
-func _on_add_dialogue_memory_pair(key, value):
-	world.dialogue_memory[key] = value
-	dialogue_manager.dialogue_memory = world.dialogue_memory
-	pass
-
 func _on_open_pause_menu():
 	pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.PAUSE_MENU)
 	pass
@@ -898,6 +899,34 @@ func _on_tutorial_set_omission_override(value: bool):
 
 func _on_tutorial_player_win():
 	_on_open_stats_menu(stats_menu.INIT_TYPES.TUTORIAL)
+	pass
+
+func _on_tutorial_enter_ingress(): #override for INGRESS, not a return value so i dont clog up _on_player_following_body
+	#hard coded because i cant be fucking bothered
+	var suno = world.get_system_from_identifier(1)
+	var egress = suno.get_body_from_identifier(4)
+	
+	world.player.previous_star_system = world.player.current_star_system
+	world.player.systems_traversed += 1
+	
+	_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+	for body in suno.bodies:
+		suno.updateBodyPosition(body.get_identifier(), get_physics_process_delta_time())
+	world.player.position = egress.position
+	world.player.setTargetPosition(world.player.position)
+	world.player.updatePosition(get_physics_process_delta_time())
+	
+	system_map._on_clear_console_entries()
+	_on_switch_star_system(suno)
+	barycenter_visualizer.locked_body_identifier = 0
+	
+	system_map.follow_body = null
+	system_map.locked_body = null
+	system_map.action_body = null
+	
+	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
+	_on_wormhole_minigame_popup()
+	_on_player_entering_system(suno)
 	pass
 
 func _on_add_player_morale(amount : int) -> void:
@@ -983,6 +1012,15 @@ func _on_update_objectives_panel(_active_objectives: Array[objectiveAPI]) -> voi
 
 func _on_roll_nav_buoy(_anomaly_seed: int) -> void: # i mean, technically its LEGAL?
 	dialogue_manager._on_receive_nav_buoy_roll(world.roll_nav_buoy(_anomaly_seed))
+	pass
+
+func _on_supercharge_player_for_jumps(jumps: int):
+	world.player.supercharge_jumps_remaining += jumps
+	system_map.player_supercharged = world.player.supercharged #also updated when the player enters a new system
+	pass
+
+func _on_modify_character_standing(occupation: characterAPI.OCCUPATIONS, amount: int, _increase: bool):
+	world.player.modifyCharacterStanding(occupation, amount, _increase)
 	pass
 
 func _on_open_LRS():
