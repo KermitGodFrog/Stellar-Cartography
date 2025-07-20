@@ -212,6 +212,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("upgradeShip", _on_upgrade_ship)
 	dialogue_manager.connect("rollNavBuoy", _on_roll_nav_buoy)
 	dialogue_manager.connect("superchargePlayerForJumps", _on_supercharge_player_for_jumps)
+	dialogue_manager.connect("modifyCharacterStanding", _on_modify_character_standing)
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
@@ -1016,6 +1017,10 @@ func _on_roll_nav_buoy(_anomaly_seed: int) -> void: # i mean, technically its LE
 func _on_supercharge_player_for_jumps(jumps: int):
 	world.player.supercharge_jumps_remaining += jumps
 	system_map.player_supercharged = world.player.supercharged #also updated when the player enters a new system
+	pass
+
+func _on_modify_character_standing(occupation: characterAPI.OCCUPATIONS, amount: int, _increase: bool):
+	world.player.modifyCharacterStanding(occupation, amount, _increase)
 	pass
 
 func _on_open_LRS():

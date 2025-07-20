@@ -37,7 +37,7 @@ func get_gender() -> GENDERS:
 func set_gender(value: GENDERS) -> void:
 	current_gender = value
 
-enum OCCUPATIONS {FIRST_OFFICER, CHIEF_ENGINEER, SECURITY_OFFICER, MEDICAL_OFFICER, LINGUIST, HISTORIAN}
+enum OCCUPATIONS {FIRST_OFFICER, CHIEF_ENGINEER, SECURITY_OFFICER, MEDICAL_OFFICER}
 @export var current_occupation: OCCUPATIONS:
 	get = get_occupation, set = set_occupation
 func get_occupation() -> OCCUPATIONS:

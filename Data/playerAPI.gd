@@ -333,3 +333,11 @@ func decreaseCharacterStanding(occupation: characterAPI.OCCUPATIONS, amount: int
 	if c:
 		c.removeStanding(amount)
 	pass
+
+func modifyCharacterStanding(_occupation: characterAPI.OCCUPATIONS, _amount: int, increase: bool) -> void:
+	match increase:
+		true:
+			increaseCharacterStanding(_occupation, _amount)
+		false:
+			decreaseCharacterStanding(_occupation, _amount)
+	pass

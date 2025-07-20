@@ -34,6 +34,7 @@ signal addPlayerMutinyBacking(amount: int)
 signal upgradeShip(_upgrade_idx: playerAPI.UPGRADE_ID, _cost: int)
 signal rollNavBuoy(anomaly_seed: int)
 signal superchargePlayerForJumps(jumps: int) #saying superchargePlayerForJumps is like saying addPlayerValueForPlayerInternalValueCounter
+signal modifyCharacterStanding(occupation: characterAPI.OCCUPATIONS, amount: int, _increase: bool)
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
@@ -600,14 +601,6 @@ func discoverRandomBodyWithFlair() -> void:
 		dialogue.add_text(str("[color=green](Gained no new scan data) [/color]"))
 	pass
 
-func increaseSecurityOfficerStanding(_amount: int) -> void:
-	player.increaseCharacterStanding(characterAPI.OCCUPATIONS.SECURITY_OFFICER, _amount)
-	pass
-
-func decreaseSecurityOfficerStanding(_amount: int) -> void:
-	player.decreaseCharacterStanding(characterAPI.OCCUPATIONS.SECURITY_OFFICER, _amount)
-	pass
-
 func getPlanetDescriptionWithFlair(planet_type: String) -> void:
 	var description: String = system.planet_descriptions.get(planet_type, String())
 	dialogue.add_text("[color=darkgray]%s [/color]" % description)
@@ -678,6 +671,24 @@ func superchargeForJumpsWithFlair(jumps: int) -> void:
 	emit_signal("superchargePlayerForJumps", jumps)
 	dialogue.add_text("[color=green](Supercharged for plus %.f jumps) [/color]" % jumps)
 	playSoundEffect("success.wav")
+	pass
+
+func increaseCharacterStandingBy25(written_occupation: String) -> void:
+	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
+	emit_signal("modifyCharacterStanding", occupation, 25, true)
+	pass
+
+func decreaseCharacterStandingBy25(written_occupation: String) -> void:
+	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
+	emit_signal("modifyCharacterStanding", occupation, 25, false)
+	pass
+
+func increaseSecurityOfficerStanding(amount: int) -> void: #keeping this so i dont have to refactor rules.txt to not use it lmao
+	emit_signal("modifyCharacterStanding", characterAPI.OCCUPATIONS.SECURITY_OFFICER, amount, true)
+	pass
+
+func decreaseSecurityOfficerStanding(amount: int) -> void: #keeping this so i dont have to refactor rules.txt to not use it lmao
+	emit_signal("modifyCharacterStanding", characterAPI.OCCUPATIONS.SECURITY_OFFICER, amount, false)
 	pass
 
 
