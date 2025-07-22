@@ -1,0 +1,11 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=4 format=3 uid="uid://du7p5ge1wqdch"]
+
+[ext_resource type="AudioStream" uid="uid://4iioxhx2oom7" path="res://Sound/SFX/dialogue-click/heavy1.wav" id="1_f5o6o"]
+[ext_resource type="AudioStream" uid="uid://bwcy8m5vfmgea" path="res://Sound/SFX/dialogue-click/heavy2.wav" id="2_jxk1u"]
+[ext_resource type="AudioStream" uid="uid://c7y4xf8m4hkui" path="res://Sound/SFX/dialogue-click/heavy3.wav" id="3_ypkrt"]
+
+[resource]
+streams_count = 3
+stream_0/stream = ExtResource("1_f5o6o")
+stream_1/stream = ExtResource("2_jxk1u")
+stream_2/stream = ExtResource("3_ypkrt")

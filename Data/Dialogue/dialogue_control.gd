@@ -6,6 +6,10 @@ extends Control
 @onready var music = $music
 @onready var option = preload("res://Data/Dialogue/dialogue_option.tscn")
 
+@onready var dialogue_click_light = preload("res://Sound/SFX/dialogue_click_light.tres")
+@onready var dialogue_click_heavy = preload("res://Sound/SFX/dialogue_click_heavy.tres")
+@onready var dialogue_click_cancel = preload("res://Sound/SFX/dialogue_click_cancel.tres")
+
 const TYPING_SPEED: int = 500 #could have this in settings! good test for a slider option!
 var typing_position: float = 0.0
 var options_added: int = 0 #added since last clear
@@ -31,6 +35,7 @@ func add_options(new_options: Dictionary):
 		var rule = new_options.get(option_text, "defaultLeave")
 		option_instance.initialize(rule, option_text, options_added)
 		option_instance.pressed.connect(_on_option_selected.bind(rule, option_text))
+		option_instance.mouse_entered.connect(_on_option_mouse_entered)
 		options_scroll.add_child(option_instance)
 	pass
 
@@ -87,9 +92,12 @@ func _on_option_selected(option_rule: String, option_text: String):
 	clear_options() #options are always cleared in rules.csv when an option is selected anyway
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
-	#play 'selected something' sound effect
+	get_tree().call_group("audioHandler", "play_once", dialogue_click_heavy, 0.0, "SFX")
 	pass
 
+func _on_option_mouse_entered() -> void:
+	get_tree().call_group("audioHandler", "play_once", dialogue_click_light, 0.0, "SFX")
+	pass
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
@@ -102,5 +110,5 @@ func _input(event: InputEvent) -> void:
 						_on_option_selected(option_instance.rule, option_instance._text)
 						return
 				
-				#play 'couldnt select anything' sound effect because obviously there isnt anything to select at this point
+				get_tree().call_group("audioHandler", "play_once", dialogue_click_cancel, 0.0, "SFX")
 	pass
