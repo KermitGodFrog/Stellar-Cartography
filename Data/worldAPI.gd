@@ -21,7 +21,13 @@ class_name worldAPI
 @export var missing_GL_chance_per_relevant_planet: float
 # in order to justify why thsi is here - what if the player wants to update key customization while playing? this would be useful to ahndle it
 
+#MISC!  >>>>>
 @export var nav_buoy_tag: String = "" #for nav buoy space anomaly - i had no better place to put this!
+
+@export_storage var played_frontier_leitmotif: bool = false #used exclusively in game.gd _on_player_entering_system()
+@export_storage var played_abyss_leitmotif: bool = false #used exclusively in game.gd _on_player_entering_system()
+# ^^^ neither of these are necessarily a player issue, thus are here instead
+
 
 
 func createStarSystem(d_name: String) -> starSystemAPI:

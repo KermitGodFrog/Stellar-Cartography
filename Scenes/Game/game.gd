@@ -610,8 +610,7 @@ func _on_player_entering_system(system: starSystemAPI):
 	
 	#not awaiting onCloseDialog because wacky shtuff happens!!!!!!! audioHandler should only play it when pause_mode is NONE anyway
 	
-	if system.is_civilized():
-		get_tree().call_group("audioHandler", "queue_music", "res://Sound/Music/motif.tres")
+	if system.is_civilized(): _on_play_civilized_system_leitmotif()
 	pass
 
 func _on_player_mutiny() -> void:
@@ -1022,6 +1021,22 @@ func _on_supercharge_player_for_jumps(jumps: int):
 func _on_modify_character_standing(occupation: characterAPI.OCCUPATIONS, amount: int, _increase: bool):
 	world.player.modifyCharacterStanding(occupation, amount, _increase)
 	pass
+
+func _on_play_civilized_system_leitmotif() -> void:
+	if world.player.weirdness_index >= 0.2 and world.player.weirdness_index < 0.6: #in frontier
+		if not world.played_frontier_leitmotif:
+			get_tree().call_group("audioHandler", "queue_music", "res://Sound/Music/frontier_leitmotif.wav")
+			world.played_frontier_leitmotif = true
+			return
+	elif world.player.weirdness_index >= 0.6: #in abyss
+		if not world.played_abyss_leitmotif:
+			get_tree().call_group("audioHandler", "queue_music", "res://Sound/Music/abyss_leitmotif.wav")
+			world.played_abyss_leitmotif = true
+			return
+	#world.player.weirdness_index updates faster than game_data.player_weirdness index, and should thus be used all throughout game.gd
+	
+	get_tree().call_group("audioHandler", "queue_music", "res://Sound/Music/motif.tres")
+	return
 
 func _on_open_LRS():
 	await get_tree().physics_frame
