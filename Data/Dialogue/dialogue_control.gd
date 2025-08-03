@@ -90,6 +90,7 @@ func _on_option_selected(option_rule: String, option_text: String):
 	new_query.add("concept", "optionSelected")
 	new_query.add("option", option_rule)
 	clear_options() #options are always cleared in rules.csv when an option is selected anyway
+	stop_music() #music is USUALLY stopped after selecting an option anyway! :)
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	get_tree().call_group("audioHandler", "play_once", dialogue_click_heavy, 0.0, "SFX")
