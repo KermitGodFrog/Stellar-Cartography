@@ -383,6 +383,54 @@ func clear_system_list_caches() -> void:
 	collapsed_cache.clear()
 	pass
 
+func sort_item_for_body(parent: TreeItem, item: TreeItem) -> void:
+	var to_sort: Array = []
+	var children = parent.get_children()
+	for c in children:
+		var m = c.get_metadata(0)
+		var body = system.get_body_from_identifier(m) as bodyAPI
+		to_sort.append([c, body.orbit_distance])
+	
+	for i in to_sort.size():
+		var j = i
+		
+		
+		
+		while j > 0 and to_sort[j].back() < to_sort[j - 1].back():
+			var current_item = to_sort[j].front()
+			var last_item = to_sort[j - 1].front()
+			
+			var temp_idx = current_item.get_index()
+			
+			
+			
+			
+			pass
+		
+		
+		
+		
+		
+		
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	pass
+
+
+
+
+
+
+
 func oscillate_item_icon_color(item: TreeItem, color: Color, c: int = 0) -> void:
 	item.set_icon_modulate(c, color * maxf(sin(Time.get_unix_time_from_system()), 0.75))
 	pass
