@@ -272,11 +272,7 @@ func recursive_add(body: bodyAPI, parent: TreeItem) -> void:
 	if body != null:
 		var new = create_item_for_body(body, parent)
 		
-		var sub_bodies = sort_sub_bodies_by_distance(
-			body, 
-			system.get_bodies_with_hook_identifier(body.get_identifier())
-		)
-		
+		var sub_bodies = sort_sub_bodies_by_distance(body, system.get_bodies_with_hook_identifier(body.get_identifier()))
 		for b in sub_bodies:
 			recursive_add(b, new)
 	pass
