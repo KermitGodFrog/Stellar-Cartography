@@ -271,7 +271,13 @@ func generate_system_list() -> void:
 func recursive_add(body: bodyAPI, parent: TreeItem) -> void:
 	if body != null:
 		var new = create_item_for_body(body, parent)
-		for b in system.get_bodies_with_hook_identifier(body.get_identifier()):
+		
+		var sub_bodies = sort_sub_bodies_by_distance(
+			body, 
+			system.get_bodies_with_hook_identifier(body.get_identifier())
+		)
+		
+		for b in sub_bodies:
 			recursive_add(b, new)
 	pass
 
@@ -383,47 +389,22 @@ func clear_system_list_caches() -> void:
 	collapsed_cache.clear()
 	pass
 
-func sort_item_for_body(parent: TreeItem, item: TreeItem) -> void:
-	var to_sort: Array = []
-	var children = parent.get_children()
-	for c in children:
-		var m = c.get_metadata(0)
-		var body = system.get_body_from_identifier(m) as bodyAPI
-		to_sort.append([c, body.orbit_distance])
+func sort_sub_bodies_by_distance(body: bodyAPI, sub_bodies: Array) -> Array:
+	var to_sort = sub_bodies.duplicate()
 	
-	for i in to_sort.size():
-		var j = i
-		
-		
-		
-		while j > 0 and to_sort[j].back() < to_sort[j - 1].back():
-			var current_item = to_sort[j].front()
-			var last_item = to_sort[j - 1].front()
-			
-			var temp_idx = current_item.get_index()
-			
-			
-			
-			
-			pass
-		
-		
-		
-		
-		
-		
-		
-		
+	var n = len(to_sort)
+	for i in range(1,n):
+		var insert_index = i
+		var current_body = to_sort.pop_at(i)
+		var current_distance = current_body.position.distance_to(body.position)
+		for j in range(i-1, -1, -1):
+			if to_sort[j].position.distance_to(body.position) > current_distance:
+				insert_index = j
+		to_sort.insert(insert_index, current_body)
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	pass
+	return to_sort
+
+
 
 
 
