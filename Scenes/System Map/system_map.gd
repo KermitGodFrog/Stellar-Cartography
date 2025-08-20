@@ -271,7 +271,9 @@ func generate_system_list() -> void:
 func recursive_add(body: bodyAPI, parent: TreeItem) -> void:
 	if body != null:
 		var new = create_item_for_body(body, parent)
-		for b in system.get_bodies_with_hook_identifier(body.get_identifier()):
+		
+		var sub_bodies = sort_sub_bodies_by_distance(body, system.get_bodies_with_hook_identifier(body.get_identifier()))
+		for b in sub_bodies:
 			recursive_add(b, new)
 	pass
 
@@ -382,6 +384,29 @@ func clear_system_list_caches() -> void:
 	#print("SYSTEM MAP (DEBUG): CLEARING SYSTEM LIST CACHES")
 	collapsed_cache.clear()
 	pass
+
+func sort_sub_bodies_by_distance(body: bodyAPI, sub_bodies: Array) -> Array:
+	var to_sort = sub_bodies.duplicate()
+	
+	var n = len(to_sort)
+	for i in range(1,n):
+		var insert_index = i
+		var current_body = to_sort.pop_at(i)
+		var current_distance = current_body.position.distance_to(body.position)
+		for j in range(i-1, -1, -1):
+			if to_sort[j].position.distance_to(body.position) > current_distance:
+				insert_index = j
+		to_sort.insert(insert_index, current_body)
+	
+	return to_sort
+
+
+
+
+
+
+
+
 
 func oscillate_item_icon_color(item: TreeItem, color: Color, c: int = 0) -> void:
 	item.set_icon_modulate(c, color * maxf(sin(Time.get_unix_time_from_system()), 0.75))
