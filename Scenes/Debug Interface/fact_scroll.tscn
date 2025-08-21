@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://c31jdpsifhyp8"]
+
+[ext_resource type="Script" path="res://Scenes/Debug Interface/fact_scroll.gd" id="1_yf0vw"]
+
+[node name="fact_scroll" type="HBoxContainer"]
+script = ExtResource("1_yf0vw")
+
+[node name="key_edit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="value_edit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="text_changed" from="key_edit" to="." method="_on_key_edit_text_changed"]
+[connection signal="text_changed" from="value_edit" to="." method="_on_value_edit_text_changed"]

@@ -23,6 +23,7 @@ var world: worldAPI
 @onready var gas_layer_surveyor = $gas_layer_surveyor_window/gas_layer_surveyor
 @onready var countdown_processor: Node #quantum state of existing and not existing
 @onready var objectives_manager = $objectivesManager
+@onready var debug_interface = $debug_interface_window/debug_interface
 
 func _ready():
 	connect_all_signals()
@@ -173,10 +174,6 @@ func connect_all_signals() -> void:
 	system_map.connect("playerBelowCMERingRadius", _on_player_below_CME_ring_radius)
 	system_map.connect("updatePlayerInAsteroidBelt", _on_update_player_in_asteroid_belt)
 	
-	system_map.connect("DEBUG_REVEAL_ALL_WORMHOLES", _ON_DEBUG_REVEAL_ALL_WORMHOLES)
-	system_map.connect("DEBUG_REVEAL_ALL_BODIES", _ON_DEBUG_REVEAL_ALL_BODIES)
-	system_map.connect("DEBUG_QUICK_ADD_NANITES", _ON_DEBUG_QUICK_ADD_NANITES)
-	
 	system_3d.connect("foundBody", _on_found_body)
 	system_3d.connect("addConsoleEntry", _on_add_console_entry)
 	
@@ -232,6 +229,11 @@ func connect_all_signals() -> void:
 	
 	gas_layer_surveyor.connect("addPlayerValue", _on_add_player_value)
 	
+	debug_interface.connect("increasePlayerBalance", _on_increase_player_balance)
+	debug_interface.connect("clearLoadRules", _on_DEBUG_clear_load_rules)
+	debug_interface.connect("revealAllWormholes", _on_DEBUG_reveal_all_wormholes)
+	debug_interface.connect("revealAllBodies", _on_DEBUG_reveal_all_bodies)
+	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
 	pause_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -285,19 +287,9 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("SC_PAUSE"):
 		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
-	if Input.is_action_just_pressed("SC_DEBUG_MISC"):
-		dialogue_manager.clear_and_load_rules()
-	if Input.is_action_just_pressed("SC_DEBUG_MISC2"):
-		var new_query = responseQuery.new()
-		new_query.add("concept", "DEBUG_printTest")
-		new_query.add_tree_access("seed", randi())
-		get_tree().call_group("dialogueManager", "speak", self, new_query)
-	
-	#DEBUG \/\//\/\/\//\/\\/
-	#if Input.is_action_just_pressed("SC_DEBUG_MISC"):
-		#var new_query = responseQuery.new()
-		#new_query.add("concept", "DEBUGfalseMatchTest")
-		#get_tree().call_group("dialogueManager", "speak", self, new_query)
+	if Input.is_action_just_pressed("SC_DEBUG_OPEN_DEBUG_MENU"):
+		$debug_interface_window.move_to_center()
+		$debug_interface_window.popup()
 	
 	#ultra miscellanious:
 	_on_update_countdown_overlay_shown(countdown_processor != null)
@@ -808,6 +800,10 @@ func _on_decrease_player_balance(amount: int) -> void:
 	world.player.decreaseBalance(amount)
 	pass
 
+func _on_increase_player_balance(amount: int) -> void: #shouldnt be used for anything besides debug...?
+	world.player.increaseBalance(amount)
+	pass
+
 func _on_add_player_value(amount: int) -> void:
 	world.player.current_value += amount
 	pass
@@ -1091,20 +1087,22 @@ func _on_pause_mode_changed(new_mode: game_data.PAUSE_MODES) -> void:
 
 
 
-func _ON_DEBUG_REVEAL_ALL_WORMHOLES():
+func _on_DEBUG_clear_load_rules() -> void:
+	dialogue_manager.clear_and_load_rules()
+	pass
+
+func _on_DEBUG_reveal_all_wormholes() -> void:
 	for body in world.player.current_star_system.bodies:
 		if body.get_type() == starSystemAPI.BODY_TYPES.WORMHOLE:
 			body.known = true
 	pass
 
-func _ON_DEBUG_REVEAL_ALL_BODIES():
+func _on_DEBUG_reveal_all_bodies() -> void:
 	for body in world.player.current_star_system.bodies:
 		body.known = true
 	pass
 
-func _ON_DEBUG_QUICK_ADD_NANITES():
-	world.player.increaseBalance(100000)
-	pass
+
 
 
 
