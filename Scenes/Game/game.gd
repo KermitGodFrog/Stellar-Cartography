@@ -23,6 +23,7 @@ var world: worldAPI
 @onready var gas_layer_surveyor = $gas_layer_surveyor_window/gas_layer_surveyor
 @onready var countdown_processor: Node #quantum state of existing and not existing
 @onready var objectives_manager = $objectivesManager
+@onready var debug_interface = $debug_interface_window/debug_interface
 
 func _ready():
 	connect_all_signals()
