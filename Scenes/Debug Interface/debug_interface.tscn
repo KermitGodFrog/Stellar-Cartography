@@ -1,12 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://bje1x41oldwpw"]
+[gd_scene load_steps=3 format=3 uid="uid://bje1x41oldwpw"]
 
 [ext_resource type="Script" path="res://Scenes/Debug Interface/debug_interface.gd" id="1_jmlrq"]
+[ext_resource type="Script" path="res://Scenes/Debug Interface/query_scroll.gd" id="2_pvsfw"]
 
 [node name="debug_interface_window" type="Window"]
 disable_3d = true
 title = "Debug Interface"
 position = Vector2i(0, 36)
-size = Vector2i(300, 300)
+size = Vector2i(300, 600)
 visible = false
 
 [node name="debug_interface" type="Control" parent="."]
@@ -33,7 +34,6 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 2
 text = "+100000n"
-horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="nanites_slider" type="HSlider" parent="debug_interface/scroll/nanites_scroll"]
@@ -66,6 +66,34 @@ text = "REVEAL ALL BODIES"
 layout_mode = 2
 text = "PRINT TEST"
 
+[node name="query_scroll" type="VBoxContainer" parent="debug_interface/scroll"]
+layout_mode = 2
+script = ExtResource("2_pvsfw")
+
+[node name="concept_scroll" type="HBoxContainer" parent="debug_interface/scroll/query_scroll"]
+layout_mode = 2
+
+[node name="concept_label" type="Label" parent="debug_interface/scroll/query_scroll/concept_scroll"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "CONCEPT"
+vertical_alignment = 1
+
+[node name="concept_edit" type="LineEdit" parent="debug_interface/scroll/query_scroll/concept_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="query_button" type="Button" parent="debug_interface/scroll/query_scroll/concept_scroll"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "GO"
+
+[node name="add_fact_button" type="Button" parent="debug_interface/scroll/query_scroll"]
+layout_mode = 2
+text = "+"
+
+[connection signal="about_to_popup" from="." to="debug_interface" method="_on_debug_interface_window_about_to_popup"]
 [connection signal="close_requested" from="." to="debug_interface" method="_on_debug_interface_window_close_requested"]
 [connection signal="drag_ended" from="debug_interface/scroll/nanites_scroll/nanites_slider" to="debug_interface" method="_on_nanites_slider_drag_ended"]
 [connection signal="pressed" from="debug_interface/scroll/nanites_scroll/nanites_button" to="debug_interface" method="_on_nanites_button_pressed"]
@@ -73,3 +101,6 @@ text = "PRINT TEST"
 [connection signal="pressed" from="debug_interface/scroll/reveal_wormholes_button" to="debug_interface" method="_on_reveal_wormholes_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/reveal_bodies_button" to="debug_interface" method="_on_reveal_bodies_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/print_test_button" to="debug_interface" method="_on_print_test_button_pressed"]
+[connection signal="text_changed" from="debug_interface/scroll/query_scroll/concept_scroll/concept_edit" to="debug_interface/scroll/query_scroll" method="_on_concept_edit_text_changed"]
+[connection signal="pressed" from="debug_interface/scroll/query_scroll/concept_scroll/query_button" to="debug_interface" method="_on_query_button_pressed"]
+[connection signal="pressed" from="debug_interface/scroll/query_scroll/add_fact_button" to="debug_interface/scroll/query_scroll" method="_on_add_fact_button_pressed"]

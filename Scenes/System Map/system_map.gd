@@ -36,10 +36,6 @@ signal journeyMapPopup
 signal longRangeScopesPopup
 signal gasLayerSurveyorPopup
 
-signal DEBUG_REVEAL_ALL_WORMHOLES
-signal DEBUG_REVEAL_ALL_BODIES
-signal DEBUG_QUICK_ADD_NANITES
-
 var TUTORIAL_INGRESS_OVERRIDE: bool = false
 var TUTORIAL_OMISSION_OVERRIDE: bool = false
 
@@ -447,15 +443,6 @@ func _unhandled_input(event):
 		follow_body_modifier = null
 		emit_signal("updateTargetPosition", get_global_mouse_position())
 		emit_signal("lockedBodyDepreciated")
-	
-	if event.is_action_pressed("SC_DEBUG_REVEAL_ALL_WORMHOLES"): #DEBUG!!!!!!!!!!!!!!!!!
-		emit_signal("DEBUG_REVEAL_ALL_WORMHOLES")
-	
-	if event.is_action_pressed("SC_DEBUG_REVEAL_ALL_BODIES"): #DEBUG!!!!!!!!!!!!!!!!!
-		emit_signal("DEBUG_REVEAL_ALL_BODIES")
-	
-	if event.is_action_pressed("SC_DEBUG_QUICK_ADD_NANITES"): #DEBUG!!!!!!!!!!!!!!!!!
-		emit_signal("DEBUG_QUICK_ADD_NANITES")
 	
 	if event.is_action_pressed("SC_BOOST"):
 		player_is_boosting = true
