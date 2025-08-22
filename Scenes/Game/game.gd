@@ -233,6 +233,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("clearLoadRules", _on_DEBUG_clear_load_rules)
 	debug_interface.connect("revealAllWormholes", _on_DEBUG_reveal_all_wormholes)
 	debug_interface.connect("revealAllBodies", _on_DEBUG_reveal_all_bodies)
+	debug_interface.connect("forceQuitDialogue", _on_DEBUG_force_quit_dialogue)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -287,9 +288,6 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("SC_PAUSE"):
 		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
-	if Input.is_action_just_pressed("SC_DEBUG_OPEN_DEBUG_MENU"):
-		$debug_interface_window.move_to_center()
-		$debug_interface_window.popup()
 	
 	#ultra miscellanious:
 	_on_update_countdown_overlay_shown(countdown_processor != null)
@@ -1102,7 +1100,9 @@ func _on_DEBUG_reveal_all_bodies() -> void:
 		body.known = true
 	pass
 
-
+func _on_DEBUG_force_quit_dialogue() -> void:
+	dialogue_manager.closeDialog()
+	pass
 
 
 

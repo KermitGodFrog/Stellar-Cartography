@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://Scenes/Debug Interface/query_scroll.gd" id="2_pvsfw"]
 
 [node name="debug_interface_window" type="Window"]
+process_mode = 3
 disable_3d = true
 title = "Debug Interface"
 position = Vector2i(0, 36)
@@ -66,6 +67,10 @@ text = "REVEAL ALL BODIES"
 layout_mode = 2
 text = "PRINT TEST"
 
+[node name="force_quit_dialogue_button" type="Button" parent="debug_interface/scroll"]
+layout_mode = 2
+text = "FORCE QUIT DIALOGUE"
+
 [node name="query_scroll" type="VBoxContainer" parent="debug_interface/scroll"]
 layout_mode = 2
 script = ExtResource("2_pvsfw")
@@ -101,6 +106,7 @@ text = "+"
 [connection signal="pressed" from="debug_interface/scroll/reveal_wormholes_button" to="debug_interface" method="_on_reveal_wormholes_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/reveal_bodies_button" to="debug_interface" method="_on_reveal_bodies_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/print_test_button" to="debug_interface" method="_on_print_test_button_pressed"]
+[connection signal="pressed" from="debug_interface/scroll/force_quit_dialogue_button" to="debug_interface" method="_on_force_quit_dialogue_button_pressed"]
 [connection signal="text_changed" from="debug_interface/scroll/query_scroll/concept_scroll/concept_edit" to="debug_interface/scroll/query_scroll" method="_on_concept_edit_text_changed"]
 [connection signal="pressed" from="debug_interface/scroll/query_scroll/concept_scroll/query_button" to="debug_interface" method="_on_query_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/query_scroll/add_fact_button" to="debug_interface/scroll/query_scroll" method="_on_add_fact_button_pressed"]

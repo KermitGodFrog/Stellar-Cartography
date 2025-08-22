@@ -5,16 +5,25 @@ extends Control
 @onready var query_scroll = $scroll/query_scroll
 
 
-
 signal increasePlayerBalance(amount: int)
 
 signal clearLoadRules()
 signal revealAllWormholes()
 signal revealAllBodies()
+signal forceQuitDialogue()
 
 
 func _ready() -> void:
 	_on_nanites_slider_drag_ended(true)
+	pass
+
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("SC_DEBUG_OPEN_DEBUG_MENU"):
+		if owner.is_visible():
+			owner.hide()
+		else:
+			owner.move_to_center()
+			owner.popup()
 	pass
 
 
@@ -62,15 +71,15 @@ func _on_query_button_pressed() -> void:
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
-
-
+func _on_force_quit_dialogue_button_pressed():
+	emit_signal("forceQuitDialogue")
+	pass
 
 
 
 func _on_debug_interface_window_close_requested() -> void:
 	owner.hide()
 	pass
-
 
 func _on_debug_interface_window_about_to_popup() -> void:
 	query_scroll.reset_all()
