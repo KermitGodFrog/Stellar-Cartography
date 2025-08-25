@@ -501,7 +501,7 @@ func closeDialog(with_return_state = null):
 	tree_access_memory = {}
 	emit_signal("onCloseDialog", with_return_state)
 	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
-	dialogue.stop_music()
+	dialogue.clear_music()
 	pass
 
 func clearFact(key: String) -> void:
@@ -582,8 +582,8 @@ func playMusic(path: String) -> void:
 	dialogue.play_music(path)
 	pass
 
-func stopMusic() -> void:
-	dialogue.stop_music()
+func clearMusic() -> void:
+	dialogue.clear_music()
 	pass
 
 func discoverRandomBodyWithFlair() -> void:

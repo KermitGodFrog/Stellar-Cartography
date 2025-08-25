@@ -68,16 +68,27 @@ func clear_options():
 	pass
 
 func play_sound_effect(path: String) -> void:
-	get_tree().call_group("audioHandler", "play_once", load("res://Sound/dialogue/sfx/%s" % path), 0.0, "SFX")
+	var global_path = "res://Sound/dialogue/sfx/%s" % path
+	get_tree().call_group("audioHandler", "play_once", load(global_path), 0.0, "SFX")
 	pass
 
 func play_music(path: String) -> void:
-	music.set_stream(load("res://Sound/dialogue/music/%s" % path))
+	var global_path = "res://Sound/dialogue/music/%s" % path
+	var instance = load(global_path)
+	if music.get_stream() != null:
+		if music.stream.get_path() == global_path:
+			music.stream_paused = false
+			return
+	music.set_stream(instance)
 	music.play()
 	pass
 
 func stop_music() -> void:
-	music.stop()
+	music.stream_paused = true
+	pass
+
+func clear_music() -> void:
+	music.set_stream(null)
 	pass
 
 func _on_option_selected(option_rule: String, option_text: String):
