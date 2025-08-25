@@ -12,6 +12,7 @@ func _on_pause_mode_changed(value):
 			dialogue.hide()
 		game_data.PAUSE_MODES.DIALOGUE:
 			dialogue.show()
+	dialogue.pause_mode = value
 	pass
 
 
@@ -481,6 +482,7 @@ func get_send_ranked_achievements(incoming_query) -> void:
 	
 	get_tree().call_group("achievementManager", "receive_ranked_achievements", ranked_achievements)
 	pass
+
 
 
 func openDialog():

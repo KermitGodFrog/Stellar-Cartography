@@ -10,6 +10,8 @@ extends Control
 @onready var dialogue_click_heavy = preload("res://Sound/SFX/dialogue_click_heavy.tres")
 @onready var dialogue_click_cancel = preload("res://Sound/SFX/dialogue_click_cancel.tres")
 
+var pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE #from dialogueManager _on_pause_mode_changed
+
 const TYPING_SPEED: int = 500 #could have this in settings! good test for a slider option!
 var typing_position: float = 0.0
 var options_added: int = 0 #added since last clear
@@ -112,15 +114,16 @@ func _on_option_mouse_entered() -> void:
 	pass
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.is_pressed():
-			if event.keycode >= 49 and event.keycode <= 57:
-				var selecting = int(OS.get_keycode_string(event.keycode))
-				
-				for option_instance in options_scroll.get_children():
-					if selecting == option_instance.iteration:
-						_on_option_selected(option_instance.rule, option_instance._text)
-						return
-				
-				get_tree().call_group("audioHandler", "play_once", dialogue_click_cancel, 0.0, "SFX")
+	if pause_mode == game_data.PAUSE_MODES.DIALOGUE:
+		if event is InputEventKey:
+			if event.is_pressed():
+				if event.keycode >= 49 and event.keycode <= 57:
+					var selecting = int(OS.get_keycode_string(event.keycode))
+					
+					for option_instance in options_scroll.get_children():
+						if selecting == option_instance.iteration:
+							_on_option_selected(option_instance.rule, option_instance._text)
+							return
+					
+					get_tree().call_group("audioHandler", "play_once", dialogue_click_cancel, 0.0, "SFX")
 	pass
