@@ -131,7 +131,7 @@ RP_FebrisFallback,"concept: optionSelected, option: RP_FebrisFallback",,,"""Is t
 ,,,,,,,,,,
 RP_WalkerSummon,"concept: optionSelected, option: RP_WalkerSummon",,,"Walker enters your ready room, salutes, asks for permission to sit and does so when given. You understand that your standing with Walker dictates your chance to survive a mutiny.",Dismiss Walker: RP_Fallback,populateRP_WalkerOptions,,,,
 RP_WalkerFallback,"concept: optionSelected, option: RP_WalkerFallback",,,"""$player_prefix, anything else that I can do for you, $player_prefix_lower?"" Walker asks.",Dismiss Walker: RP_Fallback,populateRP_WalkerOptions,,,,
-RP_WalkerOriginOption,"concept: populateRP_WalkerOptions, player_SECURITY_OFFICER_standing: >=50, RP_WalkerOriginOption_PREV: false",,,"(UNFINISHED EVENT) Message about how Walker has been requesting security assessments incredibly regularly even when danger is not present, and some of his subordinates are justly mad about it.",Ask Walker about the assessments: RP_WalkerOrigin,,,,,RP_WalkerOriginOption_PREV: true
+RP_WalkerOriginOption,"concept: populateRP_WalkerOptions, player_SECURITY_OFFICER_standing: >50, RP_WalkerOriginOption_PREV: false",,,"(UNFINISHED EVENT) Message about how Walker has been requesting security assessments incredibly regularly even when danger is not present, and some of his subordinates are justly mad about it.",Ask Walker about the assessments: RP_WalkerOrigin,,,,,RP_WalkerOriginOption_PREV: true
 RP_WalkerOrigin,"concept: optionSelected, option: RP_WalkerOrigin",,,(UNFINISHED EVENT) Walker explains his backstory. ,Dismiss Walker: RP_Fallback,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
