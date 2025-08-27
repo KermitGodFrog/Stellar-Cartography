@@ -301,7 +301,10 @@ Office01.wav by LG -- https://freesound.org/s/14856/ -- License: Attribution 4.0
 (Retrieved 23rd August 2025)
 
 Umbrella walk.wav by eZZin -- https://freesound.org/s/585720/ -- License: Creative Commons 0
-(Retrieved 23rd August 2025)"
+(Retrieved 23rd August 2025)
+
+Street noise in 5.1 format by tosha73 -- https://freesound.org/s/819676/ -- License: Attribution 4.0
+(Retrieved 27th August 2025)"
 autowrap_mode = 2
 
 [node name="achievements_list_popup" parent="." instance=ExtResource("5_7l6aj")]
