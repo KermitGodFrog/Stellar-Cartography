@@ -8,6 +8,7 @@ extends Control
 @onready var new_game_popup = $new_game_popup
 @onready var achievements_list_popup = $achievements_list_popup
 @onready var background = $background
+@onready var credits_popup = $credits_popup
 
 var SHOW_NEW_GAME_POPUP: bool = false:
 	set(value):
@@ -23,6 +24,13 @@ var SHOW_ACHIEVEMENTS_LIST_POPUP: bool = false:
 			achievements_list_popup.show()
 		if value == false:
 			achievements_list_popup.hide()
+var SHOW_CREDITS_POPUP: bool = false:
+	set(value):
+		SHOW_CREDITS_POPUP = value
+		if value == true:
+			credits_popup.show()
+		if value == false:
+			credits_popup.hide()
 
 const background_images: Array = [
 	preload("res://Graphics/Dialogue/SA03G_seeder_ship_OFF.png"),
@@ -101,4 +109,12 @@ func _on_achievements_button_pressed():
 
 func _on_achievements_list_return_button_pressed(): #connects in _ready
 	SHOW_ACHIEVEMENTS_LIST_POPUP = false
+	pass
+
+func _on_credits_button_pressed() -> void:
+	SHOW_CREDITS_POPUP = true
+	pass
+
+func _on_credits_return_button_pressed() -> void:
+	SHOW_CREDITS_POPUP = false
 	pass

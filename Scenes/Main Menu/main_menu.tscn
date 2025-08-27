@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=14 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" path="res://Scenes/Main Menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://Scenes/master_theme.tres" id="1_b84fj"]
@@ -19,6 +19,16 @@ bg_color = Color(0.235294, 0.431373, 0.443137, 1)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8pdab"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_de2wi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cskqv"]
+bg_color = Color(0.207843, 0.207843, 0.207843, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xbeg8"]
+bg_color = Color(0.156863, 0.294118, 0.388235, 1)
 
 [node name="main_menu" type="Control"]
 layout_mode = 3
@@ -92,6 +102,12 @@ custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
 theme = ExtResource("2_2eiki")
 text = "ACHIEVEMENTS"
+
+[node name="credits_button" type="Button" parent="options_scroll"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme = ExtResource("2_2eiki")
+text = "CREDITS"
 
 [node name="new_game_popup" type="Control" parent="."]
 visible = false
@@ -192,6 +208,102 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "CREATE"
 
+[node name="credits_popup" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="background" type="ColorRect" parent="credits_popup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.235294, 0.235294, 0.235294, 0.313726)
+
+[node name="margin" type="MarginContainer" parent="credits_popup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="panel" type="PanelContainer" parent="credits_popup/margin"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cskqv")
+
+[node name="panel_margin" type="MarginContainer" parent="credits_popup/margin/panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="scroll" type="VBoxContainer" parent="credits_popup/margin/panel/panel_margin"]
+layout_mode = 2
+
+[node name="actions_hbox" type="HBoxContainer" parent="credits_popup/margin/panel/panel_margin/scroll"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="title" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/actions_hbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_outline_color = Color(0.0588235, 0.0784314, 0.14902, 1)
+theme_override_constants/outline_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_xbeg8")
+text = "CREDITS AND ATTRIBUTIONS"
+vertical_alignment = 1
+
+[node name="credits_return_button" type="Button" parent="credits_popup/margin/panel/panel_margin/scroll/actions_hbox"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_type_variation = &"ButtonDull"
+theme_override_styles/hover = SubResource("StyleBoxFlat_qyn1f")
+theme_override_styles/normal = SubResource("StyleBoxFlat_2i1us")
+icon = ExtResource("5_uqij0")
+icon_alignment = 1
+expand_icon = true
+
+[node name="content_vbox" type="VBoxContainer" parent="credits_popup/margin/panel/panel_margin/scroll"]
+layout_mode = 2
+
+[node name="kermit_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
+layout_mode = 2
+text = "* KermitTheGodFrog - Developer (https://kermitthegodfrog.itch.io)"
+
+[node name="phoenix_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
+layout_mode = 2
+text = "* Phoenix1509 - Some dialogue/main menu backgrounds (https://itch.io/profile/phoenix1509)"
+
+[node name="separator" type="HSeparator" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="audio_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
+custom_minimum_size = Vector2(1360, 0)
+layout_mode = 2
+text = "Shopping Mall Ambiance by Natalie via SoundBible. Licensed under Public Domain. Retrieved 22nd August 2025: https://soundbible.com/1265-Shopping-Mall-Ambiance.html
+
+Office01.wav by LG -- https://freesound.org/s/14856/ -- License: Attribution 4.0
+(Retrieved 23rd August 2025)
+
+Umbrella walk.wav by eZZin -- https://freesound.org/s/585720/ -- License: Creative Commons 0
+(Retrieved 23rd August 2025)"
+autowrap_mode = 2
+
 [node name="achievements_list_popup" parent="." instance=ExtResource("5_7l6aj")]
 layout_mode = 1
 
@@ -199,5 +311,7 @@ layout_mode = 1
 [connection signal="pressed" from="options_scroll/new_button" to="." method="_on_new_button_pressed"]
 [connection signal="pressed" from="options_scroll/tutorial_button" to="." method="_on_tutorial_button_pressed"]
 [connection signal="pressed" from="options_scroll/achievements_button" to="." method="_on_achievements_button_pressed"]
+[connection signal="pressed" from="options_scroll/credits_button" to="." method="_on_credits_button_pressed"]
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/actions_hbox/new_game_return_button" to="." method="_on_new_game_return_button_pressed"]
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/create_button" to="." method="_on_create_button_pressed"]
+[connection signal="pressed" from="credits_popup/margin/panel/panel_margin/scroll/actions_hbox/credits_return_button" to="." method="_on_credits_return_button_pressed"]
