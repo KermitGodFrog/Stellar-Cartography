@@ -295,9 +295,7 @@ layout_mode = 2
 [node name="audio_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
 custom_minimum_size = Vector2(1360, 0)
 layout_mode = 2
-text = "Shopping Mall Ambiance by Natalie via SoundBible. Licensed under Public Domain. Retrieved 22nd August 2025: https://soundbible.com/1265-Shopping-Mall-Ambiance.html
-
-Office01.wav by LG -- https://freesound.org/s/14856/ -- License: Attribution 4.0
+text = "Office01.wav by LG -- https://freesound.org/s/14856/ -- License: Attribution 4.0
 (Retrieved 23rd August 2025)
 
 Umbrella walk.wav by eZZin -- https://freesound.org/s/585720/ -- License: Creative Commons 0
