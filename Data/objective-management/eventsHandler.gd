@@ -22,6 +22,7 @@ signal markObjective(_wID: String, _state: objectiveAPI.STATES)
 #journey_map_open
 #system_map_camera_move
 #scopes_fov_change
+#hull_stress_status_hover
 
 var init_type: int #FROM GLOBAL DATA INIT TYPES
 
@@ -50,6 +51,8 @@ func process_tutorial_event(_calling: Node, incoming_wID: String, _incoming_valu
 			emit_signal("markObjective", "tutorialOptionalJourneyMap", objectiveAPI.STATES.SUCCESS)
 		"system_list_info_tab_select":
 			emit_signal("markObjective", "tutorialOptionalInfo", objectiveAPI.STATES.SUCCESS)
+		"hull_stress_status_hover":
+			emit_signal("markObjective", "tutorialOptionalCheckStress", objectiveAPI.STATES.SUCCESS)
 	pass
 
 func process_campaign_event(_calling: Node, _incoming_wID: String, _incoming_value: Variant = null) -> void:

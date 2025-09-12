@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://c8v4gumwynury"]
+
+[ext_resource type="Script" path="res://Data/objective-management/objectiveAPI.gd" id="1_6iuab"]
+
+[resource]
+script = ExtResource("1_6iuab")
+written_identifier = ""
+current_state = 0
+title = "Go-to Peregrination"
+description = "(REITERATE YOUR MISSION N SHIT)
+(EXPLAIN THAT THERE ARE STATIONS EVERY 5 SYSTEMS MAYBE)
+
+(STANDARD HOW TO BULLSHIT)"

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://hy7ss3wle0s8"]
+
+[ext_resource type="Script" path="res://Data/objective-management/objectiveAPI.gd" id="1_gh6uo"]
+
+[resource]
+script = ExtResource("1_gh6uo")
+written_identifier = ""
+current_state = 0
+title = "Go-to Tomo Sewi Locus "
+description = "(ADD DETAIL HERE: REPAIR AT STATIONS)
+
+Click on Tomo Sewi Locus on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. Wormholes, space stations, planetary anomalies, and other phenomena are all interacted with through the 'GO-TO' action. 
+[img]res://Graphics/go_to_icon.png[/img]"
