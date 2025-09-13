@@ -424,7 +424,7 @@ tutorialIngressOrbitingCancel,"concept: tutorialIngressOrbitingPortalResponse, t
 ,,,,,,,,,,
 tutorialIngressFollowingPortal,"concept: followingBody, type: WORMHOLE, name: Ingress, tutorial: true",,,,,,tutorialIngressFollowingPortalResponse,,,
 tutorialIngressFollowing,concept: tutorialIngressFollowingPortalResponse,"openDialog: null, objectiveSuccess: tutorialFollowIngress",defaultApproachMessage,"The wormhole glows a dull purple; its surface depicts the space around another star. Anti-protons are ejected in thin flux ropes, but no sooner snatched back into the distortion. Instruments go haywire as your starship approaches.",Enter the wormhole:tutorialIngressEnterCarry,,,,,tutorialIngressFollowingPREV: true
-tutorialIngressEnterCarry,"concept: optionSelected, option: tutorialIngressEnterCarry","closeDialog: null, _TUTORIALEnterIngress: null, categoryActive: tutorialFollowTomoSewi",,,,,,,,
+tutorialIngressEnterCarry,"concept: optionSelected, option: tutorialIngressEnterCarry","closeDialog: null, _TUTORIALEnterIngress: null, categoryActive: tutorialPreTomoSewiFollow",,,,,,,,
 tutorialIngressFollowingCancel,"concept: tutorialIngressFollowingPortalResponse, tutorialIngressFollowingPREV: true",,,,,,,,,
 tutorialIngressFollowingPlotCancel,"concept: tutorialIngressFollowingPortalResponse, tutorialIngressOrbitingPREV: false",openDialog: null,defaultApproachMessage,"The helmsman on duty looks exasperated. ""Captain, I apologise,"" he begins, ""but I was under the impression that we would first enter orbit."" He pauses to steady himself. ""We have not completed all of the calculations - if we enter the wormhole now, the ship will get torn apart.""",Enter orbit:defaultLeave,,,,,
 ,,,,,,,,,,
@@ -441,7 +441,7 @@ tutorialTomoSewiFollowing,"concept: followingBody, type: STATION, name: Tomo Sew
 tutorialTomoSewiDockCarry,"concept: optionSelected, option: tutorialTomoSewiDockCarry",categoryActive: tutorialPreAnteFollow,stationDockingAccess,,,,,,,
 ,,,,,,,,,,
 tutorialAnteMessageApproach,concept: tutorialAnteMessageApproach,,,"Ante was first discovered to be the ideal world by ancient pioneers. It had a near perfect circular orbit in the habitable zone of Suno, friendly ocean tides, a breathable atmosphere, a vast and complex alien ecoystem and an equatorial surface temperature at a near constant 21 degrees celcius. Ante was only recently settled following long-standing fears of upsetting its natural balance, conciliated with the building of extensive preservation infastructure. The sparse settlement thereafter was concentrated around the equator on fault plateaus, a result of the planets unique tectonics, which provide separation between settlers and the fauna and flora of the lowlands. Recently, it became home to the headquarters of the Provisional Executive.",,,,,,
-tutorialAnteFollowingPortal,"concept: followingBody, type: PLANET, name: Ante, tutorial: true","openDialog: null, playMusic: ante.wav","defaultApproachMessage, tutorialAnteMessageApproach",,,,tutorialAntePortalDispatch,,,
+tutorialAnteFollowingPortal,"concept: followingBody, type: PLANET, name: Ante, tutorial: true","openDialog: null, playMusic: ante.wav, objectiveSuccess: tutorialFollowAnte","defaultApproachMessage, tutorialAnteMessageApproach",,,,tutorialAntePortalDispatch,,,
 tutorialAnteResponseValid,"concept: tutorialAntePortalDispatch, tutorialAntePortal_PREV: false",,,"You gaze at a landscape view of Spiriten, an interstellar entity under the auspices of the Provisional Executive, and ad hoc capital city of humanity. It rests on a thousand square kilometers of fault plateau, inland at the most temperature stable region of the equator. You brace yourself for the meetings, the crushing gravity, and the hours of walking in crisp white ceremonial dress, all within the opulent capital city.",Lead an away team: tutorialAnteTrip,,,,,tutorialAntePortal_PREV: true
 tutorialAnteResponseInvalid,"concept: tutorialAntePortalDispatch, tutorialAntePortal_PREV: true",,,,Leave:defaultLeave,,,,,
 #ante exploration council walk,,,,,,,,,,
@@ -475,7 +475,6 @@ tutorialAnteTransportWalkB,"concept: optionSelected, option: tutorialAnteTranspo
 ,,,,,,,,,,
 tutorialPeregrinationFollowingPortal,"concept: followingBody, type: WORMHOLE, name: Peregrination, tutorial: true",,,,,,tutorialPeregrinationFollowingPortalResponse,,,
 tutorialPeregrinationFollowing,"concept: tutorialPeregrinationFollowingPortalResponse, tutorialAntePortal_PREV: true","openDialog: null, objectiveSuccess: tutorialFollowPeregrination",defaultApproachMessage,,Enter the wormhole:tutorialPeregrinationEnterCarry,,,,,
-,,,,,,,,,,
 tutorialPeregrinationEnterCarry,"concept: optionSelected, option: tutorialPeregrinationEnterCarry","closeDialog: null, _TUTORIALPlayerWin: null",,,,,,,,
 tutorialPeregrinationFollowingPlotCancel,concept: tutorialPeregrinationFollowingPortalResponse,,,(MESSAGE ABOUT HOW YOU HAVE TO COME BACK AFTER GOING TO ANTE),Leave: defaultLeave,,,,,
 ,,,,,,,,,,

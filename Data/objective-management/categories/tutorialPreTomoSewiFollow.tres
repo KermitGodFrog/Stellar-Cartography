@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_xraup")
 written_identifier = ""
-objective_wIDs = ["tutorialFollowTomoSewi", "tutorialOptionalCheckStress"]
+objective_wIDs = ["tutorialOptionalCheckStress", "tutorialFollowTomoSewi"]
