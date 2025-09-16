@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_ni0lg")
 written_identifier = ""
-objective_wIDs = ["tutorialFollowPeregrination", "tutorialOptionalJourneyMap"]
+objective_wIDs = ["tutorialOptionalJourneyMap", "tutorialFollowPeregrination"]
