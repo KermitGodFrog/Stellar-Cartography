@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://c2upluruwt8c"]
+[gd_scene load_steps=21 format=3 uid="uid://c2upluruwt8c"]
 
 [ext_resource type="Shader" path="res://Scenes/Wormhole Minigame/wormhole_exterior.gdshader" id="1_hg32g"]
 [ext_resource type="Script" path="res://Scenes/Wormhole Minigame/wormhole_minigame.gd" id="1_u2vnu"]
@@ -48,6 +48,9 @@ content_margin_bottom = 140.0
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_17at8"]
 texture = ExtResource("8_41qj7")
 modulate_color = Color(0.211765, 0.211765, 0.211765, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dyc5n"]
+bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
 
 [node name="wormhole_minigame_window" type="Window"]
 process_mode = 2
@@ -197,6 +200,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "CLICK TO START"
+
+[node name="tutorial" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
+visible = false
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 22.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_dyc5n")
+text = "INFORMATION:
+- Press 'BRAKE' when the 'DISTANCE' meter is in the green area."
+autowrap_mode = 3
 
 [node name="wormhole_interference" type="AudioStreamPlayer" parent="minigame_container/minigame_viewport/wormhole_minigame"]
 stream = ExtResource("9_w5evm")

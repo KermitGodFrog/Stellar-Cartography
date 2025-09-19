@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dtbagvxj5to3"]
+[gd_scene load_steps=17 format=3 uid="uid://dtbagvxj5to3"]
 
 [ext_resource type="Script" path="res://Scenes/Station UI/station_ui.gd" id="1_8gqs2"]
 [ext_resource type="Script" path="res://Scenes/Station UI/ui_save_audio_profiles_scroll.gd" id="3_b7unw"]
@@ -22,6 +22,9 @@ bg_color = Color(0.6, 0.6, 0.6, 0.54902)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w52st"]
 content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0u5xa"]
+bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
 
 [node name="station_window" type="Window"]
 process_mode = 2
@@ -311,6 +314,24 @@ script = ExtResource("4_ng3on")
 custom_minimum_size = Vector2(880, 0)
 layout_mode = 2
 text = "FINISHED"
+
+[node name="tutorial" type="Label" parent="station_control"]
+visible = false
+custom_minimum_size = Vector2(350, 100)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_right = 10.0
+offset_bottom = 11.5
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_0u5xa")
+text = "INFORMATION:
+- 'EXPLORATION DATA' is aquired by discovering bodies, using certain upgrades and as a result of certain anomalies.
+- 'n' stands for nanites. Refer to the STATUS PANEL to view 'NANITE' status while not docked at a station."
+vertical_alignment = 1
+autowrap_mode = 3
 
 [connection signal="close_requested" from="." to="station_control" method="_on_station_window_close_requested"]
 [connection signal="pressed" from="station_control/sell_data_button" to="station_control" method="_on_sell_data_button_pressed"]

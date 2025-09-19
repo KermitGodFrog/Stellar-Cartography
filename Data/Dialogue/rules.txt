@@ -403,7 +403,7 @@ enteringSystemCME,"concept: enteringSystem, system_hazard_classification: CORONA
 ,,,,,,,,,,
 ,,,,,,,,,,
 # tutorials,,,,,,,,,,
-tutorialPlayerStart,concept: tutorialPlayerStart,"_TUTORIALSetIngressOverride: true, _TUTORIALSetOmissionOverride: true, categoryActive: tutorialPrePreludeTheorise",,,,,,,,"tutorialPreludeOrbitingPREV: false, tutorialIngressOrbitingPREV: false"
+tutorialPlayerStart,concept: tutorialPlayerStart,"_TUTORIALSetIngressOverride: true, _TUTORIALSetOmissionOverride: true, _TUTORIALSetWindowTutorials: true, categoryActive: tutorialPrePreludeTheorise",,,,,,,,"tutorialPreludeOrbitingPREV: false, tutorialIngressOrbitingPREV: false"
 ,,,,,,,,,,
 tutorialPreludeTheorised,"concept: theorisedBody, type: PLANET, name: Prelude, tutorial: true","objectiveSuccess: tutorialMarkPrelude, categoryActive: tutorialPrePreludeOrbit",,,,,,,,
 ,,,,,,,,,,

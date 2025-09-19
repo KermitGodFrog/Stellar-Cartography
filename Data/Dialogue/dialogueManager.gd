@@ -40,6 +40,7 @@ signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
 signal TUTORIALEnterIngress()
+signal TUTORIALSetWindowTutorials(value: bool)
 
 var dialogue_memory: Dictionary = {} #memory that is added by any query, and is always accessible indefinitely. from worldAPI dialogue_memory which is sent via game.gd HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
@@ -748,4 +749,8 @@ func _TUTORIALPlayerWin():
 
 func _TUTORIALEnterIngress():
 	emit_signal("TUTORIALEnterIngress")
+	pass
+
+func _TUTORIALSetWindowTutorials(value: bool):
+	emit_signal("TUTORIALSetWindowTutorials", value)
 	pass
