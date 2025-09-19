@@ -7,6 +7,6 @@ script = ExtResource("1_oyamk")
 written_identifier = ""
 current_state = 0
 title = "Go-to Ante"
-description = "(SHORT MESSAGE ABOUT WHY YOU ARE GOING TO ANTE)
-
-(STANDARD HOW-TO BULLSHIT)"
+description = "A communiqué has instructed you to travel to Ante for briefing. This requires interacting with it.
+Click on Ante on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. 
+[img]res://Graphics/go_to_icon.png[/img]"
