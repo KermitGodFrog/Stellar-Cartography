@@ -8,6 +8,6 @@ name = "Graduation"
 description = "Complete the tutorial."
 dialogue_criteria = {
 "concept": "optionSelected",
-"option": "tutorialPlayerWin"
+"option": "tutorialPeregrinationEnterCarry"
 }
 index = 0
