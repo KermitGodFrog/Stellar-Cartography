@@ -40,6 +40,7 @@ var awaiting_start: bool = true
 @onready var press_to_start = $starship_and_camera/camera/UI_control/press_to_start_button
 @onready var brake_button = $starship_and_camera/camera/UI_control/brake_button
 @onready var hull_stress_increase_label = $starship_and_camera/camera/UI_control/hull_stress_increase_label
+@onready var tutorial = $starship_and_camera/camera/UI_control/tutorial
 
 @onready var failure_sound = preload("res://Sound/Wormhole Minigame/wormhole_minigame_failure.wav")
 @onready var success_sound = preload("res://Sound/Wormhole Minigame/wormhole_minigame_success.wav")
@@ -109,3 +110,7 @@ func _on_press_to_start_button_pressed():
 	press_to_start.hide()
 	awaiting_start = false
 	pass 
+
+func _on_set_tutorial_visible(value: bool) -> void:
+	tutorial.set_visible(value)
+	pass

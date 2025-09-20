@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="categoryAPI" load_steps=2 format=3 uid="uid://bsnuumck6uklw"]
+
+[ext_resource type="Script" path="res://Data/objective-management/categoryAPI.gd" id="1_xraup"]
+
+[resource]
+script = ExtResource("1_xraup")
+written_identifier = ""
+objective_wIDs = ["tutorialOptionalCheckStress", "tutorialFollowTomoSewi"]

@@ -31,3 +31,7 @@ func _on_pressed():
 		emit_signal("removeHullStressForNanites", 1, nanites_per_percentage)
 		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "NC_use")
 	pass 
+
+func _on_mouse_entered() -> void:
+	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "hull_stress_status_hover", true)
+	pass

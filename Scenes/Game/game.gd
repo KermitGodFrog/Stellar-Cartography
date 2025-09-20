@@ -53,7 +53,7 @@ func _ready():
 		world.star_systems.append(king)
 		world.star_systems.append(suno)
 		
-		world.player.systems_traversed = 4
+		world.player.systems_traversed = -6
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
 		_on_switch_star_system(king)
@@ -214,6 +214,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
 	dialogue_manager.connect("TUTORIALEnterIngress", _on_tutorial_enter_ingress)
+	dialogue_manager.connect("TUTORIALSetWindowTutorials", _on_tutorial_set_window_tutorials)
 	
 	pause_menu.connect("saveWorld", _on_save_world)
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
@@ -920,6 +921,11 @@ func _on_tutorial_enter_ingress(): #override for INGRESS, not a return value so 
 	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
 	_on_wormhole_minigame_popup()
 	_on_player_entering_system(suno)
+	pass
+
+func _on_tutorial_set_window_tutorials(value: bool):
+	station_ui._on_set_tutorial_visible(value)
+	wormhole_minigame._on_set_tutorial_visible(value)
 	pass
 
 func _on_add_player_morale(amount : int) -> void:
