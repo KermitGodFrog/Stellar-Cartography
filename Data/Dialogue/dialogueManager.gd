@@ -111,7 +111,7 @@ func clear_and_load_rules() -> void:
 				"TEXT": #not in execution order
 					var text = convert_to_string(cell)
 					if not text.is_empty() and new_rule != null:
-						new_rule.text = cell
+						new_rule.text = cell #why are we setting it to cell after converting it? will need to take a DEEP LOOK into ts
 				"OPTIONS": #not in execution order
 					var dict = convert_to_dictionary(cell)
 					if not dict.is_empty() and new_rule != null:
