@@ -53,7 +53,7 @@ func _ready():
 		world.star_systems.append(king)
 		world.star_systems.append(suno)
 		
-		world.player.systems_traversed = 4
+		world.player.systems_traversed = -6
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
 		_on_switch_star_system(king)
