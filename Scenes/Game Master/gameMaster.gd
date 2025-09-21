@@ -8,6 +8,7 @@ const exclude = ["achievementManager"]
 var _current_path_to_scene: String = ""
 var _current_init_args: Dictionary = {}
 var _current_loading_instance: Node #loading screen
+var _current_load_confirmation: bool = false
 var progress: Array[float] = []
 
 func _ready():
@@ -23,7 +24,9 @@ func _change_scene(path_to_scene, init_args: Dictionary = {}): #init args: {"ini
 		child.queue_free()
 	
 	var loading_instance = load(loading_screen_path).instantiate()
+	loading_instance.connect("load_confirmation", _on_loading_instance_load_confirmation)
 	add_child(loading_instance)
+	await loading_instance.is_node_ready()
 	if path_to_scene != game_path:
 		loading_instance.disable_tips()
 	
@@ -41,6 +44,11 @@ func _process(_delta):
 		var status = ResourceLoader.load_threaded_get_status(_current_path_to_scene, progress)
 		match status:
 			ResourceLoader.THREAD_LOAD_LOADED:
+				
+				if _current_path_to_scene == game_path:
+					if not _current_load_confirmation:
+						_current_loading_instance.show_continue_popup()
+						return
 				
 				var new_scene: PackedScene = ResourceLoader.load_threaded_get(_current_path_to_scene) as PackedScene
 				var new_scene_instance = new_scene.instantiate()
@@ -79,4 +87,9 @@ func reset_all_current() -> void:
 	_current_path_to_scene = ""
 	_current_init_args = {}
 	_current_loading_instance = null
+	_current_load_confirmation = false
+	pass
+
+func _on_loading_instance_load_confirmation() -> void:
+	_current_load_confirmation = true
 	pass
