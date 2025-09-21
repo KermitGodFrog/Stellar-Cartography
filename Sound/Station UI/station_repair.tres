@@ -1,0 +1,17 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=7 format=3 uid="uid://dha2d3lx22sd1"]
+
+[ext_resource type="AudioStream" uid="uid://ci1bcxwhv2v0q" path="res://Sound/Station UI/repair1.wav" id="1_l1fgt"]
+[ext_resource type="AudioStream" uid="uid://cd1e6sh4jrymg" path="res://Sound/Station UI/repair2.wav" id="2_laaec"]
+[ext_resource type="AudioStream" uid="uid://dtuh2kfj4v2lk" path="res://Sound/Station UI/repair3.wav" id="3_d1i1j"]
+[ext_resource type="AudioStream" uid="uid://cg7bm3d7osd5c" path="res://Sound/Station UI/repair4.wav" id="4_nai34"]
+[ext_resource type="AudioStream" uid="uid://brx4y18u1s3jm" path="res://Sound/Station UI/repair5.wav" id="5_gur0j"]
+[ext_resource type="AudioStream" uid="uid://wehw1qy6bnfg" path="res://Sound/Station UI/repair6.wav" id="6_aabt4"]
+
+[resource]
+streams_count = 6
+stream_0/stream = ExtResource("1_l1fgt")
+stream_1/stream = ExtResource("2_laaec")
+stream_2/stream = ExtResource("3_d1i1j")
+stream_3/stream = ExtResource("4_nai34")
+stream_4/stream = ExtResource("5_gur0j")
+stream_5/stream = ExtResource("6_aabt4")

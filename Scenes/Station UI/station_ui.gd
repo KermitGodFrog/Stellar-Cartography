@@ -65,6 +65,7 @@ signal addPlayerValue(amount: int)
 
 @onready var station_upgrade = preload("res://Sound/Station UI/station_upgrade.tres")
 @onready var station_sell_data = preload("res://Sound/Station UI/station_sell_data.tres")
+@onready var station_repair = preload("res://Sound/Station UI/station_repair.tres")
 
 var has_sold_previously: bool = false
 
@@ -124,10 +125,16 @@ func _on_finished_button_pressed():
 
 func _on_repair_single_pressed():
 	emit_signal("removeHullStressForNanites", 1, nanites_per_percentage)
+	
+	if (player_balance >= nanites_per_percentage) and (player_hull_stress > 0): #terrible stupid thing ... shouldnt be computing this redundantly... game.gd _on_remove_hull_stress_for_nanites
+		get_tree().call_group("audioHandler", "play_once", station_repair, -12.0, "SFX")
 	pass
 
 func _on_repair_all_pressed():
 	emit_signal("removeHullStressForNanites", player_hull_stress, nanites_per_percentage)
+	
+	if (player_balance >= player_hull_stress * nanites_per_percentage) and (player_hull_stress > 0): #terrible stupid thing ... shouldnt be computing this redundantly... game.gd _on_remove_hull_stress_for_nanites
+		get_tree().call_group("audioHandler", "play_once", station_repair, -12.0, "SFX")
 	pass
 
 func _on_add_player_value(amount: int):
