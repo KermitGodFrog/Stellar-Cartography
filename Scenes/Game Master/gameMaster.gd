@@ -1,5 +1,6 @@
 extends Node
 
+const game_path = "res://Scenes/Game/game.tscn" #not used to load the game, thankfully, just to set whether tips should be shown!
 const main_menu_path = "res://Scenes/Main Menu/main_menu.tscn"
 const loading_screen_path = "res://Scenes/Loading Screen/loading_screen.tscn"
 const exclude = ["achievementManager"]
@@ -23,6 +24,8 @@ func _change_scene(path_to_scene, init_args: Dictionary = {}): #init args: {"ini
 	
 	var loading_instance = load(loading_screen_path).instantiate()
 	add_child(loading_instance)
+	if path_to_scene != game_path:
+		loading_instance.disable_tips()
 	
 	var error = ResourceLoader.load_threaded_request(path_to_scene)
 	if error != OK:
@@ -38,6 +41,7 @@ func _process(_delta):
 		var status = ResourceLoader.load_threaded_get_status(_current_path_to_scene, progress)
 		match status:
 			ResourceLoader.THREAD_LOAD_LOADED:
+				
 				var new_scene: PackedScene = ResourceLoader.load_threaded_get(_current_path_to_scene) as PackedScene
 				var new_scene_instance = new_scene.instantiate()
 				
