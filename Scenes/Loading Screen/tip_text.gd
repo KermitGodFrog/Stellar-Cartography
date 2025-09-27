@@ -6,6 +6,9 @@ const tips = [
 	"Click on a body on the SYSTEM MAP to quick-lock.",
 	"Right click on a body on the SYSTEM MAP to quick-orbit.",
 	"Note the 'MARKET PRICE' at all space stations in a system before selling your exploration data."
+	
+	
+	
 ]
 
 func _ready() -> void:

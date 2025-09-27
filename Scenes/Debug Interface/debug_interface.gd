@@ -7,6 +7,7 @@ extends Control
 
 signal increasePlayerBalance(amount: int)
 
+signal addPlayerHullStress(amount: int)
 signal clearLoadRules()
 signal revealAllWormholes()
 signal revealAllBodies()
@@ -73,6 +74,10 @@ func _on_query_button_pressed() -> void:
 
 func _on_force_quit_dialogue_button_pressed():
 	emit_signal("forceQuitDialogue")
+	pass
+
+func _on_add_hull_stress_button_pressed() -> void:
+	emit_signal("addPlayerHullStress", 5)
 	pass
 
 

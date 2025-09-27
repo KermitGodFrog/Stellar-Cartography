@@ -231,6 +231,7 @@ func connect_all_signals() -> void:
 	gas_layer_surveyor.connect("addPlayerValue", _on_add_player_value)
 	
 	debug_interface.connect("increasePlayerBalance", _on_increase_player_balance)
+	debug_interface.connect("addPlayerHullStress", _on_add_player_hull_stress)
 	debug_interface.connect("clearLoadRules", _on_DEBUG_clear_load_rules)
 	debug_interface.connect("revealAllWormholes", _on_DEBUG_reveal_all_wormholes)
 	debug_interface.connect("revealAllBodies", _on_DEBUG_reveal_all_bodies)
