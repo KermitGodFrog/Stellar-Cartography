@@ -630,18 +630,17 @@ func generateRandomWeightedSpecialAnomaly():
 
 
 
-func get_random_orbit_speed(hook: bodyAPI, _orbit_distance: float) -> float:
-	var orbit_speed_multiplier: float = 1.0
-	if hook.orbit_speed > 0:
-		orbit_speed_multiplier = ((hook.orbit_speed * 109.1) + 1)
-	var minimum_speed: float = ((sqrt(47*(hook.mass) / hook.radius)) / time) / (_orbit_distance / 100) * orbit_speed_multiplier
-	var maximum_speed: float = ((sqrt((2*47*hook.mass) / hook.radius)) / time) / (_orbit_distance / 100) * orbit_speed_multiplier
+func get_random_orbit_speed(hook: bodyAPI, _orbit_distance: float) -> float: #rather deceptive as this is used as rot/frame
+	#v = √(GM/r), where G is gravitational constant, M is hook mass (central body mass) and r is orbit radius
+	var hook_orbit_velocity = tan(hook.orbit_speed) * hook.orbit_distance # real orbital velocity = orbital velocity + hook orbital velocity
+	var orbit_velocity = hook_orbit_velocity + (sqrt(47*(hook.mass) / _orbit_distance)) / time #this is the actual velocity of a body 
+	var orbit_angle_change = atan(orbit_velocity / _orbit_distance) #this is the rotation change in radians per unit of time for the body
+	
 	#CHANCE FOR THE BODY TO ORBIT RETROGRADE:
 	if randf() >= 0.975:
-		minimum_speed = -minimum_speed
-		maximum_speed = -maximum_speed
+		orbit_angle_change = -orbit_angle_change
 	
-	return global_data.get_randf(minimum_speed, maximum_speed)
+	return orbit_angle_change
 
 func get_orbit_distance(hook: bodyAPI, iteration: int) -> float:
 	return hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * iteration)
