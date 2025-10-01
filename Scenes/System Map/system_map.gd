@@ -195,7 +195,7 @@ func _physics_process(delta):
 			body_attributes_list.add_item("radius : %.2f (earth radii)" % (follow_body.radius * 109.1), null, false)
 			body_attributes_list.add_item("mass : %.2f (earth masses)" % (follow_body.mass * 333000))
 		
-		body_attributes_list.add_item("orbit_angle_change : %.2f (rad/t)" % follow_body.orbit_angle_change, null, false)
+		body_attributes_list.add_item("orbit_angle_change : %.2f (rad/frame)" % follow_body.orbit_angle_change, null, false)
 		body_attributes_list.add_item("orbit_distance %.2f (solar radii)" % follow_body.orbit_distance, null, false)
 		
 		#metadata

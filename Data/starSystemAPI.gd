@@ -11,7 +11,7 @@ class_name starSystemAPI
 @export var bodies: Array[bodyAPI]
 @export var identifier_count: int = 1
 
-const time: int = 1000
+const time: int = 1
 @export_storage var post_gen_location_candidates: Array = []
 # ^^^ can be used for multiple passes of additional things, each pass removes used indexes from the array  
 
@@ -634,7 +634,7 @@ func generateRandomWeightedSpecialAnomaly():
 func get_orbit_angle_change(hook: bodyAPI, _orbit_distance: float) -> float: #(per unit of time) 
 	#v = √(GM/r), where G is gravitational constant, M is hook mass (central body mass) and r is orbit radius
 	var hook_orbit_velocity = tan(hook.orbit_angle_change) * hook.orbit_distance # real orbital velocity = orbital velocity + hook orbital velocity
-	var orbit_velocity = hook_orbit_velocity + (sqrt(47*(hook.mass) / _orbit_distance)) / time * 10000 #this is the actual velocity of a body 
+	var orbit_velocity = hook_orbit_velocity + (sqrt(47*(hook.mass) / _orbit_distance)) / time #this is the actual velocity of a body 
 	var orbit_angle_change = atan(orbit_velocity / _orbit_distance) #this is the rotation change in radians per unit of time for the body
 	
 	#CHANCE FOR THE BODY TO ORBIT RETROGRADE:
