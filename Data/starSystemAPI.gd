@@ -388,7 +388,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 				#print("------------")
 				
 				#PICKING SPEED
-				var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
+				var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 				
 				#PICKING COLOR
 				var color = planet_type_data.get(planet_type).get("color")
@@ -428,7 +428,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 					game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.PLANET, name_scheme, hook.get_display_name(), i, remaining.size()),
 					hook.get_identifier(),
 					orbit_distance,
-					orbit_speed,
+					orbit_angle_change,
 					(radius / 109.1),
 					{"mass": (mass / 333000), "surface_color": color, "current_variation": planetBodyAPI.VARIATIONS.values().pick_random(), "layers": gas_layers_sum},
 					{"planet_classification": planet_classification, "planet_type": planet_type, "value": value, "iterations": (hook.metadata.get("iterations") / 2), "planetary_anomaly": has_planetary_anomaly, "planetary_anomaly_available": is_planetary_anomaly_available, "seed": randi(), "missing_AO": has_missing_AO, "missing_GL": has_missing_GL}
@@ -455,7 +455,7 @@ func generateWormholes(): #uses variables post_gen_location_candidates, destinat
 		var i = location.back()
 		
 		var orbit_distance = get_orbit_distance(hook, i)
-		var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
+		var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 		
 		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
 		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
@@ -467,7 +467,7 @@ func generateWormholes(): #uses variables post_gen_location_candidates, destinat
 			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.WORMHOLE, name_scheme, hook.get_display_name()),
 			hook.get_identifier(),
 			orbit_distance,
-			orbit_speed,
+			orbit_angle_change,
 			(radius / 109.1),
 			{"destination_system": dest_system, "mass": 0.0, "surface_color": Color.WEB_PURPLE},
 			{"destination_star_type": dest_system.get_first_star().metadata.get("star_type")}
@@ -487,7 +487,7 @@ func generateRandomWeightedStations():
 		var i = location.back()
 		
 		var orbit_distance = get_orbit_distance(hook, i)
-		var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
+		var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 		var radius = get_default_radius_solar_radii()
 		
 		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
@@ -500,7 +500,7 @@ func generateRandomWeightedStations():
 			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, name_scheme, hook.get_display_name()),
 			hook.get_identifier(),
 			orbit_distance,
-			orbit_speed,
+			orbit_angle_change,
 			radius,
 			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup},
 			{}
@@ -520,7 +520,7 @@ func generateRandomAnomalies(SA_chance_per_candidate: float = 0.0):
 			var i = location.back()
 			
 			var orbit_distance = get_orbit_distance(hook, i) 
-			var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
+			var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 			var radius = get_default_radius_solar_radii()
 			
 			var new_anomaly = addBody(
@@ -530,7 +530,7 @@ func generateRandomAnomalies(SA_chance_per_candidate: float = 0.0):
 				game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ANOMALY, name_scheme, hook.get_display_name()),
 				hook.get_identifier(),
 				orbit_distance,
-				orbit_speed,
+				orbit_angle_change,
 				radius,
 				{},
 				{"seed": randi()},
@@ -549,7 +549,7 @@ func generateRandomWeightedEntities():
 		var i = location.back()
 		
 		var orbit_distance = get_orbit_distance(hook, i)
-		var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
+		var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 		var radius = get_default_radius_solar_radii()
 		
 		var entity_classification = global_data.weighted_pick(game_data.get_weighted_entity_classifications(), "weight")
@@ -561,7 +561,7 @@ func generateRandomWeightedEntities():
 			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ENTITY_DEFAULT, name_scheme, hook.get_display_name()),
 			hook.get_identifier(),
 			orbit_distance,
-			orbit_speed,
+			orbit_angle_change,
 			radius,
 			{"entity_classification": entity_classification},
 			{}
@@ -578,7 +578,7 @@ func generateRendezvousPoint():
 	var i = location.back()
 	
 	var orbit_distance = get_orbit_distance(hook, i)
-	var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
+	var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 	var radius = get_default_radius_solar_radii()
 	
 	var new_body = addBody(
@@ -588,7 +588,7 @@ func generateRendezvousPoint():
 		game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.RENDEZVOUS_POINT_DEFAULT, name_scheme, hook.get_display_name()), 
 		hook.get_identifier(),
 		orbit_distance, 
-		orbit_speed,
+		orbit_angle_change,
 		radius,
 		{}, #dialogue content overrides, perhaps?
 		{}
@@ -604,12 +604,13 @@ func generateRandomWeightedSpecialAnomaly():
 	var i = location.back()
 	
 	var orbit_distance = get_orbit_distance(hook, i)
-	var orbit_speed = get_random_orbit_speed(hook, orbit_distance)
+	var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 	var radius = get_default_radius_solar_radii()
 	
 	var special_anomaly_classification = global_data.weighted_pick(game_data.get_weighted_special_anomaly_classifications(), "weight")
 	match special_anomaly_classification:
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID:
+			var hook_orbit_velocity = tan(hook.orbit_angle_change) * hook.orbit_distance #would have to recalculate every frame if not calculating now, which would be unnecessary
 			var new_body = addBody(
 				load("res://Data/BodyAPIs/Special/SpA_SentientAsteroid.gd").new(),
 				BODY_TYPES.CUSTOM,
@@ -617,9 +618,9 @@ func generateRandomWeightedSpecialAnomaly():
 				"Unidentified Contact",
 				hook.get_identifier(),
 				orbit_distance,
-				orbit_speed,
+				orbit_angle_change,
 				radius,
-				{"dialogue_tag": "SpA_SentientAsteroid", "_system_time": time, "_hook_mass": hook.mass, "_hook_radius": hook.radius, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "icon_path": "res://Graphics/question_mark.png", "post_icon_path": "res://Graphics/SpA_SentientAsteroid_frame.png"},
+				{"dialogue_tag": "SpA_SentientAsteroid", "_system_time": time, "_hook_mass": hook.mass, "_hook_orbit_velocity": hook_orbit_velocity, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "icon_path": "res://Graphics/question_mark.png", "post_icon_path": "res://Graphics/SpA_SentientAsteroid_frame.png"},
 				{}
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
@@ -630,10 +631,10 @@ func generateRandomWeightedSpecialAnomaly():
 
 
 
-func get_random_orbit_speed(hook: bodyAPI, _orbit_distance: float) -> float: #rather deceptive as this is used as rot/frame
+func get_orbit_angle_change(hook: bodyAPI, _orbit_distance: float) -> float: #(per unit of time) 
 	#v = √(GM/r), where G is gravitational constant, M is hook mass (central body mass) and r is orbit radius
-	var hook_orbit_velocity = tan(hook.orbit_speed) * hook.orbit_distance # real orbital velocity = orbital velocity + hook orbital velocity
-	var orbit_velocity = hook_orbit_velocity + (sqrt(47*(hook.mass) / _orbit_distance)) / time #this is the actual velocity of a body 
+	var hook_orbit_velocity = tan(hook.orbit_angle_change) * hook.orbit_distance # real orbital velocity = orbital velocity + hook orbital velocity
+	var orbit_velocity = hook_orbit_velocity + (sqrt(47*(hook.mass) / _orbit_distance)) / time * 10000 #this is the actual velocity of a body 
 	var orbit_angle_change = atan(orbit_velocity / _orbit_distance) #this is the rotation change in radians per unit of time for the body
 	
 	#CHANCE FOR THE BODY TO ORBIT RETROGRADE:
@@ -658,14 +659,14 @@ func get_star_types_mixed_weights() -> Dictionary:
 
 
 
-func addBody(body: bodyAPI, _body_type: BODY_TYPES, id: int, d_name: String, hook_id: int, _orbit_distance: float, _orbit_speed: float, _radius: float, variables: Dictionary, metadata: Dictionary) -> int:
+func addBody(body: bodyAPI, _body_type: BODY_TYPES, id: int, d_name: String, hook_id: int, _orbit_distance: float, _orbit_angle_change: float, _radius: float, variables: Dictionary, metadata: Dictionary) -> int:
 	body.set_type(_body_type)
 	body.hook_identifier = hook_id
 	body.set_identifier(id)
 	identifier_count += 1
 	body.set_display_name(d_name)
 	body.orbit_distance = _orbit_distance
-	body.orbit_speed = _orbit_speed
+	body.orbit_angle_change = _orbit_angle_change
 	body.radius = _radius
 	for variable in variables:
 		body.set(variable, variables.get(variable))
@@ -686,9 +687,9 @@ func updateBodyPosition(id: int, delta):
 		var hook = get_body_from_identifier(body.hook_identifier)
 		if hook:
 			body.position = hook.position
-			if body.orbit_speed != 0 and body.orbit_distance != 0:
+			if body.orbit_angle_change != 0 and body.orbit_distance != 0:
 				var dir = Vector2.UP.rotated(body.rotation)
-				body.rotation += body.orbit_speed * delta
+				body.rotation += body.orbit_angle_change * delta
 				body.position = body.position + (dir * body.orbit_distance)
 	pass
 
