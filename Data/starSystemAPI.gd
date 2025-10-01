@@ -645,12 +645,13 @@ func generateFallbackAnomalies():
 	if space_anomalies.size() > 0:
 		SAs = true
 	
-	if not PAs:
-		var target = planets.pick_random()
-		target.metadata["planetary_anomaly"] = true
-		target.metadata["planetary_anomaly_available"] = true
-	if not SAs:
-		addRandomSpaceAnomaly()
+	if not PAs and not SAs: #no anomalies
+		if randf() >= 0.5:
+			var target = planets.pick_random()
+			target.metadata["planetary_anomaly"] = true
+			target.metadata["planetary_anomaly_available"] = true
+		else:
+			addRandomSpaceAnomaly()
 	pass
 
 
