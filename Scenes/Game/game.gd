@@ -236,6 +236,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("revealAllWormholes", _on_DEBUG_reveal_all_wormholes)
 	debug_interface.connect("revealAllBodies", _on_DEBUG_reveal_all_bodies)
 	debug_interface.connect("forceQuitDialogue", _on_DEBUG_force_quit_dialogue)
+	debug_interface.connect("forceUnexploredSystem", _on_DEBUG_force_unexplored_system)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -1111,7 +1112,14 @@ func _on_DEBUG_force_quit_dialogue() -> void:
 	dialogue_manager.closeDialog()
 	pass
 
-
+func _on_DEBUG_force_unexplored_system() -> void:
+	var new = _on_create_new_star_system()
+	new.createAuxiliaryUnexplored()
+	_on_switch_star_system(new)
+	_on_player_entering_system(new)
+	
+	_on_DEBUG_reveal_all_bodies()
+	pass
 
 
 

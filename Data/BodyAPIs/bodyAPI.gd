@@ -28,7 +28,7 @@ func set_display_name(value) -> void:
 	pass
 
 @export var orbit_distance: float
-@export var orbit_speed: float
+@export var orbit_angle_change: float #the change in rotation of a body IN RADIANS per unit of time given its orbital distance
 ##Used as the bodies LITERAL radius (for circularBodyAPIs), but is also used in calculations regarding player exclusion zones and player orbital distance.
 @export var radius: float
 

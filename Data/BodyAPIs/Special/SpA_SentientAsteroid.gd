@@ -7,7 +7,7 @@ extends customBodyAPI
 @export_storage var cooldown: float = 0.0
 #req:
 @export_storage var _hook_mass: float = 0.0
-@export_storage var _hook_radius: float = 0.0
+@export_storage var _hook_orbit_velocity: float = 0.0
 @export_storage var _system_time: float = 0.0
 
 func initialize():
@@ -16,7 +16,7 @@ func initialize():
 
 func advance(delta):
 	cooldown = maxf(0.0, cooldown - delta)
-	orbit_speed = get_orbit_speed()
+	orbit_angle_change = get_orbit_angle_change()
 	orbit_distance = move_toward(orbit_distance, target_distance, delta * 4.0)
 	if (orbit_distance == target_distance) and cooldown == 0.0:
 		cooldown = 10.0
@@ -30,5 +30,7 @@ func randomize_target_distance() -> void:
 	target_distance = global_data.get_randf(min_distance, max_distance)
 	pass
 
-func get_orbit_speed() -> float:
-	return ((sqrt(1.5*47*(_hook_mass) / _hook_radius)) / _system_time) / (orbit_distance / 100)
+func get_orbit_angle_change() -> float:
+	var orbit_velocity = _hook_orbit_velocity + (sqrt(47*(_hook_mass) / orbit_distance)) / _system_time
+	var _orbit_angle_change = atan(orbit_velocity / orbit_distance)
+	return _orbit_angle_change
