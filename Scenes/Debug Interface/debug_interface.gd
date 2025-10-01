@@ -12,6 +12,7 @@ signal clearLoadRules()
 signal revealAllWormholes()
 signal revealAllBodies()
 signal forceQuitDialogue()
+signal forceUnexploredSystem()
 
 
 func _ready() -> void:
@@ -80,7 +81,9 @@ func _on_add_hull_stress_button_pressed() -> void:
 	emit_signal("addPlayerHullStress", 5)
 	pass
 
-
+func _on_force_unexplored_system_button_pressed() -> void:
+	emit_signal("forceUnexploredSystem")
+	pass
 
 func _on_debug_interface_window_close_requested() -> void:
 	owner.hide()
