@@ -208,6 +208,7 @@ func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_plane
 	var hook_star = generateRandomWeightedHookStar()
 	generateRandomWeightedPlanets(hook_star, _PA_chance_per_planet, _missing_AO_chance_per_planet, _missing_GL_chance_per_relevant_planet)
 	generateRandomAnomalies(_SA_chance_per_candidate)
+	generateFallbackAnomalies()
 	pass
 
 func createAuxiliaryCivilized() -> void:
@@ -515,29 +516,32 @@ func generateRandomAnomalies(SA_chance_per_candidate: float = 0.0):
 	#anomalies = space anomalies - dialogue, disappear afterwards.
 	for anomaly in post_gen_location_candidates.size(): #for this reason, have to generate anomalies LAST
 		if randf() > (1 - SA_chance_per_candidate):
-			var location = post_gen_location_candidates.pick_random()
-			var hook = get_body_from_identifier(location.front())
-			var i = location.back()
-			
-			var orbit_distance = get_orbit_distance(hook, i) 
-			var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
-			var radius = get_default_radius_solar_radii()
-			
-			var new_anomaly = addBody(
-				spaceAnomalyBodyAPI.new(),
-				BODY_TYPES.SPACE_ANOMALY,
-				identifier_count,
-				game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ANOMALY, name_scheme, hook.get_display_name()),
-				hook.get_identifier(),
-				orbit_distance,
-				orbit_angle_change,
-				radius,
-				{},
-				{"seed": randi()},
-			)
-			
-			get_body_from_identifier(new_anomaly).rotation = deg_to_rad(global_data.get_randf(0,360))
-			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
+			addRandomSpaceAnomaly()
+	pass
+func addRandomSpaceAnomaly() -> void: #used in both generateRandomAnomalies and generateFallbackAnomalies
+	var location = post_gen_location_candidates.pick_random()
+	var hook = get_body_from_identifier(location.front())
+	var i = location.back()
+	
+	var orbit_distance = get_orbit_distance(hook, i) 
+	var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
+	var radius = get_default_radius_solar_radii()
+	
+	var new_anomaly = addBody(
+		spaceAnomalyBodyAPI.new(),
+		BODY_TYPES.SPACE_ANOMALY,
+		identifier_count,
+		game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ANOMALY, name_scheme, hook.get_display_name()),
+		hook.get_identifier(),
+		orbit_distance,
+		orbit_angle_change,
+		radius,
+		{},
+		{"seed": randi()},
+	)
+	
+	get_body_from_identifier(new_anomaly).rotation = deg_to_rad(global_data.get_randf(0,360))
+	post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
 func generateRandomWeightedEntities():
@@ -620,7 +624,7 @@ func generateRandomWeightedSpecialAnomaly():
 				orbit_distance,
 				orbit_angle_change,
 				radius,
-				{"dialogue_tag": "SpA_SentientAsteroid", "_system_time": time, "_hook_mass": hook.mass, "_hook_orbit_velocity": hook_orbit_velocity, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "icon_path": "res://Graphics/question_mark.png", "post_icon_path": "res://Graphics/SpA_SentientAsteroid_frame.png"},
+				{"dialogue_tag": "SpA_SentientAsteroid", "_hook_mass": hook.mass, "_hook_orbit_velocity": hook_orbit_velocity, "_system_time": time, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "icon_path": "res://Graphics/question_mark.png", "post_icon_path": "res://Graphics/SpA_SentientAsteroid_frame.png"},
 				{}
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
@@ -629,6 +633,25 @@ func generateRandomWeightedSpecialAnomaly():
 			pass
 	pass
 
+func generateFallbackAnomalies():
+	var planets: Array = get_bodies_of_body_type(BODY_TYPES.PLANET)
+	var space_anomalies: Array = get_bodies_of_body_type(BODY_TYPES.SPACE_ANOMALY)
+	var PAs: bool = false
+	var SAs: bool = false
+	
+	for planet in planets:
+		if planet.is_PA_valid():
+			PAs = true
+	if space_anomalies.size() > 0:
+		SAs = true
+	
+	if not PAs:
+		var target = planets.pick_random()
+		target.metadata["planetary_anomaly"] = true
+		target.metadata["planetary_anomaly_available"] = true
+	if not SAs:
+		addRandomSpaceAnomaly()
+	pass
 
 
 func get_orbit_angle_change(hook: bodyAPI, _orbit_distance: float) -> float: #(per unit of time) 
@@ -699,7 +722,7 @@ func updateBodyPosition(id: int, delta):
 func get_random_body():
 	return bodies.pick_random()
 
-func get_random_planet(): #the fuck? why return an array????
+func get_random_planet(): #the fuck? why return an array???? this isnt even used anywhere??????????
 	var planets: Array = []
 	for body in bodies:
 		if body.get_type() == BODY_TYPES.PLANET:
