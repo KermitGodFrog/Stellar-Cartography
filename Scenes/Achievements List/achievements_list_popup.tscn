@@ -10,11 +10,11 @@ bg_color = Color(0.207843, 0.207843, 0.207843, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77k44"]
 bg_color = Color(0.235294, 0.431373, 0.443137, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8kb6g"]
-bg_color = Color(0.235294, 0.431373, 0.443137, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gcmde"]
 bg_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8kb6g"]
+bg_color = Color(0.235294, 0.431373, 0.443137, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t5pok"]
 content_margin_right = 10.0
@@ -85,8 +85,8 @@ custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 theme_type_variation = &"ButtonDull"
-theme_override_styles/normal = SubResource("StyleBoxFlat_8kb6g")
 theme_override_styles/hover = SubResource("StyleBoxFlat_gcmde")
+theme_override_styles/normal = SubResource("StyleBoxFlat_8kb6g")
 icon = ExtResource("3_kt56g")
 icon_alignment = 1
 expand_icon = true
