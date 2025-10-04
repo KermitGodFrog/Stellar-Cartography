@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://curgo67fknmdl"
-path="res://.godot/imported/wormhole_full.wav-b2ac4c549e45b2b7d99c891acc5ed5e0.sample"
+path="res://.godot/imported/peregrination.wav-0e2b950e9553b81c59f342cd854d120a.sample"
 
 [deps]
 
-source_file="res://Sound/Wormhole Minigame/wormhole_full.wav"
-dest_files=["res://.godot/imported/wormhole_full.wav-b2ac4c549e45b2b7d99c891acc5ed5e0.sample"]
+source_file="res://Sound/dialogue/music/peregrination.wav"
+dest_files=["res://.godot/imported/peregrination.wav-0e2b950e9553b81c59f342cd854d120a.sample"]
 
 [params]
 

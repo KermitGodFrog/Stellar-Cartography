@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dm8or23stl5h7"
-path="res://.godot/imported/wormhole_leads.wav-7d5005415aa8ab1dc6dac428b27d4884.sample"
+path="res://.godot/imported/wormhole_leads.wav-90c02177e6be288d1ce9a74685a173a8.sample"
 
 [deps]
 
-source_file="res://Sound/Wormhole Minigame/wormhole_leads.wav"
-dest_files=["res://.godot/imported/wormhole_leads.wav-7d5005415aa8ab1dc6dac428b27d4884.sample"]
+source_file="res://Sound/dialogue/music/wormhole_leads.wav"
+dest_files=["res://.godot/imported/wormhole_leads.wav-90c02177e6be288d1ce9a74685a173a8.sample"]
 
 [params]
 
