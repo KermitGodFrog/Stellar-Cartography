@@ -22,7 +22,7 @@ metadata = {
 "star_type": "M"
 }
 orbit_distance = 0.0
-orbit_speed = 0.0
+orbit_angle_change = 0.0
 radius = 0.431
 position = Vector2(0, 0)
 rotation = 0.0
@@ -52,7 +52,7 @@ metadata = {
 "value": 514
 }
 orbit_distance = 20.322
-orbit_speed = 0.008
+orbit_angle_change = 0.008
 radius = 0.008
 position = Vector2(0, 0)
 rotation = 0.0
@@ -80,7 +80,7 @@ metadata = {
 "value": 3029
 }
 orbit_distance = 132.267
-orbit_speed = 0.005
+orbit_angle_change = 0.005
 radius = 0.132
 position = Vector2(0, 0)
 rotation = 4.705
@@ -104,7 +104,7 @@ metadata = {
 "destination_star_type": "M"
 }
 orbit_distance = 64.582
-orbit_speed = 0.012
+orbit_angle_change = 0.012
 radius = 0.005
 position = Vector2(0, 0)
 rotation = 0.0

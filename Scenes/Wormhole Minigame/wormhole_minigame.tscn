@@ -214,12 +214,13 @@ autowrap_mode = 3
 
 [node name="wormhole_interference" type="AudioStreamPlayer" parent="minigame_container/minigame_viewport/wormhole_minigame"]
 stream = ExtResource("9_w5evm")
+volume_db = -12.0
 autoplay = true
 bus = &"SFX"
 
 [node name="deceleration" type="AudioStreamPlayer" parent="minigame_container/minigame_viewport/wormhole_minigame"]
 stream = ExtResource("10_7mbe0")
-volume_db = -24.0
+volume_db = -36.0
 autoplay = true
 bus = &"SFX"
 

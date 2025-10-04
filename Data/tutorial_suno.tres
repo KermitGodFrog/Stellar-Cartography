@@ -22,7 +22,7 @@ metadata = {
 "star_type": "M"
 }
 orbit_distance = 0.0
-orbit_speed = 0.0
+orbit_angle_change = 0.0
 radius = 0.399
 position = Vector2(0, 0)
 rotation = 0.0
@@ -50,7 +50,7 @@ metadata = {
 "value": 16784
 }
 orbit_distance = 37.271
-orbit_speed = 0.017
+orbit_angle_change = 0.017
 radius = 0.004
 position = Vector2(0, 0)
 rotation = 5.799
@@ -78,7 +78,7 @@ metadata = {
 "value": 1873
 }
 orbit_distance = 93.072
-orbit_speed = 0.007
+orbit_angle_change = 0.007
 radius = 0.006
 position = Vector2(0, 0)
 rotation = 3.817
@@ -115,7 +115,7 @@ metadata = {
 "destination_star_type": "M"
 }
 orbit_distance = 45.252
-orbit_speed = 0.015
+orbit_angle_change = 0.015
 radius = 0.005
 position = Vector2(0, 0)
 rotation = 6.284
@@ -152,7 +152,7 @@ metadata = {
 "destination_star_type": "G"
 }
 orbit_distance = 103.573
-orbit_speed = 0.011
+orbit_angle_change = 0.011
 radius = 0.004
 position = Vector2(0, 0)
 rotation = 2.587
@@ -172,7 +172,7 @@ display_name = "Tomo Sewi Locus"
 hook_identifier = 2
 metadata = {}
 orbit_distance = 2.592
-orbit_speed = 0.01
+orbit_angle_change = 0.01
 radius = 0.004
 position = Vector2(0, 0)
 rotation = 1.106
