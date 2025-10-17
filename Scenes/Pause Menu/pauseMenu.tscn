@@ -24,6 +24,14 @@ script = ExtResource("1_u73yd")
 [node name="pause_canvas" type="CanvasLayer" parent="."]
 visible = false
 
+[node name="background" type="ColorRect" parent="pause_canvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.235294, 0.235294, 0.235294, 0.313726)
+
 [node name="pause_control" type="Control" parent="pause_canvas"]
 layout_mode = 3
 anchors_preset = 15

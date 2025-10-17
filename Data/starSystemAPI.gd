@@ -139,24 +139,24 @@ const planet_type_data = {
 const planet_descriptions = { #currently accessed by: go-to interactions
 	"Chthonian": "A solid planet which is, in itself, a metallic core. Result of a massive gravitational pull stripping the atmosphere of a Neptunian or Jovian world, leaving only the core behind.",
 	"Lava": "A solid planet composed of silicate, carbon and trace rare elements, with extensive sulfur concentrated near the surface due to constant active volcanism. Metallic core.",
-	"Hycean": "NO DESCRIPTION YET",
-	"Desert": "A solid planet with a human suitable nitrogen-oxygen atmosphere.",
-	"Ocean": "A solid planet with a human suitable nitrogen-oxygen atmosphere.",
-	"Earth-like": "A solid planet with a human suitable nitrogen-oxygen atmosphere.",
+	"Hycean": "A solid planet with a hydrogen-rich atmosphere which is suitable for non-human forms of life, while having a largely ocean surface.",
+	"Desert": "A solid planet with a human suitable nitrogen-oxygen atmosphere which has a dry surface that lacks any oceans.",
+	"Ocean": "A solid planet with a human suitable nitrogen-oxygen atmosphere which has an entirely ocean surface.",
+	"Earth-like": "A solid planet with a human suitable nitrogen-oxygen atmosphere which has a surface consisting of both continents and oceans.",
 	"Ice": "A solid planet composed of silicate, water and carbon, with huge reservoirs of water, methane, ammonia and nitrogen at the surface. Metallic core.",
 	"Iron": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by an iron core.",
 	"Nickel": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by a nickel or iron-nickel core.",
 	"Sulfur": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by a sulfur or iron-sulfur core.",
 	"Coreless": "A solid planet composed of silicate, water, carbon and trace rare elements which is notably devoid of a core. Comparatively greater water content than Iron, Nickel and Sulfur planets.",
 	"Carbon": "A solid planet composed of carbon in quantity, with trace amounts of silicate and rare elements, while being entirely devoid of water. Metallic core.",
-	"Fire Dwarf": "NO DESCRIPTION YET",
-	"Gas Dwarf": "NO DESCRIPTION YET",
-	"Ice Dwarf": "NO DESCRIPTION YET",
-	"Helium Dwarf": "NO DESCRIPTION YET",
-	"Fire Giant": "NO DESCRIPTION YET",
-	"Gas Giant": "NO DESCRIPTION YET",
-	"Ice Giant": "NO DESCRIPTION YET",
-	"Helium Giant": "NO DESCRIPTION YET"
+	"Fire Dwarf": "A warm semi-gaseous planet with a high surface-atmosphere temperature and subsequent low atmospheric density.",
+	"Gas Dwarf": "A semi-gaseous planet composed mainly of hydrogen and helium.",
+	"Ice Dwarf": "A cold semi-gaseous planet composed of oxygen, carbon, nitrogen, sulfur and other heavier elements.",
+	"Helium Dwarf": "A semi-gaseous planet composed of helium in quantity, with high levels of hydrogen monoxide and dioxide, while being entirely devoid of methane.",
+	"Fire Giant": "A warm gaseous planet with a high surface-atmosphere temperature and subsequent low atmospheric density.",
+	"Gas Giant": "A gaseous planet composed mainly of hydrogen and helium.",
+	"Ice Giant": "A cold gaseous planet composed of oxygen, carbon, nitrogen, sulfur and other heavier elements.",
+	"Helium Giant": "A gaseous planet composed of helium in quantity, with high levels of hydrogen monoxide and dioxide, while being entirely devoid of methane."
 }
 
 const star_descriptions = { #currently accessed by: go-to interactions
