@@ -149,11 +149,11 @@ const planet_descriptions = { #currently accessed by: go-to interactions
 	"Sulfur": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by a sulfur or iron-sulfur core.",
 	"Coreless": "A solid planet composed of silicate, water, carbon and trace rare elements which is notably devoid of a core. Comparatively greater water content than Iron, Nickel and Sulfur planets.",
 	"Carbon": "A solid planet composed of carbon in quantity, with trace amounts of silicate and rare elements, while being entirely devoid of water. Metallic core.",
-	"Fire Dwarf": "A warm semi-gaseous planet with a high surface-atmosphere temperature and subsequent low atmospheric density.",
+	"Fire Dwarf": "A semi-gaseous planet with a high surface-atmosphere temperature and subsequent low atmospheric density.",
 	"Gas Dwarf": "A semi-gaseous planet composed mainly of hydrogen and helium.",
 	"Ice Dwarf": "A cold semi-gaseous planet composed of oxygen, carbon, nitrogen, sulfur and other heavier elements.",
 	"Helium Dwarf": "A semi-gaseous planet composed of helium in quantity, with high levels of hydrogen monoxide and dioxide, while being entirely devoid of methane.",
-	"Fire Giant": "A warm gaseous planet with a high surface-atmosphere temperature and subsequent low atmospheric density.",
+	"Fire Giant": "A gaseous planet with a high surface-atmosphere temperature and subsequent low atmospheric density.",
 	"Gas Giant": "A gaseous planet composed mainly of hydrogen and helium.",
 	"Ice Giant": "A cold gaseous planet composed of oxygen, carbon, nitrogen, sulfur and other heavier elements.",
 	"Helium Giant": "A gaseous planet composed of helium in quantity, with high levels of hydrogen monoxide and dioxide, while being entirely devoid of methane."
