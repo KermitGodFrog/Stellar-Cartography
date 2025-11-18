@@ -237,6 +237,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("revealAllBodies", _on_DEBUG_reveal_all_bodies)
 	debug_interface.connect("forceQuitDialogue", _on_DEBUG_force_quit_dialogue)
 	debug_interface.connect("forceUnexploredSystem", _on_DEBUG_force_unexplored_system)
+	debug_interface.connect("maxCharacterStanding", _on_DEBUG_max_character_standing)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -1121,6 +1122,12 @@ func _on_DEBUG_force_unexplored_system() -> void:
 	_on_DEBUG_reveal_all_bodies()
 	pass
 
+func _on_DEBUG_max_character_standing() -> void:
+	_on_modify_character_standing(characterAPI.OCCUPATIONS.FIRST_OFFICER, 100, true)
+	_on_modify_character_standing(characterAPI.OCCUPATIONS.CHIEF_ENGINEER, 100, true)
+	_on_modify_character_standing(characterAPI.OCCUPATIONS.SECURITY_OFFICER, 100, true)
+	_on_modify_character_standing(characterAPI.OCCUPATIONS.MEDICAL_OFFICER, 100, true)
+	pass
 
 
 

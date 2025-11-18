@@ -13,6 +13,7 @@ signal revealAllWormholes()
 signal revealAllBodies()
 signal forceQuitDialogue()
 signal forceUnexploredSystem()
+signal maxCharacterStanding()
 
 
 func _ready() -> void:
@@ -84,6 +85,11 @@ func _on_add_hull_stress_button_pressed() -> void:
 func _on_force_unexplored_system_button_pressed() -> void:
 	emit_signal("forceUnexploredSystem")
 	pass
+
+func _on_max_character_standing_button_pressed() -> void:
+	emit_signal("maxCharacterStanding")
+	pass
+
 
 func _on_debug_interface_window_close_requested() -> void:
 	owner.hide()
