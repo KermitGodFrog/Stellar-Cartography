@@ -238,6 +238,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("forceQuitDialogue", _on_DEBUG_force_quit_dialogue)
 	debug_interface.connect("forceUnexploredSystem", _on_DEBUG_force_unexplored_system)
 	debug_interface.connect("maxCharacterStanding", _on_DEBUG_max_character_standing)
+	debug_interface.connect("removePlayerMorale", _on_remove_player_morale)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -566,7 +567,8 @@ func dock_with_station(following_station):
 
 
 func _on_player_death():
-	await pause_mode_handler.pauseModeNone
+	if pause_mode_handler.pause_mode != game_data.PAUSE_MODES.NONE: #unnecessary since a mutiny SHOULDNT ever happen outside of when dialogue is already open
+		await pause_mode_handler.pauseModeNone
 	print("GAME: PLAYER DIED")
 	
 	var new_query = responseQuery.new()
@@ -608,7 +610,8 @@ func _on_player_entering_system(system: starSystemAPI):
 	pass
 
 func _on_player_mutiny() -> void:
-	await pause_mode_handler.pauseModeNone
+	if pause_mode_handler.pause_mode != game_data.PAUSE_MODES.NONE: #unnecessary since a mutiny SHOULDNT ever happen outside of when dialogue is already open
+		await pause_mode_handler.pauseModeNone
 	print("GAME: PLAYER MUTINY")
 	
 	var new_query = responseQuery.new()
@@ -617,10 +620,13 @@ func _on_player_mutiny() -> void:
 	
 	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 	match RETURN_STATE:
-		"HARD_LEAVE":
+		"LOSE_MUTINY":
+			print("PLAYER LOSE_MUTINY")
+			world.player.survived_mutiny = false
 			_on_player_death()
-		"SOFT_LEAVE":
-			pass
+		"WIN_MUTINY":
+			print("PLAYER WIN_MUTINY")
+			world.player.survived_mutiny = true
 		_:
 			pass
 	pass
@@ -831,7 +837,8 @@ func _on_player_hull_deterioration_changed(new_value: int) -> void:
 
 func _on_player_morale_changed(new_value: int) -> void:
 	if new_value == 0:
-		_on_player_mutiny()
+		if world.player.survived_mutiny == false:
+			_on_player_mutiny()
 	pass
 
 func _on_kill_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> void:

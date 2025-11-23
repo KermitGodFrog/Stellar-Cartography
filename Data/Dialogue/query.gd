@@ -37,6 +37,8 @@ func populateWithPlayerData(player: playerAPI):
 	add("player_morale", player.morale)
 	add("morale_increase_cost", roundi(game_data.MORALE_INCREASE_CURVE.sample(game_data.player_weirdness_index)))
 	
+	#add("player_survived_mutiny", player.survived_mutiny)
+	
 	var in_CORE_region: bool = false
 	var in_FRONTIER_region: bool = false
 	var in_ABYSS_region: bool = false

@@ -14,6 +14,7 @@ signal revealAllBodies()
 signal forceQuitDialogue()
 signal forceUnexploredSystem()
 signal maxCharacterStanding()
+signal removePlayerMorale(amount: int)
 
 
 func _ready() -> void:
@@ -88,6 +89,10 @@ func _on_force_unexplored_system_button_pressed() -> void:
 
 func _on_max_character_standing_button_pressed() -> void:
 	emit_signal("maxCharacterStanding")
+	pass
+
+func _on_remove_morale_button_pressed() -> void:
+	emit_signal("removePlayerMorale", 5)
 	pass
 
 

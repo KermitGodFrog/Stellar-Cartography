@@ -59,7 +59,10 @@ enum STORYLINES {THE_DETECTIVE, THE_CONGLOMERATE}
 
 @export_storage var hull_deterioration: int = 0
 @export_storage var hull_stress: int = 0
-@export_storage var morale: int = 95
+@export_storage var morale: int = 95:
+	get:
+		if survived_mutiny: return 0
+		else: return morale
 #@export_storage var mutiny_backing: int = 0
 
 enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES, SCAN_PREDICTION, GAS_LAYER_SURVEYOR}
@@ -82,6 +85,7 @@ var current_SPL_upgrades: int = 0:
 
 @export_storage var CME_immune: bool = false #didnt know where to put this
 @export_storage var supercharge_jumps_remaining: int = 0
+@export_storage var survived_mutiny: bool = false #misc
 
 @export var characters: Array[characterAPI] = [
 	preload("res://Data/Characters/rui.tres"),
