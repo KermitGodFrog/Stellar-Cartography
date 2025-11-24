@@ -570,6 +570,20 @@ func killCharacterWithFlair(written_occupation: String):
 	playSoundEffect("failure.wav")
 	pass
 
+func killEveryCharacterWithFlair() -> void:
+	for occupation in [
+			characterAPI.OCCUPATIONS.FIRST_OFFICER,
+			characterAPI.OCCUPATIONS.CHIEF_ENGINEER,
+			characterAPI.OCCUPATIONS.SECURITY_OFFICER,
+			characterAPI.OCCUPATIONS.MEDICAL_OFFICER
+	]:
+		var character = player.get_character_with_occupation(occupation)
+		if character.is_alive():
+			dialogue.add_text(str("[color=red](", characterAPI.OCCUPATIONS.find_key(occupation).capitalize(), " ", character.get_display_name(), " is dead) [/color]"))
+		playSoundEffect("failure.wav")
+		emit_signal("killCharacterWithOccupation", occupation)
+	pass
+
 func setImage(path: String):
 	dialogue.set_image(path)
 	pass
