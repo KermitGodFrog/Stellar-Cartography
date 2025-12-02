@@ -278,6 +278,7 @@ expand_icon = true
 
 [node name="content_vbox" type="VBoxContainer" parent="credits_popup/margin/panel/panel_margin/scroll"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="kermit_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
 layout_mode = 2
@@ -291,7 +292,16 @@ text = "* Phoenix1509 - Some dialogue/main menu backgrounds (https://itch.io/pro
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="audio_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
+[node name="audio_scroll" type="ScrollContainer" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="audio_vbox" type="VBoxContainer" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox/audio_scroll"]
+layout_mode = 2
+
+[node name="audio_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox/audio_scroll/audio_vbox"]
 custom_minimum_size = Vector2(1360, 0)
 layout_mode = 2
 text = "Office01.wav by LG -- https://freesound.org/s/14856/ -- License: Attribution 4.0
@@ -307,7 +317,16 @@ Gun Battle Sound by ReamProductions - https://soundbible.com/2078-Gun-Battle-Sou
 (Retrieved 18th November 2025)
 
 Radio Active by Mike Koenig -- https://soundbible.com/1113-Radio-Active.html -- License: Attribution 3.0
-(Retrieved 18th November 2025)"
+(Retrieved 18th November 2025)
+
+Harbor Rotterdam Radio - sector waalhaven REC-241207-150333 by klankbeeld -- https://freesound.org/s/778332/ -- License: Attribution 4.0
+(Retrieved 2nd December 2025)
+
+HAM radio competition 14239 kHz 180825-17.30UTC.ogg by klankbeeld -- https://freesound.org/s/441697/ -- License: Attribution 4.0
+(Retrieved 2nd December 2025)
+
+HAM 40m Italian radio 2021-11-28 7120.0kHz.wav by klankbeeld -- https://freesound.org/s/610106/ -- License: Creative Commons 0
+(Retrieved 2nd December 2025)"
 autowrap_mode = 2
 
 [node name="achievements_list_popup" parent="." instance=ExtResource("5_7l6aj")]
