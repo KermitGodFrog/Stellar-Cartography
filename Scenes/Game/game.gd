@@ -606,7 +606,8 @@ func _on_player_entering_system(system: starSystemAPI):
 	
 	#not awaiting onCloseDialog because wacky shtuff happens!!!!!!! audioHandler should only play it when pause_mode is NONE anyway
 	
-	if system.is_civilized(): _on_play_civilized_system_leitmotif()
+	if system.is_civilized():
+		_on_play_civilized_system_leitmotif()
 	pass
 
 func _on_player_mutiny() -> void:
@@ -984,6 +985,7 @@ func _on_player_below_CME_ring_radius():
 		
 		_on_add_player_hull_stress(world.player.hull_stress_CME)
 		get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/coronal_mass_ejection.wav"), 0.0, "SFX")
+		get_tree().call_group("audioHandler", "plot_radio", load("res://Data/radio-helpers/player_below_CME_ring_radius.tres"))
 		system_map._on_countdown_overlay_CME_flash()
 	pass
 
@@ -1098,6 +1100,7 @@ func _on_pause_mode_changed(new_mode: game_data.PAUSE_MODES) -> void:
 	system_map.reset_player_boosting() #to stop boosting from being stuck to true, this SHOULD cover ALL grounds!
 	system_map.reset_actions_buttons_pressed() #godot 4.3 migration quick fix
 	pass
+
 
 
 

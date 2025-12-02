@@ -718,6 +718,10 @@ func _on_found_body(id: int):
 		get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
 	else:
 		get_tree().call_group("audioHandler", "play_once", LIDAR_discovery, 0.0, "SFX")
+	
+	if body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
+		if body.is_habitable():
+			get_tree().call_group("audioHandler", "plot_radio", load("res://Data/radio-helpers/discover_habitable_planet.tres"))
 	pass
 
 func _on_picker_button_item_selected(index):

@@ -10,6 +10,7 @@ _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 15), 0.0, 0.0, 0, 0, Vector
 point_count = 3
 
 [resource]
+resource_local_to_scene = true
 script = ExtResource("1_pp58e")
 radius_curve = SubResource("Curve_udqr3")
 color_curve = SubResource("Gradient_3y2i6")
