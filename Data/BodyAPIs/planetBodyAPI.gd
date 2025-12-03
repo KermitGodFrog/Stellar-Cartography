@@ -1,6 +1,14 @@
 extends circularBodyAPI
 class_name planetBodyAPI
 
+const habitable_planet_types = [
+	"Hycean",
+	"Desert",
+	"Ocean",
+	"Earth-like"
+]
+
+
 #Audio Visualizer
 enum VARIATIONS {LOW, MEDIUM, HIGH}
 @export var current_variation: int = -1:
@@ -32,3 +40,8 @@ func get_gas_layers_sum() -> int:
 func set_gas_layers_sum(value) -> void:
 	layers = value
 	pass
+
+func is_habitable() -> bool:
+	if metadata.get("planet_type", String()) in habitable_planet_types:
+		return true
+	return false

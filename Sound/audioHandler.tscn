@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://p275r5sfhnj5"]
+[gd_scene load_steps=4 format=3 uid="uid://p275r5sfhnj5"]
 
 [ext_resource type="Script" path="res://Sound/audioHandler.gd" id="1_eb43v"]
+[ext_resource type="AudioStream" uid="uid://culfmb2t457i2" path="res://Sound/Music/radio_chatter.ogg" id="2_6dvah"]
+[ext_resource type="Script" path="res://Sound/radioHandler.gd" id="3_jyn62"]
 
 [node name="audioHandler" type="Node" groups=["audioHandler"]]
 process_mode = 3
@@ -13,3 +15,12 @@ bus = &"Music"
 [node name="intermission" type="Timer" parent="."]
 wait_time = 60.0
 one_shot = true
+
+[node name="radioHandler" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("3_jyn62")
+
+[node name="radio" type="AudioStreamPlayer" parent="radioHandler"]
+stream = ExtResource("2_6dvah")
+autoplay = true
+bus = &"SFX"

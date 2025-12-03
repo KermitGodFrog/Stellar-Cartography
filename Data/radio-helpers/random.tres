@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="radioHelper" load_steps=3 format=3 uid="uid://beqinecl4nb7s"]
+
+[ext_resource type="Script" path="res://Data/radioHelper.gd" id="1_kfvhf"]
+
+[sub_resource type="Curve" id="Curve_ooiwo"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.05, 0.1), 0.0, 0.0, 0, 0, Vector2(0.75, 0.1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[resource]
+script = ExtResource("1_kfvhf")
+volume_curve = SubResource("Curve_ooiwo")
+max_time = 5.0

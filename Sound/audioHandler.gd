@@ -14,12 +14,14 @@ func _on_pause_mode_changed(_value):
 @onready var UI_click_generic = preload("res://Sound/SFX/UI_click_generic.tres")
 @onready var music = $music
 @onready var intermission = $intermission
+@onready var radio_handler =  $radioHandler
 
 var music_linear_volume_target: float = 1.0
 var enable_music_criteria: Dictionary = {}
 var music_queue: Array[String] = []
 
 func _process(delta):
+	radio_handler.enable_radio = _pause_mode == game_data.PAUSE_MODES.NONE
 	enable_music_criteria["pause_mode_none"] = _pause_mode == game_data.PAUSE_MODES.NONE
 	
 	var enable_music: bool = enable_music_criteria.values().all(equal_to_true)
@@ -107,4 +109,9 @@ func _on_play_once_player_finished(player: AudioStreamPlayer) -> void:
 func queue_music(path: String) -> void:
 	music_queue.append(path)
 	print("(AUDIO HANDLER) PATH ADDED TO MUSIC QUEUE: ", path)
+	pass
+
+
+func plot_radio(h: radioHelper) -> void:
+	radio_handler._plot_radio(h)
 	pass
