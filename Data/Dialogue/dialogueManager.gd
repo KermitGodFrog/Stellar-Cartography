@@ -708,6 +708,10 @@ func decreaseSecurityOfficerStanding(amount: int) -> void: #keeping this so i do
 	emit_signal("modifyCharacterStanding", characterAPI.OCCUPATIONS.SECURITY_OFFICER, amount, false)
 	pass
 
+func plotRadio(radio_helper_path: String) -> void:
+	get_tree().call_group("audioHandler", "plot_radio", load("res://Data/radio-helpers/%s" % radio_helper_path))
+	pass
+
 
 
 func categoryActive(wID: String) -> void:
