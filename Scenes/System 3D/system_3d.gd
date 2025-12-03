@@ -28,6 +28,8 @@ var target_fov: float = 75
 
 #for wormholes obv
 var wormhole_shader = preload("res://Scenes/wormhole_shader.gdshader")
+var pulsar_beam_material = preload("res://Instantiated Scenes/system-3d/pulsar_beam.tres")
+
 
 func _ready():
 	control.connect("targetFOVChange", _on_target_FOV_change)
@@ -111,9 +113,12 @@ func _physics_process(_delta):
 
 func spawnBodies():
 	for child in get_children():
-		if child.is_in_group("body_3d"):
+		if child.is_in_group("body_3d") \
+		or child.is_in_group("asteroid_belt_3d") \
+		or child.is_in_group("pulsar_beam_3d"):
 			call_deferred("remove_child", child)
 			child.queue_free()
+		
 	for body in system.bodies:
 		if body is circularBodyAPI:
 			var new_body_3d = body_3d.instantiate()
@@ -124,6 +129,8 @@ func spawnBodies():
 				new_body_3d.initialize(body.radius * system_scalar, body.surface_color, body.surface_color, 1.0)
 				star_omni_light.light_color = body.surface_color
 				star_omni_light.light_size = body.radius
+				if body is pulsarBodyAPI:
+					spawn_pulsar_beams(body)
 			elif body.get_type() == starSystemAPI.BODY_TYPES.WORMHOLE:
 				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
 			add_child(new_body_3d) 
@@ -145,6 +152,42 @@ func spawn_glint_body_3d_for_identifier(id: int):
 	add_child(new_entity_3d)
 	pass
 
+func spawn_pulsar_beams(_star: pulsarBodyAPI) -> void:
+	var points = get_pulsar_beams_as_3D_points(_star)
+	
+	var arrays1 = []
+	arrays1.resize(Mesh.ARRAY_MAX)
+	var arrays2 = arrays1.duplicate()
+	
+	arrays1[Mesh.ARRAY_VERTEX] = points[0]
+	arrays2[Mesh.ARRAY_VERTEX] = points[1]
+	
+	var arr_mesh1 = ArrayMesh.new()
+	var arr_mesh2 = ArrayMesh.new()
+	
+	arr_mesh1.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLE_STRIP, arrays1)
+	arr_mesh2.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays2)
+	
+	var m1 = MeshInstance3D.new()
+	var m2 = MeshInstance3D.new()
+	
+	m1.mesh = arr_mesh1
+	m2.mesh = arr_mesh2
+	
+	m1.add_to_group("pulsar_beam_3d")
+	m2.add_to_group("pulsar_beam_3d")
+	
+	m1.set_surface_override_material(0, pulsar_beam_material)
+	m2.set_surface_override_material(0, pulsar_beam_material)
+	
+	m1.rotate_z(deg_to_rad(90))
+	m2.rotate_z(deg_to_rad(90))
+	
+	add_child(m1)
+	add_child(m2)
+	
+	pass
+
 
 
 func reset_locked_body():
@@ -156,3 +199,38 @@ func _on_target_FOV_change(fov: float):
 	target_fov = fov
 	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "scopes_fov_change")
 	pass
+
+
+
+
+func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Array]:
+	var dir1 = Vector2.UP.rotated(star.beam_rotation)
+	var ex1 = dir1 + Vector2(0, -500).rotated(star.beam_rotation)
+	var a1 = dir1 + Vector2(0, -star.radius * 4.0).rotated(star.beam_rotation)
+	var b1 = ex1 + Vector2(0,star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
+	var c1 = ex1 + Vector2(0,-star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
+	var a1_3d = Vector3(a1.x, 0, a1.y)
+	var b1_3d = Vector3(b1.x, 0, b1.y)
+	var c1_3d = Vector3(c1.x, 0, c1.y)
+	
+	#var points1: PackedVector3Array = [
+	#	a1_3d, b1_3d, b1_3d + Vector3(0,40,0), 
+	#	b1_3d + Vector3(0,40,0), c1_3d + Vector3(0,40,0), a1_3d,
+	#	a1_3d, b1_3d, b1_3d - Vector3(0,40,0),
+	#	b1_3d - Vector3(0,40,0), c1_3d - Vector3(0,40,0), a1_3d,
+	#	a1_3d, c1_3d, c1_3d + Vector3(0,40,0),
+	#	a1_3d, c1_3d, c1_3d - Vector3(0,40,0),
+	#	b1_3d, b1_3d + Vector3(0,40,0), c1_3d + Vector3(0,40,0),
+	#	b1_3d, b1_3d - Vector3(0,40,0), c1_3d - Vector3(0,40,0)
+	#]
+	
+	#var points1: PackedVector3Array = [a1_3d, b1_3d, c1_3d, -a1_3d, -b1_3d, -c1_3d]
+	#var points2: PackedVector3Array = [-a1_3d, -b1_3d, -c1_3d, a1_3d, b1_3d, c1_3d]
+	#var points1: PackedVector3Array = [c1_3d, b1_3d, a1_3d, -a1_3d, -b1_3d, -c1_3d]
+	#var points2: PackedVector3Array = [-c1_3d, -b1_3d, -a1_3d, a1_3d, b1_3d, c1_3d]
+	var points1: PackedVector3Array = [a1_3d * system_scalar, b1_3d * system_scalar, c1_3d * system_scalar]
+	var points2: PackedVector3Array = [-a1_3d * system_scalar, -b1_3d * system_scalar, -c1_3d * system_scalar]
+	
+	
+	
+	return [points1, points2]

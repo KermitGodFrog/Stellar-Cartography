@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b7dvufojm35ny"]
+[gd_scene load_steps=18 format=3 uid="uid://b7dvufojm35ny"]
 
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="1_dndbf"]
 [ext_resource type="Texture2D" uid="uid://cs13346mdnofp" path="res://Graphics/2k_jupiter.jpg" id="1_so0ix"]
@@ -57,9 +57,17 @@ buffer = PackedFloat32Array(0.532779, -0.728831, 0.43238, -10.958, -0.763167, -0
 inner_radius = 10.0
 outer_radius = 12.0
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_yxjhc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2jgqq"]
+shading_mode = 0
+grow_amount = -0.854
+point_size = 32.5
+
 [node name="Test" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
 cast_shadow = 0
 mesh = SubResource("SphereMesh_xmlf5")
 surface_material_override/0 = SubResource("StandardMaterial3D_85ea2")
@@ -91,3 +99,8 @@ mesh = SubResource("TorusMesh_dsu5u")
 
 [node name="mesh_instance_mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_s0pj5")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.85264, -2.61249, 0, 0.522499, 4.2632, 0, 0, 0)
+mesh = SubResource("PlaneMesh_yxjhc")
+surface_material_override/0 = SubResource("StandardMaterial3D_2jgqq")
