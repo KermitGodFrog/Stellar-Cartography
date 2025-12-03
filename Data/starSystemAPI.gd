@@ -48,7 +48,8 @@ const star_types = {
 	"F": {"name": "F", "weight_eg": 0.0303398, "weight_lg": 0.1213592},
 	"A": {"name": "A", "weight_eg": 0.0060679, "weight_lg": 0.0764563},
 	"B": {"name": "B", "weight_eg": 0.0012136, "weight_lg": 0.0303398},
-	"O": {"name": "O", "weight_eg": 0.0000003, "weight_lg": 0.0060679}
+	"O": {"name": "O", "weight_eg": 0.0000003, "weight_lg": 0.0060679},
+	"Pulsar": {"name": "Pulsar", "weight_eg": 0.030, "weight_lg": 0.030}
 }
 
 const star_data = { #MASS IS IN SOLAR MASSES, RADIUS IS IN SOLAR RADII
@@ -58,7 +59,8 @@ const star_data = { #MASS IS IN SOLAR MASSES, RADIUS IS IN SOLAR RADII
 	"F": {"solar_radius_min": 1.15, "solar_radius_max": 1.4, "solar_mass_min": 1.04, "solar_mass_max": 1.4, "luminosity_min": 1.5, "luminosity_max": 5, "color": Color.WHITE_SMOKE},
 	"A": {"solar_radius_min": 1.4, "solar_radius_max": 1.8, "solar_mass_min": 1.4, "solar_mass_max": 2.1, "luminosity_min": 5, "luminosity_max": 25, "color": Color.LIGHT_BLUE},
 	"B": {"solar_radius_min": 1.8, "solar_radius_max": 6.6, "solar_mass_min": 2.1, "solar_mass_max": 16,"luminosity_min": 25000, "luminosity_max": 30000, "color": Color.BLUE_VIOLET},
-	"O": {"solar_radius_min": 6.6, "solar_radius_max": 10, "solar_mass_min": 16, "solar_mass_max": 25, "luminosity_min": 30000, "luminosity_max": 50000, "color": Color.BLUE}
+	"O": {"solar_radius_min": 6.6, "solar_radius_max": 10, "solar_mass_min": 16, "solar_mass_max": 25, "luminosity_min": 30000, "luminosity_max": 50000, "color": Color.BLUE},
+	"Pulsar": {"solar_radius_min": 0.1, "solar_radius_max": 0.7, "solar_mass_min": 1.44, "solar_mass_max": 2.9, "luminosity_min": 0.001, "luminosity_max": 0.01, "color": Color.WHITE}
 }
 
 const planet_classifications = {
@@ -166,7 +168,8 @@ const star_descriptions = { #currently accessed by: go-to interactions
 	"F": "NO DESCRIPTION YET",
 	"A": "NO DESCRIPTION YET",
 	"B": "NO DESCRIPTION YET",
-	"O": "NO DESCRIPTION YET"
+	"O": "NO DESCRIPTION YET",
+	"Pulsar": "NO DESCRIPTION YET"
 }
 
 
@@ -266,18 +269,38 @@ func generateRandomWeightedHookStar():
 	
 	var multiplier = get_discovery_multiplier_from_star_type(star_type)
 	
-	var new_body = addBody(
-		circularBodyAPI.new(),
-		BODY_TYPES.STAR,
-		identifier_count,
-		game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STAR, name_scheme),
-		0, #identifier count starts at 1 so this shouldnt be any issue
-		0.0,
-		0.0,
-		radius,
-		{"mass": mass, "surface_color": color},
-		{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25}
-	)
+	var new_body: int
+	
+	match star_type:
+		"Pulsar":
+			var beam_angle_change: float = global_data.get_randf(deg_to_rad(1), deg_to_rad(5))
+			var beam_width: float = global_data.get_randf(10, 30)
+			
+			new_body = addBody(
+				pulsarBodyAPI.new(),
+				BODY_TYPES.STAR,
+				identifier_count,
+				game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STAR, name_scheme),
+				0,
+				0.0,
+				0.0,
+				radius,
+				{"mass": mass, "surface_color": color, "beam_angle_change": beam_angle_change, "beam_width": beam_width},
+				{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25}
+			)
+		_:
+			new_body = addBody(
+				circularBodyAPI.new(),
+				BODY_TYPES.STAR,
+				identifier_count,
+				game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STAR, name_scheme),
+				0, #identifier count starts at 1 so this shouldnt be any issue
+				0.0,
+				0.0,
+				radius,
+				{"mass": mass, "surface_color": color},
+				{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25}
+			)
 	
 	get_body_from_identifier(new_body).known = true #so you can see stars on system map before exploring
 	return new_body
@@ -751,6 +774,7 @@ func get_discovery_multiplier_from_star_type(star_type: String) -> float:
 		"A": return 2.0
 		"B": return 3.5
 		"O": return 5.0
+		"Pulsar": return 2.0
 		_: return 1.0
 
 func get_body_from_identifier(id: int):

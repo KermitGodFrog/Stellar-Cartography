@@ -476,6 +476,7 @@ func _draw():
 	draw_map()
 	draw_sonar()
 	draw_CME()
+	draw_pulsar_beams()
 	pass
 
 func draw_sonar():
@@ -489,6 +490,30 @@ func draw_sonar():
 func draw_CME():
 	if CME_RING_SHOWN:
 		draw_circle(Vector2.ZERO, CME_RING_RADIUS, Color.WHITE.darkened(remap(float(CME_RING_RADIUS), float(), float(CME_MAX_RING_RADIUS), 0.0, 1.0)), false, 10)
+	pass
+
+func draw_pulsar_beams():
+	if system.get_first_star().metadata.get("star_type", String()) == "Pulsar":
+		var star = system.get_first_star() as pulsarBodyAPI
+		var dir1 = Vector2.UP.rotated(star.beam_rotation)
+		
+		var ex1 = dir1 + Vector2(0, -500).rotated(star.beam_rotation)
+		
+		var cols: PackedColorArray = [Color.GRAY, Color.WHITE, Color.WHITE]
+		
+		var a1 = dir1 + Vector2(0, -star.radius * 4.0).rotated(star.beam_rotation)
+		var b1 = ex1 + Vector2(0,star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
+		var c1 = ex1 + Vector2(0,-star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
+		var points1: PackedVector2Array = [a1, b1, c1]
+		
+		var a2 = -a1
+		var b2 = -b1
+		var c2 = -c1
+		var points2: PackedVector2Array = [a2, b2, c2]
+		
+		draw_polygon(points1, cols)
+		draw_polygon(points2, cols)
+	
 	pass
 
 func draw_map():
