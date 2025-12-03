@@ -29,7 +29,9 @@ signal lockedBodyDepreciated
 signal theorisedBody(id: int)
 signal removeHullStressForNanites(amount: int, nanites_per_percentage: int)
 signal playerBelowCMERingRadius
+signal playerInPulsarBeamCooldownExpired
 signal updatePlayerInAsteroidBelt(_player_in_asteroid_belt: bool)
+signal updatePlayerInPulsarBeam(_player_in_pulsar_beam: bool)
 
 signal audioVisualizerPopup
 signal journeyMapPopup
@@ -108,6 +110,9 @@ var CME_RING_RADIUS: int = 0
 var CME_RING_SHOWN: bool = false
 const CME_MAX_RING_RADIUS: int = 1000
 
+var PULSAR_DAMAGE_COOLDOWN: float = 0.0
+const PULSAR_MAX_DAMAGE_COOLDOWN: float = 1.0
+
 #system list
 var collapsed_cache: Dictionary = {}
 var selected_cache: Dictionary = {} #CURRENTLY DOES NOTHING BECAUSE I CANT FIGURE OUT HOW TO MAKE IT WORK!
@@ -121,6 +126,11 @@ var player_in_asteroid_belt: bool = false:
 			#travel_modifier_label.check_modifier("asteroid_belt", "Asteroid belt (0.5x R%c/s)" % "☉", value)
 			travel_modifier_label.check_modifier("asteroid_belt", "Asteroid belt", value)
 		player_in_asteroid_belt = value
+var player_in_pulsar_beam: bool = false: #doesnt impact speed ATM
+	set(value):
+		if player_in_pulsar_beam != value:
+			emit_signal("updatePlayerInPulsarBeam", value)
+		player_in_pulsar_beam = value
 var player_supercharged: bool = false:
 	set(value):
 		player_supercharged = value
@@ -166,6 +176,7 @@ func _physics_process(delta):
 	closest_body_id = camera_position_to_bodies.find_key(sorted_values.front()) #FOR SYSTEM LIST, create_item_for_body()
 	
 	calculate_asteroid_belt_slowdown()
+	calculate_pulsar_beam_slowdown_and_damage(delta)
 	generate_system_list()
 	
 	#updating sonar ping visualization time values & sonar polygon display time
@@ -240,7 +251,7 @@ func _physics_process(delta):
 
 
 
-func calculate_asteroid_belt_slowdown():
+func calculate_asteroid_belt_slowdown() -> void:
 	var i: int = 0
 	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT)
 	if asteroid_belts:
@@ -255,6 +266,29 @@ func calculate_asteroid_belt_slowdown():
 		player_in_asteroid_belt = false
 	elif i > 0:
 		player_in_asteroid_belt = true
+	pass
+
+func calculate_pulsar_beam_slowdown_and_damage(delta) -> void:
+	var i: int = 0
+	if system.get_first_star() is pulsarBodyAPI:
+		var _star = system.get_first_star()
+		var points = get_pulsar_beams_as_points(_star)
+		for beam in points:
+			if Geometry2D.is_point_in_polygon(player_position_matrix[0], beam):
+				i += 1
+				break
+	if i == 0:
+		player_in_pulsar_beam = false
+	if i > 0: 
+		player_in_pulsar_beam = true
+	
+	PULSAR_DAMAGE_COOLDOWN = maxf(0, PULSAR_DAMAGE_COOLDOWN - delta)
+	if player_in_pulsar_beam and PULSAR_DAMAGE_COOLDOWN == 0:
+		PULSAR_DAMAGE_COOLDOWN = PULSAR_MAX_DAMAGE_COOLDOWN
+		emit_signal("playerInPulsarBeamCooldownExpired")
+	
+	
+	
 	pass
 
 
@@ -493,28 +527,22 @@ func draw_CME():
 	pass
 
 func draw_pulsar_beams():
-	if system.get_first_star().metadata.get("star_type", String()) == "Pulsar":
-		var star = system.get_first_star() as pulsarBodyAPI
-		var dir1 = Vector2.UP.rotated(star.beam_rotation)
-		
-		var ex1 = dir1 + Vector2(0, -500).rotated(star.beam_rotation)
-		
+	if system.get_first_star() is pulsarBodyAPI:
+		var _star = system.get_first_star()
+		var points = get_pulsar_beams_as_points(_star)
 		var cols: PackedColorArray = [Color.GRAY, Color.WHITE, Color.WHITE]
-		
-		var a1 = dir1 + Vector2(0, -star.radius * 4.0).rotated(star.beam_rotation)
-		var b1 = ex1 + Vector2(0,star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
-		var c1 = ex1 + Vector2(0,-star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
-		var points1: PackedVector2Array = [a1, b1, c1]
-		
-		var a2 = -a1
-		var b2 = -b1
-		var c2 = -c1
-		var points2: PackedVector2Array = [a2, b2, c2]
-		
-		draw_polygon(points1, cols)
-		draw_polygon(points2, cols)
-	
+		draw_polygon(points[0], cols)
+		draw_polygon(points[1], cols)
 	pass
+func get_pulsar_beams_as_points(star: pulsarBodyAPI) -> Array[PackedVector2Array]:
+	var dir1 = Vector2.UP.rotated(star.beam_rotation)
+	var ex1 = dir1 + Vector2(0, -500).rotated(star.beam_rotation)
+	var a1 = dir1 + Vector2(0, -star.radius * 4.0).rotated(star.beam_rotation)
+	var b1 = ex1 + Vector2(0,star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
+	var c1 = ex1 + Vector2(0,-star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
+	var points1: PackedVector2Array = [a1, b1, c1]
+	var points2: PackedVector2Array = [-a1, -b1, -c1]
+	return [points1, points2]
 
 func draw_map():
 	var show_overlay: bool = camera.zoom.length() < 100

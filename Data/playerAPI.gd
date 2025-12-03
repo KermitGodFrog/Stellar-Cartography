@@ -25,6 +25,7 @@ func get_adjusted_speed() -> int:
 
 var boosting: bool = false
 var in_asteroid_belt: bool = false
+var in_pulsar_beam: bool = false
 var supercharged: bool = false:
 	get():
 		if supercharge_jumps_remaining > 0:
@@ -47,6 +48,7 @@ var total_score: int = 0:
 @export var max_jumps: int
 @export var hull_stress_wormhole: int
 @export var hull_stress_CME: int
+@export var hull_stress_pulsar_beam: int
 
 @export_storage var jumps_remaining: int = 0
 @export_storage var systems_traversed: int = 0

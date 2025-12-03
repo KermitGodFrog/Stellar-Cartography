@@ -30,7 +30,7 @@ func _ready():
 	
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 25, 15, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -74,7 +74,7 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 25, 15, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -173,6 +173,8 @@ func connect_all_signals() -> void:
 	system_map.connect("theorisedBody", _on_theorised_body)
 	system_map.connect("playerBelowCMERingRadius", _on_player_below_CME_ring_radius)
 	system_map.connect("updatePlayerInAsteroidBelt", _on_update_player_in_asteroid_belt)
+	system_map.connect("updatePlayerInPulsarBeam", _on_update_player_in_pulsar_beam)
+	system_map.connect("playerInPulsarBeamCooldownExpired", _on_player_in_pulsar_beam_cooldown_expired)
 	
 	system_3d.connect("foundBody", _on_found_body)
 	system_3d.connect("addConsoleEntry", _on_add_console_entry)
@@ -989,6 +991,10 @@ func _on_player_below_CME_ring_radius():
 		system_map._on_countdown_overlay_CME_flash()
 	pass
 
+func _on_player_in_pulsar_beam_cooldown_expired() -> void:
+	_on_add_player_hull_stress(world.player.hull_stress_pulsar_beam)
+	pass
+
 func _on_update_countdown_overlay_info(_title: String, _description: String, _hull_stress: int):
 	system_map._on_update_countdown_overlay_info(_title, _description, _hull_stress)
 	pass
@@ -1004,6 +1010,10 @@ func _on_update_countdown_overlay_shown(_shown: bool):
 
 func _on_update_player_in_asteroid_belt(player_in_asteroid_belt: bool):
 	world.player.in_asteroid_belt = player_in_asteroid_belt
+	pass
+
+func _on_update_player_in_pulsar_beam(player_in_pulsar_beam: bool):
+	world.player.in_pulsar_beam = player_in_pulsar_beam
 	pass
 
 func _on_player_action_type_pending_or_completed(type: playerAPI.ACTION_TYPES, body: bodyAPI, pending: bool):
