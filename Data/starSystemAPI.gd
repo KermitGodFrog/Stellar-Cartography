@@ -60,7 +60,7 @@ const star_data = { #MASS IS IN SOLAR MASSES, RADIUS IS IN SOLAR RADII
 	"A": {"solar_radius_min": 1.4, "solar_radius_max": 1.8, "solar_mass_min": 1.4, "solar_mass_max": 2.1, "luminosity_min": 5, "luminosity_max": 25, "color": Color.LIGHT_BLUE},
 	"B": {"solar_radius_min": 1.8, "solar_radius_max": 6.6, "solar_mass_min": 2.1, "solar_mass_max": 16,"luminosity_min": 25000, "luminosity_max": 30000, "color": Color.BLUE_VIOLET},
 	"O": {"solar_radius_min": 6.6, "solar_radius_max": 10, "solar_mass_min": 16, "solar_mass_max": 25, "luminosity_min": 30000, "luminosity_max": 50000, "color": Color.BLUE},
-	"Pulsar": {"solar_radius_min": 0.1, "solar_radius_max": 0.7, "solar_mass_min": 1.44, "solar_mass_max": 2.9, "luminosity_min": 0.001, "luminosity_max": 0.01, "color": Color.WHITE}
+	"Pulsar": {"solar_radius_min": 0.1, "solar_radius_max": 1.15, "solar_mass_min": 1.44, "solar_mass_max": 2.9, "luminosity_min": 0.001, "luminosity_max": 0.01, "color": Color.WHITE}
 }
 
 const planet_classifications = {
@@ -273,8 +273,8 @@ func generateRandomWeightedHookStar():
 	
 	match star_type:
 		"Pulsar":
-			var beam_angle_change: float = global_data.get_randf(deg_to_rad(1), deg_to_rad(5))
-			var beam_width: float = global_data.get_randf(10, 30)
+			var beam_angle_change: float = global_data.get_randf(deg_to_rad(1), deg_to_rad(6))
+			var beam_width: float = global_data.get_randf(10, 50) # IN SOLAR RADII
 			
 			new_body = addBody(
 				pulsarBodyAPI.new(),

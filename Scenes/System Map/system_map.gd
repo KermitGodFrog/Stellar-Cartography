@@ -286,9 +286,6 @@ func calculate_pulsar_beam_slowdown_and_damage(delta) -> void:
 	if player_in_pulsar_beam and PULSAR_DAMAGE_COOLDOWN == 0:
 		PULSAR_DAMAGE_COOLDOWN = PULSAR_MAX_DAMAGE_COOLDOWN
 		emit_signal("playerInPulsarBeamCooldownExpired")
-	
-	
-	
 	pass
 
 
@@ -527,12 +524,24 @@ func draw_CME():
 	pass
 
 func draw_pulsar_beams():
+	randomize()
 	if system.get_first_star() is pulsarBodyAPI:
-		var _star = system.get_first_star()
-		var points = get_pulsar_beams_as_points(_star)
-		var cols: PackedColorArray = [Color.GRAY, Color.WHITE, Color.WHITE]
-		draw_polygon(points[0], cols)
-		draw_polygon(points[1], cols)
+		var _star = system.get_first_star() as pulsarBodyAPI
+		var points_top = get_pulsar_beams_as_points(_star)
+		var points_backdrop = get_pulsar_beams_as_points(_star)
+		
+		var tip_color = Color.WHITE
+		tip_color.a = sin(_star.beam_rotation * _star.beam_width)
+		
+		var cols_top: PackedColorArray = [Color.WHITE, tip_color, tip_color]
+		var cols_backdrop: PackedColorArray = []
+		cols_backdrop.resize(3)
+		cols_backdrop.fill(Color(Color.DIM_GRAY, 0.35))
+		
+		draw_polygon(points_backdrop[0], cols_backdrop)
+		draw_polygon(points_backdrop[1], cols_backdrop)
+		draw_polygon(points_top[0], cols_top)
+		draw_polygon(points_top[1], cols_top)
 	pass
 func get_pulsar_beams_as_points(star: pulsarBodyAPI) -> Array[PackedVector2Array]:
 	var dir1 = Vector2.UP.rotated(star.beam_rotation)
