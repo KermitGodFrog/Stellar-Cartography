@@ -26,6 +26,8 @@ var system_scalar: float = 10.0
 var body_detection_range: int = 1000
 var target_fov: float = 75
 
+var initial_beam_rotation: float = 0.0 #REQUIRED FOR PULSARS TO WORK. BARELY KNEW WHAT I WAS DOING WHEN I MADE IT WORK SO DONT TOUCH!
+
 #for wormholes obv
 var wormhole_shader = preload("res://Scenes/wormhole_shader.gdshader")
 var pulsar_beam_material = preload("res://Instantiated Scenes/system-3d/pulsar_beam.tres")
@@ -36,7 +38,19 @@ func _ready():
 	pass
 
 func _physics_process(delta):
-	
+	for child in get_children():
+		if child.is_in_group("pulsar_beam_3d"):
+			var beam = child as MeshInstance3D
+			var star = system.get_first_star()
+			
+			var dir = Vector2.UP.rotated(star.beam_rotation - initial_beam_rotation)
+			var a = dir + Vector2(0, -1).rotated(star.beam_rotation - initial_beam_rotation)
+			var a_3d = Vector3(a.x, 0, a.y) * system_scalar
+			
+			beam.transform = transform.looking_at(a_3d)
+			
+			
+			#THIS ACTUALLY WORKS??? THANKS - initial_beam_rotation
 	
 	
 	
@@ -157,6 +171,7 @@ func spawn_glint_body_3d_for_identifier(id: int):
 	pass
 
 func spawn_pulsar_beams(_star: pulsarBodyAPI) -> void:
+	initial_beam_rotation = _star.beam_rotation
 	var points = get_pulsar_beams_as_3D_points(_star)
 	
 	for beam_points in points:
@@ -195,6 +210,7 @@ func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Ar
 	var a1 = dir1 + Vector2(0, -star.radius * 4.0).rotated(star.beam_rotation)
 	var b1 = ex1 + Vector2(0,star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
 	var c1 = ex1 + Vector2(0,-star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
+	
 	var a1_3d = Vector3(a1.x, 0, a1.y) * system_scalar
 	var b1_3d = Vector3(b1.x, 0, b1.y) * system_scalar
 	var c1_3d = Vector3(c1.x, 0, c1.y) * system_scalar
@@ -215,5 +231,5 @@ func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Ar
 		a2_3d, c2_3d + v_offset, b2_3d - v_offset
 	]
 	
-	#these points are already rotated according to the stars current beam_rotation variable at the time of the system being loaded!
+	#these points are already rotated according to the stars current beam_rotation variable at the time of the system being loaded! therefore, to find the real rotation for the MeshInstances, do beam_rotation - initial_beam_rotation :>
 	return [points1, points2]
