@@ -35,9 +35,13 @@ func _ready():
 	control.connect("targetFOVChange", _on_target_FOV_change)
 	pass
 
-func _physics_process(_delta):
-	#setting post process
+func _physics_process(delta):
 	
+	
+	
+	
+	
+	#setting post process
 	var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)
 	post_process.material.set("shader_parameter/pixel_size", round(fov_to_pixel_size))
 	
@@ -155,37 +159,19 @@ func spawn_glint_body_3d_for_identifier(id: int):
 func spawn_pulsar_beams(_star: pulsarBodyAPI) -> void:
 	var points = get_pulsar_beams_as_3D_points(_star)
 	
-	var arrays1 = []
-	arrays1.resize(Mesh.ARRAY_MAX)
-	var arrays2 = arrays1.duplicate()
-	
-	arrays1[Mesh.ARRAY_VERTEX] = points[0]
-	arrays2[Mesh.ARRAY_VERTEX] = points[1]
-	
-	var arr_mesh1 = ArrayMesh.new()
-	var arr_mesh2 = ArrayMesh.new()
-	
-	arr_mesh1.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLE_STRIP, arrays1)
-	arr_mesh2.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays2)
-	
-	var m1 = MeshInstance3D.new()
-	var m2 = MeshInstance3D.new()
-	
-	m1.mesh = arr_mesh1
-	m2.mesh = arr_mesh2
-	
-	m1.add_to_group("pulsar_beam_3d")
-	m2.add_to_group("pulsar_beam_3d")
-	
-	m1.set_surface_override_material(0, pulsar_beam_material)
-	m2.set_surface_override_material(0, pulsar_beam_material)
-	
-	m1.rotate_z(deg_to_rad(90))
-	m2.rotate_z(deg_to_rad(90))
-	
-	add_child(m1)
-	add_child(m2)
-	
+	for beam_points in points:
+		var arrays = []
+		arrays.resize(Mesh.ARRAY_MAX)
+		arrays[Mesh.ARRAY_VERTEX] = beam_points
+		
+		var arr_mesh = ArrayMesh.new()
+		arr_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		
+		var instance = MeshInstance3D.new()
+		instance.mesh = arr_mesh
+		instance.add_to_group("pulsar_beam_3d")
+		instance.set_surface_override_material(0, pulsar_beam_material)
+		add_child(instance)
 	pass
 
 
@@ -209,28 +195,25 @@ func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Ar
 	var a1 = dir1 + Vector2(0, -star.radius * 4.0).rotated(star.beam_rotation)
 	var b1 = ex1 + Vector2(0,star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
 	var c1 = ex1 + Vector2(0,-star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
-	var a1_3d = Vector3(a1.x, 0, a1.y)
-	var b1_3d = Vector3(b1.x, 0, b1.y)
-	var c1_3d = Vector3(c1.x, 0, c1.y)
+	var a1_3d = Vector3(a1.x, 0, a1.y) * system_scalar
+	var b1_3d = Vector3(b1.x, 0, b1.y) * system_scalar
+	var c1_3d = Vector3(c1.x, 0, c1.y) * system_scalar
 	
-	#var points1: PackedVector3Array = [
-	#	a1_3d, b1_3d, b1_3d + Vector3(0,40,0), 
-	#	b1_3d + Vector3(0,40,0), c1_3d + Vector3(0,40,0), a1_3d,
-	#	a1_3d, b1_3d, b1_3d - Vector3(0,40,0),
-	#	b1_3d - Vector3(0,40,0), c1_3d - Vector3(0,40,0), a1_3d,
-	#	a1_3d, c1_3d, c1_3d + Vector3(0,40,0),
-	#	a1_3d, c1_3d, c1_3d - Vector3(0,40,0),
-	#	b1_3d, b1_3d + Vector3(0,40,0), c1_3d + Vector3(0,40,0),
-	#	b1_3d, b1_3d - Vector3(0,40,0), c1_3d - Vector3(0,40,0)
-	#]
+	var a2_3d = -a1_3d
+	var b2_3d = -b1_3d
+	var c2_3d = -c1_3d
 	
-	#var points1: PackedVector3Array = [a1_3d, b1_3d, c1_3d, -a1_3d, -b1_3d, -c1_3d]
-	#var points2: PackedVector3Array = [-a1_3d, -b1_3d, -c1_3d, a1_3d, b1_3d, c1_3d]
-	#var points1: PackedVector3Array = [c1_3d, b1_3d, a1_3d, -a1_3d, -b1_3d, -c1_3d]
-	#var points2: PackedVector3Array = [-c1_3d, -b1_3d, -a1_3d, a1_3d, b1_3d, c1_3d]
-	var points1: PackedVector3Array = [a1_3d * system_scalar, b1_3d * system_scalar, c1_3d * system_scalar]
-	var points2: PackedVector3Array = [-a1_3d * system_scalar, -b1_3d * system_scalar, -c1_3d * system_scalar]
+	var v_offset = Vector3(0,star.beam_width,0) * system_scalar
 	
+	var points1: PackedVector3Array = [
+		a1_3d, b1_3d + v_offset, c1_3d - v_offset,
+		a1_3d, c1_3d + v_offset, b1_3d - v_offset
+	]
 	
+	var points2: PackedVector3Array = [
+		a2_3d, b2_3d + v_offset, c2_3d - v_offset,
+		a2_3d, c2_3d + v_offset, b2_3d - v_offset
+	]
 	
+	#these points are already rotated according to the stars current beam_rotation variable at the time of the system being loaded!
 	return [points1, points2]
