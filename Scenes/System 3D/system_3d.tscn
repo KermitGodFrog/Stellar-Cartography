@@ -55,6 +55,7 @@ script = ExtResource("1_a351o")
 [node name="canvas_layer" type="CanvasLayer" parent="system_3d/camera_offset/camera"]
 
 [node name="post_process" type="ColorRect" parent="system_3d/camera_offset/camera/canvas_layer"]
+visible = false
 texture_filter = 1
 material = SubResource("ShaderMaterial_e7fqt")
 anchors_preset = 15

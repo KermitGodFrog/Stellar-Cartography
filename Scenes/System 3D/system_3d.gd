@@ -37,7 +37,7 @@ func _ready():
 	control.connect("targetFOVChange", _on_target_FOV_change)
 	pass
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	for child in get_children():
 		if child.is_in_group("pulsar_beam_3d"):
 			var beam = child as MeshInstance3D
@@ -47,8 +47,7 @@ func _physics_process(delta):
 			var a = dir + Vector2(0, -1).rotated(star.beam_rotation - initial_beam_rotation)
 			var a_3d = Vector3(a.x, 0, a.y) * system_scalar
 			
-			beam.transform = transform.looking_at(a_3d)
-			
+			beam.transform = beam.transform.looking_at(a_3d)
 			
 			#THIS ACTUALLY WORKS??? THANKS - initial_beam_rotation
 	
@@ -206,14 +205,14 @@ func _on_target_FOV_change(fov: float):
 
 func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Array]:
 	var dir1 = Vector2.UP.rotated(star.beam_rotation)
-	var ex1 = dir1 + Vector2(0, -500).rotated(star.beam_rotation)
-	var a1 = dir1 + Vector2(0, -star.radius * 4.0).rotated(star.beam_rotation)
-	var b1 = ex1 + Vector2(0,star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
-	var c1 = ex1 + Vector2(0,-star.beam_width).rotated(Vector2.ZERO.angle_to_point(ex1))
+	var ex1 = dir1 + Vector2(0, -500 * system_scalar).rotated(star.beam_rotation)
+	var a1 = dir1 + Vector2(0, (-star.radius * 4.0) * system_scalar).rotated(star.beam_rotation)
+	var b1 = ex1 + Vector2(0,star.beam_width * system_scalar).rotated(Vector2.ZERO.angle_to_point(ex1))
+	var c1 = ex1 + Vector2(0,-star.beam_width * system_scalar).rotated(Vector2.ZERO.angle_to_point(ex1))
 	
-	var a1_3d = Vector3(a1.x, 0, a1.y) * system_scalar
-	var b1_3d = Vector3(b1.x, 0, b1.y) * system_scalar
-	var c1_3d = Vector3(c1.x, 0, c1.y) * system_scalar
+	var a1_3d = Vector3(a1.x, 0, a1.y)
+	var b1_3d = Vector3(b1.x, 0, b1.y)
+	var c1_3d = Vector3(c1.x, 0, c1.y)
 	
 	var a2_3d = -a1_3d
 	var b2_3d = -b1_3d
