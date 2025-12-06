@@ -28,7 +28,7 @@ var target_fov: float = 75
 
 var initial_beam_rotation: float = 0.0 #REQUIRED FOR PULSARS TO WORK. BARELY KNEW WHAT I WAS DOING WHEN I MADE IT WORK SO DONT TOUCH!
 
-#for wormholes obv
+#for wormholes obv      <- past me who put this comment, stop being such a fucking smartass istg
 var wormhole_shader = preload("res://Scenes/wormhole_shader.gdshader")
 var pulsar_beam_material = preload("res://Instantiated Scenes/system-3d/pulsar_beam.tres")
 
@@ -50,9 +50,6 @@ func _physics_process(_delta):
 			beam.transform = beam.transform.looking_at(a_3d)
 			
 			#THIS ACTUALLY WORKS??? THANKS - initial_beam_rotation
-	
-	
-	
 	
 	#setting post process
 	var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)

@@ -49,7 +49,7 @@ const star_types = {
 	"A": {"name": "A", "weight_eg": 0.0060679, "weight_lg": 0.0764563},
 	"B": {"name": "B", "weight_eg": 0.0012136, "weight_lg": 0.0303398},
 	"O": {"name": "O", "weight_eg": 0.0000003, "weight_lg": 0.0060679},
-	"Pulsar": {"name": "Pulsar", "weight_eg": 100, "weight_lg": 0.030}
+	"Pulsar": {"name": "Pulsar", "weight_eg": 0.030, "weight_lg": 0.050}
 }
 
 const star_data = { #MASS IS IN SOLAR MASSES, RADIUS IS IN SOLAR RADII
