@@ -26,16 +26,32 @@ var system_scalar: float = 10.0
 var body_detection_range: int = 1000
 var target_fov: float = 75
 
-#for wormholes obv
+var initial_beam_rotation: float = 0.0 #REQUIRED FOR PULSARS TO WORK. BARELY KNEW WHAT I WAS DOING WHEN I MADE IT WORK SO DONT TOUCH!
+
+#for wormholes obv      <- past me who put this comment, stop being such a fucking smartass istg
 var wormhole_shader = preload("res://Scenes/wormhole_shader.gdshader")
+var pulsar_beam_material = preload("res://Instantiated Scenes/system-3d/pulsar_beam.tres")
+
 
 func _ready():
 	control.connect("targetFOVChange", _on_target_FOV_change)
 	pass
 
 func _physics_process(_delta):
-	#setting post process
+	for child in get_children():
+		if child.is_in_group("pulsar_beam_3d"):
+			var beam = child as MeshInstance3D
+			var star = system.get_first_star()
+			
+			var dir = Vector2.UP.rotated(star.beam_rotation - initial_beam_rotation)
+			var a = dir + Vector2(0, -1).rotated(star.beam_rotation - initial_beam_rotation)
+			var a_3d = Vector3(a.x, 0, a.y) * system_scalar
+			
+			beam.transform = beam.transform.looking_at(a_3d)
+			
+			#THIS ACTUALLY WORKS??? THANKS - initial_beam_rotation
 	
+	#setting post process
 	var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)
 	post_process.material.set("shader_parameter/pixel_size", round(fov_to_pixel_size))
 	
@@ -111,9 +127,12 @@ func _physics_process(_delta):
 
 func spawnBodies():
 	for child in get_children():
-		if child.is_in_group("body_3d"):
+		if child.is_in_group("body_3d") \
+		or child.is_in_group("asteroid_belt_3d") \
+		or child.is_in_group("pulsar_beam_3d"):
 			call_deferred("remove_child", child)
 			child.queue_free()
+		
 	for body in system.bodies:
 		if body is circularBodyAPI:
 			var new_body_3d = body_3d.instantiate()
@@ -124,6 +143,8 @@ func spawnBodies():
 				new_body_3d.initialize(body.radius * system_scalar, body.surface_color, body.surface_color, 1.0)
 				star_omni_light.light_color = body.surface_color
 				star_omni_light.light_size = body.radius
+				if body is pulsarBodyAPI:
+					spawn_pulsar_beams(body)
 			elif body.get_type() == starSystemAPI.BODY_TYPES.WORMHOLE:
 				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
 			add_child(new_body_3d) 
@@ -145,6 +166,25 @@ func spawn_glint_body_3d_for_identifier(id: int):
 	add_child(new_entity_3d)
 	pass
 
+func spawn_pulsar_beams(_star: pulsarBodyAPI) -> void:
+	initial_beam_rotation = _star.beam_rotation
+	var points = get_pulsar_beams_as_3D_points(_star)
+	
+	for beam_points in points:
+		var arrays = []
+		arrays.resize(Mesh.ARRAY_MAX)
+		arrays[Mesh.ARRAY_VERTEX] = beam_points
+		
+		var arr_mesh = ArrayMesh.new()
+		arr_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		
+		var instance = MeshInstance3D.new()
+		instance.mesh = arr_mesh
+		instance.add_to_group("pulsar_beam_3d")
+		instance.set_surface_override_material(0, pulsar_beam_material)
+		add_child(instance)
+	pass
+
 
 
 func reset_locked_body():
@@ -156,3 +196,36 @@ func _on_target_FOV_change(fov: float):
 	target_fov = fov
 	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "scopes_fov_change")
 	pass
+
+
+
+
+func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Array]:
+	var dir1 = Vector2.UP.rotated(star.beam_rotation)
+	var ex1 = dir1 + Vector2(0, -500 * system_scalar).rotated(star.beam_rotation)
+	var a1 = dir1 + Vector2(0, (-star.radius * 4.0) * system_scalar).rotated(star.beam_rotation)
+	var b1 = ex1 + Vector2(0,star.beam_width * system_scalar).rotated(Vector2.ZERO.angle_to_point(ex1))
+	var c1 = ex1 + Vector2(0,-star.beam_width * system_scalar).rotated(Vector2.ZERO.angle_to_point(ex1))
+	
+	var a1_3d = Vector3(a1.x, 0, a1.y)
+	var b1_3d = Vector3(b1.x, 0, b1.y)
+	var c1_3d = Vector3(c1.x, 0, c1.y)
+	
+	var a2_3d = -a1_3d
+	var b2_3d = -b1_3d
+	var c2_3d = -c1_3d
+	
+	var v_offset = Vector3(0,star.beam_width,0) * system_scalar
+	
+	var points1: PackedVector3Array = [
+		a1_3d, b1_3d + v_offset, c1_3d - v_offset,
+		a1_3d, c1_3d + v_offset, b1_3d - v_offset
+	]
+	
+	var points2: PackedVector3Array = [
+		a2_3d, b2_3d + v_offset, c2_3d - v_offset,
+		a2_3d, c2_3d + v_offset, b2_3d - v_offset
+	]
+	
+	#these points are already rotated according to the stars current beam_rotation variable at the time of the system being loaded! therefore, to find the real rotation for the MeshInstances, do beam_rotation - initial_beam_rotation :>
+	return [points1, points2]
