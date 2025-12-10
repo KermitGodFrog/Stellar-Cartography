@@ -6,6 +6,6 @@ fractal_ping_pong_strength = 4.0
 domain_warp_enabled = true
 
 [resource]
-in_3d_space = true
-seamless = true
 noise = SubResource("FastNoiseLite_o1y6p")
+seamless = true
+in_3d_space = true

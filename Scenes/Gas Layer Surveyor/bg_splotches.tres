@@ -8,7 +8,7 @@ offsets = PackedFloat32Array(0.625, 0.71)
 domain_warp_enabled = true
 
 [resource]
-in_3d_space = true
-seamless = true
-color_ramp = SubResource("Gradient_q40fr")
 noise = SubResource("FastNoiseLite_7onvr")
+color_ramp = SubResource("Gradient_q40fr")
+seamless = true
+in_3d_space = true
