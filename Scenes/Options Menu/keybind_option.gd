@@ -35,11 +35,11 @@ func convert_events_to_readable(input_array: Array[InputEvent]) -> String:
 	var s: String = ""
 	for event in input_array:
 		if event is InputEventKey:
-			if event.physical_keycode:
-				var keycode = DisplayServer.keyboard_get_keycode_from_physical(event.physical_keycode)
-				s += "%s " % OS.get_keycode_string(keycode)
+			if event.keycode != KEY_NONE:
+				s += "%s " % OS.get_keycode_string(event.get_keycode_with_modifiers())
 			else:
-				s += "%s " % OS.get_keycode_string(event.keycode)
+				var keycode = DisplayServer.keyboard_get_keycode_from_physical(event.get_physical_keycode_with_modifiers())
+				s += "%s " % OS.get_keycode_string(keycode)
 		if event is InputEventJoypadButton:
 			s += "JOY_%s " % event.button_index
 		if event is InputEventMouseButton:

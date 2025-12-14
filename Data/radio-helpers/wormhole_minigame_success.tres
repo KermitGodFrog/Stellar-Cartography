@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="radioHelper" load_steps=3 format=3 uid="uid://d4dv8lmqyeb0b"]
 
-[ext_resource type="Script" path="res://Data/radioHelper.gd" id="1_ud383"]
+[ext_resource type="Script" uid="uid://bpval2aruiksl" path="res://Data/radioHelper.gd" id="1_ud383"]
 
 [sub_resource type="Curve" id="Curve_cvrk7"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.05, 0.5), 0.0, 0.0, 0, 0, Vector2(0.5, 0.25), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, -0.8, 0, 0]

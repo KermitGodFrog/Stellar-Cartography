@@ -18,7 +18,7 @@ func _physics_process(_delta):
 	ping_width = ping_width_slider.value
 	
 	if not ping_cooldown_timer.is_stopped():
-		cooldown_label.set_text(str(round(ping_cooldown_timer.time_left)))
+		cooldown_label.set_text(str(roundi(ping_cooldown_timer.time_left)))
 	else:
 		cooldown_label.set_text("")
 	

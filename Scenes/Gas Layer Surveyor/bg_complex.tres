@@ -6,6 +6,6 @@ cellular_distance_function = 1
 domain_warp_enabled = true
 
 [resource]
-in_3d_space = true
-seamless = true
 noise = SubResource("FastNoiseLite_y65r0")
+seamless = true
+in_3d_space = true

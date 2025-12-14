@@ -87,7 +87,7 @@ func _physics_process(_delta):
 		hull_stress_label.set_text(str("HULL STRESS: ", player_hull_stress, "%"))
 		
 		if not has_sold_previously:
-			sell_data_button.set_text(str("SELL EXPLORATION DATA\n", player_current_value * (station.sell_percentage_of_market_price / 100.0), "n\n(", station.sell_percentage_of_market_price, "% OF MARKET PRICE)"))
+			sell_data_button.set_text(str("SELL EXPLORATION DATA\n", int(player_current_value * (station.sell_percentage_of_market_price / 100.0)), "n\n(", station.sell_percentage_of_market_price, "% OF MARKET PRICE)"))
 		elif has_sold_previously: sell_data_button.set_text("SOLD")
 		
 		repair_single_button.set_text(str("REPAIR 1% (", nanites_per_percentage, "n)"))

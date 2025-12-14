@@ -4,10 +4,10 @@
 frequency = 1.0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kuke5"]
-in_3d_space = true
-seamless = true
-as_normal_map = true
 noise = SubResource("FastNoiseLite_dgn3k")
+seamless = true
+in_3d_space = true
+as_normal_map = true
 
 [resource]
 cull_mode = 2

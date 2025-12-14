@@ -6,7 +6,7 @@ fractal_type = 3
 fractal_lacunarity = 5.0
 
 [resource]
+noise = SubResource("FastNoiseLite_rd8ju")
+seamless = true
 invert = true
 in_3d_space = true
-seamless = true
-noise = SubResource("FastNoiseLite_rd8ju")

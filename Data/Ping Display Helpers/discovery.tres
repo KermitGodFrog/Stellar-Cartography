@@ -1,11 +1,12 @@
 [gd_resource type="Resource" script_class="pingDisplayHelper" load_steps=4 format=3 uid="uid://d3ntmvsq6pv83"]
 
-[ext_resource type="Script" path="res://Data/pingDisplayHelper.gd" id="1_pp58e"]
+[ext_resource type="Script" uid="uid://d1aliwh3uy1j8" path="res://Data/pingDisplayHelper.gd" id="1_pp58e"]
 
 [sub_resource type="Gradient" id="Gradient_3y2i6"]
 colors = PackedColorArray(0, 1, 0, 1, 0, 0.290196, 0, 1)
 
 [sub_resource type="Curve" id="Curve_udqr3"]
+_limits = [0.0, 15.0, 0.0, 1.0]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 15), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
