@@ -1,42 +1,30 @@
 [gd_resource type="Resource" script_class="starSystemAPI" load_steps=15 format=3 uid="uid://bhqtlq0blu17n"]
 
-[ext_resource type="Script" path="res://Data/BodyAPIs/bodyAPI.gd" id="1_wqt4h"]
-[ext_resource type="Script" path="res://Data/BodyAPIs/circularBodyAPI.gd" id="2_ayvjj"]
-[ext_resource type="Script" path="res://Data/starSystemAPI.gd" id="2_svsgr"]
-[ext_resource type="Script" path="res://Data/BodyAPIs/planetBodyAPI.gd" id="3_5alrp"]
-[ext_resource type="Script" path="res://Data/BodyAPIs/wormholeBodyAPI.gd" id="5_h2sx4"]
-[ext_resource type="Script" path="res://Data/BodyAPIs/stationBodyAPI.gd" id="6_sgroa"]
+[ext_resource type="Script" uid="uid://cbd8771ytigfk" path="res://Data/BodyAPIs/bodyAPI.gd" id="1_wqt4h"]
+[ext_resource type="Script" uid="uid://b6paa488wsman" path="res://Data/BodyAPIs/circularBodyAPI.gd" id="2_ayvjj"]
+[ext_resource type="Script" uid="uid://whlsn7syw5s7" path="res://Data/starSystemAPI.gd" id="2_svsgr"]
+[ext_resource type="Script" uid="uid://dh0dm26gfudjg" path="res://Data/BodyAPIs/planetBodyAPI.gd" id="3_5alrp"]
+[ext_resource type="Script" uid="uid://cucnh63c8ohpe" path="res://Data/BodyAPIs/wormholeBodyAPI.gd" id="5_h2sx4"]
+[ext_resource type="Script" uid="uid://ba58xj4krhakl" path="res://Data/BodyAPIs/stationBodyAPI.gd" id="6_sgroa"]
 
 [sub_resource type="Resource" id="Resource_2k4rg"]
 script = ExtResource("2_ayvjj")
 mass = 0.236
 surface_color = Color(1, 0, 0, 1)
-current_type = 0
 identifier = 1
 display_name = "Suno"
-hook_identifier = 0
 metadata = {
 "discovery_multiplier": 1.0,
 "iterations": 25,
 "luminosity": 0.047,
 "star_type": "M"
 }
-orbit_distance = 0.0
-orbit_angle_change = 0.0
 radius = 0.399
-position = Vector2(0, 0)
-rotation = 0.0
-pings_to_be_theorised = 3
-theorised = false
 known = true
-hidden = false
 
 [sub_resource type="Resource" id="Resource_uenxk"]
 script = ExtResource("3_5alrp")
 current_variation = 1
-guessed_variation = -1
-layers = -1
-mass = 0.0
 surface_color = Color(0, 1, 0, 1)
 current_type = 1
 identifier = 2
@@ -52,19 +40,12 @@ metadata = {
 orbit_distance = 37.271
 orbit_angle_change = 0.017
 radius = 0.004
-position = Vector2(0, 0)
 rotation = 5.799
-pings_to_be_theorised = 3
-theorised = false
 known = true
-hidden = false
 
 [sub_resource type="Resource" id="Resource_h7vb3"]
 script = ExtResource("3_5alrp")
 current_variation = 0
-guessed_variation = -1
-layers = -1
-mass = 0.0
 surface_color = Color(1, 1, 1, 1)
 current_type = 1
 identifier = 3
@@ -80,32 +61,16 @@ metadata = {
 orbit_distance = 93.072
 orbit_angle_change = 0.007
 radius = 0.006
-position = Vector2(0, 0)
 rotation = 3.817
-pings_to_be_theorised = 3
-theorised = false
 known = true
-hidden = false
 
 [sub_resource type="Resource" id="Resource_tk3if"]
 script = ExtResource("2_svsgr")
-identifier = 0
-display_name = ""
-destination_systems = Array[ExtResource("2_svsgr")]([])
-bodies = Array[ExtResource("1_wqt4h")]([])
-identifier_count = 1
-post_gen_location_candidates = []
-name_scheme = 0
-special_system_classification = 0
-system_hazard_classification = 0
-system_hazard_metadata = {}
 
 [sub_resource type="Resource" id="Resource_kf63k"]
 script = ExtResource("5_h2sx4")
 destination_system = SubResource("Resource_tk3if")
-post_jumps_remaining = 0
 disabled = true
-mass = 0.0
 surface_color = Color(0.502, 0, 0.502, 1)
 current_type = 3
 identifier = 4
@@ -117,32 +82,15 @@ metadata = {
 orbit_distance = 45.252
 orbit_angle_change = 0.015
 radius = 0.005
-position = Vector2(0, 0)
 rotation = 6.284
-pings_to_be_theorised = 3
-theorised = false
 known = true
-hidden = false
 
 [sub_resource type="Resource" id="Resource_y01rm"]
 script = ExtResource("2_svsgr")
-identifier = 0
-display_name = ""
-destination_systems = Array[ExtResource("2_svsgr")]([])
-bodies = Array[ExtResource("1_wqt4h")]([])
-identifier_count = 1
-post_gen_location_candidates = []
-name_scheme = 0
-special_system_classification = 0
-system_hazard_classification = 0
-system_hazard_metadata = {}
 
 [sub_resource type="Resource" id="Resource_bk4fa"]
 script = ExtResource("5_h2sx4")
 destination_system = SubResource("Resource_y01rm")
-post_jumps_remaining = 0
-disabled = false
-mass = 0.0
 surface_color = Color(0.502, 0, 0.502, 1)
 current_type = 3
 identifier = 5
@@ -154,42 +102,24 @@ metadata = {
 orbit_distance = 103.573
 orbit_angle_change = 0.011
 radius = 0.004
-position = Vector2(0, 0)
 rotation = 2.587
-pings_to_be_theorised = 3
-theorised = false
 known = true
-hidden = false
 
 [sub_resource type="Resource" id="Resource_g738h"]
 script = ExtResource("6_sgroa")
-station_classification = 0
 sell_percentage_of_market_price = 200
-is_module_store_disabled = false
 current_type = 4
 identifier = 6
 display_name = "Tomo Sewi Locus"
 hook_identifier = 2
-metadata = {}
 orbit_distance = 2.592
 orbit_angle_change = 0.01
 radius = 0.004
-position = Vector2(0, 0)
 rotation = 1.106
-pings_to_be_theorised = 3
-theorised = false
 known = true
-hidden = false
 
 [resource]
 script = ExtResource("2_svsgr")
 identifier = 1
 display_name = "tutorial_suno"
-destination_systems = Array[ExtResource("2_svsgr")]([])
 bodies = Array[ExtResource("1_wqt4h")]([SubResource("Resource_2k4rg"), SubResource("Resource_uenxk"), SubResource("Resource_h7vb3"), SubResource("Resource_kf63k"), SubResource("Resource_bk4fa"), SubResource("Resource_g738h")])
-identifier_count = 1
-post_gen_location_candidates = []
-name_scheme = 0
-special_system_classification = 0
-system_hazard_classification = 0
-system_hazard_metadata = {}
