@@ -43,13 +43,14 @@ func _physics_process(_delta):
 			var beam = child as MeshInstance3D
 			var star = system.get_first_star()
 			
-			var dir = Vector2.UP.rotated(star.beam_rotation - initial_beam_rotation)
-			var a = dir + Vector2(0, -1).rotated(star.beam_rotation - initial_beam_rotation)
-			var a_3d = Vector3(a.x, 0, a.y) * system_scalar
-			
-			beam.transform = beam.transform.looking_at(a_3d)
-			
-			#THIS ACTUALLY WORKS??? THANKS - initial_beam_rotation
+			if star is pulsarBodyAPI:
+				var dir = Vector2.UP.rotated(star.beam_rotation - initial_beam_rotation)
+				var a = dir + Vector2(0, -1).rotated(star.beam_rotation - initial_beam_rotation)
+				var a_3d = Vector3(a.x, 0, a.y) * system_scalar
+				
+				beam.transform = beam.transform.looking_at(a_3d)
+				
+				#THIS ACTUALLY WORKS??? THANKS - initial_beam_rotation
 	
 	#setting post process
 	var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)

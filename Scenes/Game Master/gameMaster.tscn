@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bx0lvlyiisoa6"]
 
-[ext_resource type="Script" path="res://Scenes/Game Master/gameMaster.gd" id="1_406e6"]
+[ext_resource type="Script" uid="uid://cwnvete0f14de" path="res://Scenes/Game Master/gameMaster.gd" id="1_406e6"]
 [ext_resource type="PackedScene" uid="uid://duvniw8fxre1f" path="res://Data/Achievement/achievementsManager.tscn" id="2_0jmyx"]
 
 [node name="gameMaster" type="Node"]
