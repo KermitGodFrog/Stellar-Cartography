@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://chwm82adl21cm"]
 
-[ext_resource type="Script" path="res://Scenes/Sonar Interface/sonar_interface.gd" id="1_bmylm"]
+[ext_resource type="Script" uid="uid://j6p3dv2arp7u" path="res://Scenes/Sonar Interface/sonar_interface.gd" id="1_bmylm"]
 [ext_resource type="Texture2D" uid="uid://bu4clhu1rmiwq" path="res://Graphics/sonar_64x.png" id="1_t5fig"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_njxhc"]
