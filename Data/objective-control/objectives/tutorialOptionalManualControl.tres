@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://v636pfdquvwv"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_dssi5"]
+
+[resource]
+script = ExtResource("1_dssi5")
+written_identifier = ""
+current_state = 0
+title = "(Optional) Set Course Manually"
+description = "On the SYSTEM MAP, right click to lay in a course to your mouse pointer, left click to direct SCOPES towards your mouse pointer, right click on a body to quick orbit, and left click on a body to quick lock. "

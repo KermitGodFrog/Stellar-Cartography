@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://cmwwxbntvpfcn"
-path="res://.godot/imported/takeoff.wav-f8a66a8499ab20956a8b53cf1108e87f.sample"
+path="res://.godot/imported/takeoff.wav-dddf0ff5107ef62c4087f6b345d0f4a6.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/sfx/takeoff.wav"
-dest_files=["res://.godot/imported/takeoff.wav-f8a66a8499ab20956a8b53cf1108e87f.sample"]
+source_file="res://sound/dialogue/sfx/takeoff.wav"
+dest_files=["res://.godot/imported/takeoff.wav-dddf0ff5107ef62c4087f6b345d0f4a6.sample"]
 
 [params]
 

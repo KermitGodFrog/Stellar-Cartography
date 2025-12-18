@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://curgo67fknmdl"
-path="res://.godot/imported/peregrination.wav-0e2b950e9553b81c59f342cd854d120a.sample"
+path="res://.godot/imported/peregrination.wav-a6ef2c0587d264b5872394b56d7dacb2.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/music/peregrination.wav"
-dest_files=["res://.godot/imported/peregrination.wav-0e2b950e9553b81c59f342cd854d120a.sample"]
+source_file="res://sound/dialogue/music/peregrination.wav"
+dest_files=["res://.godot/imported/peregrination.wav-a6ef2c0587d264b5872394b56d7dacb2.sample"]
 
 [params]
 

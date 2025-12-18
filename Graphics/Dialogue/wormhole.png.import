@@ -3,12 +3,12 @@
 importer="image"
 type="Image"
 uid="uid://u2uncoku38xo"
-path="res://.godot/imported/wormhole.png-7274dc6d84012de605ab9123d281f335.image"
+path="res://.godot/imported/wormhole.png-d25b709d290b639483df6869c70bf0c7.image"
 
 [deps]
 
-source_file="res://Graphics/Dialogue/wormhole.png"
-dest_files=["res://.godot/imported/wormhole.png-7274dc6d84012de605ab9123d281f335.image"]
+source_file="res://graphics/dialogue/wormhole.png"
+dest_files=["res://.godot/imported/wormhole.png-d25b709d290b639483df6869c70bf0c7.image"]
 
 [params]
 

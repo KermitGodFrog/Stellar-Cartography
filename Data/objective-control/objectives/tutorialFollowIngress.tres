@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://dn2fd7ihaee75"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_di0mm"]
+
+[resource]
+script = ExtResource("1_di0mm")
+written_identifier = ""
+current_state = 0
+title = "Go-to & Enter Ingress"
+description = "Wormholes allow for travel between star systems. Traversing a wormhole requires interacting with it.
+Click on Ingress on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. Wormholes, space stations, planetary anomalies, and other phenomena are all interacted with through the 'GO-TO' action. 
+[img]res://Graphics/go_to_icon.png[/img]"

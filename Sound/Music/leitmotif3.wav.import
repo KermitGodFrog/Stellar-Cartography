@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://cofpsvw30qdd1"
-path="res://.godot/imported/leitmotif3.wav-83f1a779dc04cb14cb4982ee3d9716ac.sample"
+path="res://.godot/imported/leitmotif3.wav-3fa0ac6f604a4b324c9512aef05a5eb3.sample"
 
 [deps]
 
-source_file="res://Sound/Music/leitmotif3.wav"
-dest_files=["res://.godot/imported/leitmotif3.wav-83f1a779dc04cb14cb4982ee3d9716ac.sample"]
+source_file="res://sound/music/leitmotif3.wav"
+dest_files=["res://.godot/imported/leitmotif3.wav-3fa0ac6f604a4b324c9512aef05a5eb3.sample"]
 
 [params]
 

@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dfa4dqt8e5uti"
-path="res://.godot/imported/office.wav-88684e0e737b35d8ccdc1c15e810cf1f.sample"
+path="res://.godot/imported/office.wav-18ad0267585441979388f6b7781952bb.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/music/office.wav"
-dest_files=["res://.godot/imported/office.wav-88684e0e737b35d8ccdc1c15e810cf1f.sample"]
+source_file="res://sound/dialogue/music/office.wav"
+dest_files=["res://.godot/imported/office.wav-18ad0267585441979388f6b7781952bb.sample"]
 
 [params]
 

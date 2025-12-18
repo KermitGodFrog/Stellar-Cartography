@@ -3,25 +3,28 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://cebi6a4vshcjg"
-path="res://.godot/imported/RobotoMono Medium Italic.ttf-e863545b323edf0f31525e5beb7d7960.fontdata"
+path="res://.godot/imported/RobotoMono Medium Italic.ttf-dafe5cfc02836b9ad6099c058bdfac11.fontdata"
 
 [deps]
 
-source_file="res://Graphics/Fonts/RobotoMono Medium Italic.ttf"
-dest_files=["res://.godot/imported/RobotoMono Medium Italic.ttf-e863545b323edf0f31525e5beb7d7960.fontdata"]
+source_file="res://graphics/fonts/RobotoMono Medium Italic.ttf"
+dest_files=["res://.godot/imported/RobotoMono Medium Italic.ttf-dafe5cfc02836b9ad6099c058bdfac11.fontdata"]
 
 [params]
 
 Rendering=null
 antialiasing=1
 generate_mipmaps=false
+disable_embedded_bitmaps=true
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
 msdf_size=48
 allow_system_fallback=true
 force_autohinter=false
+modulate_color_glyphs=false
 hinting=1
 subpixel_positioning=1
+keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null
 fallbacks=[]

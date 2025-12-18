@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://b2icy2xtupkwj"
-path="res://.godot/imported/mutiny_start.wav-f79584bd826016f8a0ceece4a0aced1b.sample"
+path="res://.godot/imported/mutiny_start.wav-ed0686e0b064926cfb7e65599c0c6f2b.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/music/mutiny_start.wav"
-dest_files=["res://.godot/imported/mutiny_start.wav-f79584bd826016f8a0ceece4a0aced1b.sample"]
+source_file="res://sound/dialogue/music/mutiny_start.wav"
+dest_files=["res://.godot/imported/mutiny_start.wav-ed0686e0b064926cfb7e65599c0c6f2b.sample"]
 
 [params]
 

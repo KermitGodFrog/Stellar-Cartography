@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://5hmw04jxm73"
-path="res://.godot/imported/failure.wav-f025008bf0def8e74302d6c0575a8be7.sample"
+path="res://.godot/imported/failure.wav-b458ba4aa98b834bbfb48ac1bf562a0e.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/sfx/failure.wav"
-dest_files=["res://.godot/imported/failure.wav-f025008bf0def8e74302d6c0575a8be7.sample"]
+source_file="res://sound/dialogue/sfx/failure.wav"
+dest_files=["res://.godot/imported/failure.wav-b458ba4aa98b834bbfb48ac1bf562a0e.sample"]
 
 [params]
 

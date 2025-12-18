@@ -1,9 +1,9 @@
 [gd_scene load_steps=18 format=3 uid="uid://b7dvufojm35ny"]
 
-[ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://Scenes/System 3D/sky_shader.tres" id="1_dndbf"]
-[ext_resource type="Texture2D" uid="uid://cs13346mdnofp" path="res://Graphics/2k_jupiter.jpg" id="1_so0ix"]
-[ext_resource type="Texture2D" uid="uid://dm2bfs2rf8r1a" path="res://Graphics/2k_earth_specular_map.png" id="1_ujx1s"]
-[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://Graphics/Misc/star_backdrop.jpeg" id="2_cjve6"]
+[ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://shader-gen/system-3d/sky_shader.tres" id="1_dndbf"]
+[ext_resource type="Texture2D" uid="uid://cs13346mdnofp" path="res://graphics/misc/2k_jupiter.jpg" id="1_so0ix"]
+[ext_resource type="Texture2D" uid="uid://dm2bfs2rf8r1a" path="res://graphics/misc/2k_earth_specular_map.png" id="1_ujx1s"]
+[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/misc/star_backdrop.jpeg" id="2_cjve6"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_xmlf5"]
 radius = 1.0

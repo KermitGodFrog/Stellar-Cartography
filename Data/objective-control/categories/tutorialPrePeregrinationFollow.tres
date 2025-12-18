@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="categoryAPI" load_steps=2 format=3 uid="uid://c51shxnpclkkx"]
+
+[ext_resource type="Script" uid="uid://c4tfr1shicj34" path="res://data/objective-control/categoryAPI.gd" id="1_ni0lg"]
+
+[resource]
+script = ExtResource("1_ni0lg")
+written_identifier = ""
+objective_wIDs = ["tutorialOptionalJourneyMap", "tutorialFollowPeregrination"]

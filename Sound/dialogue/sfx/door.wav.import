@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://ckapch2bhs7cm"
-path="res://.godot/imported/door.wav-859ac2f062c9ecf51464fe82ff7c2c54.sample"
+path="res://.godot/imported/door.wav-a2eaeacfa47f4526f64134deffeab77f.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/sfx/door.wav"
-dest_files=["res://.godot/imported/door.wav-859ac2f062c9ecf51464fe82ff7c2c54.sample"]
+source_file="res://sound/dialogue/sfx/door.wav"
+dest_files=["res://.godot/imported/door.wav-a2eaeacfa47f4526f64134deffeab77f.sample"]
 
 [params]
 

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="characterAPI" load_steps=2 format=3 uid="uid://b0ufsv84pso1i"]
+
+[ext_resource type="Script" uid="uid://bx7gcyl258f6u" path="res://data/game/characterAPI.gd" id="1_mpaaa"]
+
+[resource]
+script = ExtResource("1_mpaaa")
+display_name = "Rui"
+is_known = true
+current_gender = 0
+current_occupation = 0

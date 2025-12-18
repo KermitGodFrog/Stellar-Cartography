@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://kwn57pq1u2s7"
-path="res://.godot/imported/combat_high.wav-be9199889602d869f15b9ceac274094b.sample"
+path="res://.godot/imported/combat_high.wav-9232a8826ea1886b08511356cc8a64d8.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/music/combat_high.wav"
-dest_files=["res://.godot/imported/combat_high.wav-be9199889602d869f15b9ceac274094b.sample"]
+source_file="res://sound/dialogue/music/combat_high.wav"
+dest_files=["res://.godot/imported/combat_high.wav-9232a8826ea1886b08511356cc8a64d8.sample"]
 
 [params]
 

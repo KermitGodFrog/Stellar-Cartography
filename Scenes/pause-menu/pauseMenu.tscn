@@ -1,0 +1,133 @@
+[gd_scene load_steps=7 format=3 uid="uid://cu8n2e53bgc37"]
+
+[ext_resource type="Script" uid="uid://bo10h285vqmij" path="res://scenes/pause-menu/pauseMenu.gd" id="1_u73yd"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="2_r6vbf"]
+[ext_resource type="PackedScene" uid="uid://df1xq5fo2rlje" path="res://scenes/options-menu/optionsMenu.tscn" id="2_vsgfh"]
+[ext_resource type="Script" uid="uid://dm5vhmppi3dol" path="res://scenes/pause-menu/objectives-panel/objectives_panel.gd" id="3_77jva"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yykag"]
+bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
+skew = Vector2(-0.2, 0)
+expand_margin_left = 20.0
+expand_margin_right = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2jwyw"]
+bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
+skew = Vector2(-0.2, 0)
+expand_margin_left = 10.0
+expand_margin_right = 20.0
+
+[node name="pauseMenu" type="Node"]
+process_mode = 2
+script = ExtResource("1_u73yd")
+
+[node name="pause_canvas" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="background" type="ColorRect" parent="pause_canvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.235294, 0.235294, 0.235294, 0.313726)
+
+[node name="pause_control" type="Control" parent="pause_canvas"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_r6vbf")
+
+[node name="pause_scroll" type="VBoxContainer" parent="pause_canvas/pause_control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -126.5
+offset_top = -50.5
+offset_right = 126.5
+offset_bottom = 50.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="resume_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+text = "RESUME"
+
+[node name="settings_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+text = "SETTINGS
+"
+
+[node name="save_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+text = "SAVE"
+
+[node name="save_and_quit_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+text = "SAVE AND QUIT TO MAIN MENU"
+
+[node name="exit_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+text = "EXIT TO MAIN MENU"
+
+[node name="console_cover_panel" type="PanelContainer" parent="pause_canvas/pause_control"]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yykag")
+
+[node name="objectives_panel" type="PanelContainer" parent="pause_canvas/pause_control/console_cover_panel"]
+custom_minimum_size = Vector2(450, 200)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2jwyw")
+script = ExtResource("3_77jva")
+
+[node name="margin" type="MarginContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="scroll_container" type="ScrollContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel/margin"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="item_anchor" type="VBoxContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel/margin/scroll_container"]
+custom_minimum_size = Vector2(422, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="options_menu" parent="pause_canvas" instance=ExtResource("2_vsgfh")]
+visible = false
+
+[node name="unpause_possible_timer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/resume_button" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/settings_button" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/save_button" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/save_and_quit_button" to="." method="_on_save_and_quit_button_pressed"]
+[connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/exit_button" to="." method="_on_exit_button_pressed"]
+[connection signal="timeout" from="unpause_possible_timer" to="." method="_on_unpause_possible_timer_timeout"]

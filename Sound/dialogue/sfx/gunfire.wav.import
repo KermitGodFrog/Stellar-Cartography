@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dv031n04w2mtn"
-path="res://.godot/imported/gunfire.wav-e86613534fba970d54fdd234ee136b51.sample"
+path="res://.godot/imported/gunfire.wav-c9d847d7e6513b40868bf23e65096623.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/sfx/gunfire.wav"
-dest_files=["res://.godot/imported/gunfire.wav-e86613534fba970d54fdd234ee136b51.sample"]
+source_file="res://sound/dialogue/sfx/gunfire.wav"
+dest_files=["res://.godot/imported/gunfire.wav-c9d847d7e6513b40868bf23e65096623.sample"]
 
 [params]
 

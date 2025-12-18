@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://vcgpo07kaopa"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_qedng"]
+
+[resource]
+script = ExtResource("1_qedng")
+written_identifier = ""
+current_state = 0
+title = "(Optional) Boost"
+description = "Hold [KEY_LSHIFT] to boost. This will significantly shorten a journey at no cost to your starship."

@@ -1,0 +1,341 @@
+[gd_scene load_steps=17 format=3 uid="uid://dtbagvxj5to3"]
+
+[ext_resource type="Script" uid="uid://dyslold788w2p" path="res://scenes/windows/station-ui/station_ui.gd" id="1_8gqs2"]
+[ext_resource type="Script" uid="uid://djc724vbwtd40" path="res://scenes/windows/station-ui/ui_save_audio_profiles_scroll.gd" id="3_b7unw"]
+[ext_resource type="Theme" uid="uid://pb8t4wekexd8" path="res://theme-gen/station-ui/station_ui_SAVE_AUDIO_PROFILES_theme.tres" id="3_bcdrx"]
+[ext_resource type="Shader" uid="uid://c8yxk67y2u80y" path="res://shader-gen/pixelate_shader.gdshader" id="3_n6881"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="4_0fv2y"]
+[ext_resource type="Script" uid="uid://bgg40ileteb7a" path="res://scenes/windows/station-ui/observed_bodies_list.gd" id="4_ng3on"]
+[ext_resource type="Texture2D" uid="uid://c5r5ok7jmth3o" path="res://graphics/station-ui/confirm_no_shadow.png" id="5_nd783"]
+[ext_resource type="Script" uid="uid://cbablbmj0jhq8" path="res://scenes/windows/station-ui/upgrade_button.gd" id="5_nlbm1"]
+[ext_resource type="Texture2D" uid="uid://c5wk5giq8ua5h" path="res://graphics/station-ui/download_icon.png" id="5_oh1b1"]
+[ext_resource type="Script" uid="uid://cq4qo6bsf3emb" path="res://scenes/windows/station-ui/disclaimer_label.gd" id="6_ubeaq"]
+[ext_resource type="Texture2D" uid="uid://cudxvqxk513ea" path="res://graphics/station-ui/denied.png" id="7_pt3w3"]
+[ext_resource type="PackedScene" uid="uid://c3o837337jhqc" path="res://scenes/windows/station-ui/station_ui_background.tscn" id="9_c1dhy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bvpf3"]
+shader = ExtResource("3_n6881")
+shader_parameter/pixel_size = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_du8uj"]
+bg_color = Color(0.6, 0.6, 0.6, 0.54902)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w52st"]
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0u5xa"]
+bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
+
+[node name="station_window" type="Window"]
+process_mode = 2
+title = "Station Access"
+position = Vector2i(0, 36)
+size = Vector2i(1000, 500)
+visible = false
+always_on_top = true
+
+[node name="station_control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8gqs2")
+window = NodePath("..")
+
+[node name="background_center" type="CenterContainer" parent="station_control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="background_container" type="SubViewportContainer" parent="station_control/background_center"]
+layout_mode = 2
+
+[node name="post_process" type="ColorRect" parent="station_control/background_center/background_container"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_bvpf3")
+custom_minimum_size = Vector2(1600, 900)
+layout_mode = 2
+
+[node name="background_viewport" type="SubViewport" parent="station_control/background_center/background_container"]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1600, 900)
+render_target_update_mode = 0
+
+[node name="station_ui_background" parent="station_control/background_center/background_container/background_viewport" instance=ExtResource("9_c1dhy")]
+
+[node name="sell_data_button" type="Button" parent="station_control"]
+custom_minimum_size = Vector2(100, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -102.0
+offset_top = -27.0
+offset_right = 102.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_0fv2y")
+theme_type_variation = &"ButtonDull"
+text = "SELL EXPLORATION DATA
+24242409 (75%)"
+
+[node name="balance_label" type="Label" parent="station_control"]
+layout_mode = 1
+offset_right = 40.0
+offset_bottom = 23.0
+text = "BALANCE"
+
+[node name="upgrade_container" type="VBoxContainer" parent="station_control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -321.0
+offset_bottom = 40.0
+grow_horizontal = 0
+theme = ExtResource("4_0fv2y")
+
+[node name="UPGRADES" type="VBoxContainer" parent="station_control/upgrade_container"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="0" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+script = ExtResource("5_nlbm1")
+cost = 7500
+description = "Advanced scanning capability. Increases the chance to detect planetary and space anomalies by 10%."
+
+[node name="4" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+script = ExtResource("5_nlbm1")
+upgrade = 4
+cost = 7500
+description = "Scan prediction algorithms. Allow LIDAR scan arcs to be visible on the SYSTEM MAP before the 'PING' button is pressed."
+
+[node name="2" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+script = ExtResource("5_nlbm1")
+upgrade = 2
+cost = 25000
+description = "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost."
+
+[node name="1" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+script = ExtResource("5_nlbm1")
+upgrade = 1
+cost = 35000
+description = "(SPECIAL) Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."
+
+[node name="3" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+script = ExtResource("5_nlbm1")
+upgrade = 3
+cost = 35000
+description = "(SPECIAL) Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."
+
+[node name="5" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+script = ExtResource("5_nlbm1")
+upgrade = 5
+cost = 35000
+description = "(SPECIAL) Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."
+
+[node name="SPL_disclaimer_label" type="Label" parent="station_control/upgrade_container"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "(0/0 SPECIAL UPGRADES)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="disclaimer_label" type="Label" parent="station_control/upgrade_container"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "(ONLY ONE MAY BE PURCHASED PER PORT)"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("6_ubeaq")
+
+[node name="description_label" type="Label" parent="station_control/upgrade_container"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_du8uj")
+text = "(HOVER UPGRADE TO VIEW DESCRIPTION)"
+autowrap_mode = 3
+
+[node name="repair_container" type="VBoxContainer" parent="station_control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+theme = ExtResource("4_0fv2y")
+
+[node name="hull_stress_label" type="Label" parent="station_control/repair_container"]
+layout_mode = 2
+text = "HULL STRESS"
+
+[node name="repair_single" type="Button" parent="station_control/repair_container"]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+text = "REPAIR 1% (100n)"
+alignment = 0
+
+[node name="repair_all" type="Button" parent="station_control/repair_container"]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+text = "REPAIR 100% (10000n)"
+alignment = 0
+
+[node name="save_audio_profiles_control" type="Control" parent="station_control"]
+visible = false
+top_level = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_bcdrx")
+
+[node name="background" type="ColorRect" parent="station_control/save_audio_profiles_control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0901961, 0.0901961, 0.0901961, 0.588235)
+
+[node name="margin" type="MarginContainer" parent="station_control/save_audio_profiles_control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="panel" type="Panel" parent="station_control/save_audio_profiles_control/margin"]
+custom_minimum_size = Vector2(880, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="panel_margin" type="MarginContainer" parent="station_control/save_audio_profiles_control/margin/panel"]
+custom_minimum_size = Vector2(880, 400)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="save_audio_profiles_scroll" type="VBoxContainer" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin" groups=["FOLLOW_UPGRADE_STATE"]]
+custom_minimum_size = Vector2(880, 400)
+layout_mode = 2
+script = ExtResource("3_b7unw")
+
+[node name="info_label" type="Label" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
+custom_minimum_size = Vector2(880, 0)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_w52st")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="storage_progress_bar" type="ProgressBar" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
+layout_mode = 2
+
+[node name="WARNING" type="ColorRect" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
+custom_minimum_size = Vector2(880, 0)
+layout_mode = 2
+size_flags_vertical = 3
+color = Color(0.184314, 0.14902, 0.156863, 1)
+
+[node name="warning_label" type="Label" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/WARNING"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "UNAVAILABLE : Collected no audio profiles as audio visualizer software is not installed."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="observed_bodies_list" type="ItemList" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
+visible = false
+custom_minimum_size = Vector2(880, 0)
+layout_mode = 2
+size_flags_vertical = 3
+max_text_lines = 2
+item_count = 8
+max_columns = 4
+item_0/text = "Quane"
+item_0/selectable = false
+item_1/text = "LOW CLOUD COVER"
+item_1/icon = ExtResource("5_nd783")
+item_1/selectable = false
+item_2/text = "(+1000c)"
+item_3/text = "SAVE"
+item_3/icon = ExtResource("5_oh1b1")
+item_4/text = "Eisegesis"
+item_5/text = "HIGH WIND SPEEDS"
+item_5/icon = ExtResource("7_pt3w3")
+item_7/text = "SAVE"
+item_7/icon = ExtResource("5_oh1b1")
+script = ExtResource("4_ng3on")
+
+[node name="finished_button" type="Button" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
+custom_minimum_size = Vector2(880, 0)
+layout_mode = 2
+text = "FINISHED"
+
+[node name="tutorial" type="Label" parent="station_control"]
+visible = false
+custom_minimum_size = Vector2(350, 100)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_right = 10.0
+offset_bottom = 11.5
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_0u5xa")
+text = "INFORMATION:
+- 'EXPLORATION DATA' is aquired by discovering bodies, using certain upgrades and as a result of certain anomalies.
+- 'n' stands for nanites. Refer to the STATUS PANEL to view 'NANITE' status while not docked at a station."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[connection signal="close_requested" from="." to="station_control" method="_on_station_window_close_requested"]
+[connection signal="pressed" from="station_control/sell_data_button" to="station_control" method="_on_sell_data_button_pressed"]
+[connection signal="pressed" from="station_control/repair_container/repair_single" to="station_control" method="_on_repair_single_pressed"]
+[connection signal="pressed" from="station_control/repair_container/repair_all" to="station_control" method="_on_repair_all_pressed"]
+[connection signal="item_clicked" from="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list" to="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list" method="_on_item_clicked"]
+[connection signal="pressed" from="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/finished_button" to="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/observed_bodies_list" method="_on_finished_button_pressed"]

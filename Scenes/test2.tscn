@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://cycxitd1pn136"]
 
-[ext_resource type="PackedScene" uid="uid://b7nqphwa0ia2y" path="res://Graphics/Meshes/spaceship.tscn" id="1_lfu3u"]
-[ext_resource type="Shader" path="res://Scenes/3d_speed_lines.gdshader" id="2_kj6i3"]
+[ext_resource type="PackedScene" path="res://Graphics/Meshes/spaceship.tscn" id="1_lfu3u"]
+[ext_resource type="Shader" uid="uid://c12h7sunmdlyh" path="res://shader-gen/3d_speed_lines.gdshader" id="2_kj6i3"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_yw3st"]
 

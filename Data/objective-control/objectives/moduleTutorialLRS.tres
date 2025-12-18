@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://dd35xhnbhr4mo"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_g8rh2"]
+
+[resource]
+script = ExtResource("1_g8rh2")
+written_identifier = ""
+current_state = 0
+title = "Take a Photo"
+description = "- Click on any Stellar Phenomena on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL to view with Long Range Scopes.
+- Click on the view boundaries to rotate the camera, press [KEY_ENTER] to take a photo, and press [KEY_QUOTE_LEFT] to use the rangefinder. When range-finding or viewing photos, press any key to return to taking photos.
+- Any values under ‘PHOTOS SOUGHT WITH’ are in the units displayed when range-finding.
+- You may only take three photos per phenomena.
+[img=150%x150%]res://Graphics/objective-management/module_tutorial_lrs_view_boundary_example.png[/img]"

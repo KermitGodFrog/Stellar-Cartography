@@ -3,25 +3,28 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://btjqff4rpbjop"
-path="res://.godot/imported/protomolecule.ttf-8b49943bf9193fab9ae9bf6cd43b6ab8.fontdata"
+path="res://.godot/imported/protomolecule.ttf-d476a6c7df00ca5b3c3637e834bddc8a.fontdata"
 
 [deps]
 
-source_file="res://Graphics/Fonts/protomolecule.ttf"
-dest_files=["res://.godot/imported/protomolecule.ttf-8b49943bf9193fab9ae9bf6cd43b6ab8.fontdata"]
+source_file="res://graphics/fonts/protomolecule.ttf"
+dest_files=["res://.godot/imported/protomolecule.ttf-d476a6c7df00ca5b3c3637e834bddc8a.fontdata"]
 
 [params]
 
 Rendering=null
 antialiasing=1
 generate_mipmaps=false
+disable_embedded_bitmaps=true
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
 msdf_size=48
 allow_system_fallback=true
 force_autohinter=false
+modulate_color_glyphs=false
 hinting=1
 subpixel_positioning=1
+keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null
 fallbacks=[]

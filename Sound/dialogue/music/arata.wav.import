@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://cplhtofd5x4u3"
-path="res://.godot/imported/arata.wav-799e285552b91ef5184e20c17bedcddc.sample"
+path="res://.godot/imported/arata.wav-b3799e8713c8326ad229a2afb54fcb26.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/music/arata.wav"
-dest_files=["res://.godot/imported/arata.wav-799e285552b91ef5184e20c17bedcddc.sample"]
+source_file="res://sound/dialogue/music/arata.wav"
+dest_files=["res://.godot/imported/arata.wav-b3799e8713c8326ad229a2afb54fcb26.sample"]
 
 [params]
 

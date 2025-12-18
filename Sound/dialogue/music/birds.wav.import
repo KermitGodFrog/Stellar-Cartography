@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dyemcg8y8wiur"
-path="res://.godot/imported/birds.wav-15fd52c1010807d5ec1920bd1f97930b.sample"
+path="res://.godot/imported/birds.wav-504b2291c43fa9d06988582f8363542b.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/music/birds.wav"
-dest_files=["res://.godot/imported/birds.wav-15fd52c1010807d5ec1920bd1f97930b.sample"]
+source_file="res://sound/dialogue/music/birds.wav"
+dest_files=["res://.godot/imported/birds.wav-504b2291c43fa9d06988582f8363542b.sample"]
 
 [params]
 

@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://byps421d1hgbv"
-path="res://.godot/imported/RP_WalkerOrigin_clarity.wav-7807c6e3c110a3f99391695dd17ba4bb.sample"
+path="res://.godot/imported/RP_WalkerOrigin_clarity.wav-f9a44193a6c245f673a829ea92ef90ec.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/music/RP_WalkerOrigin_clarity.wav"
-dest_files=["res://.godot/imported/RP_WalkerOrigin_clarity.wav-7807c6e3c110a3f99391695dd17ba4bb.sample"]
+source_file="res://sound/dialogue/music/RP_WalkerOrigin_clarity.wav"
+dest_files=["res://.godot/imported/RP_WalkerOrigin_clarity.wav-f9a44193a6c245f673a829ea92ef90ec.sample"]
 
 [params]
 

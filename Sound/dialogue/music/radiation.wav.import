@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://d1i577nyyt1nj"
-path="res://.godot/imported/radiation.wav-891394aaf751c8f78c866f4e0b3beedb.sample"
+path="res://.godot/imported/radiation.wav-98ed46702c3cec55b14c797d23e19e8c.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/music/radiation.wav"
-dest_files=["res://.godot/imported/radiation.wav-891394aaf751c8f78c866f4e0b3beedb.sample"]
+source_file="res://sound/dialogue/music/radiation.wav"
+dest_files=["res://.godot/imported/radiation.wav-98ed46702c3cec55b14c797d23e19e8c.sample"]
 
 [params]
 

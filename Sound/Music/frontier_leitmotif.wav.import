@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://claebx585obr7"
-path="res://.godot/imported/frontier_leitmotif.wav-aa6a95bbc88d18c9e766c15b0e3cd7a0.sample"
+path="res://.godot/imported/frontier_leitmotif.wav-741263c468188bec165c311fc65b06fc.sample"
 
 [deps]
 
-source_file="res://Sound/Music/frontier_leitmotif.wav"
-dest_files=["res://.godot/imported/frontier_leitmotif.wav-aa6a95bbc88d18c9e766c15b0e3cd7a0.sample"]
+source_file="res://sound/music/frontier_leitmotif.wav"
+dest_files=["res://.godot/imported/frontier_leitmotif.wav-741263c468188bec165c311fc65b06fc.sample"]
 
 [params]
 

@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://bwulwe28jidrd"
-path="res://.godot/imported/ante.wav-aed55778b9564aa381fee1b045cf0cf2.sample"
+path="res://.godot/imported/ante.wav-52b3fa362635cab5c91b770391c2e761.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/music/ante.wav"
-dest_files=["res://.godot/imported/ante.wav-aed55778b9564aa381fee1b045cf0cf2.sample"]
+source_file="res://sound/dialogue/music/ante.wav"
+dest_files=["res://.godot/imported/ante.wav-52b3fa362635cab5c91b770391c2e761.sample"]
 
 [params]
 

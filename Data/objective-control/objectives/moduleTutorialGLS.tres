@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://bmynk2cjrnup0"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_eeki4"]
+
+[resource]
+script = ExtResource("1_eeki4")
+written_identifier = ""
+current_state = 0
+title = "Complete a Dive"
+description = "- Gas Layer Surveyor icons next to planets on the SYSTEM LIST symbolise missing gas layer data.
+[img=200%x36%]res://Graphics/objective-management/module_tutorial_gls_system_list_example.png[/img]
+- Click on any planet with missing gas layer data on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL to view with Gas Layer Surveyor.
+- Take careful note of the color and noise type of each passing layer as the probe descends.
+- After the dive is completed, arrange the gas layers top to bottom in order of when you observed them, and press 'CONFIRM'."

@@ -3,25 +3,28 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://bakyyug5mxnpj"
-path="res://.godot/imported/comicsans.ttf-7d9e9091c411dfec0b7044f67bd3076f.fontdata"
+path="res://.godot/imported/comicsans.ttf-4d860ca9308195c88868f2994ff7319b.fontdata"
 
 [deps]
 
-source_file="res://Graphics/Fonts/comicsans.ttf"
-dest_files=["res://.godot/imported/comicsans.ttf-7d9e9091c411dfec0b7044f67bd3076f.fontdata"]
+source_file="res://graphics/fonts/comicsans.ttf"
+dest_files=["res://.godot/imported/comicsans.ttf-4d860ca9308195c88868f2994ff7319b.fontdata"]
 
 [params]
 
 Rendering=null
 antialiasing=1
 generate_mipmaps=false
+disable_embedded_bitmaps=true
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
 msdf_size=48
 allow_system_fallback=true
 force_autohinter=false
+modulate_color_glyphs=false
 hinting=1
 subpixel_positioning=1
+keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null
 fallbacks=[]

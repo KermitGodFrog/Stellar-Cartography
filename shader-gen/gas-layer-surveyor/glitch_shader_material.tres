@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c01wgv5av85fo"]
+
+[ext_resource type="Shader" uid="uid://bsqwy54nyd3k2" path="res://shader-gen/glitch_shader.gdshader" id="1_u2mcy"]
+
+[resource]
+shader = ExtResource("1_u2mcy")
+shader_parameter/pixel = 1.0
+shader_parameter/red_offset = Vector2(0, 0)
+shader_parameter/green_offset = Vector2(0, 0)
+shader_parameter/blue_offset = Vector2(0, 0)
+shader_parameter/alpha = 0.0
+shader_parameter/rand_strength = 4.0
+shader_parameter/affected = Vector4(0, 0, 1, 1)

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://c8v4gumwynury"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_6iuab"]
+
+[resource]
+script = ExtResource("1_6iuab")
+written_identifier = ""
+current_state = 0
+title = "Go-to & Enter Peregrination"
+description = "You have been instructed to travel to New Eden. The first wormhole you must traverse on your journey is Peregrination. This requires interacting with it.
+Click on Peregrination on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. 
+[img]res://Graphics/go_to_icon.png[/img]"

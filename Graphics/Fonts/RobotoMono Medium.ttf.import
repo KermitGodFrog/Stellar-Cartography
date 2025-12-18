@@ -3,25 +3,28 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://xrcqj2080elm"
-path="res://.godot/imported/RobotoMono Medium.ttf-3c36c4bd77de77a22941aded630e123e.fontdata"
+path="res://.godot/imported/RobotoMono Medium.ttf-b36204aaf45d747a93fa251d1be474eb.fontdata"
 
 [deps]
 
-source_file="res://Graphics/Fonts/RobotoMono Medium.ttf"
-dest_files=["res://.godot/imported/RobotoMono Medium.ttf-3c36c4bd77de77a22941aded630e123e.fontdata"]
+source_file="res://graphics/fonts/RobotoMono Medium.ttf"
+dest_files=["res://.godot/imported/RobotoMono Medium.ttf-b36204aaf45d747a93fa251d1be474eb.fontdata"]
 
 [params]
 
 Rendering=null
 antialiasing=1
 generate_mipmaps=false
+disable_embedded_bitmaps=true
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
 msdf_size=48
 allow_system_fallback=true
 force_autohinter=false
+modulate_color_glyphs=false
 hinting=1
 subpixel_positioning=1
+keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null
 fallbacks=[]

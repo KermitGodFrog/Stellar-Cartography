@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://ckrtf5mydfhai"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_a0hot"]
+
+[resource]
+script = ExtResource("1_a0hot")
+written_identifier = ""
+current_state = 0
+title = "(Optional) Show Help Overlay"
+description = "Press and hold [KEY_1] to show the help overlay. The help overlay displays the name of each UI component referenced in this tutorial."

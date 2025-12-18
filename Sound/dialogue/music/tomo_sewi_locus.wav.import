@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://cvcqk1ylco5c8"
-path="res://.godot/imported/tomo_sewi_locus.wav-890b06fdd607473cb945fada66037fac.sample"
+path="res://.godot/imported/tomo_sewi_locus.wav-701271a99313b64e962f84e1512843e0.sample"
 
 [deps]
 
-source_file="res://Sound/dialogue/music/tomo_sewi_locus.wav"
-dest_files=["res://.godot/imported/tomo_sewi_locus.wav-890b06fdd607473cb945fada66037fac.sample"]
+source_file="res://sound/dialogue/music/tomo_sewi_locus.wav"
+dest_files=["res://.godot/imported/tomo_sewi_locus.wav-701271a99313b64e962f84e1512843e0.sample"]
 
 [params]
 

@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dqfqylbxbxvgq"
-path="res://.godot/imported/frontier_intermission.wav-e88d972f4c7aeb99cb83ba290780861a.sample"
+path="res://.godot/imported/frontier_intermission.wav-18396054d4e2f1af2a40e82af9e57456.sample"
 
 [deps]
 
-source_file="res://Sound/Music/frontier_intermission.wav"
-dest_files=["res://.godot/imported/frontier_intermission.wav-e88d972f4c7aeb99cb83ba290780861a.sample"]
+source_file="res://sound/music/frontier_intermission.wav"
+dest_files=["res://.godot/imported/frontier_intermission.wav-18396054d4e2f1af2a40e82af9e57456.sample"]
 
 [params]
 

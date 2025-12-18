@@ -3,12 +3,12 @@
 importer="image"
 type="Image"
 uid="uid://p0yhaer28ulk"
-path="res://.godot/imported/PA_04_missing_core.png-fc5c870b25220dfed2de0dec391ea316.image"
+path="res://.godot/imported/PA_04_missing_core.png-290ce48073dca909ad7f5b2c19cf5603.image"
 
 [deps]
 
-source_file="res://Graphics/Dialogue/PA_04_missing_core.png"
-dest_files=["res://.godot/imported/PA_04_missing_core.png-fc5c870b25220dfed2de0dec391ea316.image"]
+source_file="res://graphics/dialogue/PA_04_missing_core.png"
+dest_files=["res://.godot/imported/PA_04_missing_core.png-290ce48073dca909ad7f5b2c19cf5603.image"]
 
 [params]
 
