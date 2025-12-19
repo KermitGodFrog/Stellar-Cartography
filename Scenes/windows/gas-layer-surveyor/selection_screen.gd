@@ -21,7 +21,7 @@ var current_planet_value: int = 0
 @onready var noise_texture = $margin/tabs/ENTRY/scroll/noise_texture
 @onready var attributes_list = $margin/tabs/ENTRY/scroll/attributes_list 
 
-@onready var layer_representation = preload("res://Scenes/Gas Layer Surveyor/layer_representation.tscn")
+@onready var layer_representation = preload("uid://4yeivroypj5")
 
 var _layer_data: Dictionary = {} # set on game start
 var _current_layers: PackedStringArray = []

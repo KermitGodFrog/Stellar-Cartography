@@ -5,10 +5,10 @@ signal map_updated
 var jumps_remaining: int = 0
 var systems_traversed: int = 0
 var systems: Array = []
-const label_font = preload("res://Graphics/Fonts/RobotoMono Medium.ttf")
+const label_font = preload("uid://xrcqj2080elm")
 var draw_landmarks: Dictionary = {"The Core": -(0 * 100), "The Frontier": -(5 * 100), "The Abyss": -(15 * 100), "New Eden": -(25 * 100)}
 
-@onready var station_frame = preload("res://Graphics/station_frame.png")
+@onready var station_frame = preload("uid://csrl0hs7rc0hn")
 
 func _ready():
 	connect("map_updated", _on_map_updated)

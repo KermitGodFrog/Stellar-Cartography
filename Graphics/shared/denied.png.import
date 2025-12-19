@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c5r5ok7jmth3o"
-path="res://.godot/imported/confirm_no_shadow.png-07c66e05f1906f3e1cbf98e7af0c1973.ctex"
+uid="uid://cudxvqxk513ea"
+path="res://.godot/imported/denied.png-f49d7970cf3bdfade4d6a0038f19b73e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/station-ui/confirm_no_shadow.png"
-dest_files=["res://.godot/imported/confirm_no_shadow.png-07c66e05f1906f3e1cbf98e7af0c1973.ctex"]
+source_file="res://graphics/shared/denied.png"
+dest_files=["res://.godot/imported/denied.png-f49d7970cf3bdfade4d6a0038f19b73e.ctex"]
 
 [params]
 

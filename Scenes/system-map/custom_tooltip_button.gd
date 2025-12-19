@@ -1,6 +1,6 @@
 extends Button
 
-@onready var custom_tooltip = preload("res://Scenes/Custom Tooltip/custom_tooltip.tscn")
+@onready var custom_tooltip = preload("uid://cer7wk3ixuyb6")
 @export var tooltip_title: String
 
 func _make_custom_tooltip(for_text):

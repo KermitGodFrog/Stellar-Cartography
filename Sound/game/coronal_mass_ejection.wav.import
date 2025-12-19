@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://c7baaje1ffxh6"
-path="res://.godot/imported/coronal_mass_ejection.wav-1c62175ad1eb717534cbe213345ebfa8.sample"
+path="res://.godot/imported/coronal_mass_ejection.wav-5a26b2d79814367349fef907e49d6996.sample"
 
 [deps]
 
-source_file="res://sound/system-map/coronal_mass_ejection.wav"
-dest_files=["res://.godot/imported/coronal_mass_ejection.wav-1c62175ad1eb717534cbe213345ebfa8.sample"]
+source_file="res://sound/game/coronal_mass_ejection.wav"
+dest_files=["res://.godot/imported/coronal_mass_ejection.wav-5a26b2d79814367349fef907e49d6996.sample"]
 
 [params]
 

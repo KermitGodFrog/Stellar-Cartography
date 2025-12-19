@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dqya8a0ae4idg"
-path="res://.godot/imported/stress_2.wav-ca94874fc77035a558c33f204591e34b.sample"
+path="res://.godot/imported/stress_2.wav-05606d89da11bc44c72e1b322da7f69e.sample"
 
 [deps]
 
-source_file="res://sound/system-map/damage/stress_2.wav"
-dest_files=["res://.godot/imported/stress_2.wav-ca94874fc77035a558c33f204591e34b.sample"]
+source_file="res://sound/game/damage/stress_2.wav"
+dest_files=["res://.godot/imported/stress_2.wav-05606d89da11bc44c72e1b322da7f69e.sample"]
 
 [params]
 

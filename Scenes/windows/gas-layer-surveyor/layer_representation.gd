@@ -5,8 +5,8 @@ enum STATUSES {NONE, CONFIRMED, DENIED}
 
 signal activated(_tag: String, _list: LISTS, _action: ACTIONS)
 
-@onready var confirm = preload("res://Graphics/Misc/confirm_outline.png")
-@onready var denied = preload("res://Graphics/Misc/denied_outline.png")
+@onready var confirm = preload("uid://cqooj3po86k13")
+@onready var denied = preload("uid://bm60fxptpfl4x")
 @onready var status_texture = $status_texture
 @onready var status_label = $status_label
 @onready var cover = $cover
@@ -36,7 +36,7 @@ func _ready() -> void:
 
 
 #yoinking this from system_map
-@onready var custom_tooltip = preload("res://Scenes/Custom Tooltip/custom_tooltip.tscn")
+@onready var custom_tooltip = preload("uid://cer7wk3ixuyb6")
 var tooltip_title: String
 func _make_custom_tooltip(for_text):
 	var custom_tooltip_instance = custom_tooltip.instantiate()

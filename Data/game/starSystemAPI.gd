@@ -639,7 +639,7 @@ func generateRandomWeightedSpecialAnomaly():
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID:
 			var hook_orbit_velocity = tan(hook.orbit_angle_change) * hook.orbit_distance #would have to recalculate every frame if not calculating now, which would be unnecessary
 			var new_body = addBody(
-				load("res://Data/BodyAPIs/Special/SpA_SentientAsteroid.gd").new(),
+				load("uid://lxeqs6ypk0ju").new(),
 				BODY_TYPES.CUSTOM,
 				identifier_count,
 				"Unidentified Contact",
@@ -647,7 +647,7 @@ func generateRandomWeightedSpecialAnomaly():
 				orbit_distance,
 				orbit_angle_change,
 				radius,
-				{"dialogue_tag": "SpA_SentientAsteroid", "_hook_mass": hook.mass, "_hook_orbit_velocity": hook_orbit_velocity, "_system_time": time, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "icon_path": "res://Graphics/question_mark.png", "post_icon_path": "res://Graphics/SpA_SentientAsteroid_frame.png"},
+				{"dialogue_tag": "SpA_SentientAsteroid", "_hook_mass": hook.mass, "_hook_orbit_velocity": hook_orbit_velocity, "_system_time": time, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "icon_path": "res://graphics/system-map/question_mark.png", "post_icon_path": "res://graphics/system-map/system-list/SpA_SentientAsteroid_frame.png"},
 				{}
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))

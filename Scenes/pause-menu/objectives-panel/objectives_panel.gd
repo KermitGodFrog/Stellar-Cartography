@@ -3,9 +3,9 @@ extends PanelContainer
 @onready var item_anchor = $margin/scroll_container/item_anchor
 @onready var scroll_container = $margin/scroll_container
 
-@onready var objective_item = preload("res://Data/objective-management/objective_item.tscn")
-@onready var _confirm_texture = preload("res://Graphics/Misc/confirm_no_shadow.png")
-@onready var _denied_texture = preload("res://Graphics/Misc/denied.png")
+@onready var objective_item = preload("uid://c4inc2m5l36fl")
+@onready var _confirm_texture = preload("uid://c5r5ok7jmth3o")
+@onready var _denied_texture = preload("uid://cudxvqxk513ea")
 
 var active_objectives: Array[objectiveAPI] = []
 

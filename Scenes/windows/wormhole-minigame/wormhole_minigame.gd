@@ -42,8 +42,8 @@ var awaiting_start: bool = true
 @onready var hull_stress_increase_label = $starship_and_camera/camera/UI_control/hull_stress_increase_label
 @onready var tutorial = $starship_and_camera/camera/UI_control/tutorial
 
-@onready var failure_sound = preload("res://Sound/Wormhole Minigame/wormhole_minigame_failure.wav")
-@onready var success_sound = preload("res://Sound/Wormhole Minigame/wormhole_minigame_success.wav")
+@onready var failure_sound = preload("uid://bplalt1pic5f")
+@onready var success_sound = preload("uid://c6aiafgr21bxi")
 
 func _physics_process(delta):
 	if not awaiting_start:

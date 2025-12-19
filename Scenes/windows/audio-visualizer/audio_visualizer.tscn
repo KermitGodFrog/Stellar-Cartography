@@ -7,10 +7,10 @@
 [ext_resource type="AudioStream" uid="uid://cuqfn1a6g6g0e" path="res://sound/audio-visualizer/pops.wav" id="3_7knfx"]
 [ext_resource type="AudioStream" uid="uid://c5bcwxp1is83n" path="res://sound/audio-visualizer/pulses.wav" id="4_00en7"]
 [ext_resource type="Script" uid="uid://4qjn2mwnpnia" path="res://scenes/windows/audio-visualizer/saved_audio_profiles_list.gd" id="4_c818x"]
-[ext_resource type="Texture2D" uid="uid://c5r5ok7jmth3o" path="res://graphics/station-ui/confirm_no_shadow.png" id="4_n2ehy"]
+[ext_resource type="Texture2D" uid="uid://c5r5ok7jmth3o" path="res://graphics/shared/confirmed.png" id="4_n2ehy"]
 [ext_resource type="Texture2D" uid="uid://bqokr8l8kfuv2" path="res://graphics/audio-visualizer/play_icon.png" id="5_6qtkb"]
 [ext_resource type="AudioStream" uid="uid://dd3hsfa1u5ktm" path="res://sound/audio-visualizer/storm.wav" id="5_fsbvl"]
-[ext_resource type="Texture2D" uid="uid://cudxvqxk513ea" path="res://graphics/station-ui/denied.png" id="6_5rdbj"]
+[ext_resource type="Texture2D" uid="uid://cudxvqxk513ea" path="res://graphics/shared/denied.png" id="6_5rdbj"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r0g17"]
 

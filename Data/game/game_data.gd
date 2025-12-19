@@ -7,44 +7,44 @@ const GENERATION_VECTORS = [Vector3.UP, Vector3.DOWN, Vector3.LEFT, Vector3.RIGH
 
 enum STATION_CLASSIFICATIONS {STANDARD, PIRATE, ABANDONED, COVERUP, DEBRIS, ABANDONED_OPERATIONAL, ABANDONED_BACKROOMS, PARTIALLY_SALVAGED, BIRD}
 const STATION_CLASSIFICATION_CURVES = {
-	STATION_CLASSIFICATIONS.STANDARD: preload("res://Data/Spawn Data/Stations/standard.tres"), 
-	STATION_CLASSIFICATIONS.PIRATE: preload("res://Data/Spawn Data/Stations/pirate.tres"), 
-	STATION_CLASSIFICATIONS.ABANDONED: preload("res://Data/Spawn Data/Stations/abandoned.tres"), 
-	STATION_CLASSIFICATIONS.COVERUP: preload("res://Data/Spawn Data/Stations/coverup.tres"), 
-	STATION_CLASSIFICATIONS.DEBRIS: preload("res://Data/Spawn Data/Stations/debris.tres"), 
-	STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL: preload("res://Data/Spawn Data/Stations/abandoned_operational.tres"), 
-	STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS: preload("res://Data/Spawn Data/Stations/abandoned_backrooms.tres"), 
-	STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED: preload("res://Data/Spawn Data/Stations/partially_salvaged.tres"), 
-	STATION_CLASSIFICATIONS.BIRD: preload("res://Data/Spawn Data/Stations/bird.tres")
+	STATION_CLASSIFICATIONS.STANDARD: preload("uid://d3lrc557tpb8w"), 
+	STATION_CLASSIFICATIONS.PIRATE: preload("uid://cunik7u381xbg"), 
+	STATION_CLASSIFICATIONS.ABANDONED: preload("uid://dbhwyek8pgn6k"), 
+	STATION_CLASSIFICATIONS.COVERUP: preload("uid://d203ycfjm6xvu"), 
+	STATION_CLASSIFICATIONS.DEBRIS: preload("uid://bqva2d2reveky"), 
+	STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL: preload("uid://h78gyk2jxtp3"), 
+	STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS: preload("uid://c1xvmry5i7ekj"), 
+	STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED: preload("uid://b6to23ulryumm"), 
+	STATION_CLASSIFICATIONS.BIRD: preload("uid://pw426lmm5rm7")
 }
 
 enum ENTITY_CLASSIFICATIONS {SPACE_WHALE_POD, LAGRANGE_CLOUD} 
 const ENTITY_CLASSIFICATION_CURVES = {
-	ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: preload("res://Data/Spawn Data/Entities/space_whale_pod.tres"),
-	ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: preload("res://Data/Spawn Data/Entities/lagrange_cloud.tres")
+	ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: preload("uid://c20v6pcqnu4xx"),
+	ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: preload("uid://bu5cfgwjjws7i")
 }
 
 enum SPECIAL_ANOMALY_CLASSIFICATIONS {NONE, SENTIENT_ASTEROID}
 const SPECIAL_ANOMALY_CLASSIFICATION_CURVES = {
-	SPECIAL_ANOMALY_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/Special Anomalies/none.tres"),
-	SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID: preload("res://Data/Spawn Data/Special Anomalies/sentient_asteroid.tres")
+	SPECIAL_ANOMALY_CLASSIFICATIONS.NONE: preload("uid://cyev8sdpb6npm"),
+	SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID: preload("uid://dp0kuawqk0fo4")
 }
 
 enum SPECIAL_SYSTEM_CLASSIFICATIONS {NONE, VOID}
 const SPECIAL_SYSTEM_CLASSIFICATION_CURVES = {
-	SPECIAL_SYSTEM_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/Special Systems/none.tres"),
-	SPECIAL_SYSTEM_CLASSIFICATIONS.VOID: preload("res://Data/Spawn Data/Special Systems/void.tres")
+	SPECIAL_SYSTEM_CLASSIFICATIONS.NONE: preload("uid://bcbxt0ka5hvk6"),
+	SPECIAL_SYSTEM_CLASSIFICATIONS.VOID: preload("uid://c185056t7jlry")
 }
 
 enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE, CORONAL_MASS_EJECTION}
 const SYSTEM_HAZARD_CLASSIFICATION_CURVES = {
-	SYSTEM_HAZARD_CLASSIFICATIONS.NONE: preload("res://Data/Spawn Data/System Hazards/none.tres"),
-	SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION: preload("res://Data/Spawn Data/System Hazards/coronal_mass_ejection.tres")
+	SYSTEM_HAZARD_CLASSIFICATIONS.NONE: preload("uid://oua44qc1agpd"),
+	SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION: preload("uid://ceicfkufoj2g2")
 }
 
-const REPAIR_CURVE = preload("res://Data/Spawn Data/repair_curve.tres")
-const NANITE_CONTROLLER_REPAIR_CURVE = preload("res://Data/Spawn Data/nanite_controller_repair_curve.tres")
-const MORALE_INCREASE_CURVE = preload("res://Data/Spawn Data/morale_increase_curve.tres")
+const REPAIR_CURVE = preload("uid://doinlbknr820v")
+const NANITE_CONTROLLER_REPAIR_CURVE = preload("uid://bdgrms6k50dkq")
+const MORALE_INCREASE_CURVE = preload("uid://qyrr2j508d2k")
 
 enum NAME_SCHEMES {STANDARD, SCIENTIFIC, TREK}
 enum NAME_VARIETIES {STAR, PLANET, GENERIC_FLAIR, ASTEROID_BELT, WORMHOLE, WORMHOLE_FLAIR, STATION, STATION_FLAIR, SPACE_ANOMALY, SPACE_ANOMALY_FLAIR, SPACE_ENTITY_DEFAULT, RENDEZVOUS_POINT_DEFAULT} #SPACE_ENTITY_DEFAULT exists because SCIENTIFIC name scheme will give a space entity something like "SF-1058" while STANDARD name scheme will give a space entity "stellar_phenomena"
@@ -62,16 +62,16 @@ var NAME_DATA: Dictionary = {
 }
 
 const NAME_FILE_PATHS: Dictionary = {
-	NAME_VARIETIES.STAR: "res://Data/Name Data/star_names.txt",
-	NAME_VARIETIES.PLANET: "res://Data/Name Data/planet_names.txt",
-	NAME_VARIETIES.GENERIC_FLAIR: "res://Data/Name Data/generic_flairs.txt",
-	NAME_VARIETIES.ASTEROID_BELT: "res://Data/Name Data/asteroid_belt_names.txt",
-	NAME_VARIETIES.WORMHOLE: "res://Data/Name Data/wormhole_names.txt",
-	NAME_VARIETIES.WORMHOLE_FLAIR: "res://Data/Name Data/wormhole_flairs.txt",
-	NAME_VARIETIES.STATION: "res://Data/Name Data/station_names.txt",
-	NAME_VARIETIES.STATION_FLAIR: "res://Data/Name Data/station_flairs.txt",
-	NAME_VARIETIES.SPACE_ANOMALY: "res://Data/Name Data/space_anomaly_names.txt",
-	NAME_VARIETIES.SPACE_ANOMALY_FLAIR: "res://Data/Name Data/space_anomaly_flairs.txt"
+	NAME_VARIETIES.STAR: "res://data/game/gen/names/star_names.txt",
+	NAME_VARIETIES.PLANET: "res://data/game/gen/names/planet_names.txt",
+	NAME_VARIETIES.GENERIC_FLAIR: "res://data/game/gen/names/generic_flairs.txt",
+	NAME_VARIETIES.ASTEROID_BELT: "res://data/game/gen/names/asteroid_belt_names.txt",
+	NAME_VARIETIES.WORMHOLE: "res://data/game/gen/names/wormhole_names.txt",
+	NAME_VARIETIES.WORMHOLE_FLAIR: "res://data/game/gen/names/wormhole_flairs.txt",
+	NAME_VARIETIES.STATION: "res://data/game/gen/names/station_names.txt",
+	NAME_VARIETIES.STATION_FLAIR: "res://data/game/gen/names/station_flairs.txt",
+	NAME_VARIETIES.SPACE_ANOMALY: "res://data/game/gen/names/space_anomaly_names.txt",
+	NAME_VARIETIES.SPACE_ANOMALY_FLAIR: "res://data/game/gen/names/space_anomaly_flairs.txt"
 }
 
 const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]

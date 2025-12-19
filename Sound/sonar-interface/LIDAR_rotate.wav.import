@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://cdhsp5c4fxgx8"
-path="res://.godot/imported/LIDAR_rotate.wav-66d4c0d981543f24094428ab9de2313f.sample"
+path="res://.godot/imported/LIDAR_rotate.wav-c0788b2670b69884de7759addae8edf7.sample"
 
 [deps]
 
-source_file="res://sound/system-map/LIDAR_rotate.wav"
-dest_files=["res://.godot/imported/LIDAR_rotate.wav-66d4c0d981543f24094428ab9de2313f.sample"]
+source_file="res://sound/sonar-interface/LIDAR_rotate.wav"
+dest_files=["res://.godot/imported/LIDAR_rotate.wav-c0788b2670b69884de7759addae8edf7.sample"]
 
 [params]
 

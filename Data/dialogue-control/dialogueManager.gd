@@ -65,7 +65,7 @@ func _ready() -> void:
 func clear_and_load_rules() -> void:
 	rules.clear()
 	
-	var csv_rules = FileAccess.open("res://Data/Dialogue/rules.txt", FileAccess.READ)
+	var csv_rules = FileAccess.open("res://data/dialogue-control/rules.txt", FileAccess.READ)
 	var current_pointer: POINTERS = POINTERS.RULE
 	var current_line: int = 0
 	var current_rule: int = 0
@@ -709,7 +709,7 @@ func decreaseSecurityOfficerStanding(amount: int) -> void: #keeping this so i do
 	pass
 
 func plotRadio(radio_helper_path: String) -> void:
-	get_tree().call_group("audioHandler", "plot_radio", load("res://Data/radio-helpers/%s" % radio_helper_path))
+	get_tree().call_group("audioHandler", "plot_radio", load("res://data/audio-control/radio-control/radio-helpers/%s" % radio_helper_path))
 	pass
 
 

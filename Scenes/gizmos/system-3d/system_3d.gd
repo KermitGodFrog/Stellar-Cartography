@@ -12,8 +12,8 @@ var target_position: Vector2
 var locked_body_identifier: int
 var label_locked_body_identifier: int
 
-var body_3d = preload("res://Instantiated Scenes/Body 3D/body_3d.tscn")
-var entity_3d = preload("res://Instantiated Scenes/Body 3D/entity_3d.tscn")
+var body_3d = preload("uid://bdotk8rm2p7df")
+var entity_3d = preload("uid://csvx63c0ejn6a")
 
 @onready var control = $camera_offset/camera/canvas_layer/control
 @onready var camera_offset = $camera_offset
@@ -29,8 +29,8 @@ var target_fov: float = 75
 var initial_beam_rotation: float = 0.0 #REQUIRED FOR PULSARS TO WORK. BARELY KNEW WHAT I WAS DOING WHEN I MADE IT WORK SO DONT TOUCH!
 
 #for wormholes obv      <- past me who put this comment, stop being such a fucking smartass istg
-var wormhole_shader = preload("res://Scenes/wormhole_shader.gdshader")
-var pulsar_beam_material = preload("res://Instantiated Scenes/system-3d/pulsar_beam.tres")
+var wormhole_shader = preload("uid://bkngs6wdkye6n")
+var pulsar_beam_material = preload("uid://dtpqpy1b1rnxv")
 
 
 func _ready():

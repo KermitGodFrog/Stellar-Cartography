@@ -2,7 +2,7 @@ extends VBoxContainer
 
 @onready var concept_edit = $concept_scroll/concept_edit
 
-@onready var fact_scene: PackedScene = preload("res://Scenes/Debug Interface/fact_scroll.tscn")
+@onready var fact_scene: PackedScene = preload("uid://c31jdpsifhyp8")
 
 var active_fact_instances: Array[HBoxContainer] = []
 var facts_added: int = 0

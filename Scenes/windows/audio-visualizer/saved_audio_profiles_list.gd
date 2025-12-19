@@ -3,9 +3,9 @@ extends ItemList
 signal playSavedAudioProfile(helper: audioProfileHelper)
 signal removeSavedAudioProfile(helper: audioProfileHelper)
 
-@onready var confirmed = load("res://Graphics/Misc/confirm_no_shadow.png")
-@onready var denied = load("res://Graphics/Misc/denied.png")
-@onready var icon = load("res://Graphics/play_icon.png")
+@onready var confirmed = preload("uid://c5r5ok7jmth3o")
+@onready var denied = preload("uid://cudxvqxk513ea")
+@onready var icon = preload("uid://bqokr8l8kfuv2")
 
 enum METADATA_TYPE {PLAY, DELETE}
 

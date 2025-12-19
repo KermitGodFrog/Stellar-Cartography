@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://c8lfpcf1vsiok"
-path="res://.godot/imported/tick_low.wav-aab901d08ffdcdcfc11f34308c86fdf1.sample"
+path="res://.godot/imported/tick_low.wav-11ca26d5fbee91e0e69beac0cc2bd188.sample"
 
 [deps]
 
-source_file="res://sound/system-map/tick_low.wav"
-dest_files=["res://.godot/imported/tick_low.wav-aab901d08ffdcdcfc11f34308c86fdf1.sample"]
+source_file="res://sound/game/tick_low.wav"
+dest_files=["res://.godot/imported/tick_low.wav-11ca26d5fbee91e0e69beac0cc2bd188.sample"]
 
 [params]
 

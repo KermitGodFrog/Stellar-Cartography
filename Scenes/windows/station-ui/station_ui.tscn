@@ -6,11 +6,11 @@
 [ext_resource type="Shader" uid="uid://c8yxk67y2u80y" path="res://shader-gen/pixelate_shader.gdshader" id="3_n6881"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="4_0fv2y"]
 [ext_resource type="Script" uid="uid://bgg40ileteb7a" path="res://scenes/windows/station-ui/observed_bodies_list.gd" id="4_ng3on"]
-[ext_resource type="Texture2D" uid="uid://c5r5ok7jmth3o" path="res://graphics/station-ui/confirm_no_shadow.png" id="5_nd783"]
+[ext_resource type="Texture2D" uid="uid://c5r5ok7jmth3o" path="res://graphics/shared/confirmed.png" id="5_nd783"]
 [ext_resource type="Script" uid="uid://cbablbmj0jhq8" path="res://scenes/windows/station-ui/upgrade_button.gd" id="5_nlbm1"]
 [ext_resource type="Texture2D" uid="uid://c5wk5giq8ua5h" path="res://graphics/station-ui/download_icon.png" id="5_oh1b1"]
 [ext_resource type="Script" uid="uid://cq4qo6bsf3emb" path="res://scenes/windows/station-ui/disclaimer_label.gd" id="6_ubeaq"]
-[ext_resource type="Texture2D" uid="uid://cudxvqxk513ea" path="res://graphics/station-ui/denied.png" id="7_pt3w3"]
+[ext_resource type="Texture2D" uid="uid://cudxvqxk513ea" path="res://graphics/shared/denied.png" id="7_pt3w3"]
 [ext_resource type="PackedScene" uid="uid://c3o837337jhqc" path="res://scenes/windows/station-ui/station_ui_background.tscn" id="9_c1dhy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bvpf3"]

@@ -33,8 +33,8 @@ var SHOW_CREDITS_POPUP: bool = false:
 			credits_popup.hide()
 
 const background_images: Array = [
-	preload("res://Graphics/Dialogue/SA03G_seeder_ship_OFF.png"),
-	preload("res://Graphics/Dialogue/PA_04_missing_core.png")
+	preload("uid://y2kguswkl4v4"),
+	preload("uid://p0yhaer28ulk")
 ]
 
 func _ready():
@@ -77,21 +77,21 @@ func _ready():
 	pass
 
 func _on_continue_button_pressed():
-	global_data.change_scene.emit("res://Scenes/Game/game.tscn", {"init_type": global_data.GAME_INIT_TYPES.CONTINUE})
+	global_data.change_scene.emit("res://scenes/game/game.tscn", {"init_type": global_data.GAME_INIT_TYPES.CONTINUE})
 	pass
 
 func _on_tutorial_button_pressed():
-	global_data.change_scene.emit("res://Scenes/Game/game.tscn", {"init_type": global_data.GAME_INIT_TYPES.TUTORIAL})
+	global_data.change_scene.emit("res://scenes/game/game.tscn", {"init_type": global_data.GAME_INIT_TYPES.TUTORIAL})
 	pass
 
 func _on_create_button_pressed():
 	if not name_edit.text.is_empty():
-		global_data.change_scene.emit("res://Scenes/Game/game.tscn", {
+		global_data.change_scene.emit("res://scenes/game/game.tscn", {
 			"init_type": global_data.GAME_INIT_TYPES.NEW, 
 			"init_data": {"name": name_edit.get_text(), "prefix": prefix_edit.get_item_text(prefix_edit.selected)}
 			})
 	else:
-		global_data.change_scene.emit("res://Scenes/Game/game.tscn", {
+		global_data.change_scene.emit("res://scenes/game/game.tscn", {
 			"init_type": global_data.GAME_INIT_TYPES.NEW})
 	pass
 

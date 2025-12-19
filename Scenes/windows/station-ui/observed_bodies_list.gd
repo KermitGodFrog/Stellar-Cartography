@@ -4,9 +4,9 @@ signal saveAudioProfile(helper: audioProfileHelper)
 signal _addPlayerValue(amount: int)
 signal finishedButtonPressed
 
-@onready var confirmed = load("res://Graphics/Misc/confirm_no_shadow.png")
-@onready var denied = load("res://Graphics/Misc/denied.png")
-@onready var icon = load("res://Graphics/download_icon.png")
+@onready var confirmed = preload("uid://c5r5ok7jmth3o")
+@onready var denied = preload("uid://cudxvqxk513ea")
+@onready var icon = preload("uid://c5wk5giq8ua5h")
 
 func initialize(helpers: Array[audioProfileHelper]):
 	clear()

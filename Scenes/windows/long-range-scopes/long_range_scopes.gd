@@ -14,11 +14,11 @@ var state_change_lock_duration: float = 0.1
 var _DRAW_MATRICIES: Array[Array] = [[]] #carried to _on_state_changed
 var _REWARD_MATRIX: Array = [] #carried to _on_state_changed
 
-@onready var space_whale_scene = preload("res://Instantiated Scenes/Space Whales/adult_space_whale.tscn")
-@onready var space_coral_scene = preload("res://Instantiated Scenes/Coral Asteroids/coral_asteroid1.tscn")
-@onready var hud_default = preload("res://Graphics/long_range_scopes_hud4.png")
-@onready var hud_holding = preload("res://Graphics/long_range_scopes_hud3.png")
-@onready var hud_release = preload("res://Graphics/long_range_scopes_hud2.png")
+@onready var space_whale_scene = preload("uid://dwtt1i110irrs")
+@onready var space_coral_scene = preload("uid://ds142pkckx34w")
+@onready var hud_default = preload("uid://3ea0xeivnnax")
+@onready var hud_holding = preload("uid://b7gnhndm5menj")
+@onready var hud_release = preload("uid://3xbvtj2mc6e5")
 
 @onready var directional_light = $directional_light
 @onready var camera = $camera_offset/camera

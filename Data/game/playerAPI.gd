@@ -90,10 +90,10 @@ var current_SPL_upgrades: int = 0:
 @export_storage var survived_mutiny: bool = false #misc
 
 @export var characters: Array[characterAPI] = [
-	preload("res://Data/Characters/rui.tres"),
-	preload("res://Data/Characters/jiya.tres"),
-	preload("res://Data/Characters/walker.tres"),
-	preload("res://Data/Characters/febris.tres")
+	preload("uid://b0ufsv84pso1i"),
+	preload("uid://dshniitnvqmdm"),
+	preload("uid://bg402hymen2yw"),
+	preload("uid://btatr08y80g7t")
 	]
 func get_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> characterAPI:
 	for c in characters:

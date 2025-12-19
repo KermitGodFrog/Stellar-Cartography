@@ -19,7 +19,7 @@ const layer_data = { #name (color(s)-noise-property): properties
 	"default": {
 		"bg_color": Color.WHITE,
 		"bg_time_divisor": 100.0,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_default.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_default.tres"),
 		"fog_albedo": Color.WHITE,
 		"fog_emission": Color.BLACK,
 		"fog_density": 0.035,
@@ -28,39 +28,39 @@ const layer_data = { #name (color(s)-noise-property): properties
 	},
 	"red-pink-splotches": {
 		"bg_color": Color.RED,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_splotches.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_splotches.tres"),
 		"fog_albedo": Color("ff5df0"),
 		"fog_emission": Color("0000ba"),
 		"fog_length": 15.0
 	},
 	"yellow-orange-splotches": {
 		"bg_color": Color.YELLOW,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_splotches.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_splotches.tres"),
 		"fog_albedo": Color("d16600"),
 		"fog_emission": Color.RED,
 	},
 	"green-slow-splotches": {
 		"bg_color": Color.GREEN,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_splotches.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_splotches.tres"),
 		"bg_time_divisor": 180.0,
 		"fog_albedo": Color("254925"),
 	},
 	"green-fast-splotches": {
 		"bg_color": Color.GREEN,
 		"bg_time_divisor": 50.0,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_splotches.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_splotches.tres"),
 		"fog_albedo": Color("60aa60"),
 		"fog_emission": Color("00006b")
 	},
 	"blue-splotches": {
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_splotches.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_splotches.tres"),
 		"fog_albedo": Color("008388"),
 		"fog_emission": Color("2e69ff")
 	},
 	"red-slow-bacterium": {
 		"bg_color": Color("ff3f30"),
 		"bg_time_divisor": 150.0,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_bacterium.tres"),
 		"fog_albedo": Color("330000"),
 		"fog_emission": Color("800000"),
 		"fog_density": 0.05
@@ -68,28 +68,28 @@ const layer_data = { #name (color(s)-noise-property): properties
 	"red-blue-fast-bacterium": {
 		"bg_color": Color("ff3f30"),
 		"bg_time_divisor": 50.0,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_bacterium.tres"),
 		"fog_albedo": Color("1c1c5b"),
 		"fog_emission": Color("000068"),
 		"fog_density": 0.05
 	},
 	"blue-bacterium": {
 		"bg_color": Color.BLUE,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_bacterium.tres"),
 		"fog_albedo": Color.BLACK,
 		"fog_emission": Color("00004d")
 	},
 	"purple-bacterium": {
 		"bg_color": Color("4e00ff"),
 		"bg_time_divisor": 70.0,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_bacterium.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_bacterium.tres"),
 		"fog_albedo": Color("002b2b"),
 		"fog_emission": Color("27007d")
 	},
 	"brown-slow-complex": {
 		"bg_color": Color("642613"),
 		"bg_time_divisor": 200.0,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_complex.tres"),
 		"fog_albedo": Color("3c3c3c"),
 		"fog_emission": Color("642613"),
 		"fog_length": 10.0
@@ -97,13 +97,13 @@ const layer_data = { #name (color(s)-noise-property): properties
 	"gray-fast-complex": {
 		"bg_color": Color("464646"),
 		"bg_time_divisor": 50.0,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_complex.tres"),
 		"fog_albedo": Color("444444"),
 		"fog_anisotropy": 0.8
 	},
 	"purple-pink-complex": {
 		"bg_color": Color("833cff"),
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_complex.tres"),
 		"fog_albedo": Color("f300c1"),
 		"fog_emission": Color("d69bff"),
 		"fog_density": 0.01,
@@ -112,43 +112,43 @@ const layer_data = { #name (color(s)-noise-property): properties
 	"orange-yellow-fast-complex": {
 		"bg_color": Color("ff6721"),
 		"bg_time_divisor": 20.0,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_complex.tres"),
 		"fog_albedo": Color("a7a700"),
 		"fog_anisotropy": -0.8
 	},
 	"green-complex": {
 		"bg_color": Color.GREEN,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_complex.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_complex.tres"),
 		"fog_albedo": Color("254925")
 	},
 	"white-pink-ridges": {
 		"bg_color": Color.WHITE,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_ridges.tres"),
 		"fog_albedo": Color.BLACK,
 		"fog_emission": Color("ff00ff")
 	},
 	"pink-fast-ridges": {
 		"bg_color": Color("ff83bd"),
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_ridges.tres"),
 		"fog_albedo": Color("320032"),
 		"fog_emission": Color("4c3d63"),
 		"fog_density": 0.05
 	},
 	"brown-purple-ridges": {
 		"bg_color": Color("642613"),
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_ridges.tres"),
 		"fog_albedo": Color("360031"),
 		"fog_emission": Color("642613")
 	},
 	"gray-slow-ridges": {
 		"bg_color": Color("464646"),
 		"bg_time_divisor": 180.0,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_ridges.tres"),
 		"fog_albedo": Color("141414"),
 	},
 	"yellow-red-ridges": {
 		"bg_color": Color.YELLOW,
-		"bg_sampler": preload("res://Scenes/Gas Layer Surveyor/bg_ridges.tres"),
+		"bg_sampler": preload("res://scenes/windows/gas-layer-surveyor/bg_ridges.tres"),
 		"fog_albedo": Color("851414"),
 		"fog_length": 60.0
 	}

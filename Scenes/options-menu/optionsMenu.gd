@@ -1,8 +1,8 @@
 extends Control
 
-@onready var keybind_button_group = load("res://Scenes/Options Menu/keybind_button_group.tres")
-@onready var keybind_option = load("res://Scenes/Options Menu/keybind_option.tscn")
-@onready var audio_slider_option = load("res://Scenes/Options Menu/audio_slider_option.tscn")
+@onready var keybind_button_group = preload("uid://ds237xjai4y42")
+@onready var keybind_option = preload("uid://cbaykf0eovygh")
+@onready var audio_slider_option = preload("uid://b564nt73u2b3j")
 @onready var scroll = $panel_scroll/background/margin/scroll_container/scroll
 
 var keybind_options: Array[Node] = []

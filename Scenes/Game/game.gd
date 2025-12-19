@@ -48,8 +48,8 @@ func _ready():
 		new_player.connect("dataValueChanged", _on_player_data_value_changed)
 		new_player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
 		
-		var king: starSystemAPI = load("res://Data/tutorial_king.tres")
-		var suno: starSystemAPI = load("res://Data/tutorial_suno.tres")
+		var king: starSystemAPI = load("uid://bpnb60fo3ghca")
+		var suno: starSystemAPI = load("uid://bhqtlq0blu17n")
 		world.star_systems.append(king)
 		world.star_systems.append(suno)
 		
@@ -123,7 +123,7 @@ func _ready():
 		
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
 		
-		get_tree().call_group("audioHandler", "queue_music", "res://Sound/Music/intro.wav")
+		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
 		
 		#var debug = responseQuery.new()
 		#debug.add("concept", "followingBody")
@@ -701,7 +701,7 @@ func _on_process_system_hazard(system: starSystemAPI):
 			var time_random = clamp(randfn(120, 30) - (game_data.player_weirdness_index * 30.0), 30.0, 240.0)
 			var time_total = metadata.get_or_add("CME_time_total", time_random)
 			var time_current = metadata.get_or_add("CME_time_current", time_total)
-			var processor = load("res://Scenes/Countdown Processor/countdown_processor.tscn")
+			var processor = load("uid://cuc55f8drt4bt")
 			var CDP = processor.instantiate()
 			add_child(CDP)
 			countdown_processor = CDP
@@ -823,9 +823,9 @@ func _on_add_player_hull_stress(amount: int) -> void:
 	#damage sfx, couldnt find any other place to put this :(
 	if amount > 0:
 		if world.player.hull_stress >= 100:
-			get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/damage_deterioration.tres"), -12, "SFX")
+			get_tree().call_group("audioHandler", "play_once", load("uid://5di84fc8e1su"), -12, "SFX")
 		else:
-			get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/damage_stress.tres"), -12, "SFX")
+			get_tree().call_group("audioHandler", "play_once", load("uid://b31tkiiqdh72x"), -12, "SFX")
 	world.player.addHullStress(amount)
 	pass
 
@@ -879,11 +879,11 @@ func _on_save_world():
 
 func _on_save_and_quit():
 	game_data.saveWorld(world)
-	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
+	global_data.change_scene.emit("res://scenes/main-menu/main_menu.tscn")
 	pass
 
 func _on_exit_to_main_menu():
-	global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
+	global_data.change_scene.emit("res://Scenes/main-menu/main_menu.tscn")
 	pass
 
 func _on_theorised_body(id: int):
@@ -952,9 +952,9 @@ func _on_remove_player_morale(amount : int) -> void:
 func _on_stats_menu_quit(_init_type: int) -> void:
 	match _init_type:
 		stats_menu.INIT_TYPES.TUTORIAL:
-			global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn")
+			global_data.change_scene.emit("res://scenes/main-menu/main_menu.tscn")
 		_:
-			global_data.change_scene.emit("res://Scenes/Main Menu/main_menu.tscn") #WIN, DEATH
+			global_data.change_scene.emit("res://scenes/main-menu/main_menu.tscn") #WIN, DEATH
 			game_data.deleteWorld()
 	pass
 
@@ -969,9 +969,9 @@ func _on_add_player_mutiny_backing(amount : int) -> void:
 func _on_CME_time_current_updated(_time_current: float, _system_id: int):
 	world.get_system_from_identifier(_system_id).system_hazard_metadata["CME_time_current"] = _time_current
 	if _time_current <= 10:
-		get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/tick_high.wav"), -24, "SFX")
+		get_tree().call_group("audioHandler", "play_once", load("uid://bmx8m5qyt3ogy"), -24, "SFX")
 	else:
-		get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/tick_low.wav"), -24, "SFX")
+		get_tree().call_group("audioHandler", "play_once", load("uid://c8lfpcf1vsiok"), -24, "SFX")
 	pass
 
 func _on_CME_timeout(_system_id: int):
@@ -986,8 +986,8 @@ func _on_player_below_CME_ring_radius():
 		world.player.CME_immune = true
 		
 		_on_add_player_hull_stress(world.player.hull_stress_CME)
-		get_tree().call_group("audioHandler", "play_once", load("res://Sound/SFX/coronal_mass_ejection.wav"), 0.0, "SFX")
-		get_tree().call_group("audioHandler", "plot_radio", load("res://Data/radio-helpers/player_below_CME_ring_radius.tres"))
+		get_tree().call_group("audioHandler", "play_once", load("uid://c7baaje1ffxh6"), 0.0, "SFX")
+		get_tree().call_group("audioHandler", "plot_radio", load("uid://ddi2c1haas55w"))
 		system_map._on_countdown_overlay_CME_flash()
 	pass
 
@@ -1047,17 +1047,17 @@ func _on_modify_character_standing(occupation: characterAPI.OCCUPATIONS, amount:
 func _on_play_civilized_system_leitmotif() -> void:
 	if world.player.weirdness_index >= 0.2 and world.player.weirdness_index < 0.6: #in frontier
 		if not world.played_frontier_leitmotif:
-			get_tree().call_group("audioHandler", "queue_music", "res://Sound/Music/frontier_leitmotif.wav")
+			get_tree().call_group("audioHandler", "queue_music", "res://sound/music/frontier_leitmotif.wav")
 			world.played_frontier_leitmotif = true
 			return
 	elif world.player.weirdness_index >= 0.6: #in abyss
 		if not world.played_abyss_leitmotif:
-			get_tree().call_group("audioHandler", "queue_music", "res://Sound/Music/abyss_leitmotif.wav")
+			get_tree().call_group("audioHandler", "queue_music", "res://sound/music/abyss_leitmotif.wav")
 			world.played_abyss_leitmotif = true
 			return
 	#world.player.weirdness_index updates faster than game_data.player_weirdness index, and should thus be used all throughout game.gd
 	
-	get_tree().call_group("audioHandler", "queue_music", "res://Sound/Music/motif.tres")
+	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/motif.tres")
 	return
 
 func _on_open_LRS():

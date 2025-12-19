@@ -1,4 +1,4 @@
-extends "res://Scenes/System Map/custom_tooltip_button.gd"
+extends "res://scenes/system-map/custom_tooltip_button.gd"
 
 @export var texture_node: NodePath
 

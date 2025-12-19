@@ -4,11 +4,11 @@ extends Control
 @onready var text = $margin/panel/main_scroll/interaction/interaction_scroll/text
 @onready var options_scroll = $margin/panel/main_scroll/interaction/interaction_scroll/scroll/options_scroll
 @onready var music = $music
-@onready var option = preload("res://Data/Dialogue/dialogue_option.tscn")
+@onready var option = preload("uid://rxjmiaa4kdop")
 
-@onready var dialogue_click_light = preload("res://Sound/SFX/dialogue_click_light.tres")
-@onready var dialogue_click_heavy = preload("res://Sound/SFX/dialogue_click_heavy.tres")
-@onready var dialogue_click_cancel = preload("res://Sound/SFX/dialogue_click_cancel.tres")
+@onready var dialogue_click_light = preload("uid://fsqkr5ytugp1")
+@onready var dialogue_click_heavy = preload("uid://du7p5ge1wqdch")
+@onready var dialogue_click_cancel = preload("uid://tjlgpm3y41y1")
 
 var pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE #from dialogueManager _on_pause_mode_changed
 
@@ -42,7 +42,7 @@ func add_options(new_options: Dictionary):
 	pass
 
 func set_image(path: String):
-	var new_image = load("res://Graphics/Dialogue/%s" % path)
+	var new_image = load("res://graphics/dialogue/%s" % path)
 	if new_image:
 		var texture = ImageTexture.create_from_image(new_image) #IMAGES MUST BE IMPORTED AS 'IMAGE' TYPE!
 		texture.set_size_override(Vector2i(450, 250))
@@ -70,12 +70,12 @@ func clear_options():
 	pass
 
 func play_sound_effect(path: String) -> void:
-	var global_path = "res://Sound/dialogue/sfx/%s" % path
+	var global_path = "res://sound/dialogue/sfx/%s" % path
 	get_tree().call_group("audioHandler", "play_once", load(global_path), 0.0, "SFX")
 	pass
 
 func play_music(path: String) -> void:
-	var global_path = "res://Sound/dialogue/music/%s" % path
+	var global_path = "res://sound/dialogue/music/%s" % path
 	var instance = load(global_path)
 	if music.get_stream() != null:
 		if music.stream.get_path() == global_path:

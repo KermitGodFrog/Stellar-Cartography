@@ -11,20 +11,20 @@ var achievements_array: Array[responseAchievement] = []:
 			array.append(a)
 		return array
 const default_achievements: Dictionary = {
-	preload("res://Data/Achievement/Achievements/optionSelectedTutorialWin.tres"): false,
-	preload("res://Data/Achievement/Achievements/anyTutorialOmissionOrbitingPREV.tres"): false,
-	preload("res://Data/Achievement/Achievements/playerWinTenMillionScore.tres"): false,
-	preload("res://Data/Achievement/Achievements/playerWinFifteenMillionScore.tres"): false,
-	preload("res://Data/Achievement/Achievements/playerWinTwentyMillionScore.tres"): false,
-	preload("res://Data/Achievement/Achievements/playerWinAllCharactersAlive.tres"): false,
-	preload("res://Data/Achievement/Achievements/anyAllModulesUnlocked.tres"): false,
-	preload("res://Data/Achievement/Achievements/anyAudioVisualizerUnlocked.tres"): false,
-	preload("res://Data/Achievement/Achievements/anyLongRangeScopesUnlocked.tres"): false,
-	preload("res://Data/Achievement/Achievements/anyGasLayerSurveyorUnlocked.tres"): false,
-	preload("res://Data/Achievement/Achievements/followingBodyWormholeInFrontier.tres"): false,
-	preload("res://Data/Achievement/Achievements/followingBodyWormholeInAbyss.tres"): false,
-	preload("res://Data/Achievement/Achievements/anyHullDeteriorationFifty.tres"): false,
-	preload("res://Data/Achievement/Achievements/enteringSystemStarTypeO.tres"): false
+	preload("uid://diwwcd4u152wj"): false,
+	preload("uid://hwxe6ko2un15"): false,
+	preload("uid://c1jawjdur6vwj"): false,
+	preload("uid://b0njvlvfd51jw"): false,
+	preload("uid://h11jp6ylt5p4"): false,
+	preload("uid://bnnk3hpl5vyv5"): false,
+	preload("uid://by1e4fqswofqx"): false,
+	preload("uid://bs3s26w3bcouo"): false,
+	preload("uid://cw60jj5x3nom5"): false,
+	preload("uid://dtkpc2w8p3rlp"): false,
+	preload("uid://b1p5pjreb7qtb"): false,
+	preload("uid://dnqtbuyyvp4rp"): false,
+	preload("uid://bmt6d3hv7bcuw"): false,
+	preload("uid://dp84a2qtdaaas"): false
 	#preload("res://Data/Achievement/Achievements/anyIsWarCriminal.tres"): false
 	#preload("res://Data/Achievement/Achievements/anyLRSAndAVUnlockedDEBUG.tres"): false
 }

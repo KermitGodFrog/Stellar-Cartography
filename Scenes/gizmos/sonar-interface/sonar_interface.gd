@@ -11,8 +11,8 @@ var ping_direction: Vector2 = Vector2.ZERO
 @onready var ping_cooldown_timer = $ping_cooldown_timer
 @onready var cooldown_label = $cooldown_label
 
-@onready var LIDAR_arc_change = preload("res://Sound/SFX/LIDAR_arc_change.wav")
-@onready var LIDAR_rotate = preload("res://Sound/SFX/LIDAR_rotate.wav")
+@onready var LIDAR_arc_change = preload("uid://dkx5h7gy177m8")
+@onready var LIDAR_rotate = preload("uid://cdhsp5c4fxgx8")
 
 func _physics_process(_delta):
 	ping_width = ping_width_slider.value

@@ -63,9 +63,9 @@ signal addPlayerValue(amount: int)
 
 @onready var tutorial = $tutorial
 
-@onready var station_upgrade = preload("res://Sound/Station UI/station_upgrade.tres")
-@onready var station_sell_data = preload("res://Sound/Station UI/station_sell_data.tres")
-@onready var station_repair = preload("res://Sound/Station UI/station_repair.tres")
+@onready var station_upgrade = preload("uid://crt73kp6x2bbe")
+@onready var station_sell_data = preload("uid://bbdwwjno15wk3")
+@onready var station_repair = preload("uid://dha2d3lx22sd1")
 
 var has_sold_previously: bool = false
 

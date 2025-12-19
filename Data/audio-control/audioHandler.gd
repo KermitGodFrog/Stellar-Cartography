@@ -11,7 +11,7 @@ signal setPauseMode(new_mode: game_data.PAUSE_MODES)
 func _on_pause_mode_changed(_value):
 	pass
 
-@onready var UI_click_generic = preload("res://Sound/SFX/UI_click_generic.tres")
+@onready var UI_click_generic = preload("uid://bxhmolsyar7ei")
 @onready var music = $music
 @onready var intermission = $intermission
 @onready var radio_handler =  $radioHandler
@@ -77,7 +77,7 @@ func restart_intermission() -> void:
 
 func _on_intermission_timeout() -> void:
 	if _pause_mode == game_data.PAUSE_MODES.NONE:
-		music_queue.append("res://Sound/Music/ambience.tres")
+		music_queue.append("res://sound/music/ambience.tres")
 	restart_intermission()
 	pass
 

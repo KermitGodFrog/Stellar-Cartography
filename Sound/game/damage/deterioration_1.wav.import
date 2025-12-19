@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://eeghttpktfk1"
-path="res://.godot/imported/deterioration_1.wav-ec27d8d362d73b87abff47afebabae7a.sample"
+path="res://.godot/imported/deterioration_1.wav-c3bc4095718878362b2bfb0fd3b80afa.sample"
 
 [deps]
 
-source_file="res://sound/system-map/damage/deterioration_1.wav"
-dest_files=["res://.godot/imported/deterioration_1.wav-ec27d8d362d73b87abff47afebabae7a.sample"]
+source_file="res://sound/game/damage/deterioration_1.wav"
+dest_files=["res://.godot/imported/deterioration_1.wav-c3bc4095718878362b2bfb0fd3b80afa.sample"]
 
 [params]
 

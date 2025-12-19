@@ -1,6 +1,6 @@
 extends Label
 
-@onready var curve = preload("res://Scenes/System Map/view_objectives_label_fade_out.tres") #consider this to be necessary as it has quite a weird curve that i am uncertain i can replicate in code
+@onready var curve = preload("uid://lk2jrbgdrxym") #consider this to be necessary as it has quite a weird curve that i am uncertain i can replicate in code
 
 var countdown_overlay_shown: bool = false
 

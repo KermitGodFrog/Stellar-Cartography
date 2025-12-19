@@ -19,16 +19,16 @@ offset = Vector3(-51328.9, 0, 0)
 fractal_type = 2
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mbhjw"]
-invert = true
 noise = SubResource("FastNoiseLite_btx65")
+invert = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ibrli"]
 render_priority = 0
 shader = ExtResource("1_hg32g")
-shader_parameter/color = Color(0.501961, 0, 0.501961, 1)
 shader_parameter/noise = SubResource("NoiseTexture2D_mbhjw")
 shader_parameter/normal_map = SubResource("NoiseTexture2D_mbhjw")
 shader_parameter/stars = ExtResource("4_jtuyj")
+shader_parameter/color = Color(0.501961, 0, 0.501961, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_mdcva"]
 material = SubResource("ShaderMaterial_ibrli")

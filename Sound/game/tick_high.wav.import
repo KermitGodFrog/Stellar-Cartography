@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://bmx8m5qyt3ogy"
-path="res://.godot/imported/tick_high.wav-258b9dab7b0f172eecd750f53d53571f.sample"
+path="res://.godot/imported/tick_high.wav-c5a4a0da2e8352671845e65a38bb96ac.sample"
 
 [deps]
 
-source_file="res://sound/system-map/tick_high.wav"
-dest_files=["res://.godot/imported/tick_high.wav-258b9dab7b0f172eecd750f53d53571f.sample"]
+source_file="res://sound/game/tick_high.wav"
+dest_files=["res://.godot/imported/tick_high.wav-c5a4a0da2e8352671845e65a38bb96ac.sample"]
 
 [params]
 

@@ -34,12 +34,12 @@ func _ready() -> void:
 	pass
 
 func start_construct_banks() -> void: #called by game.gd when the game is NEW
-	var objective_paths = global_data.get_all_files("res://Data/objective-management/objectives", "tres")
+	var objective_paths = global_data.get_all_files("res://data/objective-control/objectives", "tres")
 	for path: String in objective_paths:
 		var wID = path.get_file().trim_suffix(".tres")
 		var objective: objectiveAPI = load(path)
 		bank_objectives[wID] = [objective.title, objective.description]
-	var category_paths = global_data.get_all_files("res://Data/objective-management/categories", "tres")
+	var category_paths = global_data.get_all_files("res://data/objective-control/categories", "tres")
 	for path: String in category_paths:
 		var wID = path.get_file().trim_suffix(".tres")
 		var category: categoryAPI = load(path)

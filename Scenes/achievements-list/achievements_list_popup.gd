@@ -2,9 +2,9 @@ extends Control
 
 signal returnButtonPressed
 
-@onready var achievement_item = preload("res://Scenes/Achievements List/achievement_item.tscn")
-@onready var item_locked_stylebox = preload("res://Scenes/Achievements List/item_locked_stylebox.tres")
-@onready var item_unlocked_stylebox = preload("res://Scenes/Achievements List/item_unlocked_stylebox.tres")
+@onready var achievement_item = preload("uid://b34lxvbuquaso")
+@onready var item_locked_stylebox = preload("uid://cnaci0fj8gv3d")
+@onready var item_unlocked_stylebox = preload("uid://hami5xfvw4k0")
 
 @onready var spawn_scroll = $panel/margin/actions_items_split/scroll/spawn_scroll
 

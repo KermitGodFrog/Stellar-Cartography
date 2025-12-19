@@ -78,18 +78,18 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var help_overlay = $camera/canvas/help_overlay
 @onready var tabs = $camera/canvas/control/tabs_and_ca_scroll/tabs
 
-@onready var LIDAR_ping = preload("res://Sound/SFX/LIDAR_ping.tres")
-@onready var LIDAR_bounceback = preload("res://Sound/SFX/LIDAR_bounceback.tres")
-@onready var LIDAR_discovery = preload("res://Sound/SFX/LIDAR_discovery.tres")
-@onready var LIDAR_anomaly_discovery = preload("res://Sound/SFX/LIDAR_anomaly_discovery.tres")
-@onready var boost_start = preload("res://Sound/SFX/boost_start.wav")
-@onready var boost_end = preload("res://Sound/SFX/boost_end.wav")
+@onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
+@onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
+@onready var LIDAR_discovery = preload("uid://dmdwnnnq2d2xo")
+@onready var LIDAR_anomaly_discovery = preload("uid://qnadsccxvg5q")
+@onready var boost_start = preload("uid://ddkrd6hh2pqhq")
+@onready var boost_end = preload("uid://ir1h2au76ia5")
 enum BOOST_SOUND_TYPES {START, END}
 
-@onready var entity_texture = preload("res://Graphics/entity_32x.png")
-@onready var question_mark_frame = preload("res://Graphics/question_mark_frame.png")
-@onready var question_mark_texture = preload("res://Graphics/question_mark.png")
-@onready var empty_frame = preload("res://Graphics/empty_frame.png")
+@onready var entity_texture = preload("uid://bdxkekgntbyc5")
+@onready var question_mark_frame = preload("uid://gmtqybky5mo")
+@onready var question_mark_texture = preload("uid://diwsd0k5wno8h")
+@onready var empty_frame = preload("uid://id0yg3qh1o32")
 
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body_modifier : bodyAPI #used for drawing scope direction imdicator accurately and nothinh eklse
@@ -334,7 +334,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 			match body.get_type():
 				starSystemAPI.BODY_TYPES.STAR:
 					#item.set_text(0, "%s - %s Class Star" % [body.get_display_name(), body.metadata.get("star_type")])
-					item.set_icon(0, load("res://Graphics/new-system-list/star_frame.png"))
+					item.set_icon(0, load("uid://d0r4v5pr3cutt"))
 					item.set_tooltip_text(0, "%s - %s Class Star" % [item.get_text(0), body.metadata.get("star_type")])
 					
 					if body == follow_body:
@@ -353,14 +353,14 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 						item.set_icon(0, question_mark_frame)
 						oscillate_item_icon_color(item, Color.GREEN)
 					elif (body.metadata.get("missing_GL", false) == true) and (player_gas_layer_surveyor_unlocked == true):
-						item.set_icon(0, load("res://Graphics/gas_layer_surveyor_frame.png"))
+						item.set_icon(0, load("uid://dmutb3ak7n4l2"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					elif (body.metadata.get("missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
-						item.set_icon(0, load("res://Graphics/audio_visualizer_frame.png"))
+						item.set_icon(0, load("uid://pbgoomdkkj6h"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					
 				starSystemAPI.BODY_TYPES.WORMHOLE:
-					item.set_icon(0, load("res://Graphics/new-system-list/wormhole_frame.png"))
+					item.set_icon(0, load("uid://k50rbp6ri57u"))
 					
 					match body.is_disabled(): #is_disabled() will be a function in new wormholeAPI
 						true:
@@ -379,7 +379,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 								item.set_custom_bg_color(0, Color.WEB_PURPLE)
 					
 				starSystemAPI.BODY_TYPES.STATION:
-					item.set_icon(0, load("res://Graphics/station_frame.png"))
+					item.set_icon(0, load("uid://csrl0hs7rc0hn"))
 					
 				starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
 					if body.metadata.get("space_anomaly_available", true) == true:
@@ -391,7 +391,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					item.set_icon(0, get_entity_frame(body.entity_classification))
 					
 				starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
-					item.set_icon(0, load("res://Graphics/rendezvous_point_frame.png"))
+					item.set_icon(0, load("uid://hdeudc7u2rsm"))
 					
 				starSystemAPI.BODY_TYPES.CUSTOM:
 					var icon: Object
@@ -722,7 +722,7 @@ func async_add_ping(body: bodyAPI) -> void:
 		if not body.theorised:
 			emit_signal("theorisedBody", body.get_identifier())
 		body.theorised = true #so it says '???' on the overview
-	var pings = ["res://Data/Ping Display Helpers/normal.tres"]
+	var pings = ["res://data/system-map/ping-display-helpers/normal.tres"]
 	var ping = load(pings.pick_random()).duplicate(true)
 	ping.position = body.position
 	ping.resetTime()
@@ -751,25 +751,25 @@ func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int
 
 func get_entity_frame(classification: game_data.ENTITY_CLASSIFICATIONS) -> Resource:
 	match classification:
-		game_data.ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: return load("res://Graphics/space_whale_pod_frame.png")
-		game_data.ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: return load("res://Graphics/lagrange_cloud_frame.png")
+		game_data.ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: return load("uid://cd2n33fiot3dr")
+		game_data.ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: return load("uid://585th5rg5vak")
 		
-		_: return load("res://Graphics/empty_frame.png")
+		_: return load("uid://id0yg3qh1o32")
 
 func get_planet_frame(classification: String) -> Resource:
 	match classification:
 		"Terran":
-			return load("res://Graphics/new-system-list/terran_planet_frame.png")
+			return load("uid://u5b3uh7kbj25")
 		"Neptunian":
-			return load("res://Graphics/new-system-list/neptunian_planet_frame.png")
+			return load("uid://ddxxk0gbwi37a")
 		"Jovian":
-			return load("res://Graphics/new-system-list/jovian_planet_frame.png")
+			return load("uid://dt4ghhmgofelr")
 	return null
 
 func _on_found_body(id: int):
 	var body = system.get_body_from_identifier(id)
 	var body_pos = body.position
-	var ping = load("res://Data/Ping Display Helpers/discovery.tres").duplicate(true)
+	var ping = load("uid://d3ntmvsq6pv83").duplicate(true)
 	ping.position = body_pos
 	ping.resetTime()
 	SONAR_PINGS.append(ping)
@@ -783,7 +783,7 @@ func _on_found_body(id: int):
 	
 	if body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
 		if body.is_habitable():
-			get_tree().call_group("audioHandler", "plot_radio", load("res://Data/radio-helpers/discover_habitable_planet.tres"))
+			get_tree().call_group("audioHandler", "plot_radio", load("uid://crkhwlwd0qqkh"))
 	pass
 
 func _on_picker_button_item_selected(index):

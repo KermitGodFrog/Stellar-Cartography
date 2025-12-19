@@ -1,8 +1,8 @@
 extends Node
 
-const game_path = "res://Scenes/Game/game.tscn" #not used to load the game, thankfully, just to set whether tips should be shown!
-const main_menu_path = "res://Scenes/Main Menu/main_menu.tscn"
-const loading_screen_path = "res://Scenes/Loading Screen/loading_screen.tscn"
+const game_path = "res://scenes/game/game.tscn" #not used to load the game, thankfully, just to set whether tips should be shown!
+const main_menu_path = "res://scenes/main-menu/main_menu.tscn"
+const loading_screen_path = "res://scenes/loading-screen/loading_screen.tscn"
 const exclude = ["achievementManager"]
 
 var _current_path_to_scene: String = ""
