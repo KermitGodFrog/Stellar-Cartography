@@ -4,9 +4,7 @@
 
 [resource]
 script = ExtResource("1_onact")
-written_identifier = ""
-current_state = 0
 title = "Repair Outside Port"
 description = "- Hover over Hull Stress on the STATUS PANEL to view its tooltip, which illustrates the cost of repair.
 - Click on Hull Stress on the STATUS PANEL to remove one percent of hull stress for nanites if the prerequisite number of nanites are available.
-[img=160%x100%]res://Graphics/objective-management/module_tutorial_nc_cost_example.png[/img]"
+[img=160%x100%]res://graphics/objective/module_tutorial_nc_cost_example.png[/img]"

@@ -4,9 +4,7 @@
 
 [resource]
 script = ExtResource("1_vf8fj")
-written_identifier = ""
-current_state = 0
 title = "Go-to Prelude"
 description = "The question mark adjacent to Prelude on the SYSTEM LIST symbolises an undocumented anomaly - which can result in rewards or tragedy. Investigating an anomaly requires interacting with it.
 Click on Prelude on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. Wormholes, space stations, planetary anomalies, and other phenomena are all interacted with through the 'GO-TO' action. 
-[img]res://Graphics/go_to_icon.png[/img]"
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"

@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="starSystemAPI" load_steps=11 format=3 uid="uid://bpnb60fo3ghca"]
 
-[ext_resource type="Script" uid="uid://cbd8771ytigfk" path="res://data/game/BodyAPIs/bodyAPI.gd" id="1_5t5jn"]
-[ext_resource type="Script" uid="uid://b6paa488wsman" path="res://data/game/BodyAPIs/circularBodyAPI.gd" id="2_uifhc"]
-[ext_resource type="Script" uid="uid://dh0dm26gfudjg" path="res://data/game/BodyAPIs/planetBodyAPI.gd" id="3_tlaew"]
+[ext_resource type="Script" uid="uid://cbd8771ytigfk" path="res://data/game/bodyAPIs/bodyAPI.gd" id="1_5t5jn"]
+[ext_resource type="Script" uid="uid://b6paa488wsman" path="res://data/game/bodyAPIs/circularBodyAPI.gd" id="2_uifhc"]
+[ext_resource type="Script" uid="uid://dh0dm26gfudjg" path="res://data/game/bodyAPIs/planetBodyAPI.gd" id="3_tlaew"]
 [ext_resource type="Script" uid="uid://whlsn7syw5s7" path="res://data/game/starSystemAPI.gd" id="4_762sj"]
-[ext_resource type="Script" uid="uid://cucnh63c8ohpe" path="res://data/game/BodyAPIs/wormholeBodyAPI.gd" id="5_umr8a"]
+[ext_resource type="Script" uid="uid://cucnh63c8ohpe" path="res://data/game/bodyAPIs/wormholeBodyAPI.gd" id="5_umr8a"]
 [ext_resource type="Resource" uid="uid://bhqtlq0blu17n" path="res://data/tutorial_suno.tres" id="6_brypj"]
 
 [sub_resource type="Resource" id="Resource_ne0u5"]

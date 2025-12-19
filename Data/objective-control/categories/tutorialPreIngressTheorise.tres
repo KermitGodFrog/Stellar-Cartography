@@ -4,5 +4,4 @@
 
 [resource]
 script = ExtResource("1_gk58n")
-written_identifier = ""
 objective_wIDs = ["tutorialOptionalManualControl", "tutorialMarkIngress"]

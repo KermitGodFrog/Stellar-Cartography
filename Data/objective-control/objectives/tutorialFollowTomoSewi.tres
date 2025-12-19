@@ -4,9 +4,7 @@
 
 [resource]
 script = ExtResource("1_gh6uo")
-written_identifier = ""
-current_state = 0
 title = "Go-to Tomo Sewi Locus"
 description = "Your starship is damaged after repeated wormhole traversals and now requires repairs at Tomo Sewi Locus - a space station. This requires interacting with it.
 Click on Tomo Sewi Locus on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. 
-[img]res://Graphics/go_to_icon.png[/img]"
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"

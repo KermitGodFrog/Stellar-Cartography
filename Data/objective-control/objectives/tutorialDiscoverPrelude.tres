@@ -4,9 +4,7 @@
 
 [resource]
 script = ExtResource("1_im1q5")
-written_identifier = ""
-current_state = 0
 title = "Discover Prelude"
 description = "The location of Prelude has been added to the SYSTEM LIST. However, it has not yet been discovered.
 Discover a body by visually acquiring it. Click on the the triple question mark on the SYSTEM LIST to lock, and then press the 'ORBIT' action in the ACTIONS PANEL.
-[img]res://Graphics/orbit_icon.png[/img]"
+[img]res://graphics/system-map/actions-panel/orbit_icon.png[/img]"

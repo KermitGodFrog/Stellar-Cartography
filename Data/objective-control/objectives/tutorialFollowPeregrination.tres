@@ -4,9 +4,7 @@
 
 [resource]
 script = ExtResource("1_6iuab")
-written_identifier = ""
-current_state = 0
 title = "Go-to & Enter Peregrination"
 description = "You have been instructed to travel to New Eden. The first wormhole you must traverse on your journey is Peregrination. This requires interacting with it.
 Click on Peregrination on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. 
-[img]res://Graphics/go_to_icon.png[/img]"
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
