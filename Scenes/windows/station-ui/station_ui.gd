@@ -143,7 +143,7 @@ func _on_add_player_value(amount: int):
 
 
 func _on_station_window_close_requested():
-	get_tree().call_group("audioHandler", "plot_radio", load("res://Data/radio-helpers/station_undock.tres"))
+	get_tree().call_group("audioHandler", "plot_radio", load("uid://bx2vg1aj6oo03"))
 	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	pass
 

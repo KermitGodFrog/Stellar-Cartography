@@ -99,11 +99,11 @@ func finish_minigame(result: bool) -> void:
 		true:
 			emit_signal("addPlayerHullStress", hull_stress_wormhole)
 			get_tree().call_group("audioHandler", "play_once", success_sound, -6, "SFX")
-			get_tree().call_group("audioHandler", "plot_radio", load("res://Data/radio-helpers/wormhole_minigame_success.tres"))
+			get_tree().call_group("audioHandler", "plot_radio", load("uid://d4dv8lmqyeb0b"))
 		false:
 			emit_signal("addPlayerHullStress", hull_stress_wormhole * 2)
 			get_tree().call_group("audioHandler", "play_once", failure_sound, -6, "SFX")
-			get_tree().call_group("audioHandler", "plot_radio", load("res://Data/radio-helpers/wormhole_minigame_failure.tres"))
+			get_tree().call_group("audioHandler", "plot_radio", load("uid://bw3fyxwdtfqyi"))
 	
 	emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	pass
