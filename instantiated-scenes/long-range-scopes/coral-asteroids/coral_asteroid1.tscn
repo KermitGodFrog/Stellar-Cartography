@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://ds142pkckx34w"]
+
+[ext_resource type="PackedScene" uid="uid://b2te3sqitlwmk" path="res://meshes/long-range-scopes/coral-asteroids/coral_asteroid1.glb" id="1_83r7v"]
+[ext_resource type="Script" uid="uid://b7oslqy7gucmv" path="res://instantiated-scenes/long-range-scopes/long_range_scopes_prop.gd" id="2_dtb1p"]
+
+[sub_resource type="Curve" id="Curve_lg6un"]
+max_value = 1000.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 1000), 0.0, 0.0, 0, 0, Vector2(0.5, 200), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_m1a3l"]
+max_value = 1000.0
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.498856, 1000), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="coral_asteroid1" groups=["coral_asteroid", "long_range_scopes_prop"] instance=ExtResource("1_83r7v")]
+script = ExtResource("2_dtb1p")
+size_reward_curve = SubResource("Curve_lg6un")
+distance_reward_curve = SubResource("Curve_m1a3l")
+bounds = NodePath("bounds")
+
+[node name="bounds" type="Node3D" parent="." index="5"]
+
+[node name="1" type="Marker3D" parent="bounds" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.82, 0, 0)
+
+[node name="2" type="Marker3D" parent="bounds" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.94, 0)
+
+[node name="3" type="Marker3D" parent="bounds" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.96, 0)
+
+[node name="4" type="Marker3D" parent="bounds" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.76, 0, 0)

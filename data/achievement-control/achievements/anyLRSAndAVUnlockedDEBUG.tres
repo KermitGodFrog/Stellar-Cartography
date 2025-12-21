@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://klcxvbhr5ao8"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_gcjee"]
+
+[resource]
+script = ExtResource("1_gcjee")
+name = "BOTH AT THE SAME TIME"
+description = "AGAIN! WOW! I LOVE BUGFIXING!"
+dialogue_criteria = {
+"player_AUDIO_VISUALIZER_unlocked": true,
+"player_LONG_RANGE_SCOPES_unlocked": true
+}
+index = 0

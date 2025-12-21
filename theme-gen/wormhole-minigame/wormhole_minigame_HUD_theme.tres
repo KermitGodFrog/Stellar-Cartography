@@ -1,0 +1,95 @@
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://du8q1tlwo1jt1"]
+
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="1_7m4qy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r3gxb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hfy7c"]
+bg_color = Color(0, 0, 0, 0.494118)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0.835294, 0, 1)
+shadow_color = Color(0, 0.313726, 0, 0.313726)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7qkor"]
+bg_color = Color(0, 0, 0, 0.494118)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0.835294, 0, 1)
+shadow_color = Color(1, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aenv6"]
+bg_color = Color(0, 0, 0, 0.494118)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.823529, 1, 0.823529, 1)
+shadow_color = Color(1, 0, 0, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3xf4m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rliiv"]
+bg_color = Color(0, 0, 0, 0.494118)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.835294, 0, 0, 1)
+shadow_color = Color(0.313726, 0, 0, 0.313726)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nteb7"]
+bg_color = Color(0, 0, 0, 0.494118)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.835294, 0, 0, 1)
+shadow_color = Color(1, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmfto"]
+bg_color = Color(0, 0, 0, 0.494118)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.823529, 0.823529, 1)
+shadow_color = Color(1, 0, 0, 0)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_256lr"]
+color = Color(0, 0, 0, 0.164706)
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 10
+vertical = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gs72h"]
+bg_color = Color(0, 0, 0, 0)
+draw_center = false
+border_width_top = 1
+
+[resource]
+default_font = ExtResource("1_7m4qy")
+default_font_size = 16
+BrakeGreen/base_type = &"Button"
+BrakeGreen/colors/font_outline_color = Color(0, 0, 0, 1)
+BrakeGreen/constants/outline_size = 10
+BrakeGreen/styles/focus = SubResource("StyleBoxEmpty_r3gxb")
+BrakeGreen/styles/hover = SubResource("StyleBoxFlat_hfy7c")
+BrakeGreen/styles/normal = SubResource("StyleBoxFlat_7qkor")
+BrakeGreen/styles/pressed = SubResource("StyleBoxFlat_aenv6")
+BrakeRed/base_type = &"Button"
+BrakeRed/colors/font_outline_color = Color(0, 0, 0, 1)
+BrakeRed/constants/outline_size = 5
+BrakeRed/styles/focus = SubResource("StyleBoxEmpty_3xf4m")
+BrakeRed/styles/hover = SubResource("StyleBoxFlat_rliiv")
+BrakeRed/styles/normal = SubResource("StyleBoxFlat_nteb7")
+BrakeRed/styles/pressed = SubResource("StyleBoxFlat_xmfto")
+ProgressBar/styles/background = SubResource("StyleBoxLine_256lr")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_gs72h")

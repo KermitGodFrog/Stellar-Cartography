@@ -1,0 +1,66 @@
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://br33hy3pgvm14"]
+
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="1_itdfk"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="2_finwo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8tini"]
+bg_color = Color(0, 0, 0, 1)
+skew = Vector2(-0.15, 0)
+border_color = Color(0.0862745, 0.109804, 0.2, 1)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+expand_margin_top = 1.0
+expand_margin_right = 15.0
+expand_margin_bottom = 1.0
+shadow_size = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gvbf4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3bll3"]
+bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
+skew = Vector2(-0.15, 0)
+border_width_left = 3
+border_color = Color(0.25098, 0.301961, 0.486275, 1)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 1.0
+expand_margin_right = 15.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wkppo"]
+bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
+skew = Vector2(-0.15, 0)
+border_width_left = 3
+border_color = Color(0.0862745, 0.109804, 0.2, 1)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+expand_margin_top = 1.0
+expand_margin_right = 15.0
+expand_margin_bottom = 1.0
+shadow_size = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_27jxc"]
+bg_color = Color(0.501961, 0.560784, 0.764706, 1)
+skew = Vector2(-0.15, 0)
+border_width_left = 3
+border_color = Color(0.643137, 0.698039, 0.858824, 1)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+expand_margin_top = 1.0
+expand_margin_right = 15.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rungm"]
+bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
+
+[resource]
+default_font = ExtResource("2_finwo")
+default_font_size = 16
+Button/fonts/font = ExtResource("1_itdfk")
+Button/styles/disabled = SubResource("StyleBoxFlat_8tini")
+Button/styles/focus = SubResource("StyleBoxEmpty_gvbf4")
+Button/styles/hover = SubResource("StyleBoxFlat_3bll3")
+Button/styles/normal = SubResource("StyleBoxFlat_wkppo")
+Button/styles/pressed = SubResource("StyleBoxFlat_27jxc")
+Panel/styles/panel = SubResource("StyleBoxFlat_rungm")

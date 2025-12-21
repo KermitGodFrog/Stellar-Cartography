@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbaykf0eovygh"]
+
+[ext_resource type="Script" uid="uid://dca27u2pc22bm" path="res://scenes/options-menu/keybind_option.gd" id="2_yykas"]
+
+[node name="keybind_option" type="Button"]
+toggle_mode = true
+clip_text = true
+script = ExtResource("2_yykas")
