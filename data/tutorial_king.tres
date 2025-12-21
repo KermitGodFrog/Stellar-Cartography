@@ -1,0 +1,85 @@
+[gd_resource type="Resource" script_class="starSystemAPI" load_steps=11 format=3 uid="uid://bpnb60fo3ghca"]
+
+[ext_resource type="Script" uid="uid://cbd8771ytigfk" path="res://data/game/bodyAPIs/bodyAPI.gd" id="1_5t5jn"]
+[ext_resource type="Script" uid="uid://b6paa488wsman" path="res://data/game/bodyAPIs/circularBodyAPI.gd" id="2_uifhc"]
+[ext_resource type="Script" uid="uid://dh0dm26gfudjg" path="res://data/game/bodyAPIs/planetBodyAPI.gd" id="3_tlaew"]
+[ext_resource type="Script" uid="uid://whlsn7syw5s7" path="res://data/game/starSystemAPI.gd" id="4_762sj"]
+[ext_resource type="Script" uid="uid://cucnh63c8ohpe" path="res://data/game/bodyAPIs/wormholeBodyAPI.gd" id="5_umr8a"]
+[ext_resource type="Resource" uid="uid://bhqtlq0blu17n" path="res://data/tutorial_suno.tres" id="6_brypj"]
+
+[sub_resource type="Resource" id="Resource_ne0u5"]
+script = ExtResource("2_uifhc")
+mass = 0.272
+surface_color = Color(1, 0, 0, 1)
+identifier = 1
+display_name = "King"
+metadata = {
+"discovery_multiplier": 1.0,
+"iterations": 25,
+"luminosity": 0.017,
+"star_type": "M"
+}
+radius = 0.431
+known = true
+
+[sub_resource type="Resource" id="Resource_pkjv2"]
+script = ExtResource("3_tlaew")
+current_variation = 0
+surface_color = Color(0.663, 0.663, 0.663, 1)
+current_type = 1
+identifier = 2
+display_name = "Prelude"
+hook_identifier = 1
+metadata = {
+"iterations": 12,
+"planet_classification": "Terran",
+"planet_type": "Iron",
+"planetary_anomaly": true,
+"planetary_anomaly_available": true,
+"seed": 0,
+"value": 514
+}
+orbit_distance = 20.322
+orbit_angle_change = 0.008
+radius = 0.008
+
+[sub_resource type="Resource" id="Resource_lw4hu"]
+script = ExtResource("3_tlaew")
+current_variation = 1
+mass = 0.026
+surface_color = Color(0, 0, 0.545, 1)
+current_type = 1
+identifier = 3
+display_name = "Omission"
+hook_identifier = 1
+metadata = {
+"iterations": 12,
+"planet_classification": "Neptunian",
+"planet_type": "Ice Dwarf",
+"seed": 0,
+"value": 3029
+}
+orbit_distance = 132.267
+orbit_angle_change = 0.005
+radius = 0.132
+rotation = 4.705
+
+[sub_resource type="Resource" id="Resource_wvc64"]
+script = ExtResource("5_umr8a")
+destination_system = ExtResource("6_brypj")
+surface_color = Color(0.502, 0, 0.502, 1)
+current_type = 3
+identifier = 4
+display_name = "Ingress"
+hook_identifier = 1
+metadata = {
+"destination_star_type": "M"
+}
+orbit_distance = 64.582
+orbit_angle_change = 0.012
+radius = 0.005
+
+[resource]
+script = ExtResource("4_762sj")
+display_name = "tutorial_king"
+bodies = Array[ExtResource("1_5t5jn")]([SubResource("Resource_ne0u5"), SubResource("Resource_pkjv2"), SubResource("Resource_lw4hu"), SubResource("Resource_wvc64")])

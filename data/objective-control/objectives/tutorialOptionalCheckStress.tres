@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://cuspy0m2msa3q"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_tiu0v"]
+
+[resource]
+script = ExtResource("1_tiu0v")
+title = "(Optional) Check Hull Stress"
+description = "Check your 'HULL STRESS' status in the STATUS PANEL. View the tooltip for entries in the STATUS PANEL by hovering over them. 'HULL STRESS' increases as a result of wormhole traversal, system hazards and certain anomalies. Note that gaining 100% 'HULL DETERIORATION' makes you lose a run.
+[img=70%x90%]res://graphics/objective/tutorial_hull_stress_example.png[/img]"

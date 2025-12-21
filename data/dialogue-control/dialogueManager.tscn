@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckd75fjfh7urh"]
+
+[ext_resource type="Script" uid="uid://y2qb85cn7l" path="res://data/dialogue-control/dialogueManager.gd" id="1_5bsxl"]
+[ext_resource type="PackedScene" uid="uid://dcr1601bgfbjt" path="res://scenes/dialogue/dialogue_control.tscn" id="2_x0pe0"]
+
+[node name="dialogueManager" type="Node" groups=["FOLLOW_ACHIEVEMENTS_ARRAY_UPDATE", "dialogueManager"]]
+process_mode = 3
+script = ExtResource("1_5bsxl")
+
+[node name="dialogue" type="CanvasLayer" parent="."]
+
+[node name="dialogue_control" parent="dialogue" instance=ExtResource("2_x0pe0")]

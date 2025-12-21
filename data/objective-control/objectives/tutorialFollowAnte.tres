@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://btetjaosjk6vm"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_oyamk"]
+
+[resource]
+script = ExtResource("1_oyamk")
+title = "Go-to Ante"
+description = "A communiqué has instructed you to travel to Ante for briefing. This requires interacting with it.
+Click on Ante on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. 
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="characterAPI" load_steps=2 format=3 uid="uid://btatr08y80g7t"]
+
+[ext_resource type="Script" uid="uid://bx7gcyl258f6u" path="res://data/game/characterAPI.gd" id="1_0ny7n"]
+
+[resource]
+script = ExtResource("1_0ny7n")
+display_name = "Febris"
+alive = true
+standing = 50
+current_gender = 1
+current_occupation = 3

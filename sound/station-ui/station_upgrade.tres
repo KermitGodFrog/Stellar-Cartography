@@ -1,0 +1,15 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=6 format=3 uid="uid://crt73kp6x2bbe"]
+
+[ext_resource type="AudioStream" uid="uid://tcnj3f18hj00" path="res://sound/station-ui/upgrade_1.wav" id="1_lww8l"]
+[ext_resource type="AudioStream" uid="uid://bix0666n18m6i" path="res://sound/station-ui/upgrade_2.wav" id="2_18kwq"]
+[ext_resource type="AudioStream" uid="uid://bbqoy4d7ul5lk" path="res://sound/station-ui/upgrade_3.wav" id="3_advnp"]
+[ext_resource type="AudioStream" uid="uid://b8563rug4pjqc" path="res://sound/station-ui/upgrade_4.wav" id="4_pa8ue"]
+[ext_resource type="AudioStream" uid="uid://dg3n664752m2x" path="res://sound/station-ui/upgrade_5.wav" id="5_6evdr"]
+
+[resource]
+streams_count = 5
+stream_0/stream = ExtResource("1_lww8l")
+stream_1/stream = ExtResource("2_18kwq")
+stream_2/stream = ExtResource("3_advnp")
+stream_3/stream = ExtResource("4_pa8ue")
+stream_4/stream = ExtResource("5_6evdr")

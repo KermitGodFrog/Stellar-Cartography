@@ -1,0 +1,9 @@
+Gate
+Gateway
+Rift
+Portal
+Crossroads
+Bridge
+Tunnel
+Conduit
+Leyline

@@ -1,0 +1,163 @@
+[gd_scene load_steps=10 format=3 uid="uid://by20kgac6fdvh"]
+
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="1_bo87y"]
+[ext_resource type="Script" uid="uid://bpuuoow6j0sx7" path="res://scenes/loading-screen/loading_screen.gd" id="1_wfufl"]
+[ext_resource type="Texture2D" uid="uid://dxs2m82n7o616" path="res://graphics/loading-screen/exclamation_mark.png" id="3_g4eko"]
+[ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="4_2gomw"]
+[ext_resource type="Script" uid="uid://h41e6vesfp4j" path="res://scenes/loading-screen/tip_text.gd" id="5_1jxr4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jiv0v"]
+bg_color = Color(0.207843, 0.207843, 0.207843, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_euhfb"]
+bg_color = Color(0.156863, 0.294118, 0.388235, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_n0mtv"]
+color = Color(0.207843, 0.207843, 0.207843, 1)
+grow_begin = 30.0
+grow_end = 30.0
+thickness = 10
+vertical = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3jodk"]
+bg_color = Color(0.207843, 0.207843, 0.207843, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[node name="loading_screen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wfufl")
+
+[node name="loading_background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+
+[node name="progress_fill" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_jiv0v")
+max_value = 50.0
+show_percentage = false
+
+[node name="loading_label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.5
+offset_top = -21.5
+offset_right = 66.5
+offset_bottom = 21.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_bo87y")
+theme_override_font_sizes/font_size = 32
+text = "LOADING"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="tip_control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -300.0
+offset_right = 20.0
+offset_bottom = -260.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="tip_hbox" type="HBoxContainer" parent="tip_control"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="mark_center" type="CenterContainer" parent="tip_control/tip_hbox"]
+layout_mode = 2
+
+[node name="mark_backdrop" type="Panel" parent="tip_control/tip_hbox/mark_center"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_euhfb")
+
+[node name="mark_texture" type="TextureRect" parent="tip_control/tip_hbox/mark_center"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("3_g4eko")
+
+[node name="separator" type="VSeparator" parent="tip_control/tip_hbox"]
+layout_mode = 2
+theme_override_constants/separation = 50
+theme_override_styles/separator = SubResource("StyleBoxLine_n0mtv")
+
+[node name="tip_text" type="Label" parent="tip_control/tip_hbox"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_2gomw")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_3jodk")
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("5_1jxr4")
+
+[node name="continue_label" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -111.5
+offset_top = -125.0
+offset_right = 111.5
+offset_bottom = -102.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_bo87y")
+theme_override_font_sizes/font_size = 16
+text = "PRESS [SPACE] TO CONTINUE"
+horizontal_alignment = 1
+vertical_alignment = 1

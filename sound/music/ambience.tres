@@ -1,0 +1,19 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=8 format=3 uid="uid://vjo3btfmm2me"]
+
+[ext_resource type="AudioStream" uid="uid://v4nc0u5uqltk" path="res://sound/music/ambience1.wav" id="1_631pv"]
+[ext_resource type="AudioStream" uid="uid://cku4d8tw2cajp" path="res://sound/music/ambience2.wav" id="2_t18nu"]
+[ext_resource type="AudioStream" uid="uid://cu5vu17sts25g" path="res://sound/music/ambience3.wav" id="3_j2mf1"]
+[ext_resource type="AudioStream" uid="uid://oenxmfqy2kac" path="res://sound/music/ambience4.wav" id="4_jnf0v"]
+[ext_resource type="AudioStream" uid="uid://cl2t8klaj22iy" path="res://sound/music/ambience5.wav" id="5_ebogx"]
+[ext_resource type="AudioStream" uid="uid://bmb6iip6wr554" path="res://sound/music/ambience6.wav" id="6_l8enn"]
+[ext_resource type="AudioStream" uid="uid://bjutgp72kdlrv" path="res://sound/music/ambience7.wav" id="7_vsb7a"]
+
+[resource]
+streams_count = 7
+stream_0/stream = ExtResource("1_631pv")
+stream_1/stream = ExtResource("2_t18nu")
+stream_2/stream = ExtResource("3_j2mf1")
+stream_3/stream = ExtResource("4_jnf0v")
+stream_4/stream = ExtResource("5_ebogx")
+stream_5/stream = ExtResource("6_l8enn")
+stream_6/stream = ExtResource("7_vsb7a")

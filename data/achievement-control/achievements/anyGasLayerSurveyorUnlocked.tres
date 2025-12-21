@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://dtkpc2w8p3rlp"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_8c4h0"]
+
+[resource]
+script = ExtResource("1_8c4h0")
+name = "Pressure Sealed"
+description = "Unlock the special Gas Layer Surveyor module during a run."
+dialogue_criteria = {
+"player_GAS_LAYER_SURVEYOR_unlocked": true
+}
+index = 9

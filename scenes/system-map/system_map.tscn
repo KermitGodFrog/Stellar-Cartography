@@ -1,0 +1,817 @@
+[gd_scene load_steps=53 format=3 uid="uid://bhroagne3v4wq"]
+
+[ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
+[ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
+[ext_resource type="Texture2D" uid="uid://bcjaew4hxmqfk" path="res://graphics/system-map/map_overlay.png" id="3_bft1b"]
+[ext_resource type="Theme" uid="uid://dm3fbhtw7qov2" path="res://theme-gen/system-map/system_map_HUD_theme.tres" id="3_djc4s"]
+[ext_resource type="Script" uid="uid://tpkr3y6kcw1f" path="res://scenes/system-map/map-overlay/map_overlay.gd" id="4_cfo3w"]
+[ext_resource type="Texture2D" uid="uid://dn8ug1anbuwpu" path="res://graphics/system-map/actions-panel/orbit_icon.png" id="5_hp0se"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="5_yv8xl"]
+[ext_resource type="Script" uid="uid://cweohjqx4grdp" path="res://scenes/system-map/countdown_overlay.gd" id="6_1p25s"]
+[ext_resource type="Theme" uid="uid://br33hy3pgvm14" path="res://theme-gen/system-map/system_map_APPS_theme.tres" id="8_a7cgy"]
+[ext_resource type="Script" uid="uid://dpq46h1aev2dr" path="res://scenes/system-map/actions-panel/action_button.gd" id="8_ne0ka"]
+[ext_resource type="Script" uid="uid://bn0iwpsggh1w3" path="res://scenes/system-map/console.gd" id="8_oaj06"]
+[ext_resource type="PackedScene" uid="uid://oqkfuasvgtj6" path="res://scenes/gizmos/barycenter-visualizer/barycenter_visualizer.tscn" id="9_2aiel"]
+[ext_resource type="Script" uid="uid://dwgyfacssxw2y" path="res://scenes/system-map/apps-dock/ui_apps_scroll.gd" id="9_pw1kh"]
+[ext_resource type="PackedScene" uid="uid://chwm82adl21cm" path="res://scenes/gizmos/sonar-interface/sonar_interface.tscn" id="10_48t0n"]
+[ext_resource type="Texture2D" uid="uid://4r5ju0dq0137" path="res://graphics/system-map/status-panel/nanites_icon.png" id="10_e6b7x"]
+[ext_resource type="Texture2D" uid="uid://7klr1mcpbsc4" path="res://graphics/system-map/actions-panel/go_to_icon.png" id="10_xhqpl"]
+[ext_resource type="Script" uid="uid://oifivdox788" path="res://scenes/system-map/status-panel/status_scroll.gd" id="10_ydc85"]
+[ext_resource type="Script" uid="uid://dskivfpkly04v" path="res://scenes/system-map/status-panel/status_button.gd" id="11_1rwmm"]
+[ext_resource type="Texture2D" uid="uid://dq25m1n2y5upl" path="res://graphics/system-map/status-panel/hull_stress_icon.png" id="11_1tiv0"]
+[ext_resource type="PackedScene" uid="uid://co52u63cyk220" path="res://scenes/gizmos/system-3d/system_3d.tscn" id="11_domud"]
+[ext_resource type="Texture2D" uid="uid://csvtv1sy2k3ns" path="res://graphics/system-map/apps-dock/audio_visualizer_icon.png" id="11_lvg8y"]
+[ext_resource type="Texture2D" uid="uid://dsyfc4m1nq34w" path="res://graphics/system-map/actions-panel/stop_icon.png" id="11_vquxl"]
+[ext_resource type="Texture2D" uid="uid://cghgcu7ghw8mf" path="res://graphics/system-map/status-panel/hull_deterioration_icon.png" id="12_3bh3s"]
+[ext_resource type="Texture2D" uid="uid://vdjsk4r01pst" path="res://graphics/system-map/ui_arrow.png" id="12_6oeqo"]
+[ext_resource type="Script" uid="uid://dc2hvx6y80gv7" path="res://scenes/system-map/value_increase_label.gd" id="13_6i2x8"]
+[ext_resource type="Texture2D" uid="uid://ce1et15cnh5ao" path="res://graphics/system-map/status-panel/morale_icon.png" id="13_vaatn"]
+[ext_resource type="Script" uid="uid://g0rvlwk6v2fa" path="res://scenes/system-map/status-panel/hull_stress_button.gd" id="14_u08qu"]
+[ext_resource type="Texture2D" uid="uid://m857xad6154v" path="res://graphics/misc/double_tall_arrow.png" id="15_4xoy6"]
+[ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://theme-gen/custom-tooltip/custom_tooltip_host.tres" id="15_534fl"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="15_y0hnn"]
+[ext_resource type="Script" uid="uid://dk17fp0f0cm0" path="res://scenes/system-map/current-action-panel/current_action_label.gd" id="16_vo58t"]
+[ext_resource type="Script" uid="uid://cfkdo3f7q5aks" path="res://scenes/system-map/current-action-panel/travel_modifier_label.gd" id="17_ow1c8"]
+[ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://graphics/system-map/apps-dock/journey_map_icon.png" id="19_36y85"]
+[ext_resource type="Texture2D" uid="uid://dka6vwu04ir6e" path="res://graphics/system-map/apps-dock/long_range_scopes_icon.png" id="22_sph0q"]
+[ext_resource type="Script" uid="uid://xtwaxv24g3hj" path="res://scenes/system-map/scan_prediction_upgrade.gd" id="31_k5t5q"]
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="34_6kjaj"]
+[ext_resource type="Script" uid="uid://dm8nvnfggth6n" path="res://scenes/system-map/view_objectives_label.gd" id="35_1xeuo"]
+[ext_resource type="Texture2D" uid="uid://dtpw5k24arv17" path="res://graphics/system-map/apps-dock/gas_layer_surveyor_icon.png" id="35_digdi"]
+[ext_resource type="PackedScene" uid="uid://b2o2eo8ls2ldp" path="res://scenes/system-map/help-overlay/help_overlay_label.tscn" id="38_6mn7q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ciwjv"]
+atlas = ExtResource("3_bft1b")
+region = Rect2(0, 0, 200, 112)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mljhq"]
+bg_color = Color(0.0666667, 0.0666667, 0.0666667, 0.627451)
+border_width_left = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wr1u4"]
+texture = ExtResource("11_1tiv0")
+modulate_color = Color(0.211765, 0.211765, 0.211765, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ee55b"]
+content_margin_left = 25.0
+bg_color = Color(0.180392, 0.180392, 0.180392, 0.415686)
+border_width_left = 20
+border_color = Color(0.156863, 0.156863, 0.156863, 1)
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhsj4"]
+bg_color = Color(0.109804, 0.109804, 0.211765, 0.415686)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w1mgb"]
+bg_color = Color(0.211765, 0.211765, 0.211765, 0.415686)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5sqdb"]
+bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ufej3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r4cqc"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vdy1a"]
+texture = ExtResource("12_6oeqo")
+region_rect = Rect2(0, 0, 67, 32)
+modulate_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
+
+[sub_resource type="Curve" id="Curve_j23tm"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.35, 1), 0.0, 0.0, 0, 0, Vector2(0.9, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gne5x"]
+bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_5218o"]
+color = Color(0.207843, 0.207843, 0.207843, 1)
+grow_begin = 11.0
+grow_end = 11.0
+vertical = true
+
+[node name="system_window" type="Node"]
+
+[node name="system" type="Node2D" parent="."]
+script = ExtResource("1_nhsfb")
+
+[node name="camera" type="Camera2D" parent="system"]
+script = ExtResource("2_miyro")
+
+[node name="canvas" type="CanvasLayer" parent="system/camera"]
+
+[node name="map_overlay" type="TextureRect" parent="system/camera/canvas"]
+self_modulate = Color(1, 1, 1, 0.0784314)
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_ciwjv")
+script = ExtResource("4_cfo3w")
+
+[node name="frame_update" type="Timer" parent="system/camera/canvas/map_overlay"]
+autostart = true
+
+[node name="countdown_overlay" type="Control" parent="system/camera/canvas"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("5_yv8xl")
+script = ExtResource("6_1p25s")
+
+[node name="flash" type="ColorRect" parent="system/camera/canvas/countdown_overlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="main_panel" type="PanelContainer" parent="system/camera/canvas/countdown_overlay"]
+custom_minimum_size = Vector2(375, 140)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -187.5
+offset_right = 187.5
+offset_bottom = 127.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mljhq")
+
+[node name="main_margin" type="MarginContainer" parent="system/camera/canvas/countdown_overlay/main_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="main_scroll" type="VBoxContainer" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="title_label" type="Label" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll"]
+layout_mode = 2
+text = "------"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="info_scroll" type="HBoxContainer" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll"]
+layout_mode = 2
+alignment = 1
+
+[node name="time_label" type="Label" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll/info_scroll"]
+custom_minimum_size = Vector2(100, 75)
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "---"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="arrow_texture" type="TextureRect" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll/info_scroll"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+texture = ExtResource("12_6oeqo")
+stretch_mode = 5
+
+[node name="hull_stress_increase_label" type="Label" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll/info_scroll"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_wr1u4")
+text = "+-%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="description_label" type="Label" parent="system/camera/canvas/countdown_overlay/main_panel/main_margin/main_scroll"]
+layout_mode = 2
+text = "------"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="control" type="Control" parent="system/camera/canvas"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="post_process" type="ColorRect" parent="system/camera/canvas/control"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="tabs_and_ca_scroll" type="HBoxContainer" parent="system/camera/canvas/control"]
+custom_minimum_size = Vector2(658, 900)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+
+[node name="tabs" type="TabContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll"]
+custom_minimum_size = Vector2(450, 900)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 0
+theme = ExtResource("3_djc4s")
+tab_alignment = 2
+current_tab = 0
+
+[node name="OVERVIEW" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs"]
+custom_minimum_size = Vector2(450, 850)
+layout_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
+theme = ExtResource("3_djc4s")
+metadata/_tab_index = 0
+
+[node name="system_list" type="Tree" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW"]
+custom_minimum_size = Vector2(450, 700)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_djc4s")
+allow_reselect = true
+allow_rmb_select = true
+allow_search = false
+enable_recursive_folding = false
+scroll_horizontal_enabled = false
+
+[node name="actions_panel" type="Panel" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW"]
+custom_minimum_size = Vector2(450, 100)
+layout_mode = 2
+theme = ExtResource("3_djc4s")
+
+[node name="actions_scroll" type="HBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel"]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+alignment = 1
+
+[node name="orbit_button" type="Button" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+tooltip_text = "Orbit the locked body."
+theme = ExtResource("15_534fl")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("8_ne0ka")
+texture_node = NodePath("orbit_texture")
+tooltip_title = "'ORBIT' ACTION"
+
+[node name="orbit_texture" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -25.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_hp0se")
+stretch_mode = 5
+
+[node name="go_to_button" type="Button" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+tooltip_text = "Go-to (follow) the locked body. "
+theme = ExtResource("15_534fl")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("8_ne0ka")
+texture_node = NodePath("go_to_texture")
+tooltip_title = "'GO-TO' ACTION"
+
+[node name="go_to_texture" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -25.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("10_xhqpl")
+stretch_mode = 5
+
+[node name="stop_button" type="Button" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+tooltip_text = "Cancel 'GO-TO' and/or 'ORBIT' actions for the locked body. "
+theme = ExtResource("15_534fl")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("8_ne0ka")
+texture_node = NodePath("stop_texture")
+tooltip_title = "'STOP' ACTION"
+
+[node name="stop_texture" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -25.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("11_vquxl")
+stretch_mode = 5
+
+[node name="INFO" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs"]
+visible = false
+custom_minimum_size = Vector2(450, 850)
+layout_mode = 2
+mouse_filter = 0
+theme = ExtResource("3_djc4s")
+metadata/_tab_index = 1
+
+[node name="follow_body_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme = ExtResource("3_djc4s")
+theme_override_colors/font_color = Color(0.87451, 1, 0.862745, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ee55b")
+text = "CBCBCBCBCB"
+vertical_alignment = 1
+clip_text = true
+
+[node name="body_attributes_list" type="ItemList" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO"]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_djc4s")
+allow_search = false
+
+[node name="picker_header" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_hhsj4")
+text = "- ADDITIONAL OBSERVATIONS -"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="picker_panel" type="Panel" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO"]
+custom_minimum_size = Vector2(450, 200)
+layout_mode = 2
+
+[node name="picker_margin" type="MarginContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="picker_scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel/picker_margin"]
+layout_mode = 2
+
+[node name="picker_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll"]
+visible = false
+layout_mode = 2
+text = "VARIATION:"
+vertical_alignment = 1
+
+[node name="picker_button" type="OptionButton" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll"]
+visible = false
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+tooltip_text = "A value which can be reasonably estimated via the audio visualizer."
+theme_override_styles/normal = SubResource("StyleBoxFlat_w1mgb")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_w1mgb")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5sqdb")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ufej3")
+fit_to_longest_item = false
+item_count = 3
+popup/item_0/text = "LOW"
+popup/item_0/id = 0
+popup/item_1/text = "MEDIUM"
+popup/item_1/id = 1
+popup/item_2/text = "HIGH"
+popup/item_2/id = 2
+
+[node name="arrow_and_ca_scroll" type="HBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="arrow_texture" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll"]
+modulate = Color(0.180392, 0.180392, 0.180392, 0.415686)
+custom_minimum_size = Vector2(13, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("15_4xoy6")
+
+[node name="ca_panel" type="PanelContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll"]
+custom_minimum_size = Vector2(187, 100)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="margin" type="MarginContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin"]
+layout_mode = 2
+
+[node name="current_action_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll"]
+custom_minimum_size = Vector2(177, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("15_y0hnn")
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+text_overrun_behavior = 4
+script = ExtResource("16_vo58t")
+
+[node name="travel_modifier_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll"]
+custom_minimum_size = Vector2(177, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("15_y0hnn")
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+script = ExtResource("17_ow1c8")
+
+[node name="console" type="RichTextLabel" parent="system/camera/canvas/control"]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_r4cqc")
+bbcode_enabled = true
+scroll_following = true
+shortcut_keys_enabled = false
+script = ExtResource("8_oaj06")
+
+[node name="scopes_snap_scroll" type="VBoxContainer" parent="system/camera/canvas/control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -540.0
+offset_top = -544.0
+grow_horizontal = 0
+grow_vertical = 0
+alignment = 2
+
+[node name="scopes_bg" type="ColorRect" parent="system/camera/canvas/control/scopes_snap_scroll"]
+custom_minimum_size = Vector2(320, 320)
+layout_mode = 2
+size_flags_horizontal = 8
+color = Color(0.180392, 0.180392, 0.180392, 0.415686)
+
+[node name="scopes_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/scopes_bg"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="scopes_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/scopes_bg/scopes_margin"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="system_3d_window" parent="system/camera/canvas/control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container" instance=ExtResource("11_domud")]
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="core_and_value_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll"]
+layout_mode = 2
+alignment = 2
+
+[node name="data_value_increase_label" type="Label" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll"]
+custom_minimum_size = Vector2(134, 64)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_vdy1a")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("13_6i2x8")
+hide_curve = SubResource("Curve_j23tm")
+
+[node name="core_panel_bg" type="ColorRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll"]
+custom_minimum_size = Vector2(710, 235)
+layout_mode = 2
+color = Color(0.180392, 0.180392, 0.180392, 0.415686)
+
+[node name="core_panel_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
+
+[node name="status_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gne5x")
+
+[node name="status_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="status_scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin"]
+layout_mode = 2
+alignment = 1
+script = ExtResource("10_ydc85")
+
+[node name="nanites_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
+layout_mode = 2
+tooltip_text = "Universally recognised currency. Can be obtained via trading in exploration data at a space station. "
+theme = ExtResource("15_534fl")
+text = "50253"
+icon = ExtResource("10_e6b7x")
+script = ExtResource("11_1rwmm")
+current_danger_rule = 2
+tooltip_title = "Nanites"
+
+[node name="morale_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
+layout_mode = 2
+tooltip_text = "The willingness of a starships crew to follow their superiors. Depending on circumstance, an uprising may occur at 0%."
+theme = ExtResource("15_534fl")
+text = "100%"
+icon = ExtResource("13_vaatn")
+script = ExtResource("11_1rwmm")
+current_danger_rule = 1
+tooltip_title = "Morale"
+
+[node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll" groups=["FOLLOW_UPGRADE_STATE", "playUIClickSFX"]]
+layout_mode = 2
+theme = ExtResource("15_534fl")
+text = "100%"
+icon = ExtResource("11_1tiv0")
+script = ExtResource("14_u08qu")
+current_danger_rule = 2
+tooltip_title = "Hull Stress"
+
+[node name="hull_deterioration_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
+layout_mode = 2
+tooltip_text = "Permanent damage to a starship. Catastrophic, and often explosive, ship breakdown occurs at 100%."
+theme = ExtResource("15_534fl")
+text = "100%"
+icon = ExtResource("12_3bh3s")
+script = ExtResource("11_1rwmm")
+tooltip_title = "Hull Deterioration"
+
+[node name="core_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll"]
+custom_minimum_size = Vector2(460, 235)
+layout_mode = 2
+
+[node name="core_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="core_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin"]
+layout_mode = 2
+alignment = 1
+
+[node name="barycenter_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_vertical = 4
+stretch = true
+
+[node name="barycenter_visualizer_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container" instance=ExtResource("9_2aiel")]
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="separator1" type="VSeparator" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+theme_override_constants/separation = 20
+theme_override_styles/separator = SubResource("StyleBoxLine_5218o")
+
+[node name="sonar_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_vertical = 4
+stretch = true
+
+[node name="sonar_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container" instance=ExtResource("10_48t0n")]
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="apps_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll"]
+custom_minimum_size = Vector2(100, 235)
+layout_mode = 2
+theme = ExtResource("8_a7cgy")
+
+[node name="apps_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="apps_scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin" groups=["FOLLOW_UPGRADE_STATE"]]
+layout_mode = 2
+script = ExtResource("9_pw1kh")
+
+[node name="journey_map_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
+layout_mode = 2
+theme = ExtResource("8_a7cgy")
+text = "JUR"
+icon = ExtResource("19_36y85")
+clip_text = true
+icon_alignment = 2
+
+[node name="audio_visualizer_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
+visible = false
+layout_mode = 2
+theme = ExtResource("8_a7cgy")
+text = "AUD"
+icon = ExtResource("11_lvg8y")
+clip_text = true
+icon_alignment = 2
+
+[node name="long_range_scopes_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
+visible = false
+layout_mode = 2
+theme = ExtResource("8_a7cgy")
+text = "LON"
+icon = ExtResource("22_sph0q")
+clip_text = true
+icon_alignment = 2
+
+[node name="gas_layer_surveyor_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
+visible = false
+layout_mode = 2
+theme = ExtResource("8_a7cgy")
+text = "GAS"
+icon = ExtResource("35_digdi")
+clip_text = true
+icon_alignment = 2
+
+[node name="view_objectives_label" type="Label" parent="system/camera/canvas/control"]
+visible = false
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("34_6kjaj")
+theme_override_font_sizes/font_size = 16
+text = "Press [UNSET] to view objectives"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("35_1xeuo")
+
+[node name="help_overlay" type="Control" parent="system/camera/canvas"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="scopes" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "scopes"
+track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
+
+[node name="apps_dock" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "apps dock"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel")
+
+[node name="system_list" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "system list"
+track = NodePath("../../control/tabs_and_ca_scroll/tabs")
+
+[node name="actions_panel" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "actions panel"
+track = NodePath("../../control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel")
+
+[node name="current_action_panel" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "current action panel"
+track = NodePath("../../control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel")
+
+[node name="status_panel" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "status panel"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel")
+
+[node name="barycenter_visualizer" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "barycenter visualizer"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container")
+
+[node name="LIDAR" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "LIDAR"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container")
+
+[node name="console" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 0
+text = "console"
+track = NodePath("../../control/console")
+
+[node name="system_map" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.5
+offset_top = -8.5
+offset_right = 36.5
+offset_bottom = 8.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "system map"
+
+[node name="scan_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
+show_behind_parent = true
+script = ExtResource("31_k5t5q")
+
+[connection signal="timeout" from="system/camera/canvas/map_overlay/frame_update" to="system/camera/canvas/map_overlay" method="_on_frame_update_timeout"]
+[connection signal="tab_changed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs" to="system" method="_on_tabs_tab_changed"]
+[connection signal="item_collapsed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_collapsed"]
+[connection signal="item_mouse_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_mouse_selected"]
+[connection signal="item_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_selected"]
+[connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]
+[connection signal="item_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button" to="system" method="_on_picker_button_item_selected"]
+[connection signal="mouse_entered" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" to="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" method="_on_mouse_entered"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" to="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/hull_stress_button" method="_on_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/journey_map_button" to="system" method="_on_journey_map_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/long_range_scopes_button" to="system" method="_on_long_range_scopes_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/gas_layer_surveyor_button" to="system" method="_on_gas_layer_surveyor_button_pressed"]

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="categoryAPI" load_steps=2 format=3 uid="uid://b6uoxkf6p8iw1"]
+
+[ext_resource type="Script" uid="uid://c4tfr1shicj34" path="res://data/objective-control/categoryAPI.gd" id="1_w7m7q"]
+
+[resource]
+script = ExtResource("1_w7m7q")
+written_identifier = ""
+objective_wIDs = ["moduleTutorialAV", "moduleTutorialGLS", "moduleTutorialLRS", "moduleTutorialNC"]

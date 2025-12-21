@@ -1,0 +1,13 @@
+Memorial
+Depot
+Orbital
+Station
+Terminal
+Installation
+Facility
+Base
+Garrison
+Terminus
+Locus
+Stop
+Post

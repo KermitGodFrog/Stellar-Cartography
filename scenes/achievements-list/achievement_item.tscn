@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://b34lxvbuquaso"]
+
+[ext_resource type="StyleBox" uid="uid://cnaci0fj8gv3d" path="res://scenes/achievements-list/item_locked_stylebox.tres" id="1_m3mrf"]
+[ext_resource type="Script" uid="uid://brp0htq10t46k" path="res://scenes/achievements-list/achievement_item.gd" id="2_74jvj"]
+[ext_resource type="Texture2D" uid="uid://bkagb0wi4hewb" path="res://graphics/achievements-list/trophy.png" id="3_rp7wn"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="4_nbish"]
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="5_kx5i0"]
+
+[node name="achievement_item" type="PanelContainer" groups=["achievement_item"]]
+custom_minimum_size = Vector2(0, 100)
+theme_override_styles/panel = ExtResource("1_m3mrf")
+script = ExtResource("2_74jvj")
+
+[node name="achievement_scroll" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="icon" type="TextureRect" parent="achievement_scroll"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("3_rp7wn")
+stretch_mode = 5
+
+[node name="info_scroll" type="VBoxContainer" parent="achievement_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="name_label" type="Label" parent="achievement_scroll/info_scroll"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_nbish")
+theme_override_font_sizes/font_size = 30
+vertical_alignment = 1
+clip_text = true
+
+[node name="description" type="Label" parent="achievement_scroll/info_scroll"]
+custom_minimum_size = Vector2(475, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.701961, 0.701961, 0.701961, 1)
+theme_override_fonts/font = ExtResource("5_kx5i0")
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 3
+clip_text = true
