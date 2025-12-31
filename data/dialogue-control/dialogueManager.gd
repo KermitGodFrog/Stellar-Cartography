@@ -772,3 +772,7 @@ func _TUTORIALEnterIngress():
 func _TUTORIALSetWindowTutorials(value: bool):
 	emit_signal("TUTORIALSetWindowTutorials", value)
 	pass
+
+func _TUTORIALQueueVoyageLeitmotif():
+	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/voyage_leitmotif.ogg")
+	pass
