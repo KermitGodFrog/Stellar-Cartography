@@ -362,14 +362,16 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				starSystemAPI.BODY_TYPES.WORMHOLE:
 					item.set_icon(0, load("uid://k50rbp6ri57u"))
 					
+					const disabled_color = Color("#7f4b4b")
+					
 					match body.is_disabled(): #is_disabled() will be a function in new wormholeAPI
 						true:
 							if body == follow_body:
-								item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.5))
+								item.set_custom_bg_color(0, disabled_color.lightened(0.5))
 							elif body.get_identifier() == closest_body_id:
-								item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.2))
+								item.set_custom_bg_color(0, disabled_color.lightened(0.2))
 							else:
-								item.set_custom_bg_color(0, Color.DARK_RED)
+								item.set_custom_bg_color(0, disabled_color)
 						false:
 							if body == follow_body:
 								item.set_custom_bg_color(0, Color.WEB_PURPLE.lightened(0.5))
