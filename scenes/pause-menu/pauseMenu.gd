@@ -74,11 +74,13 @@ func _on_settings_button_pressed():
 
 func _on_objectives_fullscreen_button_pressed() -> void:
 	var instance = fullscreen_objectives.instantiate()
-	instance.ready.connect(_on_fullscreen_objectives_ready.bind(instance))
+	instance.ready.connect(_on_update_fullscreen_objectives.bind(instance))
 	pause_canvas.add_child(instance)
+	instance.visibility_changed.connect(_on_update_fullscreen_objectives.bind(instance))
 	pass
-func _on_fullscreen_objectives_ready(_instance: Control) -> void:
-	_instance.objectives_panel._on_update_objectives_panel(objectives_panel.active_objectives)
+func _on_update_fullscreen_objectives(_instance: Control) -> void:
+	if _instance.is_visible_in_tree():
+		_instance.objectives_panel._on_update_objectives_panel(objectives_panel.active_objectives)
 	pass
 
 func _on_update_objectives_panel(_active_objectives: Array[objectiveAPI]) -> void:

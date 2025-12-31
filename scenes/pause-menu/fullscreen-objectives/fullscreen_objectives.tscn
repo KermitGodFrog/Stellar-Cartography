@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d7m4h6j7mma7"]
+[gd_scene load_steps=10 format=3 uid="uid://d7m4h6j7mma7"]
 
 [ext_resource type="Script" uid="uid://b1a4prkbpyi07" path="res://scenes/pause-menu/fullscreen-objectives/fullscreen_objectives.gd" id="1_3q3w0"]
 [ext_resource type="Script" uid="uid://cu1j5esb68cav" path="res://scenes/pause-menu/fullscreen-objectives/objectives_panel.gd" id="1_52fge"]
@@ -20,6 +20,9 @@ bg_color = Color(0.235294, 0.431373, 0.443137, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vr45s"]
 bg_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fx24x"]
+bg_color = Color(0.15686275, 0.29411766, 0.3882353, 1)
 
 [node name="fullscreen_objectives" type="Control"]
 layout_mode = 3
@@ -95,12 +98,28 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="scroll_container" type="ScrollContainer" parent="margin/objectives_panel/scroll/margin"]
+[node name="split_container" type="VSplitContainer" parent="margin/objectives_panel/scroll/margin"]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+theme_override_styles/split_bar_background = SubResource("StyleBoxFlat_fx24x")
+split_offset = 377
+
+[node name="scroll_container" type="ScrollContainer" parent="margin/objectives_panel/scroll/margin/split_container"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="item_anchor" type="VBoxContainer" parent="margin/objectives_panel/scroll/margin/scroll_container"]
+[node name="item_anchor" type="VBoxContainer" parent="margin/objectives_panel/scroll/margin/split_container/scroll_container"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="misc_scroll_container" type="ScrollContainer" parent="margin/objectives_panel/scroll/margin/split_container"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="misc_item_anchor" type="VBoxContainer" parent="margin/objectives_panel/scroll/margin/split_container/misc_scroll_container"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
