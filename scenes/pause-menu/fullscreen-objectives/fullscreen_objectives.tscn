@@ -1,0 +1,108 @@
+[gd_scene load_steps=9 format=3 uid="uid://d7m4h6j7mma7"]
+
+[ext_resource type="Script" uid="uid://b1a4prkbpyi07" path="res://scenes/pause-menu/fullscreen-objectives/fullscreen_objectives.gd" id="1_3q3w0"]
+[ext_resource type="Script" uid="uid://cu1j5esb68cav" path="res://scenes/pause-menu/fullscreen-objectives/objectives_panel.gd" id="1_52fge"]
+[ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/misc/denied_monochrome.png" id="2_02o3k"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="4_d4cr1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fyjij"]
+bg_color = Color(0.09411765, 0.09411765, 0.09411765, 1)
+border_width_left = 5
+border_color = Color(0.15686275, 0.29411766, 0.3882353, 1)
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lfqif"]
+bg_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d4cr1"]
+bg_color = Color(0.235294, 0.431373, 0.443137, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vr45s"]
+bg_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[node name="fullscreen_objectives" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3q3w0")
+
+[node name="margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 25
+
+[node name="objectives_panel" type="PanelContainer" parent="margin"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fyjij")
+script = ExtResource("1_52fge")
+
+[node name="scroll" type="VBoxContainer" parent="margin/objectives_panel"]
+layout_mode = 2
+
+[node name="title_background" type="Panel" parent="margin/objectives_panel/scroll"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_lfqif")
+
+[node name="title_margin" type="MarginContainer" parent="margin/objectives_panel/scroll/title_background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="title" type="Label" parent="margin/objectives_panel/scroll/title_background/title_margin"]
+layout_mode = 2
+theme = ExtResource("4_d4cr1")
+theme_override_font_sizes/font_size = 24
+text = "OBJECTIVES"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="return_button" type="Button" parent="margin/objectives_panel/scroll/title_background/title_margin"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_type_variation = &"ButtonDull"
+theme_override_styles/normal = SubResource("StyleBoxFlat_d4cr1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_vr45s")
+icon = ExtResource("2_02o3k")
+icon_alignment = 1
+expand_icon = true
+
+[node name="margin" type="MarginContainer" parent="margin/objectives_panel/scroll"]
+custom_minimum_size = Vector2(0, 775)
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="scroll_container" type="ScrollContainer" parent="margin/objectives_panel/scroll/margin"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="item_anchor" type="VBoxContainer" parent="margin/objectives_panel/scroll/margin/scroll_container"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="pressed" from="margin/objectives_panel/scroll/title_background/title_margin/return_button" to="." method="_on_return_button_pressed"]
