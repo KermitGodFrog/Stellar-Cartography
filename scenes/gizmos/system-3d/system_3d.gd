@@ -263,6 +263,8 @@ func _on_toggle_scope_mode_switch_button() -> void: #system_map checks for keybi
 func _on_mode_switch_button_toggled(toggled_on: bool) -> void:
 	if not toggled_on:
 		scope_mode = playerAPI.SCOPE_MODES.VIS
+		get_tree().call_group("audioHandler", "play_once", load("uid://bcahs3q6yv8yv"), 0.0, "SFX")
 	else:
 		scope_mode = playerAPI.SCOPE_MODES.RAD
+		get_tree().call_group("audioHandler", "play_once", load("uid://do2rl0w7wqiio"), 0.0, "SFX")
 	pass
