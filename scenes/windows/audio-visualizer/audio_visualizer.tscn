@@ -3,20 +3,20 @@
 [ext_resource type="Script" uid="uid://vxx2x12co2y8" path="res://scenes/windows/audio-visualizer/audio_visualizer.gd" id="1_fs2yq"]
 [ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://theme-gen/window_theme.tres" id="1_hiiey"]
 [ext_resource type="Theme" uid="uid://dm3fbhtw7qov2" path="res://theme-gen/system-map/system_map_HUD_theme.tres" id="2_ecg40"]
-[ext_resource type="AudioStream" uid="uid://b0mftg24fipnp" path="res://sound/audio-visualizer/chimes.wav" id="2_wgufx"]
-[ext_resource type="AudioStream" uid="uid://cuqfn1a6g6g0e" path="res://sound/audio-visualizer/pops.wav" id="3_7knfx"]
-[ext_resource type="AudioStream" uid="uid://c5bcwxp1is83n" path="res://sound/audio-visualizer/pulses.wav" id="4_00en7"]
 [ext_resource type="Script" uid="uid://4qjn2mwnpnia" path="res://scenes/windows/audio-visualizer/saved_audio_profiles_list.gd" id="4_c818x"]
 [ext_resource type="Texture2D" uid="uid://c5r5ok7jmth3o" path="res://graphics/shared/confirmed.png" id="4_n2ehy"]
 [ext_resource type="Texture2D" uid="uid://bqokr8l8kfuv2" path="res://graphics/audio-visualizer/play_icon.png" id="5_6qtkb"]
-[ext_resource type="AudioStream" uid="uid://dd3hsfa1u5ktm" path="res://sound/audio-visualizer/storm.wav" id="5_fsbvl"]
 [ext_resource type="Texture2D" uid="uid://cudxvqxk513ea" path="res://graphics/shared/denied.png" id="6_5rdbj"]
+[ext_resource type="AudioStream" uid="uid://ttuaxhwhlx47" path="res://sound/audio-visualizer/chimes.ogg" id="8_37xey"]
+[ext_resource type="AudioStream" uid="uid://e414kheudg0d" path="res://sound/audio-visualizer/pops.ogg" id="9_7faek"]
+[ext_resource type="AudioStream" uid="uid://brc8rwhnw65k5" path="res://sound/audio-visualizer/pulses.ogg" id="10_ov7pi"]
+[ext_resource type="AudioStream" uid="uid://dfslaxf3v6f2s" path="res://sound/audio-visualizer/storm.ogg" id="11_5khyv"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r0g17"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sjidh"]
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ave51"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sjidh"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gqlwt"]
 
@@ -72,8 +72,8 @@ layout_mode = 2
 [node name="clear_button" type="Button" parent="audio_control/ui_container/visualizer_controls"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_r0g17")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_sjidh")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_ave51")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sjidh")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_gqlwt")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_2lnqy")
 text = "CLEAR"
@@ -124,19 +124,19 @@ item_3/icon = ExtResource("6_5rdbj")
 script = ExtResource("4_c818x")
 
 [node name="chimes" type="AudioStreamPlayer" parent="audio_control"]
-stream = ExtResource("2_wgufx")
+stream = ExtResource("8_37xey")
 bus = &"Planetary SFX"
 
 [node name="pops" type="AudioStreamPlayer" parent="audio_control"]
-stream = ExtResource("3_7knfx")
+stream = ExtResource("9_7faek")
 bus = &"Planetary SFX"
 
 [node name="pulses" type="AudioStreamPlayer" parent="audio_control"]
-stream = ExtResource("4_00en7")
+stream = ExtResource("10_ov7pi")
 bus = &"Planetary SFX"
 
 [node name="storm" type="AudioStreamPlayer" parent="audio_control"]
-stream = ExtResource("5_fsbvl")
+stream = ExtResource("11_5khyv")
 bus = &"Planetary SFX"
 
 [node name="custom" type="AudioStreamPlayer" parent="audio_control"]

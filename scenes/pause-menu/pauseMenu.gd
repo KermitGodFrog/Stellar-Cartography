@@ -16,8 +16,6 @@ func _on_pause_mode_changed(value):
 			pause_canvas.show()
 	pass
 
-
-
 signal saveWorld
 signal saveAndQuit
 signal exitToMainMenu
@@ -31,7 +29,9 @@ var is_open = false
 @onready var save_and_quit_button = $pause_canvas/pause_control/pause_scroll/save_and_quit_button
 @onready var options_menu = $pause_canvas/options_menu
 @onready var pause_canvas = $pause_canvas
-@onready var objectives_panel = $pause_canvas/pause_control/console_cover_panel/objectives_panel
+@onready var objectives_panel = $pause_canvas/pause_control/console_cover_panel/scroll/objectives_panel
+
+@onready var fullscreen_objectives = preload("uid://d7m4h6j7mma7")
 
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("SC_PAUSE"):
@@ -70,6 +70,17 @@ func _on_unpause_possible_timer_timeout():
 func _on_settings_button_pressed():
 	options_menu.initialize()
 	options_menu.visible = !options_menu.visible
+	pass
+
+func _on_objectives_fullscreen_button_pressed() -> void:
+	var instance = fullscreen_objectives.instantiate()
+	instance.ready.connect(_on_update_fullscreen_objectives.bind(instance))
+	pause_canvas.add_child(instance)
+	instance.visibility_changed.connect(_on_update_fullscreen_objectives.bind(instance))
+	pass
+func _on_update_fullscreen_objectives(_instance: Control) -> void:
+	if _instance.is_visible_in_tree():
+		_instance.objectives_panel._on_update_objectives_panel(objectives_panel.active_objectives)
 	pass
 
 func _on_update_objectives_panel(_active_objectives: Array[objectiveAPI]) -> void:

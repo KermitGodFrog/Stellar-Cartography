@@ -1,13 +1,18 @@
 extends PanelContainer
 
-@onready var item_anchor = $margin/scroll_container/item_anchor
-@onready var scroll_container = $margin/scroll_container
+var item_anchor: Node
+var scroll_container: Node
 
 @onready var objective_item = preload("uid://c4inc2m5l36fl")
 @onready var _confirm_texture = preload("uid://c5r5ok7jmth3o")
 @onready var _denied_texture = preload("uid://cudxvqxk513ea")
 
 var active_objectives: Array[objectiveAPI] = []
+
+func _ready() -> void:
+	item_anchor = $margin/scroll_container/item_anchor
+	scroll_container = $margin/scroll_container
+	pass
 
 func _on_update_objectives_panel(_active_objectives: Array[objectiveAPI]) -> void: #{file name: objectiveAPI}
 	active_objectives = _active_objectives

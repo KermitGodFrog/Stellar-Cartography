@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cu8n2e53bgc37"]
+[gd_scene load_steps=12 format=3 uid="uid://cu8n2e53bgc37"]
 
 [ext_resource type="Script" uid="uid://bo10h285vqmij" path="res://scenes/pause-menu/pauseMenu.gd" id="1_u73yd"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="2_r6vbf"]
 [ext_resource type="PackedScene" uid="uid://df1xq5fo2rlje" path="res://scenes/options-menu/optionsMenu.tscn" id="2_vsgfh"]
+[ext_resource type="Texture2D" uid="uid://wj8xwuug1m0o" path="res://graphics/misc/tree_arrow.png" id="3_0rvr6"]
 [ext_resource type="Script" uid="uid://dm5vhmppi3dol" path="res://scenes/pause-menu/objectives-panel/objectives_panel.gd" id="3_77jva"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yykag"]
@@ -10,6 +11,26 @@ bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
 skew = Vector2(-0.2, 0)
 expand_margin_left = 20.0
 expand_margin_right = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0rvr6"]
+bg_color = Color(0.20784314, 0.20784314, 0.20784314, 1)
+skew = Vector2(-0.2, 0)
+expand_margin_left = 10.0
+expand_margin_right = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3odcv"]
+bg_color = Color(0.09411765, 0.09411765, 0.09411765, 1)
+skew = Vector2(-0.2, 0)
+expand_margin_left = 10.0
+expand_margin_right = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xraqk"]
+bg_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
+skew = Vector2(-0.2, 0)
+expand_margin_left = 10.0
+expand_margin_right = 20.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0rvr6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2jwyw"]
 bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
@@ -92,7 +113,20 @@ offset_bottom = 40.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_yykag")
 
-[node name="objectives_panel" type="PanelContainer" parent="pause_canvas/pause_control/console_cover_panel"]
+[node name="scroll" type="VBoxContainer" parent="pause_canvas/pause_control/console_cover_panel"]
+layout_mode = 2
+
+[node name="fullscreen_button" type="Button" parent="pause_canvas/pause_control/console_cover_panel/scroll"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_0rvr6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3odcv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_xraqk")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0rvr6")
+icon = ExtResource("3_0rvr6")
+icon_alignment = 1
+
+[node name="objectives_panel" type="PanelContainer" parent="pause_canvas/pause_control/console_cover_panel/scroll"]
 custom_minimum_size = Vector2(450, 200)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -100,19 +134,19 @@ size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_2jwyw")
 script = ExtResource("3_77jva")
 
-[node name="margin" type="MarginContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel"]
+[node name="margin" type="MarginContainer" parent="pause_canvas/pause_control/console_cover_panel/scroll/objectives_panel"]
 layout_mode = 2
-theme_override_constants/margin_left = 10
+theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="scroll_container" type="ScrollContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel/margin"]
+[node name="scroll_container" type="ScrollContainer" parent="pause_canvas/pause_control/console_cover_panel/scroll/objectives_panel/margin"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="item_anchor" type="VBoxContainer" parent="pause_canvas/pause_control/console_cover_panel/objectives_panel/margin/scroll_container"]
+[node name="item_anchor" type="VBoxContainer" parent="pause_canvas/pause_control/console_cover_panel/scroll/objectives_panel/margin/scroll_container"]
 custom_minimum_size = Vector2(422, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -130,4 +164,5 @@ one_shot = true
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/save_button" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/save_and_quit_button" to="." method="_on_save_and_quit_button_pressed"]
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/exit_button" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="pause_canvas/pause_control/console_cover_panel/scroll/fullscreen_button" to="." method="_on_objectives_fullscreen_button_pressed"]
 [connection signal="timeout" from="unpause_possible_timer" to="." method="_on_unpause_possible_timer_timeout"]
