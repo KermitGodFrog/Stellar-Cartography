@@ -3,6 +3,15 @@ extends Node3D
 signal foundBody(id: int)
 signal addConsoleEntry(entry_text: String, text_color: Color)
 
+@onready var control = $camera_offset/camera/canvas_layer/control
+@onready var camera_offset = $camera_offset
+@onready var camera = $camera_offset/camera
+@onready var locked_body_label = $camera_offset/camera/canvas_layer/control/locked_body_label
+@onready var post_process = $camera_offset/camera/canvas_layer/post_process
+@onready var star_omni_light = $star_omni_light
+@onready var mode_switch_button = $camera_offset/camera/canvas_layer/control/mode_switch_button
+
+
 var TUTORIAL_INGRESS_OVERRIDE: bool = false
 var TUTORIAL_OMISSION_OVERRIDE: bool = false
 
@@ -15,16 +24,15 @@ var label_locked_body_identifier: int
 var body_3d = preload("uid://bdotk8rm2p7df")
 var entity_3d = preload("uid://csvx63c0ejn6a")
 
-@onready var control = $camera_offset/camera/canvas_layer/control
-@onready var camera_offset = $camera_offset
-@onready var camera = $camera_offset/camera
-@onready var locked_body_label = $camera_offset/camera/canvas_layer/control/locked_body_label
-@onready var post_process = $camera_offset/camera/canvas_layer/post_process
-@onready var star_omni_light = $star_omni_light
-
 var system_scalar: float = 10.0
 var body_detection_range: int = 1000
 var target_fov: float = 75
+var scope_mode: playerAPI.SCOPE_MODES = playerAPI.SCOPE_MODES.VIS:
+	set(value):
+		scope_mode = value
+		_on_scope_mode_changed(value)
+func get_scope_mode() -> playerAPI.SCOPE_MODES:
+	return scope_mode
 
 var initial_beam_rotation: float = 0.0 #REQUIRED FOR PULSARS TO WORK. BARELY KNEW WHAT I WAS DOING WHEN I MADE IT WORK SO DONT TOUCH!
 
@@ -51,6 +59,12 @@ func _physics_process(_delta):
 				beam.transform = beam.transform.looking_at(a_3d)
 				
 				#THIS ACTUALLY WORKS??? THANKS - initial_beam_rotation
+	
+	#setting scope mode
+	if not mode_switch_button.is_pressed():
+		scope_mode = playerAPI.SCOPE_MODES.VIS
+	else:
+		scope_mode = playerAPI.SCOPE_MODES.RAD
 	
 	#setting post process
 	var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)
@@ -95,24 +109,24 @@ func _physics_process(_delta):
 			if acos(a.dot(b)) <= deg_to_rad(camera.fov):
 				var associated_body = system.get_body_from_identifier(child.get_identifier()) #repeat code ?!?!?!?!?!?!?!??!?!?!?!?!??!!
 				if associated_body:
-					var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
-					if detection_scalar < body_detection_range and associated_body.is_known() == false:
-						
-						if associated_body.is_hidden():
-							continue
-						elif associated_body.get_display_name() == "Ingress":
-							if TUTORIAL_INGRESS_OVERRIDE == true:
+					if associated_body.get_required_scope_mode() == get_scope_mode():
+						var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
+						if detection_scalar < body_detection_range and associated_body.is_known() == false:
+							
+							if associated_body.is_hidden():
 								continue
-						elif associated_body.get_display_name() == "Omission":
-							if TUTORIAL_OMISSION_OVERRIDE == true:
-								continue
-						
-						emit_signal("foundBody", child.get_identifier())
-						var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
-						if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name()), Color.DARK_GREEN)
-						elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", roundi(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
+							elif associated_body.get_display_name() == "Ingress":
+								if TUTORIAL_INGRESS_OVERRIDE == true:
+									continue
+							elif associated_body.get_display_name() == "Omission":
+								if TUTORIAL_OMISSION_OVERRIDE == true:
+									continue
+							
+							emit_signal("foundBody", child.get_identifier())
+							var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
+							if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name()), Color.DARK_GREEN)
+							elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", roundi(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
 	
-	#this is broked because when you unlock a body by moving the camera target pos, the locked_body_identifier variable on this script remains the same - thereofore, it always displays that you are locked to a body
 	#setting locked_body_label text
 	var body: bodyAPI = system.get_body_from_identifier(label_locked_body_identifier)
 	if body:
@@ -198,7 +212,10 @@ func _on_target_FOV_change(fov: float):
 	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "scopes_fov_change")
 	pass
 
-
+func _on_scope_mode_changed(new_mode: playerAPI.SCOPE_MODES) -> void:
+	
+	
+	pass
 
 
 func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Array]:
