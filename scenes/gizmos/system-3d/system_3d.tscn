@@ -5,7 +5,7 @@
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://shader-gen/system-3d/sky_shader.tres" id="3_buwkt"]
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="3_wi6mv"]
 [ext_resource type="Script" uid="uid://b7f1548xygxbm" path="res://scenes/gizmos/system-3d/control.gd" id="4_d6r1b"]
-[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/misc/star_backdrop.jpeg" id="4_rgh3c"]
+[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/system-3d/star_backdrop.jpeg" id="4_rgh3c"]
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="5_u5io5"]
 [ext_resource type="Texture2D" uid="uid://bm556o6bplwe1" path="res://graphics/system-3d/checked.svg" id="6_a5f52"]
 [ext_resource type="Texture2D" uid="uid://d02k71150k6kn" path="res://graphics/system-3d/unchecked.svg" id="6_tx8l4"]
@@ -68,6 +68,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="rad_post_process" type="ColorRect" parent="system_3d/camera_offset/camera/canvas_layer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.49803922, 0.29411766, 0.29411766, 0.50980395)
 
 [node name="control" type="Control" parent="system_3d/camera_offset/camera/canvas_layer"]
 layout_mode = 3

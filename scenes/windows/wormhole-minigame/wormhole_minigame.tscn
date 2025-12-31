@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://b1mml0k67ehdt" path="res://scenes/windows/wormhole-minigame/wormhole_minigame.gd" id="1_u2vnu"]
 [ext_resource type="Environment" uid="uid://ktbbdqasxhbr" path="res://scenes/windows/wormhole-minigame/wormhole_minigame_environment.tres" id="2_phyvx"]
 [ext_resource type="PackedScene" uid="uid://cd845qsl0v3dk" path="res://meshes/station-ui/starship/starship.glb" id="4_1fh2q"]
-[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/misc/star_backdrop.jpeg" id="4_jtuyj"]
+[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/system-3d/star_backdrop.jpeg" id="4_jtuyj"]
 [ext_resource type="Script" uid="uid://ct5k4d5fntjjm" path="res://scenes/windows/wormhole-minigame/wormhole_animation.gd" id="4_pmdih"]
 [ext_resource type="Theme" uid="uid://du8q1tlwo1jt1" path="res://theme-gen/wormhole-minigame/wormhole_minigame_HUD_theme.tres" id="7_y6ir1"]
 [ext_resource type="Texture2D" uid="uid://dq25m1n2y5upl" path="res://graphics/system-map/status-panel/hull_stress_icon.png" id="8_41qj7"]

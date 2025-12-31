@@ -10,7 +10,8 @@ signal addConsoleEntry(entry_text: String, text_color: Color)
 @onready var post_process = $camera_offset/camera/canvas_layer/post_process
 @onready var star_omni_light = $star_omni_light
 @onready var mode_switch_button = $camera_offset/camera/canvas_layer/control/mode_switch_button
-
+@onready var rad_post_process = $camera_offset/camera/canvas_layer/rad_post_process
+@onready var environment = $world_environment
 
 var TUTORIAL_INGRESS_OVERRIDE: bool = false
 var TUTORIAL_OMISSION_OVERRIDE: bool = false
@@ -40,8 +41,11 @@ var initial_beam_rotation: float = 0.0 #REQUIRED FOR PULSARS TO WORK. BARELY KNE
 var wormhole_shader = preload("uid://bkngs6wdkye6n")
 var pulsar_beam_material = preload("uid://dtpqpy1b1rnxv")
 
+var vis_panorama = preload("uid://byp6pykkhwnpf")
+var rad_panorama = preload("uid://c7u31smqi45er")
 
 func _ready():
+	_on_scope_mode_changed(playerAPI.SCOPE_MODES.VIS)
 	control.connect("targetFOVChange", _on_target_FOV_change)
 	pass
 
@@ -156,6 +160,7 @@ func spawnBodies():
 					spawn_pulsar_beams(body)
 			elif body.get_type() == starSystemAPI.BODY_TYPES.WORMHOLE:
 				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
+			new_body_3d._on_scope_mode_changed(get_scope_mode())
 			add_child(new_body_3d) 
 		elif body is glintBodyAPI:
 			spawn_glint_body_3d_for_identifier(body.get_identifier())
@@ -172,6 +177,7 @@ func spawn_glint_body_3d_for_identifier(id: int):
 	var new_entity_3d = entity_3d.instantiate()
 	new_entity_3d.set_identifier(id)
 	new_entity_3d.initialize(pow(pow(10, -1.3), 0.28) / 128) #pixel size, can be different for stations/anomalies
+	new_entity_3d._on_scope_mode_changed(get_scope_mode())
 	add_child(new_entity_3d)
 	pass
 
@@ -206,14 +212,18 @@ func _on_target_FOV_change(fov: float):
 	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "scopes_fov_change")
 	pass
 
-func _on_scope_mode_changed(new_mode: playerAPI.SCOPE_MODES) -> void:
-	
-	
-	
-	
-	
+func _on_scope_mode_changed(_new_mode: playerAPI.SCOPE_MODES) -> void:
+	for child in get_children():
+		if child.is_in_group("body_3d"):
+			child._on_scope_mode_changed(_new_mode)
+	match _new_mode:
+		playerAPI.SCOPE_MODES.VIS:
+			rad_post_process.hide()
+			environment.get_environment().get_sky().get_material().set_shader_parameter("source_panorama", vis_panorama)
+		playerAPI.SCOPE_MODES.RAD:
+			rad_post_process.show()
+			environment.get_environment().get_sky().get_material().set_shader_parameter("source_panorama", rad_panorama)
 	pass
-
 
 func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Array]:
 	var dir1 = Vector2.UP.rotated(star.beam_rotation)

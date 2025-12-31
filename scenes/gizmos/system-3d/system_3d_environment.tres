@@ -1,7 +1,7 @@
 [gd_resource type="Environment" load_steps=5 format=3 uid="uid://b1yq54jdcwnuc"]
 
 [ext_resource type="Shader" uid="uid://i105jey58ell" path="res://shader-gen/sky_shader.tres" id="1_tuodv"]
-[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/misc/star_backdrop.jpeg" id="2_4frer"]
+[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/system-3d/star_backdrop.jpeg" id="2_4frer"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ch2h2"]
 shader = ExtResource("1_tuodv")

@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://cdv8lviwsrhdv" path="res://scenes/windows/long-range-scopes/rangefinder.gd" id="2_rbmww"]
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="3_drepj"]
 [ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://shader-gen/system-3d/sky_shader.tres" id="3_iyrid"]
-[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/misc/star_backdrop.jpeg" id="4_kwwow"]
+[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/system-3d/star_backdrop.jpeg" id="4_kwwow"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="4_mjqhh"]
 [ext_resource type="AudioStream" uid="uid://c4ia3frwfyqim" path="res://sound/long-range-scopes/shutter1.wav" id="10_0oh6i"]
 [ext_resource type="AudioStream" uid="uid://dynsxxaf7y458" path="res://sound/long-range-scopes/shutter2.wav" id="11_o2hra"]

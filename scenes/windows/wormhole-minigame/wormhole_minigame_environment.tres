@@ -1,7 +1,7 @@
 [gd_resource type="Environment" load_steps=5 format=3 uid="uid://ktbbdqasxhbr"]
 
 [ext_resource type="Shader" uid="uid://bsj7ob65dqjfo" path="res://shader-gen/wormhole-minigame/sky_shader_local.tres" id="1_f47yt"]
-[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/misc/star_backdrop.jpeg" id="2_rkxyt"]
+[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/system-3d/star_backdrop.jpeg" id="2_rkxyt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7x8tp"]
 shader = ExtResource("1_f47yt")
