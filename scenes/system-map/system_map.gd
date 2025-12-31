@@ -32,6 +32,7 @@ signal playerBelowCMERingRadius
 signal playerInPulsarBeamCooldownExpired
 signal updatePlayerInAsteroidBelt(_player_in_asteroid_belt: bool)
 signal updatePlayerInPulsarBeam(_player_in_pulsar_beam: bool)
+signal toggleScopeModeSwitchButton
 
 signal audioVisualizerPopup
 signal journeyMapPopup
@@ -492,6 +493,9 @@ func _unhandled_input(event):
 		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "help_overlay_show")
 	elif event.is_action_released("SC_OPEN_HELP_OVERLAY"):
 		help_overlay.hide()
+	
+	if event.is_action_released("SC_SCOPE_SWITCH"):
+		emit_signal("toggleScopeModeSwitchButton")
 	pass
 
 func reset_player_boosting() -> void:

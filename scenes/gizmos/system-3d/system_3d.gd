@@ -60,12 +60,6 @@ func _physics_process(_delta):
 				
 				#THIS ACTUALLY WORKS??? THANKS - initial_beam_rotation
 	
-	#setting scope mode
-	if not mode_switch_button.is_pressed():
-		scope_mode = playerAPI.SCOPE_MODES.VIS
-	else:
-		scope_mode = playerAPI.SCOPE_MODES.RAD
-	
 	#setting post process
 	var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)
 	post_process.material.set("shader_parameter/pixel_size", round(fov_to_pixel_size))
@@ -215,6 +209,9 @@ func _on_target_FOV_change(fov: float):
 func _on_scope_mode_changed(new_mode: playerAPI.SCOPE_MODES) -> void:
 	
 	
+	
+	
+	
 	pass
 
 
@@ -247,3 +244,15 @@ func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Ar
 	
 	#these points are already rotated according to the stars current beam_rotation variable at the time of the system being loaded! therefore, to find the real rotation for the MeshInstances, do beam_rotation - initial_beam_rotation :>
 	return [points1, points2]
+
+
+func _on_toggle_scope_mode_switch_button() -> void: #system_map checks for keybind 'SC_SCOPE_SWITCH' and sends change to game.gd, which sends it here
+	mode_switch_button.set_pressed(!mode_switch_button.button_pressed)
+	pass
+
+func _on_mode_switch_button_toggled(toggled_on: bool) -> void:
+	if not toggled_on:
+		scope_mode = playerAPI.SCOPE_MODES.VIS
+	else:
+		scope_mode = playerAPI.SCOPE_MODES.RAD
+	pass

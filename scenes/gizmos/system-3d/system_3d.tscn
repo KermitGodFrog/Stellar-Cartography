@@ -106,3 +106,5 @@ environment = SubResource("Environment_wo5s4")
 
 [node name="star_omni_light" type="OmniLight3D" parent="system_3d"]
 omni_range = 4096.0
+
+[connection signal="toggled" from="system_3d/camera_offset/camera/canvas_layer/control/mode_switch_button" to="system_3d" method="_on_mode_switch_button_toggled"]

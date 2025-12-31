@@ -175,6 +175,7 @@ func connect_all_signals() -> void:
 	system_map.connect("updatePlayerInAsteroidBelt", _on_update_player_in_asteroid_belt)
 	system_map.connect("updatePlayerInPulsarBeam", _on_update_player_in_pulsar_beam)
 	system_map.connect("playerInPulsarBeamCooldownExpired", _on_player_in_pulsar_beam_cooldown_expired)
+	system_map.connect("toggleScopeModeSwitchButton", _on_toggle_scope_mode_switch_button)
 	
 	system_3d.connect("foundBody", _on_found_body)
 	system_3d.connect("addConsoleEntry", _on_add_console_entry)
@@ -1059,6 +1060,10 @@ func _on_play_civilized_system_leitmotif() -> void:
 	
 	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/motif.tres")
 	return
+
+func _on_toggle_scope_mode_switch_button() -> void:
+	system_3d._on_toggle_scope_mode_switch_button()
+	pass
 
 func _on_open_LRS():
 	await get_tree().physics_frame
