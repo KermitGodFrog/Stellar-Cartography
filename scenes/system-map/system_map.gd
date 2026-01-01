@@ -463,7 +463,7 @@ func _unhandled_input(event):
 			follow_body_modifier = closest_body
 			action_body = closest_body
 			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
-			async_add_movement_ping(closest_body.position)
+			async_add_movement_ping(closest_body.position, closest_body)
 			return
 		
 		locked_body = null
@@ -759,10 +759,12 @@ func async_add_ping(body: bodyAPI) -> void:
 	get_tree().call_group("audioHandler", "play_once", LIDAR_bounceback, 0.0, "SFX")
 	pass
 
-func async_add_movement_ping(pos: Vector2) -> void: #manual targeting n shit
-	var ping = load("uid://rt20q5blyny2").duplicate(true)
+func async_add_movement_ping(pos: Vector2, body: bodyAPI = null) -> void: #manual targeting n shit
+	var ping: pingDisplayHelper = load("uid://rt20q5blyny2").duplicate(true)
 	ping.position = pos
 	ping.resetTime()
+	if body:
+		body.connect("position_updated", ping.updatePosition)
 	MOVEMENT_PINGS.append(ping)
 	pass
 

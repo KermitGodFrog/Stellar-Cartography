@@ -17,6 +17,10 @@ func updateTime(delta):
 	time = maxi(0, time - delta)
 	pass
 
+func updatePosition(new_position: Vector2) -> void:
+	position = new_position
+	pass
+
 func updateDisplay():
 	var normalized_time = remap(time, 0, max_time, 1.0, 0.0)
 	if radius_curve: current_radius = radius_curve.sample(normalized_time)
