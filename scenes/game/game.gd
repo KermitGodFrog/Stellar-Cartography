@@ -458,6 +458,7 @@ func _on_player_following_body(following_body: bodyAPI):
 func body_query_add_shared(query: responseQuery, body: bodyAPI) -> void:
 	query.add("type", starSystemAPI.BODY_TYPES.find_key(body.get_type()))
 	query.add_tree_access("name", body.get_display_name())
+	query.add_tree_access("known", body.is_known())
 	query.add("tutorial", init_type == global_data.GAME_INIT_TYPES.TUTORIAL)
 	pass
 
