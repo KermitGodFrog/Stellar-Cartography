@@ -22,3 +22,6 @@ func updateDisplay():
 	if radius_curve: current_radius = radius_curve.sample(normalized_time)
 	if color_curve: current_color = color_curve.sample(normalized_time)
 	pass
+
+func is_expired() -> bool:
+	return time == 0

@@ -91,6 +91,8 @@ enum BOOST_SOUND_TYPES {START, END}
 @onready var question_mark_texture = preload("uid://diwsd0k5wno8h")
 @onready var empty_frame = preload("uid://id0yg3qh1o32")
 
+@onready var target_texture = preload("uid://diuwq6pqf7xir")
+
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body_modifier : bodyAPI #used for drawing scope direction imdicator accurately and nothinh eklse
 var follow_body : bodyAPI
@@ -104,6 +106,8 @@ var body_size_multiplier_hint: float = 0.0
 var SONAR_PINGS: Array[pingDisplayHelper]
 var SONAR_POLYGON: PackedVector2Array
 var SONAR_POLYGON_DISPLAY_TIME: float = 0
+
+var MOVEMENT_PINGS: Array[pingDisplayHelper]
 
 #to display CME data
 var CME_RING_RADIUS: int = 0
@@ -184,8 +188,15 @@ func _physics_process(delta):
 	if SONAR_PINGS:
 		for ping in SONAR_PINGS:
 			ping.updateTime(delta)
-			if ping.time == 0:
+			if ping.is_expired():
 				SONAR_PINGS.erase(ping)
+	#updating movement ping stuff
+	if MOVEMENT_PINGS:
+		for ping in MOVEMENT_PINGS:
+			ping.updateTime(delta)
+			if ping.is_expired():
+				MOVEMENT_PINGS.erase(ping)
+	# ew, ugly! ^^^
 	
 	#CME shenanigans
 	if CME_RING_SHOWN:
@@ -452,12 +463,14 @@ func _unhandled_input(event):
 			follow_body_modifier = closest_body
 			action_body = closest_body
 			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
+			async_add_movement_ping(closest_body.position)
 			return
 		
 		locked_body = null
 		action_body = null
 		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
 		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
+		async_add_movement_ping(get_global_mouse_position())
 		get_tree().call_group("eventsHandler", "speak", self, "player_target_position_update")
 	
 	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE"):
@@ -506,6 +519,7 @@ func reset_actions_buttons_pressed() -> void: #godot 4.3 migration issue quickfi
 func _draw():
 	draw_map()
 	draw_sonar()
+	draw_movement()
 	draw_CME()
 	draw_pulsar_beams()
 	pass
@@ -516,6 +530,20 @@ func draw_sonar():
 	for ping in SONAR_PINGS:
 		ping.updateDisplay()
 		draw_circle(ping.position, ping.current_radius, ping.current_color)
+	pass
+
+func draw_movement() -> void: # draw movement pings (manual set course)
+	var size_exponent = pow(camera.zoom.length(), -0.5)
+	
+	for ping in MOVEMENT_PINGS:
+		ping.updateDisplay()
+		var size = size_exponent * (ping.current_radius * 15.0)
+		target_texture.draw_rect(
+			get_canvas_item(), 
+			global_data.get_offset_rect2(ping.position, size, size), 
+			false, 
+			ping.current_color
+		)
 	pass
 
 func draw_CME():
@@ -729,6 +757,13 @@ func async_add_ping(body: bodyAPI) -> void:
 	SONAR_PINGS.append(ping)
 	
 	get_tree().call_group("audioHandler", "play_once", LIDAR_bounceback, 0.0, "SFX")
+	pass
+
+func async_add_movement_ping(pos: Vector2) -> void: #manual targeting n shit
+	var ping = load("uid://rt20q5blyny2").duplicate(true)
+	ping.position = pos
+	ping.resetTime()
+	MOVEMENT_PINGS.append(ping)
 	pass
 
 func play_boost_sound(sound_type: BOOST_SOUND_TYPES):
