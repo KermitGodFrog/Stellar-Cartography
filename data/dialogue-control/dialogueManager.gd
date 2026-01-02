@@ -607,14 +607,18 @@ func clearMusic() -> void:
 	dialogue.clear_music()
 	pass
 
-func discoverRandomBodyWithFlair() -> void:
+func discoverRandomBodyWithFlair(anomaly_seed: String = String()) -> void:
+	var random = RandomNumberGenerator.new()
+	random.set_seed(hash(int(anomaly_seed) - rules_triggered))
+	
 	var undiscovered_bodies: Array[bodyAPI] = []
 	for body in system.bodies:
 		if not (body.get_type() == starSystemAPI.BODY_TYPES.STAR or body.get_type() == starSystemAPI.BODY_TYPES.STATION):
 			if not body.is_known():
 				undiscovered_bodies.append(body)
 	if undiscovered_bodies.size() > 0:
-		var body: bodyAPI = undiscovered_bodies.pick_random()
+		var random_index: int = random.randi_range(0, undiscovered_bodies.size() - 1)
+		var body: bodyAPI = undiscovered_bodies[random_index]
 		emit_signal("foundBody", body.get_identifier())
 		dialogue.add_text(str("[color=green](Gained scan data for ", body.get_display_name(), ") [/color]"))
 		playSoundEffect("success.wav") #easier than putting it in every single rule?
@@ -638,7 +642,12 @@ const reward_types = {
 	"DISCOVERY": {"LOW": 1, "MEDIUM": 2, "HIGH": 3}
 }
 func addRandomRewardWithFlair(rarity: String = "LOW") -> void:
-	var reward = reward_types.keys().pick_random()
+	var anomaly_seed = tree_access_memory.get("seed", randi()) #this goes against all of the rules for this class... DO NOT DO THIS ANYWHERE ELSE!!! I AM CUTTING CORNERS BY DOING THIS AND ITS *BAD* - ONLY DOING BC CAN ONLY HAVE ONE ARGUMENT FOR DIALOGUE METHODS
+	var random = RandomNumberGenerator.new()
+	random.set_seed(hash(int(anomaly_seed) - rules_triggered))
+	
+	var random_index: int = random.randi_range(0, reward_types.keys().size() - 1)
+	var reward = reward_types.keys()[random_index]
 	match reward:
 		"STRESS":
 			removeHullStressWithFlair(reward_types.get(reward).get(rarity))
@@ -649,7 +658,10 @@ func addRandomRewardWithFlair(rarity: String = "LOW") -> void:
 				discoverRandomBodyWithFlair()
 	pass
 
-func unlockRandomUpgradeWithFlair() -> void:
+func unlockRandomUpgradeWithFlair(anomaly_seed: String = String()) -> void:
+	var random = RandomNumberGenerator.new()
+	random.set_seed(hash(int(anomaly_seed) - rules_triggered))
+	
 	var IDs: Array[playerAPI.UPGRADE_ID] = []
 	for ID in player.UPGRADE_ID:
 		IDs.append(player.UPGRADE_ID.get(ID))
@@ -657,7 +669,8 @@ func unlockRandomUpgradeWithFlair() -> void:
 	var available_IDs = IDs.filter(is_available.bind(player.unlocked_upgrades))
 	
 	if available_IDs.size() > 0:
-		var random_ID = available_IDs.pick_random()
+		var random_index: int = random.randi_range(0, available_IDs.size() - 1)
+		var random_ID = available_IDs[random_index]
 		if player.is_upgrade_unlock_valid(random_ID):
 			emit_signal("upgradeShip", random_ID, int())
 			dialogue.add_text("[color=green](Unlocked %s) [/color]" % player.UPGRADE_ID.find_key(random_ID).capitalize())
@@ -671,7 +684,7 @@ func is_available(ID: int, _unlocked_upgrades: Array[playerAPI.UPGRADE_ID]) -> b
 	return false
 
 func getNavBuoyOutcomeWithFlair(anomaly_seed: String = String()) -> void: # for nav buoy space anomaly, have to input String anomaly_seed as fact reference substitution obviously doesnt convert to int, and thats fine
-	emit_signal("rollNavBuoy", int(anomaly_seed)) #continued in _on_receive_nav_buoy_roll
+	emit_signal("rollNavBuoy", hash(int(anomaly_seed) - rules_triggered)) #continued in _on_receive_nav_buoy_roll
 	pass
 func _on_receive_nav_buoy_roll(roll: Array) -> void:
 	var nav_buoy_tag = roll.front()
