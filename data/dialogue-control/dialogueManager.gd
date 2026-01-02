@@ -9,6 +9,7 @@ signal setPauseMode(new_mode: game_data.PAUSE_MODES)
 func _on_pause_mode_changed(value):
 	match value:
 		game_data.PAUSE_MODES.NONE:
+			rules_triggered = 0
 			dialogue.hide()
 		game_data.PAUSE_MODES.DIALOGUE:
 			dialogue.show()
@@ -54,6 +55,8 @@ var rules: Array[responseRule] = []
 enum POINTERS {RULE, CRITERIA, TRIGGER_FUNCTIONS, TRIGGER_RULES, TEXT, OPTIONS, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, QUERY_OLD_BEST_CONCEPT, APPLY_FACTS}
 
 var _achievements_array: Array[responseAchievement] = []
+
+var rules_triggered: int = 0
 
 @onready var dialogue = $dialogue/dialogue_control
 
@@ -289,7 +292,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			
 			if rules_with_max_matches.size() > 0:
 				var random = RandomNumberGenerator.new()
-				random.set_seed(incoming_query.facts.get("seed", randi()))
+				random.set_seed(hash(incoming_query.facts.get("seed", randi()) - rules_triggered))
 				var random_index = random.randi_range(0, rules_with_max_matches.size() - 1)
 				
 				var matched_rule: responseRule = rules_with_max_matches[random_index]
@@ -384,6 +387,7 @@ func get_relevant_rules(incoming_query: responseQuery) -> Array[responseRule]:
 
 
 func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQuery):
+	rules_triggered += 1
 	print("QUERY HANDLER: ", calling, " TRIGGERING RULE ", rule.get_name())
 	
 	#apply_facts: \\\\\\\\\\\\\ BEFORE EVERYTHING THAT REFRESHES DIALOGUE MEMORY \/\/\/\/ (MESSES WITH ACTUAL COLUMN ORDER IN THE DOC)
@@ -666,7 +670,7 @@ func is_available(ID: int, _unlocked_upgrades: Array[playerAPI.UPGRADE_ID]) -> b
 		return true
 	return false
 
-func getNavBuoyOutcomeWithFlair(anomaly_seed: String) -> void: # for nav buoy space anomaly, have to input String anomaly_seed as fact reference substitution obviously doesnt convert to int, and thats fine
+func getNavBuoyOutcomeWithFlair(anomaly_seed: String = String()) -> void: # for nav buoy space anomaly, have to input String anomaly_seed as fact reference substitution obviously doesnt convert to int, and thats fine
 	emit_signal("rollNavBuoy", int(anomaly_seed)) #continued in _on_receive_nav_buoy_roll
 	pass
 func _on_receive_nav_buoy_roll(roll: Array) -> void:
