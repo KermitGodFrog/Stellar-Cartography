@@ -32,6 +32,7 @@ signal playerBelowCMERingRadius
 signal playerInPulsarBeamCooldownExpired
 signal updatePlayerInAsteroidBelt(_player_in_asteroid_belt: bool)
 signal updatePlayerInPulsarBeam(_player_in_pulsar_beam: bool)
+signal openPauseMenu
 
 signal audioVisualizerPopup
 signal journeyMapPopup
@@ -934,4 +935,8 @@ func follow_and_lock_item(item: TreeItem):
 func _on_tabs_tab_changed(tab: int) -> void:
 	if tabs.get_tab_title(tab) == "INFO":
 		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "system_list_info_tab_select")
+	pass
+
+func _on_settings_button_pressed() -> void:
+	emit_signal("openPauseMenu")
 	pass

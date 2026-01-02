@@ -175,6 +175,7 @@ func connect_all_signals() -> void:
 	system_map.connect("updatePlayerInAsteroidBelt", _on_update_player_in_asteroid_belt)
 	system_map.connect("updatePlayerInPulsarBeam", _on_update_player_in_pulsar_beam)
 	system_map.connect("playerInPulsarBeamCooldownExpired", _on_player_in_pulsar_beam_cooldown_expired)
+	system_map.connect("openPauseMenu", _on_open_pause_menu)
 	
 	system_3d.connect("foundBody", _on_found_body)
 	system_3d.connect("addConsoleEntry", _on_add_console_entry)
