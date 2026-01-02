@@ -689,6 +689,7 @@ func _on_go_to_button_pressed():
 	if locked_body:
 		action_body = locked_body
 		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.GO_TO, action_body)
+		async_add_movement_ping(action_body.position, action_body)
 	pass
 
 func _on_orbit_button_pressed():
@@ -696,6 +697,7 @@ func _on_orbit_button_pressed():
 	if locked_body:
 		action_body = locked_body
 		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
+		async_add_movement_ping(action_body.position, action_body)
 	pass
 
 func _on_stop_button_pressed():
