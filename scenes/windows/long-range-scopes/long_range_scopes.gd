@@ -16,6 +16,7 @@ var _REWARD_MATRIX: Array = [] #carried to _on_state_changed
 
 @onready var space_whale_scene = preload("uid://dwtt1i110irrs")
 @onready var space_coral_scene = preload("uid://ds142pkckx34w")
+@onready var space_olm_scene = preload("uid://3y8dknybi0sm")
 @onready var hud_default = preload("uid://3ea0xeivnnax")
 @onready var hud_holding = preload("uid://b7gnhndm5menj")
 @onready var hud_release = preload("uid://3xbvtj2mc6e5")
@@ -204,6 +205,30 @@ func _on_current_entity_changed(new_entity : entityBodyAPI):
 						space_coral.transform = space_coral.transform.translated(Vector3(0, (REVERSE_GENERATION_POSITIONS[ii + 2].x * 0.25), 0))
 						
 						add_child(space_coral)
+					else: break
+			
+			game_data.ENTITY_CLASSIFICATIONS.OLM_MAELSTROM:
+				
+				for olm in 15:
+					if (ii + 1) < GENERATION_POSITIONS.size():
+						ii += 1
+						var pos = GENERATION_POSITIONS[ii]
+						
+						var space_olm = space_olm_scene.instantiate()
+						space_olm.transform = Transform3D(GENERATION_BASIS, pos)
+						space_olm.transform.basis = space_olm.transform.basis.rotated(game_data.GENERATION_VECTORS.pick_random(), deg_to_rad(global_data.get_randi(0,20)))
+						space_olm.initial_basis = space_olm.transform.basis
+						space_olm.target_basis = space_olm.initial_basis
+						
+						add_child(space_olm)
+					else: break
+				
+				
+				
+				
+				
+				
+			
 	
 	#var entity_dir_from_player = player_position.direction_to(current_entity.position)
 	#camera_offset.transform.basis = camera_offset.transform.basis.looking_at(Vector3(entity_dir_from_player.x, 0, entity_dir_from_player.y))
