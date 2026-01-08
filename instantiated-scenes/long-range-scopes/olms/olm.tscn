@@ -1,11 +1,11 @@
 [gd_scene load_steps=5 format=3 uid="uid://3y8dknybi0sm"]
 
 [ext_resource type="Script" uid="uid://b7oslqy7gucmv" path="res://instantiated-scenes/long-range-scopes/long_range_scopes_prop.gd" id="1_7eb3a"]
-[ext_resource type="PackedScene" uid="uid://d3r41vmxvt7ih" path="res://meshes/long-range-scopes/olms/olm.glb" id="1_w1jn0"]
+[ext_resource type="PackedScene" uid="uid://dbgtorew8ri25" path="res://meshes/long-range-scopes/olms/olm.glb" id="1_w1jn0"]
 
 [sub_resource type="Curve" id="Curve_7eb3a"]
-_limits = [0.0, 500.0, 0.0, 1.0]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.05, 500), 0.0, 0.0, 0, 0, Vector2(0.25, 100), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_limits = [0.0, 750.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 275), 0.0, 0.0, 0, 0, Vector2(0.9, 750), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="Curve" id="Curve_da6ij"]
@@ -13,33 +13,29 @@ _limits = [0.0, 750.0, 0.0, 1.0]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25, 750), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[node name="olm" type="Node3D" groups=["long_range_scopes_prop", "olm"]]
+[node name="olm" groups=["long_range_scopes_prop", "olm"] instance=ExtResource("1_w1jn0")]
 script = ExtResource("1_7eb3a")
 size_reward_curve = SubResource("Curve_7eb3a")
 distance_reward_curve = SubResource("Curve_da6ij")
 animation_mean = 20
 animation_stdev = 5
-animation_names = Array[String](["tail_wag", "head_nod"])
-bounds = NodePath("olm/olm/bounds")
-animation_player = NodePath("olm/AnimationPlayer")
+animation_names = Array[String](["tail_wag", "head_nod", "head_turn"])
+bounds = NodePath("olm/bounds")
+animation_player = NodePath("AnimationPlayer")
 
-[node name="olm" parent="." instance=ExtResource("1_w1jn0")]
-
-[node name="Skeleton3D" parent="olm/olm" index="0"]
+[node name="Skeleton3D" parent="olm" index="0"]
 bones/5/rotation = Quaternion(0.46471664, 0.47526413, 0.67058617, -0.32935822)
 
-[node name="bounds" type="Node3D" parent="olm/olm" index="1"]
+[node name="bounds" type="Node3D" parent="olm" index="1"]
 
-[node name="Marker3D" type="Marker3D" parent="olm/olm/bounds"]
+[node name="1" type="Marker3D" parent="olm/bounds" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.2, 0)
 
-[node name="Marker3D2" type="Marker3D" parent="olm/olm/bounds"]
+[node name="2" type="Marker3D" parent="olm/bounds" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, -0.5, 0.5)
 
-[node name="Marker3D3" type="Marker3D" parent="olm/olm/bounds"]
+[node name="3" type="Marker3D" parent="olm/bounds" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15, -0.5, 0.5)
 
-[node name="Marker3D4" type="Marker3D" parent="olm/olm/bounds"]
+[node name="4" type="Marker3D" parent="olm/bounds" index="3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.65, 0.25)
-
-[editable path="olm"]
