@@ -610,7 +610,9 @@ func _on_player_entering_system(system: starSystemAPI):
 	
 	#not awaiting onCloseDialog because wacky shtuff happens!!!!!!! audioHandler should only play it when pause_mode is NONE anyway
 	
-	if system.is_civilized():
+	if world.player.systems_traversed == roundi(world.player.total_systems / 2):
+		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/halfway_point.ogg")
+	elif system.is_civilized():
 		_on_play_civilized_system_leitmotif()
 	pass
 
