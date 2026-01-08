@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://3y8dknybi0sm"]
+
+[ext_resource type="Script" uid="uid://b7oslqy7gucmv" path="res://instantiated-scenes/long-range-scopes/long_range_scopes_prop.gd" id="1_7eb3a"]
+[ext_resource type="PackedScene" uid="uid://d3r41vmxvt7ih" path="res://meshes/long-range-scopes/olms/olm.glb" id="1_w1jn0"]
+
+[sub_resource type="Curve" id="Curve_7eb3a"]
+_limits = [0.0, 1000.0, 0.0, 1.0]
+_data = [Vector2(0, 1000), 0.0, 0.0, 0, 0, Vector2(0.25, 500), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_da6ij"]
+_limits = [0.0, 1000.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25383705, 1000), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="olm" type="Node3D" groups=["long_range_scopes_prop", "olm"]]
+script = ExtResource("1_7eb3a")
+size_reward_curve = SubResource("Curve_7eb3a")
+distance_reward_curve = SubResource("Curve_da6ij")
+animation_mean = 10
+animation_stdev = 2
+animation_names = Array[String](["tail_wag", "head_nod"])
+bounds = NodePath("olm/olm/bounds")
+animation_player = NodePath("olm/AnimationPlayer")
+
+[node name="olm" parent="." instance=ExtResource("1_w1jn0")]
+
+[node name="Skeleton3D" parent="olm/olm" index="0"]
+bones/5/rotation = Quaternion(0.46471664, 0.47526413, 0.67058617, -0.32935822)
+
+[node name="bounds" type="Node3D" parent="olm/olm" index="1"]
+
+[node name="Marker3D" type="Marker3D" parent="olm/olm/bounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.2, 0)
+
+[node name="Marker3D2" type="Marker3D" parent="olm/olm/bounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, -0.5, 0.5)
+
+[node name="Marker3D3" type="Marker3D" parent="olm/olm/bounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15, -0.5, 0.5)
+
+[node name="Marker3D4" type="Marker3D" parent="olm/olm/bounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.65, 0.25)
+
+[editable path="olm"]
