@@ -4,21 +4,21 @@
 [ext_resource type="PackedScene" uid="uid://d3r41vmxvt7ih" path="res://meshes/long-range-scopes/olms/olm.glb" id="1_w1jn0"]
 
 [sub_resource type="Curve" id="Curve_7eb3a"]
-_limits = [0.0, 1000.0, 0.0, 1.0]
-_data = [Vector2(0, 1000), 0.0, 0.0, 0, 0, Vector2(0.25, 500), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
+_limits = [0.0, 500.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.05, 500), 0.0, 0.0, 0, 0, Vector2(0.25, 100), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
 
 [sub_resource type="Curve" id="Curve_da6ij"]
-_limits = [0.0, 1000.0, 0.0, 1.0]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25383705, 1000), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_limits = [0.0, 750.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25, 750), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [node name="olm" type="Node3D" groups=["long_range_scopes_prop", "olm"]]
 script = ExtResource("1_7eb3a")
 size_reward_curve = SubResource("Curve_7eb3a")
 distance_reward_curve = SubResource("Curve_da6ij")
-animation_mean = 10
-animation_stdev = 2
+animation_mean = 20
+animation_stdev = 5
 animation_names = Array[String](["tail_wag", "head_nod"])
 bounds = NodePath("olm/olm/bounds")
 animation_player = NodePath("olm/AnimationPlayer")
