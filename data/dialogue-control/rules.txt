@@ -406,7 +406,7 @@ SA_02NavBuoy,"concept: SA_PortalResponse, player_in_CORE_or_FRONTIER_region: tru
 SA_02NavBuoyContinue,"concept: optionSelected, option: SA_02NavBuoyContinue",getNavBuoyOutcomeWithFlair: $seed,,,Leave:defaultHardLeave,,,,,
 ,,,,,,,,,,
 SA03SeederShipResponse,"concept: SASeederShipDispatch, player_SECURITY_OFFICER_alive: true",,,"A faint dot is visible on thermals, deep in the ships substructure. Your leading salvors interpret this as a sign that the ship has valuable, functioning technology which could be ransacked.",Strip it: SA03SeederShipStrip,,,SASeederShipAuxiliaryMessage,,
-SA03SeederShipStrip,"concept: optionSelected, option: SA03SeederShipStrip",,,,,,,,,
+SA03SeederShipStrip,"concept: optionSelected, option: SA03SeederShipStrip",,,,Leave: defaultHardLeave,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
