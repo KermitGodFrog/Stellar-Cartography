@@ -56,11 +56,11 @@ func _physics_process(_delta):
 			var star = system.get_first_star()
 			var player_distance = player_position.distance_to(star.position)
 			var offset = Vector2(0, -player_distance).rotated(star.beam_rotation)
-			match child.get_name(): #horrible way to do this but i got 4.5 to 5 hours of sleep last night so give me a FUCKING BREAK !!! BITCH !!!
-				"pulsar_beam_0":
-					child.set_position(Vector3(offset.x, 0, offset.y) * system_scalar)
-				"pulsar_beam_1":
-					child.set_position(Vector3(-offset.x, 0, -offset.y) * system_scalar)
+			#\/ horrible way to do this but i got 4.5 to 5 hours of sleep last night so give me a FUCKING BREAK !!! BITCH !!!
+			if child.is_in_group("pulsar_beam_3d_flyby_sfx_0"):
+				child.set_position(Vector3(offset.x, 0, offset.y) * system_scalar)
+			elif child.is_in_group("pulsar_beam_3d_flyby_sfx_1"):
+				child.set_position(Vector3(-offset.x, 0, -offset.y) * system_scalar)
 	
 	#setting post process
 	var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)
@@ -199,7 +199,7 @@ func spawn_pulsar_beams(_star: pulsarBodyAPI) -> void:
 	for flyby_sfx in 2:
 		var instance = flyby.instantiate() as AudioStreamPlayer3D
 		instance.add_to_group("pulsar_beam_3d_flyby_sfx")
-		instance.set_name("pulsar_beam_%.f" % flyby_sfx)
+		instance.add_to_group("pulsar_beam_3d_flyby_sfx_%.f" % flyby_sfx)
 		
 		#very important setup do not change values or the game wont start
 		instance.set_volume_db(12.0)
