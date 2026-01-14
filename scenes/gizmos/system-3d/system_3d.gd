@@ -14,6 +14,7 @@ var label_locked_body_identifier: int
 
 var body_3d = preload("uid://bdotk8rm2p7df")
 var entity_3d = preload("uid://csvx63c0ejn6a")
+var flyby = preload("uid://c7mmitfihh8pe")
 
 @onready var control = $camera_offset/camera/canvas_layer/control
 @onready var camera_offset = $camera_offset
@@ -51,6 +52,15 @@ func _physics_process(_delta):
 				beam.transform = beam.transform.looking_at(a_3d)
 				
 				#THIS ACTUALLY WORKS??? THANKS - initial_beam_rotation
+		elif child.is_in_group("pulsar_beam_3d_flyby_sfx"):
+			var star = system.get_first_star()
+			var player_distance = player_position.distance_to(star.position)
+			var offset = Vector2(0, -player_distance).rotated(star.beam_rotation)
+			match child.get_name(): #horrible way to do this but i got 4.5 to 5 hours of sleep last night so give me a FUCKING BREAK !!! BITCH !!!
+				"pulsar_beam_0":
+					child.set_position(Vector3(offset.x, 0, offset.y) * system_scalar)
+				"pulsar_beam_1":
+					child.set_position(Vector3(-offset.x, 0, -offset.y) * system_scalar)
 	
 	#setting post process
 	var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)
@@ -130,7 +140,8 @@ func spawnBodies():
 	for child in get_children():
 		if child.is_in_group("body_3d") \
 		or child.is_in_group("asteroid_belt_3d") \
-		or child.is_in_group("pulsar_beam_3d"):
+		or child.is_in_group("pulsar_beam_3d") \
+		or child.is_in_group("pulsar_beam_3d_flyby_sfx"):
 			call_deferred("remove_child", child)
 			child.queue_free()
 		
@@ -183,6 +194,19 @@ func spawn_pulsar_beams(_star: pulsarBodyAPI) -> void:
 		instance.mesh = arr_mesh
 		instance.add_to_group("pulsar_beam_3d")
 		instance.set_surface_override_material(0, pulsar_beam_material)
+		add_child(instance)
+	
+	for flyby_sfx in 2:
+		var instance = flyby.instantiate() as AudioStreamPlayer3D
+		instance.add_to_group("pulsar_beam_3d_flyby_sfx")
+		instance.set_name("pulsar_beam_%.f" % flyby_sfx)
+		
+		#very important setup do not change values or the game wont start
+		instance.set_volume_db(12.0)
+		instance.set_max_distance(300.0)
+		instance.set_unit_size(25.0)
+		instance.set_pitch_scale(3.0)
+		
 		add_child(instance)
 	pass
 
