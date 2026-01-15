@@ -4,5 +4,4 @@
 
 [resource]
 script = ExtResource("1_xq2x7")
-written_identifier = ""
 objective_wIDs = ["tutorialFollowAnte"]

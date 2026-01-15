@@ -4,5 +4,4 @@
 
 [resource]
 script = ExtResource("1_txsnk")
-written_identifier = ""
 objective_wIDs = ["tutorialOptionalZoomScopes", "tutorialDiscoverPrelude"]

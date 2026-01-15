@@ -285,6 +285,7 @@ func _on_toggle_scope_mode_switch_button() -> void: #system_map checks for keybi
 	pass
 
 func _on_mode_switch_button_toggled(toggled_on: bool) -> void:
+	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "scope_mode_switch")
 	if not toggled_on:
 		scope_mode = playerAPI.SCOPE_MODES.VIS
 		get_tree().call_group("audioHandler", "play_once", load("uid://bcahs3q6yv8yv"), 0.0, "SFX")

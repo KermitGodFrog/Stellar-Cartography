@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://dip445kgph7or"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_lie2m"]
+
+[resource]
+script = ExtResource("1_lie2m")
+title = "(Optional) Change Scope Mode"
+description = "Press the 'RAD' button on SCOPES (or press [KEY_SPACE]) to switch the scope mode. Depending on the scope mode, different bodies can be discovered.
+When 'RAD' is enabled, space anomalies, stellar phenomena and other small bodies can be discovered while in range. When disabled, planets and other large bodies can be discovered while in range."
+metadata/_custom_type_script = "uid://cxmuiuh6uokvl"
