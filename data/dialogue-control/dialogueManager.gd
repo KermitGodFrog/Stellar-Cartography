@@ -9,6 +9,7 @@ signal setPauseMode(new_mode: game_data.PAUSE_MODES)
 func _on_pause_mode_changed(value):
 	match value:
 		game_data.PAUSE_MODES.NONE:
+			rules_triggered = 0
 			dialogue.hide()
 		game_data.PAUSE_MODES.DIALOGUE:
 			dialogue.show()
@@ -54,6 +55,8 @@ var rules: Array[responseRule] = []
 enum POINTERS {RULE, CRITERIA, TRIGGER_FUNCTIONS, TRIGGER_RULES, TEXT, OPTIONS, QUERY_ALL_CONCEPT, QUERY_BEST_CONCEPT, QUERY_RAND_BEST_CONCEPT, QUERY_OLD_BEST_CONCEPT, APPLY_FACTS}
 
 var _achievements_array: Array[responseAchievement] = []
+
+var rules_triggered: int = 0
 
 @onready var dialogue = $dialogue/dialogue_control
 
@@ -289,7 +292,7 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 			
 			if rules_with_max_matches.size() > 0:
 				var random = RandomNumberGenerator.new()
-				random.set_seed(incoming_query.facts.get("seed", randi()))
+				random.set_seed(hash(incoming_query.facts.get("seed", randi()) - rules_triggered))
 				var random_index = random.randi_range(0, rules_with_max_matches.size() - 1)
 				
 				var matched_rule: responseRule = rules_with_max_matches[random_index]
@@ -384,6 +387,7 @@ func get_relevant_rules(incoming_query: responseQuery) -> Array[responseRule]:
 
 
 func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQuery):
+	rules_triggered += 1
 	print("QUERY HANDLER: ", calling, " TRIGGERING RULE ", rule.get_name())
 	
 	#apply_facts: \\\\\\\\\\\\\ BEFORE EVERYTHING THAT REFRESHES DIALOGUE MEMORY \/\/\/\/ (MESSES WITH ACTUAL COLUMN ORDER IN THE DOC)
@@ -603,14 +607,18 @@ func clearMusic() -> void:
 	dialogue.clear_music()
 	pass
 
-func discoverRandomBodyWithFlair() -> void:
+func discoverRandomBodyWithFlair(anomaly_seed: String = String()) -> void:
+	var random = RandomNumberGenerator.new()
+	random.set_seed(hash(int(anomaly_seed) - rules_triggered))
+	
 	var undiscovered_bodies: Array[bodyAPI] = []
 	for body in system.bodies:
 		if not (body.get_type() == starSystemAPI.BODY_TYPES.STAR or body.get_type() == starSystemAPI.BODY_TYPES.STATION):
 			if not body.is_known():
 				undiscovered_bodies.append(body)
 	if undiscovered_bodies.size() > 0:
-		var body: bodyAPI = undiscovered_bodies.pick_random()
+		var random_index: int = random.randi_range(0, undiscovered_bodies.size() - 1)
+		var body: bodyAPI = undiscovered_bodies[random_index]
 		emit_signal("foundBody", body.get_identifier())
 		dialogue.add_text(str("[color=green](Gained scan data for ", body.get_display_name(), ") [/color]"))
 		playSoundEffect("success.wav") #easier than putting it in every single rule?
@@ -634,7 +642,12 @@ const reward_types = {
 	"DISCOVERY": {"LOW": 1, "MEDIUM": 2, "HIGH": 3}
 }
 func addRandomRewardWithFlair(rarity: String = "LOW") -> void:
-	var reward = reward_types.keys().pick_random()
+	var anomaly_seed = tree_access_memory.get("seed", randi()) #this goes against all of the rules for this class... DO NOT DO THIS ANYWHERE ELSE!!! I AM CUTTING CORNERS BY DOING THIS AND ITS *BAD* - ONLY DOING BC CAN ONLY HAVE ONE ARGUMENT FOR DIALOGUE METHODS
+	var random = RandomNumberGenerator.new()
+	random.set_seed(hash(int(anomaly_seed) - rules_triggered))
+	
+	var random_index: int = random.randi_range(0, reward_types.keys().size() - 1)
+	var reward = reward_types.keys()[random_index]
 	match reward:
 		"STRESS":
 			removeHullStressWithFlair(reward_types.get(reward).get(rarity))
@@ -645,7 +658,10 @@ func addRandomRewardWithFlair(rarity: String = "LOW") -> void:
 				discoverRandomBodyWithFlair()
 	pass
 
-func unlockRandomUpgradeWithFlair() -> void:
+func unlockRandomUpgradeWithFlair(anomaly_seed: String = String()) -> void:
+	var random = RandomNumberGenerator.new()
+	random.set_seed(hash(int(anomaly_seed) - rules_triggered))
+	
 	var IDs: Array[playerAPI.UPGRADE_ID] = []
 	for ID in player.UPGRADE_ID:
 		IDs.append(player.UPGRADE_ID.get(ID))
@@ -653,7 +669,8 @@ func unlockRandomUpgradeWithFlair() -> void:
 	var available_IDs = IDs.filter(is_available.bind(player.unlocked_upgrades))
 	
 	if available_IDs.size() > 0:
-		var random_ID = available_IDs.pick_random()
+		var random_index: int = random.randi_range(0, available_IDs.size() - 1)
+		var random_ID = available_IDs[random_index]
 		if player.is_upgrade_unlock_valid(random_ID):
 			emit_signal("upgradeShip", random_ID, int())
 			dialogue.add_text("[color=green](Unlocked %s) [/color]" % player.UPGRADE_ID.find_key(random_ID).capitalize())
@@ -666,8 +683,8 @@ func is_available(ID: int, _unlocked_upgrades: Array[playerAPI.UPGRADE_ID]) -> b
 		return true
 	return false
 
-func getNavBuoyOutcomeWithFlair(anomaly_seed: String) -> void: # for nav buoy space anomaly, have to input String anomaly_seed as fact reference substitution obviously doesnt convert to int, and thats fine
-	emit_signal("rollNavBuoy", int(anomaly_seed)) #continued in _on_receive_nav_buoy_roll
+func getNavBuoyOutcomeWithFlair(anomaly_seed: String = String()) -> void: # for nav buoy space anomaly, have to input String anomaly_seed as fact reference substitution obviously doesnt convert to int, and thats fine
+	emit_signal("rollNavBuoy", hash(int(anomaly_seed) - rules_triggered)) #continued in _on_receive_nav_buoy_roll
 	pass
 func _on_receive_nav_buoy_roll(roll: Array) -> void:
 	var nav_buoy_tag = roll.front()
@@ -771,4 +788,8 @@ func _TUTORIALEnterIngress():
 
 func _TUTORIALSetWindowTutorials(value: bool):
 	emit_signal("TUTORIALSetWindowTutorials", value)
+	pass
+
+func _TUTORIALQueueVoyageLeitmotif():
+	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/voyage_leitmotif.ogg")
 	pass

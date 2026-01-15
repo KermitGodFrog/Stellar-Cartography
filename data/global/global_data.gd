@@ -209,3 +209,10 @@ func get_closest_body(bodies, pos): #'bodies' refers to a group of anything with
 		return distance_to_bodies.find_key(corrected[0])
 	else:
 		return null
+
+func get_offset_rect2(_position: Vector2, _width: float, _height: float) -> Rect2:
+	var offset_x = _position.x - (_width / 2)
+	var offset_y = _position.y - (_height / 2)
+	
+	var final = Rect2(offset_x, offset_y, _width, _height)
+	return final

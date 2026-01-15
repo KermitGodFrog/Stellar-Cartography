@@ -2,6 +2,8 @@ extends Resource
 class_name bodyAPI
 #not displayed anywhere in game
 
+signal position_updated(new_position: Vector2) #this is called thousands of times a second (potentially). DO NOT USE OFTEN OMGGG
+
 @export var current_type: starSystemAPI.BODY_TYPES:
 	get = get_type, set = set_type
 @export var identifier: int:
@@ -32,7 +34,10 @@ func set_display_name(value) -> void:
 ##Used as the bodies LITERAL radius (for circularBodyAPIs), but is also used in calculations regarding player exclusion zones and player orbital distance.
 @export var radius: float
 
-@export_storage var position: Vector2
+@export_storage var position: Vector2:
+	set(value):
+		position = value
+		emit_signal("position_updated", position)
 @export var rotation: float
 
 @export_storage var pings_to_be_theorised: int = 3

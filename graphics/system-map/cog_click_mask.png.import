@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://vsyxkeka6b8c"
+path="res://.godot/imported/cog_click_mask.png-ad3624b8ea93654beb44b0d59b3c0a66.res"
+
+[deps]
+
+source_file="res://graphics/system-map/cog_click_mask.png"
+dest_files=["res://.godot/imported/cog_click_mask.png-ad3624b8ea93654beb44b0d59b3c0a66.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

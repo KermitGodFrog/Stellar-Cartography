@@ -176,6 +176,7 @@ func connect_all_signals() -> void:
 	system_map.connect("updatePlayerInPulsarBeam", _on_update_player_in_pulsar_beam)
 	system_map.connect("playerInPulsarBeamCooldownExpired", _on_player_in_pulsar_beam_cooldown_expired)
 	system_map.connect("toggleScopeModeSwitchButton", _on_toggle_scope_mode_switch_button)
+	system_map.connect("openPauseMenu", _on_open_pause_menu)
 	
 	system_3d.connect("foundBody", _on_found_body)
 	system_3d.connect("addConsoleEntry", _on_add_console_entry)
@@ -459,6 +460,7 @@ func _on_player_following_body(following_body: bodyAPI):
 func body_query_add_shared(query: responseQuery, body: bodyAPI) -> void:
 	query.add("type", starSystemAPI.BODY_TYPES.find_key(body.get_type()))
 	query.add_tree_access("name", body.get_display_name())
+	query.add_tree_access("known", body.is_known())
 	query.add("tutorial", init_type == global_data.GAME_INIT_TYPES.TUTORIAL)
 	pass
 
@@ -609,7 +611,9 @@ func _on_player_entering_system(system: starSystemAPI):
 	
 	#not awaiting onCloseDialog because wacky shtuff happens!!!!!!! audioHandler should only play it when pause_mode is NONE anyway
 	
-	if system.is_civilized():
+	if world.player.systems_traversed == roundi(world.player.total_systems / 2):
+		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/halfway_point.ogg")
+	elif system.is_civilized():
 		_on_play_civilized_system_leitmotif()
 	pass
 

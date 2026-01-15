@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7mmitfihh8pe"]
+
+[ext_resource type="AudioStream" uid="uid://b0o4on2y11tpn" path="res://sound/system-3d/body_flyby.wav" id="1_y6m4x"]
+
+[node name="flyby" type="AudioStreamPlayer3D"]
+stream = ExtResource("1_y6m4x")
+attenuation_model = 1
+autoplay = true
+max_distance = 30.0
+bus = &"SFX"
+doppler_tracking = 2

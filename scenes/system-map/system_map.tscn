@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=56 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
@@ -38,7 +38,10 @@
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="34_6kjaj"]
 [ext_resource type="Script" uid="uid://dm8nvnfggth6n" path="res://scenes/system-map/view_objectives_label.gd" id="35_1xeuo"]
 [ext_resource type="Texture2D" uid="uid://dtpw5k24arv17" path="res://graphics/system-map/apps-dock/gas_layer_surveyor_icon.png" id="35_digdi"]
+[ext_resource type="Texture2D" uid="uid://b4vw5uist668o" path="res://graphics/system-map/cog_hover.svg" id="38_4c7jy"]
 [ext_resource type="PackedScene" uid="uid://b2o2eo8ls2ldp" path="res://scenes/system-map/help-overlay/help_overlay_label.tscn" id="38_6mn7q"]
+[ext_resource type="Texture2D" uid="uid://dxiksctsg7w41" path="res://graphics/system-map/cog_normal.svg" id="38_ji0h2"]
+[ext_resource type="BitMap" uid="uid://vsyxkeka6b8c" path="res://graphics/system-map/cog_click_mask.png" id="40_ji0h2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ciwjv"]
 atlas = ExtResource("3_bft1b")
@@ -726,6 +729,21 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("35_1xeuo")
 
+[node name="settings_button" type="TextureButton" parent="system/camera/canvas/control"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+texture_normal = ExtResource("38_ji0h2")
+texture_pressed = ExtResource("38_ji0h2")
+texture_hover = ExtResource("38_4c7jy")
+texture_click_mask = ExtResource("40_ji0h2")
+stretch_mode = 5
+
 [node name="help_overlay" type="Control" parent="system/camera/canvas"]
 visible = false
 layout_mode = 3
@@ -815,3 +833,4 @@ script = ExtResource("31_k5t5q")
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/long_range_scopes_button" to="system" method="_on_long_range_scopes_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/gas_layer_surveyor_button" to="system" method="_on_gas_layer_surveyor_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/settings_button" to="system" method="_on_settings_button_pressed"]
