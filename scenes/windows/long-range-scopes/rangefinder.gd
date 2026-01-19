@@ -1,6 +1,6 @@
 extends ColorRect
 
-const font = preload("res://Graphics/Fonts/RobotoMono Medium.ttf")
+const font = preload("uid://xrcqj2080elm")
 var DRAW_MATRICIES: Array[Array] = [[]]
 
 func draw_rangefinder(_DRAW_MATRICIES: Array[Array]):
