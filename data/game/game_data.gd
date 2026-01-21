@@ -75,10 +75,13 @@ const NAME_FILE_PATHS: Dictionary = {
 	NAME_VARIETIES.SPACE_ANOMALY_FLAIR: "res://data/game/gen/names/space_anomaly_flairs.txt"
 }
 
+const CHARACTER_NAMES_FILE_PATH: String = "res://data/game/gen/names/character_names.txt"
+
 const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]
 var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
 
-
+func get_random_character_name() -> String:
+	return get_lines_from_file(CHARACTER_NAMES_FILE_PATH).pick_random()
 
 func get_random_name_from_variety_for_scheme(variety: NAME_VARIETIES, scheme: NAME_SCHEMES, _hook_display_name: String = "", _iteration: int = -1, _remaining_size = -1):
 	match scheme:
