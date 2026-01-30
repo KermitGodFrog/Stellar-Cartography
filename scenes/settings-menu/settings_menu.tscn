@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://df1xq5fo2rlje"]
+[gd_scene load_steps=6 format=3 uid="uid://df1xq5fo2rlje"]
 
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_ksgtm"]
 [ext_resource type="Script" uid="uid://b53cc3i80umc7" path="res://scenes/settings-menu/settings_menu.gd" id="2_fub1k"]
 [ext_resource type="PackedScene" uid="uid://bph1iqtdv2hk8" path="res://instantiated-scenes/ui/top/top_panel_16_9.tscn" id="3_fub1k"]
+[ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://theme-gen/window_theme.tres" id="4_peeu5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l7ofl"]
 bg_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
@@ -72,19 +73,32 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="scroll_container" type="ScrollContainer" parent="top_panel_16_9/top_panel/panel_scroll/background/margin"]
+[node name="list_container" type="ScrollContainer" parent="top_panel_16_9/top_panel/panel_scroll/background/margin"]
 layout_mode = 2
 follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="scroll" type="VBoxContainer" parent="top_panel_16_9/top_panel/panel_scroll/background/margin/scroll_container"]
+[node name="settings_list" type="VBoxContainer" parent="top_panel_16_9/top_panel/panel_scroll/background/margin/list_container"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="confirmation_dialog" type="ConfirmationDialog" parent="."]
+disable_3d = true
+oversampling_override = 1.0
+title = "Discard unsaved changes?"
+initial_position = 1
+size = Vector2i(400, 128)
+theme = ExtResource("4_peeu5")
+ok_button_text = "Lose changes"
+dialog_text = "If you proceed, you will lose all the changes you've made. This cannot be undone."
+dialog_autowrap = true
+cancel_button_text = "Keep editing"
+
 [connection signal="pressed" from="top_panel_16_9/top_panel/panel_scroll/options_scroll/save_button" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="top_panel_16_9/top_panel/panel_scroll/options_scroll/reset_button" to="." method="_on_reset_button_pressed"]
 [connection signal="pressed" from="top_panel_16_9/top_panel/panel_scroll/options_scroll/back_button" to="." method="_on_back_button_pressed"]
+[connection signal="confirmed" from="confirmation_dialog" to="." method="_on_confirmation_dialog_confirmed"]
 
 [editable path="top_panel_16_9"]

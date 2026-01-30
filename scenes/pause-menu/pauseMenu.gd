@@ -27,11 +27,11 @@ var is_open = false
 @onready var unpause_possible_timer = $unpause_possible_timer
 @onready var save_button = $pause_canvas/pause_control/pause_scroll/save_button
 @onready var save_and_quit_button = $pause_canvas/pause_control/pause_scroll/save_and_quit_button
-@onready var settings_menu = $pause_canvas/settings_menu
 @onready var pause_canvas = $pause_canvas
 @onready var objectives_panel = $pause_canvas/pause_control/console_cover_panel/scroll/objectives_panel
 
 @onready var fullscreen_objectives = preload("uid://d7m4h6j7mma7")
+@onready var settings_menu = preload("uid://df1xq5fo2rlje")
 
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("SC_PAUSE"):
@@ -68,8 +68,15 @@ func _on_unpause_possible_timer_timeout():
 	pass 
 
 func _on_settings_button_pressed():
-	settings_menu.initialize()
-	settings_menu.visible = !settings_menu.visible
+	can_unpause = false
+	var instance = settings_menu.instantiate()
+	instance.exit_type = global_data.SETTINGS_EXIT_TYPES.INSTANCE
+	instance.connect("exiting", _on_settings_menu_exiting)
+	pause_canvas.add_child(instance)
+	pass
+
+func _on_settings_menu_exiting() -> void:
+	can_unpause = true
 	pass
 
 func _on_objectives_fullscreen_button_pressed() -> void:

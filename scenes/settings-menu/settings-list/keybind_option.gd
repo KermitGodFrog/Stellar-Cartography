@@ -1,10 +1,13 @@
 extends Button
 
+signal changed()
+
 var linked_action : StringName 
 var last_input_event : InputEvent:
 	set(value):
 		last_input_event = value
 		_on_last_input_event_changed()
+		emit_signal("changed")
 
 
 func reset_display() -> void:
