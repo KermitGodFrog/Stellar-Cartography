@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://bph1iqtdv2hk8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cxhxu"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.60038817, 0.60038817, 0.60038817, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[node name="top_panel_16_9" type="PanelContainer"]
+anchors_preset = -1
+theme_override_styles/panel = SubResource("StyleBoxFlat_cxhxu")
