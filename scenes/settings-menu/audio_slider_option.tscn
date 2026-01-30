@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b564nt73u2b3j"]
 
-[ext_resource type="Script" uid="uid://bm7a0vxpvtxiw" path="res://scenes/options-menu/audio_slider_option.gd" id="1_c40y1"]
+[ext_resource type="Script" uid="uid://bm7a0vxpvtxiw" path="res://scenes/settings-menu/audio_slider_option.gd" id="1_c40y1"]
 
 [node name="audio_slider_option" type="HBoxContainer"]
 size_flags_horizontal = 3

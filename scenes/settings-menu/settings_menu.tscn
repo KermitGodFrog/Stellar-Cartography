@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://df1xq5fo2rlje"]
 
-[ext_resource type="Script" uid="uid://b53cc3i80umc7" path="res://scenes/options-menu/optionsMenu.gd" id="1_1c1tf"]
-[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_5cywm"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_ksgtm"]
+[ext_resource type="Script" uid="uid://b53cc3i80umc7" path="res://scenes/settings-menu/settings_menu.gd" id="2_fub1k"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_te87n"]
 bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
@@ -12,15 +12,15 @@ border_blend = true
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l7ofl"]
 bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
 
-[node name="options_menu" type="Control"]
+[node name="settings_menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_5cywm")
-script = ExtResource("1_1c1tf")
+theme = ExtResource("1_ksgtm")
+script = ExtResource("2_fub1k")
 
 [node name="panel_scroll" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -52,7 +52,7 @@ text = "SAVE"
 
 [node name="reset_button" type="Button" parent="panel_scroll/gradient_background/options_scroll"]
 layout_mode = 2
-theme = ExtResource("1_5cywm")
+theme = ExtResource("1_ksgtm")
 theme_type_variation = &"ButtonPaletteLeft"
 text = "RESET TO DEFAULTS"
 

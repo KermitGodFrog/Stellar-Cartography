@@ -27,7 +27,7 @@ var is_open = false
 @onready var unpause_possible_timer = $unpause_possible_timer
 @onready var save_button = $pause_canvas/pause_control/pause_scroll/save_button
 @onready var save_and_quit_button = $pause_canvas/pause_control/pause_scroll/save_and_quit_button
-@onready var options_menu = $pause_canvas/options_menu
+@onready var settings_menu = $pause_canvas/settings_menu
 @onready var pause_canvas = $pause_canvas
 @onready var objectives_panel = $pause_canvas/pause_control/console_cover_panel/scroll/objectives_panel
 
@@ -68,8 +68,8 @@ func _on_unpause_possible_timer_timeout():
 	pass 
 
 func _on_settings_button_pressed():
-	options_menu.initialize()
-	options_menu.visible = !options_menu.visible
+	settings_menu.initialize()
+	settings_menu.visible = !settings_menu.visible
 	pass
 
 func _on_objectives_fullscreen_button_pressed() -> void:
