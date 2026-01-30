@@ -77,7 +77,8 @@ func _on_settings_button_pressed():
 	pass
 func _on_settings_menu_exiting() -> void:
 	pause_control.show()
-	can_unpause = true
+	can_unpause = false
+	unpause_possible_timer.start()
 	pass
 
 func _on_objectives_fullscreen_button_pressed() -> void:

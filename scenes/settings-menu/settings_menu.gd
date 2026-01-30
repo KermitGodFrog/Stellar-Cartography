@@ -17,6 +17,11 @@ var exit_path: String = String() #only relevant for exit type SCENE
 
 var unsaved_changes: bool = false
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("SC_PAUSE"):
+		_on_back_button_pressed()
+	pass
+
 func _ready() -> void:
 	#for child in settings_list.get_children():
 	#	child.queue_free()
