@@ -1,11 +1,16 @@
 extends HBoxContainer
 
+signal changed()
+
 @onready var slider = $slider
 @onready var description = $description
 @onready var bus_label = $bus_label
 
 var linked_bus_idx: int
-var last_value: float
+var last_value: float:
+	set(value):
+		last_value = value
+		emit_signal("changed")
 
 func reset_display() -> void:
 	bus_label.set_text(AudioServer.get_bus_name(linked_bus_idx))

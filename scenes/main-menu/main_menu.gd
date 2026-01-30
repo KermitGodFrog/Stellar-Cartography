@@ -118,3 +118,10 @@ func _on_credits_button_pressed() -> void:
 func _on_credits_return_button_pressed() -> void:
 	SHOW_CREDITS_POPUP = false
 	pass
+
+func _on_settings_button_pressed() -> void:
+	global_data.change_scene.emit("res://scenes/settings-menu/settings_menu.tscn", {
+		"exit_type": global_data.SETTINGS_EXIT_TYPES.SCENE,
+		"exit_path": "res://scenes/main-menu/main_menu.tscn"
+	})
+	pass
