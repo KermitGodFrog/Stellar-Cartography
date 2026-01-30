@@ -68,26 +68,32 @@ func _on_unpause_possible_timer_timeout():
 	pass 
 
 func _on_settings_button_pressed():
+	pause_control.hide()
 	can_unpause = false
 	var instance = settings_menu.instantiate()
 	instance.exit_type = global_data.SETTINGS_EXIT_TYPES.INSTANCE
 	instance.connect("exiting", _on_settings_menu_exiting)
 	pause_canvas.add_child(instance)
 	pass
-
 func _on_settings_menu_exiting() -> void:
+	pause_control.show()
 	can_unpause = true
 	pass
 
 func _on_objectives_fullscreen_button_pressed() -> void:
+	pause_control.hide()
 	var instance = fullscreen_objectives.instantiate()
 	instance.ready.connect(_on_update_fullscreen_objectives.bind(instance))
+	instance.connect("exiting", _on_fullscreen_objectives_exiting)
 	pause_canvas.add_child(instance)
 	instance.visibility_changed.connect(_on_update_fullscreen_objectives.bind(instance))
 	pass
 func _on_update_fullscreen_objectives(_instance: Control) -> void:
 	if _instance.is_visible_in_tree():
 		_instance.objectives_panel._on_update_objectives_panel(objectives_panel.active_objectives)
+	pass
+func _on_fullscreen_objectives_exiting() -> void:
+	pause_control.show()
 	pass
 
 func _on_update_objectives_panel(_active_objectives: Array[objectiveAPI]) -> void:
