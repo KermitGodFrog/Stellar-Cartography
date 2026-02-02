@@ -82,6 +82,7 @@ func populateWithSystemData(system: starSystemAPI):
 	pass
 
 func populateWithWorldData():
+	add("random_name", game_data.get_random_character_name())
 	add("randi", randi())
 	add("randf", randf())
 	add("RAND_50%", randf() > 0.5)

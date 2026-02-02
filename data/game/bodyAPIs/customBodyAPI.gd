@@ -11,11 +11,11 @@ func set_dialogue_tag(value) -> void:
 	dialogue_tag = value
 	pass
 
-@export var texture_path: String = "res://Graphics/entity_32x.png": #assumes that texture_path will always be set before post_texture_path, otherwise will override
+@export var texture_path: String = "res://graphics/system-map/entity_32x.png": #assumes that texture_path will always be set before post_texture_path, otherwise will override
 	set(value):
 		texture_path = value
 		post_texture_path = value
-@export var post_texture_path: String = "res://Graphics/entity_32x.png"
+@export var post_texture_path: String = "res://graphics/system-map/entity_32x.png"
 @export var icon_path: String: #assumes that icon path will always be set before post_icon_path, otherwise will override
 	set(value):
 		icon_path = value
