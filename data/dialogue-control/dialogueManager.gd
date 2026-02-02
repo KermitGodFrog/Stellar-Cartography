@@ -703,7 +703,7 @@ func _on_receive_nav_buoy_roll(roll: Array) -> void:
 
 func superchargeForJumpsWithFlair(jumps: int) -> void:
 	emit_signal("superchargePlayerForJumps", jumps)
-	dialogue.add_text("[color=green](Supercharged for plus %.f jumps) [/color]" % jumps)
+	dialogue.add_text("[color=green](Supercharged for plus %.f wormhole traversals) [/color]" % jumps)
 	playSoundEffect("success.wav")
 	pass
 
