@@ -280,6 +280,7 @@ func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Ar
 	return [points1, points2]
 
 
+
 func _on_toggle_scope_mode_switch_button() -> void: #system_map checks for keybind 'SC_SCOPE_SWITCH' and sends change to game.gd, which sends it here
 	mode_switch_button.set_pressed(!mode_switch_button.button_pressed)
 	pass
@@ -287,9 +288,19 @@ func _on_toggle_scope_mode_switch_button() -> void: #system_map checks for keybi
 func _on_mode_switch_button_toggled(toggled_on: bool) -> void:
 	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "scope_mode_switch")
 	if not toggled_on:
+		mode_switch_button.set_pressed_no_signal(false)
 		scope_mode = playerAPI.SCOPE_MODES.VIS
 		get_tree().call_group("audioHandler", "play_once", load("uid://bcahs3q6yv8yv"), 0.0, "SFX")
 	else:
+		mode_switch_button.set_pressed_no_signal(true)
 		scope_mode = playerAPI.SCOPE_MODES.RAD
 		get_tree().call_group("audioHandler", "play_once", load("uid://do2rl0w7wqiio"), 0.0, "SFX")
+	pass
+
+func toggle_mode_switch_button_to_mode(_new_mode: playerAPI.SCOPE_MODES) -> void:
+	match _new_mode:
+		playerAPI.SCOPE_MODES.VIS:
+			_on_mode_switch_button_toggled(false)
+		playerAPI.SCOPE_MODES.RAD:
+			_on_mode_switch_button_toggled(true)
 	pass
