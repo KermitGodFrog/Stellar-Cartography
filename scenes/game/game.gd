@@ -175,6 +175,7 @@ func connect_all_signals() -> void:
 	system_map.connect("updatePlayerInAsteroidBelt", _on_update_player_in_asteroid_belt)
 	system_map.connect("updatePlayerInPulsarBeam", _on_update_player_in_pulsar_beam)
 	system_map.connect("playerInPulsarBeamCooldownExpired", _on_player_in_pulsar_beam_cooldown_expired)
+	system_map.connect("toggleScopeModeSwitchButton", _on_toggle_scope_mode_switch_button)
 	system_map.connect("openPauseMenu", _on_open_pause_menu)
 	
 	system_3d.connect("foundBody", _on_found_body)
@@ -213,6 +214,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("rollNavBuoy", _on_roll_nav_buoy)
 	dialogue_manager.connect("superchargePlayerForJumps", _on_supercharge_player_for_jumps)
 	dialogue_manager.connect("modifyCharacterStanding", _on_modify_character_standing)
+	dialogue_manager.connect("changePlayerScopeMode", _on_change_scope_mode)
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
@@ -324,6 +326,7 @@ func _on_player_orbiting_body(orbiting_body: bodyAPI):
 	var new_query = responseQuery.new()
 	new_query.add("concept", "orbitingBody")
 	body_query_add_shared(new_query, orbiting_body)
+	new_query.add_tree_access("known", orbiting_body.is_known())
 	
 	#type construction >>>>>>>
 	match orbiting_body.get_type():
@@ -346,7 +349,11 @@ func _on_player_orbiting_body(orbiting_body: bodyAPI):
 
 func _on_player_following_body(following_body: bodyAPI):
 	var new_query = responseQuery.new()
-	new_query.add("concept", "followingBody")
+	if following_body.is_known():
+		new_query.add("concept", "followingBody")
+	else:
+		new_query.add("concept", "followingUnknownBody")
+		new_query.add_tree_access("required_scope_mode", following_body.get_required_scope_mode())
 	body_query_add_shared(new_query, following_body)
 	
 	#type construction >>>>>>>
@@ -459,7 +466,6 @@ func _on_player_following_body(following_body: bodyAPI):
 func body_query_add_shared(query: responseQuery, body: bodyAPI) -> void:
 	query.add("type", starSystemAPI.BODY_TYPES.find_key(body.get_type()))
 	query.add_tree_access("name", body.get_display_name())
-	query.add_tree_access("known", body.is_known())
 	query.add("tutorial", init_type == global_data.GAME_INIT_TYPES.TUTORIAL)
 	pass
 
@@ -1063,6 +1069,14 @@ func _on_play_civilized_system_leitmotif() -> void:
 	
 	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/motif.tres")
 	return
+
+func _on_toggle_scope_mode_switch_button() -> void:
+	system_3d._on_toggle_scope_mode_switch_button()
+	pass
+
+func _on_change_scope_mode(new_mode: playerAPI.SCOPE_MODES) -> void:
+	system_3d.toggle_mode_switch_button_to_mode(new_mode)
+	pass
 
 func _on_open_LRS():
 	await get_tree().physics_frame

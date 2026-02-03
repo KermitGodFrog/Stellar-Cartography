@@ -37,6 +37,7 @@ signal upgradeShip(_upgrade_idx: playerAPI.UPGRADE_ID, _cost: int)
 signal rollNavBuoy(anomaly_seed: int)
 signal superchargePlayerForJumps(jumps: int) #saying superchargePlayerForJumps is like saying addPlayerValueForPlayerInternalValueCounter
 signal modifyCharacterStanding(occupation: characterAPI.OCCUPATIONS, amount: int, _increase: bool)
+signal changePlayerScopeMode(_new_mode: playerAPI.SCOPE_MODES)
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
@@ -729,6 +730,11 @@ func plotRadio(radio_helper_path: String) -> void:
 	get_tree().call_group("audioHandler", "plot_radio", load("res://data/audio-control/radio-control/radio-helpers/%s" % radio_helper_path))
 	pass
 
+func changeScopeMode(new_mode) -> void:
+	if typeof(new_mode) == TYPE_STRING:
+		new_mode = new_mode.to_int()
+	emit_signal("changePlayerScopeMode", new_mode)
+	pass
 
 
 func categoryActive(wID: String) -> void:

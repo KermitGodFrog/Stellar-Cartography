@@ -4,5 +4,4 @@
 
 [resource]
 script = ExtResource("1_y108j")
-written_identifier = ""
 objective_wIDs = ["tutorialOptionalInfo", "tutorialFollowIngress"]

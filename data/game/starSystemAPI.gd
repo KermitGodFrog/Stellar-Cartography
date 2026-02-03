@@ -526,7 +526,7 @@ func generateRandomWeightedStations():
 			orbit_distance,
 			orbit_angle_change,
 			radius,
-			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup},
+			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
 			{}
 		)
 		
@@ -559,7 +559,7 @@ func addRandomSpaceAnomaly() -> void: #used in both generateRandomAnomalies and 
 		orbit_distance,
 		orbit_angle_change,
 		radius,
-		{},
+		{"req_scope_mode": playerAPI.SCOPE_MODES.RAD},
 		{"seed": randi()},
 	)
 	
@@ -590,7 +590,7 @@ func generateRandomWeightedEntities():
 			orbit_distance,
 			orbit_angle_change,
 			radius,
-			{"entity_classification": entity_classification},
+			{"entity_classification": entity_classification, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
 			{}
 		)
 		
@@ -617,7 +617,7 @@ func generateRendezvousPoint():
 		orbit_distance, 
 		orbit_angle_change,
 		radius,
-		{}, #dialogue content overrides, perhaps?
+		{"req_scope_mode": playerAPI.SCOPE_MODES.RAD}, #dialogue content overrides, perhaps?
 		{}
 	)
 	
@@ -647,7 +647,7 @@ func generateRandomWeightedSpecialAnomaly():
 				orbit_distance,
 				orbit_angle_change,
 				radius,
-				{"dialogue_tag": "SpA_SentientAsteroid", "_hook_mass": hook.mass, "_hook_orbit_velocity": hook_orbit_velocity, "_system_time": time, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "icon_path": "res://graphics/system-map/question_mark.png", "post_icon_path": "res://graphics/system-map/system-list/SpA_SentientAsteroid_frame.png"},
+				{"dialogue_tag": "SpA_SentientAsteroid", "_hook_mass": hook.mass, "_hook_orbit_velocity": hook_orbit_velocity, "_system_time": time, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "icon_path": "res://graphics/system-map/question_mark.png", "post_icon_path": "res://graphics/system-map/system-list/SpA_SentientAsteroid_frame.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
 				{}
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))

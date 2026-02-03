@@ -4,8 +4,6 @@
 
 [resource]
 script = ExtResource("1_b213p")
-written_identifier = ""
-current_state = 0
 title = "Reach New Eden"
-description = "Fly to New Eden, a fragment of human civilisation long forgotten.
+description = "Fly to New Eden, a fragment of human civilization long forgotten.
 The Journey Map will display your progress."

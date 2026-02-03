@@ -3,6 +3,16 @@ extends Node3D
 signal foundBody(id: int)
 signal addConsoleEntry(entry_text: String, text_color: Color)
 
+@onready var control = $camera_offset/camera/canvas_layer/control
+@onready var camera_offset = $camera_offset
+@onready var camera = $camera_offset/camera
+@onready var locked_body_label = $camera_offset/camera/canvas_layer/control/locked_body_label
+@onready var post_process = $camera_offset/camera/canvas_layer/post_process
+@onready var star_omni_light = $star_omni_light
+@onready var mode_switch_button = $camera_offset/camera/canvas_layer/control/mode_switch_button
+@onready var rad_post_process = $camera_offset/camera/canvas_layer/rad_post_process
+@onready var environment = $world_environment
+
 var TUTORIAL_INGRESS_OVERRIDE: bool = false
 var TUTORIAL_OMISSION_OVERRIDE: bool = false
 
@@ -16,16 +26,15 @@ var body_3d = preload("uid://bdotk8rm2p7df")
 var entity_3d = preload("uid://csvx63c0ejn6a")
 var flyby = preload("uid://c7mmitfihh8pe")
 
-@onready var control = $camera_offset/camera/canvas_layer/control
-@onready var camera_offset = $camera_offset
-@onready var camera = $camera_offset/camera
-@onready var locked_body_label = $camera_offset/camera/canvas_layer/control/locked_body_label
-@onready var post_process = $camera_offset/camera/canvas_layer/post_process
-@onready var star_omni_light = $star_omni_light
-
 var system_scalar: float = 10.0
 var body_detection_range: int = 1000
 var target_fov: float = 75
+var scope_mode: playerAPI.SCOPE_MODES = playerAPI.SCOPE_MODES.VIS:
+	set(value):
+		scope_mode = value
+		_on_scope_mode_changed(value)
+func get_scope_mode() -> playerAPI.SCOPE_MODES:
+	return scope_mode
 
 var initial_beam_rotation: float = 0.0 #REQUIRED FOR PULSARS TO WORK. BARELY KNEW WHAT I WAS DOING WHEN I MADE IT WORK SO DONT TOUCH!
 
@@ -33,8 +42,11 @@ var initial_beam_rotation: float = 0.0 #REQUIRED FOR PULSARS TO WORK. BARELY KNE
 var wormhole_shader = preload("uid://bkngs6wdkye6n")
 var pulsar_beam_material = preload("uid://dtpqpy1b1rnxv")
 
+var vis_panorama = preload("uid://byp6pykkhwnpf")
+var rad_panorama = preload("uid://c7u31smqi45er")
 
 func _ready():
+	_on_scope_mode_changed(playerAPI.SCOPE_MODES.VIS)
 	control.connect("targetFOVChange", _on_target_FOV_change)
 	pass
 
@@ -105,24 +117,24 @@ func _physics_process(_delta):
 			if acos(a.dot(b)) <= deg_to_rad(camera.fov):
 				var associated_body = system.get_body_from_identifier(child.get_identifier()) #repeat code ?!?!?!?!?!?!?!??!?!?!?!?!??!!
 				if associated_body:
-					var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
-					if detection_scalar < body_detection_range and associated_body.is_known() == false:
-						
-						if associated_body.is_hidden():
-							continue
-						elif associated_body.get_display_name() == "Ingress":
-							if TUTORIAL_INGRESS_OVERRIDE == true:
+					if associated_body.get_required_scope_mode() == get_scope_mode():
+						var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
+						if detection_scalar < body_detection_range and associated_body.is_known() == false:
+							
+							if associated_body.is_hidden():
 								continue
-						elif associated_body.get_display_name() == "Omission":
-							if TUTORIAL_OMISSION_OVERRIDE == true:
-								continue
-						
-						emit_signal("foundBody", child.get_identifier())
-						var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
-						if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name()), Color.DARK_GREEN)
-						elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", roundi(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
+							elif associated_body.get_display_name() == "Ingress":
+								if TUTORIAL_INGRESS_OVERRIDE == true:
+									continue
+							elif associated_body.get_display_name() == "Omission":
+								if TUTORIAL_OMISSION_OVERRIDE == true:
+									continue
+							
+							emit_signal("foundBody", child.get_identifier())
+							var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
+							if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name()), Color.DARK_GREEN)
+							elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", roundi(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
 	
-	#this is broked because when you unlock a body by moving the camera target pos, the locked_body_identifier variable on this script remains the same - thereofore, it always displays that you are locked to a body
 	#setting locked_body_label text
 	var body: bodyAPI = system.get_body_from_identifier(label_locked_body_identifier)
 	if body:
@@ -159,6 +171,7 @@ func spawnBodies():
 					spawn_pulsar_beams(body)
 			elif body.get_type() == starSystemAPI.BODY_TYPES.WORMHOLE:
 				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
+			new_body_3d._on_scope_mode_changed(get_scope_mode())
 			add_child(new_body_3d) 
 		elif body is glintBodyAPI:
 			spawn_glint_body_3d_for_identifier(body.get_identifier())
@@ -175,6 +188,7 @@ func spawn_glint_body_3d_for_identifier(id: int):
 	var new_entity_3d = entity_3d.instantiate()
 	new_entity_3d.set_identifier(id)
 	new_entity_3d.initialize(pow(pow(10, -1.3), 0.28) / 128) #pixel size, can be different for stations/anomalies
+	new_entity_3d._on_scope_mode_changed(get_scope_mode())
 	add_child(new_entity_3d)
 	pass
 
@@ -222,8 +236,18 @@ func _on_target_FOV_change(fov: float):
 	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "scopes_fov_change")
 	pass
 
-
-
+func _on_scope_mode_changed(_new_mode: playerAPI.SCOPE_MODES) -> void:
+	for child in get_children():
+		if child.is_in_group("body_3d"):
+			child._on_scope_mode_changed(_new_mode)
+	match _new_mode:
+		playerAPI.SCOPE_MODES.VIS:
+			rad_post_process.hide()
+			environment.get_environment().get_sky().get_material().set_shader_parameter("source_panorama", vis_panorama)
+		playerAPI.SCOPE_MODES.RAD:
+			rad_post_process.show()
+			environment.get_environment().get_sky().get_material().set_shader_parameter("source_panorama", rad_panorama)
+	pass
 
 func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Array]:
 	var dir1 = Vector2.UP.rotated(star.beam_rotation)
@@ -254,3 +278,29 @@ func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Ar
 	
 	#these points are already rotated according to the stars current beam_rotation variable at the time of the system being loaded! therefore, to find the real rotation for the MeshInstances, do beam_rotation - initial_beam_rotation :>
 	return [points1, points2]
+
+
+
+func _on_toggle_scope_mode_switch_button() -> void: #system_map checks for keybind 'SC_SCOPE_SWITCH' and sends change to game.gd, which sends it here
+	mode_switch_button.set_pressed(!mode_switch_button.button_pressed)
+	pass
+
+func _on_mode_switch_button_toggled(toggled_on: bool) -> void:
+	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "scope_mode_switch")
+	if not toggled_on:
+		mode_switch_button.set_pressed_no_signal(false)
+		scope_mode = playerAPI.SCOPE_MODES.VIS
+		get_tree().call_group("audioHandler", "play_once", load("uid://bcahs3q6yv8yv"), 0.0, "SFX")
+	else:
+		mode_switch_button.set_pressed_no_signal(true)
+		scope_mode = playerAPI.SCOPE_MODES.RAD
+		get_tree().call_group("audioHandler", "play_once", load("uid://do2rl0w7wqiio"), 0.0, "SFX")
+	pass
+
+func toggle_mode_switch_button_to_mode(_new_mode: playerAPI.SCOPE_MODES) -> void:
+	match _new_mode:
+		playerAPI.SCOPE_MODES.VIS:
+			_on_mode_switch_button_toggled(false)
+		playerAPI.SCOPE_MODES.RAD:
+			_on_mode_switch_button_toggled(true)
+	pass

@@ -101,6 +101,8 @@ func get_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> char
 			return c
 	return null
 
+enum SCOPE_MODES {VIS, RAD}
+
 #stuff ported from old system_map.gd - no idea how it works so dont ask me hahahahhaah good luck
 var rotation_hint: float #used for orbiting mechanics
 @export_storage var target_position: Vector2 = Vector2.ZERO

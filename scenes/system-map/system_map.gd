@@ -32,6 +32,7 @@ signal playerBelowCMERingRadius
 signal playerInPulsarBeamCooldownExpired
 signal updatePlayerInAsteroidBelt(_player_in_asteroid_belt: bool)
 signal updatePlayerInPulsarBeam(_player_in_pulsar_beam: bool)
+signal toggleScopeModeSwitchButton
 signal openPauseMenu
 
 signal audioVisualizerPopup
@@ -78,6 +79,7 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var view_objective_label = $camera/canvas/control/view_objectives_label
 @onready var help_overlay = $camera/canvas/help_overlay
 @onready var tabs = $camera/canvas/control/tabs_and_ca_scroll/tabs
+@onready var enable_scope_mode_switch = $enable_scope_mode_switch
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -374,14 +376,16 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				starSystemAPI.BODY_TYPES.WORMHOLE:
 					item.set_icon(0, load("uid://k50rbp6ri57u"))
 					
+					const disabled_color = Color("#7f4b4b")
+					
 					match body.is_disabled(): #is_disabled() will be a function in new wormholeAPI
 						true:
 							if body == follow_body:
-								item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.5))
+								item.set_custom_bg_color(0, disabled_color.lightened(0.5))
 							elif body.get_identifier() == closest_body_id:
-								item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.2))
+								item.set_custom_bg_color(0, disabled_color.lightened(0.2))
 							else:
-								item.set_custom_bg_color(0, Color.DARK_RED)
+								item.set_custom_bg_color(0, disabled_color)
 						false:
 							if body == follow_body:
 								item.set_custom_bg_color(0, Color.WEB_PURPLE.lightened(0.5))
@@ -504,6 +508,10 @@ func _unhandled_input(event):
 		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "help_overlay_show")
 	elif event.is_action_released("SC_OPEN_HELP_OVERLAY"):
 		help_overlay.hide()
+	
+	if event.is_action_released("SC_SCOPE_SWITCH"):
+		if enable_scope_mode_switch.is_stopped():
+			emit_signal("toggleScopeModeSwitchButton")
 	pass
 
 func reset_player_boosting() -> void:

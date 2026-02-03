@@ -4,7 +4,6 @@ var identifier: int
 
 func get_identifier():
 	return identifier
-
 func set_identifier(new_identifier: int):
 	identifier = new_identifier
 	pass
@@ -28,4 +27,12 @@ func initialize(radius: float, color: Color, emission_color: Color, emission_mul
 
 func updatePosition(pos: Vector3):
 	position = pos
+	pass
+
+func _on_scope_mode_changed(new_mode: playerAPI.SCOPE_MODES) -> void:
+	match new_mode:
+		playerAPI.SCOPE_MODES.VIS:
+			set_transparency(0.0)
+		playerAPI.SCOPE_MODES.RAD:
+			set_transparency(0.9)
 	pass
