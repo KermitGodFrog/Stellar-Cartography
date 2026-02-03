@@ -79,6 +79,7 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var view_objective_label = $camera/canvas/control/view_objectives_label
 @onready var help_overlay = $camera/canvas/help_overlay
 @onready var tabs = $camera/canvas/control/tabs_and_ca_scroll/tabs
+@onready var enable_scope_mode_switch = $enable_scope_mode_switch
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -509,7 +510,8 @@ func _unhandled_input(event):
 		help_overlay.hide()
 	
 	if event.is_action_released("SC_SCOPE_SWITCH"):
-		emit_signal("toggleScopeModeSwitchButton")
+		if enable_scope_mode_switch.is_stopped():
+			emit_signal("toggleScopeModeSwitchButton")
 	pass
 
 func reset_player_boosting() -> void:

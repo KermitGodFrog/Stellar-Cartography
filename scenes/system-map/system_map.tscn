@@ -818,6 +818,11 @@ text = "system map"
 show_behind_parent = true
 script = ExtResource("31_k5t5q")
 
+[node name="enable_scope_mode_switch" type="Timer" parent="system"]
+one_shot = true
+autostart = true
+ignore_time_scale = true
+
 [connection signal="timeout" from="system/camera/canvas/map_overlay/frame_update" to="system/camera/canvas/map_overlay" method="_on_frame_update_timeout"]
 [connection signal="tab_changed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs" to="system" method="_on_tabs_tab_changed"]
 [connection signal="item_collapsed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/system_list" to="system" method="_on_system_list_item_collapsed"]
