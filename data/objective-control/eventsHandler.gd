@@ -1,10 +1,12 @@
 extends Node
-#used mostly to trigger objectives. just takes in a whole lot of updates which would be too expensive/too often to pass through dialogueManager and responds to em
+#used mostly to trigger objectives AND to inform the hints system. just takes in a whole lot of updates which would be too expensive/too often to pass through dialogueManager and responds to em
 #game.gd not allowed to use speak() <<<<<< IMPORTANT !!!!
 #incoming_wIDs must be in the present tense >>>> [name][state]
 #must be called with flags and subsequently UNIQUE and DEFERRED
 #cannot be called every frame nontheless
 #SHOULD ONLY BE USED TO MARK OBJECTIVES, NOT CLEAR THEM
+
+@onready var hints_handler = $hintsHandler
 
 signal markObjective(_wID: String, _state: objectiveAPI.STATES)
 
@@ -33,10 +35,11 @@ func speak(_calling: Node, _incoming_wID: String, _incoming_value: Variant = nul
 			process_tutorial_event(_calling, _incoming_wID, _incoming_value)
 		_:
 			process_campaign_event(_calling, _incoming_wID, _incoming_value)
+			hints_handler.process_campaign_event(_calling, _incoming_wID, _incoming_value)
 	pass
 
-func process_tutorial_event(_calling: Node, incoming_wID: String, _incoming_value: Variant = null) -> void:
-	match incoming_wID:
+func process_tutorial_event(_calling: Node, _incoming_wID: String, _incoming_value: Variant = null) -> void:
+	match _incoming_wID:
 		"help_overlay_show":
 			emit_signal("markObjective", "tutorialOptionalHelpOverlay", objectiveAPI.STATES.SUCCESS)
 		"system_map_camera_move":

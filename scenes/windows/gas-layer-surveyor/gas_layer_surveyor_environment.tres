@@ -5,9 +5,9 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_77pv1"]
 shader = ExtResource("1_y5axs")
+shader_parameter/sampler = ExtResource("2_qcv54")
 shader_parameter/color = Color(0, 0, 0, 1)
 shader_parameter/time_divisor = 150.0
-shader_parameter/sampler = ExtResource("2_qcv54")
 
 [sub_resource type="Sky" id="Sky_fdcw4"]
 sky_material = SubResource("ShaderMaterial_77pv1")
