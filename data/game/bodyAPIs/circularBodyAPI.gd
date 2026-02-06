@@ -1,4 +1,4 @@
-extends bodyAPI
+extends orbitBodyAPI
 class_name circularBodyAPI
 
 @export var mass: float

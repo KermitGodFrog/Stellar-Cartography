@@ -117,16 +117,14 @@ func _ready():
 		
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
 		
-		world.player.current_star_system.addBody(
+		world.player.current_star_system.addUnitBody(
 			unitBodyAPI.new(),
 			starSystemAPI.BODY_TYPES.UNIT,
 			world.player.current_star_system.identifier_count,
 			"ruh roh",
-			int(),
-			int(),
-			int(),
-			int(),
-			{"speed": 3, "target_position": Vector2(50,50)},
+			3,
+			world.player.current_star_system.get_default_radius_solar_radii(),
+			{"target_position": Vector2(50,50)},
 			{}
 		)
 	

@@ -1,4 +1,4 @@
-extends bodyAPI
+extends orbitBodyAPI
 class_name customBodyAPI
 
 ##On interaction (theorised, orbiting, following), the game will set this as the value of the 'custom_id' fact, if configured. Leave empty to let the game search for more complex queries derived from the body type.

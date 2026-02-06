@@ -216,13 +216,14 @@ func _physics_process(delta):
 	body_attributes_list.clear()
 	if follow_body and follow_body.is_known():
 		
-		if follow_body is circularBodyAPI: 
-			body_attributes_list.add_item("radius : %.2f (earth radii)" % (follow_body.radius * 109.1), null, false)
-			body_attributes_list.add_item("mass : %.2f (earth masses)" % (follow_body.mass * 333000))
-		
-		body_attributes_list.add_item("orbit_angle_change : %.2f (rad/frame)" % follow_body.orbit_angle_change, null, false)
-		body_attributes_list.add_item("orbit_distance %.2f (solar radii)" % follow_body.orbit_distance, null, false)
-		
+		if follow_body is orbitBodyAPI:
+			body_attributes_list.add_item("orbit_angle_change : %.2f (rad/frame)" % follow_body.orbit_angle_change, null, false)
+			body_attributes_list.add_item("orbit_distance %.2f (solar radii)" % follow_body.orbit_distance, null, false)
+			
+			if follow_body is circularBodyAPI: 
+				body_attributes_list.add_item("radius : %.2f (earth radii)" % (follow_body.radius * 109.1), null, false)
+				body_attributes_list.add_item("mass : %.2f (earth masses)" % (follow_body.mass * 333000))
+			
 		#metadata
 		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "missing_GL", "seed", "custom_available", "custom_follow_available", "custom_orbit_available"]
 		if follow_body.is_known():

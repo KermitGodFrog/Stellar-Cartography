@@ -276,7 +276,7 @@ func generateRandomWeightedHookStar():
 			var beam_angle_change: float = global_data.get_randf(deg_to_rad(1), deg_to_rad(6))
 			var beam_width: float = global_data.get_randf(10, 50) # IN SOLAR RADII
 			
-			new_body = addBody(
+			new_body = addOrbitBody(
 				pulsarBodyAPI.new(),
 				BODY_TYPES.STAR,
 				identifier_count,
@@ -289,7 +289,7 @@ func generateRandomWeightedHookStar():
 				{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25}
 			)
 		_:
-			new_body = addBody(
+			new_body = addOrbitBody(
 				circularBodyAPI.new(),
 				BODY_TYPES.STAR,
 				identifier_count,
@@ -331,8 +331,8 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 					var belt_classification = global_data.weighted_pick(asteroid_belt_classifications, "weight")
 					var belt_mass = global_data.get_randf(pow(10, -1.3) / 333000, pow(10, 0.22) / 333000)
 					
-					var new_belt = addBody(
-						bodyAPI.new(),
+					var new_belt = addOrbitBody(
+						orbitBodyAPI.new(),
 						BODY_TYPES.ASTEROID_BELT,
 						identifier_count, 
 						game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.ASTEROID_BELT, name_scheme, hook.get_display_name()),
@@ -445,7 +445,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 							has_missing_GL = true
 							gas_layers_sum = global_data.get_randi(4, 9)
 				
-				var new_planet = addBody(
+				var new_planet = addOrbitBody(
 					planetBodyAPI.new(),
 					BODY_TYPES.PLANET,
 					identifier_count,
@@ -484,7 +484,7 @@ func generateWormholes(): #uses variables post_gen_location_candidates, destinat
 		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
 		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 		
-		var new_wormhole = addBody(
+		var new_wormhole = addOrbitBody(
 			wormholeBodyAPI.new(),
 			BODY_TYPES.WORMHOLE,
 			identifier_count,
@@ -517,7 +517,7 @@ func generateRandomWeightedStations():
 		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
 		var percentage_markup = global_data.get_randi(75, 200)
 		
-		var new_station = addBody(
+		var new_station = addOrbitBody(
 			stationBodyAPI.new(),
 			BODY_TYPES.STATION,
 			identifier_count,
@@ -550,7 +550,7 @@ func addRandomSpaceAnomaly() -> void: #used in both generateRandomAnomalies and 
 	var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 	var radius = get_default_radius_solar_radii()
 	
-	var new_anomaly = addBody(
+	var new_anomaly = addOrbitBody(
 		spaceAnomalyBodyAPI.new(),
 		BODY_TYPES.SPACE_ANOMALY,
 		identifier_count,
@@ -581,7 +581,7 @@ func generateRandomWeightedEntities():
 		
 		var entity_classification = global_data.weighted_pick(game_data.get_weighted_entity_classifications(), "weight")
 		
-		var new_entity = addBody(
+		var new_entity = addOrbitBody(
 			entityBodyAPI.new(),
 			BODY_TYPES.SPACE_ENTITY,
 			identifier_count,
@@ -608,7 +608,7 @@ func generateRendezvousPoint():
 	var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 	var radius = get_default_radius_solar_radii()
 	
-	var new_body = addBody(
+	var new_body = addOrbitBody(
 		glintBodyAPI.new(),
 		BODY_TYPES.RENDEZVOUS_POINT,
 		identifier_count, 
@@ -638,7 +638,7 @@ func generateRandomWeightedSpecialAnomaly():
 	match special_anomaly_classification:
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID:
 			var hook_orbit_velocity = tan(hook.orbit_angle_change) * hook.orbit_distance #would have to recalculate every frame if not calculating now, which would be unnecessary
-			var new_body = addBody(
+			var new_body = addOrbitBody(
 				load("uid://lxeqs6ypk0ju").new(),
 				BODY_TYPES.CUSTOM,
 				identifier_count,
@@ -707,21 +707,31 @@ func get_star_types_mixed_weights() -> Dictionary:
 
 
 
-func addBody(body: bodyAPI, _body_type: BODY_TYPES, id: int, d_name: String, hook_id: int, _orbit_distance: float, _orbit_angle_change: float, _radius: float, variables: Dictionary, metadata: Dictionary) -> int:
-	body.set_type(_body_type)
-	body.hook_identifier = hook_id
+func addBody(body: bodyAPI, body_type: BODY_TYPES, id: int, d_name: String, variables: Dictionary, metadata: Dictionary) -> int:
+	body.set_type(body_type)
 	body.set_identifier(id)
 	identifier_count += 1
 	body.set_display_name(d_name)
-	body.orbit_distance = _orbit_distance
-	body.orbit_angle_change = _orbit_angle_change
-	body.radius = _radius
 	for variable in variables:
 		body.set(variable, variables.get(variable))
 	body.set("metadata", metadata)
 	body.initialize()
 	bodies.append(body)
 	return body.get_identifier()
+
+func addOrbitBody(_body: orbitBodyAPI, _body_type: BODY_TYPES, _id: int, _d_name: String, _hook_id: int, _orbit_distance: float, _orbit_angle_change: float, _radius: float, _variables: Dictionary, _metadata: Dictionary) -> int:
+	_variables["hook_identifier"] = _hook_id
+	_variables["orbit_distance"] = _orbit_distance
+	_variables["orbit_angle_change"] = _orbit_angle_change
+	_variables["radius"] = _radius
+	var id = addBody(_body, _body_type, _id, _d_name, _variables, _metadata)
+	return id
+
+func addUnitBody(_body: unitBodyAPI, _body_type: BODY_TYPES, _id: int, _d_name: String, _speed: int, _radius: float, _variables: Dictionary, _metadata: Dictionary) -> int:
+	_variables["speed"] = _speed
+	_variables["radius"] = _radius
+	var id = addBody(_body, _body_type, _id, _d_name, _variables, _metadata)
+	return id
 
 func removeBody(id: int):
 	for body in bodies:
@@ -793,8 +803,9 @@ func get_body_from_identifier(id: int):
 func get_bodies_with_hook_identifier(id: int) -> Array:
 	var bodies_with_requested_hook_identifier: Array = []
 	for body in bodies:
-		if body.hook_identifier == id:
-			bodies_with_requested_hook_identifier.append(body)
+		if body.get("hook_identifier") != null:
+			if body.hook_identifier == id:
+				bodies_with_requested_hook_identifier.append(body)
 	return bodies_with_requested_hook_identifier
 
 func get_bodies_with_metadata_key(metadata_key: String) -> Array:
