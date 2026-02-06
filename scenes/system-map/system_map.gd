@@ -597,11 +597,18 @@ func draw_map():
 	if show_overlay: map_overlay.show()
 	else: map_overlay.hide()
 	
-	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT) #not EXACTLY proper but yknow
+	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT)
 	if asteroid_belts: 
 		for belt in asteroid_belts:
 			if belt.is_known(): 
 				draw_arc(belt.position, belt.orbit_distance, -10, TAU, 50, belt.metadata.get("belt_color"), belt.metadata.get("belt_width"), false)
+	
+	for body in system.bodies:
+		
+		#batch unitBodyAPI drawing
+		if body is unitBodyAPI: #and body.is_known():
+			if show_overlay:
+				draw_rect(global_data.get_offset_rect2(body.position, size_exponent * 3.0, size_exponent * 3.0), Color.GRAY)
 	
 	for body in system.bodies:
 		

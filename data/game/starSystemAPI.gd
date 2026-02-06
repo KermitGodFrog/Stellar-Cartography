@@ -39,7 +39,7 @@ func set_display_name(new_display_name: String):
 #enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
 #enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
 
-enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, CUSTOM}
+enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, UNIT, CUSTOM}
 
 const star_types = {
 	"M": {"name": "M", "weight_eg": 0.7645629, "weight_lg": 0.0000003},
@@ -678,6 +678,7 @@ func generateFallbackAnomalies():
 	pass
 
 
+
 func get_orbit_angle_change(hook: bodyAPI, _orbit_distance: float) -> float: #(per unit of time) 
 	#v = √(GM/r), where G is gravitational constant, M is hook mass (central body mass) and r is orbit radius
 	var hook_orbit_velocity = tan(hook.orbit_angle_change) * hook.orbit_distance # real orbital velocity = orbital velocity + hook orbital velocity
@@ -730,14 +731,18 @@ func removeBody(id: int):
 
 func updateBodyPosition(id: int, delta):
 	var body = get_body_from_identifier(id)
-	if body and body.hook_identifier != null:
-		var hook = get_body_from_identifier(body.hook_identifier)
-		if hook:
-			body.position = hook.position
-			if body.orbit_angle_change != 0 and body.orbit_distance != 0:
-				var dir = Vector2.UP.rotated(body.rotation)
-				body.rotation += body.orbit_angle_change * delta
-				body.position = body.position + (dir * body.orbit_distance)
+	match body:
+		_ when body is unitBodyAPI:
+			body.updatePosition(delta)
+		_:
+			if body and body.hook_identifier != null:
+				var hook = get_body_from_identifier(body.hook_identifier)
+				if hook:
+					body.position = hook.position
+					if body.orbit_angle_change != 0 and body.orbit_distance != 0:
+						var dir = Vector2.UP.rotated(body.rotation)
+						body.rotation += body.orbit_angle_change * delta
+						body.position = body.position + (dir * body.orbit_distance)
 	pass
 
 

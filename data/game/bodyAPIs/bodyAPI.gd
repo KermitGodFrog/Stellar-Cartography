@@ -1,6 +1,5 @@
 extends Resource
 class_name bodyAPI
-#not displayed anywhere in game
 
 signal position_updated(new_position: Vector2) #this is called thousands of times a second (potentially). DO NOT USE OFTEN OMGGG
 

@@ -107,14 +107,6 @@ func _ready():
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
-		#var new_query = responseQuery.new()
-		#new_query.add("concept", "openDialog")
-		#new_query.add("id", "station")
-		#new_query.add_tree_access("station_classification", str("ABANDONED"))
-		#new_query.add_tree_access("is_station_abandoned", true)
-		#new_query.add_tree_access("is_station_inhabited", false)
-		#get_tree().call_group("dialogueManager", "speak", self, new_query)
-		
 		var new_query = responseQuery.new()
 		new_query.add("concept", "playerStart")
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
@@ -125,17 +117,18 @@ func _ready():
 		
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
 		
-		#var debug = responseQuery.new()
-		#debug.add("concept", "followingBody")
-		#debug.add("id", "planetaryAnomaly")
-		#debug.add_tree_access("planet_classification", "Terran")
-		#debug.add_tree_access("planet_type", "Iron")
-		#debug.add_tree_access("player_in_CORE_region", true)
-		#get_tree().call_group("dialogueManager", "speak", self, debug)
-		
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
-		
+		world.player.current_star_system.addBody(
+			unitBodyAPI.new(),
+			starSystemAPI.BODY_TYPES.UNIT,
+			world.player.current_star_system.identifier_count,
+			"ruh roh",
+			int(),
+			int(),
+			int(),
+			int(),
+			{"speed": 3, "target_position": Vector2(50,50)},
+			{}
+		)
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
