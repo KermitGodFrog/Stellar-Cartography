@@ -9,9 +9,7 @@ class_name starSystemAPI
 @export var destination_systems: Array[starSystemAPI]
 
 @export var bodies: Array[bodyAPI]
-@export var units: Array[unitAPI]
-@export var body_identifier_count: int = 1
-@export var unit_identifier_count: int = 1
+@export var identifier_count: int = 1
 
 const time: int = 1
 @export_storage var post_gen_location_candidates: Array = []
@@ -139,6 +137,7 @@ const planet_type_data = {
 	#dwarfs and giants have the same audio data and thus can have the same variation class!
 }
 
+
 const planet_descriptions = { #currently accessed by: go-to interactions
 	"Chthonian": "A solid planet which is, in itself, a metallic core. Result of a massive gravitational pull stripping the atmosphere of a Neptunian or Jovian world, leaving only the core behind.",
 	"Lava": "A solid planet composed of silicate, carbon and trace rare elements, with extensive sulfur concentrated near the surface due to constant active volcanism. Metallic core.",
@@ -172,6 +171,7 @@ const star_descriptions = { #currently accessed by: go-to interactions
 	"O": "NO DESCRIPTION YET",
 	"Pulsar": "NO DESCRIPTION YET"
 }
+
 
 var LOW_VAR = planetBodyAPI.VARIATIONS.LOW #var LOW_VAR = bodyAPI.VARIATIONS.LOW
 var MED_VAR = planetBodyAPI.VARIATIONS.MEDIUM #var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
@@ -279,7 +279,7 @@ func generateRandomWeightedHookStar():
 			new_body = addBody(
 				pulsarBodyAPI.new(),
 				BODY_TYPES.STAR,
-				body_identifier_count,
+				identifier_count,
 				game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STAR, name_scheme),
 				0,
 				0.0,
@@ -292,7 +292,7 @@ func generateRandomWeightedHookStar():
 			new_body = addBody(
 				circularBodyAPI.new(),
 				BODY_TYPES.STAR,
-				body_identifier_count,
+				identifier_count,
 				game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STAR, name_scheme),
 				0, #identifier count starts at 1 so this shouldnt be any issue
 				0.0,
@@ -334,7 +334,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 					var new_belt = addBody(
 						bodyAPI.new(),
 						BODY_TYPES.ASTEROID_BELT,
-						body_identifier_count, 
+						identifier_count, 
 						game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.ASTEROID_BELT, name_scheme, hook.get_display_name()),
 						hook.get_identifier(),
 						orbit_distance,
@@ -448,7 +448,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 				var new_planet = addBody(
 					planetBodyAPI.new(),
 					BODY_TYPES.PLANET,
-					body_identifier_count,
+					identifier_count,
 					game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.PLANET, name_scheme, hook.get_display_name(), i, remaining.size()),
 					hook.get_identifier(),
 					orbit_distance,
@@ -487,7 +487,7 @@ func generateWormholes(): #uses variables post_gen_location_candidates, destinat
 		var new_wormhole = addBody(
 			wormholeBodyAPI.new(),
 			BODY_TYPES.WORMHOLE,
-			body_identifier_count,
+			identifier_count,
 			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.WORMHOLE, name_scheme, hook.get_display_name()),
 			hook.get_identifier(),
 			orbit_distance,
@@ -520,7 +520,7 @@ func generateRandomWeightedStations():
 		var new_station = addBody(
 			stationBodyAPI.new(),
 			BODY_TYPES.STATION,
-			body_identifier_count,
+			identifier_count,
 			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, name_scheme, hook.get_display_name()),
 			hook.get_identifier(),
 			orbit_distance,
@@ -553,7 +553,7 @@ func addRandomSpaceAnomaly() -> void: #used in both generateRandomAnomalies and 
 	var new_anomaly = addBody(
 		spaceAnomalyBodyAPI.new(),
 		BODY_TYPES.SPACE_ANOMALY,
-		body_identifier_count,
+		identifier_count,
 		game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ANOMALY, name_scheme, hook.get_display_name()),
 		hook.get_identifier(),
 		orbit_distance,
@@ -584,7 +584,7 @@ func generateRandomWeightedEntities():
 		var new_entity = addBody(
 			entityBodyAPI.new(),
 			BODY_TYPES.SPACE_ENTITY,
-			body_identifier_count,
+			identifier_count,
 			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.SPACE_ENTITY_DEFAULT, name_scheme, hook.get_display_name()),
 			hook.get_identifier(),
 			orbit_distance,
@@ -611,7 +611,7 @@ func generateRendezvousPoint():
 	var new_body = addBody(
 		glintBodyAPI.new(),
 		BODY_TYPES.RENDEZVOUS_POINT,
-		body_identifier_count, 
+		identifier_count, 
 		game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.RENDEZVOUS_POINT_DEFAULT, name_scheme, hook.get_display_name()), 
 		hook.get_identifier(),
 		orbit_distance, 
@@ -641,7 +641,7 @@ func generateRandomWeightedSpecialAnomaly():
 			var new_body = addBody(
 				load("uid://lxeqs6ypk0ju").new(),
 				BODY_TYPES.CUSTOM,
-				body_identifier_count,
+				identifier_count,
 				"Unidentified Contact",
 				hook.get_identifier(),
 				orbit_distance,
@@ -704,13 +704,13 @@ func get_star_types_mixed_weights() -> Dictionary:
 		mixed_types[type] = {"name": type, "weight": mixed_weight}
 	return mixed_types
 
-#BODY STUFF \/\/\/\/
+
 
 func addBody(body: bodyAPI, _body_type: BODY_TYPES, id: int, d_name: String, hook_id: int, _orbit_distance: float, _orbit_angle_change: float, _radius: float, variables: Dictionary, metadata: Dictionary) -> int:
 	body.set_type(_body_type)
 	body.hook_identifier = hook_id
 	body.set_identifier(id)
-	body_identifier_count += 1
+	identifier_count += 1
 	body.set_display_name(d_name)
 	body.orbit_distance = _orbit_distance
 	body.orbit_angle_change = _orbit_angle_change
@@ -739,6 +739,7 @@ func updateBodyPosition(id: int, delta):
 				body.rotation += body.orbit_angle_change * delta
 				body.position = body.position + (dir * body.orbit_distance)
 	pass
+
 
 
 
@@ -831,22 +832,3 @@ func is_civilized() -> bool:
 		if body.get_type() == BODY_TYPES.STATION:
 			return true
 	return false
-
-#UNIT STUFF \/\/\/\/
-
-func addUnit(unit: unitAPI, id: int, d_name: String, variables: Dictionary, metadata: Dictionary) -> int:
-	unit.set_identifier(id)
-	unit_identifier_count += 1
-	unit.set_display_name(d_name)
-	for variable in variables:
-		unit.set(variable, variables.get(variable))
-	unit.set("metadata", metadata)
-	unit.initialize()
-	units.append(unit)
-	return unit.get_identifier()
-
-func removeUnit(id: int) -> void:
-	for unit in units:
-		if unit.get_identifier() == id:
-			units.erase(unit)
-	pass
