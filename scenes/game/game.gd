@@ -30,7 +30,7 @@ func _ready():
 	
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 100.0, 10.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -76,7 +76,7 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 100.0, 10.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -1080,13 +1080,13 @@ func _on_change_scope_mode(new_mode: playerAPI.SCOPE_MODES) -> void:
 	pass
 
 func _on_player_scanner_contact_gained(_unit: unitBodyAPI) -> void:
-	
-	
+	print_debug("(DEBUG) PLAYER SCANNER CONTACT GAINED ", _unit)
+	system_map._on_player_scanner_contact_gained(_unit)
 	pass
 
 func _on_player_scanner_contact_lost(_unit: unitBodyAPI) -> void:
-	
-	
+	print_debug("(DEBUG) PLAYER SCANNER CONTACT LOST ", _unit)
+	system_map._on_player_scanner_contact_lost(_unit)
 	pass
 
 func _on_open_LRS():

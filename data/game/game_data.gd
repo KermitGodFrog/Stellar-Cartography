@@ -233,7 +233,7 @@ func saveWorld(world: worldAPI) -> void:
 	print("ERROR CODE: ", error)
 	pass
 
-func createWorld(_total_systems: int, _max_jumps: int, _hull_stress_wormhole: int, _hull_stress_CME: int, _hull_stress_pulsar_beam: int, _SA_chance_per_candidate: float, _PA_chance_per_planet: float, _missing_AO_chance_per_planet: float, _missing_GL_chance_per_relevant_planet: float) -> worldAPI:
+func createWorld(_total_systems: int, _max_jumps: int, _hull_stress_wormhole: int, _hull_stress_CME: int, _hull_stress_pulsar_beam: int, _scanner_profile: float, _scanner_power: float, _SA_chance_per_candidate: float, _PA_chance_per_planet: float, _missing_AO_chance_per_planet: float, _missing_GL_chance_per_relevant_planet: float) -> worldAPI:
 	print("GAME DATA: CREATING WORLD")
 	var world = worldAPI.new()
 	world._max_jumps = _max_jumps
@@ -241,6 +241,8 @@ func createWorld(_total_systems: int, _max_jumps: int, _hull_stress_wormhole: in
 	world._hull_stress_wormhole = _hull_stress_wormhole
 	world._hull_stress_CME = _hull_stress_CME
 	world._hull_stress_pulsar_beam = _hull_stress_pulsar_beam
+	world._scanner_profile = _scanner_profile
+	world._scanner_power = _scanner_power
 	world.SA_chance_per_candidate = _SA_chance_per_candidate
 	world.PA_chance_per_planet = _PA_chance_per_planet
 	world.missing_AO_chance_per_planet = _missing_AO_chance_per_planet

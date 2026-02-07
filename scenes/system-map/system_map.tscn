@@ -271,6 +271,7 @@ allow_reselect = true
 allow_rmb_select = true
 allow_search = false
 enable_recursive_folding = false
+hide_root = true
 scroll_horizontal_enabled = false
 
 [node name="actions_panel" type="Panel" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW"]

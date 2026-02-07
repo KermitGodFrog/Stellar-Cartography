@@ -147,6 +147,7 @@ var player_supercharged: bool = false:
 
 func _ready():
 	status_scroll.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
+	contact_list.create_item(null)
 	pass
 
 func _physics_process(delta):
@@ -447,6 +448,19 @@ func sort_sub_bodies_by_distance(body: bodyAPI, sub_bodies: Array) -> Array:
 
 
 
+func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
+	var item: TreeItem = contact_list.create_item(contact_list.get_root())
+	item.set_metadata(0, unit)
+	item.set_text(0, unit.get_display_name())
+	pass
+
+func _on_player_scanner_contact_lost(unit: unitBodyAPI) -> void:
+	var root = contact_list.get_root() as TreeItem
+	for item in root.get_children():
+		if item.get_metadata(0) == unit:
+			item.free()
+			break
+	pass
 
 
 
