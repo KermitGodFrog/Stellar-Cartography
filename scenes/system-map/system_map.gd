@@ -94,6 +94,7 @@ enum BOOST_SOUND_TYPES {START, END}
 @onready var question_mark_frame = preload("uid://gmtqybky5mo")
 @onready var question_mark_texture = preload("uid://diwsd0k5wno8h")
 @onready var empty_frame = preload("uid://id0yg3qh1o32")
+@onready var empty_diamond = preload("uid://dud3plsl0rwo7")
 
 @onready var target_texture = preload("uid://diuwq6pqf7xir")
 
@@ -187,6 +188,7 @@ func _physics_process(delta):
 	calculate_asteroid_belt_slowdown()
 	calculate_pulsar_beam_slowdown_and_damage(delta)
 	generate_system_list()
+	update_contact_list()
 	
 	#updating sonar ping visualization time values & sonar polygon display time
 	SONAR_POLYGON_DISPLAY_TIME = maxi(0, SONAR_POLYGON_DISPLAY_TIME - delta)
@@ -448,10 +450,23 @@ func sort_sub_bodies_by_distance(body: bodyAPI, sub_bodies: Array) -> Array:
 
 
 
+func update_contact_list() -> void:
+	var root = contact_list.get_root() as TreeItem
+	for item in root.get_children():
+		var body = item.get_metadata(0)
+		if body == follow_body:
+			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
+		elif body.get_identifier() == closest_body_id: 
+			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.2)) #WEB_GRAY
+		else:
+			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
+	pass
+
 func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
 	var item: TreeItem = contact_list.create_item(contact_list.get_root())
 	item.set_metadata(0, unit)
 	item.set_text(0, unit.get_display_name())
+	item.set_icon(0, empty_diamond)
 	pass
 
 func _on_player_scanner_contact_lost(unit: unitBodyAPI) -> void:
