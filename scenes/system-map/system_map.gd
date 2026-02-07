@@ -61,6 +61,7 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var camera = $camera
 @onready var canvas = $camera/canvas
 @onready var system_list = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/syslist_contacts_split/system_list
+@onready var contact_list = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/syslist_contacts_split/contact_list
 @onready var follow_body_label = $camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/follow_body_label
 @onready var body_attributes_list = $camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/body_attributes_list
 @onready var orbit_button = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button
@@ -449,9 +450,6 @@ func sort_sub_bodies_by_distance(body: bodyAPI, sub_bodies: Array) -> Array:
 
 
 
-
-
-
 func oscillate_item_icon_color(item: TreeItem, color: Color, c: int = 0) -> void:
 	item.set_icon_modulate(c, color * maxf(sin(Time.get_unix_time_from_system()), 0.75))
 	pass
@@ -692,15 +690,7 @@ func draw_map():
 	#draw_texture_rect(camera_here_tex, Rect2(Vector2(camera_target_position.x - size_exponent, camera_target_position.y - size_exponent), Vector2(size_exponent,size_exponent)), false)
 	pass
 
-#func draw_custom_arc(center, radius, angle_from, angle_to, color): #this is used under the assumption that batching can only occur on polygons/lines/rects, although this info is from godot 3.5 so idk (NO THICKNESS VARIABBLE, NOT SURE HOW TO ADD, ABANDONED THIS)
-#	var nb_points = 32
-#	var points_arc = PackedVector2Array()
-#	for i in range(nb_points + 1):
-#		var angle_point = deg_to_rad(angle_from + i * (angle_to-angle_from) / nb_points - 90)
-#		points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * radius)
-#	for index_point in range(nb_points):
-#		draw_line(points_arc[index_point], points_arc[index_point + 1], color)
-#	pass
+
 
 func _on_go_to_button_pressed():
 	if locked_body:
@@ -787,6 +777,8 @@ func async_add_movement_ping(pos: Vector2, body: bodyAPI = null) -> void: #manua
 	MOVEMENT_PINGS.append(ping)
 	pass
 
+
+
 func play_boost_sound(sound_type: BOOST_SOUND_TYPES):
 	match sound_type:
 		BOOST_SOUND_TYPES.START:
@@ -798,8 +790,6 @@ func play_boost_sound(sound_type: BOOST_SOUND_TYPES):
 func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2): #for SCAN_PREDICTION upgrade!
 	scan_prediction_upgrade._on_sonar_values_changed(ping_width, ping_length, ping_direction)
 	pass
-
-
 
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:
 	emit_signal("removeHullStressForNanites", amount, nanites_per_percentage)

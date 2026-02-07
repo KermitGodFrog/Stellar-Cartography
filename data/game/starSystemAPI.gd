@@ -206,6 +206,8 @@ const asteroid_belt_classifications = {
 	"Carbonaceous": {"name": "Carbonaceous", "weight": 0.3}
 }
 
+# core gen methods \/
+
 func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0, _missing_GL_chance_per_relevant_planet: float = 0.0) -> void:
 	#generate just planets, stars and space anomalies!
 	var hook_star = generateRandomWeightedHookStar()
@@ -253,7 +255,7 @@ func createAuxiliaryUnexplored() -> void:
 		#for example, a completely empty star system could use this match statement to REMOVE all existing bodies (besides the star) and spawn nothing else. Then an event could happen on concept enteringSystem 
 	pass
 
-
+# gen methods \/
 
 func generateRandomWeightedHookStar():
 	randomize()
@@ -677,7 +679,7 @@ func generateFallbackAnomalies():
 			addRandomSpaceAnomaly()
 	pass
 
-
+# generation related getters \/
 
 func get_orbit_angle_change(hook: bodyAPI, _orbit_distance: float) -> float: #(per unit of time) 
 	#v = √(GM/r), where G is gravitational constant, M is hook mass (central body mass) and r is orbit radius
@@ -705,7 +707,7 @@ func get_star_types_mixed_weights() -> Dictionary:
 		mixed_types[type] = {"name": type, "weight": mixed_weight}
 	return mixed_types
 
-
+# core body methods \/
 
 func addBody(body: bodyAPI, body_type: BODY_TYPES, id: int, d_name: String, variables: Dictionary, metadata: Dictionary) -> int:
 	body.set_type(body_type)
@@ -755,8 +757,7 @@ func updateBodyPosition(id: int, delta):
 						body.position = body.position + (dir * body.orbit_distance)
 	pass
 
-
-
+# misc \/
 
 func get_random_body():
 	return bodies.pick_random()
@@ -848,3 +849,15 @@ func is_civilized() -> bool:
 		if body.get_type() == BODY_TYPES.STATION:
 			return true
 	return false
+
+# unit stuff \/
+
+func get_units_in_scanner_power_range(pos: Vector2, power: float) -> Array[unitBodyAPI]:
+	var units_in_range: Array[unitBodyAPI] = []
+	var units = get_bodies_of_body_type(BODY_TYPES.UNIT) as Array[unitBodyAPI]
+	
+	for unit in units:
+		if unit.position.distance_to(pos) < power:
+			units_in_range.append(unit)
+	
+	return units_in_range

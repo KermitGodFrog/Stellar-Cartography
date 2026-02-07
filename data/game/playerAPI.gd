@@ -8,6 +8,8 @@ signal hullDeteriorationChanged(new_value: int)
 signal moraleChanged(new_value: int)
 signal dataValueChanged(new_value: int)
 signal actionTypePendingOrCompleted(_type: ACTION_TYPES, _body: bodyAPI, _pending: bool) #unlike the system_map.gd updatePlayerActionType signal, this one includes whether the action type is pending or not, e.g. it updates again once the action is achieved
+signal scannerContactGained(unit: unitBodyAPI)
+signal scannerContactLost(unit: unitBodyAPI)
 
 @export var name: String
 @export var prefix: String
@@ -116,6 +118,11 @@ enum ACTION_TYPES {NONE, GO_TO, ORBIT}
 	set(value):
 		action_body = value
 		emit_signal("actionTypePendingOrCompleted", current_action_type, action_body, false)
+
+#unitBodyAPI detection ranges
+@export var scanner_profile: float #how far away OTHER ships have to be to detect you
+@export var scanner_power: float #detection range of OTHER ships in solar radii
+var scanner_contacts: Array[unitBodyAPI] = []
 
 func get_jumps_remaining():
 	return jumps_remaining
@@ -282,6 +289,8 @@ func decreaseBalance(amount: int):
 	pass
 
 
+
+
 func addAudioProfile(helper: audioProfileHelper):
 	if saved_audio_profiles.size() < max_saved_audio_profiles:
 		saved_audio_profiles.append(helper)
@@ -292,6 +301,8 @@ func removeAudioProfile(helper: audioProfileHelper):
 	if saved_audio_profiles.has(helper):
 		saved_audio_profiles.erase(helper)
 	pass
+
+
 
 
 func addHullStress(amount: int) -> void:
@@ -308,6 +319,8 @@ func removeHullStress(amount: int) -> void:
 	pass
 
 
+
+
 func addHullDeterioration(amount: int) -> void:
 	hull_deterioration = mini(100, hull_deterioration + amount)
 	emit_signal("hullDeteriorationChanged", hull_deterioration)
@@ -319,6 +332,8 @@ func removeHullDeterioration(amount: int) -> void:
 	pass
 
 
+
+
 func addMorale(amount: int) -> void:
 	morale = mini(100, morale + amount)
 	emit_signal("moraleChanged", morale)
@@ -328,6 +343,8 @@ func removeMorale(amount: int) -> void:
 	morale = maxi(0, morale - amount)
 	emit_signal("moraleChanged", morale)
 	pass
+
+
 
 
 func increaseCharacterStanding(occupation: characterAPI.OCCUPATIONS, amount: int) -> void:
@@ -348,4 +365,17 @@ func modifyCharacterStanding(_occupation: characterAPI.OCCUPATIONS, _amount: int
 			increaseCharacterStanding(_occupation, _amount)
 		false:
 			decreaseCharacterStanding(_occupation, _amount)
+	pass
+
+
+
+
+func updateScannerContacts(r_contacts: Array[unitBodyAPI]) -> void:
+	var gained_contacts: Array[unitBodyAPI] = r_contacts.filter(func(c): return not scanner_contacts.has(c))
+	var lost_contacts: Array[unitBodyAPI] = scanner_contacts.filter(func(c): return not r_contacts.has(c))
+	for c in gained_contacts:
+		emit_signal("scannerContactGained", c)
+	for c in lost_contacts:
+		emit_signal("scannerContactLost", c)
+	scanner_contacts = r_contacts
 	pass

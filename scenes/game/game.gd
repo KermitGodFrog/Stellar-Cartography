@@ -47,6 +47,8 @@ func _ready():
 		new_player.connect("moraleChanged", _on_player_morale_changed)
 		new_player.connect("dataValueChanged", _on_player_data_value_changed)
 		new_player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
+		new_player.connect("scannerContactGained", _on_player_scanner_contact_gained)
+		new_player.connect("scannerContactLost", _on_player_scanner_contact_lost)
 		
 		var king: starSystemAPI = load("uid://bpnb60fo3ghca")
 		var suno: starSystemAPI = load("uid://bhqtlq0blu17n")
@@ -91,6 +93,8 @@ func _ready():
 		new_player.connect("moraleChanged", _on_player_morale_changed)
 		new_player.connect("dataValueChanged", _on_player_data_value_changed)
 		new_player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
+		new_player.connect("scannerContactGained", _on_player_scanner_contact_gained)
+		new_player.connect("scannerContactLost", _on_player_scanner_contact_lost)
 		
 		#new game stuff
 		var ghost: starSystemAPI = _on_create_new_star_system()
@@ -138,6 +142,8 @@ func _ready():
 		world.player.connect("moraleChanged", _on_player_morale_changed)
 		world.player.connect("dataValueChanged", _on_player_data_value_changed)
 		world.player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
+		world.player.connect("scannerContactGained", _on_player_scanner_contact_gained)
+		world.player.connect("scannerContactLost", _on_player_scanner_contact_lost)
 		
 		for i in world.player.current_star_system.destination_systems:
 			i.previous_system = world.player.current_star_system #really important  actually
@@ -262,6 +268,10 @@ func _physics_process(delta):
 	#updating positions of everyhthing for API's
 	world.player.updateActionBodyState()
 	world.player.updatePosition(delta)
+	world.player.updateScannerContacts(world.player.current_star_system.get_units_in_scanner_power_range(
+		world.player.position, 
+		world.player.scanner_power
+	))
 	var current_bodies = world.player.current_star_system.bodies
 	if current_bodies:
 		for body in current_bodies:
@@ -1067,6 +1077,16 @@ func _on_toggle_scope_mode_switch_button() -> void:
 
 func _on_change_scope_mode(new_mode: playerAPI.SCOPE_MODES) -> void:
 	system_3d.toggle_mode_switch_button_to_mode(new_mode)
+	pass
+
+func _on_player_scanner_contact_gained(_unit: unitBodyAPI) -> void:
+	
+	
+	pass
+
+func _on_player_scanner_contact_lost(_unit: unitBodyAPI) -> void:
+	
+	
 	pass
 
 func _on_open_LRS():
