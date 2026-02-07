@@ -35,24 +35,14 @@ func set_display_name(value) -> void:
 		position = value
 		emit_signal("position_updated", position)
 
-@export_storage var pings_to_be_theorised: int = 3
-@export_storage var theorised: bool = false:
-	get = is_theorised
 @export var known: bool = false:
 	get = is_known
 @export var hidden: bool = false: #hidden ON SYSTEM LIST and ON SYSTEM MAP
 	get = is_hidden
-func is_theorised() -> bool:
-	return theorised
 func is_known() -> bool:
 	return known
 func is_hidden() -> bool:
 	return hidden
-func is_theorised_not_known() -> bool:
-	if (not known) and theorised:
-		return true
-	else:
-		return false
 func is_not_known_or_is_hidden() -> bool:
 	if (not known) or hidden:
 		return true

@@ -757,18 +757,18 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	SONAR_POLYGON_DISPLAY_TIME = 50
 	
 	for body in system.bodies:
-		
-		if body.is_hidden():
-			continue
-		elif body.get_display_name() == "Ingress":
-			if TUTORIAL_INGRESS_OVERRIDE == true:
+		if body is orbitBodyAPI:
+			if body.is_hidden():
 				continue
-		elif body.get_display_name() == "Omission":
-			if TUTORIAL_OMISSION_OVERRIDE == true:
-				continue
-		
-		if Geometry2D.is_point_in_polygon(body.position, points):
-			async_add_ping(body)
+			elif body.get_display_name() == "Ingress":
+				if TUTORIAL_INGRESS_OVERRIDE == true:
+					continue
+			elif body.get_display_name() == "Omission":
+				if TUTORIAL_OMISSION_OVERRIDE == true:
+					continue
+			
+			if Geometry2D.is_point_in_polygon(body.position, points):
+				async_add_ping(body)
 	
 	#random pings \/\/\/\/
 	#for random_ping in global_data.get_randi(0, remap(ping_width, 5, 90, 0, 10)):
