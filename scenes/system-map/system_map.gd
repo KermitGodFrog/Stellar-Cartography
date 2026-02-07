@@ -60,7 +60,7 @@ var player_gas_layer_surveyor_unlocked: bool = false
 
 @onready var camera = $camera
 @onready var canvas = $camera/canvas
-@onready var system_list = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/system_list
+@onready var system_list = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/syslist_contacts_split/system_list
 @onready var follow_body_label = $camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/follow_body_label
 @onready var body_attributes_list = $camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/body_attributes_list
 @onready var orbit_button = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button
