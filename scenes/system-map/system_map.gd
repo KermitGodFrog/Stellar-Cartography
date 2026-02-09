@@ -454,7 +454,8 @@ func sort_sub_bodies_by_distance(body: bodyAPI, sub_bodies: Array) -> Array:
 func update_contact_list() -> void:
 	var root = contact_list.get_root() as TreeItem
 	for item in root.get_children():
-		var body = item.get_metadata(0)
+		var identifier = item.get_metadata(0)
+		var body = system.get_body_from_identifier(identifier)
 		if body == follow_body:
 			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
 		elif body.get_identifier() == closest_body_id: 
@@ -467,7 +468,7 @@ func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
 	unit.known = true
 	_on_found_body(unit.get_identifier())
 	var item: TreeItem = contact_list.create_item(contact_list.get_root())
-	item.set_metadata(0, unit)
+	item.set_metadata(0, unit.get_identifier())
 	item.set_text(0, unit.get_display_name())
 	item.set_icon(0, empty_diamond)
 	pass
@@ -476,7 +477,7 @@ func _on_player_scanner_contact_lost(unit: unitBodyAPI) -> void:
 	unit.known = false
 	var root = contact_list.get_root() as TreeItem
 	for item in root.get_children():
-		if item.get_metadata(0) == unit:
+		if item.get_metadata(0) == unit.get_identifier():
 			item.free()
 			break
 	pass
@@ -492,7 +493,9 @@ func oscillate_item_icon_color(item: TreeItem, color: Color, c: int = 0) -> void
 func _unhandled_input(event):
 	if event.is_action_pressed("SC_INTERACT2_RIGHT_MOUSE"):
 		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
-		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and (not closest_body.is_not_known_or_is_hidden()):
+		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) \
+		and (not closest_body.is_not_known_or_is_hidden()) \
+		and (not closest_body.get_type() == starSystemAPI.BODY_TYPES.UNIT):
 			emit_signal("updatedLockedBody", closest_body)
 			locked_body = closest_body
 			follow_body = closest_body
@@ -512,7 +515,8 @@ func _unhandled_input(event):
 	
 	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE"):
 		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
-		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and (not closest_body.is_not_known_or_is_hidden()):
+		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) \
+		and (not closest_body.is_not_known_or_is_hidden()):
 			emit_signal("updatedLockedBody", closest_body)
 			locked_body = closest_body
 			follow_body = closest_body
@@ -959,19 +963,33 @@ func _on_system_list_item_mouse_selected(_position, mouse_button_index):
 			_on_orbit_button_pressed()
 	pass
 
+func _on_contact_list_item_selected() -> void:
+	follow_and_lock_item(contact_list.get_selected())
+	pass
+
 func follow_and_lock_item(item: TreeItem):
 	var identifier: int
 	if item: 
 		identifier = item.get_metadata(0)
 	if identifier:
 		var body = system.get_body_from_identifier(identifier)
-		if body.is_theorised_not_known() or body.is_known():
-			emit_signal("updatedLockedBody", body)
-			locked_body = body
-			follow_body = body
-			camera.follow_body = follow_body
-			follow_body_modifier = follow_body
+		match body:
+			_ when body is unitBodyAPI:
+				if body.is_known():
+					emit_signal("updatedLockedBody", body)
+					locked_body = body
+					follow_body = body
+					camera.follow_body = follow_body
+					follow_body_modifier = follow_body
+			_:
+				if body.is_theorised_not_known() or body.is_known():
+					emit_signal("updatedLockedBody", body)
+					locked_body = body
+					follow_body = body
+					camera.follow_body = follow_body
+					follow_body_modifier = follow_body
 	pass
+
 
 
 func _on_tabs_tab_changed(tab: int) -> void:

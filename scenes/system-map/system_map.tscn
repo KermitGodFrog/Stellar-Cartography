@@ -848,6 +848,7 @@ ignore_time_scale = true
 [connection signal="item_collapsed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/syslist_contacts_split/system_list" to="system" method="_on_system_list_item_collapsed"]
 [connection signal="item_mouse_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/syslist_contacts_split/system_list" to="system" method="_on_system_list_item_mouse_selected"]
 [connection signal="item_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/syslist_contacts_split/system_list" to="system" method="_on_system_list_item_selected"]
+[connection signal="item_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/syslist_contacts_split/contact_list" to="system" method="_on_contact_list_item_selected"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]
