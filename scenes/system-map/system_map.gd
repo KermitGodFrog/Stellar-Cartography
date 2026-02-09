@@ -174,7 +174,10 @@ func _physics_process(delta):
 		orbit_button.set("disabled", true)
 		go_to_button.set("disabled", true)
 	else:
-		orbit_button.set("disabled", false)
+		if locked_body.get_type() == starSystemAPI.BODY_TYPES.UNIT:
+			orbit_button.set("disabled", true)
+		else:
+			orbit_button.set("disabled", false)
 		go_to_button.set("disabled", false)
 	
 	var camera_position_to_bodies: Dictionary = {}
