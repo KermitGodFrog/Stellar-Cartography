@@ -49,6 +49,7 @@ var system: starSystemAPI:
 		clear_system_list_caches()
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 var _player_status_matrix: Array = [0,0,0,0]
+var player_scanner_matrix: Array = [0.0, 0.0] #this does NOT have to be updated every frame lmfao BRRRRRRRRRRRRR
 var player_is_boosting: bool = false:
 	set(value):
 		if player_is_boosting != value:
@@ -429,7 +430,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 	return null
 
 func clear_system_list_caches() -> void:
-	#print("SYSTEM MAP (DEBUG): CLEARING SYSTEM LIST CACHES")
+	print("SYSTEM MAP: CLEARING SYSTEM LIST CACHES")
 	collapsed_cache.clear()
 	pass
 
@@ -463,6 +464,8 @@ func update_contact_list() -> void:
 	pass
 
 func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
+	unit.known = true
+	_on_found_body(unit.get_identifier())
 	var item: TreeItem = contact_list.create_item(contact_list.get_root())
 	item.set_metadata(0, unit)
 	item.set_text(0, unit.get_display_name())
@@ -470,6 +473,7 @@ func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
 	pass
 
 func _on_player_scanner_contact_lost(unit: unitBodyAPI) -> void:
+	unit.known = false
 	var root = contact_list.get_root() as TreeItem
 	for item in root.get_children():
 		if item.get_metadata(0) == unit:
@@ -624,6 +628,9 @@ func draw_map():
 	
 	if show_overlay: map_overlay.show()
 	else: map_overlay.hide()
+	
+	#DEBUG DRAWING, WILL HAVE TO IMPROVE LATER ! ! ! \/\/\/
+	draw_arc(player_position_matrix[0], player_scanner_matrix[1], -TAU, TAU, 10, Color(0.98039216, 0.92156863, 0.84313726, 0.1), 1.0, false)
 	
 	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT)
 	if asteroid_belts: 

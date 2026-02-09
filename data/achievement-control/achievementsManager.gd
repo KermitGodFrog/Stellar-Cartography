@@ -73,7 +73,6 @@ func _ready():
 	pass
 
 func _on_scene_changed():
-	print("DISTRIBUTING UPDATED ACHIEVEMENTS")
 	get_tree().call_deferred("call_group", "FOLLOW_ACHIEVEMENTS_ARRAY_UPDATE", "receive_updated_achievements_array", achievements_array) #this calls too early/late and doesnt work for some reason when/if achievementsHelper 'achievements' variable is inferred to be an array rather than an Array[achievement]
 	get_tree().call_deferred("call_group", "FOLLOW_ACHIEVEMENTS_UPDATE", "receive_updated_achievements", achievements)
 	pass

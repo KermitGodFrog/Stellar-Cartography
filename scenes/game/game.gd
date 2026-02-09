@@ -30,7 +30,7 @@ func _ready():
 	
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 100.0, 10.0, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 100.0, 50.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -76,7 +76,7 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 100.0, 10.0, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 100.0, 50.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -281,6 +281,7 @@ func _physics_process(delta):
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_map.set("_player_status_matrix", [world.player.balance, world.player.hull_stress, world.player.hull_deterioration, world.player.morale])
+	system_map.set("player_scanner_matrix", [world.player.scanner_profile, world.player.scanner_power])
 	system_map.set("player_audio_visualizer_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.AUDIO_VISUALIZER) != -1))
 	system_map.set("player_gas_layer_surveyor_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) != -1))
 	system_3d.set("player_position", world.player.position)
@@ -635,11 +636,11 @@ func _on_player_mutiny() -> void:
 	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 	match RETURN_STATE:
 		"LOSE_MUTINY":
-			print("PLAYER LOSE_MUTINY")
+			print("GAME: PLAYER LOSE_MUTINY")
 			world.player.survived_mutiny = false
 			_on_player_death()
 		"WIN_MUTINY":
-			print("PLAYER WIN_MUTINY")
+			print("GAME: PLAYER WIN_MUTINY")
 			world.player.survived_mutiny = true
 		_:
 			pass
@@ -659,12 +660,10 @@ func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
 
 func _on_update_player_target_position(pos: Vector2):
 	world.player.target_position = pos
-	print("SYSTEM MAP: UPDATING PLAYER TARGET POSITION: ", pos)
 	pass
 
 func _on_update_target_position(pos: Vector2):
 	system_3d.set("target_position", pos)
-	print("SYSTEM MAP: UPDATING TARGET POSITION: ", pos)
 	pass
 
 func _on_create_new_star_system(for_system: starSystemAPI = null):
@@ -675,11 +674,11 @@ func _on_create_new_star_system(for_system: starSystemAPI = null):
 	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
-	print("GAME (DEBUG): CREATING NEW STAR SYSTEM")
+	print("GAME: CREATING NEW STAR SYSTEM ", system)
 	return system
 
 func _on_switch_star_system(to_system: starSystemAPI):
-	print_debug("GAME (DEBUG) SWITCHING STAR SYSTEM")
+	print_debug("GAME: SWITCHING STAR SYSTEM ", to_system)
 	#if world.player.current_star_system:
 		#if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1: #this was the thing throwing TypedArray does not inherit from GDScript errors, so I just removed it.... hopefully ok. does not look important at all
 	audio_visualizer._on_clear_button_pressed()
@@ -754,12 +753,10 @@ func _on_found_body(id: int):
 	pass
 
 func _on_add_console_entry(entry_text: String, text_color: Color = Color.WHITE): #called via systtem 3d
-	print_debug("ADD CONSOLE ITEM CALLED ", entry_text, " ", text_color)
 	system_map._on_add_console_entry(entry_text, text_color)
 	pass
 
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
-	print("GAME (DEBUG): PINGING")
 	system_map._on_sonar_ping(ping_width, ping_length, ping_direction)
 	pass
 
@@ -770,7 +767,7 @@ func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction:
 	pass
 
 func _on_sell_exploration_data(sell_percentage_of_market_price: int):
-	print("STATION_UI (DEBUG): SELLING EXPLORATION DATA")
+	print("GAME: SELLING EXPLORATION DATA")
 	var multiplier = sell_percentage_of_market_price / 100.0
 	var sell_for = world.player.current_value * multiplier #star system multiplier is already added to value
 	
@@ -782,7 +779,7 @@ func _on_sell_exploration_data(sell_percentage_of_market_price: int):
 	pass
 
 func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
-	print("STATION_UI (DEBUG): UPGRADING SHIP")
+	print("GAME: UPGRADING SHIP")
 	if world.player.balance >= cost and (world.player.is_upgrade_unlock_valid(upgrade_idx)):
 		world.player.decreaseBalance(cost)
 		_on_unlock_upgrade(upgrade_idx)
@@ -803,7 +800,7 @@ func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 	pass
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
-	print("GAME (DEBUG): UPGRADE STATE CHANGED: ", upgrade_idx, " ", state)
+	print("GAME: UPGRADE STATE CHANGED: ", upgrade_idx, " ", state)
 	get_tree().call_group("FOLLOW_UPGRADE_STATE", "_on_upgrade_state_change", upgrade_idx, state)
 	if state == true and pause_mode_handler.pause_mode == game_data.PAUSE_MODES.STATION_UI:
 		_on_async_upgrade_tutorial(upgrade_idx)
@@ -869,7 +866,6 @@ func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int
 	if (world.player.balance >= amount * nanites_per_percentage) and (world.player.hull_stress > 0):
 		world.player.decreaseBalance(amount * nanites_per_percentage)
 		_on_remove_player_hull_stress(amount)
-		print_debug("REMOVE HULL STRESS SUCCESSFUL")
 	station_ui.player_balance = world.player.balance
 	station_ui.player_hull_stress = world.player.hull_stress
 	pass
@@ -1080,12 +1076,12 @@ func _on_change_scope_mode(new_mode: playerAPI.SCOPE_MODES) -> void:
 	pass
 
 func _on_player_scanner_contact_gained(_unit: unitBodyAPI) -> void:
-	print_debug("(DEBUG) PLAYER SCANNER CONTACT GAINED ", _unit)
+	print_debug("GAME: PLAYER SCANNER CONTACT GAINED ", _unit)
 	system_map._on_player_scanner_contact_gained(_unit)
 	pass
 
 func _on_player_scanner_contact_lost(_unit: unitBodyAPI) -> void:
-	print_debug("(DEBUG) PLAYER SCANNER CONTACT LOST ", _unit)
+	print_debug("GAME: PLAYER SCANNER CONTACT LOST ", _unit)
 	system_map._on_player_scanner_contact_lost(_unit)
 	pass
 
