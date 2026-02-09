@@ -745,6 +745,7 @@ func updateBodyPosition(id: int, delta):
 	var body = get_body_from_identifier(id)
 	match body:
 		_ when body is unitBodyAPI:
+			body.updateActionBodyState()
 			body.updatePosition(delta)
 		_:
 			if body and body.hook_identifier != null:

@@ -53,6 +53,7 @@ func createPlayer(name: String, prefix: String) -> playerAPI:
 	var new_player = playerAPI.new()
 	new_player.name = name
 	new_player.prefix = prefix
+	new_player.speed = 3
 	
 	new_player.max_jumps = _max_jumps
 	new_player.total_systems = _total_systems

@@ -121,7 +121,7 @@ func _ready():
 		
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
 		
-		world.player.current_star_system.addUnitBody(
+		var id = world.player.current_star_system.addUnitBody(
 			unitBodyAPI.new(),
 			starSystemAPI.BODY_TYPES.UNIT,
 			world.player.current_star_system.identifier_count,
@@ -131,6 +131,11 @@ func _ready():
 			{"target_position": Vector2(50,50)},
 			{}
 		)
+		
+		var unit = world.player.current_star_system.get_body_from_identifier(id)
+		unit.current_action_type = playerAPI.ACTION_TYPES.ORBIT
+		unit.pending_action_body = world.player.current_star_system.bodies.pick_random()
+		
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
