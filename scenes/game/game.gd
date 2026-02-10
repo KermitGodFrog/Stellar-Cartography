@@ -122,13 +122,13 @@ func _ready():
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
 		
 		var id = world.player.current_star_system.addUnitBody(
-			unitBodyAPI.new(),
+			neutralUnitAPI.new(),
 			starSystemAPI.BODY_TYPES.UNIT,
 			world.player.current_star_system.identifier_count,
 			"ruh roh",
 			3,
 			world.player.current_star_system.get_default_radius_solar_radii(),
-			{"target_position": Vector2(50,50)},
+			{"system": world.player.current_star_system},
 			{}
 		)
 		
@@ -162,6 +162,12 @@ func _ready():
 		objectives_manager.start_receive_init_type(init_type)
 		
 		_on_switch_star_system(world.player.current_star_system)
+		
+		await get_tree().create_timer(1.0, true).timeout
+		
+		for body in world.player.current_star_system:
+			if body is AIUnitAPI:
+				body.set_system(world.player.current_star_system)
 	pass
 
 func connect_all_signals() -> void:
@@ -282,6 +288,9 @@ func _physics_process(delta):
 		for body in current_bodies:
 			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
 			body.advance(delta) #capacity to do more stuff, can be overriden by classes that inherit bodyAPI
+			if body is AIUnitAPI:
+				body.player_position_matrix = [world.player.position, world.player.target_position]
+				body.player_scanner_matrix = [world.player.scanner_profile, world.player.scanner_power]
 	
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])

@@ -219,7 +219,7 @@ func _physics_process(delta):
 	
 	#INFOR TAB!!!!!!! \/\/\\/\/
 	if follow_body and follow_body.is_known(): follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
-	elif follow_body and follow_body.is_theorised_not_known(): follow_body_label.set_text(">>> Unknown")
+	elif follow_body and follow_body is orbitBodyAPI: if follow_body.is_theorised_not_known(): follow_body_label.set_text(">>> Unknown")
 	else: follow_body_label.set_text(">>> LOCK BODY FOR INFO")
 	body_attributes_list.clear()
 	if follow_body and follow_body.is_known():

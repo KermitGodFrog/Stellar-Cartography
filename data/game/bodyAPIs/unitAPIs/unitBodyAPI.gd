@@ -21,7 +21,7 @@ var in_asteroid_belt: bool = false
 var in_pulsar_beam: bool = false
 
 var rotation_hint: float #used for orbiting mechanics
-@export_storage var target_position: Vector2 = Vector2.ZERO
+@export_storage var target_position: Vector2
 enum ACTION_TYPES {NONE, GO_TO, ORBIT}
 @export_storage var current_action_type: ACTION_TYPES = ACTION_TYPES.NONE
 @export_storage var pending_action_body : bodyAPI:
@@ -120,9 +120,38 @@ func set_action_type(type: ACTION_TYPES, _action_body: bodyAPI) -> void:
 		pending_action_body = _action_body
 	pass
 
+func orbit_body(b: orbitBodyAPI) -> void:
+	set_action_type(ACTION_TYPES.ORBIT, b)
+	pass
+
+func follow_body(b: bodyAPI) -> void:
+	set_action_type(ACTION_TYPES.GO_TO, b)
+	pass
+
+
 
 func get_orbit_position_for_body(body: bodyAPI) -> Vector2:
 	var dir = Vector2.UP.rotated(rotation_hint)
 	var orbit_pos = body.position
 	orbit_pos = orbit_pos + (dir * ((3 * body.radius) + 1.0))
 	return orbit_pos
+
+func get_current_action_type() -> ACTION_TYPES:
+	return current_action_type
+
+func get_relevant_action_body() -> bodyAPI:
+	if current_action_type != ACTION_TYPES.NONE:
+		var pending = is_action_pending()
+		match pending:
+			true:
+				return pending_action_body
+			false:
+				return action_body
+	return null
+
+func is_action_pending() -> bool:
+	if pending_action_body != null:
+		return true
+	elif action_body != null:
+		return false
+	return false
