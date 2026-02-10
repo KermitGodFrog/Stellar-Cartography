@@ -131,8 +131,13 @@ func orbit_body(b: orbitBodyAPI) -> void:
 	set_action_type(ACTION_TYPES.ORBIT, b)
 	pass
 
-func follow_body(b: bodyAPI) -> void:
+func go_to_body(b: bodyAPI) -> void:
 	set_action_type(ACTION_TYPES.GO_TO, b)
+	pass
+
+func course_to_position(pos: Vector2) -> void:
+	set_action_type(ACTION_TYPES.NONE, null)
+	target_position = pos
 	pass
 
 

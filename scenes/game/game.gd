@@ -30,7 +30,7 @@ func _ready():
 	
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 100.0, 50.0, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -76,7 +76,7 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 100.0, 50.0, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -122,13 +122,13 @@ func _ready():
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
 		
 		world.player.current_star_system.addUnitBody(
-			wanderingUnitAPI.new(),
+			interceptingUnitAPI.new(),
 			starSystemAPI.BODY_TYPES.UNIT,
 			world.player.current_star_system.identifier_count,
 			"ruh roh",
 			3,
 			world.player.current_star_system.get_default_radius_solar_radii(),
-			{"system": world.player.current_star_system},
+			{"system": world.player.current_star_system, "player_scanner_profile": world.player.scanner_profile},
 			{}
 		)
 	
@@ -272,7 +272,7 @@ func _physics_process(delta):
 	#updating positions of everyhthing for API's
 	world.player.updateActionBodyState()
 	world.player.updatePosition(delta)
-	world.player.updateScannerContacts(world.player.current_star_system.get_units_in_scanner_power_range(
+	world.player.updateScannerContacts(world.player.current_star_system.get_units_in_scanner_range(
 		world.player.position, 
 		world.player.scanner_power
 	))

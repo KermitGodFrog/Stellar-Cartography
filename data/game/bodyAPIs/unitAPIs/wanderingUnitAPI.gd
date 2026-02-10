@@ -9,9 +9,6 @@ const task_schedule: Dictionary = {
 	TASKS.DOCK: [TASKS.MOVE_TO_SURVEY]
 }
 @export_storage var current_task: TASKS
-var task_switching_enabled: bool = true
-
-@export_storage var target : orbitBodyAPI
 
 @export_storage var propensity_to_boost: float = 0.0 #has to be above 1.0 to boost
 
@@ -49,7 +46,6 @@ func update_boosting_status(delta) -> void:
 	else:
 		boosting = false
 	pass
-
 
 func check_task_status() -> TASK_STATUSES:
 	match current_task:
@@ -89,7 +85,7 @@ func switch_task() -> void:
 			var stations = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.STATION)
 			if stations.size() > 0:
 				target = stations.pick_random()
-				follow_body(target)
+				go_to_body(target)
 		TASKS.DOCK:
 			task_clock.start(global_data.get_randf(5.0,10.0))
 	
@@ -97,16 +93,17 @@ func switch_task() -> void:
 	current_task = new_task
 	pass
 
+
+#region cooldown stuff
 func start_cooldown() -> void:
 	task_switching_enabled = false
 	cooldown_clock.start(2.5)
 	pass
 
-
-
 func _on_cooldown_clock_time_expired() -> void:
 	task_switching_enabled = true
 	pass
+#endregion
 
 func _on_boosting_changed(new_value: bool):
 	match new_value:
