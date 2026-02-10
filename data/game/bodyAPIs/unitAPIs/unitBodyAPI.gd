@@ -1,9 +1,12 @@
 extends bodyAPI
 class_name unitBodyAPI
+#note that for some stupid fuckin reason, if set_action_type is not set when added, it wont move? stupid thing. stupid stupid stupid.
 
 signal orbitingBody(body: bodyAPI)
 signal followingBody(body: bodyAPI)
 signal actionTypePendingOrCompleted(_type: ACTION_TYPES, _body: bodyAPI, _pending: bool)
+
+signal boosting_changed(new_value: bool)
 
 #this is a kinda hacky hack class that the game interprets differently to the normal bodyAPI inherited classes
 #it doesnt orbit - it has a target position and moves towards it depending on its internal speed
@@ -16,7 +19,11 @@ func get_adjusted_speed() -> int:
 	else:
 		return speed * (1 + (-int(in_asteroid_belt) * 0.5))
 
-var boosting: bool = false
+var boosting: bool = false:
+	set(value):
+		if not boosting == value:
+			emit_signal("boosting_changed", value)
+		boosting = value
 var in_asteroid_belt: bool = false
 var in_pulsar_beam: bool = false
 
@@ -114,10 +121,10 @@ func updateActionBodyState() -> void:
 				action_body = null
 	pass
 
-func set_action_type(type: ACTION_TYPES, _action_body: bodyAPI) -> void:
+func set_action_type(type: ACTION_TYPES, new_body: bodyAPI) -> void:
 	current_action_type = type
-	if action_body != null:
-		pending_action_body = _action_body
+	if new_body != null:
+		pending_action_body = new_body
 	pass
 
 func orbit_body(b: orbitBodyAPI) -> void:

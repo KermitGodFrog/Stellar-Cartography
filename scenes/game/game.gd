@@ -121,8 +121,8 @@ func _ready():
 		
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
 		
-		var id = world.player.current_star_system.addUnitBody(
-			neutralUnitAPI.new(),
+		world.player.current_star_system.addUnitBody(
+			wanderingUnitAPI.new(),
 			starSystemAPI.BODY_TYPES.UNIT,
 			world.player.current_star_system.identifier_count,
 			"ruh roh",
@@ -131,11 +131,6 @@ func _ready():
 			{"system": world.player.current_star_system},
 			{}
 		)
-		
-		var unit = world.player.current_star_system.get_body_from_identifier(id)
-		unit.current_action_type = playerAPI.ACTION_TYPES.ORBIT
-		unit.pending_action_body = world.player.current_star_system.bodies.pick_random()
-		
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
@@ -162,8 +157,6 @@ func _ready():
 		objectives_manager.start_receive_init_type(init_type)
 		
 		_on_switch_star_system(world.player.current_star_system)
-		
-		await get_tree().create_timer(1.0, true).timeout
 		
 		for body in world.player.current_star_system.bodies:
 			if body is AIUnitAPI:
@@ -667,9 +660,7 @@ func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
 		long_range_scopes._on_current_entity_cleared()
 		gas_layer_surveyor._on_current_planet_cleared()
 	
-	world.player.current_action_type = type
-	if action_body != null:
-		world.player.pending_action_body = action_body
+	world.player.set_action_type(type, action_body)
 	pass
 
 func _on_update_player_target_position(pos: Vector2):
