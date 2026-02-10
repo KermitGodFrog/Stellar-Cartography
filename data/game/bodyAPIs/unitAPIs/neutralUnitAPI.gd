@@ -2,14 +2,15 @@ extends AIUnitAPI
 class_name neutralUnitAPI
 
 enum TASKS {MOVE, SURVEY}
-enum TASK_STATUSES {ONGOING, COMPLETE, FAILED}
-const TASK_SCHEDULE: Dictionary = {TASKS.MOVE: [TASKS.SURVEY], TASKS.SURVEY: [TASKS.MOVE]}
+const task_schedule: Dictionary = {TASKS.MOVE: [TASKS.SURVEY], TASKS.SURVEY: [TASKS.MOVE]}
 @export_storage var current_task: TASKS
 var task_switching_enabled: bool = true
 
 @export_storage var target_planet : planetBodyAPI
 
 func initialize() -> void:
+	task_clock = clock.new()
+	cooldown_clock = clock.new()
 	cooldown_clock.time_expired.connect(_on_cooldown_clock_time_expired)
 	pass
 
@@ -43,7 +44,7 @@ func check_task_status() -> TASK_STATUSES:
 	return TASK_STATUSES.FAILED
 
 func switch_task() -> void:
-	var options: Array = TASK_SCHEDULE.get(current_task)
+	var options: Array = task_schedule.get(current_task)
 	var new_task = options.pick_random()
 	current_task = new_task
 	

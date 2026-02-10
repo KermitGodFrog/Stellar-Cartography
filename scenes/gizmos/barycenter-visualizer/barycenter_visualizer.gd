@@ -86,7 +86,7 @@ func _physics_process(_delta):
 	var locked_body = system.get_body_from_identifier(locked_body_identifier)
 	if locked_body: 
 		if locked_body.is_known(): locked_body_label.set_text(locked_body.get_display_name())
-		elif locked_body.is_theorised_not_known(): locked_body_label.set_text("Unknown")
+		elif locked_body and locked_body is orbitBodyAPI: if locked_body.is_theorised_not_known(): locked_body_label.set_text("Unknown")
 	else: locked_body_label.set_text("")
 	queue_redraw()
 	pass

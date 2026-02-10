@@ -165,7 +165,7 @@ func _ready():
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
-		for body in world.player.current_star_system:
+		for body in world.player.current_star_system.bodies:
 			if body is AIUnitAPI:
 				body.set_system(world.player.current_star_system)
 	pass
