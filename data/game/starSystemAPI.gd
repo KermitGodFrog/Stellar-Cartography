@@ -679,6 +679,11 @@ func generateFallbackAnomalies():
 			addRandomSpaceAnomaly()
 	pass
 
+func generateRandomWeightedUnits() -> void:
+	
+	
+	pass
+
 # generation related getters \/
 
 func get_orbit_angle_change(hook: bodyAPI, _orbit_distance: float) -> float: #(per unit of time) 
@@ -745,6 +750,7 @@ func updateBodyPosition(id: int, delta):
 	var body = get_body_from_identifier(id)
 	match body:
 		_ when body is unitBodyAPI:
+			body.updateActionBodyState()
 			body.updatePosition(delta)
 		_:
 			if body and body.hook_identifier != null:
@@ -852,12 +858,12 @@ func is_civilized() -> bool:
 
 # unit stuff \/
 
-func get_units_in_scanner_power_range(pos: Vector2, power: float) -> Array[unitBodyAPI]:
+func get_units_in_scanner_range(pos: Vector2, size: float) -> Array[unitBodyAPI]:
 	var units_in_range: Array[unitBodyAPI] = []
 	var units = get_bodies_of_body_type(BODY_TYPES.UNIT) as Array[unitBodyAPI]
 	
 	for unit in units:
-		if unit.position.distance_to(pos) < power:
+		if unit.position.distance_to(pos) < size:
 			units_in_range.append(unit)
 	
 	return units_in_range

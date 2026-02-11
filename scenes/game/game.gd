@@ -30,7 +30,7 @@ func _ready():
 	
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 100.0, 50.0, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -76,7 +76,7 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 100.0, 50.0, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -122,13 +122,13 @@ func _ready():
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
 		
 		world.player.current_star_system.addUnitBody(
-			unitBodyAPI.new(),
+			interceptingUnitAPI.new(),
 			starSystemAPI.BODY_TYPES.UNIT,
 			world.player.current_star_system.identifier_count,
 			"ruh roh",
 			3,
 			world.player.current_star_system.get_default_radius_solar_radii(),
-			{"target_position": Vector2(50,50)},
+			{"system": world.player.current_star_system, "player": world.player}, #player would usually be set _on_switch_star_system, but cant apply here as its after that obv !!!
 			{}
 		)
 	
@@ -157,6 +157,11 @@ func _ready():
 		objectives_manager.start_receive_init_type(init_type)
 		
 		_on_switch_star_system(world.player.current_star_system)
+		
+		for body in world.player.current_star_system.bodies:
+			if body is AIUnitAPI:
+				body.set_system(world.player.current_star_system)
+				body.set_player(world.player)
 	pass
 
 func connect_all_signals() -> void:
@@ -268,7 +273,7 @@ func _physics_process(delta):
 	#updating positions of everyhthing for API's
 	world.player.updateActionBodyState()
 	world.player.updatePosition(delta)
-	world.player.updateScannerContacts(world.player.current_star_system.get_units_in_scanner_power_range(
+	world.player.updateScannerContacts(world.player.current_star_system.get_units_in_scanner_range(
 		world.player.position, 
 		world.player.scanner_power
 	))
@@ -547,6 +552,9 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 	for body in destination.bodies:
 		destination.updateBodyPosition(body.get_identifier(), get_physics_process_delta_time())
+		#SETTING PLAYER FOR AI UNITS IN DESTINATION
+		if body is AIUnitAPI:
+			body.set_player(world.player)
 	world.player.position = destination_wormhole.position
 	world.player.setTargetPosition(world.player.position)
 	world.player.updatePosition(get_physics_process_delta_time())
@@ -653,9 +661,7 @@ func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
 		long_range_scopes._on_current_entity_cleared()
 		gas_layer_surveyor._on_current_planet_cleared()
 	
-	world.player.current_action_type = type
-	if action_body != null:
-		world.player.pending_action_body = action_body
+	world.player.set_action_type(type, action_body)
 	pass
 
 func _on_update_player_target_position(pos: Vector2):

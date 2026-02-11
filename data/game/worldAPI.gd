@@ -9,7 +9,7 @@ class_name worldAPI
 @export var dialogue_memory: Dictionary = {} #how the fuck does it akways have access to the updated version of this???
 @export var active_objectives: Array[objectiveAPI] = []
 
-#KEY CUSTOMIZATION
+#KEY CUSTOMIZATION - ORIGINAL, UNCHANGED VALUES FROM GAME START
 @export var _total_systems: int 
 @export var _max_jumps: int
 @export var _hull_stress_wormhole: int
@@ -22,7 +22,6 @@ class_name worldAPI
 @export var PA_chance_per_planet: float
 @export var missing_AO_chance_per_planet: float
 @export var missing_GL_chance_per_relevant_planet: float
-# in order to justify why thsi is here - what if the player wants to update key customization while playing? this would be useful to ahndle it
 
 #MISC!  >>>>>
 @export var nav_buoy_tag: String = "" #for nav buoy space anomaly - i had no better place to put this!
@@ -53,6 +52,7 @@ func createPlayer(name: String, prefix: String) -> playerAPI:
 	var new_player = playerAPI.new()
 	new_player.name = name
 	new_player.prefix = prefix
+	new_player.speed = 3
 	
 	new_player.max_jumps = _max_jumps
 	new_player.total_systems = _total_systems

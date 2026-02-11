@@ -1,33 +1,25 @@
-extends Resource
+extends unitBodyAPI
 class_name playerAPI
 #any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
-signal orbitingBody(body: bodyAPI)
-signal followingBody(body: bodyAPI)
 signal hullDeteriorationChanged(new_value: int)
 signal moraleChanged(new_value: int)
 signal dataValueChanged(new_value: int)
-signal actionTypePendingOrCompleted(_type: ACTION_TYPES, _body: bodyAPI, _pending: bool) #unlike the system_map.gd updatePlayerActionType signal, this one includes whether the action type is pending or not, e.g. it updates again once the action is achieved
 signal scannerContactGained(unit: unitBodyAPI)
 signal scannerContactLost(unit: unitBodyAPI)
 
 @export var name: String
 @export var prefix: String
 
-@export_storage var position: Vector2 = Vector2.ZERO
 @export_storage var current_star_system: starSystemAPI
 @export_storage var previous_star_system: starSystemAPI
 
-@export var speed: int = 3
 func get_adjusted_speed() -> int:
 	if boosting:
 		return speed * 5 * (1 + (-int(in_asteroid_belt) * 0.5)) * (1 + int(supercharged))
 	else:
 		return speed * (1 + (-int(in_asteroid_belt) * 0.5)) * (1 + int(supercharged))
 
-var boosting: bool = false
-var in_asteroid_belt: bool = false
-var in_pulsar_beam: bool = false
 var supercharged: bool = false:
 	get():
 		if supercharge_jumps_remaining > 0:
@@ -105,20 +97,6 @@ func get_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> char
 
 enum SCOPE_MODES {VIS, RAD}
 
-#stuff ported from old system_map.gd - no idea how it works so dont ask me hahahahhaah good luck
-var rotation_hint: float #used for orbiting mechanics
-@export_storage var target_position: Vector2 = Vector2.ZERO
-enum ACTION_TYPES {NONE, GO_TO, ORBIT}
-@export_storage var current_action_type: ACTION_TYPES = ACTION_TYPES.NONE
-@export_storage var pending_action_body : bodyAPI:
-	set(value):
-		pending_action_body = value
-		emit_signal("actionTypePendingOrCompleted", current_action_type, pending_action_body, true)
-@export_storage var action_body : bodyAPI:
-	set(value):
-		action_body = value
-		emit_signal("actionTypePendingOrCompleted", current_action_type, action_body, false)
-
 #unitBodyAPI detection ranges
 @export var scanner_profile: float #how far away OTHER ships have to be to detect you
 @export var scanner_power: float #detection range of OTHER ships in solar radii
@@ -136,94 +114,9 @@ func set_max_jumps(value: int):
 
 
 
-
-func updatePosition(delta): #dont ask bro
-	rotation_hint += delta
-	if pending_action_body:
-		match current_action_type:
-			ACTION_TYPES.NONE:
-				if not position.distance_to(target_position) < get_adjusted_speed():
-					position += position.direction_to(target_position) * get_adjusted_speed() * delta
-				else:
-					position += position.direction_to(target_position) * position.distance_to(target_position) * delta
-			ACTION_TYPES.GO_TO:
-				var pos = pending_action_body.position
-				if not position.distance_to(pos) < (pending_action_body.radius):
-					position += position.direction_to(pos) * get_adjusted_speed() * delta
-				else:
-					position = pos
-				target_position = pos #not actually used for moving, just for drawing where the player is moving to
-			ACTION_TYPES.ORBIT:
-				var dir = Vector2.UP.rotated(rotation_hint)
-				var pos = pending_action_body.position
-				pos = pos + (dir * ((3 * pending_action_body.radius) + 1.0))
-				if not position.distance_to(pos) < (pending_action_body.radius):
-					position += position.direction_to(pos) * get_adjusted_speed() * delta
-				else:
-					position = pos
-				target_position = pos #not actually used for moving, just for drawing where the player is moving to
-	elif action_body:
-		match current_action_type:
-			ACTION_TYPES.NONE:
-				if not position.distance_to(target_position) < get_adjusted_speed():
-					position += position.direction_to(target_position) * get_adjusted_speed() * delta
-				else:
-					position += position.direction_to(target_position) * position.distance_to(target_position) * delta
-			ACTION_TYPES.GO_TO:
-				var pos = action_body.position
-				position = pos
-				target_position = pos #not actually used for moving, just for drawing where the player is moving to
-			ACTION_TYPES.ORBIT:
-				var dir = Vector2.UP.rotated(rotation_hint)
-				var pos = action_body.position
-				pos = pos + (dir * ((3 * action_body.radius) + 1.0))
-				position = pos
-				target_position = pos #not actually used for moving, just for drawing where the player is moving to
-	else:
-		if not position.distance_to(target_position) < get_adjusted_speed():
-			position += position.direction_to(target_position) * get_adjusted_speed() * delta
-		else:
-			position += position.direction_to(target_position) * position.distance_to(target_position) * delta
-	pass
-
 func setTargetPosition(pos: Vector2):
 	target_position = pos
 	pass
-
-func updateActionBodyState():
-	if pending_action_body:
-		match current_action_type:
-			ACTION_TYPES.NONE:
-				pending_action_body = null
-				action_body = null
-			ACTION_TYPES.GO_TO:
-				var pos = pending_action_body.position
-				if position.distance_to(pos) < (pending_action_body.radius + 1.0):
-					emit_signal("followingBody", pending_action_body)
-					var temp = pending_action_body #ugly but necessary for current action display to work (temp)
-					pending_action_body = null
-					action_body = temp
-			ACTION_TYPES.ORBIT:
-				var dir = Vector2.UP.rotated(rotation_hint)
-				var pos = pending_action_body.position
-				pos = pos + (dir * ((3 * pending_action_body.radius) + 1.0))
-				if position.distance_to(pos) < (pending_action_body.radius + 1.0):
-					emit_signal("orbitingBody", pending_action_body)
-					var temp = pending_action_body #ugly but necessary for current action display to work (temp)
-					pending_action_body = null
-					action_body = temp
-	elif action_body: #ugly but necessary for current action display to work - i still have no ufcking idea what is going on here DO NOT TOUCH IT 
-		match current_action_type:
-			ACTION_TYPES.NONE:
-				pending_action_body = null
-				action_body = null
-	else: #ugly but necessary for current action display to work
-		match current_action_type:
-			ACTION_TYPES.NONE:
-				pending_action_body = null
-				action_body = null
-	pass
-
 
 
 
