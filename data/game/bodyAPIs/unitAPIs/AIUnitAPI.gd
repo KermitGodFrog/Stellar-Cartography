@@ -9,17 +9,25 @@ var task_switching_enabled: bool = true
 
 @export_storage var target : orbitBodyAPI
 
-var system: starSystemAPI: #updated in TWO ways: 1) set while creating the body, 2) updated by game.gd on _ready when in the CONTINUE query type
+var system: starSystemAPI: #updated in TWO ways: 1) set by starSystemAPI while creating the body, 2) set by game.gd when in the CONTINUE query type
 	get = get_system, set = set_system
-var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)] #updated by game.gd _physics_process
-var player_scanner_matrix: Array = [0.0, 0.0] #updated by game.gd _physics_process
+var player: playerAPI: #updated in TWO ways: 1) updated by game.gd on _on_switch_star_system, 2) updated by game.gd on _ready when in the CONTINUE query type
+	get = get_player, set = set_player
 
 func get_system() -> starSystemAPI:
-	return system
+	if system != null:
+		return system
+	else:
+		print_debug("UNIT (%s): USING PLAYER CURRENT STAR SYSTEM AS SYSTEM IS NOT SET" % self)
+		return player.current_star_system
 func set_system(value) -> void:
 	system = value
 	pass
 
+func get_player() -> playerAPI:
+	return player
+func set_player(value) -> void:
+	player = value
 
 
 func check_task_status() -> TASK_STATUSES:

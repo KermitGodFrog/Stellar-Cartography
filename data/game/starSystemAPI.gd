@@ -679,6 +679,11 @@ func generateFallbackAnomalies():
 			addRandomSpaceAnomaly()
 	pass
 
+func generateRandomWeightedUnits() -> void:
+	
+	
+	pass
+
 # generation related getters \/
 
 func get_orbit_angle_change(hook: bodyAPI, _orbit_distance: float) -> float: #(per unit of time) 

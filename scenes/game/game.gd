@@ -128,7 +128,7 @@ func _ready():
 			"ruh roh",
 			3,
 			world.player.current_star_system.get_default_radius_solar_radii(),
-			{"system": world.player.current_star_system, "player_scanner_profile": world.player.scanner_profile},
+			{"system": world.player.current_star_system, "player": world.player}, #player would usually be set _on_switch_star_system, but cant apply here as its after that obv !!!
 			{}
 		)
 	
@@ -161,6 +161,7 @@ func _ready():
 		for body in world.player.current_star_system.bodies:
 			if body is AIUnitAPI:
 				body.set_system(world.player.current_star_system)
+				body.set_player(world.player)
 	pass
 
 func connect_all_signals() -> void:
@@ -281,9 +282,6 @@ func _physics_process(delta):
 		for body in current_bodies:
 			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
 			body.advance(delta) #capacity to do more stuff, can be overriden by classes that inherit bodyAPI
-			if body is AIUnitAPI:
-				body.player_position_matrix = [world.player.position, world.player.target_position]
-				body.player_scanner_matrix = [world.player.scanner_profile, world.player.scanner_power]
 	
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
@@ -554,6 +552,9 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 	for body in destination.bodies:
 		destination.updateBodyPosition(body.get_identifier(), get_physics_process_delta_time())
+		#SETTING PLAYER FOR AI UNITS IN DESTINATION
+		if body is AIUnitAPI:
+			body.set_player(world.player)
 	world.player.position = destination_wormhole.position
 	world.player.setTargetPosition(world.player.position)
 	world.player.updatePosition(get_physics_process_delta_time())
