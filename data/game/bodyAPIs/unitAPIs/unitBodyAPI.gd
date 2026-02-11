@@ -29,7 +29,7 @@ var in_pulsar_beam: bool = false
 
 var rotation_hint: float #used for orbiting mechanics
 @export_storage var target_position: Vector2
-enum ACTION_TYPES {NONE, GO_TO, ORBIT}
+enum ACTION_TYPES {NONE, GO_TO, ORBIT, NONE_SLOWDOWN_OVERRIDE}
 @export_storage var current_action_type: ACTION_TYPES = ACTION_TYPES.NONE
 @export_storage var pending_action_body : bodyAPI:
 	set(value):
@@ -82,6 +82,11 @@ func updatePosition(delta) -> void:
 				pos = pos + (dir * ((3 * action_body.radius) + 1.0))
 				position = pos
 				target_position = pos
+	elif current_action_type == ACTION_TYPES.NONE_SLOWDOWN_OVERRIDE:
+		if not position.distance_to(target_position) < (get_adjusted_speed() * delta):
+			position += position.direction_to(target_position) * get_adjusted_speed() * delta
+		else:
+			position = target_position
 	else:
 		if not position.distance_to(target_position) < get_adjusted_speed():
 			position += position.direction_to(target_position) * get_adjusted_speed() * delta

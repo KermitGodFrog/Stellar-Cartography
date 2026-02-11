@@ -1,7 +1,7 @@
 extends AIUnitAPI
 class_name interceptingUnitAPI
 
-enum TASKS {MOVE_TO_SURVEY, SURVEY, USE_LIDAR, MOVE_TO_LIDAR, INVESTIGATE_LIDAR, MOVE_TO_INTERCEPT, INTERCEPT, MOVE_TO_RE_DISCOVER}
+enum TASKS {MOVE_TO_SURVEY, SURVEY, USE_LIDAR, MOVE_TO_LIDAR, INVESTIGATE_LIDAR, MOVE_TO_INTERCEPT, INTERCEPT, LOOK_FOR_PLAYER, LOOK_FOR_PLAYER_ALT}
 const task_schedule: Dictionary = {
 	TASKS.MOVE_TO_SURVEY: [TASKS.SURVEY],
 	TASKS.SURVEY: [TASKS.MOVE_TO_SURVEY, TASKS.USE_LIDAR],
@@ -10,7 +10,8 @@ const task_schedule: Dictionary = {
 	TASKS.INVESTIGATE_LIDAR: [TASKS.MOVE_TO_SURVEY, TASKS.USE_LIDAR],
 	TASKS.MOVE_TO_INTERCEPT: [TASKS.INTERCEPT], #overrides if ENTERING the players scanner profile
 	TASKS.INTERCEPT: [TASKS.MOVE_TO_INTERCEPT],
-	TASKS.MOVE_TO_RE_DISCOVER: [TASKS.MOVE_TO_SURVEY, TASKS.USE_LIDAR] #overrides if EXITING the players scanner profile. follows the players dir vector for 1 minute and then ceases
+	TASKS.LOOK_FOR_PLAYER: [TASKS.LOOK_FOR_PLAYER_ALT, TASKS.USE_LIDAR], #overrides if EXITING the players scanner profile. follows the players dir vector for 1 minute and then ceases
+	TASKS.LOOK_FOR_PLAYER_ALT: [TASKS.LOOK_FOR_PLAYER_ALT, TASKS.MOVE_TO_SURVEY, TASKS.USE_LIDAR]
 }
 @export_storage var current_task: TASKS
 
@@ -24,6 +25,8 @@ const task_schedule: Dictionary = {
 				false:
 					_on_exited_player_scanner_profile()
 		within_player_profile = value
+@export_storage var propensity_to_boost: float = 0.0 #has to be above 1.0 to boost
+@export_storage var velocity_position_hint: Array[Vector2] = [Vector2.ZERO, Vector2.ZERO] #player position last frame, self position last frame
 
 const MAX_SONAR_LENGTH := 300.0 #currently what it is in sonar_interface, but if i ever change it...
 
@@ -31,24 +34,51 @@ func initialize() -> void:
 	task_clock = clock.new()
 	cooldown_clock = clock.new()
 	cooldown_clock.time_expired.connect(_on_cooldown_clock_time_expired)
+	boosting_changed.connect(_on_boosting_changed)
 	pass
 
 func advance(delta) -> void:
 	task_clock.tick(delta)
 	cooldown_clock.tick(delta)
 	
+	update_boosting_status(delta)
 	update_scanner_status()
 	
 	match current_task:
 		TASKS.MOVE_TO_INTERCEPT:
-			target_position = player.position
+			var player_displacement = player.position - velocity_position_hint[0]
+			var player_velocity = player_displacement / delta
+			var displacement = position - velocity_position_hint[1]
+			var velocity = displacement / delta
+			var adjusted_target_position = player.position + (player_velocity * (player_velocity - velocity).length() / (pow(get_adjusted_speed(), 2)))
+			target_position = adjusted_target_position
 	
 	var status = check_task_status()
 	if cooldown_clock.is_stopped():
 		if status in [TASK_STATUSES.COMPLETE, TASK_STATUSES.FAILED]:
 			print("UNIT (%s): TASK %s -> %s" % [self, TASKS.find_key(current_task), TASK_STATUSES.find_key(status)])
 			switch_task()
+	velocity_position_hint[0] = player.position
+	velocity_position_hint[1] = position
 	pass
+
+func update_boosting_status(delta) -> void:
+	match current_task:
+		TASKS.MOVE_TO_INTERCEPT:
+			propensity_to_boost += global_data.get_randf(0.1,1.0) * 10.0 * delta
+		TASKS.MOVE_TO_SURVEY, TASKS.MOVE_TO_LIDAR, TASKS.LOOK_FOR_PLAYER, TASKS.LOOK_FOR_PLAYER_ALT:
+			propensity_to_boost += global_data.get_randf(0.0,1.0) * 10.0 * delta
+		TASKS.SURVEY, TASKS.USE_LIDAR, TASKS.INVESTIGATE_LIDAR, TASKS.INTERCEPT:
+			propensity_to_boost = 0.0
+	
+	propensity_to_boost = maxf(0, propensity_to_boost - global_data.get_randf(0.0,1.0) * 10.0 * delta)
+	
+	if propensity_to_boost >= 1.0:
+		boosting = true
+	else:
+		boosting = false
+	pass
+
 
 func update_scanner_status() -> void:
 	var contacts = system.get_units_in_scanner_range(player.position, player.scanner_profile)
@@ -76,7 +106,7 @@ func check_task_status() -> TASK_STATUSES:
 							return TASK_STATUSES.ONGOING
 			return TASK_STATUSES.FAILED
 		TASKS.USE_LIDAR:
-			if get_current_action_type() == ACTION_TYPES.NONE:
+			if get_current_action_type() in [ACTION_TYPES.NONE, ACTION_TYPES.ORBIT]:
 				if task_clock.is_stopped():
 					if sonar_theorised_player():
 						switch_task(TASKS.MOVE_TO_LIDAR)
@@ -84,15 +114,22 @@ func check_task_status() -> TASK_STATUSES:
 				else:
 					return TASK_STATUSES.ONGOING
 			return TASK_STATUSES.FAILED
-		TASKS.INVESTIGATE_LIDAR, TASKS.MOVE_TO_RE_DISCOVER, TASKS.INTERCEPT:
+		TASKS.INVESTIGATE_LIDAR, TASKS.LOOK_FOR_PLAYER, TASKS.LOOK_FOR_PLAYER_ALT, TASKS.INTERCEPT:
 			if get_current_action_type() == ACTION_TYPES.NONE:
 				if task_clock.is_stopped():
 					return TASK_STATUSES.COMPLETE
 				else:
 					return TASK_STATUSES.ONGOING
 			return TASK_STATUSES.FAILED
-		TASKS.MOVE_TO_LIDAR, TASKS.MOVE_TO_INTERCEPT:
+		TASKS.MOVE_TO_LIDAR:
 			if get_current_action_type() == ACTION_TYPES.NONE:
+				if position.distance_to(target_position) < system.get_default_radius_solar_radii(): #assumes that the players radius is the default
+					return TASK_STATUSES.COMPLETE
+				else:
+					return TASK_STATUSES.ONGOING
+			return TASK_STATUSES.FAILED
+		TASKS.MOVE_TO_INTERCEPT:
+			if get_current_action_type() == ACTION_TYPES.NONE_SLOWDOWN_OVERRIDE:
 				if position.distance_to(target_position) < system.get_default_radius_solar_radii(): #assumes that the players radius is the default
 					return TASK_STATUSES.COMPLETE
 				else:
@@ -118,7 +155,8 @@ func switch_task(override_task = null) -> void:
 			task_clock.start(global_data.get_randf(10.0,30.0))
 		TASKS.USE_LIDAR:
 			task_clock.start(15.0)
-			course_to_position(position)
+			if not get_current_action_type() == ACTION_TYPES.ORBIT:
+				course_to_position(position)
 		TASKS.MOVE_TO_LIDAR:
 			if last_player_position != Vector2.ZERO:
 				course_to_position(last_player_position)
@@ -126,34 +164,50 @@ func switch_task(override_task = null) -> void:
 			task_clock.start(global_data.get_randf(5.0, 7.5))
 			course_to_position(position)
 		TASKS.MOVE_TO_INTERCEPT:
-			set_action_type(ACTION_TYPES.NONE, null) #continuously updated in advance function
-			pass
+			set_action_type(ACTION_TYPES.NONE_SLOWDOWN_OVERRIDE, null) #continuously updated in advance function
 		TASKS.INTERCEPT:
-			print("INTERCEPTED! FOLLOWING BODY SIGNAL SENT")
+			course_to_position(position)
 			emit_signal("followingBody", player)
 			task_clock.start(3.0) #(physical) cooldown time before it can move to intercept again
-		TASKS.MOVE_TO_RE_DISCOVER:
-			task_clock.start(global_data.get_randf(20.0,40.0))
+		TASKS.LOOK_FOR_PLAYER:
+			task_clock.start(global_data.get_randf(5.0,20.0))
 			var dir = position.direction_to(last_player_position)
 			var course = position + (dir * 1000.0)
+			course_to_position(course)
+		TASKS.LOOK_FOR_PLAYER_ALT:
+			task_clock.start(global_data.get_randf(5.0,10.0))
+			var dir = position.direction_to(last_player_position)
+			var dir_alt = dir.rotated(deg_to_rad(global_data.get_randf(-45.0, 45.0)))
+			dir_alt = dir_alt.normalized()
+			var course = position + (dir_alt * 1000.0)
 			course_to_position(course)
 	
 	print("UNIT (%s): NEW TASK -> %s" % [self, TASKS.find_key(new_task)])
 	
 	start_cooldown()
 	current_task = new_task
+	propensity_to_boost = 0.0
 	pass
 
+
+#MISC FUNCTIONS
 func sonar_theorised_player() -> bool:
 	if position.distance_to(player.position) < MAX_SONAR_LENGTH:
-		var theorised_player = randf() > 0.5 #make this smarter later - taking distance and stuff into account
+		var mapped_distance = remap(position.distance_to(player.position), MAX_SONAR_LENGTH, 0, 0.2, 0.75)
+		var theorised_player = randf() < mapped_distance
 		if theorised_player:
 			last_player_position = player.position
 		return theorised_player
 	return false
 
+func async_switch_to_intercept() -> void:
+	switch_task(TASKS.MOVE_TO_INTERCEPT)
+	pass
 
-
+func async_switch_to_re_discover() -> void:
+	last_player_position = player.position
+	switch_task(TASKS.LOOK_FOR_PLAYER)
+	pass
 
 
 
@@ -170,10 +224,25 @@ func _on_cooldown_clock_time_expired() -> void:
 #endregion
 
 func _on_entered_player_scanner_profile() -> void:
-	switch_task(TASKS.MOVE_TO_INTERCEPT)
+	if not cooldown_clock.is_stopped():
+		await cooldown_clock.time_expired
+		async_switch_to_intercept()
+	else:
+		async_switch_to_intercept()
 	pass
 
 func _on_exited_player_scanner_profile() -> void:
-	last_player_position = player.position
-	switch_task(TASKS.MOVE_TO_RE_DISCOVER)
+	if not cooldown_clock.is_stopped():
+		await cooldown_clock.time_expired
+		async_switch_to_re_discover()
+	else:
+		async_switch_to_re_discover()
+	pass
+
+func _on_boosting_changed(new_value: bool):
+	match new_value:
+		true:
+			propensity_to_boost += 0.5
+		false:
+			propensity_to_boost = 0.0
 	pass

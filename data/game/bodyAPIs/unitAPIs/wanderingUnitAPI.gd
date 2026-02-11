@@ -91,6 +91,7 @@ func switch_task() -> void:
 	
 	start_cooldown()
 	current_task = new_task
+	propensity_to_boost = 0.0
 	pass
 
 
