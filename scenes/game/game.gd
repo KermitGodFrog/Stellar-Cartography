@@ -913,7 +913,7 @@ func _on_save_and_quit():
 	pass
 
 func _on_exit_to_main_menu():
-	global_data.change_scene.emit("res://Scenes/main-menu/main_menu.tscn")
+	global_data.change_scene.emit("res://scenes/main-menu/main_menu.tscn")
 	pass
 
 func _on_theorised_body(id: int):
