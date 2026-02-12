@@ -219,7 +219,7 @@ func _physics_process(delta):
 	
 	#INFOR TAB!!!!!!! \/\/\\/\/
 	if follow_body and follow_body.is_known(): follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
-	elif follow_body and follow_body is orbitBodyAPI: if follow_body.is_theorised_not_known(): follow_body_label.set_text(">>> Unknown")
+	elif follow_body and follow_body.is_theorised_not_known(): follow_body_label.set_text(">>> Unknown") #does not need override for unitBodyAPIs as it should clear before this can run
 	else: follow_body_label.set_text(">>> LOCK BODY FOR INFO")
 	body_attributes_list.clear()
 	if follow_body and follow_body.is_known():
@@ -841,6 +841,10 @@ func play_boost_sound(sound_type: BOOST_SOUND_TYPES):
 			get_tree().call_group("audioHandler", "play_once", boost_start, -24, "SFX")
 		BOOST_SOUND_TYPES.END:
 			get_tree().call_group("audioHandler", "play_once", boost_end, -24, "SFX")
+	pass
+
+func reset_camera_follow_body() -> void:
+	camera.follow_body = null
 	pass
 
 func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2): #for SCAN_PREDICTION upgrade!

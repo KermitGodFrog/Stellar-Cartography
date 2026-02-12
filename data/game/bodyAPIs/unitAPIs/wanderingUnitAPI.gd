@@ -93,6 +93,8 @@ func switch_task() -> void:
 		TASKS.DOCK:
 			task_clock.start(global_data.get_randf(5.0,10.0))
 	
+	print("UNIT (%s): NEW TASK -> %s" % [self, TASKS.find_key(new_task)])
+	
 	start_cooldown()
 	current_task = new_task
 	propensity_to_boost = 0.0

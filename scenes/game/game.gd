@@ -104,14 +104,14 @@ func _ready():
 		new.createAuxiliaryCivilized()
 		
 		new.addUnitBody(
-			interceptingUnitAPI.new(),
+			wanderingUnitAPI.new(),
 			starSystemAPI.BODY_TYPES.UNIT,
 			new.identifier_count,
 			"ruh roh",
 			3,
 			new.get_default_radius_solar_radii(),
 			{"system": new, "player": world.player}, #player would usually be set _on_switch_star_system, but cant apply here as its after that obv !!!
-			{"hostile": true}
+			{"hostile": false}
 		)
 		
 		_on_switch_star_system(new)
@@ -1117,6 +1117,30 @@ func _on_player_scanner_contact_gained(_unit: unitBodyAPI) -> void:
 func _on_player_scanner_contact_lost(_unit: unitBodyAPI) -> void:
 	print_debug("GAME: PLAYER SCANNER CONTACT LOST ", _unit)
 	system_map._on_player_scanner_contact_lost(_unit)
+	
+	
+	#dealing with deselecting the unit EVERYWHERE or else it can cause many errors bc it does not include is_theorised_not_known()
+	#this definitely breaks a lot of rules, but i think its better to have it all centralised here!!!
+	#its so ugly too... BLEGGHH. unfortunately, i cannot be bothered to make it prettier as i am NEVER touching it again :)
+	
+	if _unit == system_map.follow_body:
+		system_map.follow_body = null
+		system_map.reset_camera_follow_body()
+	if _unit == system_map.follow_body_modifier:
+		system_map.follow_body_modifier = null
+		system_map.reset_camera_follow_body()
+	if _unit == system_map.locked_body:
+		system_map.locked_body = null
+		#system_map.emit_signal("lockedBodyDepreciated") <- all this does is reset system_3d label_locked_body_identifier, which is useless!!!
+	if _unit == system_map.action_body:
+		system_map._on_stop_button_pressed()
+	
+	if _unit.get_identifier() == system_3d.locked_body_identifier \
+	or _unit.get_identifier() ==  system_3d.label_locked_body_identifier:
+		system_3d.reset_locked_body()
+	
+	if _unit.get_identifier() == barycenter_visualizer.locked_body_identifier:
+		barycenter_visualizer.locked_body_identifier = 0
 	pass
 
 func _on_open_LRS():

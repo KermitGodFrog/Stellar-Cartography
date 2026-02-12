@@ -140,7 +140,7 @@ func _physics_process(_delta):
 	if body:
 		if body.is_known():
 			locked_body_label.set_text(str("LOCKED: ", body.get_display_name()))
-		elif body and body is orbitBodyAPI: if body.is_theorised_not_known():
+		elif body.is_theorised_not_known(): #does not need override for unitBodyAPIs as it should clear before this can run
 			locked_body_label.set_text("LOCKED: Unknown")
 	elif target_position != Vector2.ZERO:
 		locked_body_label.set_text("LOCKED: MANUAL")
