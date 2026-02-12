@@ -79,7 +79,6 @@ func update_boosting_status(delta) -> void:
 		boosting = false
 	pass
 
-
 func update_scanner_status() -> void:
 	var contacts = system.get_units_in_scanner_range(player.position, player.scanner_profile)
 	within_player_profile = contacts.has(self)
@@ -106,7 +105,7 @@ func check_task_status() -> TASK_STATUSES:
 							return TASK_STATUSES.ONGOING
 			return TASK_STATUSES.FAILED
 		TASKS.USE_LIDAR:
-			if get_current_action_type() in [ACTION_TYPES.NONE, ACTION_TYPES.ORBIT]:
+			if get_current_action_type() == ACTION_TYPES.NONE:
 				if task_clock.is_stopped():
 					if sonar_theorised_player():
 						switch_task(TASKS.MOVE_TO_LIDAR)
@@ -155,8 +154,7 @@ func switch_task(override_task = null) -> void:
 			task_clock.start(global_data.get_randf(10.0,30.0))
 		TASKS.USE_LIDAR:
 			task_clock.start(15.0)
-			if not get_current_action_type() == ACTION_TYPES.ORBIT:
-				course_to_position(position)
+			course_to_position(position)
 		TASKS.MOVE_TO_LIDAR:
 			if last_player_position != Vector2.ZERO:
 				course_to_position(last_player_position)

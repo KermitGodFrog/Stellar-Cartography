@@ -40,7 +40,7 @@ enum ACTION_TYPES {NONE, GO_TO, ORBIT, NONE_SLOWDOWN_OVERRIDE}
 		action_body = value
 		emit_signal("actionTypePendingOrCompleted", current_action_type, action_body, false)
 
-
+#core movement methods
 
 func updatePosition(delta) -> void:
 	rotation_hint += delta
@@ -114,14 +114,23 @@ func updateActionBodyState() -> void:
 					var temp = pending_action_body 
 					pending_action_body = null
 					action_body = temp
+			ACTION_TYPES.NONE_SLOWDOWN_OVERRIDE:
+				pending_action_body = null
+				action_body = null
 	elif action_body:
 		match current_action_type:
 			ACTION_TYPES.NONE:
 				pending_action_body = null
 				action_body = null
+			ACTION_TYPES.NONE_SLOWDOWN_OVERRIDE:
+				pending_action_body = null
+				action_body = null
 	else: 
 		match current_action_type:
 			ACTION_TYPES.NONE:
+				pending_action_body = null
+				action_body = null
+			ACTION_TYPES.NONE_SLOWDOWN_OVERRIDE:
 				pending_action_body = null
 				action_body = null
 	pass
@@ -145,7 +154,7 @@ func course_to_position(pos: Vector2) -> void:
 	target_position = pos
 	pass
 
-
+#miscellaneous getters and appraisals
 
 func get_orbit_position_for_body(body: bodyAPI) -> Vector2:
 	var dir = Vector2.UP.rotated(rotation_hint)

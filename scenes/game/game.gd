@@ -129,7 +129,7 @@ func _ready():
 			3,
 			world.player.current_star_system.get_default_radius_solar_radii(),
 			{"system": world.player.current_star_system, "player": world.player}, #player would usually be set _on_switch_star_system, but cant apply here as its after that obv !!!
-			{}
+			{"hostile": true}
 		)
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:

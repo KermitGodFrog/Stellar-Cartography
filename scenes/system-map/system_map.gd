@@ -637,20 +637,13 @@ func draw_map():
 	else: map_overlay.hide()
 	
 	#DEBUG DRAWING, WILL HAVE TO IMPROVE LATER ! ! ! \/\/\/
-	draw_arc(player_position_matrix[0], player_scanner_matrix[1], -TAU, TAU, 10, Color(0.98039216, 0.92156863, 0.84313726, 0.1), 1.0, false)
+	draw_arc(player_position_matrix[0], player_scanner_matrix[1], -TAU, TAU, 30, Color(0.98039216, 0.92156863, 0.84313726, 0.1), 0.2, false)
 	
 	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT)
 	if asteroid_belts: 
 		for belt in asteroid_belts:
 			if belt.is_known(): 
 				draw_arc(belt.position, belt.orbit_distance, -10, TAU, 50, belt.metadata.get("belt_color"), belt.metadata.get("belt_width"), false)
-	
-	for body in system.bodies:
-		
-		#batch unitBodyAPI drawing
-		if body is unitBodyAPI: #and body.is_known():
-			if show_overlay:
-				draw_rect(global_data.get_offset_rect2(body.position, size_exponent * 3.0, size_exponent * 3.0), Color.GRAY)
 	
 	for body in system.bodies:
 		
@@ -707,6 +700,26 @@ func draw_map():
 		if body is glintBodyAPI and body.is_known():
 			if show_overlay:
 				entity_texture.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false)
+	
+	for body in system.bodies:
+		
+		#INCORRECTLY batch unitBodyAPI drawing (applies two different draws at once, removing any possible benefit of batching)
+		
+		if body is AIUnitAPI and body.is_known(): #unitBodyAPIs are usually not drawn, like bodyAPIs, but AIUnitAPIs are always drawn !!!
+			if show_overlay:
+				var AI_color = Color.SLATE_GRAY
+				var blink_color = Color.LIGHT_GRAY
+				if body.is_hostile():
+					AI_color = Color.RED
+					blink_color = Color.DARK_RED
+				
+				draw_arc(body.position, maxf(0.25, sin(Time.get_unix_time_from_system() * 4.0) * size_exponent * 6.0), -TAU, TAU, 5, blink_color, 0.2, false)
+				
+				draw_rect(global_data.get_offset_rect2(body.position, size_exponent * 3.0, size_exponent * 3.0), AI_color)
+				
+				
+				
+				
 	
 	for body in system.bodies:
 		

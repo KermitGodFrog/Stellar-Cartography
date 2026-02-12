@@ -29,8 +29,14 @@ func get_player() -> playerAPI:
 func set_player(value) -> void:
 	player = value
 
-
 func check_task_status() -> TASK_STATUSES:
 	return TASK_STATUSES.FAILED
 func switch_task() -> void: #func switch_task(override: TASKS = null) -> void:
 	pass
+
+
+
+func is_hostile() -> bool:
+	if metadata.get("hostile", false) == true:
+		return true
+	return false
