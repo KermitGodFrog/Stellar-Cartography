@@ -12,9 +12,12 @@ const task_schedule: Dictionary = {
 
 @export_storage var propensity_to_boost: float = 0.0 #has to be above 1.0 to boost
 
-func initialize() -> void:
+func _init() -> void:
 	task_clock = clock.new()
 	cooldown_clock = clock.new()
+	pass
+
+func initialize() -> void:
 	cooldown_clock.time_expired.connect(_on_cooldown_clock_time_expired)
 	boosting_changed.connect(_on_boosting_changed)
 	pass

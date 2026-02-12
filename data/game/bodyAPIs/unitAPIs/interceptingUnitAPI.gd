@@ -16,7 +16,7 @@ const task_schedule: Dictionary = {
 @export_storage var current_task: TASKS
 
 @export_storage var last_player_position: Vector2 = Vector2.ZERO
-@export_storage var within_player_profile: bool = false:
+@export_storage var within_player_profile: bool:
 	set(value):
 		if within_player_profile != value:
 			match value:
@@ -30,9 +30,12 @@ const task_schedule: Dictionary = {
 
 const MAX_SONAR_LENGTH := 300.0 #currently what it is in sonar_interface, but if i ever change it...
 
-func initialize() -> void:
+func _init() -> void:
 	task_clock = clock.new()
 	cooldown_clock = clock.new()
+	pass
+
+func initialize() -> void:
 	cooldown_clock.time_expired.connect(_on_cooldown_clock_time_expired)
 	boosting_changed.connect(_on_boosting_changed)
 	pass

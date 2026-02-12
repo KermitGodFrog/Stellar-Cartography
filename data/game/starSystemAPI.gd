@@ -2,8 +2,8 @@ extends Resource
 class_name starSystemAPI
 #any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
-signal unit_following_body(b: bodyAPI, u: unitBodyAPI)
-signal unit_orbiting_body(b: bodyAPI, u: unitBodyAPI)
+signal unit_following_body(b: bodyAPI, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
+signal unit_orbiting_body(b: bodyAPI, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
 
 @export var identifier: int
 @export var display_name: String
@@ -741,9 +741,6 @@ func addUnitBody(_body: unitBodyAPI, _body_type: BODY_TYPES, _id: int, _d_name: 
 	_variables["speed"] = _speed
 	_variables["radius"] = _radius
 	var id = addBody(_body, _body_type, _id, _d_name, _variables, _metadata)
-	var unit: unitBodyAPI = get_body_from_identifier(id)
-	unit.followingBody.connect(_on_unit_following_body.bind(unit))
-	unit.orbitingBody.connect(_on_unit_orbiting_body.bind(unit))
 	return id
 
 func removeBody(id: int):

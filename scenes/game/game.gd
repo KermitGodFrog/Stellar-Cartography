@@ -103,6 +103,17 @@ func _ready():
 			_on_create_new_star_system(new)
 		new.createAuxiliaryCivilized()
 		
+		new.addUnitBody(
+			interceptingUnitAPI.new(),
+			starSystemAPI.BODY_TYPES.UNIT,
+			new.identifier_count,
+			"ruh roh",
+			3,
+			new.get_default_radius_solar_radii(),
+			{"system": new, "player": world.player}, #player would usually be set _on_switch_star_system, but cant apply here as its after that obv !!!
+			{"hostile": true}
+		)
+		
 		_on_switch_star_system(new)
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
@@ -121,16 +132,6 @@ func _ready():
 		
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
 		
-		world.player.current_star_system.addUnitBody(
-			interceptingUnitAPI.new(),
-			starSystemAPI.BODY_TYPES.UNIT,
-			world.player.current_star_system.identifier_count,
-			"ruh roh",
-			3,
-			world.player.current_star_system.get_default_radius_solar_radii(),
-			{"system": world.player.current_star_system, "player": world.player}, #player would usually be set _on_switch_star_system, but cant apply here as its after that obv !!!
-			{"hostile": true}
-		)
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
@@ -310,6 +311,7 @@ func _physics_process(delta):
 	_on_update_countdown_overlay_shown(countdown_processor != null)
 	pass
 
+
 func _on_player_theorised_body(theorised_body: bodyAPI):
 	var new_query = responseQuery.new()
 	new_query.add("concept", "theorisedBody")
@@ -488,6 +490,84 @@ func body_query_add_custom_type_shared(query: responseQuery, body: bodyAPI) -> v
 	query.add_tree_access("seed", body.metadata.get("seed", 0))
 	pass
 
+
+func _on_unit_following_body(_b: bodyAPI, _u: unitBodyAPI) -> void:
+	if _b == world.player:
+		_on_player_following_body(_u)
+	pass
+
+func _on_unit_orbiting_body(_b: bodyAPI, _u: unitBodyAPI) -> void:
+	pass
+
+
+func _on_player_death():
+	if pause_mode_handler.pause_mode != game_data.PAUSE_MODES.NONE: #unnecessary since a mutiny SHOULDNT ever happen outside of when dialogue is already open
+		await pause_mode_handler.pauseModeNone
+	print("GAME: PLAYER DIED")
+	
+	var new_query = responseQuery.new()
+	new_query.add("concept", "playerDeath")
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+	
+	_on_open_stats_menu(stats_menu.INIT_TYPES.DEATH)
+	pass
+
+func _on_player_win():
+	print("GAME: PLAYER WON")
+	
+	var new_query = responseQuery.new()
+	new_query.add("concept", "playerWin")
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+	
+	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN)
+	pass
+
+func _on_player_entering_system(system: starSystemAPI):
+	#only called when entering a system for the first time, not for loading the system
+	#called by enter_wormhole - SHOULD await the wormhole minigame closing before starting because of pause modes
+	var new_query = responseQuery.new()
+	new_query.add("concept", "enteringSystem")
+	#new_query.add_tree_access("name", system.get_display_name()) # no point to do this as the system display name will always be 'random' or 'tutorial' or whatever!
+	new_query.add_tree_access("special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(system.special_system_classification)))
+	new_query.add_tree_access("system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(system.system_hazard_classification)))
+	new_query.add_tree_access("system_star_type", system.get_first_star().metadata.get("star_type"))
+	new_query.add_tree_access("system_civilized", system.is_civilized())
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	#not awaiting onCloseDialog because wacky shtuff happens!!!!!!! audioHandler should only play it when pause_mode is NONE anyway
+	
+	if world.player.systems_traversed == roundi(world.player.total_systems / 2):
+		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/halfway_point.ogg")
+	elif system.is_civilized():
+		_on_play_civilized_system_leitmotif()
+	pass
+
+func _on_player_mutiny() -> void:
+	if pause_mode_handler.pause_mode != game_data.PAUSE_MODES.NONE: #unnecessary since a mutiny SHOULDNT ever happen outside of when dialogue is already open
+		await pause_mode_handler.pauseModeNone
+	print("GAME: PLAYER MUTINY")
+	
+	var new_query = responseQuery.new()
+	new_query.add("concept", "playerMutiny")
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+	match RETURN_STATE:
+		"LOSE_MUTINY":
+			print("GAME: PLAYER LOSE_MUTINY")
+			world.player.survived_mutiny = false
+			_on_player_death()
+		"WIN_MUTINY":
+			print("GAME: PLAYER WIN_MUTINY")
+			world.player.survived_mutiny = true
+		_:
+			pass
+	pass
+
 func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
 	match upgrade_idx:
 		playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES:
@@ -591,85 +671,7 @@ func dock_with_station(following_station):
 	_on_station_popup()
 	pass
 
-
-func _on_player_death():
-	if pause_mode_handler.pause_mode != game_data.PAUSE_MODES.NONE: #unnecessary since a mutiny SHOULDNT ever happen outside of when dialogue is already open
-		await pause_mode_handler.pauseModeNone
-	print("GAME: PLAYER DIED")
-	
-	var new_query = responseQuery.new()
-	new_query.add("concept", "playerDeath")
-	get_tree().call_group("dialogueManager", "speak", self, new_query)
-	
-	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
-	
-	_on_open_stats_menu(stats_menu.INIT_TYPES.DEATH)
-	pass
-
-func _on_player_win():
-	print("GAME: PLAYER WON")
-	
-	var new_query = responseQuery.new()
-	new_query.add("concept", "playerWin")
-	get_tree().call_group("dialogueManager", "speak", self, new_query)
-	
-	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
-	
-	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN)
-	pass
-
-func _on_player_entering_system(system: starSystemAPI):
-	#only called when entering a system for the first time, not for loading the system
-	#called by enter_wormhole - SHOULD await the wormhole minigame closing before starting because of pause modes
-	var new_query = responseQuery.new()
-	new_query.add("concept", "enteringSystem")
-	#new_query.add_tree_access("name", system.get_display_name()) # no point to do this as the system display name will always be 'random' or 'tutorial' or whatever!
-	new_query.add_tree_access("special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(system.special_system_classification)))
-	new_query.add_tree_access("system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(system.system_hazard_classification)))
-	new_query.add_tree_access("system_star_type", system.get_first_star().metadata.get("star_type"))
-	new_query.add_tree_access("system_civilized", system.is_civilized())
-	get_tree().call_group("dialogueManager", "speak", self, new_query)
-	
-	#not awaiting onCloseDialog because wacky shtuff happens!!!!!!! audioHandler should only play it when pause_mode is NONE anyway
-	
-	if world.player.systems_traversed == roundi(world.player.total_systems / 2):
-		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/halfway_point.ogg")
-	elif system.is_civilized():
-		_on_play_civilized_system_leitmotif()
-	pass
-
-func _on_player_mutiny() -> void:
-	if pause_mode_handler.pause_mode != game_data.PAUSE_MODES.NONE: #unnecessary since a mutiny SHOULDNT ever happen outside of when dialogue is already open
-		await pause_mode_handler.pauseModeNone
-	print("GAME: PLAYER MUTINY")
-	
-	var new_query = responseQuery.new()
-	new_query.add("concept", "playerMutiny")
-	get_tree().call_group("dialogueManager", "speak", self, new_query)
-	
-	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
-	match RETURN_STATE:
-		"LOSE_MUTINY":
-			print("GAME: PLAYER LOSE_MUTINY")
-			world.player.survived_mutiny = false
-			_on_player_death()
-		"WIN_MUTINY":
-			print("GAME: PLAYER WIN_MUTINY")
-			world.player.survived_mutiny = true
-		_:
-			pass
-	pass
-
-
-func _on_unit_following_body(_b: bodyAPI, _u: unitBodyAPI) -> void:
-	if _b == world.player:
-		_on_player_following_body(_u)
-	pass
-
-func _on_unit_orbiting_body(_b: bodyAPI, _u: unitBodyAPI) -> void:
-	
-	pass
-
+#misc signal handling
 
 func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
 	if not (type == world.player.current_action_type and action_body == world.player.action_body):
@@ -690,8 +692,6 @@ func _on_update_target_position(pos: Vector2):
 func _on_create_new_star_system(for_system: starSystemAPI = null):
 	game_data.SYSTEM_PREFIX = "" #shuldnt be calling game_data from game.gd but whateverrrrrrr
 	var system = world.createStarSystem("random")
-	system.unit_following_body.connect(_on_unit_following_body)
-	system.unit_orbiting_body.connect(_on_unit_orbiting_body)
 	var _advanced_scanning_unlocked = world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.ADVANCED_SCANNING)
 	system.createBase(world.get_adjusted_PA_chance(_advanced_scanning_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_scanning_unlocked), world.missing_GL_chance_per_relevant_planet)
 	if for_system != null:
@@ -702,6 +702,14 @@ func _on_create_new_star_system(for_system: starSystemAPI = null):
 
 func _on_switch_star_system(to_system: starSystemAPI):
 	print_debug("GAME: SWITCHING STAR SYSTEM ", to_system)
+	
+	#this atrocity ENSURES that units can follow the player AFTER reload or at any time since _on_switch_star_system is called on both CONTINUE and NEW. 
+	for unit: unitBodyAPI in to_system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.UNIT):
+		if not unit.followingBody.is_connected(to_system._on_unit_following_body): unit.followingBody.connect(to_system._on_unit_following_body.bind(unit))
+		if not unit.orbitingBody.is_connected(to_system._on_unit_orbiting_body): unit.orbitingBody.connect(to_system._on_unit_orbiting_body.bind(unit))
+	if not to_system.unit_following_body.is_connected(_on_unit_following_body): to_system.unit_following_body.connect(_on_unit_following_body)
+	if not to_system.unit_orbiting_body.is_connected(_on_unit_orbiting_body): to_system.unit_orbiting_body.connect(_on_unit_orbiting_body)
+	
 	#if world.player.current_star_system:
 		#if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1: #this was the thing throwing TypedArray does not inherit from GDScript errors, so I just removed it.... hopefully ok. does not look important at all
 	audio_visualizer._on_clear_button_pressed()

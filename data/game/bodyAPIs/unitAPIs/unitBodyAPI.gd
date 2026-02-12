@@ -2,8 +2,8 @@ extends bodyAPI
 class_name unitBodyAPI
 #note that for some stupid fuckin reason, if set_action_type is not set when added, it wont move? stupid thing. stupid stupid stupid.
 
-signal orbitingBody(body: bodyAPI)
-signal followingBody(body: bodyAPI)
+signal orbitingBody(body: bodyAPI) #connected by game.gd _on_switch_star_system
+signal followingBody(body: bodyAPI) #connected by game.gd _on_switch_star_system
 signal actionTypePendingOrCompleted(_type: ACTION_TYPES, _body: bodyAPI, _pending: bool)
 
 signal boosting_changed(new_value: bool)
