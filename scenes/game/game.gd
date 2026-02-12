@@ -397,7 +397,10 @@ func _on_player_following_body(following_body: bodyAPI):
 		starSystemAPI.BODY_TYPES.STAR:
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
 		starSystemAPI.BODY_TYPES.UNIT:
+			new_query.add("unit_anomaly", following_body.metadata.get("unit_anomaly", false))
+			new_query.add("unit_anomaly_available", following_body.metadata.get("unit_anomaly_available", false))
 			new_query.add_tree_access("hostile", following_body.metadata.get("hostile", false))
+			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 	
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
@@ -703,7 +706,7 @@ func _on_create_new_star_system(for_system: starSystemAPI = null):
 func _on_switch_star_system(to_system: starSystemAPI):
 	print_debug("GAME: SWITCHING STAR SYSTEM ", to_system)
 	
-	#this atrocity ENSURES that units can follow the player AFTER reload or at any time since _on_switch_star_system is called on both CONTINUE and NEW. 
+	#this atrocity ENSURES that units can follow the player AFTER reload or at any time since _on_switch_star_system is called on both CONTINUE and NEW. unitBodyAPIs must be made *BEFORE* _on_switch_star_system as a result.
 	for unit: unitBodyAPI in to_system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.UNIT):
 		if not unit.followingBody.is_connected(to_system._on_unit_following_body): unit.followingBody.connect(to_system._on_unit_following_body.bind(unit))
 		if not unit.orbitingBody.is_connected(to_system._on_unit_orbiting_body): unit.orbitingBody.connect(to_system._on_unit_orbiting_body.bind(unit))
