@@ -41,6 +41,7 @@ func advance(delta) -> void:
 	task_clock.tick(delta)
 	cooldown_clock.tick(delta)
 	
+	calculate_asteroid_belt_slowdown()
 	update_boosting_status(delta)
 	update_scanner_status()
 	
@@ -166,7 +167,7 @@ func switch_task(override_task = null) -> void:
 		TASKS.INTERCEPT:
 			course_to_position(position)
 			emit_signal("followingBody", player)
-			task_clock.start(3.0) #(physical) cooldown time before it can move to intercept again
+			task_clock.start(5.0) #(physical) cooldown time before it can move to intercept again
 		TASKS.LOOK_FOR_PLAYER:
 			task_clock.start(global_data.get_randf(5.0,20.0))
 			var dir = position.direction_to(last_player_position)
@@ -206,7 +207,6 @@ func async_switch_to_re_discover() -> void:
 	last_player_position = player.position
 	switch_task(TASKS.LOOK_FOR_PLAYER)
 	pass
-
 
 
 

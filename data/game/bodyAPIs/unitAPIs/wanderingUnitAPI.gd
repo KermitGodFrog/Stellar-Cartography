@@ -23,6 +23,7 @@ func advance(delta) -> void:
 	task_clock.tick(delta)
 	cooldown_clock.tick(delta)
 	
+	calculate_asteroid_belt_slowdown()
 	update_boosting_status(delta)
 	
 	var status = check_task_status()

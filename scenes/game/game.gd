@@ -394,6 +394,8 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add_tree_access("space_entity_type", str(game_data.ENTITY_CLASSIFICATIONS.find_key(following_body.entity_classification)))
 		starSystemAPI.BODY_TYPES.STAR:
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
+		starSystemAPI.BODY_TYPES.UNIT:
+			new_query.add_tree_access("hostile", following_body.metadata.get("hostile", false))
 	
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
@@ -466,6 +468,10 @@ func _on_player_following_body(following_body: bodyAPI):
 					dock_with_station(temp_station)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+		starSystemAPI.BODY_TYPES.UNIT:
+			match RETURN_STATE:
+				_:
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 		_:
 			_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 	pass
@@ -655,6 +661,15 @@ func _on_player_mutiny() -> void:
 	pass
 
 
+func _on_unit_following_body(_b: bodyAPI, _u: unitBodyAPI) -> void:
+	if _b == world.player:
+		_on_player_following_body(_u)
+	pass
+
+func _on_unit_orbiting_body(_b: bodyAPI, _u: unitBodyAPI) -> void:
+	
+	pass
+
 
 func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
 	if not (type == world.player.current_action_type and action_body == world.player.action_body):
@@ -675,6 +690,8 @@ func _on_update_target_position(pos: Vector2):
 func _on_create_new_star_system(for_system: starSystemAPI = null):
 	game_data.SYSTEM_PREFIX = "" #shuldnt be calling game_data from game.gd but whateverrrrrrr
 	var system = world.createStarSystem("random")
+	system.unit_following_body.connect(_on_unit_following_body)
+	system.unit_orbiting_body.connect(_on_unit_orbiting_body)
 	var _advanced_scanning_unlocked = world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.ADVANCED_SCANNING)
 	system.createBase(world.get_adjusted_PA_chance(_advanced_scanning_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_scanning_unlocked), world.missing_GL_chance_per_relevant_planet)
 	if for_system != null:

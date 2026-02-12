@@ -36,6 +36,26 @@ func switch_task() -> void: #func switch_task(override: TASKS = null) -> void:
 
 
 
+
+
+
+func calculate_asteroid_belt_slowdown() -> void:
+	var i: int = 0
+	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT)
+	if asteroid_belts:
+		for belt in asteroid_belts:
+			var lower_echelon = belt.orbit_distance - belt.metadata.get("belt_width") / 2
+			var upper_echelon = belt.orbit_distance + belt.metadata.get("belt_width") / 2
+			var distance = position.distance_to(belt.position)
+			if distance > lower_echelon and distance < upper_echelon:
+				i += 1
+				break
+	if i == 0:
+		in_asteroid_belt = false
+	elif i > 0:
+		in_asteroid_belt = true
+	pass
+
 func is_hostile() -> bool:
 	if metadata.get("hostile", false) == true:
 		return true
