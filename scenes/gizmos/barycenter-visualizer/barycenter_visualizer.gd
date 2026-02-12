@@ -31,8 +31,6 @@ func _on_refresh_timeout() -> void:
 	glint_points.clear()
 	pingable_glint_points.clear()
 	
-	var locked_body = system.get_body_from_identifier(locked_body_identifier)
-	
 	for i in point_count:
 		var theta = (360 / point_count - 1) * i
 		var x = radius * cos(theta)
@@ -40,9 +38,15 @@ func _on_refresh_timeout() -> void:
 		var new_point_pos = Vector2(x + get_screen_centre().x, y + get_screen_centre().y)
 		points[new_point_pos] = 1.0
 	
+	var locked_body = system.get_body_from_identifier(locked_body_identifier)
+	if locked_body:
+		if locked_body.get_type() != starSystemAPI.BODY_TYPES.UNIT:
+			generate_new_point_weights(locked_body)
+	pass
+
+func generate_new_point_weights(for_locked_body : bodyAPI) -> void:
 	for body in system.bodies:
 		if body is circularBodyAPI and body.get_identifier() != locked_body_identifier:
-			if locked_body: #display isnt shown if no body is locked to base points around
 				
 				if body.is_hidden():
 					continue
@@ -53,8 +57,8 @@ func _on_refresh_timeout() -> void:
 					if TUTORIAL_INGRESS_OVERRIDE == true:
 						continue
 				
-				var dir = locked_body.position.direction_to(body.position)
-				var dist = locked_body.position.distance_to(body.position)
+				var dir = for_locked_body.position.direction_to(body.position)
+				var dist = for_locked_body.position.distance_to(body.position)
 				var mass = body.mass
 				
 				var magnitude: float = global_data.get_randf(0,1)
@@ -70,8 +74,7 @@ func _on_refresh_timeout() -> void:
 					if _ping_direction != Vector2.ZERO:
 						pingable_points[closest_point] = true
 		elif body is glintBodyAPI and body.get_identifier() != locked_body_identifier:
-			if locked_body:
-				var dir = locked_body.position.direction_to(body.position)
+				var dir = for_locked_body.position.direction_to(body.position)
 				var closest_point = get_closest_point_to_direction(dir)
 				glint_points[closest_point] = 10.0
 				
