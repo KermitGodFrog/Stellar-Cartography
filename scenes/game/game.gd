@@ -103,17 +103,6 @@ func _ready():
 			_on_create_new_star_system(new)
 		new.createAuxiliaryCivilized()
 		
-		new.addUnitBody(
-			wanderingUnitAPI.new(),
-			starSystemAPI.BODY_TYPES.UNIT,
-			new.identifier_count,
-			"ruh roh",
-			3,
-			new.get_default_radius_solar_radii(),
-			{"system": new, "player": world.player}, #player would usually be set _on_switch_star_system, but cant apply here as its after that obv !!!
-			{"hostile": false}
-		)
-		
 		_on_switch_star_system(new)
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
@@ -397,8 +386,7 @@ func _on_player_following_body(following_body: bodyAPI):
 		starSystemAPI.BODY_TYPES.STAR:
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
 		starSystemAPI.BODY_TYPES.UNIT:
-			new_query.add("unit_anomaly", following_body.metadata.get("unit_anomaly", false))
-			new_query.add("unit_anomaly_available", following_body.metadata.get("unit_anomaly_available", false))
+			new_query.add("unit_available", following_body.metadata.get("unit_available", true))
 			new_query.add_tree_access("hostile", following_body.metadata.get("hostile", false))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 	
@@ -475,6 +463,12 @@ func _on_player_following_body(following_body: bodyAPI):
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 		starSystemAPI.BODY_TYPES.UNIT:
 			match RETURN_STATE:
+				"HARD_LEAVE":
+					following_body.metadata["unit_available"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+				"SOFT_LEAVE":
+					following_body.metadata["unit_available"] = true
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 		_:
