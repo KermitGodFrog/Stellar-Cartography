@@ -226,6 +226,7 @@ func createAuxiliaryCivilized() -> void:
 	generateRendezvousPoint()
 	for body in bodies:
 		body.known = true
+	generateRandomWeightedUnits()
 	pass
 
 func createAuxiliaryUnexplored() -> void:
@@ -242,6 +243,7 @@ func createAuxiliaryUnexplored() -> void:
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
 			generateRandomWeightedSpecialAnomaly()
+			generateRandomWeightedUnits()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
 			#!! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !!
 			var star = get_first_star()
@@ -683,8 +685,65 @@ func generateFallbackAnomalies():
 	pass
 
 func generateRandomWeightedUnits() -> void:
+	randomize()
+	var generate_units: bool = randf() <= game_data.UNIT_TOTAL_CHANCE_CURVE.sample(game_data.player_weirdness_index)
+	if generate_units:
+		var chance_curve: Curve
+		if is_civilized():
+			chance_curve = game_data.UNIT_CIVILIZED_CHANCE_CURVE
+		else:
+			chance_curve = game_data.UNIT_UNEXPLORED_CHANCE_CURVE
+		
+		var max_units: int = int(game_data.UNIT_QUANTITY_CURVE.sample(game_data.player_weirdness_index))
+		for unit in max_units:
+			var generate_unit: bool = randf() <= chance_curve.sample(game_data.player_weirdness_index)
+			if generate_unit:
+				var planets = get_bodies_of_body_type(BODY_TYPES.PLANET)
+				if planets:
+					addRandomWeightedUnit(planets.pick_random())
+	pass
+func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
+	randomize()
+	var distribution_y_value = game_data.UNIT_AI_DISTRIBUTION_CURVE.sample(game_data.player_weirdness_index)
+	var wandering: bool = randf() <= distribution_y_value
+	var AI: AIUnitAPI = null
+	if wandering: AI = wanderingUnitAPI.new()
+	else: AI = interceptingUnitAPI.new()
+	if AI == null: AI = wanderingUnitAPI.new()
 	
+	var affiliation: game_data.UNIT_AFFILIATIONS = game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE
+	if wandering:
+		var executive_affiliated: bool = randf() <= game_data.UNIT_WANDERING_AFFILIATION_CURVE.sample(game_data.player_weirdness_index)
+		if executive_affiliated: 
+			affiliation = game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE
+		else: 
+			affiliation = game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION
+	else: 
+		affiliation = game_data.UNIT_AFFILIATIONS.MARAUDER
 	
+	var speed: int = 0
+	if wandering:
+		speed = global_data.get_randi(1, 2)
+	else:
+		speed = global_data.get_randi(3, int(game_data.UNIT_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index)))
+	
+	var new_unit = addUnitBody(
+		AI,
+		BODY_TYPES.UNIT,
+		identifier_count,
+		game_data.get_random_starship_name(affiliation),
+		speed,
+		get_default_radius_solar_radii(),
+		{"system": self},
+		{"affiliation": affiliation, "hostile": affiliation == game_data.UNIT_AFFILIATIONS.MARAUDER, "seed": randi()}
+	)
+	
+	var unit: AIUnitAPI = get_body_from_identifier(new_unit)
+	unit.set_action_type(unitBodyAPI.ACTION_TYPES.NONE, null)
+	unit.position = unit.get_orbit_position_for_body(orbiting_planet)
+	unit.course_to_position(unit.position)
+	unit.updatePosition(1.0) #dont have access to physics delta time so just updating position by a whole second
+	unit.orbit_body(orbiting_planet)
 	pass
 
 # generation related getters \/

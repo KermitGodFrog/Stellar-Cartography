@@ -9,9 +9,9 @@ var task_switching_enabled: bool = true
 
 @export_storage var target : orbitBodyAPI
 
-var system: starSystemAPI: #updated in TWO ways: 1) set by starSystemAPI while creating the body, 2) set by game.gd when in the CONTINUE query type
+var system: starSystemAPI: #updated in TWO ways: 1) set by starSystemAPI while creating the body, 2) set by game.gd on _ready when in the CONTINUE query type
 	get = get_system, set = set_system
-var player: playerAPI: #updated in TWO ways: 1) updated by game.gd on _on_switch_star_system, 2) updated by game.gd on _ready when in the CONTINUE query type
+var player: playerAPI: #updated in TWO ways: 1) updated by game.gd on _on_switch_star_system, 2) set by game.gd on _ready when in the CONTINUE query type
 	get = get_player, set = set_player
 
 func get_system() -> starSystemAPI:

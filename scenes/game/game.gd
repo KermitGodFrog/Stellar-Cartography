@@ -103,17 +103,6 @@ func _ready():
 			_on_create_new_star_system(new)
 		new.createAuxiliaryCivilized()
 		
-		new.addUnitBody(
-			wanderingUnitAPI.new(),
-			starSystemAPI.BODY_TYPES.UNIT,
-			new.identifier_count,
-			"ruh roh",
-			3,
-			new.get_default_radius_solar_radii(),
-			{"system": new, "player": world.player}, #player would usually be set _on_switch_star_system, but cant apply here as its after that obv !!!
-			{"hostile": false}
-		)
-		
 		_on_switch_star_system(new)
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
@@ -397,8 +386,7 @@ func _on_player_following_body(following_body: bodyAPI):
 		starSystemAPI.BODY_TYPES.STAR:
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
 		starSystemAPI.BODY_TYPES.UNIT:
-			new_query.add("unit_anomaly", following_body.metadata.get("unit_anomaly", false))
-			new_query.add("unit_anomaly_available", following_body.metadata.get("unit_anomaly_available", false))
+			new_query.add("unit_available", following_body.metadata.get("unit_available", true))
 			new_query.add_tree_access("hostile", following_body.metadata.get("hostile", false))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 	
@@ -475,6 +463,12 @@ func _on_player_following_body(following_body: bodyAPI):
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 		starSystemAPI.BODY_TYPES.UNIT:
 			match RETURN_STATE:
+				"HARD_LEAVE":
+					following_body.metadata["unit_available"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+				"SOFT_LEAVE":
+					following_body.metadata["unit_available"] = true
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 		_:
@@ -706,12 +700,23 @@ func _on_create_new_star_system(for_system: starSystemAPI = null):
 func _on_switch_star_system(to_system: starSystemAPI):
 	print_debug("GAME: SWITCHING STAR SYSTEM ", to_system)
 	
-	#this atrocity ENSURES that units can follow the player AFTER reload or at any time since _on_switch_star_system is called on both CONTINUE and NEW. unitBodyAPIs must be made *BEFORE* _on_switch_star_system as a result.
+	#this ENSURES that units can follow the player AFTER reload or at any time since _on_switch_star_system is called on both CONTINUE and NEW. unitBodyAPIs must be made *BEFORE* _on_switch_star_system as a result.
 	for unit: unitBodyAPI in to_system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.UNIT):
-		if not unit.followingBody.is_connected(to_system._on_unit_following_body): unit.followingBody.connect(to_system._on_unit_following_body.bind(unit))
-		if not unit.orbitingBody.is_connected(to_system._on_unit_orbiting_body): unit.orbitingBody.connect(to_system._on_unit_orbiting_body.bind(unit))
-	if not to_system.unit_following_body.is_connected(_on_unit_following_body): to_system.unit_following_body.connect(_on_unit_following_body)
-	if not to_system.unit_orbiting_body.is_connected(_on_unit_orbiting_body): to_system.unit_orbiting_body.connect(_on_unit_orbiting_body)
+		var unit_connections: Dictionary = {
+			unit.followingBody: to_system._on_unit_following_body, 
+			unit.orbitingBody: to_system._on_unit_orbiting_body
+		}
+		for s: Signal in unit_connections:
+			if not s.is_connected(unit_connections[s]):
+				s.connect(unit_connections[s].bind(unit))
+	
+	var system_connections: Dictionary = {
+		to_system.unit_following_body: _on_unit_following_body,
+		to_system.unit_orbiting_body: _on_unit_orbiting_body
+	}
+	for s: Signal in system_connections:
+		if not s.is_connected(system_connections[s]):
+			s.connect(system_connections[s])
 	
 	#if world.player.current_star_system:
 		#if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1: #this was the thing throwing TypedArray does not inherit from GDScript errors, so I just removed it.... hopefully ok. does not look important at all

@@ -43,6 +43,16 @@ const SYSTEM_HAZARD_CLASSIFICATION_CURVES = {
 	SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION: preload("uid://ceicfkufoj2g2")
 }
 
+#units \/
+enum UNIT_AFFILIATIONS {PROVISIONAL_EXECUTIVE, LOCAL_CIVILIZATION, MARAUDER, NEW_EDEN}
+const UNIT_AI_DISTRIBUTION_CURVE = preload("uid://rve257hen6dp") #below the line = wanderingUnitAPI, above the line = interceptingUnitAPI
+const UNIT_QUANTITY_CURVE = preload("uid://dbuj65poalh6t") #the MAX quantity of units spawnable, rounded to the nearest int
+const UNIT_TOTAL_CHANCE_CURVE = preload("uid://lxj6ttsru1wy") #the chance that any units will be spawned in the system at all (so they arent a constant nussiance). zero can still be spawned if the individual chances dont come through!
+const UNIT_CIVILIZED_CHANCE_CURVE = preload("uid://cavjj8wd75w0o") #the chance per int towards the max quantity for a unit to be spawned
+const UNIT_UNEXPLORED_CHANCE_CURVE = preload("uid://c4ovce7l4llwt") #the chance per int towards the max quantity for a unit to be spawned
+const UNIT_WANDERING_AFFILIATION_CURVE = preload("uid://cxqkysupkx6ox") #below the line = PROVISIONAL_EXECUTIVE, above the line = LOCAL_CIVILIZATION
+const UNIT_HOSTILE_MAX_SPEED_CURVE = preload("uid://76qpu4masy7l")
+
 const REPAIR_CURVE = preload("uid://doinlbknr820v")
 const NANITE_CONTROLLER_REPAIR_CURVE = preload("uid://bdgrms6k50dkq")
 const MORALE_INCREASE_CURVE = preload("uid://qyrr2j508d2k")
@@ -75,6 +85,14 @@ const NAME_FILE_PATHS: Dictionary = {
 	NAME_VARIETIES.SPACE_ANOMALY_FLAIR: "res://data/game/gen/names/space_anomaly_flairs.txt"
 }
 
+const GENERAL_STARSHIP_NAMES_FILE_PATH: String = "res://data/game/gen/names/general_starship_names.txt"
+const STARSHIP_NAME_FILE_PATHS: Dictionary = {
+	UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE: "res://data/game/gen/names/executive_starship_names.txt",
+	UNIT_AFFILIATIONS.LOCAL_CIVILIZATION: GENERAL_STARSHIP_NAMES_FILE_PATH,
+	UNIT_AFFILIATIONS.MARAUDER: "res://data/game/gen/names/marauder_starship_names.txt",
+	UNIT_AFFILIATIONS.NEW_EDEN: GENERAL_STARSHIP_NAMES_FILE_PATH
+}
+
 const CHARACTER_NAMES_FILE_PATH: String = "res://data/game/gen/names/character_names.txt"
 
 const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]
@@ -82,6 +100,17 @@ var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
 
 func get_random_character_name() -> String:
 	return get_lines_from_file(CHARACTER_NAMES_FILE_PATH).pick_random()
+
+func get_random_starship_name(affiliation: UNIT_AFFILIATIONS) -> String:
+	var pool = get_lines_from_file(STARSHIP_NAME_FILE_PATHS.get(affiliation))
+	match affiliation:
+		UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE:
+			pool.append_array(get_lines_from_file(GENERAL_STARSHIP_NAMES_FILE_PATH))
+			return "%s %s" % ["ES", pool.pick_random()]
+		UNIT_AFFILIATIONS.NEW_EDEN:
+			return "%s %s" % ["ISA", pool.pick_random()]
+		_:
+			return "%s %03d" % [pool.pick_random(), global_data.get_randi(0, 999)]
 
 func get_random_name_from_variety_for_scheme(variety: NAME_VARIETIES, scheme: NAME_SCHEMES, _hook_display_name: String = "", _iteration: int = -1, _remaining_size = -1):
 	match scheme:
@@ -182,7 +211,7 @@ func STANDARD_get_data_or_file_candidates(variety: NAME_VARIETIES):
 	else:
 		return data
 
-func get_lines_from_file(file_path: String):
+func get_lines_from_file(file_path: String) -> Array:
 	var lines: Array = []
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	while not file.eof_reached():
@@ -216,6 +245,9 @@ func get_weighted_special_system_classifications() -> Dictionary:
 
 func get_weighted_system_hazard_classifications() -> Dictionary:
 	return get_weighted_classifications(SYSTEM_HAZARD_CLASSIFICATION_CURVES)
+
+
+
 
 
 
