@@ -685,6 +685,7 @@ func generateFallbackAnomalies():
 	pass
 
 func generateRandomWeightedUnits() -> void:
+	randomize()
 	var generate_units: bool = randf() <= game_data.UNIT_TOTAL_CHANCE_CURVE.sample(game_data.player_weirdness_index)
 	if generate_units:
 		var chance_curve: Curve
@@ -702,6 +703,7 @@ func generateRandomWeightedUnits() -> void:
 					addRandomWeightedUnit(planets.pick_random())
 	pass
 func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
+	randomize()
 	var distribution_y_value = game_data.UNIT_AI_DISTRIBUTION_CURVE.sample(game_data.player_weirdness_index)
 	var wandering: bool = randf() <= distribution_y_value
 	var AI: AIUnitAPI = null
@@ -719,14 +721,20 @@ func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
 	else: 
 		affiliation = game_data.UNIT_AFFILIATIONS.MARAUDER
 	
+	var speed: int = 0
+	if wandering:
+		speed = global_data.get_randi(1, 2)
+	else:
+		speed = global_data.get_randi(3, int(game_data.UNIT_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index)))
+	
 	var new_unit = addUnitBody(
 		AI,
 		BODY_TYPES.UNIT,
 		identifier_count,
 		game_data.get_random_starship_name(affiliation),
-		3,
+		speed,
 		get_default_radius_solar_radii(),
-		{"system": self, },
+		{"system": self},
 		{"affiliation": affiliation, "hostile": affiliation == game_data.UNIT_AFFILIATIONS.MARAUDER, "seed": randi()}
 	)
 	
