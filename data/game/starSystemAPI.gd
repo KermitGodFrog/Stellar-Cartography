@@ -685,9 +685,9 @@ func generateFallbackAnomalies():
 
 func generateRandomWeightedUnits() -> void:
 	randomize()
+	var _units_generated: int = 0
 	var generate_units: bool = randf() <= game_data.UNIT_TOTAL_CHANCE_CURVE.sample(game_data.player_weirdness_index)
 	if generate_units:
-		print("GENERATE UNITS CHECK PASSED !!!")
 		var chance_curve: Curve
 		if is_civilized():
 			chance_curve = game_data.UNIT_CIVILIZED_CHANCE_CURVE
@@ -701,6 +701,8 @@ func generateRandomWeightedUnits() -> void:
 				var planets = get_bodies_of_body_type(BODY_TYPES.PLANET)
 				if planets:
 					addRandomWeightedUnit(planets.pick_random())
+					_units_generated += 1
+	print_rich("[color=RED]UNITS GENERATED: %.f" % _units_generated)
 	pass
 func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
 	randomize()

@@ -133,7 +133,7 @@ func check_task_status() -> TASK_STATUSES:
 			return TASK_STATUSES.FAILED
 		TASKS.MOVE_TO_INTERCEPT:
 			if get_current_action_type() == ACTION_TYPES.NONE_SLOWDOWN_OVERRIDE:
-				if position.distance_to(target_position) < system.get_default_radius_solar_radii(): #assumes that the players radius is the default
+				if position.distance_to(player.position) < (player.radius + 1.0): #assumes that the players radius is the default
 					return TASK_STATUSES.COMPLETE
 				else:
 					return TASK_STATUSES.ONGOING
