@@ -15,6 +15,7 @@ signal forceQuitDialogue()
 signal forceUnexploredSystem()
 signal maxCharacterStanding()
 signal removePlayerMorale(amount: int)
+signal quickTraverse()
 
 
 func _ready() -> void:
@@ -93,6 +94,10 @@ func _on_max_character_standing_button_pressed() -> void:
 
 func _on_remove_morale_button_pressed() -> void:
 	emit_signal("removePlayerMorale", 5)
+	pass
+
+func _on_quick_traverse_button_pressed() -> void:
+	emit_signal("quickTraverse")
 	pass
 
 

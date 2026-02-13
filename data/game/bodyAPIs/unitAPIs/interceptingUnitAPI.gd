@@ -192,7 +192,6 @@ func switch_task(override_task = null) -> void:
 	metadata["_current_task"] = TASKS.find_key(current_task)
 	pass
 
-
 #MISC FUNCTIONS
 func sonar_theorised_player() -> bool:
 	if position.distance_to(player.position) < MAX_SONAR_LENGTH:

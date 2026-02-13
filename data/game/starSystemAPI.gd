@@ -230,7 +230,6 @@ func createAuxiliaryCivilized() -> void:
 	pass
 
 func createAuxiliaryUnexplored() -> void:
-	print_debug("CREATE AUXILIARY UNEXPLORED!!")
 	var new_special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(), "weight")
 	special_system_classification = new_special_system_classification
 	

@@ -236,6 +236,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("forceUnexploredSystem", _on_DEBUG_force_unexplored_system)
 	debug_interface.connect("maxCharacterStanding", _on_DEBUG_max_character_standing)
 	debug_interface.connect("removePlayerMorale", _on_remove_player_morale)
+	debug_interface.connect("quickTraverse", _on_DEBUG_quick_traverse)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -594,7 +595,7 @@ func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
 	pass
 
 
-func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
+func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, skip_minigame: bool = false):
 	#spawning new wormholes in destination system if nonexistent
 	if not destination.destination_systems:
 		for i in range(2):
@@ -652,7 +653,8 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
 	system_map.action_body = null
 	
 	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
-	_on_wormhole_minigame_popup()
+	if not skip_minigame:
+		_on_wormhole_minigame_popup()
 	_on_player_entering_system(destination) #this dialogue is overwritten if the player dies during traversal!
 	pass
 
@@ -1237,6 +1239,18 @@ func _on_DEBUG_max_character_standing() -> void:
 	_on_modify_character_standing(characterAPI.OCCUPATIONS.MEDICAL_OFFICER, 100, true)
 	pass
 
+func _on_DEBUG_quick_traverse() -> void:
+	var adjusted_wormholes = world.player.current_star_system.get_wormholes()
+	var to_erase: Array = []
+	for w in adjusted_wormholes:
+		var destination = w.destination_system
+		if destination == world.player.previous_star_system or w.is_disabled():
+			to_erase.append(w)
+	for w in to_erase:
+		adjusted_wormholes.erase(w)
+	var final_wormhole = adjusted_wormholes.pick_random()
+	enter_wormhole(final_wormhole, world.player.current_star_system.get_wormholes(), final_wormhole.destination_system, true)
+	pass
 
 
 
