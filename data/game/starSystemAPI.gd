@@ -688,6 +688,7 @@ func generateRandomWeightedUnits() -> void:
 	randomize()
 	var generate_units: bool = randf() <= game_data.UNIT_TOTAL_CHANCE_CURVE.sample(game_data.player_weirdness_index)
 	if generate_units:
+		print("GENERATE UNITS CHECK PASSED !!!")
 		var chance_curve: Curve
 		if is_civilized():
 			chance_curve = game_data.UNIT_CIVILIZED_CHANCE_CURVE
