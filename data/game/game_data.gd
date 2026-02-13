@@ -44,7 +44,7 @@ const SYSTEM_HAZARD_CLASSIFICATION_CURVES = {
 }
 
 #units \/
-enum UNIT_AFFILIATIONS {PROVISIONAL_EXECUTIVE, LOCAL_CIVILIZATION, MARAUDER}
+enum UNIT_AFFILIATIONS {PROVISIONAL_EXECUTIVE, LOCAL_CIVILIZATION, MARAUDER, NEW_EDEN}
 const UNIT_AI_DISTRIBUTION_CURVE = preload("uid://rve257hen6dp") #below the line = wanderingUnitAPI, above the line = interceptingUnitAPI
 const UNIT_QUANTITY_CURVE = preload("uid://dbuj65poalh6t") #the MAX quantity of units spawnable, rounded to the nearest int
 const UNIT_TOTAL_CHANCE_CURVE = preload("uid://lxj6ttsru1wy") #the chance that any units will be spawned in the system at all (so they arent a constant nussiance). zero can still be spawned if the individual chances dont come through!
@@ -81,12 +81,17 @@ const NAME_FILE_PATHS: Dictionary = {
 	NAME_VARIETIES.STATION: "res://data/game/gen/names/station_names.txt",
 	NAME_VARIETIES.STATION_FLAIR: "res://data/game/gen/names/station_flairs.txt",
 	NAME_VARIETIES.SPACE_ANOMALY: "res://data/game/gen/names/space_anomaly_names.txt",
-	NAME_VARIETIES.SPACE_ANOMALY_FLAIR: "res://data/game/gen/names/space_anomaly_flairs.txt",
+	NAME_VARIETIES.SPACE_ANOMALY_FLAIR: "res://data/game/gen/names/space_anomaly_flairs.txt"
+}
+
+const STARSHIP_NAME_FILE_PATHS: Dictionary = {
+	UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE: "res://data/game/gen/names/general_starship_names.txt",
+	UNIT_AFFILIATIONS.LOCAL_CIVILIZATION: "res://data/game/gen/names/general_starship_names.txt",
+	UNIT_AFFILIATIONS.MARAUDER: "res://data/game/gen/names/marauder_starship_names.txt",
+	UNIT_AFFILIATIONS.NEW_EDEN: "res://data/game/gen/names/general_starship_names.txt"
 }
 
 const CHARACTER_NAMES_FILE_PATH: String = "res://data/game/gen/names/character_names.txt"
-const STARSHIP_NAMES_FILE_PATH: String = "res://data/game/gen/names/starship_names.txt"
-
 
 const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]
 var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
@@ -95,10 +100,12 @@ func get_random_character_name() -> String:
 	return get_lines_from_file(CHARACTER_NAMES_FILE_PATH).pick_random()
 
 func get_random_starship_name(affiliation: UNIT_AFFILIATIONS) -> String:
-	var base = get_lines_from_file(STARSHIP_NAMES_FILE_PATH).pick_random()
+	var base = get_lines_from_file(STARSHIP_NAME_FILE_PATHS.get(affiliation)).pick_random()
 	match affiliation:
 		UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE:
-			return "%s %s" % ["EC", base]
+			return "%s %s" % ["ES", base]
+		UNIT_AFFILIATIONS.NEW_EDEN:
+			return "%s %s" % ["ISA", base]
 		_:
 			return "%s %03d" % [base, global_data.get_randi(0, 999)]
 

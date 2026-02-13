@@ -224,9 +224,9 @@ func createAuxiliaryCivilized() -> void:
 	generateRandomWeightedStations()
 	generateRandomWeightedEntities()
 	generateRendezvousPoint()
-	generateRandomWeightedUnits()
 	for body in bodies:
 		body.known = true
+	generateRandomWeightedUnits()
 	pass
 
 func createAuxiliaryUnexplored() -> void:
@@ -727,12 +727,14 @@ func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
 		3,
 		get_default_radius_solar_radii(),
 		{"system": self, },
-		{"hostile": affiliation == game_data.UNIT_AFFILIATIONS.MARAUDER, "seed": randi()}
+		{"affiliation": affiliation, "hostile": affiliation == game_data.UNIT_AFFILIATIONS.MARAUDER, "seed": randi()}
 	)
 	
 	var unit: AIUnitAPI = get_body_from_identifier(new_unit)
 	unit.set_action_type(unitBodyAPI.ACTION_TYPES.NONE, null)
 	unit.position = unit.get_orbit_position_for_body(orbiting_planet)
+	unit.course_to_position(unit.position)
+	unit.updatePosition(1.0) #dont have access to physics delta time so just updating position by a whole second
 	unit.orbit_body(orbiting_planet)
 	pass
 

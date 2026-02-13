@@ -700,12 +700,23 @@ func _on_create_new_star_system(for_system: starSystemAPI = null):
 func _on_switch_star_system(to_system: starSystemAPI):
 	print_debug("GAME: SWITCHING STAR SYSTEM ", to_system)
 	
-	#this atrocity ENSURES that units can follow the player AFTER reload or at any time since _on_switch_star_system is called on both CONTINUE and NEW. unitBodyAPIs must be made *BEFORE* _on_switch_star_system as a result.
+	#this ENSURES that units can follow the player AFTER reload or at any time since _on_switch_star_system is called on both CONTINUE and NEW. unitBodyAPIs must be made *BEFORE* _on_switch_star_system as a result.
 	for unit: unitBodyAPI in to_system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.UNIT):
-		if not unit.followingBody.is_connected(to_system._on_unit_following_body): unit.followingBody.connect(to_system._on_unit_following_body.bind(unit))
-		if not unit.orbitingBody.is_connected(to_system._on_unit_orbiting_body): unit.orbitingBody.connect(to_system._on_unit_orbiting_body.bind(unit))
-	if not to_system.unit_following_body.is_connected(_on_unit_following_body): to_system.unit_following_body.connect(_on_unit_following_body)
-	if not to_system.unit_orbiting_body.is_connected(_on_unit_orbiting_body): to_system.unit_orbiting_body.connect(_on_unit_orbiting_body)
+		var unit_connections: Dictionary = {
+			unit.followingBody: to_system._on_unit_following_body, 
+			unit.orbitingBody: to_system._on_unit_orbiting_body
+		}
+		for s: Signal in unit_connections:
+			if not s.is_connected(unit_connections[s]):
+				s.connect(unit_connections[s].bind(unit))
+	
+	var system_connections: Dictionary = {
+		to_system.unit_following_body: _on_unit_following_body,
+		to_system.unit_orbiting_body: _on_unit_orbiting_body
+	}
+	for s: Signal in system_connections:
+		if not s.is_connected(system_connections[s]):
+			s.connect(system_connections[s])
 	
 	#if world.player.current_star_system:
 		#if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1: #this was the thing throwing TypedArray does not inherit from GDScript errors, so I just removed it.... hopefully ok. does not look important at all
