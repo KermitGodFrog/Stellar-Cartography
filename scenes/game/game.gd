@@ -703,10 +703,13 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	print_debug("GAME: SWITCHING STAR SYSTEM ", to_system)
 	
 	#this ENSURES that units can follow the player AFTER reload or at any time since _on_switch_star_system is called on both CONTINUE and NEW. unitBodyAPIs must be made *BEFORE* _on_switch_star_system as a result.
+	
+	
 	for unit: unitBodyAPI in to_system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.UNIT):
 		var unit_connections: Dictionary = {
 			unit.followingBody: to_system._on_unit_following_body, 
-			unit.orbitingBody: to_system._on_unit_orbiting_body
+			unit.orbitingBody: to_system._on_unit_orbiting_body,
+			unit.play_sound_effect: to_system._on_unit_play_sound_effect,
 		}
 		for s: Signal in unit_connections:
 			if not s.is_connected(unit_connections[s]):
@@ -714,7 +717,8 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	
 	var system_connections: Dictionary = {
 		to_system.unit_following_body: _on_unit_following_body,
-		to_system.unit_orbiting_body: _on_unit_orbiting_body
+		to_system.unit_orbiting_body: _on_unit_orbiting_body,
+		to_system.unit_play_sound_effect: _on_unit_play_sound_effect
 	}
 	for s: Signal in system_connections:
 		if not s.is_connected(system_connections[s]):
@@ -1148,6 +1152,10 @@ func _on_player_scanner_contact_lost(_unit: unitBodyAPI) -> void:
 	
 	if _unit.get_identifier() == barycenter_visualizer.locked_body_identifier:
 		barycenter_visualizer.locked_body_identifier = 0
+	pass
+
+func _on_unit_play_sound_effect(_path: String, _u: unitBodyAPI) -> void:
+	get_tree().call_group("audioHandler", "play_once", load(_path), 0.0, "SFX")
 	pass
 
 func _on_open_LRS():

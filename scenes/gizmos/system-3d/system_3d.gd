@@ -117,23 +117,24 @@ func _physics_process(_delta):
 			if acos(a.dot(b)) <= deg_to_rad(camera.fov):
 				var associated_body = system.get_body_from_identifier(child.get_identifier()) #repeat code ?!?!?!?!?!?!?!??!?!?!?!?!??!!
 				if associated_body:
-					if associated_body.get_required_scope_mode() == get_scope_mode():
-						var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
-						if detection_scalar < body_detection_range and associated_body.is_known() == false:
-							
-							if associated_body.is_hidden():
-								continue
-							elif associated_body.get_display_name() == "Ingress":
-								if TUTORIAL_INGRESS_OVERRIDE == true:
+					if associated_body is orbitBodyAPI:
+						if associated_body.get_required_scope_mode() == get_scope_mode():
+							var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
+							if detection_scalar < body_detection_range and associated_body.is_known() == false:
+								
+								if associated_body.is_hidden():
 									continue
-							elif associated_body.get_display_name() == "Omission":
-								if TUTORIAL_OMISSION_OVERRIDE == true:
-									continue
-							
-							emit_signal("foundBody", child.get_identifier())
-							var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
-							if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name()), Color.DARK_GREEN)
-							elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", roundi(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
+								elif associated_body.get_display_name() == "Ingress":
+									if TUTORIAL_INGRESS_OVERRIDE == true:
+										continue
+								elif associated_body.get_display_name() == "Omission":
+									if TUTORIAL_OMISSION_OVERRIDE == true:
+										continue
+								
+								emit_signal("foundBody", child.get_identifier())
+								var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
+								if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name()), Color.DARK_GREEN)
+								elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", roundi(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
 	
 	#setting locked_body_label text
 	var body: bodyAPI = system.get_body_from_identifier(label_locked_body_identifier)
@@ -173,7 +174,7 @@ func spawnBodies():
 				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
 			new_body_3d._on_scope_mode_changed(get_scope_mode())
 			add_child(new_body_3d) 
-		elif body is glintBodyAPI:
+		elif body is glintBodyAPI or AIUnitAPI:
 			spawn_glint_body_3d_for_identifier(body.get_identifier())
 		elif body is customBodyAPI:
 			if body.mesh_path.is_empty():
