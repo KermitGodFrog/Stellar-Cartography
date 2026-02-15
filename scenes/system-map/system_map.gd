@@ -785,18 +785,20 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	SONAR_POLYGON_DISPLAY_TIME = 50
 	
 	for body in system.bodies:
-		if body is orbitBodyAPI:
-			if body.is_hidden():
+		if body.is_hidden():
+			continue
+		elif body.get_display_name() == "Ingress":
+			if TUTORIAL_INGRESS_OVERRIDE == true:
 				continue
-			elif body.get_display_name() == "Ingress":
-				if TUTORIAL_INGRESS_OVERRIDE == true:
-					continue
-			elif body.get_display_name() == "Omission":
-				if TUTORIAL_OMISSION_OVERRIDE == true:
-					continue
-			
-			if Geometry2D.is_point_in_polygon(body.position, points):
+		elif body.get_display_name() == "Omission":
+			if TUTORIAL_OMISSION_OVERRIDE == true:
+				continue
+		
+		if Geometry2D.is_point_in_polygon(body.position, points):
+			if body is orbitBodyAPI:
 				async_add_ping(body)
+			elif body is unitBodyAPI:
+				async_add_unit_ping(body)
 	
 	#random pings \/\/\/\/
 	#for random_ping in global_data.get_randi(0, remap(ping_width, 5, 90, 0, 10)):
@@ -808,7 +810,7 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	get_tree().call_group("audioHandler", "play_once", LIDAR_ping, 0.0, "SFX")
 	pass
 
-func async_add_ping(body: bodyAPI) -> void:
+func async_add_ping(body: orbitBodyAPI) -> void:
 	await get_tree().create_timer((player_position_matrix[0].distance_to(body.position) / 100)).timeout
 	
 	body.pings_to_be_theorised = maxi(0, body.pings_to_be_theorised - 1)
@@ -819,6 +821,17 @@ func async_add_ping(body: bodyAPI) -> void:
 	var pings = ["res://data/system-map/ping-display-helpers/normal.tres"]
 	var ping = load(pings.pick_random()).duplicate(true)
 	ping.position = body.position
+	ping.resetTime()
+	SONAR_PINGS.append(ping)
+	
+	get_tree().call_group("audioHandler", "play_once", LIDAR_bounceback, 0.0, "SFX")
+	pass
+
+func async_add_unit_ping(unit: unitBodyAPI) -> void:
+	await get_tree().create_timer((player_position_matrix[0].distance_to(unit.position) / 100)).timeout
+	
+	var ping = load("uid://do24617ugegbj").duplicate(true)
+	ping.position = unit.position
 	ping.resetTime()
 	SONAR_PINGS.append(ping)
 	
