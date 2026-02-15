@@ -470,12 +470,22 @@ func update_contact_list() -> void:
 	for item in root.get_children():
 		var identifier = item.get_metadata(0)
 		var body = system.get_body_from_identifier(identifier)
+		
 		if body == follow_body:
 			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
 		elif body.get_identifier() == closest_body_id: 
 			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.2)) #WEB_GRAY
 		else:
 			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
+		
+		if body is AIUnitAPI:
+			if body.is_hostile():
+				if body == follow_body:
+					item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.5)) #LIGHT_SKY_BLUE
+				elif body.get_identifier() == closest_body_id: 
+					item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.2)) #WEB_GRAY
+				else:
+					item.set_custom_bg_color(0, Color.DARK_RED)
 	pass
 
 func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
