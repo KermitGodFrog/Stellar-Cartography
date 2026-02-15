@@ -4,7 +4,7 @@ class_name starSystemAPI
 
 signal unit_following_body(b: bodyAPI, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
 signal unit_orbiting_body(b: bodyAPI, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
-signal unit_play_sound_effect(path: String, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
+signal unit_play_sound(path: String, volume_db: float, bus: StringName, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
 
 @export var identifier: int
 @export var display_name: String
@@ -941,6 +941,6 @@ func _on_unit_orbiting_body(_b: bodyAPI, _u: unitBodyAPI) -> void: #connected by
 	emit_signal("unit_orbiting_body", _b, _u)
 	pass
 
-func _on_unit_play_sound_effect(_path: String, _u: unitBodyAPI) -> void: #connected by game.gd _on_switch_star_system
-	emit_signal("unit_play_sound_effect", _path, _u)
+func _on_unit_play_sound(_path: String, _volume_db: float, _bus: StringName, _u: unitBodyAPI) -> void: #connected by game.gd _on_switch_star_system
+	emit_signal("unit_play_sound", _path, _volume_db, _bus, _u)
 	pass

@@ -7,7 +7,7 @@ signal followingBody(body: bodyAPI) #connected by game.gd _on_switch_star_system
 signal actionTypePendingOrCompleted(_type: ACTION_TYPES, _body: bodyAPI, _pending: bool)
 
 signal boosting_changed(new_value: bool)
-signal play_sound_effect(path: String)
+signal play_sound(path: String, volume_db: float, bus: StringName)
 
 #this is a kinda hacky hack class that the game interprets differently to the normal bodyAPI inherited classes
 #it doesnt orbit - it has a target position and moves towards it depending on its internal speed
