@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dud3plsl0rwo7"
-path="res://.godot/imported/empty_diamond.png-48046bb9206aaa6c475d19e158f09574.ctex"
+uid="uid://hv5u4ty18pyd"
+path="res://.godot/imported/empty_octagon.png-8f41a857fb8bc3d348c63f96e9c46931.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/system-map/contact-list/empty_diamond.png"
-dest_files=["res://.godot/imported/empty_diamond.png-48046bb9206aaa6c475d19e158f09574.ctex"]
+source_file="res://graphics/system-map/contact-list/empty_octagon.png"
+dest_files=["res://.godot/imported/empty_octagon.png-8f41a857fb8bc3d348c63f96e9c46931.ctex"]
 
 [params]
 

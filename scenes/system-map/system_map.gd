@@ -95,7 +95,6 @@ enum BOOST_SOUND_TYPES {START, END}
 @onready var question_mark_frame = preload("uid://gmtqybky5mo")
 @onready var question_mark_texture = preload("uid://diwsd0k5wno8h")
 @onready var empty_frame = preload("uid://id0yg3qh1o32")
-@onready var empty_diamond = preload("uid://dud3plsl0rwo7")
 
 @onready var target_texture = preload("uid://diuwq6pqf7xir")
 
@@ -494,7 +493,14 @@ func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
 	var item: TreeItem = contact_list.create_item(contact_list.get_root())
 	item.set_metadata(0, unit.get_identifier())
 	item.set_text(0, unit.get_display_name())
-	item.set_icon(0, empty_diamond)
+	#icon handling!
+	if unit is AIUnitAPI:
+		if unit.is_hostile():
+			item.set_icon(0, load("uid://dxtvjut27oly0"))
+		else:
+			item.set_icon(0, load("uid://bbdpqnpgh7iy6"))
+	else:
+		item.set_icon(0, load("uid://hv5u4ty18pyd"))
 	pass
 
 func _on_player_scanner_contact_lost(unit: unitBodyAPI) -> void:
