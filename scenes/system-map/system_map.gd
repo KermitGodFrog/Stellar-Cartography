@@ -123,6 +123,10 @@ const CME_MAX_RING_RADIUS: int = 1000
 var PULSAR_DAMAGE_COOLDOWN: float = 0.0
 const PULSAR_MAX_DAMAGE_COOLDOWN: float = 1.0
 
+#drawing scanner stuff on system map
+var scanner_profile_time: float = 0.0
+var scanner_power_time: float = 0.0
+
 #system list
 var collapsed_cache: Dictionary = {}
 var selected_cache: Dictionary = {} #CURRENTLY DOES NOTHING BECAUSE I CANT FIGURE OUT HOW TO MAKE IT WORK!
@@ -216,6 +220,12 @@ func _physics_process(delta):
 			_on_player_below_CME_ring_radius()
 		if CME_RING_RADIUS == CME_MAX_RING_RADIUS:
 			CME_RING_SHOWN = false
+	
+	#unit update related stuff
+	scanner_profile_time = maxf(0, scanner_profile_time - delta)
+	scanner_power_time = maxf(0, scanner_power_time - delta)
+	if get_global_mouse_position().distance_to(player_position_matrix[0]) < (1 + pow(camera.zoom.length(), -0.5)):
+		_on_update_scanner_display_times(2.5, 2.5)
 	
 	#INFOR TAB!!!!!!! \/\/\\/\/
 	if follow_body and follow_body.is_known(): follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
@@ -499,7 +509,7 @@ func _unhandled_input(event):
 		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
 		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) \
 		and (not closest_body.is_not_known_or_is_hidden()) \
-		and (not closest_body.get_type() == starSystemAPI.BODY_TYPES.UNIT):
+		and (not closest_body is unitBodyAPI):
 			emit_signal("updatedLockedBody", closest_body)
 			locked_body = closest_body
 			follow_body = closest_body
@@ -637,8 +647,10 @@ func draw_map():
 	if show_overlay: map_overlay.show()
 	else: map_overlay.hide()
 	
-	#DEBUG DRAWING, WILL HAVE TO IMPROVE LATER ! ! ! \/\/\/
-	draw_arc(player_position_matrix[0], player_scanner_matrix[1], -TAU, TAU, 30, Color(0.98039216, 0.92156863, 0.84313726, 0.1), 0.2, false)
+	if scanner_profile_time > 0:
+		draw_arc(player_position_matrix[0], player_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), 0.5, false)
+	if scanner_power_time > 0:
+		draw_arc(player_position_matrix[0], player_scanner_matrix[1], -TAU, TAU, 30, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), 0.2, false)
 	
 	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT)
 	if asteroid_belts: 
@@ -717,10 +729,6 @@ func draw_map():
 				draw_arc(body.position, maxf(0.25, sin(Time.get_unix_time_from_system() * 4.0) * size_exponent * 6.0), -TAU, TAU, 5, blink_color, 0.2, false)
 				
 				draw_rect(global_data.get_offset_rect2(body.position, size_exponent * 3.0, size_exponent * 3.0), AI_color)
-				
-				
-				
-				
 	
 	for body in system.bodies:
 		
@@ -965,6 +973,11 @@ func _on_update_current_action_display(_type: playerAPI.ACTION_TYPES, _body: bod
 
 func _on_active_objectives_changed(_active_objectives: Array[objectiveAPI]):
 	view_objective_label._on_active_objectives_changed(_active_objectives)
+	pass
+
+func _on_update_scanner_display_times(new_profile_time: float, new_power_time: float) -> void:
+	scanner_profile_time = new_profile_time
+	scanner_power_time = new_power_time
 	pass
 
 
