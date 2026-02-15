@@ -1,0 +1,11 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=3 format=3 uid="uid://dndys0pgtj387"]
+
+[ext_resource type="AudioStream" uid="uid://bufmrociw3tpy" path="res://sound/system-map/LIDAR/unit_suite1.ogg" id="1_v2mof"]
+[ext_resource type="AudioStream" uid="uid://c0tqmk5wnbu4o" path="res://sound/system-map/LIDAR/unit_suite2.ogg" id="2_dxyqk"]
+
+[resource]
+random_pitch = 1.2
+random_volume_offset_db = 0.5
+streams_count = 2
+stream_0/stream = ExtResource("1_v2mof")
+stream_1/stream = ExtResource("2_dxyqk")

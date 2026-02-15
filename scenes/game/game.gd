@@ -1123,12 +1123,13 @@ func _on_change_scope_mode(new_mode: playerAPI.SCOPE_MODES) -> void:
 func _on_player_scanner_contact_gained(_unit: unitBodyAPI) -> void:
 	print_debug("GAME: PLAYER SCANNER CONTACT GAINED ", _unit)
 	system_map._on_player_scanner_contact_gained(_unit)
+	get_tree().call_group("audioHandler", "play_once", load("uid://d1woqdnpk3xes"), -12.0, "SFX")
 	pass
 
 func _on_player_scanner_contact_lost(_unit: unitBodyAPI) -> void:
 	print_debug("GAME: PLAYER SCANNER CONTACT LOST ", _unit)
 	system_map._on_player_scanner_contact_lost(_unit)
-	
+	get_tree().call_group("audioHandler", "play_once", preload("uid://qpsibe05f4su"), -12.0, "SFX")
 	
 	#dealing with deselecting the unit EVERYWHERE or else it can cause many errors bc it does not include is_theorised_not_known()
 	#this definitely breaks a lot of rules, but i think its better to have it all centralised here!!!

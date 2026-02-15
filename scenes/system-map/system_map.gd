@@ -876,21 +876,28 @@ func get_planet_frame(classification: String) -> Resource:
 func _on_found_body(id: int):
 	var body = system.get_body_from_identifier(id)
 	var body_pos = body.position
-	var ping = load("uid://d3ntmvsq6pv83").duplicate(true)
-	ping.position = body_pos
-	ping.resetTime()
-	SONAR_PINGS.append(ping)
-	
-	if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_PA_valid():
-		get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
-	elif body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ANOMALY and body.is_SA_valid():
-		get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
-	else:
-		get_tree().call_group("audioHandler", "play_once", LIDAR_discovery, 0.0, "SFX")
-	
-	if body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
-		if body.is_habitable():
-			get_tree().call_group("audioHandler", "plot_radio", load("uid://crkhwlwd0qqkh"))
+	match body:
+		_ when body is unitBodyAPI:
+			var ping = load("uid://xurvu36ugl05").duplicate(true)
+			ping.position = body_pos
+			ping.resetTime()
+			SONAR_PINGS.append(ping)
+		_ when body is orbitBodyAPI:
+			var ping = load("uid://d3ntmvsq6pv83").duplicate(true)
+			ping.position = body_pos
+			ping.resetTime()
+			SONAR_PINGS.append(ping)
+			
+			if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_PA_valid():
+				get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
+			elif body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ANOMALY and body.is_SA_valid():
+				get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
+			else:
+				get_tree().call_group("audioHandler", "play_once", LIDAR_discovery, 0.0, "SFX")
+			
+			if body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
+				if body.is_habitable():
+					get_tree().call_group("audioHandler", "plot_radio", load("uid://crkhwlwd0qqkh"))
 	pass
 
 func _on_picker_button_item_selected(index):
