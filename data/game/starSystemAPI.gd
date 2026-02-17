@@ -815,7 +815,6 @@ func addUnitBody(_body: unitBodyAPI, _body_type: BODY_TYPES, _id: int, _d_name: 
 	_variables["speed"] = _speed
 	_variables["radius"] = _radius
 	_variables["rotation_hint"] = deg_to_rad(global_data.get_randi(0,360))
-	_variables["known"] = false
 	var id = addBody(_body, _body_type, _id, _d_name, _variables, _metadata)
 	return id
 

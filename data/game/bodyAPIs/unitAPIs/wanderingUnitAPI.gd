@@ -23,10 +23,15 @@ func _init() -> void:
 	pass
 
 func initialize() -> void:
-	cooldown_clock.time_expired.connect(_on_cooldown_clock_time_expired)
-	boosting_changed.connect(_on_boosting_changed)
 	generate_valid_targets()
 	pass
+
+func get_connection_pairs() -> Dictionary:
+	var connections: Dictionary = {
+		cooldown_clock.time_expired: _on_cooldown_clock_time_expired,
+		boosting_changed: _on_boosting_changed
+	}
+	return connections
 
 func advance(delta) -> void:
 	task_clock.tick(delta)

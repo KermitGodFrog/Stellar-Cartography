@@ -182,3 +182,15 @@ func is_action_pending() -> bool:
 	elif action_body != null:
 		return false
 	return false
+
+
+
+#other
+func try_reconnect_signal_callable_pairs() -> void: #signal reconnecitons for game.gd _on_switch_star_system
+	var connections = get_connection_pairs()
+	for s: Signal in connections:
+		if not s.is_connected(connections[s]):
+			s.connect(connections[s])
+	pass
+func get_connection_pairs() -> Dictionary: #signal reconnecitons for game.gd _on_switch_star_system
+	return Dictionary()

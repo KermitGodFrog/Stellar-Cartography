@@ -859,6 +859,10 @@ func async_add_unit_ping(unit: unitBodyAPI) -> void:
 	ping.resetTime()
 	SONAR_PINGS.append(ping)
 	
+	if unit is AIUnitAPI:
+		if player_position_matrix[0].distance_to(unit.position) < player_scanner_matrix[0]: #distance below profile
+			unit.stun()
+	
 	get_tree().call_group("audioHandler", "play_once", LIDAR_bounceback, 0.0, "SFX")
 	pass
 

@@ -705,6 +705,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	#this ENSURES that units can follow the player AFTER reload or at any time since _on_switch_star_system is called on both CONTINUE and NEW. unitBodyAPIs must be made *BEFORE* _on_switch_star_system as a result.
 	
 	for unit: unitBodyAPI in to_system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.UNIT):
+		unit.try_reconnect_signal_callable_pairs()
 		var unit_connections: Dictionary = {
 			unit.followingBody: to_system._on_unit_following_body, 
 			unit.orbitingBody: to_system._on_unit_orbiting_body,

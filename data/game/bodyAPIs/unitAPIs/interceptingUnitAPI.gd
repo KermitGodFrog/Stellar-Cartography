@@ -37,17 +37,25 @@ const MAX_SONAR_LENGTH := 300.0 #currently what it is in sonar_interface, but if
 func _init() -> void:
 	task_clock = clock.new()
 	cooldown_clock = clock.new()
+	stun_clock = clock.new()
 	pass
 
 func initialize() -> void:
-	cooldown_clock.time_expired.connect(_on_cooldown_clock_time_expired)
-	boosting_changed.connect(_on_boosting_changed)
 	generate_valid_targets()
 	pass
+
+func get_connection_pairs() -> Dictionary:
+	var connections: Dictionary = {
+		cooldown_clock.time_expired: _on_cooldown_clock_time_expired,
+		stun_clock.time_expired: _on_stun_clock_time_expired,
+		boosting_changed: _on_boosting_changed
+	}
+	return connections
 
 func advance(delta) -> void:
 	task_clock.tick(delta)
 	cooldown_clock.tick(delta)
+	stun_clock.tick(delta) #i missed this shit and it took me MANY HOURS TO FIGURE OUT WHAT WAS WRONG >:(
 	
 	calculate_asteroid_belt_slowdown()
 	update_boosting_status(delta)
@@ -239,6 +247,13 @@ func async_switch_to_re_discover() -> void:
 	switch_task(TASKS.LOOK_FOR_PLAYER)
 	pass
 
+func stun() -> void:
+	if not is_stunned():
+		set_stunned(true)
+		stun_clock.start(1.0)
+		#emit_signal("play_sound", ...)
+	pass
+
 
 
 #region cooldown stuff
@@ -274,4 +289,8 @@ func _on_boosting_changed(new_value: bool):
 			propensity_to_boost += 0.5
 		false:
 			propensity_to_boost = 0.0
+	pass
+
+func _on_stun_clock_time_expired() -> void:
+	set_stunned(false)
 	pass
