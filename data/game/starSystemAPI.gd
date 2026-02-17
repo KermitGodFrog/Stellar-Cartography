@@ -833,13 +833,6 @@ func updateBodyPosition(id: int, delta):
 func get_random_body():
 	return bodies.pick_random()
 
-func get_random_planet(): #the fuck? why return an array???? this isnt even used anywhere??????????
-	var planets: Array = []
-	for body in bodies:
-		if body.get_type() == BODY_TYPES.PLANET:
-			planets.append(body)
-	return planets
-
 func get_first_star():
 	for body in bodies:
 		if body.get_type() == BODY_TYPES.STAR:
@@ -887,18 +880,16 @@ func get_bodies_with_metadata_key(metadata_key: String) -> Array:
 			return_bodies.append(body)
 	return return_bodies
 
+func get_planets() -> Array:
+	var planets: Array = get_bodies_of_body_type(BODY_TYPES.PLANET)
+	return planets
+
 func get_wormholes() -> Array:
-	var wormholes: Array[wormholeBodyAPI] = []
-	for body in bodies:
-		if body.get_type() == BODY_TYPES.WORMHOLE:
-			wormholes.append(body)
+	var wormholes: Array = get_bodies_of_body_type(BODY_TYPES.WORMHOLE)
 	return wormholes
 
 func get_stations() -> Array:
-	var stations: Array[stationBodyAPI] = []
-	for body in bodies:
-		if body.get_type() == BODY_TYPES.STATION:
-			stations.append(body)
+	var stations: Array = get_bodies_of_body_type(BODY_TYPES.STATION)
 	return stations
 
 func get_wormhole_with_destination_system(dest_system: starSystemAPI) -> wormholeBodyAPI:

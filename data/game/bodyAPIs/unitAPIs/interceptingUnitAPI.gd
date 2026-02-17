@@ -98,7 +98,7 @@ func check_task_status() -> TASK_STATUSES:
 				elif not is_action_pending():
 					if action_body == target:
 						return TASK_STATUSES.COMPLETE
-				return TASK_STATUSES.FAILED
+			return TASK_STATUSES.FAILED
 		TASKS.SURVEY:
 			if target != null:
 				if not is_action_pending():
