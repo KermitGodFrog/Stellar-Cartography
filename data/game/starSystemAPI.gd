@@ -703,6 +703,7 @@ func generateRandomWeightedUnits() -> void:
 				if planets:
 					addRandomWeightedUnit(planets.pick_random())
 					_units_generated += 1
+		
 	print_rich("[color=RED]UNITS GENERATED: %.f" % _units_generated)
 	pass
 func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
@@ -710,31 +711,30 @@ func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
 	var distribution_y_value = game_data.UNIT_AI_DISTRIBUTION_CURVE.sample(game_data.player_weirdness_index)
 	var wandering: bool = randf() <= distribution_y_value
 	
-	#horrific
+	#horrific, but it least it works
 	var affiliation: game_data.UNIT_AFFILIATIONS = game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE
-	if wandering:
-		var executive_affiliated: bool = randf() <= game_data.UNIT_WANDERING_AFFILIATION_CURVE.sample(game_data.player_weirdness_index)
-		if executive_affiliated: 
+	var executive_affiliated: bool = randf() <= game_data.UNIT_WANDERING_AFFILIATION_CURVE.sample(game_data.player_weirdness_index)
+	match wandering:
+		true when executive_affiliated:
 			affiliation = game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE
-		else: 
+		true:
 			affiliation = game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION
-	else: 
-		affiliation = game_data.UNIT_AFFILIATIONS.MARAUDER
+		false:
+			affiliation = game_data.UNIT_AFFILIATIONS.MARAUDER
 	
 	#terrible
 	var AI: AIUnitAPI = null
-	if wandering:
-		if is_civilized():
+	match wandering:
+		true when is_civilized():
 			AI = wanderingUnitAPI.new()
-		else:
-			if affiliation == game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE:
-				AI = exploringUnitAPI.new()
-			elif affiliation == game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION:
-				AI = wanderingUnitAPI.new()
-	else: 
-		AI = interceptingUnitAPI.new()
-	if AI == null: 
-		AI = wanderingUnitAPI.new()
+		true when affiliation == game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE:
+			AI = exploringUnitAPI.new()
+		true when affiliation == game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION:
+			AI = wanderingUnitAPI.new()
+		false:
+			AI = interceptingUnitAPI.new()
+		_:
+			AI = wanderingUnitAPI.new()
 	
 	var speed: int = 0
 	if wandering:
@@ -815,6 +815,7 @@ func addUnitBody(_body: unitBodyAPI, _body_type: BODY_TYPES, _id: int, _d_name: 
 	_variables["speed"] = _speed
 	_variables["radius"] = _radius
 	_variables["rotation_hint"] = deg_to_rad(global_data.get_randi(0,360))
+	_variables["known"] = false
 	var id = addBody(_body, _body_type, _id, _d_name, _variables, _metadata)
 	return id
 
