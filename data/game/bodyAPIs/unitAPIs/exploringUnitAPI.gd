@@ -145,6 +145,7 @@ func generate_valid_targets() -> void:
 	for i in range(MAX_VALID_WORMHOLES):
 		var wormhole = wormholes.pick_random()
 		valid_wait_target_ids.append(wormhole.get_identifier())
+		wormholes.erase(wormhole)
 	
 	valid_wait_target_ids.append(system.get_first_star().get_identifier())
 	pass
