@@ -28,7 +28,7 @@ var boosting: bool = false:
 var in_asteroid_belt: bool = false
 var in_pulsar_beam: bool = false
 
-var rotation_hint: float #used for orbiting mechanics
+@export_storage var rotation_hint: float #used for orbiting mechanics
 @export_storage var target_position: Vector2
 enum ACTION_TYPES {NONE, GO_TO, ORBIT, NONE_SLOWDOWN_OVERRIDE}
 @export_storage var current_action_type: ACTION_TYPES = ACTION_TYPES.NONE

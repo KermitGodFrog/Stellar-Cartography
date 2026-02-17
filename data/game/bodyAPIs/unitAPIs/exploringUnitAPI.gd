@@ -27,7 +27,7 @@ func _init() -> void:
 func initialize() -> void:
 	cooldown_clock.time_expired.connect(_on_cooldown_clock_time_expired)
 	boosting_changed.connect(_on_boosting_changed)
-	generate_valid_targets() #unsure if this will work! system might not be setup yet. might have to call this on system variable change
+	generate_valid_targets()
 	pass
 
 func advance(delta) -> void:

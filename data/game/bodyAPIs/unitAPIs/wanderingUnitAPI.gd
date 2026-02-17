@@ -14,7 +14,7 @@ const task_schedule: Dictionary = {
 
 @export var valid_wait_target_ids: Array[int] = []
 @export var valid_dock_target_ids: Array[int] = []
-const MAX_VALID_PLANETS: int = 2
+const MAX_VALID_PLANETS: int = 1
 const MAX_VALID_WORMHOLES: int = 1
 
 func _init() -> void:
@@ -133,8 +133,8 @@ func generate_valid_targets() -> void:
 	valid_wait_target_ids.append(system.get_first_star().get_identifier())
 	
 	for station in system.get_stations():
-		valid_dock_target_ids.append(station.get_identifier())
 		valid_wait_target_ids.append(station.get_identifier())
+		valid_dock_target_ids.append(station.get_identifier())
 	pass
 
 

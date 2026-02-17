@@ -29,7 +29,7 @@ const task_schedule: Dictionary = {
 @export_storage var velocity_position_hint: Array[Vector2] = [Vector2.ZERO, Vector2.ZERO] #player position last frame, self position last frame
 
 @export var valid_wait_target_ids: Array[int] = []
-const MAX_VALID_PLANETS: int = 3
+const MAX_VALID_PLANETS: int = 2
 const MAX_VALID_WORMHOLES: int = 1
 
 const MAX_SONAR_LENGTH := 300.0 #currently what it is in sonar_interface, but if i ever change it...
@@ -42,6 +42,7 @@ func _init() -> void:
 func initialize() -> void:
 	cooldown_clock.time_expired.connect(_on_cooldown_clock_time_expired)
 	boosting_changed.connect(_on_boosting_changed)
+	generate_valid_targets()
 	pass
 
 func advance(delta) -> void:
@@ -162,7 +163,7 @@ func switch_task(override_task = null) -> void:
 				target = new_target
 				orbit_body(target)
 		TASKS.WAIT:
-			task_clock.start(global_data.get_randf(30.0,60.0))
+			task_clock.start(global_data.get_randf(20.0,60.0))
 		TASKS.USE_LIDAR:
 			task_clock.start(15.0)
 			emit_signal("play_sound", "res://sound/game/bodyAPIs/unitAPIs/LIDAR_unit_suite.tres", 0.0, "SFX")
