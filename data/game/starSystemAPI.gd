@@ -703,26 +703,38 @@ func generateRandomWeightedUnits() -> void:
 				if planets:
 					addRandomWeightedUnit(planets.pick_random())
 					_units_generated += 1
+		
 	print_rich("[color=RED]UNITS GENERATED: %.f" % _units_generated)
 	pass
 func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
 	randomize()
 	var distribution_y_value = game_data.UNIT_AI_DISTRIBUTION_CURVE.sample(game_data.player_weirdness_index)
 	var wandering: bool = randf() <= distribution_y_value
-	var AI: AIUnitAPI = null
-	if wandering: AI = wanderingUnitAPI.new()
-	else: AI = interceptingUnitAPI.new()
-	if AI == null: AI = wanderingUnitAPI.new()
 	
+	#horrific, but it least it works
 	var affiliation: game_data.UNIT_AFFILIATIONS = game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE
-	if wandering:
-		var executive_affiliated: bool = randf() <= game_data.UNIT_WANDERING_AFFILIATION_CURVE.sample(game_data.player_weirdness_index)
-		if executive_affiliated: 
+	var executive_affiliated: bool = randf() <= game_data.UNIT_WANDERING_AFFILIATION_CURVE.sample(game_data.player_weirdness_index)
+	match wandering:
+		true when executive_affiliated:
 			affiliation = game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE
-		else: 
+		true:
 			affiliation = game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION
-	else: 
-		affiliation = game_data.UNIT_AFFILIATIONS.MARAUDER
+		false:
+			affiliation = game_data.UNIT_AFFILIATIONS.MARAUDER
+	
+	#terrible
+	var AI: AIUnitAPI = null
+	match wandering:
+		true when is_civilized():
+			AI = wanderingUnitAPI.new()
+		true when affiliation == game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE:
+			AI = exploringUnitAPI.new()
+		true when affiliation == game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION:
+			AI = wanderingUnitAPI.new()
+		false:
+			AI = interceptingUnitAPI.new()
+		_:
+			AI = wanderingUnitAPI.new()
 	
 	var speed: int = 0
 	if wandering:
@@ -802,6 +814,8 @@ func addOrbitBody(_body: orbitBodyAPI, _body_type: BODY_TYPES, _id: int, _d_name
 func addUnitBody(_body: unitBodyAPI, _body_type: BODY_TYPES, _id: int, _d_name: String, _speed: int, _radius: float, _variables: Dictionary, _metadata: Dictionary) -> int:
 	_variables["speed"] = _speed
 	_variables["radius"] = _radius
+	_variables["rotation_hint"] = deg_to_rad(global_data.get_randi(0,360))
+	_variables["known"] = false
 	var id = addBody(_body, _body_type, _id, _d_name, _variables, _metadata)
 	return id
 
@@ -832,13 +846,6 @@ func updateBodyPosition(id: int, delta):
 
 func get_random_body():
 	return bodies.pick_random()
-
-func get_random_planet(): #the fuck? why return an array???? this isnt even used anywhere??????????
-	var planets: Array = []
-	for body in bodies:
-		if body.get_type() == BODY_TYPES.PLANET:
-			planets.append(body)
-	return planets
 
 func get_first_star():
 	for body in bodies:
@@ -887,18 +894,16 @@ func get_bodies_with_metadata_key(metadata_key: String) -> Array:
 			return_bodies.append(body)
 	return return_bodies
 
+func get_planets() -> Array:
+	var planets: Array = get_bodies_of_body_type(BODY_TYPES.PLANET)
+	return planets
+
 func get_wormholes() -> Array:
-	var wormholes: Array[wormholeBodyAPI] = []
-	for body in bodies:
-		if body.get_type() == BODY_TYPES.WORMHOLE:
-			wormholes.append(body)
+	var wormholes: Array = get_bodies_of_body_type(BODY_TYPES.WORMHOLE)
 	return wormholes
 
 func get_stations() -> Array:
-	var stations: Array[stationBodyAPI] = []
-	for body in bodies:
-		if body.get_type() == BODY_TYPES.STATION:
-			stations.append(body)
+	var stations: Array = get_bodies_of_body_type(BODY_TYPES.STATION)
 	return stations
 
 func get_wormhole_with_destination_system(dest_system: starSystemAPI) -> wormholeBodyAPI:

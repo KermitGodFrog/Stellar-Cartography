@@ -1,17 +1,17 @@
 extends AIUnitAPI
 class_name interceptingUnitAPI
 
-enum TASKS {MOVE_TO_SURVEY, SURVEY, USE_LIDAR, MOVE_TO_LIDAR, INVESTIGATE_LIDAR, MOVE_TO_INTERCEPT, INTERCEPT, LOOK_FOR_PLAYER, LOOK_FOR_PLAYER_ALT}
+enum TASKS {MOVE_TO_WAIT, WAIT, USE_LIDAR, MOVE_TO_LIDAR, INVESTIGATE_LIDAR, MOVE_TO_INTERCEPT, INTERCEPT, LOOK_FOR_PLAYER, LOOK_FOR_PLAYER_ALT}
 const task_schedule: Dictionary = {
-	TASKS.MOVE_TO_SURVEY: [TASKS.SURVEY],
-	TASKS.SURVEY: [TASKS.MOVE_TO_SURVEY, TASKS.USE_LIDAR],
-	TASKS.USE_LIDAR: [TASKS.MOVE_TO_SURVEY], #maybe make this play a sound?? not sureeee...
+	TASKS.MOVE_TO_WAIT: [TASKS.WAIT],
+	TASKS.WAIT: [TASKS.MOVE_TO_WAIT, TASKS.USE_LIDAR],
+	TASKS.USE_LIDAR: [TASKS.MOVE_TO_WAIT], #maybe make this play a sound?? not sureeee...
 	TASKS.MOVE_TO_LIDAR: [TASKS.INVESTIGATE_LIDAR], #overrides if 'USE_LIDAR' by chance finds the player 
-	TASKS.INVESTIGATE_LIDAR: [TASKS.MOVE_TO_SURVEY, TASKS.USE_LIDAR],
+	TASKS.INVESTIGATE_LIDAR: [TASKS.MOVE_TO_WAIT, TASKS.USE_LIDAR],
 	TASKS.MOVE_TO_INTERCEPT: [TASKS.INTERCEPT], #overrides if ENTERING the players scanner profile
 	TASKS.INTERCEPT: [TASKS.MOVE_TO_INTERCEPT],
 	TASKS.LOOK_FOR_PLAYER: [TASKS.LOOK_FOR_PLAYER_ALT, TASKS.USE_LIDAR], #overrides if EXITING the players scanner profile. follows the players dir vector for 1 minute and then ceases
-	TASKS.LOOK_FOR_PLAYER_ALT: [TASKS.LOOK_FOR_PLAYER_ALT, TASKS.MOVE_TO_SURVEY, TASKS.USE_LIDAR]
+	TASKS.LOOK_FOR_PLAYER_ALT: [TASKS.LOOK_FOR_PLAYER_ALT, TASKS.MOVE_TO_WAIT, TASKS.USE_LIDAR]
 }
 @export_storage var current_task: TASKS
 
@@ -28,6 +28,10 @@ const task_schedule: Dictionary = {
 @export_storage var propensity_to_boost: float = 0.0 #has to be above 1.0 to boost
 @export_storage var velocity_position_hint: Array[Vector2] = [Vector2.ZERO, Vector2.ZERO] #player position last frame, self position last frame
 
+@export var valid_wait_target_ids: Array[int] = []
+const MAX_VALID_PLANETS: int = 2
+const MAX_VALID_WORMHOLES: int = 1
+
 const MAX_SONAR_LENGTH := 300.0 #currently what it is in sonar_interface, but if i ever change it...
 
 func _init() -> void:
@@ -38,6 +42,7 @@ func _init() -> void:
 func initialize() -> void:
 	cooldown_clock.time_expired.connect(_on_cooldown_clock_time_expired)
 	boosting_changed.connect(_on_boosting_changed)
+	generate_valid_targets()
 	pass
 
 func advance(delta) -> void:
@@ -70,9 +75,9 @@ func update_boosting_status(delta) -> void:
 	match current_task:
 		TASKS.MOVE_TO_INTERCEPT:
 			propensity_to_boost += global_data.get_randf(0.1,1.0) * 10.0 * delta
-		TASKS.MOVE_TO_SURVEY, TASKS.MOVE_TO_LIDAR, TASKS.LOOK_FOR_PLAYER, TASKS.LOOK_FOR_PLAYER_ALT:
+		TASKS.MOVE_TO_WAIT, TASKS.MOVE_TO_LIDAR, TASKS.LOOK_FOR_PLAYER, TASKS.LOOK_FOR_PLAYER_ALT:
 			propensity_to_boost += global_data.get_randf(0.0,1.0) * 10.0 * delta
-		TASKS.SURVEY, TASKS.USE_LIDAR, TASKS.INVESTIGATE_LIDAR, TASKS.INTERCEPT:
+		TASKS.WAIT, TASKS.USE_LIDAR, TASKS.INVESTIGATE_LIDAR, TASKS.INTERCEPT:
 			propensity_to_boost = 0.0
 	
 	propensity_to_boost = maxf(0, propensity_to_boost - global_data.get_randf(0.0,1.0) * 10.0 * delta)
@@ -90,7 +95,7 @@ func update_scanner_status() -> void:
 
 func check_task_status() -> TASK_STATUSES:
 	match current_task:
-		TASKS.MOVE_TO_SURVEY:
+		TASKS.MOVE_TO_WAIT:
 			if target != null:
 				if is_action_pending():
 					if pending_action_body == target:
@@ -98,8 +103,8 @@ func check_task_status() -> TASK_STATUSES:
 				elif not is_action_pending():
 					if action_body == target:
 						return TASK_STATUSES.COMPLETE
-				return TASK_STATUSES.FAILED
-		TASKS.SURVEY:
+			return TASK_STATUSES.FAILED
+		TASKS.WAIT:
 			if target != null:
 				if not is_action_pending():
 					if action_body == target:
@@ -150,12 +155,15 @@ func switch_task(override_task = null) -> void:
 		new_task = options.pick_random()
 	
 	match new_task:
-		TASKS.MOVE_TO_SURVEY:
-			var planets = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.PLANET)
-			target = planets.pick_random()
-			orbit_body(target)
-		TASKS.SURVEY:
-			task_clock.start(global_data.get_randf(10.0,30.0))
+		TASKS.MOVE_TO_WAIT:
+			target = null
+			if valid_wait_target_ids.size() > 0:
+				var new_target_id = valid_wait_target_ids.pick_random()
+				var new_target = system.get_body_from_identifier(new_target_id)
+				target = new_target
+				orbit_body(target)
+		TASKS.WAIT:
+			task_clock.start(global_data.get_randf(20.0,60.0))
 		TASKS.USE_LIDAR:
 			task_clock.start(15.0)
 			emit_signal("play_sound", "res://sound/game/bodyAPIs/unitAPIs/LIDAR_unit_suite.tres", 0.0, "SFX")
@@ -194,6 +202,25 @@ func switch_task(override_task = null) -> void:
 	pass
 
 #MISC FUNCTIONS
+func generate_valid_targets() -> void:
+	valid_wait_target_ids.clear()
+	
+	var planets = system.get_planets()
+	var wormholes = system.get_wormholes()
+	
+	for i in range(MAX_VALID_PLANETS):
+		var planet = planets.pick_random()
+		valid_wait_target_ids.append(planet.get_identifier())
+		planets.erase(planet)
+	
+	for i in range(MAX_VALID_WORMHOLES):
+		var wormhole = wormholes.pick_random()
+		valid_wait_target_ids.append(wormhole.get_identifier())
+		wormholes.erase(wormhole)
+	
+	valid_wait_target_ids.append(system.get_first_star().get_identifier())
+	pass
+
 func sonar_theorised_player() -> bool:
 	if position.distance_to(player.position) < MAX_SONAR_LENGTH:
 		var mapped_distance = remap(position.distance_to(player.position), MAX_SONAR_LENGTH, 0, 0.2, 0.75)
