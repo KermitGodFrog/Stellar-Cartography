@@ -49,7 +49,7 @@ var system: starSystemAPI:
 		clear_system_list_caches()
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 var _player_status_matrix: Array = [0,0,0,0]
-var player_scanner_matrix: Array = [0.0, 0.0] #this does NOT have to be updated every frame lmfao BRRRRRRRRRRRRR
+var player_adj_scanner_matrix: Array = [0.0, 0.0] #this does NOT have to be updated every frame lmfao BRRRRRRRRRRRRR
 var player_is_boosting: bool = false:
 	set(value):
 		if player_is_boosting != value:
@@ -664,9 +664,9 @@ func draw_map():
 	else: map_overlay.hide()
 	
 	if scanner_profile_time > 0:
-		draw_arc(player_position_matrix[0], player_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), 0.5, false)
+		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), 0.5, false)
 	if scanner_power_time > 0:
-		draw_arc(player_position_matrix[0], player_scanner_matrix[1], -TAU, TAU, 30, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), 0.2, false)
+		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[1], -TAU, TAU, 30, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), 0.2, false)
 	
 	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT)
 	if asteroid_belts: 
@@ -860,7 +860,7 @@ func async_add_unit_ping(unit: unitBodyAPI) -> void:
 	SONAR_PINGS.append(ping)
 	
 	if unit is AIUnitAPI:
-		if player_position_matrix[0].distance_to(unit.position) < player_scanner_matrix[0]: #distance below profile
+		if player_position_matrix[0].distance_to(unit.position) < player_adj_scanner_matrix[0]: #distance below profile
 			unit.stun()
 	
 	get_tree().call_group("audioHandler", "play_once", LIDAR_bounceback, 0.0, "SFX")

@@ -99,7 +99,28 @@ enum SCOPE_MODES {VIS, RAD}
 
 #unitBodyAPI detection ranges
 @export var scanner_profile: float #how far away OTHER ships have to be to detect you
+func get_adjusted_scanner_profile() -> float:
+	var multiplier = 1.0
+	
+	if in_asteroid_belt:
+		multiplier -= 0.7
+	if in_pulsar_beam:
+		multiplier -= 0.8
+	if boosting:
+		multiplier += 0.2
+	
+	return maxf(10.0, scanner_profile * maxf(0, multiplier))
 @export var scanner_power: float #detection range of OTHER ships in solar radii
+func get_adjusted_scanner_power() -> float:
+	var multiplier = 1.0
+	
+	if in_asteroid_belt:
+		multiplier -= 0.75
+	if in_pulsar_beam:
+		multiplier -= 0.5
+	
+	return maxf(10.0, scanner_power * maxf(0, multiplier))
+
 var scanner_contacts: Array[unitBodyAPI] = []
 
 func get_jumps_remaining():

@@ -97,7 +97,7 @@ func update_boosting_status(delta) -> void:
 	pass
 
 func update_scanner_status() -> void:
-	var contacts = system.get_units_in_scanner_range(player.position, player.scanner_profile)
+	var contacts = system.get_units_in_scanner_range(player.position, player.get_adjusted_scanner_profile())
 	within_player_profile = contacts.has(self)
 	pass
 

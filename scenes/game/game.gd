@@ -266,7 +266,7 @@ func _physics_process(delta):
 	world.player.updatePosition(delta)
 	world.player.updateScannerContacts(world.player.current_star_system.get_units_in_scanner_range(
 		world.player.position, 
-		world.player.scanner_power
+		world.player.get_adjusted_scanner_power()
 	))
 	var current_bodies = world.player.current_star_system.bodies
 	if current_bodies:
@@ -277,7 +277,7 @@ func _physics_process(delta):
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_map.set("_player_status_matrix", [world.player.balance, world.player.hull_stress, world.player.hull_deterioration, world.player.morale])
-	system_map.set("player_scanner_matrix", [world.player.scanner_profile, world.player.scanner_power])
+	system_map.set("player_adj_scanner_matrix", [world.player.get_adjusted_scanner_profile(), world.player.get_adjusted_scanner_power()])
 	system_map.set("player_audio_visualizer_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.AUDIO_VISUALIZER) != -1))
 	system_map.set("player_gas_layer_surveyor_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) != -1))
 	system_3d.set("player_position", world.player.position)
