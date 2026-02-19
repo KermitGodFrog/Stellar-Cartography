@@ -251,7 +251,7 @@ func stun() -> void:
 	if not is_stunned():
 		set_stunned(true)
 		stun_clock.start(1.0)
-		#emit_signal("play_sound", ...)
+		emit_signal("play_sound", "res://sound/game/bodyAPIs/unitAPIs/stun.wav", -12.0, "SFX")
 	pass
 
 
