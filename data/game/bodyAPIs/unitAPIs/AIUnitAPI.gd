@@ -8,7 +8,21 @@ var task_switching_enabled: bool = true
 @export_storage var cooldown_clock: clock
 @export_storage var stun_clock: clock
 
-@export_storage var target : orbitBodyAPI
+@export_storage var target_id: int
+var target: orbitBodyAPI:
+	set(value):
+		if value != null:
+			target_id = value.get_identifier()
+		target = value
+	get():
+		if target != null:
+			return target
+		elif target_id != 0:
+			var reclaim_target = system.get_body_from_identifier(target_id)
+			target = reclaim_target
+			return target
+		else:
+			return null
 
 @export_storage var stunned: bool = false:
 	get = is_stunned, set = set_stunned
