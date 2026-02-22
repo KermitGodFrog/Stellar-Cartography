@@ -225,6 +225,9 @@ func _physics_process(delta):
 	scanner_power_time = maxf(0, scanner_power_time - delta)
 	if get_global_mouse_position().distance_to(player_position_matrix[0]) < (1 + pow(camera.zoom.length(), -0.5)):
 		_on_update_scanner_display_times(2.5, 2.5)
+	for unit in system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.UNIT): # not very performance motherfucker >:( but i think it makes more sense that this is here and not in update_contact_list, really. but not when CUSTOM_UNIT is added.
+		if get_global_mouse_position().distance_to(unit.position) < (1 + pow(camera.zoom.length(), -0.5)):
+			_on_update_scanner_display_times(2.5, 2.5)
 	
 	#INFOR TAB!!!!!!! \/\/\\/\/
 	if follow_body and follow_body.is_known(): follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
