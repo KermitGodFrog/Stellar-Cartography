@@ -24,6 +24,7 @@ var label_locked_body_identifier: int
 
 var body_3d = preload("uid://bdotk8rm2p7df")
 var entity_3d = preload("uid://csvx63c0ejn6a")
+var unit_3d = preload("uid://cx38tvi6u1w02")
 var flyby = preload("uid://c7mmitfihh8pe")
 
 var system_scalar: float = 10.0
@@ -89,6 +90,10 @@ func _physics_process(_delta):
 				var min_dist = ((associated_body.radius * system_scalar) * 1.1) + 1.0
 				if camera_offset.position.distance_to(child.position) < min_dist:
 					camera_offset.position = child.position + (child.position.direction_to(camera_offset.position) * min_dist)
+				
+				if child.is_in_group("unit_3d"):
+					child.set("_player_position", player_position)
+					child.set("_associated_position", associated_body.position)
 	
 	#looking at locked body or looking at target position
 	if locked_body_identifier:
@@ -174,8 +179,10 @@ func spawnBodies():
 				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
 			new_body_3d._on_scope_mode_changed(get_scope_mode())
 			add_child(new_body_3d) 
-		elif body is glintBodyAPI or AIUnitAPI:
+		elif body is glintBodyAPI:
 			spawn_glint_body_3d_for_identifier(body.get_identifier())
+		elif body is AIUnitAPI:
+			spawn_unit_body_3d_for_identifier(body.get_identifier())
 		elif body is customBodyAPI:
 			if body.mesh_path.is_empty():
 				spawn_glint_body_3d_for_identifier(body.get_identifier())
@@ -188,9 +195,17 @@ func spawnBodies():
 func spawn_glint_body_3d_for_identifier(id: int):
 	var new_entity_3d = entity_3d.instantiate()
 	new_entity_3d.set_identifier(id)
-	new_entity_3d.initialize(pow(pow(10, -1.3), 0.28) / 128) #pixel size, can be different for stations/anomalies
+	new_entity_3d.initialize(pow(pow(10, -1.3), 0.28) / 109.1) #pixel size, can be different for stations/anomalies
 	new_entity_3d._on_scope_mode_changed(get_scope_mode())
 	add_child(new_entity_3d)
+	pass
+
+func spawn_unit_body_3d_for_identifier(id: int):
+	var new_unit_3d = unit_3d.instantiate()
+	new_unit_3d.set_identifier(id)
+	new_unit_3d.initialize((pow(pow(10, -1.3), 0.28) / 109.1) * 16.0) #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)
+	new_unit_3d._on_scope_mode_changed(get_scope_mode())
+	add_child(new_unit_3d)
 	pass
 
 func spawn_pulsar_beams(_star: pulsarBodyAPI) -> void:
