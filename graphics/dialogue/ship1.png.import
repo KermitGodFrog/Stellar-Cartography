@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://djddkifmtdclt"
+path="res://.godot/imported/ship1.png-25adb95c1d0c8791443096769e64bd51.image"
+
+[deps]
+
+source_file="res://graphics/dialogue/ship1.png"
+dest_files=["res://.godot/imported/ship1.png-25adb95c1d0c8791443096769e64bd51.image"]
+
+[params]
+
