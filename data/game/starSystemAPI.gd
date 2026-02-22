@@ -755,10 +755,11 @@ func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
 	
 	var unit: AIUnitAPI = get_body_from_identifier(new_unit)
 	unit.set_action_type(unitBodyAPI.ACTION_TYPES.NONE, null)
+	updateBodyPosition(orbiting_planet.get_identifier(), 1.0) #dont have access to physics delta time so just using 1.0 lol
 	unit.position = unit.get_orbit_position_for_body(orbiting_planet)
-	unit.course_to_position(unit.position)
-	unit.updatePosition(1.0) #dont have access to physics delta time so just updating position by a whole second
+	# ^ this is SOMEWHAT fixed by updating the body position BUT i think if its a moon orbiting a planet, then the planets position will still be in the star so the unit will appear orbiting the star. not a big deal; just something to note
 	unit.orbit_body(orbiting_planet)
+	unit.updatePosition(1.0)
 	pass
 
 # generation related getters \/
