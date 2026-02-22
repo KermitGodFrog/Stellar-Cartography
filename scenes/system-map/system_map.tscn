@@ -267,6 +267,7 @@ scroll_horizontal_enabled = false
 [node name="contact_list" type="Tree" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/syslist_contacts_split"]
 layout_mode = 2
 theme = ExtResource("3_djc4s")
+theme_override_font_sizes/font_size = 12
 allow_reselect = true
 allow_rmb_select = true
 allow_search = false
