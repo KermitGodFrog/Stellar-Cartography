@@ -48,9 +48,10 @@ func removeStarSystem(id: int):
 			break
 	pass
 
-func createPlayer(name: String, prefix: String) -> playerAPI:
+func createPlayer(name: String, ship_name: String, prefix: String) -> playerAPI:
 	var new_player = playerAPI.new()
 	new_player.name = name
+	new_player.ship_name = ship_name
 	new_player.prefix = prefix
 	new_player.speed = 3
 	new_player.radius = pow(pow(10, -1.3), 0.28) / 109.1

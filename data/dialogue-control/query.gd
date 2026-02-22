@@ -18,6 +18,7 @@ func populateWithLocalData():
 
 func populateWithPlayerData(player: playerAPI):
 	add("player_name", player.name)
+	add("player_ship_name", player.ship_name)
 	add("player_prefix", player.prefix)
 	add("player_prefix_lower", player.prefix.to_lower())
 	

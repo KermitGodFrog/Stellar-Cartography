@@ -9,6 +9,7 @@ signal scannerContactGained(unit: unitBodyAPI)
 signal scannerContactLost(unit: unitBodyAPI)
 
 @export var name: String
+@export var ship_name: String
 @export var prefix: String
 
 @export_storage var current_star_system: starSystemAPI

@@ -35,7 +35,8 @@ func _ready():
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
 		var new_player = world.createPlayer(
-			init_data.get("name", "Tanaka"), 
+			init_data.get("name", "Tanaka"),
+			init_data.get("ship_name", "Valiant"),
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
@@ -82,6 +83,7 @@ func _ready():
 		
 		var new_player = world.createPlayer(
 			init_data.get("name", "Tanaka"), 
+			init_data.get("ship_name", "Valiant"),
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
@@ -388,6 +390,7 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
 		starSystemAPI.BODY_TYPES.UNIT:
 			new_query.add("unit_available", following_body.metadata.get("unit_available", true))
+			new_query.add_tree_access("unit_affiliation", str(game_data.UNIT_AFFILIATIONS.find_key(following_body.metadata.get("affiliation"))))
 			new_query.add_tree_access("hostile", following_body.metadata.get("hostile", false))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 	
