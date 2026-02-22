@@ -666,16 +666,16 @@ func draw_map():
 	if show_overlay: map_overlay.show()
 	else: map_overlay.hide()
 	
-	if scanner_profile_time > 0:
-		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), 0.5, false)
-	if scanner_power_time > 0:
-		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[1], -TAU, TAU, 30, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), 0.2, false)
-	
 	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT)
 	if asteroid_belts: 
 		for belt in asteroid_belts:
 			if belt.is_known(): 
 				draw_arc(belt.position, belt.orbit_distance, -10, TAU, 50, belt.metadata.get("belt_color"), belt.metadata.get("belt_width"), false)
+	
+	if scanner_profile_time > 0:
+		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), 0.5, false)
+	if scanner_power_time > 0:
+		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[1], -TAU, TAU, 30, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), 0.2, false)
 	
 	for body in system.bodies:
 		
