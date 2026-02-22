@@ -738,7 +738,7 @@ func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
 	
 	var speed: int = 0
 	if wandering:
-		speed = global_data.get_randi(1, 2)
+		speed = global_data.get_randi(1, 3)
 	else:
 		speed = global_data.get_randi(3, int(game_data.UNIT_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index)))
 	

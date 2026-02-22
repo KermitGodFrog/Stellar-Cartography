@@ -206,7 +206,7 @@ func switch_task(override_task = null) -> void:
 	start_cooldown()
 	current_task = new_task
 	propensity_to_boost = 0.0
-	metadata["_current_task"] = TASKS.find_key(current_task)
+	#metadata["_current_task"] = TASKS.find_key(current_task)
 	pass
 
 #MISC FUNCTIONS
