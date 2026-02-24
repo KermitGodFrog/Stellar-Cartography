@@ -2,6 +2,10 @@ extends Resource
 class_name starSystemAPI
 #any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
+signal unit_following_body(b: bodyAPI, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
+signal unit_orbiting_body(b: bodyAPI, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
+signal unit_play_sound(path: String, volume_db: float, bus: StringName, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
+
 @export var identifier: int
 @export var display_name: String
 
@@ -39,7 +43,7 @@ func set_display_name(new_display_name: String):
 #enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
 #enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
 
-enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, CUSTOM}
+enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, UNIT, CUSTOM}
 
 const star_types = {
 	"M": {"name": "M", "weight_eg": 0.7645629, "weight_lg": 0.0000003},
@@ -206,6 +210,8 @@ const asteroid_belt_classifications = {
 	"Carbonaceous": {"name": "Carbonaceous", "weight": 0.3}
 }
 
+# core gen methods \/
+
 func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0, _missing_GL_chance_per_relevant_planet: float = 0.0) -> void:
 	#generate just planets, stars and space anomalies!
 	var hook_star = generateRandomWeightedHookStar()
@@ -221,10 +227,10 @@ func createAuxiliaryCivilized() -> void:
 	generateRendezvousPoint()
 	for body in bodies:
 		body.known = true
+	generateRandomWeightedUnits()
 	pass
 
 func createAuxiliaryUnexplored() -> void:
-	print_debug("CREATE AUXILIARY UNEXPLORED!!")
 	var new_special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(), "weight")
 	special_system_classification = new_special_system_classification
 	
@@ -237,6 +243,7 @@ func createAuxiliaryUnexplored() -> void:
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
 			generateRandomWeightedSpecialAnomaly()
+			generateRandomWeightedUnits()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
 			#!! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !!
 			var star = get_first_star()
@@ -253,7 +260,7 @@ func createAuxiliaryUnexplored() -> void:
 		#for example, a completely empty star system could use this match statement to REMOVE all existing bodies (besides the star) and spawn nothing else. Then an event could happen on concept enteringSystem 
 	pass
 
-
+# gen methods \/
 
 func generateRandomWeightedHookStar():
 	randomize()
@@ -276,7 +283,7 @@ func generateRandomWeightedHookStar():
 			var beam_angle_change: float = global_data.get_randf(deg_to_rad(1), deg_to_rad(6))
 			var beam_width: float = global_data.get_randf(10, 50) # IN SOLAR RADII
 			
-			new_body = addBody(
+			new_body = addOrbitBody(
 				pulsarBodyAPI.new(),
 				BODY_TYPES.STAR,
 				identifier_count,
@@ -289,7 +296,7 @@ func generateRandomWeightedHookStar():
 				{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25}
 			)
 		_:
-			new_body = addBody(
+			new_body = addOrbitBody(
 				circularBodyAPI.new(),
 				BODY_TYPES.STAR,
 				identifier_count,
@@ -331,8 +338,8 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 					var belt_classification = global_data.weighted_pick(asteroid_belt_classifications, "weight")
 					var belt_mass = global_data.get_randf(pow(10, -1.3) / 333000, pow(10, 0.22) / 333000)
 					
-					var new_belt = addBody(
-						bodyAPI.new(),
+					var new_belt = addOrbitBody(
+						orbitBodyAPI.new(),
 						BODY_TYPES.ASTEROID_BELT,
 						identifier_count, 
 						game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.ASTEROID_BELT, name_scheme, hook.get_display_name()),
@@ -445,7 +452,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 							has_missing_GL = true
 							gas_layers_sum = global_data.get_randi(4, 9)
 				
-				var new_planet = addBody(
+				var new_planet = addOrbitBody(
 					planetBodyAPI.new(),
 					BODY_TYPES.PLANET,
 					identifier_count,
@@ -484,7 +491,7 @@ func generateWormholes(): #uses variables post_gen_location_candidates, destinat
 		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
 		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
 		
-		var new_wormhole = addBody(
+		var new_wormhole = addOrbitBody(
 			wormholeBodyAPI.new(),
 			BODY_TYPES.WORMHOLE,
 			identifier_count,
@@ -517,7 +524,7 @@ func generateRandomWeightedStations():
 		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
 		var percentage_markup = global_data.get_randi(75, 200)
 		
-		var new_station = addBody(
+		var new_station = addOrbitBody(
 			stationBodyAPI.new(),
 			BODY_TYPES.STATION,
 			identifier_count,
@@ -550,7 +557,7 @@ func addRandomSpaceAnomaly() -> void: #used in both generateRandomAnomalies and 
 	var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 	var radius = get_default_radius_solar_radii()
 	
-	var new_anomaly = addBody(
+	var new_anomaly = addOrbitBody(
 		spaceAnomalyBodyAPI.new(),
 		BODY_TYPES.SPACE_ANOMALY,
 		identifier_count,
@@ -581,7 +588,7 @@ func generateRandomWeightedEntities():
 		
 		var entity_classification = global_data.weighted_pick(game_data.get_weighted_entity_classifications(), "weight")
 		
-		var new_entity = addBody(
+		var new_entity = addOrbitBody(
 			entityBodyAPI.new(),
 			BODY_TYPES.SPACE_ENTITY,
 			identifier_count,
@@ -608,7 +615,7 @@ func generateRendezvousPoint():
 	var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 	var radius = get_default_radius_solar_radii()
 	
-	var new_body = addBody(
+	var new_body = addOrbitBody(
 		glintBodyAPI.new(),
 		BODY_TYPES.RENDEZVOUS_POINT,
 		identifier_count, 
@@ -638,7 +645,7 @@ func generateRandomWeightedSpecialAnomaly():
 	match special_anomaly_classification:
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID:
 			var hook_orbit_velocity = tan(hook.orbit_angle_change) * hook.orbit_distance #would have to recalculate every frame if not calculating now, which would be unnecessary
-			var new_body = addBody(
+			var new_body = addOrbitBody(
 				load("uid://lxeqs6ypk0ju").new(),
 				BODY_TYPES.CUSTOM,
 				identifier_count,
@@ -677,6 +684,85 @@ func generateFallbackAnomalies():
 			addRandomSpaceAnomaly()
 	pass
 
+func generateRandomWeightedUnits() -> void:
+	randomize()
+	var _units_generated: int = 0
+	var generate_units: bool = randf() <= game_data.UNIT_TOTAL_CHANCE_CURVE.sample(game_data.player_weirdness_index)
+	if generate_units:
+		var chance_curve: Curve
+		if is_civilized():
+			chance_curve = game_data.UNIT_CIVILIZED_CHANCE_CURVE
+		else:
+			chance_curve = game_data.UNIT_UNEXPLORED_CHANCE_CURVE
+		
+		var max_units: int = int(game_data.UNIT_QUANTITY_CURVE.sample(game_data.player_weirdness_index))
+		for unit in max_units:
+			var generate_unit: bool = randf() <= chance_curve.sample(game_data.player_weirdness_index)
+			if generate_unit:
+				var planets = get_bodies_of_body_type(BODY_TYPES.PLANET)
+				if planets:
+					addRandomWeightedUnit(planets.pick_random())
+					_units_generated += 1
+		
+	print_rich("[color=RED]UNITS GENERATED: %.f" % _units_generated)
+	pass
+func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
+	randomize()
+	var distribution_y_value = game_data.UNIT_AI_DISTRIBUTION_CURVE.sample(game_data.player_weirdness_index)
+	var wandering: bool = randf() <= distribution_y_value
+	
+	#horrific, but it least it works
+	var affiliation: game_data.UNIT_AFFILIATIONS = game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE
+	var executive_affiliated: bool = randf() <= game_data.UNIT_WANDERING_AFFILIATION_CURVE.sample(game_data.player_weirdness_index)
+	match wandering:
+		true when executive_affiliated:
+			affiliation = game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE
+		true:
+			affiliation = game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION
+		false:
+			affiliation = game_data.UNIT_AFFILIATIONS.MARAUDER
+	
+	#terrible
+	var AI: AIUnitAPI = null
+	match wandering:
+		true when is_civilized():
+			AI = wanderingUnitAPI.new()
+		true when affiliation == game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE:
+			AI = exploringUnitAPI.new()
+		true when affiliation == game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION:
+			AI = wanderingUnitAPI.new()
+		false:
+			AI = interceptingUnitAPI.new()
+		_:
+			AI = wanderingUnitAPI.new()
+	
+	var speed: int = 0
+	if wandering:
+		speed = global_data.get_randi(1, 3)
+	else:
+		speed = global_data.get_randi(3, int(game_data.UNIT_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index)))
+	
+	var new_unit = addUnitBody(
+		AI,
+		BODY_TYPES.UNIT,
+		identifier_count,
+		game_data.get_random_starship_name(affiliation),
+		speed,
+		get_default_radius_solar_radii(),
+		{"system": self},
+		{"affiliation": affiliation, "hostile": affiliation == game_data.UNIT_AFFILIATIONS.MARAUDER, "seed": randi()}
+	)
+	
+	var unit: AIUnitAPI = get_body_from_identifier(new_unit)
+	unit.set_action_type(unitBodyAPI.ACTION_TYPES.NONE, null)
+	updateBodyPosition(orbiting_planet.get_identifier(), 1.0) #dont have access to physics delta time so just using 1.0 lol
+	unit.position = unit.get_orbit_position_for_body(orbiting_planet)
+	# ^ this is SOMEWHAT fixed by updating the body position BUT i think if its a moon orbiting a planet, then the planets position will still be in the star so the unit will appear orbiting the star. not a big deal; just something to note
+	unit.orbit_body(orbiting_planet)
+	unit.updatePosition(1.0)
+	pass
+
+# generation related getters \/
 
 func get_orbit_angle_change(hook: bodyAPI, _orbit_distance: float) -> float: #(per unit of time) 
 	#v = √(GM/r), where G is gravitational constant, M is hook mass (central body mass) and r is orbit radius
@@ -704,23 +790,34 @@ func get_star_types_mixed_weights() -> Dictionary:
 		mixed_types[type] = {"name": type, "weight": mixed_weight}
 	return mixed_types
 
+# core body methods \/
 
-
-func addBody(body: bodyAPI, _body_type: BODY_TYPES, id: int, d_name: String, hook_id: int, _orbit_distance: float, _orbit_angle_change: float, _radius: float, variables: Dictionary, metadata: Dictionary) -> int:
-	body.set_type(_body_type)
-	body.hook_identifier = hook_id
+func addBody(body: bodyAPI, body_type: BODY_TYPES, id: int, d_name: String, variables: Dictionary, metadata: Dictionary) -> int:
+	body.set_type(body_type)
 	body.set_identifier(id)
 	identifier_count += 1
 	body.set_display_name(d_name)
-	body.orbit_distance = _orbit_distance
-	body.orbit_angle_change = _orbit_angle_change
-	body.radius = _radius
 	for variable in variables:
 		body.set(variable, variables.get(variable))
 	body.set("metadata", metadata)
 	body.initialize()
 	bodies.append(body)
 	return body.get_identifier()
+
+func addOrbitBody(_body: orbitBodyAPI, _body_type: BODY_TYPES, _id: int, _d_name: String, _hook_id: int, _orbit_distance: float, _orbit_angle_change: float, _radius: float, _variables: Dictionary, _metadata: Dictionary) -> int:
+	_variables["hook_identifier"] = _hook_id
+	_variables["orbit_distance"] = _orbit_distance
+	_variables["orbit_angle_change"] = _orbit_angle_change
+	_variables["radius"] = _radius
+	var id = addBody(_body, _body_type, _id, _d_name, _variables, _metadata)
+	return id
+
+func addUnitBody(_body: unitBodyAPI, _body_type: BODY_TYPES, _id: int, _d_name: String, _speed: int, _radius: float, _variables: Dictionary, _metadata: Dictionary) -> int:
+	_variables["speed"] = _speed
+	_variables["radius"] = _radius
+	_variables["rotation_hint"] = deg_to_rad(global_data.get_randi(0,360))
+	var id = addBody(_body, _body_type, _id, _d_name, _variables, _metadata)
+	return id
 
 func removeBody(id: int):
 	for body in bodies:
@@ -730,28 +827,25 @@ func removeBody(id: int):
 
 func updateBodyPosition(id: int, delta):
 	var body = get_body_from_identifier(id)
-	if body and body.hook_identifier != null:
-		var hook = get_body_from_identifier(body.hook_identifier)
-		if hook:
-			body.position = hook.position
-			if body.orbit_angle_change != 0 and body.orbit_distance != 0:
-				var dir = Vector2.UP.rotated(body.rotation)
-				body.rotation += body.orbit_angle_change * delta
-				body.position = body.position + (dir * body.orbit_distance)
+	match body:
+		_ when body is unitBodyAPI:
+			body.updateActionBodyState()
+			body.updatePosition(delta)
+		_:
+			if body and body.hook_identifier != null:
+				var hook = get_body_from_identifier(body.hook_identifier)
+				if hook:
+					body.position = hook.position
+					if body.orbit_angle_change != 0 and body.orbit_distance != 0:
+						var dir = Vector2.UP.rotated(body.rotation)
+						body.rotation += body.orbit_angle_change * delta
+						body.position = body.position + (dir * body.orbit_distance)
 	pass
 
-
-
+# misc \/
 
 func get_random_body():
 	return bodies.pick_random()
-
-func get_random_planet(): #the fuck? why return an array???? this isnt even used anywhere??????????
-	var planets: Array = []
-	for body in bodies:
-		if body.get_type() == BODY_TYPES.PLANET:
-			planets.append(body)
-	return planets
 
 func get_first_star():
 	for body in bodies:
@@ -788,8 +882,9 @@ func get_body_from_identifier(id: int):
 func get_bodies_with_hook_identifier(id: int) -> Array:
 	var bodies_with_requested_hook_identifier: Array = []
 	for body in bodies:
-		if body.hook_identifier == id:
-			bodies_with_requested_hook_identifier.append(body)
+		if body.get("hook_identifier") != null:
+			if body.hook_identifier == id:
+				bodies_with_requested_hook_identifier.append(body)
 	return bodies_with_requested_hook_identifier
 
 func get_bodies_with_metadata_key(metadata_key: String) -> Array:
@@ -799,18 +894,16 @@ func get_bodies_with_metadata_key(metadata_key: String) -> Array:
 			return_bodies.append(body)
 	return return_bodies
 
+func get_planets() -> Array:
+	var planets: Array = get_bodies_of_body_type(BODY_TYPES.PLANET)
+	return planets
+
 func get_wormholes() -> Array:
-	var wormholes: Array[wormholeBodyAPI] = []
-	for body in bodies:
-		if body.get_type() == BODY_TYPES.WORMHOLE:
-			wormholes.append(body)
+	var wormholes: Array = get_bodies_of_body_type(BODY_TYPES.WORMHOLE)
 	return wormholes
 
 func get_stations() -> Array:
-	var stations: Array[stationBodyAPI] = []
-	for body in bodies:
-		if body.get_type() == BODY_TYPES.STATION:
-			stations.append(body)
+	var stations: Array = get_bodies_of_body_type(BODY_TYPES.STATION)
 	return stations
 
 func get_wormhole_with_destination_system(dest_system: starSystemAPI) -> wormholeBodyAPI:
@@ -832,3 +925,27 @@ func is_civilized() -> bool:
 		if body.get_type() == BODY_TYPES.STATION:
 			return true
 	return false
+
+# unit stuff \/
+
+func get_units_in_scanner_range(pos: Vector2, size: float) -> Array[unitBodyAPI]:
+	var units_in_range: Array[unitBodyAPI] = []
+	var units = get_bodies_of_body_type(BODY_TYPES.UNIT) as Array[unitBodyAPI]
+	
+	for unit in units:
+		if unit.position.distance_to(pos) < size:
+			units_in_range.append(unit)
+	
+	return units_in_range
+
+func _on_unit_following_body(_b: bodyAPI, _u: unitBodyAPI) -> void: #connected by game.gd _on_switch_star_system
+	emit_signal("unit_following_body", _b, _u)
+	pass
+
+func _on_unit_orbiting_body(_b: bodyAPI, _u: unitBodyAPI) -> void: #connected by game.gd _on_switch_star_system
+	emit_signal("unit_orbiting_body", _b, _u)
+	pass
+
+func _on_unit_play_sound(_path: String, _volume_db: float, _bus: StringName, _u: unitBodyAPI) -> void: #connected by game.gd _on_switch_star_system
+	emit_signal("unit_play_sound", _path, _volume_db, _bus, _u)
+	pass

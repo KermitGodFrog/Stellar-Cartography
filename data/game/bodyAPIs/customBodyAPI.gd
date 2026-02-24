@@ -1,4 +1,4 @@
-extends bodyAPI
+extends orbitBodyAPI
 class_name customBodyAPI
 
 ##On interaction (theorised, orbiting, following), the game will set this as the value of the 'custom_id' fact, if configured. Leave empty to let the game search for more complex queries derived from the body type.
@@ -23,7 +23,7 @@ func set_dialogue_tag(value) -> void:
 @export var post_icon_path: String
 @export var mesh_path: String
 
-func is_available() -> bool:
+func is_available() -> bool: #this is depreciated i think????? no 'is_available' metadata is used elsewhere!!!
 	if metadata.get("is_available", true) == true:
 		return true
 	return false

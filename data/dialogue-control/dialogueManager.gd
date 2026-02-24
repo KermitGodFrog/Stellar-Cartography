@@ -38,6 +38,7 @@ signal rollNavBuoy(anomaly_seed: int)
 signal superchargePlayerForJumps(jumps: int) #saying superchargePlayerForJumps is like saying addPlayerValueForPlayerInternalValueCounter
 signal modifyCharacterStanding(occupation: characterAPI.OCCUPATIONS, amount: int, _increase: bool)
 signal changePlayerScopeMode(_new_mode: playerAPI.SCOPE_MODES)
+signal lockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
@@ -392,9 +393,14 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 	print("QUERY HANDLER: ", calling, " TRIGGERING RULE ", rule.get_name())
 	
 	#apply_facts: \\\\\\\\\\\\\ BEFORE EVERYTHING THAT REFRESHES DIALOGUE MEMORY \/\/\/\/ (MESSES WITH ACTUAL COLUMN ORDER IN THE DOC)
-	for fact in rule.apply_facts:
-		emit_signal("addDialogueMemoryPair", fact, rule.apply_facts.get(fact))
-		print("QUERY HANDLER: ", calling, " APPLYING FACT ", fact)
+	for key in rule.apply_facts:
+		var value = rule.apply_facts.get(key)
+		match typeof(value):
+			TYPE_STRING:
+				emit_signal("addDialogueMemoryPair", key, replace_fact_references(value, incoming_query))
+			_:
+				emit_signal("addDialogueMemoryPair", key, value)
+		print("QUERY HANDLER: ", calling, " APPLYING FACT ", key)
 	
 	#trigger_functions: \\\\\\\\\\\\\
 	for trigger_function in rule.trigger_functions:
@@ -735,6 +741,16 @@ func changeScopeMode(new_mode) -> void:
 		new_mode = new_mode.to_int()
 	emit_signal("changePlayerScopeMode", new_mode)
 	pass
+
+func lockUpgradeWithFlair(upgrade) -> void:
+	if typeof(upgrade) == TYPE_STRING:
+		var idx = playerAPI.UPGRADE_ID.get(upgrade)
+		if idx != null:
+			emit_signal("lockUpgrade", idx)
+			dialogue.add_text("[color=red](Lost %s upgrade) [/color]" % upgrade)
+	pass
+
+
 
 
 func categoryActive(wID: String) -> void:

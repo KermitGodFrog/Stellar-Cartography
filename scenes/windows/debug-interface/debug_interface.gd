@@ -2,8 +2,8 @@ extends Control
 
 @onready var nanites_label = $scroll/nanites_scroll/nanites_label
 @onready var nanites_slider = $scroll/nanites_scroll/nanites_slider
+@onready var upgrade_options = $scroll/upgrades_scroll/upgrade_options
 @onready var query_scroll = $scroll/query_scroll
-
 
 signal increasePlayerBalance(amount: int)
 
@@ -15,10 +15,14 @@ signal forceQuitDialogue()
 signal forceUnexploredSystem()
 signal maxCharacterStanding()
 signal removePlayerMorale(amount: int)
+signal quickTraverse()
+signal unlockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
 
 
 func _ready() -> void:
 	_on_nanites_slider_drag_ended(true)
+	for upgrade in playerAPI.UPGRADE_ID:
+		upgrade_options.add_item(str(upgrade))
 	pass
 
 func _process(_delta: float) -> void:
@@ -94,6 +98,15 @@ func _on_max_character_standing_button_pressed() -> void:
 func _on_remove_morale_button_pressed() -> void:
 	emit_signal("removePlayerMorale", 5)
 	pass
+
+func _on_quick_traverse_button_pressed() -> void:
+	emit_signal("quickTraverse")
+	pass
+
+func _on_unlock_button_pressed() -> void:
+	emit_signal("unlockUpgrade", playerAPI.UPGRADE_ID.get(upgrade_options.get_item_text(upgrade_options.get_selected_id())))
+	pass
+
 
 
 func _on_debug_interface_window_close_requested() -> void:

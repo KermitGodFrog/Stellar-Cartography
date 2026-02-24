@@ -49,6 +49,7 @@ var system: starSystemAPI:
 		clear_system_list_caches()
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 var _player_status_matrix: Array = [0,0,0,0]
+var player_adj_scanner_matrix: Array = [0.0, 0.0] #this does NOT have to be updated every frame lmfao BRRRRRRRRRRRRR
 var player_is_boosting: bool = false:
 	set(value):
 		if player_is_boosting != value:
@@ -60,7 +61,8 @@ var player_gas_layer_surveyor_unlocked: bool = false
 
 @onready var camera = $camera
 @onready var canvas = $camera/canvas
-@onready var system_list = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/system_list
+@onready var system_list = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/syslist_contacts_split/system_list
+@onready var contact_list = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/syslist_contacts_split/contact_list
 @onready var follow_body_label = $camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/follow_body_label
 @onready var body_attributes_list = $camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/body_attributes_list
 @onready var orbit_button = $camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/orbit_button
@@ -120,6 +122,10 @@ const CME_MAX_RING_RADIUS: int = 1000
 var PULSAR_DAMAGE_COOLDOWN: float = 0.0
 const PULSAR_MAX_DAMAGE_COOLDOWN: float = 1.0
 
+#drawing scanner stuff on system map
+var scanner_profile_time: float = 0.0
+var scanner_power_time: float = 0.0
+
 #system list
 var collapsed_cache: Dictionary = {}
 var selected_cache: Dictionary = {} #CURRENTLY DOES NOTHING BECAUSE I CANT FIGURE OUT HOW TO MAKE IT WORK!
@@ -146,6 +152,7 @@ var player_supercharged: bool = false:
 
 func _ready():
 	status_scroll.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
+	contact_list.create_item(null)
 	pass
 
 func _physics_process(delta):
@@ -170,7 +177,10 @@ func _physics_process(delta):
 		orbit_button.set("disabled", true)
 		go_to_button.set("disabled", true)
 	else:
-		orbit_button.set("disabled", false)
+		if locked_body.get_type() == starSystemAPI.BODY_TYPES.UNIT:
+			orbit_button.set("disabled", true)
+		else:
+			orbit_button.set("disabled", false)
 		go_to_button.set("disabled", false)
 	
 	var camera_position_to_bodies: Dictionary = {}
@@ -185,6 +195,7 @@ func _physics_process(delta):
 	calculate_asteroid_belt_slowdown()
 	calculate_pulsar_beam_slowdown_and_damage(delta)
 	generate_system_list()
+	update_contact_list()
 	
 	#updating sonar ping visualization time values & sonar polygon display time
 	SONAR_POLYGON_DISPLAY_TIME = maxi(0, SONAR_POLYGON_DISPLAY_TIME - delta)
@@ -209,28 +220,39 @@ func _physics_process(delta):
 		if CME_RING_RADIUS == CME_MAX_RING_RADIUS:
 			CME_RING_SHOWN = false
 	
+	#unit update related stuff
+	scanner_profile_time = maxf(0, scanner_profile_time - delta)
+	scanner_power_time = maxf(0, scanner_power_time - delta)
+	if get_global_mouse_position().distance_to(player_position_matrix[0]) < (1 + pow(camera.zoom.length(), -0.5)):
+		_on_update_scanner_display_times(2.5, 2.5)
+	for unit in system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.UNIT).filter(func(unit): return unit.is_known()): # not very performance motherfucker >:( but i think it makes more sense that this is here and not in update_contact_list, really. but not when CUSTOM_UNIT is added.
+		if get_global_mouse_position().distance_to(unit.position) < (1 + pow(camera.zoom.length(), -0.5)):
+			_on_update_scanner_display_times(2.5, 2.5)
+	
 	#INFOR TAB!!!!!!! \/\/\\/\/
 	if follow_body and follow_body.is_known(): follow_body_label.set_text(str(">>> ", follow_body.get_display_name()))
-	elif follow_body and follow_body.is_theorised_not_known(): follow_body_label.set_text(">>> Unknown")
+	elif follow_body and follow_body.is_theorised_not_known(): follow_body_label.set_text(">>> Unknown") #does not need override for unitBodyAPIs as it should clear before this can run
 	else: follow_body_label.set_text(">>> LOCK BODY FOR INFO")
 	body_attributes_list.clear()
 	if follow_body and follow_body.is_known():
 		
-		if follow_body is circularBodyAPI: 
-			body_attributes_list.add_item("radius : %.2f (earth radii)" % (follow_body.radius * 109.1), null, false)
-			body_attributes_list.add_item("mass : %.2f (earth masses)" % (follow_body.mass * 333000))
-		
-		body_attributes_list.add_item("orbit_angle_change : %.2f (rad/frame)" % follow_body.orbit_angle_change, null, false)
-		body_attributes_list.add_item("orbit_distance %.2f (solar radii)" % follow_body.orbit_distance, null, false)
-		
+		if follow_body is orbitBodyAPI:
+			body_attributes_list.add_item("orbit_angle_change : %.2f (rad/frame)" % follow_body.orbit_angle_change, null, false)
+			body_attributes_list.add_item("orbit_distance %.2f (solar radii)" % follow_body.orbit_distance, null, false)
+			
+			if follow_body is circularBodyAPI: 
+				body_attributes_list.add_item("radius : %.2f (earth radii)" % (follow_body.radius * 109.1), null, false)
+				body_attributes_list.add_item("mass : %.2f (earth masses)" % (follow_body.mass * 333000))
+			
 		#metadata
-		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "missing_GL", "seed", "custom_available", "custom_follow_available", "custom_orbit_available"]
+		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "missing_GL", "seed", "custom_available", "custom_follow_available", "custom_orbit_available", "unit_available"]
 		if follow_body.is_known():
 			for entry in follow_body.metadata:
 				if excluding.find(entry) == -1:
 					var parse: String
 					match entry:
 						"luminosity": parse = "%.2f" % (follow_body.metadata.get(entry))
+						"affiliation": parse = "%s" % game_data.UNIT_AFFILIATIONS.find_key(follow_body.metadata.get(entry))
 						_: parse = str(follow_body.metadata.get(entry))
 					body_attributes_list.add_item("%s : %s" % [entry, parse], null, false)
 	
@@ -424,7 +446,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 	return null
 
 func clear_system_list_caches() -> void:
-	#print("SYSTEM MAP (DEBUG): CLEARING SYSTEM LIST CACHES")
+	print("SYSTEM MAP: CLEARING SYSTEM LIST CACHES")
 	collapsed_cache.clear()
 	pass
 
@@ -445,9 +467,53 @@ func sort_sub_bodies_by_distance(body: bodyAPI, sub_bodies: Array) -> Array:
 
 
 
+func update_contact_list() -> void:
+	var root = contact_list.get_root() as TreeItem
+	for item in root.get_children():
+		var identifier = item.get_metadata(0)
+		var body = system.get_body_from_identifier(identifier)
+		
+		if body == follow_body:
+			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
+		elif body.get_identifier() == closest_body_id: 
+			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.2)) #WEB_GRAY
+		else:
+			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
+		
+		if body is AIUnitAPI:
+			if body.is_hostile():
+				if body == follow_body:
+					item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.5)) #LIGHT_SKY_BLUE
+				elif body.get_identifier() == closest_body_id: 
+					item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.2)) #WEB_GRAY
+				else:
+					item.set_custom_bg_color(0, Color.DARK_RED)
+	pass
 
+func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
+	unit.known = true
+	_on_found_body(unit.get_identifier())
+	var item: TreeItem = contact_list.create_item(contact_list.get_root())
+	item.set_metadata(0, unit.get_identifier())
+	item.set_text(0, unit.get_display_name())
+	#icon handling!
+	if unit is AIUnitAPI:
+		if unit.is_hostile():
+			item.set_icon(0, load("uid://dxtvjut27oly0"))
+		else:
+			item.set_icon(0, load("uid://bbdpqnpgh7iy6"))
+	else:
+		item.set_icon(0, load("uid://hv5u4ty18pyd"))
+	pass
 
-
+func _on_player_scanner_contact_lost(unit: unitBodyAPI) -> void:
+	unit.known = false
+	var root = contact_list.get_root() as TreeItem
+	for item in root.get_children():
+		if item.get_metadata(0) == unit.get_identifier():
+			item.free()
+			break
+	pass
 
 
 
@@ -460,7 +526,9 @@ func oscillate_item_icon_color(item: TreeItem, color: Color, c: int = 0) -> void
 func _unhandled_input(event):
 	if event.is_action_pressed("SC_INTERACT2_RIGHT_MOUSE"):
 		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
-		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and (not closest_body.is_not_known_or_is_hidden()):
+		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) \
+		and (not closest_body.is_not_known_or_is_hidden()) \
+		and (not closest_body is unitBodyAPI):
 			emit_signal("updatedLockedBody", closest_body)
 			locked_body = closest_body
 			follow_body = closest_body
@@ -480,7 +548,8 @@ func _unhandled_input(event):
 	
 	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE"):
 		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
-		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) and (not closest_body.is_not_known_or_is_hidden()):
+		if get_global_mouse_position().distance_to(closest_body.position) < (1 + pow(camera.zoom.length(), -0.5)) \
+		and (not closest_body.is_not_known_or_is_hidden()):
 			emit_signal("updatedLockedBody", closest_body)
 			locked_body = closest_body
 			follow_body = closest_body
@@ -597,11 +666,16 @@ func draw_map():
 	if show_overlay: map_overlay.show()
 	else: map_overlay.hide()
 	
-	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT) #not EXACTLY proper but yknow
+	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT)
 	if asteroid_belts: 
 		for belt in asteroid_belts:
 			if belt.is_known(): 
 				draw_arc(belt.position, belt.orbit_distance, -10, TAU, 50, belt.metadata.get("belt_color"), belt.metadata.get("belt_width"), false)
+	
+	if scanner_profile_time > 0:
+		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), 0.5, false)
+	if scanner_power_time > 0:
+		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[1], -TAU, TAU, 30, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), 0.2, false)
 	
 	for body in system.bodies:
 		
@@ -661,6 +735,22 @@ func draw_map():
 	
 	for body in system.bodies:
 		
+		#INCORRECTLY batch unitBodyAPI drawing (applies two different draws at once, removing any possible benefit of batching)
+		
+		if body is AIUnitAPI and body.is_known(): #unitBodyAPIs are usually not drawn, like bodyAPIs, but AIUnitAPIs are always drawn !!!
+			if show_overlay:
+				var AI_color = Color.SLATE_GRAY
+				var blink_color = Color.LIGHT_GRAY
+				if body.is_hostile():
+					AI_color = Color.RED
+					blink_color = Color.DARK_RED
+				
+				draw_arc(body.position, maxf(0.25, sin(Time.get_unix_time_from_system() * 4.0) * size_exponent * 6.0), -TAU, TAU, 5, blink_color, 0.2, false)
+				
+				draw_rect(global_data.get_offset_rect2(body.position, size_exponent * 3.0, size_exponent * 3.0), AI_color)
+	
+	for body in system.bodies:
+		
 		#batching anomaly map icons:
 		
 		if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_known(): 
@@ -684,15 +774,7 @@ func draw_map():
 	#draw_texture_rect(camera_here_tex, Rect2(Vector2(camera_target_position.x - size_exponent, camera_target_position.y - size_exponent), Vector2(size_exponent,size_exponent)), false)
 	pass
 
-#func draw_custom_arc(center, radius, angle_from, angle_to, color): #this is used under the assumption that batching can only occur on polygons/lines/rects, although this info is from godot 3.5 so idk (NO THICKNESS VARIABBLE, NOT SURE HOW TO ADD, ABANDONED THIS)
-#	var nb_points = 32
-#	var points_arc = PackedVector2Array()
-#	for i in range(nb_points + 1):
-#		var angle_point = deg_to_rad(angle_from + i * (angle_to-angle_from) / nb_points - 90)
-#		points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * radius)
-#	for index_point in range(nb_points):
-#		draw_line(points_arc[index_point], points_arc[index_point + 1], color)
-#	pass
+
 
 func _on_go_to_button_pressed():
 	if locked_body:
@@ -730,7 +812,6 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	SONAR_POLYGON_DISPLAY_TIME = 50
 	
 	for body in system.bodies:
-		
 		if body.is_hidden():
 			continue
 		elif body.get_display_name() == "Ingress":
@@ -741,7 +822,10 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 				continue
 		
 		if Geometry2D.is_point_in_polygon(body.position, points):
-			async_add_ping(body)
+			if body is orbitBodyAPI:
+				async_add_ping(body)
+			elif body is unitBodyAPI:
+				async_add_unit_ping(body)
 	
 	#random pings \/\/\/\/
 	#for random_ping in global_data.get_randi(0, remap(ping_width, 5, 90, 0, 10)):
@@ -753,7 +837,7 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	get_tree().call_group("audioHandler", "play_once", LIDAR_ping, 0.0, "SFX")
 	pass
 
-func async_add_ping(body: bodyAPI) -> void:
+func async_add_ping(body: orbitBodyAPI) -> void:
 	await get_tree().create_timer((player_position_matrix[0].distance_to(body.position) / 100)).timeout
 	
 	body.pings_to_be_theorised = maxi(0, body.pings_to_be_theorised - 1)
@@ -770,6 +854,21 @@ func async_add_ping(body: bodyAPI) -> void:
 	get_tree().call_group("audioHandler", "play_once", LIDAR_bounceback, 0.0, "SFX")
 	pass
 
+func async_add_unit_ping(unit: unitBodyAPI) -> void:
+	await get_tree().create_timer((player_position_matrix[0].distance_to(unit.position) / 100)).timeout
+	
+	var ping = load("uid://do24617ugegbj").duplicate(true)
+	ping.position = unit.position
+	ping.resetTime()
+	SONAR_PINGS.append(ping)
+	
+	if unit is AIUnitAPI:
+		if player_position_matrix[0].distance_to(unit.position) < player_adj_scanner_matrix[0]: #distance below profile
+			unit.stun()
+	
+	get_tree().call_group("audioHandler", "play_once", LIDAR_bounceback, 0.0, "SFX")
+	pass
+
 func async_add_movement_ping(pos: Vector2, body: bodyAPI = null) -> void: #manual targeting n shit
 	var ping: pingDisplayHelper = load("uid://rt20q5blyny2").duplicate(true)
 	ping.position = pos
@@ -779,6 +878,8 @@ func async_add_movement_ping(pos: Vector2, body: bodyAPI = null) -> void: #manua
 	MOVEMENT_PINGS.append(ping)
 	pass
 
+
+
 func play_boost_sound(sound_type: BOOST_SOUND_TYPES):
 	match sound_type:
 		BOOST_SOUND_TYPES.START:
@@ -787,11 +888,13 @@ func play_boost_sound(sound_type: BOOST_SOUND_TYPES):
 			get_tree().call_group("audioHandler", "play_once", boost_end, -24, "SFX")
 	pass
 
+func reset_camera_follow_body() -> void:
+	camera.follow_body = null
+	pass
+
 func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2): #for SCAN_PREDICTION upgrade!
 	scan_prediction_upgrade._on_sonar_values_changed(ping_width, ping_length, ping_direction)
 	pass
-
-
 
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:
 	emit_signal("removeHullStressForNanites", amount, nanites_per_percentage)
@@ -817,21 +920,28 @@ func get_planet_frame(classification: String) -> Resource:
 func _on_found_body(id: int):
 	var body = system.get_body_from_identifier(id)
 	var body_pos = body.position
-	var ping = load("uid://d3ntmvsq6pv83").duplicate(true)
-	ping.position = body_pos
-	ping.resetTime()
-	SONAR_PINGS.append(ping)
-	
-	if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_PA_valid():
-		get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
-	elif body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ANOMALY and body.is_SA_valid():
-		get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
-	else:
-		get_tree().call_group("audioHandler", "play_once", LIDAR_discovery, 0.0, "SFX")
-	
-	if body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
-		if body.is_habitable():
-			get_tree().call_group("audioHandler", "plot_radio", load("uid://crkhwlwd0qqkh"))
+	match body:
+		_ when body is unitBodyAPI:
+			var ping = load("uid://xurvu36ugl05").duplicate(true)
+			ping.position = body_pos
+			ping.resetTime()
+			SONAR_PINGS.append(ping)
+		_ when body is orbitBodyAPI:
+			var ping = load("uid://d3ntmvsq6pv83").duplicate(true)
+			ping.position = body_pos
+			ping.resetTime()
+			SONAR_PINGS.append(ping)
+			
+			if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_PA_valid():
+				get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
+			elif body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ANOMALY and body.is_SA_valid():
+				get_tree().call_group("audioHandler", "play_once", LIDAR_anomaly_discovery, 0.0, "SFX")
+			else:
+				get_tree().call_group("audioHandler", "play_once", LIDAR_discovery, 0.0, "SFX")
+			
+			if body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
+				if body.is_habitable():
+					get_tree().call_group("audioHandler", "plot_radio", load("uid://crkhwlwd0qqkh"))
 	pass
 
 func _on_picker_button_item_selected(index):
@@ -888,6 +998,11 @@ func _on_active_objectives_changed(_active_objectives: Array[objectiveAPI]):
 	view_objective_label._on_active_objectives_changed(_active_objectives)
 	pass
 
+func _on_update_scanner_display_times(new_profile_time: float, new_power_time: float) -> void:
+	scanner_profile_time = new_profile_time
+	scanner_power_time = new_power_time
+	pass
+
 
 
 func _on_audio_visualizer_button_pressed() -> void:
@@ -925,19 +1040,33 @@ func _on_system_list_item_mouse_selected(_position, mouse_button_index):
 			_on_orbit_button_pressed()
 	pass
 
+func _on_contact_list_item_selected() -> void:
+	follow_and_lock_item(contact_list.get_selected())
+	pass
+
 func follow_and_lock_item(item: TreeItem):
 	var identifier: int
 	if item: 
 		identifier = item.get_metadata(0)
 	if identifier:
 		var body = system.get_body_from_identifier(identifier)
-		if body.is_theorised_not_known() or body.is_known():
-			emit_signal("updatedLockedBody", body)
-			locked_body = body
-			follow_body = body
-			camera.follow_body = follow_body
-			follow_body_modifier = follow_body
+		match body:
+			_ when body is unitBodyAPI:
+				if body.is_known():
+					emit_signal("updatedLockedBody", body)
+					locked_body = body
+					follow_body = body
+					camera.follow_body = follow_body
+					follow_body_modifier = follow_body
+			_:
+				if body.is_theorised_not_known() or body.is_known():
+					emit_signal("updatedLockedBody", body)
+					locked_body = body
+					follow_body = body
+					camera.follow_body = follow_body
+					follow_body_modifier = follow_body
 	pass
+
 
 
 func _on_tabs_tab_changed(tab: int) -> void:

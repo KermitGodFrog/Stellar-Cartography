@@ -30,12 +30,13 @@ func _ready():
 	
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
 		var new_player = world.createPlayer(
-			init_data.get("name", "Tanaka"), 
+			init_data.get("name", "Tanaka"),
+			init_data.get("ship_name", "Valiant"),
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
@@ -47,6 +48,8 @@ func _ready():
 		new_player.connect("moraleChanged", _on_player_morale_changed)
 		new_player.connect("dataValueChanged", _on_player_data_value_changed)
 		new_player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
+		new_player.connect("scannerContactGained", _on_player_scanner_contact_gained)
+		new_player.connect("scannerContactLost", _on_player_scanner_contact_lost)
 		
 		var king: starSystemAPI = load("uid://bpnb60fo3ghca")
 		var suno: starSystemAPI = load("uid://bhqtlq0blu17n")
@@ -74,12 +77,13 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
 		var new_player = world.createPlayer(
 			init_data.get("name", "Tanaka"), 
+			init_data.get("ship_name", "Valiant"),
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
@@ -91,6 +95,8 @@ func _ready():
 		new_player.connect("moraleChanged", _on_player_morale_changed)
 		new_player.connect("dataValueChanged", _on_player_data_value_changed)
 		new_player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
+		new_player.connect("scannerContactGained", _on_player_scanner_contact_gained)
+		new_player.connect("scannerContactLost", _on_player_scanner_contact_lost)
 		
 		#new game stuff
 		var ghost: starSystemAPI = _on_create_new_star_system()
@@ -107,14 +113,6 @@ func _ready():
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
-		#var new_query = responseQuery.new()
-		#new_query.add("concept", "openDialog")
-		#new_query.add("id", "station")
-		#new_query.add_tree_access("station_classification", str("ABANDONED"))
-		#new_query.add_tree_access("is_station_abandoned", true)
-		#new_query.add_tree_access("is_station_inhabited", false)
-		#get_tree().call_group("dialogueManager", "speak", self, new_query)
-		
 		var new_query = responseQuery.new()
 		new_query.add("concept", "playerStart")
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
@@ -124,17 +122,6 @@ func _ready():
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
 		
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
-		
-		#var debug = responseQuery.new()
-		#debug.add("concept", "followingBody")
-		#debug.add("id", "planetaryAnomaly")
-		#debug.add_tree_access("planet_classification", "Terran")
-		#debug.add_tree_access("planet_type", "Iron")
-		#debug.add_tree_access("player_in_CORE_region", true)
-		#get_tree().call_group("dialogueManager", "speak", self, debug)
-		
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
-		#_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 		
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
@@ -147,6 +134,8 @@ func _ready():
 		world.player.connect("moraleChanged", _on_player_morale_changed)
 		world.player.connect("dataValueChanged", _on_player_data_value_changed)
 		world.player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
+		world.player.connect("scannerContactGained", _on_player_scanner_contact_gained)
+		world.player.connect("scannerContactLost", _on_player_scanner_contact_lost)
 		
 		for i in world.player.current_star_system.destination_systems:
 			i.previous_system = world.player.current_star_system #really important  actually
@@ -160,6 +149,11 @@ func _ready():
 		objectives_manager.start_receive_init_type(init_type)
 		
 		_on_switch_star_system(world.player.current_star_system)
+		
+		for body in world.player.current_star_system.bodies:
+			if body is AIUnitAPI:
+				body.set_system(world.player.current_star_system)
+				body.set_player(world.player)
 	pass
 
 func connect_all_signals() -> void:
@@ -215,6 +209,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("superchargePlayerForJumps", _on_supercharge_player_for_jumps)
 	dialogue_manager.connect("modifyCharacterStanding", _on_modify_character_standing)
 	dialogue_manager.connect("changePlayerScopeMode", _on_change_scope_mode)
+	dialogue_manager.connect("lockUpgrade", _on_lock_upgrade)
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
@@ -244,6 +239,8 @@ func connect_all_signals() -> void:
 	debug_interface.connect("forceUnexploredSystem", _on_DEBUG_force_unexplored_system)
 	debug_interface.connect("maxCharacterStanding", _on_DEBUG_max_character_standing)
 	debug_interface.connect("removePlayerMorale", _on_remove_player_morale)
+	debug_interface.connect("quickTraverse", _on_DEBUG_quick_traverse)
+	debug_interface.connect("unlockUpgrade", _on_unlock_upgrade)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -271,6 +268,10 @@ func _physics_process(delta):
 	#updating positions of everyhthing for API's
 	world.player.updateActionBodyState()
 	world.player.updatePosition(delta)
+	world.player.updateScannerContacts(world.player.current_star_system.get_units_in_scanner_range(
+		world.player.position, 
+		world.player.get_adjusted_scanner_power()
+	))
 	var current_bodies = world.player.current_star_system.bodies
 	if current_bodies:
 		for body in current_bodies:
@@ -280,6 +281,7 @@ func _physics_process(delta):
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_map.set("_player_status_matrix", [world.player.balance, world.player.hull_stress, world.player.hull_deterioration, world.player.morale])
+	system_map.set("player_adj_scanner_matrix", [world.player.get_adjusted_scanner_profile(), world.player.get_adjusted_scanner_power()])
 	system_map.set("player_audio_visualizer_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.AUDIO_VISUALIZER) != -1))
 	system_map.set("player_gas_layer_surveyor_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) != -1))
 	system_3d.set("player_position", world.player.position)
@@ -302,6 +304,7 @@ func _physics_process(delta):
 	#ultra miscellanious:
 	_on_update_countdown_overlay_shown(countdown_processor != null)
 	pass
+
 
 func _on_player_theorised_body(theorised_body: bodyAPI):
 	var new_query = responseQuery.new()
@@ -387,6 +390,16 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add_tree_access("space_entity_type", str(game_data.ENTITY_CLASSIFICATIONS.find_key(following_body.entity_classification)))
 		starSystemAPI.BODY_TYPES.STAR:
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
+		starSystemAPI.BODY_TYPES.UNIT:
+			new_query.add("unit_available", following_body.metadata.get("unit_available", true))
+			new_query.add_tree_access("unit_affiliation", str(game_data.UNIT_AFFILIATIONS.find_key(following_body.metadata.get("affiliation"))))
+			new_query.add_tree_access("unit_hostile", following_body.metadata.get("hostile", false))
+			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
+			var unlocked_upgrades = world.player.get_unlocked_upgrades()
+			if unlocked_upgrades.size() > 0:
+				new_query.add_tree_access("target_upgrade", playerAPI.UPGRADE_ID.find_key(unlocked_upgrades[global_data.get_randi(0, unlocked_upgrades.size() - 1, following_body.metadata.get("seed", 0))]))
+			else:
+				new_query.add_tree_access("target_upgrade", null)
 	
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
@@ -459,6 +472,20 @@ func _on_player_following_body(following_body: bodyAPI):
 					dock_with_station(temp_station)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+		starSystemAPI.BODY_TYPES.UNIT:
+			match RETURN_STATE:
+				"HARD_LEAVE":
+					following_body.metadata["unit_available"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+				"SOFT_LEAVE":
+					following_body.metadata["unit_available"] = true
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+				"HARD_LEAVE_MAKE_PEACEFUL_OVERRIDE":
+					following_body.metadata["unit_available"] = false
+					following_body.metadata["hostile"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+				_:
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 		_:
 			_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 	pass
@@ -475,104 +502,15 @@ func body_query_add_custom_type_shared(query: responseQuery, body: bodyAPI) -> v
 	query.add_tree_access("seed", body.metadata.get("seed", 0))
 	pass
 
-func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
-	match upgrade_idx:
-		playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES:
-			var new_query = responseQuery.new()
-			new_query.add("concept", "moduleTutorial")
-			new_query.add("module", "longRangeScopes")
-			get_tree().call_group("dialogueManager", "speak", self, new_query)
-		
-		playerAPI.UPGRADE_ID.AUDIO_VISUALIZER:
-			var new_query = responseQuery.new()
-			new_query.add("concept", "moduleTutorial")
-			new_query.add("module", "audioVisualizer")
-			get_tree().call_group("dialogueManager", "speak", self, new_query)
-			
-		playerAPI.UPGRADE_ID.NANITE_CONTROLLER:
-			var new_query = responseQuery.new()
-			new_query.add("concept", "moduleTutorial")
-			new_query.add("module", "naniteController")
-			get_tree().call_group("dialogueManager", "speak", self, new_query)
-			
-		playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR:
-			var new_query = responseQuery.new()
-			new_query.add("concept", "moduleTutorial")
-			new_query.add("module", "gasLayerSurveyor")
-			get_tree().call_group("dialogueManager", "speak", self, new_query)
-		
+
+func _on_unit_following_body(_b: bodyAPI, _u: unitBodyAPI) -> void:
+	await get_tree().physics_frame #might fix issues where unit interacts before dialogue_manager receives player on first physics frame causing error
+	if _b == world.player:
+		_on_player_following_body(_u)
 	pass
 
-
-func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI):
-	#spawning new wormholes in destination system if nonexistent
-	if not destination.destination_systems:
-		for i in range(2):
-			_on_create_new_star_system(destination)
-	#setting whether the new system is a civilized system or not
-	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
-	if world.player.get_jumps_remaining() == 0:
-		world.player.resetJumpsRemaining()
-		destination.createAuxiliaryCivilized()
-	else:
-		destination.createAuxiliaryUnexplored()
-	
-	
-	var destination_wormhole: wormholeBodyAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
-	destination_wormhole.known = true
-	
-	
-	#removing other possible systems to traverse from previous system
-	for w in wormholes:
-		if w != following_wormhole: #if the wormhole is not the current wormhole being traversed
-			if w.destination_system:
-				if w.destination_system != world.player.previous_star_system:
-					world.removeStarSystem(w.destination_system.get_identifier())
-	
-	#removing all other systems when leaving a civilized system (need to know about all the systems when in a civilized system in case i want to add the ability to look over exploration data while at a station)
-	if world.player.current_star_system.is_civilized():
-		var exclude_systems = destination.destination_systems.duplicate()
-		exclude_systems.append(destination)
-		world.remove_systems_excluding_systems(exclude_systems)
-	
-	world.player.previous_star_system = world.player.current_star_system
-	world.player.systems_traversed += 1
-	
-	if world.player.systems_traversed == world.player.total_systems: # will need a global variable for how many ssystems until win at some point, customizability would be sick
-		_on_player_win()
-	
-	#setting position to wormhole??? actually works??????
-	_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
-	for body in destination.bodies:
-		destination.updateBodyPosition(body.get_identifier(), get_physics_process_delta_time())
-	world.player.position = destination_wormhole.position
-	world.player.setTargetPosition(world.player.position)
-	world.player.updatePosition(get_physics_process_delta_time())
-	
-	system_map._on_clear_console_entries()
-	_on_switch_star_system(destination)
-	barycenter_visualizer.locked_body_identifier = 0
-	
-	#removed from the late _on_movement_lock_timer_start function - probably does nothing but im too scared to not add it here just in case
-	system_map.follow_body = null
-	system_map.locked_body = null
-	system_map.action_body = null
-	
-	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
-	_on_wormhole_minigame_popup()
-	_on_player_entering_system(destination) #this dialogue is overwritten if the player dies during traversal!
-	pass
-
-func dock_with_station(following_station):
-	station_ui.station = following_station
-	station_ui.player_current_value = world.player.current_value
-	station_ui.player_balance = world.player.balance
-	station_ui.player_hull_stress = world.player.hull_stress
-	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades]
-	
-	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
-	station_ui.set("pending_audio_profiles", world.get_pending_audio_profiles())
-	_on_station_popup()
+func _on_unit_orbiting_body(_b: bodyAPI, _u: unitBodyAPI) -> void:
+	await get_tree().physics_frame #might fix issues where unit interacts before dialogue_manager receives player on first physics frame causing error
 	pass
 
 
@@ -634,36 +572,136 @@ func _on_player_mutiny() -> void:
 	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
 	match RETURN_STATE:
 		"LOSE_MUTINY":
-			print("PLAYER LOSE_MUTINY")
+			print("GAME: PLAYER LOSE_MUTINY")
 			world.player.survived_mutiny = false
 			_on_player_death()
 		"WIN_MUTINY":
-			print("PLAYER WIN_MUTINY")
+			print("GAME: PLAYER WIN_MUTINY")
 			world.player.survived_mutiny = true
 		_:
 			pass
 	pass
 
+func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
+	match upgrade_idx:
+		playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES:
+			var new_query = responseQuery.new()
+			new_query.add("concept", "moduleTutorial")
+			new_query.add("module", "longRangeScopes")
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+		
+		playerAPI.UPGRADE_ID.AUDIO_VISUALIZER:
+			var new_query = responseQuery.new()
+			new_query.add("concept", "moduleTutorial")
+			new_query.add("module", "audioVisualizer")
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+			
+		playerAPI.UPGRADE_ID.NANITE_CONTROLLER:
+			var new_query = responseQuery.new()
+			new_query.add("concept", "moduleTutorial")
+			new_query.add("module", "naniteController")
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+			
+		playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR:
+			var new_query = responseQuery.new()
+			new_query.add("concept", "moduleTutorial")
+			new_query.add("module", "gasLayerSurveyor")
+			get_tree().call_group("dialogueManager", "speak", self, new_query)
+		
+	pass
 
+
+func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, skip_minigame: bool = false):
+	#spawning new wormholes in destination system if nonexistent
+	if not destination.destination_systems:
+		for i in range(2):
+			_on_create_new_star_system(destination)
+	#setting whether the new system is a civilized system or not
+	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
+	if world.player.get_jumps_remaining() == 0:
+		world.player.resetJumpsRemaining()
+		destination.createAuxiliaryCivilized()
+	else:
+		destination.createAuxiliaryUnexplored()
+	
+	
+	var destination_wormhole: wormholeBodyAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
+	destination_wormhole.known = true
+	
+	
+	#removing other possible systems to traverse from previous system
+	for w in wormholes:
+		if w != following_wormhole: #if the wormhole is not the current wormhole being traversed
+			if w.destination_system:
+				if w.destination_system != world.player.previous_star_system:
+					world.removeStarSystem(w.destination_system.get_identifier())
+	
+	#removing all other systems when leaving a civilized system (need to know about all the systems when in a civilized system in case i want to add the ability to look over exploration data while at a station)
+	if world.player.current_star_system.is_civilized():
+		var exclude_systems = destination.destination_systems.duplicate()
+		exclude_systems.append(destination)
+		world.remove_systems_excluding_systems(exclude_systems)
+	
+	world.player.previous_star_system = world.player.current_star_system
+	world.player.systems_traversed += 1
+	
+	if world.player.systems_traversed == world.player.total_systems: # will need a global variable for how many ssystems until win at some point, customizability would be sick
+		_on_player_win()
+	
+	#setting position to wormhole??? actually works??????
+	_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+	for body in destination.bodies:
+		destination.updateBodyPosition(body.get_identifier(), get_physics_process_delta_time())
+		#SETTING PLAYER FOR AI UNITS IN DESTINATION
+		if body is AIUnitAPI:
+			body.set_player(world.player)
+	world.player.position = destination_wormhole.position
+	world.player.setTargetPosition(world.player.position)
+	world.player.updatePosition(get_physics_process_delta_time())
+	
+	system_map._on_clear_console_entries()
+	_on_switch_star_system(destination)
+	barycenter_visualizer.locked_body_identifier = 0
+	
+	#removed from the late _on_movement_lock_timer_start function - probably does nothing but im too scared to not add it here just in case
+	system_map.follow_body = null
+	system_map.locked_body = null
+	system_map.action_body = null
+	
+	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
+	if not skip_minigame:
+		_on_wormhole_minigame_popup()
+	_on_player_entering_system(destination) #this dialogue is overwritten if the player dies during traversal!
+	pass
+
+func dock_with_station(following_station):
+	station_ui.station = following_station
+	station_ui.player_current_value = world.player.current_value
+	station_ui.player_balance = world.player.balance
+	station_ui.player_hull_stress = world.player.hull_stress
+	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades]
+	
+	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
+	station_ui.set("pending_audio_profiles", world.get_pending_audio_profiles())
+	_on_station_popup()
+	pass
+
+#misc signal handling
 
 func _on_update_player_action_type(type: playerAPI.ACTION_TYPES, action_body):
 	if not (type == world.player.current_action_type and action_body == world.player.action_body):
 		long_range_scopes._on_current_entity_cleared()
 		gas_layer_surveyor._on_current_planet_cleared()
 	
-	world.player.current_action_type = type
-	if action_body != null:
-		world.player.pending_action_body = action_body
+	world.player.set_action_type(type, action_body)
 	pass
 
 func _on_update_player_target_position(pos: Vector2):
 	world.player.target_position = pos
-	print("SYSTEM MAP: UPDATING PLAYER TARGET POSITION: ", pos)
 	pass
 
 func _on_update_target_position(pos: Vector2):
 	system_3d.set("target_position", pos)
-	print("SYSTEM MAP: UPDATING TARGET POSITION: ", pos)
 	pass
 
 func _on_create_new_star_system(for_system: starSystemAPI = null):
@@ -674,11 +712,34 @@ func _on_create_new_star_system(for_system: starSystemAPI = null):
 	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
-	print("GAME (DEBUG): CREATING NEW STAR SYSTEM")
+	print("GAME: CREATING NEW STAR SYSTEM ", system)
 	return system
 
 func _on_switch_star_system(to_system: starSystemAPI):
-	print_debug("GAME (DEBUG) SWITCHING STAR SYSTEM")
+	print_debug("GAME: SWITCHING STAR SYSTEM ", to_system)
+	
+	#this ENSURES that units can follow the player AFTER reload or at any time since _on_switch_star_system is called on both CONTINUE and NEW. unitBodyAPIs must be made *BEFORE* _on_switch_star_system as a result.
+	
+	for unit: unitBodyAPI in to_system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.UNIT):
+		unit.try_reconnect_signal_callable_pairs()
+		var unit_connections: Dictionary = {
+			unit.followingBody: to_system._on_unit_following_body, 
+			unit.orbitingBody: to_system._on_unit_orbiting_body,
+			unit.play_sound: to_system._on_unit_play_sound,
+		}
+		for s: Signal in unit_connections:
+			if not s.is_connected(unit_connections[s]):
+				s.connect(unit_connections[s].bind(unit))
+	
+	var system_connections: Dictionary = {
+		to_system.unit_following_body: _on_unit_following_body,
+		to_system.unit_orbiting_body: _on_unit_orbiting_body,
+		to_system.unit_play_sound: _on_unit_play_sound
+	}
+	for s: Signal in system_connections:
+		if not s.is_connected(system_connections[s]):
+			s.connect(system_connections[s])
+	
 	#if world.player.current_star_system:
 		#if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1: #this was the thing throwing TypedArray does not inherit from GDScript errors, so I just removed it.... hopefully ok. does not look important at all
 	audio_visualizer._on_clear_button_pressed()
@@ -753,12 +814,10 @@ func _on_found_body(id: int):
 	pass
 
 func _on_add_console_entry(entry_text: String, text_color: Color = Color.WHITE): #called via systtem 3d
-	print_debug("ADD CONSOLE ITEM CALLED ", entry_text, " ", text_color)
 	system_map._on_add_console_entry(entry_text, text_color)
 	pass
 
 func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
-	print("GAME (DEBUG): PINGING")
 	system_map._on_sonar_ping(ping_width, ping_length, ping_direction)
 	pass
 
@@ -769,7 +828,7 @@ func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction:
 	pass
 
 func _on_sell_exploration_data(sell_percentage_of_market_price: int):
-	print("STATION_UI (DEBUG): SELLING EXPLORATION DATA")
+	print("GAME: SELLING EXPLORATION DATA")
 	var multiplier = sell_percentage_of_market_price / 100.0
 	var sell_for = world.player.current_value * multiplier #star system multiplier is already added to value
 	
@@ -781,7 +840,7 @@ func _on_sell_exploration_data(sell_percentage_of_market_price: int):
 	pass
 
 func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
-	print("STATION_UI (DEBUG): UPGRADING SHIP")
+	print("GAME: UPGRADING SHIP")
 	if world.player.balance >= cost and (world.player.is_upgrade_unlock_valid(upgrade_idx)):
 		world.player.decreaseBalance(cost)
 		_on_unlock_upgrade(upgrade_idx)
@@ -802,7 +861,7 @@ func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 	pass
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
-	print("GAME (DEBUG): UPGRADE STATE CHANGED: ", upgrade_idx, " ", state)
+	print("GAME: UPGRADE STATE CHANGED: ", upgrade_idx, " ", state)
 	get_tree().call_group("FOLLOW_UPGRADE_STATE", "_on_upgrade_state_change", upgrade_idx, state)
 	if state == true and pause_mode_handler.pause_mode == game_data.PAUSE_MODES.STATION_UI:
 		_on_async_upgrade_tutorial(upgrade_idx)
@@ -868,7 +927,6 @@ func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int
 	if (world.player.balance >= amount * nanites_per_percentage) and (world.player.hull_stress > 0):
 		world.player.decreaseBalance(amount * nanites_per_percentage)
 		_on_remove_player_hull_stress(amount)
-		print_debug("REMOVE HULL STRESS SUCCESSFUL")
 	station_ui.player_balance = world.player.balance
 	station_ui.player_hull_stress = world.player.hull_stress
 	pass
@@ -893,7 +951,7 @@ func _on_save_and_quit():
 	pass
 
 func _on_exit_to_main_menu():
-	global_data.change_scene.emit("res://Scenes/main-menu/main_menu.tscn")
+	global_data.change_scene.emit("res://scenes/main-menu/main_menu.tscn")
 	pass
 
 func _on_theorised_body(id: int):
@@ -1078,6 +1136,50 @@ func _on_change_scope_mode(new_mode: playerAPI.SCOPE_MODES) -> void:
 	system_3d.toggle_mode_switch_button_to_mode(new_mode)
 	pass
 
+func _on_player_scanner_contact_gained(_unit: unitBodyAPI) -> void:
+	print_debug("GAME: PLAYER SCANNER CONTACT GAINED ", _unit)
+	system_map._on_player_scanner_contact_gained(_unit)
+	system_map._on_update_scanner_display_times(1.0, 1.0)
+	if _unit is AIUnitAPI:
+		if _unit.is_hostile():
+			system_map._on_update_scanner_display_times(10.0, 1.0)
+	get_tree().call_group("audioHandler", "play_once", load("uid://d1woqdnpk3xes"), -12.0, "SFX")
+	pass
+
+func _on_player_scanner_contact_lost(_unit: unitBodyAPI) -> void:
+	print_debug("GAME: PLAYER SCANNER CONTACT LOST ", _unit)
+	system_map._on_player_scanner_contact_lost(_unit)
+	system_map._on_update_scanner_display_times(1.0, 1.0)
+	get_tree().call_group("audioHandler", "play_once", preload("uid://qpsibe05f4su"), -12.0, "SFX")
+	
+	#dealing with deselecting the unit EVERYWHERE or else it can cause many errors bc it does not include is_theorised_not_known()
+	#this definitely breaks a lot of rules, but i think its better to have it all centralised here!!!
+	#its so ugly too... BLEGGHH. unfortunately, i cannot be bothered to make it prettier as i am NEVER touching it again :)
+	
+	if _unit == system_map.follow_body:
+		system_map.follow_body = null
+		system_map.reset_camera_follow_body()
+	if _unit == system_map.follow_body_modifier:
+		system_map.follow_body_modifier = null
+		system_map.reset_camera_follow_body()
+	if _unit == system_map.locked_body:
+		system_map.locked_body = null
+		#system_map.emit_signal("lockedBodyDepreciated") <- all this does is reset system_3d label_locked_body_identifier, which is useless!!!
+	if _unit == system_map.action_body:
+		system_map._on_stop_button_pressed()
+	
+	if _unit.get_identifier() == system_3d.locked_body_identifier \
+	or _unit.get_identifier() ==  system_3d.label_locked_body_identifier:
+		system_3d.reset_locked_body()
+	
+	if _unit.get_identifier() == barycenter_visualizer.locked_body_identifier:
+		barycenter_visualizer.locked_body_identifier = 0
+	pass
+
+func _on_unit_play_sound(_path: String, _volume_db: float, _bus: StringName, _u: unitBodyAPI) -> void:
+	get_tree().call_group("audioHandler", "play_once", load(_path), _volume_db, _bus)
+	pass
+
 func _on_open_LRS():
 	await get_tree().physics_frame
 	var following_body = world.player.action_body #should be set as playerAPI setting action_body calls _on_player_following_body, which calls dialogue, which calls this.
@@ -1167,6 +1269,18 @@ func _on_DEBUG_max_character_standing() -> void:
 	_on_modify_character_standing(characterAPI.OCCUPATIONS.MEDICAL_OFFICER, 100, true)
 	pass
 
+func _on_DEBUG_quick_traverse() -> void:
+	var adjusted_wormholes = world.player.current_star_system.get_wormholes()
+	var to_erase: Array = []
+	for w in adjusted_wormholes:
+		var destination = w.destination_system
+		if destination == world.player.previous_star_system or w.is_disabled():
+			to_erase.append(w)
+	for w in to_erase:
+		adjusted_wormholes.erase(w)
+	var final_wormhole = adjusted_wormholes.pick_random()
+	enter_wormhole(final_wormhole, world.player.current_star_system.get_wormholes(), final_wormhole.destination_system, true)
+	pass
 
 
 
