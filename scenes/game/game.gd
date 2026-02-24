@@ -499,11 +499,13 @@ func body_query_add_custom_type_shared(query: responseQuery, body: bodyAPI) -> v
 
 
 func _on_unit_following_body(_b: bodyAPI, _u: unitBodyAPI) -> void:
+	await get_tree().physics_frame #might fix issues where unit interacts before dialogue_manager receives player on first physics frame causing error
 	if _b == world.player:
 		_on_player_following_body(_u)
 	pass
 
 func _on_unit_orbiting_body(_b: bodyAPI, _u: unitBodyAPI) -> void:
+	await get_tree().physics_frame #might fix issues where unit interacts before dialogue_manager receives player on first physics frame causing error
 	pass
 
 

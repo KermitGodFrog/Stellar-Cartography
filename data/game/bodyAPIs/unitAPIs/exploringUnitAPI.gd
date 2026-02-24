@@ -142,16 +142,19 @@ func generate_valid_targets() -> void:
 	var planets = system.get_planets()
 	var wormholes = system.get_wormholes()
 	
+	
 	for i in range(MAX_VALID_PLANETS):
-		var planet = planets.pick_random()
-		valid_wait_target_ids.append(planet.get_identifier())
-		valid_survey_target_ids.append(planet.get_identifier())
-		planets.erase(planet)
+		if planets.size() > 0:
+			var planet = planets.pick_random()
+			valid_wait_target_ids.append(planet.get_identifier())
+			valid_survey_target_ids.append(planet.get_identifier())
+			planets.erase(planet)
 	
 	for i in range(MAX_VALID_WORMHOLES):
-		var wormhole = wormholes.pick_random()
-		valid_wait_target_ids.append(wormhole.get_identifier())
-		wormholes.erase(wormhole)
+		if wormholes.size() > 0:
+			var wormhole = wormholes.pick_random()
+			valid_wait_target_ids.append(wormhole.get_identifier())
+			wormholes.erase(wormhole)
 	
 	valid_wait_target_ids.append(system.get_first_star().get_identifier())
 	pass
