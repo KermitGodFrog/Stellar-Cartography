@@ -62,6 +62,8 @@ func advance(delta) -> void:
 	update_scanner_status()
 	
 	match current_task:
+		TASKS.MOVE_TO_INTERCEPT, TASKS.INTERCEPT, TASKS.LOOK_FOR_PLAYER, TASKS.LOOK_FOR_PLAYER_ALT when not is_hostile():
+			switch_task(TASKS.MOVE_TO_WAIT)
 		TASKS.MOVE_TO_INTERCEPT:
 			var player_displacement = player.position - velocity_position_hint[0]
 			var player_velocity = player_displacement / delta
@@ -241,19 +243,22 @@ func sonar_theorised_player() -> bool:
 	return false
 
 func async_switch_to_intercept() -> void:
-	switch_task(TASKS.MOVE_TO_INTERCEPT)
+	if is_hostile():
+		switch_task(TASKS.MOVE_TO_INTERCEPT)
 	pass
 
 func async_switch_to_re_discover() -> void:
-	last_player_position = player.position
-	switch_task(TASKS.LOOK_FOR_PLAYER)
+	if is_hostile():
+		last_player_position = player.position
+		switch_task(TASKS.LOOK_FOR_PLAYER)
 	pass
 
 func stun() -> void:
-	if not is_stunned():
-		set_stunned(true)
-		stun_clock.start(1.0)
-		emit_signal("play_sound", "res://sound/game/bodyAPIs/unitAPIs/stun.wav", -12.0, "SFX")
+	if is_hostile():
+		if not is_stunned():
+			set_stunned(true)
+			stun_clock.start(1.0)
+			emit_signal("play_sound", "res://sound/game/bodyAPIs/unitAPIs/stun.wav", -12.0, "SFX")
 	pass
 
 

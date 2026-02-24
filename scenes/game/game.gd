@@ -240,6 +240,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("maxCharacterStanding", _on_DEBUG_max_character_standing)
 	debug_interface.connect("removePlayerMorale", _on_remove_player_morale)
 	debug_interface.connect("quickTraverse", _on_DEBUG_quick_traverse)
+	debug_interface.connect("unlockUpgrade", _on_unlock_upgrade)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -478,6 +479,10 @@ func _on_player_following_body(following_body: bodyAPI):
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 				"SOFT_LEAVE":
 					following_body.metadata["unit_available"] = true
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+				"HARD_LEAVE_MAKE_PEACEFUL_OVERRIDE":
+					following_body.metadata["unit_available"] = false
+					following_body.metadata["hostile"] = false
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
