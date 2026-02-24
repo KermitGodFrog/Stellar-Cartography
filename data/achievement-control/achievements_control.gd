@@ -27,6 +27,7 @@ func try_display_next_achievement() -> void:
 	pass
 
 func blink(achievement_name: String, achievement_description: String) -> void:
+	get_tree().call_group("audioHandler", "play_once", load("uid://h5od0egtjhfq"), 0.0, "SFX")
 	hide_time = max_hide_time
 	name_label.set_text(achievement_name)
 	description_label.set_text(achievement_description)

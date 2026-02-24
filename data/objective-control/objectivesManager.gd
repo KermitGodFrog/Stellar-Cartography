@@ -10,6 +10,10 @@ signal queuePauseMode(new_mode: game_data.PAUSE_MODES)
 signal setPauseMode(new_mode: game_data.PAUSE_MODES)
 func _on_pause_mode_changed(value):
 	match value:
+		game_data.PAUSE_MODES.NONE:
+			if cached_objective_gain_sound:
+				cached_objective_gain_sound = false
+				get_tree().call_group("audioHandler", "play_once", load("uid://dt1d2ijrj4emm"), -12, "SFX")
 		game_data.PAUSE_MODES.PAUSE_MENU:
 			emit_signal("updateObjectivesPanel", active_objectives)
 	pass
@@ -27,11 +31,25 @@ var bank_categories: Dictionary = { #wID: [objective_wIDs]
 #construct in objective-management/categories ^^^
 
 var active_objectives: Array[objectiveAPI] = []
+var prev_active_size: int = 0
+var cached_objective_gain_sound: bool = false
 
 func _ready() -> void:
 	events_handler.connect("markObjective", mark_objective)
 	start_construct_banks()
 	pass
+
+func _process(_delta: float) -> void:
+	if active_objectives.size() > prev_active_size:
+		if _pause_mode != game_data.PAUSE_MODES.NONE:
+			cached_objective_gain_sound = true
+		else:
+			get_tree().call_group("audioHandler", "play_once", load("uid://dt1d2ijrj4emm"), -12, "SFX")
+	prev_active_size = active_objectives.size()
+	pass
+
+
+
 
 func start_construct_banks() -> void: #called by game.gd when the game is NEW
 	var objective_paths = global_data.get_all_files("res://data/objective-control/objectives", "tres")
