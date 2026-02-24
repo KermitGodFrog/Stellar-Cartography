@@ -5,11 +5,17 @@ enum GAME_INIT_TYPES {NEW, CONTINUE, TUTORIAL}
 signal change_scene(path_to_scene)
 signal scene_changed(path_to_scene)
 
-func get_randi(from: int, to: int):
-	return RandomNumberGenerator.new().randi_range(from, to)
+func get_randi(from: int, to: int, _seed: int = 0):
+	var rng = RandomNumberGenerator.new()
+	if _seed != 0:
+		rng.set_seed(_seed) #although RandomNumberGenerator docs says default seed value is 0, that is not the case.
+	return rng.randi_range(from, to)
 
-func get_randf(from: float, to: float):
-	return RandomNumberGenerator.new().randf_range(from, to)
+func get_randf(from: float, to: float, _seed: int = 0):
+	var rng = RandomNumberGenerator.new()
+	if _seed != 0:
+		rng.set_seed(_seed) #although RandomNumberGenerator docs says default seed value is 0, that is not the case.
+	return rng.randf_range(from, to)
 
 func weighted_pick(dict: Dictionary, weight_key = null) -> Variant:
 	var weights_sum := 0.0

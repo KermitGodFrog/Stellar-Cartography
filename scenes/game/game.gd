@@ -209,6 +209,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("superchargePlayerForJumps", _on_supercharge_player_for_jumps)
 	dialogue_manager.connect("modifyCharacterStanding", _on_modify_character_standing)
 	dialogue_manager.connect("changePlayerScopeMode", _on_change_scope_mode)
+	dialogue_manager.connect("lockUpgrade", _on_lock_upgrade)
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
@@ -391,8 +392,13 @@ func _on_player_following_body(following_body: bodyAPI):
 		starSystemAPI.BODY_TYPES.UNIT:
 			new_query.add("unit_available", following_body.metadata.get("unit_available", true))
 			new_query.add_tree_access("unit_affiliation", str(game_data.UNIT_AFFILIATIONS.find_key(following_body.metadata.get("affiliation"))))
-			new_query.add_tree_access("hostile", following_body.metadata.get("hostile", false))
+			new_query.add_tree_access("unit_hostile", following_body.metadata.get("hostile", false))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
+			var unlocked_upgrades = world.player.get_unlocked_upgrades()
+			if unlocked_upgrades.size() > 0:
+				new_query.add_tree_access("target_upgrade", playerAPI.UPGRADE_ID.find_key(unlocked_upgrades[global_data.get_randi(0, unlocked_upgrades.size() - 1, following_body.metadata.get("seed", 0))]))
+			else:
+				new_query.add_tree_access("target_upgrade", null)
 	
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
