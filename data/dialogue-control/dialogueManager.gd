@@ -200,7 +200,6 @@ func convert_to_string(cell : String) -> String:
 
 
 
-
 func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = true, type: QUERY_TYPES = QUERY_TYPES.BEST):
 	if not incoming_query.tree_access_facts.is_empty():
 		tree_access_memory.merge(incoming_query.tree_access_facts, true)
@@ -387,7 +386,6 @@ func get_relevant_rules(incoming_query: responseQuery) -> Array[responseRule]:
 		return rules
 
 
-
 func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQuery):
 	rules_triggered += 1
 	print("QUERY HANDLER: ", calling, " TRIGGERING RULE ", rule.get_name())
@@ -495,7 +493,7 @@ func get_send_ranked_achievements(incoming_query) -> void:
 	get_tree().call_group("achievementManager", "receive_ranked_achievements", ranked_achievements)
 	pass
 
-
+#core trigger functions
 
 func openDialog():
 	clearAll()
@@ -522,8 +520,6 @@ func clearFact(key: String) -> void:
 	dialogue_memory.erase(key)
 	pass
 
-
-
 func clearText():
 	dialogue.clear_text()
 	pass
@@ -535,6 +531,8 @@ func clearOptions():
 func clearAll():
 	dialogue.clear_all()
 	pass
+
+#misc trigger functions
 
 func decreaseBalanceWithFlair(amount):
 	if typeof(amount) == TYPE_STRING:
@@ -618,14 +616,15 @@ func discoverRandomBodyWithFlair(anomaly_seed: String = String()) -> void:
 	var random = RandomNumberGenerator.new()
 	random.set_seed(hash(int(anomaly_seed) - rules_triggered))
 	
-	var undiscovered_bodies: Array[bodyAPI] = []
+	var undiscovered_bodies: Array[orbitBodyAPI] = []
 	for body in system.bodies:
-		if not (body.get_type() == starSystemAPI.BODY_TYPES.STAR or body.get_type() == starSystemAPI.BODY_TYPES.STATION):
-			if not body.is_known():
-				undiscovered_bodies.append(body)
+		if body is orbitBodyAPI:
+			if not (body.get_type() == starSystemAPI.BODY_TYPES.STAR or body.get_type() == starSystemAPI.BODY_TYPES.STATION):
+				if not body.is_known():
+					undiscovered_bodies.append(body)
 	if undiscovered_bodies.size() > 0:
 		var random_index: int = random.randi_range(0, undiscovered_bodies.size() - 1)
-		var body: bodyAPI = undiscovered_bodies[random_index]
+		var body: orbitBodyAPI = undiscovered_bodies[random_index]
 		emit_signal("foundBody", body.get_identifier())
 		dialogue.add_text(str("[color=green](Gained scan data for ", body.get_display_name(), ") [/color]"))
 		playSoundEffect("success.wav") #easier than putting it in every single rule?
@@ -749,7 +748,6 @@ func lockUpgradeWithFlair(upgrade) -> void:
 			emit_signal("lockUpgrade", idx)
 			dialogue.add_text("[color=red](Lost %s upgrade) [/color]" % upgrade)
 	pass
-
 
 
 

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="radioHelper" load_steps=3 format=3 uid="uid://ctku4tmi00xgw"]
+
+[ext_resource type="Script" uid="uid://bpval2aruiksl" path="res://data/audio-control/radio-control/radioHelper.gd" id="1_bhet4"]
+
+[sub_resource type="Curve" id="Curve_bhet4"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.25, 0.5), 0.0, 0.0, 0, 0, Vector2(0.5, 0.25), 0.0, 0.0, 0, 0, Vector2(0.75, 0), 0.0, 0.0, 0, 0, Vector2(0.88, 0.1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[resource]
+script = ExtResource("1_bhet4")
+volume_curve = SubResource("Curve_bhet4")
+max_time = 10.0
+metadata/_custom_type_script = "uid://bpval2aruiksl"
