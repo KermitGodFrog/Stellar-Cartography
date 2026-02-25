@@ -42,14 +42,7 @@ func _ready():
 		
 		new_player.current_storyline = playerAPI.STORYLINES.keys().pick_random()
 		
-		new_player.connect("orbitingBody", _on_player_orbiting_body)
-		new_player.connect("followingBody", _on_player_following_body)
-		new_player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
-		new_player.connect("moraleChanged", _on_player_morale_changed)
-		new_player.connect("dataValueChanged", _on_player_data_value_changed)
-		new_player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
-		new_player.connect("scannerContactGained", _on_player_scanner_contact_gained)
-		new_player.connect("scannerContactLost", _on_player_scanner_contact_lost)
+		connect_all_player_signals(new_player)
 		
 		var king: starSystemAPI = load("uid://bpnb60fo3ghca")
 		var suno: starSystemAPI = load("uid://bhqtlq0blu17n")
@@ -89,14 +82,7 @@ func _ready():
 		
 		new_player.current_storyline = playerAPI.STORYLINES.keys().pick_random()
 		
-		new_player.connect("orbitingBody", _on_player_orbiting_body)
-		new_player.connect("followingBody", _on_player_following_body)
-		new_player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
-		new_player.connect("moraleChanged", _on_player_morale_changed)
-		new_player.connect("dataValueChanged", _on_player_data_value_changed)
-		new_player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
-		new_player.connect("scannerContactGained", _on_player_scanner_contact_gained)
-		new_player.connect("scannerContactLost", _on_player_scanner_contact_lost)
+		connect_all_player_signals(new_player)
 		
 		#new game stuff
 		var ghost: starSystemAPI = _on_create_new_star_system()
@@ -128,14 +114,7 @@ func _ready():
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
-		world.player.connect("orbitingBody", _on_player_orbiting_body)
-		world.player.connect("followingBody", _on_player_following_body)
-		world.player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
-		world.player.connect("moraleChanged", _on_player_morale_changed)
-		world.player.connect("dataValueChanged", _on_player_data_value_changed)
-		world.player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
-		world.player.connect("scannerContactGained", _on_player_scanner_contact_gained)
-		world.player.connect("scannerContactLost", _on_player_scanner_contact_lost)
+		connect_all_player_signals(world.player)
 		
 		for i in world.player.current_star_system.destination_systems:
 			i.previous_system = world.player.current_star_system #really important  actually
@@ -259,6 +238,17 @@ func connect_all_signals() -> void:
 	audio_handler.connect("setPauseMode", _on_set_pause_mode) #audio handler doesnt TECHNICALLY need pause control
 	system_map.connect("setPauseMode", _on_set_pause_mode) #for hiding when in dialogue
 	objectives_manager.connect("setPauseMode", _on_set_pause_mode) #not for anything beyond pausing objective time variable incrase and sending updated objectives - not best practice
+	pass
+
+func connect_all_player_signals(_player: playerAPI) -> void:
+	_player.connect("orbitingBody", _on_player_orbiting_body)
+	_player.connect("followingBody", _on_player_following_body)
+	_player.connect("hullDeteriorationChanged", _on_player_hull_deterioration_changed)
+	_player.connect("moraleChanged", _on_player_morale_changed)
+	_player.connect("dataValueChanged", _on_player_data_value_changed)
+	_player.connect("actionTypePendingOrCompleted", _on_player_action_type_pending_or_completed)
+	_player.connect("scannerContactGained", _on_player_scanner_contact_gained)
+	_player.connect("scannerContactLost", _on_player_scanner_contact_lost)
 	pass
 
 func _physics_process(delta):
