@@ -43,7 +43,7 @@ func set_display_name(new_display_name: String):
 #enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
 #enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
 
-enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, CUSTOM, SHIP, MINE, CUSTOM_UNIT}
+enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, CUSTOM, SHIP, MINE}
 
 const star_types = {
 	"M": {"name": "M", "weight_eg": 0.7645629, "weight_lg": 0.0000003},
@@ -227,7 +227,7 @@ func createAuxiliaryCivilized() -> void:
 	generateRendezvousPoint()
 	for body in bodies:
 		body.known = true
-	generateRandomWeightedUnits()
+	generateRandomWeightedShips()
 	pass
 
 func createAuxiliaryUnexplored() -> void:
@@ -243,7 +243,7 @@ func createAuxiliaryUnexplored() -> void:
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
 			generateRandomWeightedSpecialAnomaly()
-			generateRandomWeightedUnits()
+			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
 			#!! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !!
 			var star = get_first_star()
@@ -684,36 +684,36 @@ func generateFallbackAnomalies():
 			addRandomSpaceAnomaly()
 	pass
 
-func generateRandomWeightedUnits() -> void:
+func generateRandomWeightedShips() -> void:
 	randomize()
 	var _units_generated: int = 0
-	var generate_units: bool = randf() <= game_data.UNIT_TOTAL_CHANCE_CURVE.sample(game_data.player_weirdness_index)
-	if generate_units:
+	var generate_ships: bool = randf() <= game_data.SHIP_TOTAL_CHANCE_CURVE.sample(game_data.player_weirdness_index)
+	if generate_ships:
 		var chance_curve: Curve
 		if is_civilized():
-			chance_curve = game_data.UNIT_CIVILIZED_CHANCE_CURVE
+			chance_curve = game_data.SHIP_CIVILIZED_CHANCE_CURVE
 		else:
-			chance_curve = game_data.UNIT_UNEXPLORED_CHANCE_CURVE
+			chance_curve = game_data.SHIP_UNEXPLORED_CHANCE_CURVE
 		
-		var max_units: int = int(game_data.UNIT_QUANTITY_CURVE.sample(game_data.player_weirdness_index))
+		var max_units: int = int(game_data.SHIP_QUANTITY_CURVE.sample(game_data.player_weirdness_index))
 		for unit in max_units:
 			var generate_unit: bool = randf() <= chance_curve.sample(game_data.player_weirdness_index)
 			if generate_unit:
 				var planets = get_bodies_of_body_type(BODY_TYPES.PLANET)
 				if planets:
-					addRandomWeightedUnit(planets.pick_random())
+					addRandomWeightedShip(planets.pick_random())
 					_units_generated += 1
 		
 	print_rich("[color=RED]UNITS GENERATED: %.f" % _units_generated)
 	pass
-func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
+func addRandomWeightedShip(orbiting_planet: planetBodyAPI) -> void:
 	randomize()
-	var distribution_y_value = game_data.UNIT_AI_DISTRIBUTION_CURVE.sample(game_data.player_weirdness_index)
+	var distribution_y_value = game_data.SHIP_AI_DISTRIBUTION_CURVE.sample(game_data.player_weirdness_index)
 	var wandering: bool = randf() <= distribution_y_value
 	
 	#horrific, but it least it works
 	var affiliation: game_data.UNIT_AFFILIATIONS = game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE
-	var executive_affiliated: bool = randf() <= game_data.UNIT_WANDERING_AFFILIATION_CURVE.sample(game_data.player_weirdness_index)
+	var executive_affiliated: bool = randf() <= game_data.SHIP_WANDERING_AFFILIATION_CURVE.sample(game_data.player_weirdness_index)
 	match wandering:
 		true when executive_affiliated:
 			affiliation = game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE
@@ -722,7 +722,6 @@ func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
 		false:
 			affiliation = game_data.UNIT_AFFILIATIONS.MARAUDER
 	
-	#terrible
 	var AI: AIUnitAPI = null
 	match wandering:
 		true when is_civilized():
@@ -740,7 +739,7 @@ func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
 	if wandering:
 		speed = global_data.get_randi(1, 3)
 	else:
-		speed = global_data.get_randi(3, int(game_data.UNIT_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index)))
+		speed = global_data.get_randi(3, int(game_data.SHIP_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index)))
 	
 	var new_unit = addUnitBody(
 		AI,

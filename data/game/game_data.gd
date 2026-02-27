@@ -45,13 +45,13 @@ const SYSTEM_HAZARD_CLASSIFICATION_CURVES = {
 
 #units \/
 enum UNIT_AFFILIATIONS {PROVISIONAL_EXECUTIVE, LOCAL_CIVILIZATION, MARAUDER, NEW_EDEN}
-const UNIT_AI_DISTRIBUTION_CURVE = preload("uid://rve257hen6dp") #below the line = wanderingUnitAPI, above the line = interceptingUnitAPI
-const UNIT_QUANTITY_CURVE = preload("uid://dbuj65poalh6t") #the MAX quantity of units spawnable, rounded to the nearest int
-const UNIT_TOTAL_CHANCE_CURVE = preload("uid://lxj6ttsru1wy") #the chance that any units will be spawned in the system at all (so they arent a constant nussiance). zero can still be spawned if the individual chances dont come through!
-const UNIT_CIVILIZED_CHANCE_CURVE = preload("uid://cavjj8wd75w0o") #the chance per int towards the max quantity for a unit to be spawned
-const UNIT_UNEXPLORED_CHANCE_CURVE = preload("uid://c4ovce7l4llwt") #the chance per int towards the max quantity for a unit to be spawned
-const UNIT_WANDERING_AFFILIATION_CURVE = preload("uid://cxqkysupkx6ox") #below the line = PROVISIONAL_EXECUTIVE, above the line = LOCAL_CIVILIZATION
-const UNIT_HOSTILE_MAX_SPEED_CURVE = preload("uid://76qpu4masy7l")
+const SHIP_AI_DISTRIBUTION_CURVE = preload("uid://rve257hen6dp") #below the line = wanderingUnitAPI, above the line = interceptingUnitAPI
+const SHIP_QUANTITY_CURVE = preload("uid://dbuj65poalh6t") #the MAX quantity of units spawnable, rounded to the nearest int
+const SHIP_TOTAL_CHANCE_CURVE = preload("uid://lxj6ttsru1wy") #the chance that any units will be spawned in the system at all (so they arent a constant nussiance). zero can still be spawned if the individual chances dont come through!
+const SHIP_CIVILIZED_CHANCE_CURVE = preload("uid://cavjj8wd75w0o") #the chance per int towards the max quantity for a unit to be spawned
+const SHIP_UNEXPLORED_CHANCE_CURVE = preload("uid://c4ovce7l4llwt") #the chance per int towards the max quantity for a unit to be spawned
+const SHIP_WANDERING_AFFILIATION_CURVE = preload("uid://cxqkysupkx6ox") #below the line = PROVISIONAL_EXECUTIVE, above the line = LOCAL_CIVILIZATION
+const SHIP_HOSTILE_MAX_SPEED_CURVE = preload("uid://76qpu4masy7l")
 
 const REPAIR_CURVE = preload("uid://doinlbknr820v")
 const NANITE_CONTROLLER_REPAIR_CURVE = preload("uid://bdgrms6k50dkq")
