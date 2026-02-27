@@ -768,10 +768,10 @@ func addRandomWeightedShip(orbiting_planet: planetBodyAPI) -> void:
 
 func generateRandomMines() -> void: #called by game.gd _on_process_system_hazard
 	var max_distance = get_max_body_orbit_distance()
-	for i in global_data.get_randi(8, 20):
+	for i in global_data.get_randi(8, 16):
 		
 		var dir = Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360)))
-		var pos = Vector2.ZERO + (dir * global_data.get_randf(10, max_distance))
+		var pos = Vector2.ZERO + (dir * global_data.get_randf(35.0, max_distance))
 		
 		addUnitBody(
 			unitBodyAPI.new(),
@@ -781,7 +781,7 @@ func generateRandomMines() -> void: #called by game.gd _on_process_system_hazard
 			0,
 			get_default_radius_solar_radii(),
 			{"position": pos},
-			{"affiliation": game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION, "hostile": true, "exclusion_zone_radius": 5.0}
+			{"affiliation": game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION, "hostile": true, "exclusion_zone_radius": global_data.get_randi(5, 30)} #charge up time 2 seconds: 3 (player speed) * 5 (boost multiplier) = 15 solar radii / s
 		)
 	
 	pass

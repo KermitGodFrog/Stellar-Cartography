@@ -691,7 +691,7 @@ func draw_map():
 			
 			if intersected_points.size() > 0:
 				if not intersected_points[0].size() < 3:
-					draw_colored_polygon(intersected_points[0], Color.DARK_RED.darkened(0.75))
+					draw_colored_polygon(intersected_points[0], Color(Color.DARK_RED.darkened(0.75), 0.5))
 	
 	if scanner_profile_time > 0:
 		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), 0.5, false)
