@@ -258,6 +258,11 @@ func createAuxiliaryUnexplored() -> void:
 				post_gen_location_candidates.append([star_identifier, i])
 			generateWormholes() #i think this backtracking code is reasonable as something like this is one-of-a-kind and i probably wont be manually clearing bodies again
 		#for example, a completely empty star system could use this match statement to REMOVE all existing bodies (besides the star) and spawn nothing else. Then an event could happen on concept enteringSystem 
+	
+	match new_system_hazard_classification:
+		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD:
+			if new_special_system_classification != game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
+				generateRandomMines()
 	pass
 
 # gen methods \/
@@ -761,6 +766,26 @@ func addRandomWeightedShip(orbiting_planet: planetBodyAPI) -> void:
 	unit.updatePosition(1.0)
 	pass
 
+func generateRandomMines() -> void: #called by game.gd _on_process_system_hazard
+	var max_distance = get_max_body_orbit_distance()
+	for i in global_data.get_randi(8, 20):
+		
+		var dir = Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360)))
+		var pos = Vector2.ZERO + (dir * global_data.get_randf(10, max_distance))
+		
+		addUnitBody(
+			unitBodyAPI.new(),
+			BODY_TYPES.MINE,
+			identifier_count,
+			"Mine %03d" % global_data.get_randi(0, 999),
+			0,
+			get_default_radius_solar_radii(),
+			{"position": pos},
+			{"affiliation": game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION, "hostile": true}
+		)
+	
+	pass
+
 # generation related getters \/
 
 func get_orbit_angle_change(hook: bodyAPI, _orbit_distance: float) -> float: #(per unit of time) 
@@ -918,6 +943,14 @@ func get_bodies_of_body_type(_body_type: BODY_TYPES):
 		if body.get_type() == _body_type:
 			return_bodies.append(body)
 	return return_bodies
+
+func get_max_body_orbit_distance() -> float:
+	var distances: Array = []
+	for body in bodies:
+		if body is orbitBodyAPI:
+			distances.append(body.orbit_distance)
+	distances.sort()
+	return distances.back()
 
 func is_civilized() -> bool:
 	for body in bodies:

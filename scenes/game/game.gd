@@ -785,7 +785,6 @@ func _on_process_system_hazard(system: starSystemAPI):
 			CDP.countdownTick.connect(_on_CME_time_current_updated) # real
 			CDP.countdownTimeout.connect(_on_CME_timeout) # real
 			CDP.initialize(system.get_identifier(), "WARNING", "CORONAL MASS EJECTION", world.player.hull_stress_CME, time_total, time_current)
-			
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
 			pass
 	pass
