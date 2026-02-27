@@ -82,11 +82,6 @@ func calculate_asteroid_belt_slowdown() -> void:
 		in_asteroid_belt = true
 	pass
 
-func is_hostile() -> bool:
-	if metadata.get("hostile", false) == true:
-		return true
-	return false
-
 func get_adjusted_speed() -> int:
 	if stunned:
 		return 1

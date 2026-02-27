@@ -390,10 +390,9 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add_tree_access("space_entity_type", str(game_data.ENTITY_CLASSIFICATIONS.find_key(following_body.entity_classification)))
 		starSystemAPI.BODY_TYPES.STAR:
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
-		starSystemAPI.BODY_TYPES.UNIT:
-			new_query.add("unit_available", following_body.metadata.get("unit_available", true))
-			new_query.add_tree_access("unit_affiliation", str(game_data.UNIT_AFFILIATIONS.find_key(following_body.metadata.get("affiliation"))))
-			new_query.add_tree_access("unit_hostile", following_body.metadata.get("hostile", false))
+		starSystemAPI.BODY_TYPES.SHIP:
+			body_query_add_unit_type_shared(new_query, following_body)
+			new_query.add("ship_available", following_body.metadata.get("ship_available", true))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 			var unlocked_upgrades = world.player.get_unlocked_upgrades()
 			if unlocked_upgrades.size() > 0:
@@ -472,16 +471,16 @@ func _on_player_following_body(following_body: bodyAPI):
 					dock_with_station(temp_station)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
-		starSystemAPI.BODY_TYPES.UNIT:
+		starSystemAPI.BODY_TYPES.SHIP:
 			match RETURN_STATE:
 				"HARD_LEAVE":
-					following_body.metadata["unit_available"] = false
+					following_body.metadata["ship_available"] = false
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 				"SOFT_LEAVE":
-					following_body.metadata["unit_available"] = true
+					following_body.metadata["ship_available"] = true
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 				"HARD_LEAVE_MAKE_PEACEFUL_OVERRIDE":
-					following_body.metadata["unit_available"] = false
+					following_body.metadata["ship_available"] = false
 					following_body.metadata["hostile"] = false
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 				_:
@@ -500,6 +499,11 @@ func body_query_add_custom_type_shared(query: responseQuery, body: bodyAPI) -> v
 	query.add("custom_tag", body.get_dialogue_tag())
 	query.add("custom_available", body.metadata.get("custom_available", true))
 	query.add_tree_access("seed", body.metadata.get("seed", 0))
+	pass
+
+func body_query_add_unit_type_shared(query: responseQuery, body: bodyAPI) -> void:
+	query.add_tree_access("unit_affiliation", str(game_data.UNIT_AFFILIATIONS.find_key(body.metadata.get("affiliation"))))
+	query.add_tree_access("unit_hostile", body.metadata.get("hostile", false))
 	pass
 
 

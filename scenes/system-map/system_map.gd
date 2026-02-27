@@ -480,14 +480,13 @@ func update_contact_list() -> void:
 		else:
 			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
 		
-		if body is AIUnitAPI:
-			if body.is_hostile():
-				if body == follow_body:
-					item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.5)) #LIGHT_SKY_BLUE
-				elif body.get_identifier() == closest_body_id: 
-					item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.2)) #WEB_GRAY
-				else:
-					item.set_custom_bg_color(0, Color.DARK_RED)
+		if body.is_hostile():
+			if body == follow_body:
+				item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.5)) #LIGHT_SKY_BLUE
+			elif body.get_identifier() == closest_body_id: 
+				item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.2)) #WEB_GRAY
+			else:
+				item.set_custom_bg_color(0, Color.DARK_RED)
 	pass
 
 func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
@@ -497,13 +496,10 @@ func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
 	item.set_metadata(0, unit.get_identifier())
 	item.set_text(0, unit.get_display_name())
 	#icon handling!
-	if unit is AIUnitAPI:
-		if unit.is_hostile():
-			item.set_icon(0, load("uid://dxtvjut27oly0"))
-		else:
-			item.set_icon(0, load("uid://bbdpqnpgh7iy6"))
+	if unit.is_hostile():
+		item.set_icon(0, load("uid://dxtvjut27oly0"))
 	else:
-		item.set_icon(0, load("uid://hv5u4ty18pyd"))
+		item.set_icon(0, load("uid://bbdpqnpgh7iy6"))
 	pass
 
 func _on_player_scanner_contact_lost(unit: unitBodyAPI) -> void:

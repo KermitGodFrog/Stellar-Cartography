@@ -43,7 +43,7 @@ func set_display_name(new_display_name: String):
 #enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
 #enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
 
-enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, UNIT, CUSTOM}
+enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, CUSTOM, SHIP, MINE, CUSTOM_UNIT}
 
 const star_types = {
 	"M": {"name": "M", "weight_eg": 0.7645629, "weight_lg": 0.0000003},
@@ -744,7 +744,7 @@ func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
 	
 	var new_unit = addUnitBody(
 		AI,
-		BODY_TYPES.UNIT,
+		BODY_TYPES.SHIP,
 		identifier_count,
 		game_data.get_random_starship_name(affiliation),
 		speed,
@@ -928,7 +928,7 @@ func is_civilized() -> bool:
 
 # unit stuff \/
 
-func get_units() -> Array[unitBodyAPI]:
+func get_units() -> Array[unitBodyAPI]: #gets all bodies extending unitBodyAPI
 	var return_units: Array[unitBodyAPI] = []
 	for body in bodies:
 		if body is unitBodyAPI:

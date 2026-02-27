@@ -200,7 +200,7 @@ func spawn_glint_body_3d_for_identifier(id: int):
 	add_child(new_entity_3d)
 	pass
 
-func spawn_unit_body_3d_for_identifier(id: int):
+func spawn_unit_body_3d_for_identifier(id: int): #should be AI unit body
 	var new_unit_3d = unit_3d.instantiate()
 	new_unit_3d.set_identifier(id)
 	new_unit_3d.initialize((pow(pow(10, -1.3), 0.28) / 109.1) * 16.0) #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)

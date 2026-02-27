@@ -183,6 +183,11 @@ func is_action_pending() -> bool:
 		return false
 	return false
 
+func is_hostile() -> bool: # a unit does not need to be a starship to be hostile or have an affiliation!!
+	if metadata.get("hostile", false) == true:
+		return true
+	return false
+
 
 
 #other
