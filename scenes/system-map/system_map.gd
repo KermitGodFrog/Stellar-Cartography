@@ -662,16 +662,41 @@ func draw_map():
 	if show_overlay: map_overlay.show()
 	else: map_overlay.hide()
 	
+	var scanner_power_points: PackedVector2Array = []
+	var scanner_power_point_count: int = 30
+	for i in scanner_power_point_count:
+		var theta = (360 / scanner_power_point_count) * i
+		var dir = Vector2.UP.rotated(deg_to_rad(theta))
+		var pos = Vector2(player_position_matrix[0] + (dir * player_adj_scanner_matrix[1]))
+		scanner_power_points.append(pos)
+	
 	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT)
 	if asteroid_belts: 
 		for belt in asteroid_belts:
 			if belt.is_known(): 
 				draw_arc(belt.position, belt.orbit_distance, -10, TAU, 50, belt.metadata.get("belt_color"), belt.metadata.get("belt_width"), false)
 	
+	var mines = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.MINE)
+	if mines:
+		for mine in mines:
+			var exclusion_radius_points: PackedVector2Array = []
+			var point_count: int = 6
+			for i in point_count:
+				var theta = (360 / point_count) * i
+				var dir = Vector2.UP.rotated(deg_to_rad(theta))
+				var pos = Vector2(mine.position + (dir * mine.metadata.get("exclusion_zone_radius")))
+				exclusion_radius_points.append(pos)
+			
+			var intersected_points = Geometry2D.intersect_polygons(scanner_power_points, exclusion_radius_points)
+			
+			if intersected_points.size() > 0:
+				if not intersected_points[0].size() < 3:
+					draw_colored_polygon(intersected_points[0], Color.DARK_RED.darkened(0.75))
+	
 	if scanner_profile_time > 0:
 		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), 0.5, false)
 	if scanner_power_time > 0:
-		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[1], -TAU, TAU, 30, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), 0.2, false)
+		draw_multiline(scanner_power_points, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), 0.2, false)
 	
 	for body in system.bodies:
 		
@@ -733,17 +758,16 @@ func draw_map():
 		
 		#INCORRECTLY batch unitBodyAPI drawing (applies two different draws at once, removing any possible benefit of batching)
 		
-		if body is AIUnitAPI and body.is_known(): #unitBodyAPIs are usually not drawn, like bodyAPIs, but AIUnitAPIs are always drawn !!!
+		if body is unitBodyAPI and body.is_known(): #what it should be is this: unitBodyAPIs are usually not drawn, like bodyAPIs, but AIUnitAPIs are always drawn. but this probably isnt good idea. so, therefore, we need to check that the unit is NOT custom when drawing this when we add that feature
 			if show_overlay:
-				var AI_color = Color.SLATE_GRAY
+				var self_color = Color.SLATE_GRAY
 				var blink_color = Color.LIGHT_GRAY
 				if body.is_hostile():
-					AI_color = Color.RED
+					self_color = Color.RED
 					blink_color = Color.DARK_RED
 				
 				draw_arc(body.position, maxf(0.25, sin(Time.get_unix_time_from_system() * 4.0) * size_exponent * 6.0), -TAU, TAU, 5, blink_color, 0.2, false)
-				
-				draw_rect(global_data.get_offset_rect2(body.position, size_exponent * 3.0, size_exponent * 3.0), AI_color)
+				draw_rect(global_data.get_offset_rect2(body.position, size_exponent * 3.0, size_exponent * 3.0), self_color)
 	
 	for body in system.bodies:
 		

@@ -781,7 +781,7 @@ func generateRandomMines() -> void: #called by game.gd _on_process_system_hazard
 			0,
 			get_default_radius_solar_radii(),
 			{"position": pos},
-			{"affiliation": game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION, "hostile": true}
+			{"affiliation": game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION, "hostile": true, "exclusion_zone_radius": 5.0}
 		)
 	
 	pass
