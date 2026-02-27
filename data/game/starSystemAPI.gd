@@ -928,9 +928,16 @@ func is_civilized() -> bool:
 
 # unit stuff \/
 
+func get_units() -> Array[unitBodyAPI]:
+	var return_units: Array[unitBodyAPI] = []
+	for body in bodies:
+		if body is unitBodyAPI:
+			return_units.append(body)
+	return return_units
+
 func get_units_in_scanner_range(pos: Vector2, size: float) -> Array[unitBodyAPI]:
 	var units_in_range: Array[unitBodyAPI] = []
-	var units = get_bodies_of_body_type(BODY_TYPES.UNIT) as Array[unitBodyAPI]
+	var units = get_units()
 	
 	for unit in units:
 		if unit.position.distance_to(pos) < size:

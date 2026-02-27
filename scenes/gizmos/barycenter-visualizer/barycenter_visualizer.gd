@@ -40,7 +40,7 @@ func _on_refresh_timeout() -> void:
 	
 	var locked_body = system.get_body_from_identifier(locked_body_identifier)
 	if locked_body:
-		if locked_body.get_type() != starSystemAPI.BODY_TYPES.UNIT:
+		if locked_body is not unitBodyAPI:
 			generate_new_point_weights(locked_body)
 	pass
 
