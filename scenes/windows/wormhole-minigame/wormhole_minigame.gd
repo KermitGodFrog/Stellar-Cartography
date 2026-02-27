@@ -39,7 +39,8 @@ var awaiting_start: bool = true
 @onready var distance_lower = $starship_and_camera/camera/UI_control/distance_container/distance_lower
 @onready var press_to_start = $starship_and_camera/camera/UI_control/press_to_start_button
 @onready var brake_button = $starship_and_camera/camera/UI_control/brake_button
-@onready var hull_stress_increase_label = $starship_and_camera/camera/UI_control/hull_stress_increase_label
+@onready var hull_stress_increase_label = $starship_and_camera/camera/UI_control/hint_scroll/hull_stress_increase_label
+@onready var hint_scroll = $starship_and_camera/camera/UI_control/hint_scroll
 @onready var tutorial = $starship_and_camera/camera/UI_control/tutorial
 
 @onready var failure_sound = preload("uid://bplalt1pic5f")
@@ -51,6 +52,8 @@ func _physics_process(delta):
 	var starship_offset = remap(distance, 0, 200, 110, 200)
 	starship_and_camera.position.x = -starship_offset
 	distance_progress.set_value(distance)
+	
+	hint_scroll.set_position(Vector2(distance_progress.position.x + distance_progress.size.x, distance_progress.position.y + remap(distance, 100.0, 0.0, 0.0, 100.0) - hint_scroll.size.y / 2))
 	
 	if (distance <= 0.0) and (not awaiting_start) and (_pause_mode == game_data.PAUSE_MODES.WORMHOLE_MINIGAME):
 		finish_minigame(false)
