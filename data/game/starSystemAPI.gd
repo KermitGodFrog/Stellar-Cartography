@@ -774,7 +774,7 @@ func generateRandomMines() -> void: #called by game.gd _on_process_system_hazard
 		var pos = Vector2.ZERO + (dir * global_data.get_randf(35.0, max_distance))
 		
 		addUnitBody(
-			unitBodyAPI.new(),
+			mineUnitAPI.new(),
 			BODY_TYPES.MINE,
 			identifier_count,
 			"Mine %03d" % global_data.get_randi(0, 999),
@@ -847,6 +847,12 @@ func removeBody(id: int):
 	for body in bodies:
 		if body.get_identifier() == id:
 			bodies.erase(body)
+	pass
+
+func updateBodies(delta) -> void: #position, advance function
+	for body in bodies:
+		updateBodyPosition(body.get_identifier(), delta)
+		body.advance(delta) #capacity to do more stuff, can be overriden by classes that inherit bodyAPI
 	pass
 
 func updateBodyPosition(id: int, delta):
@@ -959,6 +965,21 @@ func is_civilized() -> bool:
 	return false
 
 # unit stuff \/
+
+func updateMinesGetDetonations(detonator_position: Vector2, delta) -> int: #returns number of detonating mines this frame
+	var detonations_this_frame: int = 0
+	var mines = get_bodies_of_body_type(BODY_TYPES.MINE)
+	if mines:
+		for mine: mineUnitAPI in mines:
+			if detonator_position.distance_to(mine.position) < mine.metadata.get("exclusion_zone_radius"):
+				mine.tick_detonation_time(true, delta)
+			else:
+				mine.tick_detonation_time(false, delta)
+			if mine.can_detonate():
+				detonations_this_frame += 1
+				mine.detonate()
+				removeBody(mine.get_identifier())
+	return detonations_this_frame
 
 func get_units() -> Array[unitBodyAPI]: #gets all bodies extending unitBodyAPI
 	var return_units: Array[unitBodyAPI] = []

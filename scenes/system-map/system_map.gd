@@ -472,21 +472,23 @@ func update_contact_list() -> void:
 	for item in root.get_children():
 		var identifier = item.get_metadata(0)
 		var body = system.get_body_from_identifier(identifier)
-		
-		if body == follow_body:
-			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
-		elif body.get_identifier() == closest_body_id: 
-			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.2)) #WEB_GRAY
-		else:
-			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
-		
-		if body.is_hostile():
+		if body != null:
 			if body == follow_body:
-				item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.5)) #LIGHT_SKY_BLUE
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
 			elif body.get_identifier() == closest_body_id: 
-				item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.2)) #WEB_GRAY
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.2)) #WEB_GRAY
 			else:
-				item.set_custom_bg_color(0, Color.DARK_RED)
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
+			
+			if body.is_hostile():
+				if body == follow_body:
+					item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.5)) #LIGHT_SKY_BLUE
+				elif body.get_identifier() == closest_body_id: 
+					item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.2)) #WEB_GRAY
+				else:
+					item.set_custom_bg_color(0, Color.DARK_RED)
+		else:
+			item.free()
 	pass
 
 func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
@@ -679,19 +681,30 @@ func draw_map():
 	var mines = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.MINE)
 	if mines:
 		for mine in mines:
-			var exclusion_radius_points: PackedVector2Array = []
-			var point_count: int = 6
-			for i in point_count:
-				var theta = (360 / point_count) * i
-				var dir = Vector2.UP.rotated(deg_to_rad(theta))
-				var pos = Vector2(mine.position + (dir * mine.metadata.get("exclusion_zone_radius")))
-				exclusion_radius_points.append(pos)
+			var _exclusion_radius_points: PackedVector2Array = []
+			if mine.exclusion_radius_points.size() > 0:
+				_exclusion_radius_points = mine.exclusion_radius_points
+			else:
+				var point_count: int = 12
+				for i in point_count:
+					var theta = (360 / point_count) * i
+					var dir = Vector2.UP.rotated(deg_to_rad(theta))
+					var pos = Vector2(mine.position + (dir * mine.metadata.get("exclusion_zone_radius")))
+					_exclusion_radius_points.append(pos)
+				mine.exclusion_radius_points = _exclusion_radius_points
 			
-			var intersected_points = Geometry2D.intersect_polygons(scanner_power_points, exclusion_radius_points)
+			var intersected_points = Geometry2D.intersect_polygons(scanner_power_points, _exclusion_radius_points)
+			var offset_points = Geometry2D.offset_polygon(_exclusion_radius_points, -(mine.metadata.get("exclusion_zone_radius") * remap(mine.detonation_time_index, 0.0, 1.0, 1.0, 0.0)))
 			
 			if intersected_points.size() > 0:
 				if not intersected_points[0].size() < 3:
 					draw_colored_polygon(intersected_points[0], Color(Color.DARK_RED.darkened(0.75), 0.5))
+			
+			if offset_points.size() > 0:
+				var intersected_offset_points = Geometry2D.intersect_polygons(scanner_power_points, offset_points[0])
+				if intersected_offset_points.size() > 0:
+					if not intersected_offset_points[0].size() < 3:
+						draw_colored_polygon(intersected_offset_points[0], Color.DARK_RED.darkened(0.5))
 	
 	if scanner_profile_time > 0:
 		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), 0.5, false)

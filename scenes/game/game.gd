@@ -30,7 +30,7 @@ func _ready():
 	
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -77,7 +77,7 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -272,11 +272,9 @@ func _physics_process(delta):
 		world.player.position, 
 		world.player.get_adjusted_scanner_power()
 	))
-	var current_bodies = world.player.current_star_system.bodies
-	if current_bodies:
-		for body in current_bodies:
-			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
-			body.advance(delta) #capacity to do more stuff, can be overriden by classes that inherit bodyAPI
+	world.player.current_star_system.updateBodies(delta)
+	for i in world.player.current_star_system.updateMinesGetDetonations(world.player.position, delta):
+		_on_add_player_hull_stress(world.player.hull_stress_mine)
 	
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])

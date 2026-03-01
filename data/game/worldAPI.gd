@@ -15,6 +15,7 @@ class_name worldAPI
 @export var _hull_stress_wormhole: int
 @export var _hull_stress_CME: int
 @export var _hull_stress_pulsar_beam: int
+@export var _hull_stress_mine: int
 @export var _scanner_profile: float
 @export var _scanner_power: float
 
@@ -61,6 +62,7 @@ func createPlayer(name: String, ship_name: String, prefix: String) -> playerAPI:
 	new_player.hull_stress_wormhole = _hull_stress_wormhole
 	new_player.hull_stress_CME = _hull_stress_CME
 	new_player.hull_stress_pulsar_beam = _hull_stress_pulsar_beam
+	new_player.hull_stress_mine = _hull_stress_mine
 	new_player.scanner_profile = _scanner_profile
 	new_player.scanner_power = _scanner_power
 	
