@@ -2,6 +2,7 @@ extends Resource
 class_name starSystemAPI
 #any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
+signal body_removed(id: int)
 signal unit_following_body(b: bodyAPI, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
 signal unit_orbiting_body(b: bodyAPI, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
 signal unit_play_sound(path: String, volume_db: float, bus: StringName, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
@@ -768,11 +769,29 @@ func addRandomWeightedShip(orbiting_planet: planetBodyAPI) -> void:
 	pass
 
 func generateRandomMines() -> void: #called by game.gd _on_process_system_hazard
+	var preset_distances: Array = []
+	var star_id = get_first_star().get_identifier()
+	for body in bodies:
+		if body is orbitBodyAPI:
+			if body.hook_identifier == star_id:
+				if body.orbit_distance >= 35.0:
+					preset_distances.append(body.orbit_distance)
+	
 	var max_distance = get_max_body_orbit_distance()
 	for i in global_data.get_randi(8, 16):
-		
 		var dir = Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360)))
-		var pos = Vector2.ZERO + (dir * global_data.get_randf(35.0, max_distance))
+		var pos: Vector2 = Vector2.ZERO
+		match randf() >= 0.5:
+			true when preset_distances.size() > 0:
+				var distance = preset_distances.pick_random()
+				pos = Vector2.ZERO + (dir * distance)
+				preset_distances.erase(distance)
+			false, _:
+				pos = Vector2.ZERO + (dir * global_data.get_randf(35.0, max_distance))
+		
+		#assumes players speed is 3
+		var exclusion_zone_radius = global_data.get_randi(5, 30)
+		var max_detonation_time = exclusion_zone_radius / (3 * 2) # player speed * (boost multiplier - 3) <- (this is so its possible to interact with the mine, and a bit more fair)
 		
 		addUnitBody(
 			mineUnitAPI.new(),
@@ -781,10 +800,9 @@ func generateRandomMines() -> void: #called by game.gd _on_process_system_hazard
 			"Mine %03d" % global_data.get_randi(0, 999),
 			0,
 			get_default_radius_solar_radii(),
-			{"position": pos},
-			{"affiliation": game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION, "hostile": true, "exclusion_zone_radius": global_data.get_randi(5, 30)} #charge up time 2 seconds: 3 (player speed) * 5 (boost multiplier) = 15 solar radii / s
+			{"position": pos, "max_detonation_time": max_detonation_time},
+			{"affiliation": game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION, "hostile": true, "exclusion_zone_radius": exclusion_zone_radius} #charge up time 2 seconds: 3 (player speed) * 5 (boost multiplier) = 15 solar radii / s
 		)
-	
 	pass
 
 # generation related getters \/
@@ -848,6 +866,7 @@ func removeBody(id: int):
 	for body in bodies:
 		if body.get_identifier() == id:
 			bodies.erase(body)
+			emit_signal("body_removed", id)
 	pass
 
 func updateBodies(delta) -> void: #position, advance function

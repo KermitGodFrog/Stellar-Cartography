@@ -3,7 +3,7 @@ class_name mineUnitAPI
 
 var exclusion_radius_points: PackedVector2Array = [] # set by system_map.gd
 
-const max_detonation_time: float = 2.0
+@export var max_detonation_time: float = 2.0
 @export_storage var detonation_time: float = 0.0
 var detonation_time_index: float = 0.0:
 	get():

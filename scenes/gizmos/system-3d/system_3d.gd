@@ -289,6 +289,14 @@ func _on_mine_detonated(id: int) -> void:
 				child.play()
 	pass
 
+func _on_body_removed(id: int) -> void:
+	for child in get_children():
+		if child.is_in_group("body_3d"):
+			if child.get_identifier() == id:
+				call_deferred("remove_child", child)
+				child.queue_free()
+	pass
+
 func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Array]:
 	var dir1 = Vector2.UP.rotated(star.beam_rotation)
 	var ex1 = dir1 + Vector2(0, -500 * system_scalar).rotated(star.beam_rotation)
