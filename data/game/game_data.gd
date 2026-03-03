@@ -37,21 +37,22 @@ const SPECIAL_SYSTEM_CLASSIFICATION_CURVES = {
 	SPECIAL_SYSTEM_CLASSIFICATIONS.VOID: preload("uid://c185056t7jlry")
 }
 
-enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE, CORONAL_MASS_EJECTION}
+enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE, CORONAL_MASS_EJECTION, MINE_FIELD}
 const SYSTEM_HAZARD_CLASSIFICATION_CURVES = {
 	SYSTEM_HAZARD_CLASSIFICATIONS.NONE: preload("uid://oua44qc1agpd"),
-	SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION: preload("uid://ceicfkufoj2g2")
+	SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION: preload("uid://ceicfkufoj2g2"),
+	SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD: preload("uid://cgf1r33t2b51")
 }
 
 #units \/
 enum UNIT_AFFILIATIONS {PROVISIONAL_EXECUTIVE, LOCAL_CIVILIZATION, MARAUDER, NEW_EDEN}
-const UNIT_AI_DISTRIBUTION_CURVE = preload("uid://rve257hen6dp") #below the line = wanderingUnitAPI, above the line = interceptingUnitAPI
-const UNIT_QUANTITY_CURVE = preload("uid://dbuj65poalh6t") #the MAX quantity of units spawnable, rounded to the nearest int
-const UNIT_TOTAL_CHANCE_CURVE = preload("uid://lxj6ttsru1wy") #the chance that any units will be spawned in the system at all (so they arent a constant nussiance). zero can still be spawned if the individual chances dont come through!
-const UNIT_CIVILIZED_CHANCE_CURVE = preload("uid://cavjj8wd75w0o") #the chance per int towards the max quantity for a unit to be spawned
-const UNIT_UNEXPLORED_CHANCE_CURVE = preload("uid://c4ovce7l4llwt") #the chance per int towards the max quantity for a unit to be spawned
-const UNIT_WANDERING_AFFILIATION_CURVE = preload("uid://cxqkysupkx6ox") #below the line = PROVISIONAL_EXECUTIVE, above the line = LOCAL_CIVILIZATION
-const UNIT_HOSTILE_MAX_SPEED_CURVE = preload("uid://76qpu4masy7l")
+const SHIP_AI_DISTRIBUTION_CURVE = preload("uid://rve257hen6dp") #below the line = wanderingUnitAPI, above the line = interceptingUnitAPI
+const SHIP_QUANTITY_CURVE = preload("uid://dbuj65poalh6t") #the MAX quantity of units spawnable, rounded to the nearest int
+const SHIP_TOTAL_CHANCE_CURVE = preload("uid://lxj6ttsru1wy") #the chance that any units will be spawned in the system at all (so they arent a constant nussiance). zero can still be spawned if the individual chances dont come through!
+const SHIP_CIVILIZED_CHANCE_CURVE = preload("uid://cavjj8wd75w0o") #the chance per int towards the max quantity for a unit to be spawned
+const SHIP_UNEXPLORED_CHANCE_CURVE = preload("uid://c4ovce7l4llwt") #the chance per int towards the max quantity for a unit to be spawned
+const SHIP_WANDERING_AFFILIATION_CURVE = preload("uid://cxqkysupkx6ox") #below the line = PROVISIONAL_EXECUTIVE, above the line = LOCAL_CIVILIZATION
+const SHIP_HOSTILE_MAX_SPEED_CURVE = preload("uid://76qpu4masy7l")
 
 const REPAIR_CURVE = preload("uid://doinlbknr820v")
 const NANITE_CONTROLLER_REPAIR_CURVE = preload("uid://bdgrms6k50dkq")
@@ -265,7 +266,7 @@ func saveWorld(world: worldAPI) -> void:
 	print("ERROR CODE: ", error)
 	pass
 
-func createWorld(_total_systems: int, _max_jumps: int, _hull_stress_wormhole: int, _hull_stress_CME: int, _hull_stress_pulsar_beam: int, _scanner_profile: float, _scanner_power: float, _SA_chance_per_candidate: float, _PA_chance_per_planet: float, _missing_AO_chance_per_planet: float, _missing_GL_chance_per_relevant_planet: float) -> worldAPI:
+func createWorld(_total_systems: int, _max_jumps: int, _hull_stress_wormhole: int, _hull_stress_CME: int, _hull_stress_pulsar_beam: int, _hull_stress_mine: int, _scanner_profile: float, _scanner_power: float, _SA_chance_per_candidate: float, _PA_chance_per_planet: float, _missing_AO_chance_per_planet: float, _missing_GL_chance_per_relevant_planet: float) -> worldAPI:
 	print("GAME DATA: CREATING WORLD")
 	var world = worldAPI.new()
 	world._max_jumps = _max_jumps
@@ -273,6 +274,7 @@ func createWorld(_total_systems: int, _max_jumps: int, _hull_stress_wormhole: in
 	world._hull_stress_wormhole = _hull_stress_wormhole
 	world._hull_stress_CME = _hull_stress_CME
 	world._hull_stress_pulsar_beam = _hull_stress_pulsar_beam
+	world._hull_stress_mine = _hull_stress_mine
 	world._scanner_profile = _scanner_profile
 	world._scanner_power = _scanner_power
 	world.SA_chance_per_candidate = _SA_chance_per_candidate

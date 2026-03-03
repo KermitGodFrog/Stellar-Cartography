@@ -336,7 +336,10 @@ HAM 40m Italian radio 2021-11-28 7120.0kHz.wav by klankbeeld -- https://freesoun
 (Retrieved 2nd December 2025)
 
 Fizzle by Mike Koenig -- https://soundbible.com/1308-Fizzle.html -- License: Attribution 3.0
-(Retrieved 19th February 2026)"
+(Retrieved 19th February 2026)
+
+Grenade Explosion by Mike Koenig -- https://soundbible.com/1467-Grenade-Explosion.html -- License: Attribution 3.0
+(Retrieved 3rd March 2026)"
 autowrap_mode = 2
 
 [node name="achievements_list_popup" parent="." instance=ExtResource("5_7l6aj")]

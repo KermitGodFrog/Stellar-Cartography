@@ -2,9 +2,11 @@ extends Resource
 class_name starSystemAPI
 #any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
+signal body_removed(id: int)
 signal unit_following_body(b: bodyAPI, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
 signal unit_orbiting_body(b: bodyAPI, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
 signal unit_play_sound(path: String, volume_db: float, bus: StringName, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
+signal mine_detonated(id: int)
 
 @export var identifier: int
 @export var display_name: String
@@ -43,7 +45,7 @@ func set_display_name(new_display_name: String):
 #enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
 #enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
 
-enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, UNIT, CUSTOM}
+enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, CUSTOM, SHIP, MINE}
 
 const star_types = {
 	"M": {"name": "M", "weight_eg": 0.7645629, "weight_lg": 0.0000003},
@@ -227,7 +229,7 @@ func createAuxiliaryCivilized() -> void:
 	generateRendezvousPoint()
 	for body in bodies:
 		body.known = true
-	generateRandomWeightedUnits()
+	generateRandomWeightedShips()
 	pass
 
 func createAuxiliaryUnexplored() -> void:
@@ -243,7 +245,7 @@ func createAuxiliaryUnexplored() -> void:
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
 			generateRandomWeightedSpecialAnomaly()
-			generateRandomWeightedUnits()
+			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
 			#!! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !!
 			var star = get_first_star()
@@ -258,6 +260,11 @@ func createAuxiliaryUnexplored() -> void:
 				post_gen_location_candidates.append([star_identifier, i])
 			generateWormholes() #i think this backtracking code is reasonable as something like this is one-of-a-kind and i probably wont be manually clearing bodies again
 		#for example, a completely empty star system could use this match statement to REMOVE all existing bodies (besides the star) and spawn nothing else. Then an event could happen on concept enteringSystem 
+	
+	match new_system_hazard_classification:
+		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD:
+			if new_special_system_classification != game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
+				generateRandomMines()
 	pass
 
 # gen methods \/
@@ -684,36 +691,36 @@ func generateFallbackAnomalies():
 			addRandomSpaceAnomaly()
 	pass
 
-func generateRandomWeightedUnits() -> void:
+func generateRandomWeightedShips() -> void:
 	randomize()
 	var _units_generated: int = 0
-	var generate_units: bool = randf() <= game_data.UNIT_TOTAL_CHANCE_CURVE.sample(game_data.player_weirdness_index)
-	if generate_units:
+	var generate_ships: bool = randf() <= game_data.SHIP_TOTAL_CHANCE_CURVE.sample(game_data.player_weirdness_index)
+	if generate_ships:
 		var chance_curve: Curve
 		if is_civilized():
-			chance_curve = game_data.UNIT_CIVILIZED_CHANCE_CURVE
+			chance_curve = game_data.SHIP_CIVILIZED_CHANCE_CURVE
 		else:
-			chance_curve = game_data.UNIT_UNEXPLORED_CHANCE_CURVE
+			chance_curve = game_data.SHIP_UNEXPLORED_CHANCE_CURVE
 		
-		var max_units: int = int(game_data.UNIT_QUANTITY_CURVE.sample(game_data.player_weirdness_index))
+		var max_units: int = int(game_data.SHIP_QUANTITY_CURVE.sample(game_data.player_weirdness_index))
 		for unit in max_units:
 			var generate_unit: bool = randf() <= chance_curve.sample(game_data.player_weirdness_index)
 			if generate_unit:
 				var planets = get_bodies_of_body_type(BODY_TYPES.PLANET)
 				if planets:
-					addRandomWeightedUnit(planets.pick_random())
+					addRandomWeightedShip(planets.pick_random())
 					_units_generated += 1
 		
 	print_rich("[color=RED]UNITS GENERATED: %.f" % _units_generated)
 	pass
-func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
+func addRandomWeightedShip(orbiting_planet: planetBodyAPI) -> void:
 	randomize()
-	var distribution_y_value = game_data.UNIT_AI_DISTRIBUTION_CURVE.sample(game_data.player_weirdness_index)
+	var distribution_y_value = game_data.SHIP_AI_DISTRIBUTION_CURVE.sample(game_data.player_weirdness_index)
 	var wandering: bool = randf() <= distribution_y_value
 	
 	#horrific, but it least it works
 	var affiliation: game_data.UNIT_AFFILIATIONS = game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE
-	var executive_affiliated: bool = randf() <= game_data.UNIT_WANDERING_AFFILIATION_CURVE.sample(game_data.player_weirdness_index)
+	var executive_affiliated: bool = randf() <= game_data.SHIP_WANDERING_AFFILIATION_CURVE.sample(game_data.player_weirdness_index)
 	match wandering:
 		true when executive_affiliated:
 			affiliation = game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE
@@ -722,7 +729,6 @@ func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
 		false:
 			affiliation = game_data.UNIT_AFFILIATIONS.MARAUDER
 	
-	#terrible
 	var AI: AIUnitAPI = null
 	match wandering:
 		true when is_civilized():
@@ -740,11 +746,11 @@ func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
 	if wandering:
 		speed = global_data.get_randi(1, 3)
 	else:
-		speed = global_data.get_randi(3, int(game_data.UNIT_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index)))
+		speed = global_data.get_randi(3, int(game_data.SHIP_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index)))
 	
 	var new_unit = addUnitBody(
 		AI,
-		BODY_TYPES.UNIT,
+		BODY_TYPES.SHIP,
 		identifier_count,
 		game_data.get_random_starship_name(affiliation),
 		speed,
@@ -760,6 +766,43 @@ func addRandomWeightedUnit(orbiting_planet: planetBodyAPI) -> void:
 	# ^ this is SOMEWHAT fixed by updating the body position BUT i think if its a moon orbiting a planet, then the planets position will still be in the star so the unit will appear orbiting the star. not a big deal; just something to note
 	unit.orbit_body(orbiting_planet)
 	unit.updatePosition(1.0)
+	pass
+
+func generateRandomMines() -> void: #called by game.gd _on_process_system_hazard
+	var preset_distances: Array = []
+	var star_id = get_first_star().get_identifier()
+	for body in bodies:
+		if body is orbitBodyAPI:
+			if body.hook_identifier == star_id:
+				if body.orbit_distance >= 35.0:
+					preset_distances.append(body.orbit_distance)
+	
+	var max_distance = get_max_body_orbit_distance()
+	for i in global_data.get_randi(8, 16):
+		var dir = Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360)))
+		var pos: Vector2 = Vector2.ZERO
+		match randf() >= 0.5:
+			true when preset_distances.size() > 0:
+				var distance = preset_distances.pick_random()
+				pos = Vector2.ZERO + (dir * distance)
+				preset_distances.erase(distance)
+			false, _:
+				pos = Vector2.ZERO + (dir * global_data.get_randf(35.0, max_distance))
+		
+		#assumes players speed is 3
+		var exclusion_zone_radius = global_data.get_randi(5, 30)
+		var max_detonation_time = exclusion_zone_radius / (3 * 2) # player speed * (boost multiplier - 3) <- (this is so its possible to interact with the mine, and a bit more fair)
+		
+		addUnitBody(
+			mineUnitAPI.new(),
+			BODY_TYPES.MINE,
+			identifier_count,
+			"Mine %03d" % global_data.get_randi(0, 999),
+			0,
+			get_default_radius_solar_radii(),
+			{"position": pos, "max_detonation_time": max_detonation_time},
+			{"affiliation": game_data.UNIT_AFFILIATIONS.LOCAL_CIVILIZATION, "hostile": true, "exclusion_zone_radius": exclusion_zone_radius} #charge up time 2 seconds: 3 (player speed) * 5 (boost multiplier) = 15 solar radii / s
+		)
 	pass
 
 # generation related getters \/
@@ -823,6 +866,13 @@ func removeBody(id: int):
 	for body in bodies:
 		if body.get_identifier() == id:
 			bodies.erase(body)
+			emit_signal("body_removed", id)
+	pass
+
+func updateBodies(delta) -> void: #position, advance function
+	for body in bodies:
+		updateBodyPosition(body.get_identifier(), delta)
+		body.advance(delta) #capacity to do more stuff, can be overriden by classes that inherit bodyAPI
 	pass
 
 func updateBodyPosition(id: int, delta):
@@ -920,6 +970,14 @@ func get_bodies_of_body_type(_body_type: BODY_TYPES):
 			return_bodies.append(body)
 	return return_bodies
 
+func get_max_body_orbit_distance() -> float:
+	var distances: Array = []
+	for body in bodies:
+		if body is orbitBodyAPI:
+			distances.append(body.orbit_distance)
+	distances.sort()
+	return distances.back()
+
 func is_civilized() -> bool:
 	for body in bodies:
 		if body.get_type() == BODY_TYPES.STATION:
@@ -928,9 +986,32 @@ func is_civilized() -> bool:
 
 # unit stuff \/
 
+func updateMinesGetDetonations(detonator_position: Vector2, delta) -> int: #returns number of detonating mines this frame
+	var detonations_this_frame: int = 0
+	var mines = get_bodies_of_body_type(BODY_TYPES.MINE)
+	if mines:
+		for mine: mineUnitAPI in mines:
+			if detonator_position.distance_to(mine.position) < mine.metadata.get("exclusion_zone_radius"):
+				mine.tick_detonation_time(true, delta)
+			else:
+				mine.tick_detonation_time(false, delta)
+			if mine.can_detonate():
+				detonations_this_frame += 1
+				mine.detonate()
+				emit_signal("mine_detonated", mine.get_identifier())
+				removeBody(mine.get_identifier())
+	return detonations_this_frame
+
+func get_units() -> Array[unitBodyAPI]: #gets all bodies extending unitBodyAPI
+	var return_units: Array[unitBodyAPI] = []
+	for body in bodies:
+		if body is unitBodyAPI:
+			return_units.append(body)
+	return return_units
+
 func get_units_in_scanner_range(pos: Vector2, size: float) -> Array[unitBodyAPI]:
 	var units_in_range: Array[unitBodyAPI] = []
-	var units = get_bodies_of_body_type(BODY_TYPES.UNIT) as Array[unitBodyAPI]
+	var units = get_units()
 	
 	for unit in units:
 		if unit.position.distance_to(pos) < size:
