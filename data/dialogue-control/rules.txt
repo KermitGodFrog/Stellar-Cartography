@@ -98,6 +98,8 @@ shipAffiliationFlair_EXECUTIVE,"concept: addShipAffiliationFlair, unit_affiliati
 shipAffiliationFlair_LOCAL,"concept: addShipAffiliationFlair, unit_affiliation: LOCAL_CIVILIZATION",,,"Having cracked unknown identification codes, AIS has since identified the ship as being affiliated with a [color=blue]local civilization[/color]. ",,,,,,
 shipAffiliationFlair_MARAUDER,"concept: addShipAffiliationFlair, unit_affiliation: MARAUDER",,,"AIS has not received any identification codes, and has since identified the ship as being affiliated with [color=orange]marauders[/color].",,,,,,
 ,,,,,,,,,,
+mineOpenDialog,"concept: followingBody, type: MINE","openDialog: null, playMusic: combat_low.wav",defaultApproachMessage,"Crew look at you hopelessly from every position on the Bridge. Your instruction to fly directly towards a mine was begrudgingly followed by the helmsman out of respect for the chain of command. Now the mine's proximity fuse burns, and your company awaits the master plan which you undoubtedly have.",Leave:unitLeave,,,,,
+,,,,,,,,,,
 "#ALL valid station classifications: STANDARD, PIRATE, ABANDONED, COVERUP, DEBRIS, ABANDONED_OPERATIONAL, ABANDONED_BACKROOMS, PARTIALLY_SALVAGED, BIRD",,,,,,,,,,
 ,,,,,,,,,,
 stationApproachMessage,concept: stationApproachMessage,,,Your ship approaches the location of a space station defined in native star charts.,,,,,,

@@ -1184,7 +1184,8 @@ func _on_unit_play_sound(_path: String, _volume_db: float, _bus: StringName, _u:
 	pass
 
 func _on_mine_detonated(id: int) -> void: #starSystemAPI signal
-	system_3d._on_mine_detonated(id)
+	system_3d._on_mine_detonated(id) #plays directional SFX
+	get_tree().call_group("audioHandler", "plot_radio", load("uid://b56k7w734n8kd"))
 	pass
 
 func _on_body_removed(id: int) -> void: #starSystemAPI signal
