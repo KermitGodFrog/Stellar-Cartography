@@ -5,6 +5,7 @@ class_name starSystemAPI
 signal unit_following_body(b: bodyAPI, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
 signal unit_orbiting_body(b: bodyAPI, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
 signal unit_play_sound(path: String, volume_db: float, bus: StringName, u: unitBodyAPI) #connected by game.gd _on_switch_star_system
+signal mine_detonated(id: int)
 
 @export var identifier: int
 @export var display_name: String
@@ -978,6 +979,7 @@ func updateMinesGetDetonations(detonator_position: Vector2, delta) -> int: #retu
 			if mine.can_detonate():
 				detonations_this_frame += 1
 				mine.detonate()
+				emit_signal("mine_detonated", mine.get_identifier())
 				removeBody(mine.get_identifier())
 	return detonations_this_frame
 

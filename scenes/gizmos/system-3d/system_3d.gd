@@ -25,6 +25,8 @@ var label_locked_body_identifier: int
 var body_3d = preload("uid://bdotk8rm2p7df")
 var entity_3d = preload("uid://csvx63c0ejn6a")
 var unit_3d = preload("uid://cx38tvi6u1w02")
+var mine_3d = preload("uid://bjbd8vkcbfruh")
+var mine_3d_sfx = preload("uid://buwflpe5quce0")
 var flyby = preload("uid://c7mmitfihh8pe")
 
 var system_scalar: float = 10.0
@@ -157,9 +159,10 @@ func _physics_process(_delta):
 func spawnBodies():
 	for child in get_children():
 		if child.is_in_group("body_3d") \
+		or child.is_in_group("audio_3d") \
 		or child.is_in_group("asteroid_belt_3d") \
-		or child.is_in_group("pulsar_beam_3d") \
-		or child.is_in_group("pulsar_beam_3d_flyby_sfx"):
+		or child.is_in_group("pulsar_beam_3d"):
+		#or child.is_in_group("pulsar_beam_3d_flyby_sfx"): # part of audio_3d
 			call_deferred("remove_child", child)
 			child.queue_free()
 		
@@ -183,6 +186,8 @@ func spawnBodies():
 			spawn_glint_body_3d_for_identifier(body.get_identifier())
 		elif body is AIUnitAPI:
 			spawn_unit_body_3d_for_identifier(body.get_identifier())
+		elif body is mineUnitAPI:
+			spawn_mine_body_3d_for_identifier(body.get_identifier())
 		elif body is customBodyAPI:
 			if body.mesh_path.is_empty():
 				spawn_glint_body_3d_for_identifier(body.get_identifier())
@@ -208,6 +213,17 @@ func spawn_unit_body_3d_for_identifier(id: int): #should be AI unit body
 	add_child(new_unit_3d)
 	pass
 
+func spawn_mine_body_3d_for_identifier(id: int) -> void:
+	var new_mine_3d = mine_3d.instantiate()
+	new_mine_3d.set_identifier(id)
+	new_mine_3d.initialize(((pow(pow(10, -1.3), 0.28) / 109.1) * system_scalar) / 20.0)
+	new_mine_3d._on_scope_mode_changed(get_scope_mode())
+	add_child(new_mine_3d)
+	var new_mine_3d_sfx = mine_3d_sfx.instantiate()
+	new_mine_3d_sfx.set_identifier(id)
+	add_child(new_mine_3d_sfx)
+	pass
+
 func spawn_pulsar_beams(_star: pulsarBodyAPI) -> void:
 	initial_beam_rotation = _star.beam_rotation
 	var points = get_pulsar_beams_as_3D_points(_star)
@@ -228,6 +244,7 @@ func spawn_pulsar_beams(_star: pulsarBodyAPI) -> void:
 	
 	for flyby_sfx in 2:
 		var instance = flyby.instantiate() as AudioStreamPlayer3D
+		instance.add_to_group("audio_3d")
 		instance.add_to_group("pulsar_beam_3d_flyby_sfx")
 		instance.add_to_group("pulsar_beam_3d_flyby_sfx_%.f" % flyby_sfx)
 		
@@ -263,6 +280,13 @@ func _on_scope_mode_changed(_new_mode: playerAPI.SCOPE_MODES) -> void:
 		playerAPI.SCOPE_MODES.RAD:
 			rad_post_process.show()
 			environment.get_environment().get_sky().get_material().set_shader_parameter("source_panorama", rad_panorama)
+	pass
+
+func _on_mine_detonated(id: int) -> void:
+	for child in get_children():
+		if child.is_in_group("mine_3d_sfx"):
+			if child.get_identifier() == id:
+				child.play()
 	pass
 
 func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Array]:

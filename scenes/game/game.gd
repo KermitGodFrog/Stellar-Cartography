@@ -736,7 +736,8 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	var system_connections: Dictionary = {
 		to_system.unit_following_body: _on_unit_following_body,
 		to_system.unit_orbiting_body: _on_unit_orbiting_body,
-		to_system.unit_play_sound: _on_unit_play_sound
+		to_system.unit_play_sound: _on_unit_play_sound,
+		to_system.mine_detonated: _on_mine_detonated
 	}
 	for s: Signal in system_connections:
 		if not s.is_connected(system_connections[s]):
@@ -1179,6 +1180,10 @@ func _on_player_scanner_contact_lost(_unit: unitBodyAPI) -> void:
 
 func _on_unit_play_sound(_path: String, _volume_db: float, _bus: StringName, _u: unitBodyAPI) -> void:
 	get_tree().call_group("audioHandler", "play_once", load(_path), _volume_db, _bus)
+	pass
+
+func _on_mine_detonated(id: int) -> void:
+	system_3d._on_mine_detonated(id)
 	pass
 
 func _on_open_LRS():
