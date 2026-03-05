@@ -1,4 +1,5 @@
 extends Node3D
+#system_3d_internal_v2
 
 signal foundBody(id: int)
 signal addConsoleEntry(entry_text: String, text_color: Color)
@@ -54,6 +55,14 @@ func _ready():
 	pass
 
 func _physics_process(_delta):
+	update_all_positions()
+	update_camera_basis()
+	update_miscellaneous()
+	try_discover_orbit_bodies()
+	pass
+
+func update_all_positions() -> void: #camera and bodies
+	#update pulsars
 	for child in get_children():
 		if child.is_in_group("pulsar_beam_3d"):
 			var beam = child as MeshInstance3D
@@ -77,10 +86,6 @@ func _physics_process(_delta):
 			elif child.is_in_group("pulsar_beam_3d_flyby_sfx_1"):
 				child.set_position(Vector3(-offset.x, 0, -offset.y) * system_scalar)
 	
-	#setting post process
-	var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)
-	post_process.material.set("shader_parameter/pixel_size", round(fov_to_pixel_size))
-	
 	#setting player distance, locking player distance from bodie and moving bodies
 	camera_offset.position = Vector3((player_position.x * system_scalar), 0, (player_position.y * system_scalar))
 	for child in get_children():
@@ -96,7 +101,9 @@ func _physics_process(_delta):
 				if child.is_in_group("unit_3d"):
 					child.set("_player_position", player_position)
 					child.set("_associated_position", associated_body.position)
-	
+	pass
+
+func update_camera_basis() -> void:
 	#looking at locked body or looking at target position
 	if locked_body_identifier:
 		var locked_body: Node
@@ -113,10 +120,29 @@ func _physics_process(_delta):
 	elif target_position:
 		camera.global_transform = camera.global_transform.looking_at(Vector3((target_position.x * system_scalar), 0, (target_position.y * system_scalar)))
 		camera.global_transform = camera.global_transform.orthonormalized()
+	pass
+
+func update_miscellaneous() -> void:
+	#setting post process
+	var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)
+	post_process.material.set("shader_parameter/pixel_size", round(fov_to_pixel_size))
 	
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
 	
-	#detecting bodies
+	#setting locked_body_label text
+	var body: bodyAPI = system.get_body_from_identifier(label_locked_body_identifier)
+	if body:
+		if body.is_known():
+			locked_body_label.set_text(str("LOCKED: ", body.get_display_name()))
+		elif body.is_theorised_not_known(): #does not need override for unitBodyAPIs as it should clear before this can run
+			locked_body_label.set_text("LOCKED: Unknown")
+	elif target_position != Vector2.ZERO:
+		locked_body_label.set_text("LOCKED: MANUAL")
+	else: 
+		locked_body_label.set_text("")
+	pass
+
+func try_discover_orbit_bodies() -> void:
 	for child in get_children():
 		if child.is_in_group("body_3d"):
 			var a = camera.global_transform.basis.z
@@ -142,19 +168,16 @@ func _physics_process(_delta):
 								var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
 								if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name()), Color.DARK_GREEN)
 								elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", roundi(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
-	
-	#setting locked_body_label text
-	var body: bodyAPI = system.get_body_from_identifier(label_locked_body_identifier)
-	if body:
-		if body.is_known():
-			locked_body_label.set_text(str("LOCKED: ", body.get_display_name()))
-		elif body.is_theorised_not_known(): #does not need override for unitBodyAPIs as it should clear before this can run
-			locked_body_label.set_text("LOCKED: Unknown")
-	elif target_position != Vector2.ZERO:
-		locked_body_label.set_text("LOCKED: MANUAL")
-	else: 
-		locked_body_label.set_text("")
 	pass
+
+
+
+
+
+
+
+
+
 
 func spawnBodies():
 	for child in get_children():
@@ -259,6 +282,10 @@ func spawn_pulsar_beams(_star: pulsarBodyAPI) -> void:
 
 
 
+
+
+
+
 func reset_locked_body():
 	locked_body_identifier = 0
 	label_locked_body_identifier = 0
@@ -326,6 +353,11 @@ func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Ar
 	
 	#these points are already rotated according to the stars current beam_rotation variable at the time of the system being loaded! therefore, to find the real rotation for the MeshInstances, do beam_rotation - initial_beam_rotation :>
 	return [points1, points2]
+
+
+
+
+
 
 
 
