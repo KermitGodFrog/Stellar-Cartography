@@ -1,0 +1,21 @@
+[gd_resource type="QuadMesh" load_steps=3 format=3 uid="uid://bgfq0xrhripbw"]
+
+[ext_resource type="Texture2D" uid="uid://ckn4a4yoov0cb" path="res://graphics/system-3d/mine.png" id="1_tbs6m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rntw5"]
+transparency = 1
+shading_mode = 0
+diffuse_mode = 3
+albedo_color = Color(1, 0.49828702, 0.4313076, 1)
+albedo_texture = ExtResource("1_tbs6m")
+texture_filter = 0
+texture_repeat = false
+disable_receive_shadows = true
+billboard_mode = 2
+billboard_keep_scale = true
+fixed_size = true
+distance_fade_min_distance = 1.0
+distance_fade_max_distance = 5.0
+
+[resource]
+material = SubResource("StandardMaterial3D_rntw5")

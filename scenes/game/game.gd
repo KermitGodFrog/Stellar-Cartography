@@ -755,7 +755,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	long_range_scopes.system = to_system
 	dialogue_manager.system = to_system
 	
-	system_3d.spawnBodies()
+	system_3d.regenerate_system()
 	system_3d.reset_locked_body()
 	journey_map.add_new_system(world.player.systems_traversed)
 	journey_map.jumps_remaining = world.player.get_jumps_remaining() #required as it needs to update when the players system on game startup is loaded, not just wormhole traversal!

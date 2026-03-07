@@ -14,6 +14,24 @@ signal addConsoleEntry(entry_text: String, text_color: Color)
 @onready var rad_post_process = $camera_offset/camera/canvas_layer/rad_post_process
 @onready var environment = $world_environment
 
+#resources
+var actor_3d = preload("uid://drrmba8quj4mu")
+var body_3d = preload("uid://bdotk8rm2p7df")
+var entity_3d = preload("uid://csvx63c0ejn6a")
+var unit_3d = preload("uid://cx38tvi6u1w02")
+var mine_3d = preload("uid://bjbd8vkcbfruh")
+var mine_3d_sfx = preload("uid://buwflpe5quce0")
+var flyby = preload("uid://c7mmitfihh8pe")
+
+#for wormholes obv      <- past me who put this comment, stop being such a fucking smartass istg
+var wormhole_shader = preload("uid://bkngs6wdkye6n")
+var pulsar_beam_material = preload("uid://dtpqpy1b1rnxv")
+
+var vis_panorama = preload("uid://byp6pykkhwnpf")
+var rad_panorama = preload("uid://c7u31smqi45er")
+
+
+
 var TUTORIAL_INGRESS_OVERRIDE: bool = false
 var TUTORIAL_OMISSION_OVERRIDE: bool = false
 
@@ -22,13 +40,6 @@ var player_position: Vector2
 var target_position: Vector2
 var locked_body_identifier: int
 var label_locked_body_identifier: int
-
-var body_3d = preload("uid://bdotk8rm2p7df")
-var entity_3d = preload("uid://csvx63c0ejn6a")
-var unit_3d = preload("uid://cx38tvi6u1w02")
-var mine_3d = preload("uid://bjbd8vkcbfruh")
-var mine_3d_sfx = preload("uid://buwflpe5quce0")
-var flyby = preload("uid://c7mmitfihh8pe")
 
 var system_scalar: float = 10.0
 var body_detection_range: int = 1000
@@ -42,12 +53,11 @@ func get_scope_mode() -> playerAPI.SCOPE_MODES:
 
 var initial_beam_rotation: float = 0.0 #REQUIRED FOR PULSARS TO WORK. BARELY KNEW WHAT I WAS DOING WHEN I MADE IT WORK SO DONT TOUCH!
 
-#for wormholes obv      <- past me who put this comment, stop being such a fucking smartass istg
-var wormhole_shader = preload("uid://bkngs6wdkye6n")
-var pulsar_beam_material = preload("uid://dtpqpy1b1rnxv")
 
-var vis_panorama = preload("uid://byp6pykkhwnpf")
-var rad_panorama = preload("uid://c7u31smqi45er")
+
+var actors: Array[Node3D] = []
+
+
 
 func _ready():
 	_on_scope_mode_changed(playerAPI.SCOPE_MODES.VIS)
@@ -55,13 +65,13 @@ func _ready():
 	pass
 
 func _physics_process(_delta):
-	update_all_positions()
+	update_positions()
 	update_camera_basis()
 	update_miscellaneous()
 	try_discover_orbit_bodies()
 	pass
 
-func update_all_positions() -> void: #camera and bodies
+func update_positions() -> void: #camera and bodies
 	#update pulsars
 	for child in get_children():
 		if child.is_in_group("pulsar_beam_3d"):
@@ -174,6 +184,86 @@ func try_discover_orbit_bodies() -> void:
 
 
 
+
+func regenerate_system() -> void: #assumes that 'system' is set by game.gd beforehand - which is what happens.
+	for actor in actors:
+		remove_child(actor)
+		actor.queue_free()
+	
+	for body in system.bodies:
+		if body is circularBodyAPI:
+			
+			var radius = body.radius * system_scalar
+			
+			var new_actor = await add_actor(
+				body.get_identifier(), 
+				[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.CIRCULAR_BODY], 
+				true,
+				{"radius": radius, 
+				"height": radius * 2.0,
+				"surface_material_override/0/albedo_color": system.get_first_star().surface_color,
+				"surface_material_override/0/emission": body.surface_color},
+				{},
+				{}
+			)
+			
+			match body.get_type():
+				starSystemAPI.BODY_TYPES.PLANET:
+					new_actor.mesh.set("surface_material_override/0/emission_energy_multiplier", 0.25)
+				starSystemAPI.BODY_TYPES.STAR:
+					new_actor.mesh.set("surface_material_override/0/emission_energy_multiplier", 1.0)
+					star_omni_light.light_color = body.surface_color
+					star_omni_light.light_size = body.radius
+			
+			
+			
+			
+			
+			
+			
+		elif body is glintBodyAPI:
+			pass
+			
+			
+		elif body is customBodyAPI:
+			pass
+			
+			
+			
+			
+			
+			
+			
+			
+		elif body is AIUnitAPI:
+			pass
+			
+			
+			
+			
+			
+			
+		elif body is mineUnitAPI:
+			pass
+			
+			
+			
+	pass
+
+func add_actor(id: int, cohorts: Array[actor3D.COHORTS], do_flyby: bool, mesh_variables: Dictionary = {}, sprite_variables: Dictionary = {}, audio_variables: Dictionary = {}) -> Node3D:
+	var new_actor = actor_3d.instantiate()
+	new_actor.set_identifier(id)
+	for c in cohorts:
+		new_actor.add_cohort(c)
+	add_child(new_actor)
+	actors.append(new_actor)
+	if not new_actor.is_node_ready():
+		await new_actor.ready
+		new_actor.initialize(do_flyby, mesh_variables, sprite_variables, audio_variables)
+		return new_actor
+	else:
+		new_actor.initialize(do_flyby, mesh_variables, sprite_variables, audio_variables)
+		return new_actor
 
 
 
