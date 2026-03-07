@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bjbd8vkcbfruh"]
 
 [ext_resource type="QuadMesh" uid="uid://bgfq0xrhripbw" path="res://instantiated-scenes/system-3d/mine_mesh.tres" id="1_rntw5"]
-[ext_resource type="Script" uid="uid://dp1qkb1o0tmap" path="res://instantiated-scenes/system-3d/body-3d/mine_3d.gd" id="1_v31vy"]
+[ext_resource type="Script" uid="uid://dp1qkb1o0tmap" path="res://instantiated-scenes/system-3d/special/mine_3d.gd" id="1_v31vy"]
 
 [node name="mine_3d" type="MeshInstance3D" groups=["body_3d"]]
 mesh = ExtResource("1_rntw5")

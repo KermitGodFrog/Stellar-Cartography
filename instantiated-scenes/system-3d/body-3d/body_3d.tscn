@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bdotk8rm2p7df"]
 
-[ext_resource type="Script" uid="uid://c0ftvjeyy88j7" path="res://instantiated-scenes/system-3d/body-3d/body_3d.gd" id="1_bqpsf"]
+[ext_resource type="Script" uid="uid://c0ftvjeyy88j7" path="res://instantiated-scenes/system-3d/special/body_3d.gd" id="1_bqpsf"]
 [ext_resource type="PackedScene" uid="uid://c7mmitfihh8pe" path="res://instantiated-scenes/system-3d/flyby.tscn" id="2_2n1oe"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_gsmqo"]

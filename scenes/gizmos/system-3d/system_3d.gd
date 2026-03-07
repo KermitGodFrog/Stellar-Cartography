@@ -16,12 +16,6 @@ signal addConsoleEntry(entry_text: String, text_color: Color)
 
 #resources
 var actor_3d = preload("uid://drrmba8quj4mu")
-var body_3d = preload("uid://bdotk8rm2p7df")
-var entity_3d = preload("uid://csvx63c0ejn6a")
-var unit_3d = preload("uid://cx38tvi6u1w02")
-var mine_3d = preload("uid://bjbd8vkcbfruh")
-var mine_3d_sfx = preload("uid://buwflpe5quce0")
-var flyby = preload("uid://c7mmitfihh8pe")
 
 #for wormholes obv      <- past me who put this comment, stop being such a fucking smartass istg
 var wormhole_shader = preload("uid://bkngs6wdkye6n")
@@ -30,6 +24,7 @@ var pulsar_beam_material = preload("uid://dtpqpy1b1rnxv")
 var vis_panorama = preload("uid://byp6pykkhwnpf")
 var rad_panorama = preload("uid://c7u31smqi45er")
 
+var unit_spritesheet = preload("uid://dmi1b3su1mdfw")
 
 
 var TUTORIAL_INGRESS_OVERRIDE: bool = false
@@ -189,69 +184,100 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 	for actor in actors:
 		remove_child(actor)
 		actor.queue_free()
+	actors.clear()
 	
 	for body in system.bodies:
-		if body is circularBodyAPI:
-			
-			var radius = body.radius * system_scalar
-			
-			var new_actor = await add_actor(
-				body.get_identifier(), 
-				[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.CIRCULAR_BODY], 
-				true,
-				{"radius": radius, 
-				"height": radius * 2.0,
-				"surface_material_override/0/albedo_color": system.get_first_star().surface_color,
-				"surface_material_override/0/emission": body.surface_color},
-				{},
-				{}
-			)
-			
-			match body.get_type():
-				starSystemAPI.BODY_TYPES.PLANET:
-					new_actor.mesh.set("surface_material_override/0/emission_energy_multiplier", 0.25)
-				starSystemAPI.BODY_TYPES.STAR:
-					new_actor.mesh.set("surface_material_override/0/emission_energy_multiplier", 1.0)
-					star_omni_light.light_color = body.surface_color
-					star_omni_light.light_size = body.radius
-			
-			
-			
-			
-			
-			
-			
-		elif body is glintBodyAPI:
-			pass
-			
-			
-		elif body is customBodyAPI:
-			pass
-			
-			
-			
-			
-			
-			
-			
-			
-		elif body is AIUnitAPI:
-			pass
-			
-			
-			
-			
-			
-			
-		elif body is mineUnitAPI:
-			pass
-			
-			
-			
+		
+		var new_actor: actor3D = null
+		
+		match body.get_script():
+			circularBodyAPI:
+				
+				var mesh: SphereMesh
+				match body.get_type():
+					starSystemAPI.BODY_TYPES.PLANET:
+						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.25)
+					starSystemAPI.BODY_TYPES.STAR:
+						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, body.surface_color, body.surface_color, 1.0)
+						star_omni_light.light_color = body.surface_color
+						star_omni_light.light_size = body.radius
+						if body is pulsarBodyAPI:
+							add_pulsar_beams(body)
+					starSystemAPI.BODY_TYPES.WORMHOLE:
+						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
+				
+				new_actor = await add_actor(
+					load("uid://c0ftvjeyy88j7").new(),
+					body.get_identifier(), 
+					[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.CIRCULAR_BODY], 
+					{"mesh": mesh},
+					{},
+					{},
+					{"autoplay": true}
+				)
+				
+			glintBodyAPI:
+				
+				new_actor = await add_actor(
+					load("uid://5srke1ti70bb").new(), 
+					body.get_identifier(), 
+					[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.GLINT_BODY]
+				)
+				
+			customBodyAPI:
+				
+				if body.mesh_path.is_empty():
+					new_actor = await add_actor(
+						load("uid://5srke1ti70bb").new(), 
+						body.get_identifier(), 
+						[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.GLINT_BODY]
+					)
+				else:
+					new_actor = await add_actor(
+						actor3D.new(),
+						body.get_identifier(),
+						[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.GLINT_BODY],
+						{"mesh": load(body.mesh_path)}
+					)
+				
+			AIUnitAPI:
+				
+				new_actor = await add_actor(
+					load("uid://bp4kotll44otn").new(),
+					body.get_identifier(),
+					[actor3D.COHORTS.UNIT_BODY, actor3D.COHORTS.AI_UNIT],
+					{},
+					{"texture": unit_spritesheet, "hframes": 4, "pixel_size": starSystemAPI.get_default_radius_solar_radii() * 16.0}, #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)
+					{},
+					{"autoplay": true}
+				)
+				
+			mineUnitAPI:
+				
+				new_actor = await add_actor(
+					load("uid://dp1qkb1o0tmap").new(),
+					body.get_identifier(),
+					[actor3D.COHORTS.UNIT_BODY, actor3D.COHORTS.MINE_UNIT],
+					{},
+					{"texture": load("uid://ckn4a4yoov0cb"), "pixel_size": starSystemAPI.get_default_radius_solar_radii() / 10.0}
+				)
+				
+				add_actor(
+					actor3D.new(),
+					body.get_identifier(),
+					[actor3D.COHORTS.AUDIO, actor3D.COHORTS.MINE_SFX],
+					{},
+					{},
+					{"stream": load("uid://b7vu4bpvxlu6n"), "volume_db": -12.0, "max_db": -12.0, "panning_strength": 3.0, "bus": "SFX"}
+				)
+		
+		if new_actor != null:
+			new_actor._on_scope_mode_changed(get_scope_mode())
 	pass
 
-func add_actor(id: int, cohorts: Array[actor3D.COHORTS], do_flyby: bool, mesh_variables: Dictionary = {}, sprite_variables: Dictionary = {}, audio_variables: Dictionary = {}) -> Node3D:
+func add_actor(actor: actor3D, id: int, cohorts: Array[actor3D.COHORTS], mesh_variables: Dictionary = {}, sprite_variables: Dictionary = {}, audio_variables: Dictionary = {}, flyby_variables: Dictionary = {}) -> Node3D:
 	var new_actor = actor_3d.instantiate()
+	new_actor.set_script(actor)
 	new_actor.set_identifier(id)
 	for c in cohorts:
 		new_actor.add_cohort(c)
@@ -259,85 +285,32 @@ func add_actor(id: int, cohorts: Array[actor3D.COHORTS], do_flyby: bool, mesh_va
 	actors.append(new_actor)
 	if not new_actor.is_node_ready():
 		await new_actor.ready
-		new_actor.initialize(do_flyby, mesh_variables, sprite_variables, audio_variables)
+		new_actor.initialize(mesh_variables, sprite_variables, audio_variables, flyby_variables)
 		return new_actor
 	else:
-		new_actor.initialize(do_flyby, mesh_variables, sprite_variables, audio_variables)
+		new_actor.initialize(mesh_variables, sprite_variables, audio_variables, flyby_variables)
 		return new_actor
 
 
+func generate_circular_body_sphere_mesh(radius: float, color: Color, emission_color: Color, emission_multiplier: float, overlay_shader_resource = null, surface_texture = null) -> SphereMesh:
+	var mesh = SphereMesh.new()
+	mesh.radius = radius
+	mesh.height = radius * 2.0
+	var material = StandardMaterial3D.new()
+	material.albedo_color = color
+	material.emission_enabled = true
+	material.emission = emission_color
+	material.emission_energy_multiplier = emission_multiplier
+	if surface_texture != null:
+		material.emission_texture = surface_texture
+	if overlay_shader_resource != null:
+		var shader_material = ShaderMaterial.new()
+		shader_material.set_shader(overlay_shader_resource)
+		material.next_pass = shader_material
+	mesh.set_material(material)
+	return mesh
 
-
-
-func spawnBodies():
-	for child in get_children():
-		if child.is_in_group("body_3d") \
-		or child.is_in_group("audio_3d") \
-		or child.is_in_group("asteroid_belt_3d") \
-		or child.is_in_group("pulsar_beam_3d"):
-		#or child.is_in_group("pulsar_beam_3d_flyby_sfx"): # part of audio_3d
-			call_deferred("remove_child", child)
-			child.queue_free()
-		
-	for body in system.bodies:
-		if body is circularBodyAPI:
-			var new_body_3d = body_3d.instantiate()
-			new_body_3d.set_identifier(body.get_identifier())
-			if body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
-				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.25)
-			elif body.get_type() == starSystemAPI.BODY_TYPES.STAR:
-				new_body_3d.initialize(body.radius * system_scalar, body.surface_color, body.surface_color, 1.0)
-				star_omni_light.light_color = body.surface_color
-				star_omni_light.light_size = body.radius
-				if body is pulsarBodyAPI:
-					spawn_pulsar_beams(body)
-			elif body.get_type() == starSystemAPI.BODY_TYPES.WORMHOLE:
-				new_body_3d.initialize(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
-			new_body_3d._on_scope_mode_changed(get_scope_mode())
-			add_child(new_body_3d) 
-		elif body is glintBodyAPI:
-			spawn_glint_body_3d_for_identifier(body.get_identifier())
-		elif body is AIUnitAPI:
-			spawn_unit_body_3d_for_identifier(body.get_identifier())
-		elif body is mineUnitAPI:
-			spawn_mine_body_3d_for_identifier(body.get_identifier())
-		elif body is customBodyAPI:
-			if body.mesh_path.is_empty():
-				spawn_glint_body_3d_for_identifier(body.get_identifier())
-				continue
-			#loading mesh
-			#putting mesh in scene
-			#etc
-	pass
-
-func spawn_glint_body_3d_for_identifier(id: int):
-	var new_entity_3d = entity_3d.instantiate()
-	new_entity_3d.set_identifier(id)
-	new_entity_3d.initialize(pow(pow(10, -1.3), 0.28) / 109.1) #pixel size, can be different for stations/anomalies
-	new_entity_3d._on_scope_mode_changed(get_scope_mode())
-	add_child(new_entity_3d)
-	pass
-
-func spawn_unit_body_3d_for_identifier(id: int): #should be AI unit body
-	var new_unit_3d = unit_3d.instantiate()
-	new_unit_3d.set_identifier(id)
-	new_unit_3d.initialize((pow(pow(10, -1.3), 0.28) / 109.1) * 16.0) #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)
-	new_unit_3d._on_scope_mode_changed(get_scope_mode())
-	add_child(new_unit_3d)
-	pass
-
-func spawn_mine_body_3d_for_identifier(id: int) -> void:
-	var new_mine_3d = mine_3d.instantiate()
-	new_mine_3d.set_identifier(id)
-	new_mine_3d.initialize(((pow(pow(10, -1.3), 0.28) / 109.1) * system_scalar) / 20.0)
-	new_mine_3d._on_scope_mode_changed(get_scope_mode())
-	add_child(new_mine_3d)
-	var new_mine_3d_sfx = mine_3d_sfx.instantiate()
-	new_mine_3d_sfx.set_identifier(id)
-	add_child(new_mine_3d_sfx)
-	pass
-
-func spawn_pulsar_beams(_star: pulsarBodyAPI) -> void:
+func add_pulsar_beams(_star: pulsarBodyAPI) -> void:
 	initial_beam_rotation = _star.beam_rotation
 	var points = get_pulsar_beams_as_3D_points(_star)
 	
@@ -349,25 +322,25 @@ func spawn_pulsar_beams(_star: pulsarBodyAPI) -> void:
 		var arr_mesh = ArrayMesh.new()
 		arr_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 		
-		var instance = MeshInstance3D.new()
-		instance.mesh = arr_mesh
-		instance.add_to_group("pulsar_beam_3d")
-		instance.set_surface_override_material(0, pulsar_beam_material)
-		add_child(instance)
+		add_actor(
+			actor3D.new(),
+			_star.get_identifier(),
+			[actor3D.COHORTS.PULSAR_BEAM],
+			{"mesh": arr_mesh, "material": pulsar_beam_material}
+		)
 	
 	for flyby_sfx in 2:
-		var instance = flyby.instantiate() as AudioStreamPlayer3D
-		instance.add_to_group("audio_3d")
-		instance.add_to_group("pulsar_beam_3d_flyby_sfx")
-		instance.add_to_group("pulsar_beam_3d_flyby_sfx_%.f" % flyby_sfx)
+		var new_actor = await add_actor(
+			actor3D.new(),
+			_star.get_identifier(),
+			[actor3D.COHORTS.AUDIO, actor3D.COHORTS.PULSAR_BEAM_SFX],
+			{},
+			{},
+			{},
+			{"autoplay": true, "volume_db": 12.0, "max_distance": 300.0, "unit_size": 25.0, "pitch_scale": 3.0}
+		)
 		
-		#very important setup do not change values or the game wont start
-		instance.set_volume_db(12.0)
-		instance.set_max_distance(300.0)
-		instance.set_unit_size(25.0)
-		instance.set_pitch_scale(3.0)
-		
-		add_child(instance)
+		new_actor.add_to_group("pulsar_beam_3d_flyby_sfx_%.f" % flyby_sfx)
 	pass
 
 
