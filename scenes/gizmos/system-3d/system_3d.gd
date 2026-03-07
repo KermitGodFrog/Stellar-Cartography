@@ -24,7 +24,8 @@ var pulsar_beam_material = preload("uid://dtpqpy1b1rnxv")
 var vis_panorama = preload("uid://byp6pykkhwnpf")
 var rad_panorama = preload("uid://c7u31smqi45er")
 
-var unit_spritesheet = preload("uid://dmi1b3su1mdfw")
+var glint_large_texture = preload("uid://c236x4bwtcifq")
+var glint_small_texture = preload("uid://kxo1pkvmhml4")
 
 
 var TUTORIAL_INGRESS_OVERRIDE: bool = false
@@ -50,7 +51,7 @@ var initial_beam_rotation: float = 0.0 #REQUIRED FOR PULSARS TO WORK. BARELY KNE
 
 
 
-var actors: Array[Node3D] = []
+var actors: Array[actor3D] = []
 
 
 
@@ -67,10 +68,25 @@ func _physics_process(_delta):
 	pass
 
 func update_positions() -> void: #camera and bodies
-	#update pulsars
-	for child in get_children():
-		if child.is_in_group("pulsar_beam_3d"):
-			var beam = child as MeshInstance3D
+	camera_offset.position = Vector3((player_position.x * system_scalar), 0, (player_position.y * system_scalar))
+	
+	for actor in actors:
+		#setting player distance, locking player distance from bodie and moving bodies
+		var associated_body = system.get_body_from_identifier(actor.get_identifier())
+		if associated_body:
+			actor.position = Vector3(associated_body.position.x * system_scalar, 0, associated_body.position.y * system_scalar)
+			if not actor.is_in_any_utility_cohorts():
+				var min_dist = ((associated_body.radius * system_scalar) * 1.1) + 1.0
+				if camera_offset.position.distance_to(actor.position) < min_dist:
+					camera_offset.position = actor.position + (actor.position.direction_to(camera_offset.position) * min_dist)
+		
+		if actor.is_in_cohort(actor3D.COHORTS.AI_UNIT):
+			actor.set("_player_position", player_position)
+			actor.set("_associated_position", associated_body.position)
+		
+		#update pulsars
+		if actor.is_in_cohort(actor3D.COHORTS.PULSAR_BEAM):
+			var beam = actor.mesh_instance as MeshInstance3D
 			var star = system.get_first_star()
 			
 			if star is pulsarBodyAPI:
@@ -81,43 +97,27 @@ func update_positions() -> void: #camera and bodies
 				beam.transform = beam.transform.looking_at(a_3d)
 				
 				#THIS ACTUALLY WORKS??? THANKS - initial_beam_rotation
-		elif child.is_in_group("pulsar_beam_3d_flyby_sfx"):
+		elif actor.is_in_cohort(actor3D.COHORTS.PULSAR_BEAM_SFX):
 			var star = system.get_first_star()
 			var player_distance = player_position.distance_to(star.position)
 			var offset = Vector2(0, -player_distance).rotated(star.beam_rotation)
 			#\/ horrible way to do this but i got 4.5 to 5 hours of sleep last night so give me a FUCKING BREAK !!! BITCH !!!
-			if child.is_in_group("pulsar_beam_3d_flyby_sfx_0"):
-				child.set_position(Vector3(offset.x, 0, offset.y) * system_scalar)
-			elif child.is_in_group("pulsar_beam_3d_flyby_sfx_1"):
-				child.set_position(Vector3(-offset.x, 0, -offset.y) * system_scalar)
-	
-	#setting player distance, locking player distance from bodie and moving bodies
-	camera_offset.position = Vector3((player_position.x * system_scalar), 0, (player_position.y * system_scalar))
-	for child in get_children():
-		if child.is_in_group("body_3d"):
-			var associated_body = system.get_body_from_identifier(child.get_identifier())
-			if associated_body:
-				child.position = Vector3(associated_body.position.x * system_scalar, 0, associated_body.position.y * system_scalar)
-				
-				var min_dist = ((associated_body.radius * system_scalar) * 1.1) + 1.0
-				if camera_offset.position.distance_to(child.position) < min_dist:
-					camera_offset.position = child.position + (child.position.direction_to(camera_offset.position) * min_dist)
-				
-				if child.is_in_group("unit_3d"):
-					child.set("_player_position", player_position)
-					child.set("_associated_position", associated_body.position)
+			if actor.is_in_group("pulsar_beam_3d_flyby_sfx_0"):
+				actor.set_position(Vector3(offset.x, 0, offset.y) * system_scalar)
+			elif actor.is_in_group("pulsar_beam_3d_flyby_sfx_1"):
+				actor.set_position(Vector3(-offset.x, 0, -offset.y) * system_scalar)
 	pass
 
 func update_camera_basis() -> void:
 	#looking at locked body or looking at target position
 	if locked_body_identifier:
-		var locked_body: Node
-		for child in get_children():
-			if child.is_in_group("body_3d"):
-				if child.get_identifier() == locked_body_identifier:
-					locked_body = child
-		if locked_body and target_position == Vector2.ZERO:
-			camera.global_transform = camera.global_transform.looking_at(locked_body.global_transform.origin)
+		var locked_actor: actor3D
+		for actor in actors:
+			if not actor.is_in_any_utility_cohorts():
+				if actor.get_identifier() == locked_body_identifier:
+					locked_actor = actor
+		if locked_actor and target_position == Vector2.ZERO:
+			camera.global_transform = camera.global_transform.looking_at(locked_actor.global_transform.origin)
 			camera.global_transform = camera.global_transform.orthonormalized()
 		elif target_position:
 			camera.global_transform = camera.global_transform.looking_at(Vector3((target_position.x * system_scalar), 0, (target_position.y * system_scalar)))
@@ -148,16 +148,16 @@ func update_miscellaneous() -> void:
 	pass
 
 func try_discover_orbit_bodies() -> void:
-	for child in get_children():
-		if child.is_in_group("body_3d"):
+	for actor in actors:
+		if actor.is_in_cohort(actor3D.COHORTS.ORBIT_BODY):
 			var a = camera.global_transform.basis.z
-			var b = (camera.global_transform.origin - child.global_transform.origin).normalized() 
+			var b = (camera.global_transform.origin - actor.global_transform.origin).normalized() 
 			if acos(a.dot(b)) <= deg_to_rad(camera.fov):
-				var associated_body = system.get_body_from_identifier(child.get_identifier()) #repeat code ?!?!?!?!?!?!?!??!?!?!?!?!??!!
+				var associated_body = system.get_body_from_identifier(actor.get_identifier()) #repeat code ?!?!?!?!?!?!?!??!?!?!?!?!??!!
 				if associated_body:
 					if associated_body is orbitBodyAPI:
 						if associated_body.get_required_scope_mode() == get_scope_mode():
-							var detection_scalar = camera_offset.position.distance_to(child.position) * camera.fov
+							var detection_scalar = camera_offset.position.distance_to(actor.position) * camera.fov
 							if detection_scalar < body_detection_range and associated_body.is_known() == false:
 								
 								if associated_body.is_hidden():
@@ -169,7 +169,7 @@ func try_discover_orbit_bodies() -> void:
 									if TUTORIAL_OMISSION_OVERRIDE == true:
 										continue
 								
-								emit_signal("foundBody", child.get_identifier())
+								emit_signal("foundBody", actor.get_identifier())
 								var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
 								if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name()), Color.DARK_GREEN)
 								elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", roundi(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
@@ -188,10 +188,8 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 	
 	for body in system.bodies:
 		
-		var new_actor: actor3D = null
-		
-		match body.get_script():
-			circularBodyAPI:
+		match body:
+			_ when body is circularBodyAPI:
 				
 				var mesh: SphereMesh
 				match body.get_type():
@@ -206,9 +204,9 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					starSystemAPI.BODY_TYPES.WORMHOLE:
 						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
 				
-				new_actor = await add_actor(
-					load("uid://c0ftvjeyy88j7").new(),
-					body.get_identifier(), 
+				add_actor(
+					#load("uid://c0ftvjeyy88j7").new(),
+					body.get_identifier(),
 					[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.CIRCULAR_BODY], 
 					{"mesh": mesh},
 					{},
@@ -216,46 +214,46 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					{"autoplay": true}
 				)
 				
-			glintBodyAPI:
+			_ when body is glintBodyAPI:
 				
-				new_actor = await add_actor(
-					load("uid://5srke1ti70bb").new(), 
+				add_actor(
+					#load("uid://5srke1ti70bb").new(), 
 					body.get_identifier(), 
 					[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.GLINT_BODY]
 				)
 				
-			customBodyAPI:
+			_ when body is customBodyAPI:
 				
 				if body.mesh_path.is_empty():
-					new_actor = await add_actor(
-						load("uid://5srke1ti70bb").new(), 
+					add_actor(
+						#load("uid://5srke1ti70bb").new(), 
 						body.get_identifier(), 
 						[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.GLINT_BODY]
 					)
 				else:
-					new_actor = await add_actor(
-						actor3D.new(),
+					add_actor(
 						body.get_identifier(),
 						[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.GLINT_BODY],
 						{"mesh": load(body.mesh_path)}
 					)
 				
-			AIUnitAPI:
+			_ when body is AIUnitAPI:
+				print("ai unit")
 				
-				new_actor = await add_actor(
-					load("uid://bp4kotll44otn").new(),
+				add_actor(
+					#load("uid://bp4kotll44otn").new(),
 					body.get_identifier(),
 					[actor3D.COHORTS.UNIT_BODY, actor3D.COHORTS.AI_UNIT],
 					{},
-					{"texture": unit_spritesheet, "hframes": 4, "pixel_size": starSystemAPI.get_default_radius_solar_radii() * 16.0}, #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)
+					{"texture": load("uid://dmi1b3su1mdfw"), "hframes": 4, "pixel_size": starSystemAPI.get_default_radius_solar_radii() * 16.0}, #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)
 					{},
 					{"autoplay": true}
 				)
 				
-			mineUnitAPI:
+			_ when body is mineUnitAPI:
 				
-				new_actor = await add_actor(
-					load("uid://dp1qkb1o0tmap").new(),
+				add_actor(
+					#load("uid://dp1qkb1o0tmap").new(),
 					body.get_identifier(),
 					[actor3D.COHORTS.UNIT_BODY, actor3D.COHORTS.MINE_UNIT],
 					{},
@@ -263,21 +261,16 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 				)
 				
 				add_actor(
-					actor3D.new(),
 					body.get_identifier(),
 					[actor3D.COHORTS.AUDIO, actor3D.COHORTS.MINE_SFX],
 					{},
 					{},
-					{"stream": load("uid://b7vu4bpvxlu6n"), "volume_db": -12.0, "max_db": -12.0, "panning_strength": 3.0, "bus": "SFX"}
+					{"stream": load("uid://b7vu4bpvxlu6n"), "volume_db": -12.0, "max_db": -12.0, "panning_strength": 3.0}
 				)
-		
-		if new_actor != null:
-			new_actor._on_scope_mode_changed(get_scope_mode())
 	pass
 
-func add_actor(actor: actor3D, id: int, cohorts: Array[actor3D.COHORTS], mesh_variables: Dictionary = {}, sprite_variables: Dictionary = {}, audio_variables: Dictionary = {}, flyby_variables: Dictionary = {}) -> Node3D:
+func add_actor(id: int, cohorts: Array[actor3D.COHORTS], mesh_variables: Dictionary = {}, sprite_variables: Dictionary = {}, audio_variables: Dictionary = {}, flyby_variables: Dictionary = {}) -> Node3D:
 	var new_actor = actor_3d.instantiate()
-	new_actor.set_script(actor)
 	new_actor.set_identifier(id)
 	for c in cohorts:
 		new_actor.add_cohort(c)
@@ -291,6 +284,36 @@ func add_actor(actor: actor3D, id: int, cohorts: Array[actor3D.COHORTS], mesh_va
 		new_actor.initialize(mesh_variables, sprite_variables, audio_variables, flyby_variables)
 		return new_actor
 
+func add_pulsar_beams(_star: pulsarBodyAPI) -> void:
+	initial_beam_rotation = _star.beam_rotation
+	var points = get_pulsar_beams_as_3D_points(_star)
+	
+	for beam_points in points:
+		var arrays = []
+		arrays.resize(Mesh.ARRAY_MAX)
+		arrays[Mesh.ARRAY_VERTEX] = beam_points
+		
+		var arr_mesh = ArrayMesh.new()
+		arr_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		
+		add_actor(
+			_star.get_identifier(),
+			[actor3D.COHORTS.PULSAR_BEAM],
+			{"mesh": arr_mesh, "material": pulsar_beam_material}
+		)
+	
+	for flyby_sfx in 2:
+		var new_actor = await add_actor(
+			_star.get_identifier(),
+			[actor3D.COHORTS.AUDIO, actor3D.COHORTS.PULSAR_BEAM_SFX],
+			{},
+			{},
+			{},
+			{"autoplay": true, "volume_db": 12.0, "max_distance": 300.0, "unit_size": 25.0, "pitch_scale": 3.0}
+		)
+		
+		new_actor.add_to_group("pulsar_beam_3d_flyby_sfx_%.f" % flyby_sfx)
+	pass
 
 func generate_circular_body_sphere_mesh(radius: float, color: Color, emission_color: Color, emission_multiplier: float, overlay_shader_resource = null, surface_texture = null) -> SphereMesh:
 	var mesh = SphereMesh.new()
@@ -310,39 +333,6 @@ func generate_circular_body_sphere_mesh(radius: float, color: Color, emission_co
 	mesh.set_material(material)
 	return mesh
 
-func add_pulsar_beams(_star: pulsarBodyAPI) -> void:
-	initial_beam_rotation = _star.beam_rotation
-	var points = get_pulsar_beams_as_3D_points(_star)
-	
-	for beam_points in points:
-		var arrays = []
-		arrays.resize(Mesh.ARRAY_MAX)
-		arrays[Mesh.ARRAY_VERTEX] = beam_points
-		
-		var arr_mesh = ArrayMesh.new()
-		arr_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-		
-		add_actor(
-			actor3D.new(),
-			_star.get_identifier(),
-			[actor3D.COHORTS.PULSAR_BEAM],
-			{"mesh": arr_mesh, "material": pulsar_beam_material}
-		)
-	
-	for flyby_sfx in 2:
-		var new_actor = await add_actor(
-			actor3D.new(),
-			_star.get_identifier(),
-			[actor3D.COHORTS.AUDIO, actor3D.COHORTS.PULSAR_BEAM_SFX],
-			{},
-			{},
-			{},
-			{"autoplay": true, "volume_db": 12.0, "max_distance": 300.0, "unit_size": 25.0, "pitch_scale": 3.0}
-		)
-		
-		new_actor.add_to_group("pulsar_beam_3d_flyby_sfx_%.f" % flyby_sfx)
-	pass
-
 
 
 
@@ -359,32 +349,76 @@ func _on_target_FOV_change(fov: float):
 	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "scopes_fov_change")
 	pass
 
-func _on_scope_mode_changed(_new_mode: playerAPI.SCOPE_MODES) -> void:
-	for child in get_children():
-		if child.is_in_group("body_3d"):
-			child._on_scope_mode_changed(_new_mode)
-	match _new_mode:
+func _on_scope_mode_changed(new_mode: playerAPI.SCOPE_MODES) -> void:
+	match new_mode:
 		playerAPI.SCOPE_MODES.VIS:
 			rad_post_process.hide()
 			environment.get_environment().get_sky().get_material().set_shader_parameter("source_panorama", vis_panorama)
 		playerAPI.SCOPE_MODES.RAD:
 			rad_post_process.show()
 			environment.get_environment().get_sky().get_material().set_shader_parameter("source_panorama", rad_panorama)
+	
+	
+	for actor in actors:
+		if actor.is_in_cohort(actor3D.COHORTS.CIRCULAR_BODY):
+			match new_mode:
+				playerAPI.SCOPE_MODES.VIS:
+					actor.mesh_instance.set_transparency(0.0)
+				playerAPI.SCOPE_MODES.RAD:
+					actor.mesh_instance.set_transparency(0.9)
+		
+		if actor.is_in_cohort(actor3D.COHORTS.GLINT_BODY):
+			match new_mode:
+				playerAPI.SCOPE_MODES.VIS:
+					actor.sprite.set_texture(glint_small_texture)
+				playerAPI.SCOPE_MODES.RAD:
+					actor.sprite.set_texture(glint_large_texture)
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	pass
 
 func _on_mine_detonated(id: int) -> void:
-	for child in get_children():
-		if child.is_in_group("mine_3d_sfx"):
-			if child.get_identifier() == id:
-				child.play()
+	for actor in actors:
+		if actor.is_in_cohort(actor3D.COHORTS.MINE_SFX):
+			if actor.get_identifier() == id:
+				actor.audio.play()
 	pass
 
 func _on_body_removed(id: int) -> void:
-	for child in get_children():
-		if child.is_in_group("body_3d"):
-			if child.get_identifier() == id:
-				call_deferred("remove_child", child)
-				child.queue_free()
+	for actor in actors:
+		if not actor.is_in_cohort(actor3D.COHORTS.AUDIO):
+			if actor.get_identifier() == id:
+				call_deferred("remove_child", actor)
+				actor.queue_free()
 	pass
 
 func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Array]:

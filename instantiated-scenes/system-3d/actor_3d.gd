@@ -19,8 +19,8 @@ enum COHORTS {
 	ORBIT_BODY, UNIT_BODY,
 	CIRCULAR_BODY, GLINT_BODY, CUSTOM_BODY,
 	AI_UNIT, MINE_UNIT,
-	ASTEROID_BELT, PULSAR_BEAM, 
-	AUDIO, MINE_SFX, PULSAR_BEAM_SFX
+	ASTEROID_BELT, PULSAR_BEAM, #UTILITY
+	AUDIO, MINE_SFX, PULSAR_BEAM_SFX #UTILITY
 }
 var cohorts: Array[COHORTS] = []
 func add_cohort(c: COHORTS) -> void:
@@ -35,6 +35,16 @@ func is_in_cohort(c: COHORTS) -> bool:
 	if cohorts.has(c):
 		return true
 	return false
+func is_in_all_cohorts(ca: Array[COHORTS]) -> bool:
+	for c in ca:
+		if not cohorts.has(c):
+			return false
+	return true
+func is_in_any_cohorts(ca: Array[COHORTS]) -> bool:
+	return ca.any(func(c): cohorts.has(c))
+func is_in_any_utility_cohorts() -> bool:
+	return is_in_any_cohorts([actor3D.COHORTS.ASTEROID_BELT, actor3D.COHORTS.PULSAR_BEAM, actor3D.COHORTS.AUDIO])
+
 
 func initialize(_mesh_instance_variables: Dictionary = {}, _sprite_variables: Dictionary = {}, _audio_variables: Dictionary = {}, _flyby_variables: Dictionary = {}) -> void:
 	sprite.set_pixel_size(starSystemAPI.get_default_radius_solar_radii())
@@ -48,7 +58,4 @@ func initialize(_mesh_instance_variables: Dictionary = {}, _sprite_variables: Di
 				audio.set(v, variables[v])
 			elif variables == _flyby_variables:
 				flyby.set(v, variables[v])
-	pass
-
-func _on_scope_mode_changed(_new_mode: playerAPI.SCOPE_MODES) -> void:
 	pass
