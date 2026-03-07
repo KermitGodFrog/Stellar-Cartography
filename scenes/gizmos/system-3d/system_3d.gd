@@ -80,10 +80,6 @@ func update_positions() -> void: #camera and bodies
 				if camera_offset.position.distance_to(actor.position) < min_dist:
 					camera_offset.position = actor.position + (actor.position.direction_to(camera_offset.position) * min_dist)
 		
-		if actor.is_in_cohort(actor3D.COHORTS.AI_UNIT):
-			actor.set("_player_position", player_position)
-			actor.set("_associated_position", associated_body.position)
-		
 		#update pulsars
 		if actor.is_in_cohort(actor3D.COHORTS.PULSAR_BEAM):
 			var beam = actor.mesh_instance as MeshInstance3D
@@ -181,10 +177,11 @@ func try_discover_orbit_bodies() -> void:
 
 
 func regenerate_system() -> void: #assumes that 'system' is set by game.gd beforehand - which is what happens.
-	for actor in actors:
-		remove_child(actor)
-		actor.queue_free()
 	actors.clear()
+	for child in get_children():
+		if child.is_in_group("actor_3d"):
+			remove_child(child)
+			child.queue_free()
 	
 	for body in system.bodies:
 		
@@ -211,7 +208,7 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					{"mesh": mesh},
 					{},
 					{},
-					{"autoplay": true}
+					{"playing": true}
 				)
 				
 			_ when body is glintBodyAPI:
@@ -247,7 +244,7 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					{},
 					{"texture": load("uid://dmi1b3su1mdfw"), "hframes": 4, "pixel_size": starSystemAPI.get_default_radius_solar_radii() * 16.0}, #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)
 					{},
-					{"autoplay": true}
+					{"playing": true}
 				)
 				
 			_ when body is mineUnitAPI:
@@ -257,7 +254,7 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					body.get_identifier(),
 					[actor3D.COHORTS.UNIT_BODY, actor3D.COHORTS.MINE_UNIT],
 					{},
-					{"texture": load("uid://ckn4a4yoov0cb"), "pixel_size": starSystemAPI.get_default_radius_solar_radii() / 10.0}
+					{"texture": load("uid://ckn4a4yoov0cb"), "pixel_size": starSystemAPI.get_default_radius_solar_radii() / 10.0, "fixed_size": true}
 				)
 				
 				add_actor(
@@ -267,6 +264,8 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					{},
 					{"stream": load("uid://b7vu4bpvxlu6n"), "volume_db": -12.0, "max_db": -12.0, "panning_strength": 3.0}
 				)
+	
+	_on_scope_mode_changed(get_scope_mode()) #to refresh all cohorts which change on scope mode change! dont want to assume we r in VIS mode >:)
 	pass
 
 func add_actor(id: int, cohorts: Array[actor3D.COHORTS], mesh_variables: Dictionary = {}, sprite_variables: Dictionary = {}, audio_variables: Dictionary = {}, flyby_variables: Dictionary = {}) -> Node3D:
@@ -296,11 +295,14 @@ func add_pulsar_beams(_star: pulsarBodyAPI) -> void:
 		var arr_mesh = ArrayMesh.new()
 		arr_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 		
-		add_actor(
+		var new_actor = await add_actor(
 			_star.get_identifier(),
 			[actor3D.COHORTS.PULSAR_BEAM],
-			{"mesh": arr_mesh, "material": pulsar_beam_material}
+			{"mesh": arr_mesh}
 		)
+		
+		new_actor.mesh_instance.set_surface_override_material(0, pulsar_beam_material)
+		
 	
 	for flyby_sfx in 2:
 		var new_actor = await add_actor(
@@ -309,7 +311,7 @@ func add_pulsar_beams(_star: pulsarBodyAPI) -> void:
 			{},
 			{},
 			{},
-			{"autoplay": true, "volume_db": 12.0, "max_distance": 300.0, "unit_size": 25.0, "pitch_scale": 3.0}
+			{"playing": true, "volume_db": 12.0, "max_distance": 300.0, "unit_size": 25.0, "pitch_scale": 3.0}
 		)
 		
 		new_actor.add_to_group("pulsar_beam_3d_flyby_sfx_%.f" % flyby_sfx)
@@ -358,7 +360,6 @@ func _on_scope_mode_changed(new_mode: playerAPI.SCOPE_MODES) -> void:
 			rad_post_process.show()
 			environment.get_environment().get_sky().get_material().set_shader_parameter("source_panorama", rad_panorama)
 	
-	
 	for actor in actors:
 		if actor.is_in_cohort(actor3D.COHORTS.CIRCULAR_BODY):
 			match new_mode:
@@ -366,44 +367,18 @@ func _on_scope_mode_changed(new_mode: playerAPI.SCOPE_MODES) -> void:
 					actor.mesh_instance.set_transparency(0.0)
 				playerAPI.SCOPE_MODES.RAD:
 					actor.mesh_instance.set_transparency(0.9)
-		
 		if actor.is_in_cohort(actor3D.COHORTS.GLINT_BODY):
 			match new_mode:
 				playerAPI.SCOPE_MODES.VIS:
 					actor.sprite.set_texture(glint_small_texture)
 				playerAPI.SCOPE_MODES.RAD:
 					actor.sprite.set_texture(glint_large_texture)
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		if actor.is_in_any_cohorts([actor3D.COHORTS.AI_UNIT, actor3D.COHORTS.MINE_UNIT]):
+			match new_mode:
+				playerAPI.SCOPE_MODES.VIS:
+					actor.sprite.hide()
+				playerAPI.SCOPE_MODES.RAD:
+					actor.sprite.show()
 	pass
 
 func _on_mine_detonated(id: int) -> void:
@@ -415,7 +390,7 @@ func _on_mine_detonated(id: int) -> void:
 
 func _on_body_removed(id: int) -> void:
 	for actor in actors:
-		if not actor.is_in_cohort(actor3D.COHORTS.AUDIO):
+		if not actor.is_in_cohort(actor3D.COHORTS.MINE_SFX):
 			if actor.get_identifier() == id:
 				call_deferred("remove_child", actor)
 				actor.queue_free()

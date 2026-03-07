@@ -41,7 +41,10 @@ func is_in_all_cohorts(ca: Array[COHORTS]) -> bool:
 			return false
 	return true
 func is_in_any_cohorts(ca: Array[COHORTS]) -> bool:
-	return ca.any(func(c): cohorts.has(c))
+	for c in ca:
+		if cohorts.has(c):
+			return true
+	return false
 func is_in_any_utility_cohorts() -> bool:
 	return is_in_any_cohorts([actor3D.COHORTS.ASTEROID_BELT, actor3D.COHORTS.PULSAR_BEAM, actor3D.COHORTS.AUDIO])
 
