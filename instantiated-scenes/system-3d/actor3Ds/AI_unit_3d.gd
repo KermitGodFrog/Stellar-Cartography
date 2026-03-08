@@ -1,7 +1,5 @@
 extends actor3D
 
-#needs to update animation in real time!
-
 var velocity_position_hint: Array[Vector2] = [Vector2.ZERO, Vector2.ZERO] #player position last frame, self position last frame
 var last_distance_hint: float
 var _player_position: Vector2 #set by unit_3d.gd _physics_process

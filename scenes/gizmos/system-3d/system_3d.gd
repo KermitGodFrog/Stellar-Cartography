@@ -50,9 +50,7 @@ func get_scope_mode() -> playerAPI.SCOPE_MODES:
 var initial_beam_rotation: float = 0.0 #REQUIRED FOR PULSARS TO WORK. BARELY KNEW WHAT I WAS DOING WHEN I MADE IT WORK SO DONT TOUCH!
 
 
-
 var actors: Array[actor3D] = []
-
 
 
 func _ready():

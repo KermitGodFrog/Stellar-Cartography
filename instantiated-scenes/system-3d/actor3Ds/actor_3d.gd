@@ -1,5 +1,8 @@
 extends Node3D
 class_name actor3D
+#classes that inherit actor3D can only do so if they manipulates values at runtime and don't:
+#a) do anything related to setup, which is managed by system_3d.gd
+#b) do anything related to changing values on scope mode switch, which is managed by system_3d.gd
 
 @onready var mesh_instance = $mesh_instance
 @onready var sprite = $sprite
