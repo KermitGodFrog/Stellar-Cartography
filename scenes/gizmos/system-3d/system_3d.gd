@@ -243,7 +243,7 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					{},
 					{"texture": load("uid://dmi1b3su1mdfw"), "hframes": 4, "pixel_size": starSystemAPI.get_default_radius_solar_radii() * 16.0}, #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)
 					{},
-					{"playing": true, "pitch_scale": 10.0},
+					{},
 					load("uid://bp4kotll44otn")
 				)
 				
