@@ -822,8 +822,9 @@ func get_orbit_angle_change(hook: bodyAPI, _orbit_distance: float) -> float: #(p
 func get_orbit_distance(hook: bodyAPI, iteration: int) -> float:
 	return hook.radius + pow(hook.radius, 1/3) + ((hook.radius * 10) * iteration)
 
-func get_default_radius_solar_radii() -> float:
-	return planet_classification_data.get("Terran").get("earth_radius_min") / 109.1
+static func get_default_radius_solar_radii() -> float:
+	#return planet_classification_data.get("Terran").get("earth_radius_min") / 109.1
+	return pow(pow(10, -1.3), 0.28) / 109.1
 
 func get_star_types_mixed_weights() -> Dictionary:
 	var mixed_types: Dictionary = {}

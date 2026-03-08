@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://drrmba8quj4mu"]
+
+[ext_resource type="Script" uid="uid://dw50pf4yjhchp" path="res://instantiated-scenes/system-3d/actor3Ds/actor_3d.gd" id="1_t258e"]
+[ext_resource type="PackedScene" uid="uid://c7mmitfihh8pe" path="res://instantiated-scenes/system-3d/flyby.tscn" id="2_di35o"]
+
+[node name="actor_3d" type="Node3D" groups=["actor_3d"]]
+script = ExtResource("1_t258e")
+
+[node name="flyby" parent="." instance=ExtResource("2_di35o")]
+
+[node name="mesh_instance" type="MeshInstance3D" parent="."]
+
+[node name="sprite" type="Sprite3D" parent="."]
+billboard = 1
+texture_filter = 0
+
+[node name="audio" type="AudioStreamPlayer3D" parent="."]
+panning_strength = 3.0
+bus = &"SFX"
