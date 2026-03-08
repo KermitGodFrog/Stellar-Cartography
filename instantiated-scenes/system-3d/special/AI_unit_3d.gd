@@ -6,8 +6,13 @@ var velocity_position_hint: Array[Vector2] = [Vector2.ZERO, Vector2.ZERO] #playe
 var last_distance_hint: float
 var _player_position: Vector2 #set by unit_3d.gd _physics_process
 var _associated_position: Vector2 #set by unit_3d.gd _physics_process
+var animation_time: float
 
 func _physics_process(delta: float) -> void:
+	animation_time += delta * 4.0 #new frame every 0.25s
+	var real_frame: int = wrapi(int(animation_time), 0, 4)
+	sprite.frame = real_frame
+	
 	var current_distance_hint = _associated_position.distance_to(_player_position)
 	
 	var player_displacement = _player_position - velocity_position_hint[0]
