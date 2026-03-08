@@ -80,6 +80,10 @@ func update_positions() -> void: #camera and bodies
 				if camera_offset.position.distance_to(actor.position) < min_dist:
 					camera_offset.position = actor.position + (actor.position.direction_to(camera_offset.position) * min_dist)
 		
+		if actor.is_in_cohort(actor3D.COHORTS.AI_UNIT):
+			actor.set("_player_position", player_position)
+			actor.set("_associated_position", associated_body.position)
+		
 		#update pulsars
 		if actor.is_in_cohort(actor3D.COHORTS.PULSAR_BEAM):
 			var beam = actor.mesh_instance as MeshInstance3D
@@ -173,15 +177,15 @@ func try_discover_orbit_bodies() -> void:
 
 
 
-
-
-
 func regenerate_system() -> void: #assumes that 'system' is set by game.gd beforehand - which is what happens.
+	var remove_actors: Array[actor3D] = []
+	remove_actors.append_array(actors)
+	for actor in remove_actors:
+		actors.erase(actor)
+		call_deferred("remove_child", actor)
+		actor.queue_free()
 	actors.clear()
-	for child in get_children():
-		if child.is_in_group("actor_3d"):
-			remove_child(child)
-			child.queue_free()
+	remove_actors.clear()
 	
 	for body in system.bodies:
 		
@@ -235,7 +239,6 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					)
 				
 			_ when body is AIUnitAPI:
-				print("ai unit")
 				
 				add_actor(
 					#load("uid://bp4kotll44otn").new(),
@@ -244,7 +247,8 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					{},
 					{"texture": load("uid://dmi1b3su1mdfw"), "hframes": 4, "pixel_size": starSystemAPI.get_default_radius_solar_radii() * 16.0}, #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)
 					{},
-					{"playing": true}
+					{"playing": true},
+					load("uid://bp4kotll44otn")
 				)
 				
 			_ when body is mineUnitAPI:
@@ -254,7 +258,10 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					body.get_identifier(),
 					[actor3D.COHORTS.UNIT_BODY, actor3D.COHORTS.MINE_UNIT],
 					{},
-					{"texture": load("uid://ckn4a4yoov0cb"), "pixel_size": starSystemAPI.get_default_radius_solar_radii() / 10.0, "fixed_size": true}
+					{"texture": load("uid://ckn4a4yoov0cb"), "pixel_size": starSystemAPI.get_default_radius_solar_radii() / 10.0, "fixed_size": true},
+					{},
+					{},
+					load("uid://dp1qkb1o0tmap")
 				)
 				
 				add_actor(
@@ -268,8 +275,10 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 	_on_scope_mode_changed(get_scope_mode()) #to refresh all cohorts which change on scope mode change! dont want to assume we r in VIS mode >:)
 	pass
 
-func add_actor(id: int, cohorts: Array[actor3D.COHORTS], mesh_variables: Dictionary = {}, sprite_variables: Dictionary = {}, audio_variables: Dictionary = {}, flyby_variables: Dictionary = {}) -> Node3D:
+func add_actor(id: int, cohorts: Array[actor3D.COHORTS], mesh_variables: Dictionary = {}, sprite_variables: Dictionary = {}, audio_variables: Dictionary = {}, flyby_variables: Dictionary = {}, override_script = null) -> Node3D:
 	var new_actor = actor_3d.instantiate()
+	if override_script != null:
+		new_actor.set_script(override_script)
 	new_actor.set_identifier(id)
 	for c in cohorts:
 		new_actor.add_cohort(c)
@@ -389,11 +398,15 @@ func _on_mine_detonated(id: int) -> void:
 	pass
 
 func _on_body_removed(id: int) -> void:
+	var remove_actors: Array[actor3D] = []
 	for actor in actors:
 		if not actor.is_in_cohort(actor3D.COHORTS.MINE_SFX):
 			if actor.get_identifier() == id:
-				call_deferred("remove_child", actor)
-				actor.queue_free()
+				remove_actors.append(actor)
+	for actor in remove_actors:
+		actors.erase(actor)
+		call_deferred("remove_child", actor)
+		actor.queue_free()
 	pass
 
 func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Array]:

@@ -26,11 +26,3 @@ func _physics_process(delta: float) -> void:
 	velocity_position_hint[1] = _associated_position
 	last_distance_hint = current_distance_hint
 	pass
-
-func _on_scope_mode_changed(_new_mode: playerAPI.SCOPE_MODES) -> void:
-	match _new_mode:
-		playerAPI.SCOPE_MODES.VIS:
-			hide()
-		playerAPI.SCOPE_MODES.RAD:
-			show()
-	pass
