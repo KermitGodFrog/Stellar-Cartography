@@ -176,7 +176,7 @@ func switch_task(override_task = null) -> void:
 			task_clock.start(global_data.get_randf(20.0,60.0))
 		TASKS.USE_LIDAR:
 			task_clock.start(15.0)
-			emit_signal("play_sound", "res://sound/game/bodyAPIs/unitAPIs/LIDAR_unit_suite.tres", 0.0, "SFX")
+			emit_signal("play_sound", "res://sound/game/bodyAPIs/unitAPIs/LIDAR_unit_suite.tres", -12.0, "SFX")
 			course_to_position(position)
 		TASKS.MOVE_TO_LIDAR:
 			if last_player_position != Vector2.ZERO:
