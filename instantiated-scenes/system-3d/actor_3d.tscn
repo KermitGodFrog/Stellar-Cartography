@@ -15,4 +15,5 @@ billboard = 1
 texture_filter = 0
 
 [node name="audio" type="AudioStreamPlayer3D" parent="."]
+panning_strength = 3.0
 bus = &"SFX"

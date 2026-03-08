@@ -206,7 +206,6 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
 				
 				add_actor(
-					#load("uid://c0ftvjeyy88j7").new(),
 					body.get_identifier(),
 					[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.CIRCULAR_BODY], 
 					{"mesh": mesh},
@@ -218,7 +217,6 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 			_ when body is glintBodyAPI:
 				
 				add_actor(
-					#load("uid://5srke1ti70bb").new(), 
 					body.get_identifier(), 
 					[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.GLINT_BODY]
 				)
@@ -227,7 +225,6 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 				
 				if body.mesh_path.is_empty():
 					add_actor(
-						#load("uid://5srke1ti70bb").new(), 
 						body.get_identifier(), 
 						[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.GLINT_BODY]
 					)
@@ -241,24 +238,22 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 			_ when body is AIUnitAPI:
 				
 				add_actor(
-					#load("uid://bp4kotll44otn").new(),
 					body.get_identifier(),
 					[actor3D.COHORTS.UNIT_BODY, actor3D.COHORTS.AI_UNIT],
 					{},
 					{"texture": load("uid://dmi1b3su1mdfw"), "hframes": 4, "pixel_size": starSystemAPI.get_default_radius_solar_radii() * 16.0}, #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)
 					{},
-					{"playing": true},
+					{"playing": true, "pitch_scale": 10.0},
 					load("uid://bp4kotll44otn")
 				)
 				
 			_ when body is mineUnitAPI:
 				
 				add_actor(
-					#load("uid://dp1qkb1o0tmap").new(),
 					body.get_identifier(),
 					[actor3D.COHORTS.UNIT_BODY, actor3D.COHORTS.MINE_UNIT],
 					{},
-					{"texture": load("uid://ckn4a4yoov0cb"), "pixel_size": starSystemAPI.get_default_radius_solar_radii() / 10.0, "fixed_size": true},
+					{"texture": load("uid://ckn4a4yoov0cb"), "pixel_size": starSystemAPI.get_default_radius_solar_radii() / 20.0, "modulate": Color("ff7f6e"), "fixed_size": true},
 					{},
 					{},
 					load("uid://dp1qkb1o0tmap")
@@ -269,7 +264,7 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					[actor3D.COHORTS.AUDIO, actor3D.COHORTS.MINE_SFX],
 					{},
 					{},
-					{"stream": load("uid://b7vu4bpvxlu6n"), "volume_db": -12.0, "max_db": -12.0, "panning_strength": 3.0}
+					{"stream": load("uid://b7vu4bpvxlu6n"), "attenuation_model": 3, "volume_db": -12.0, "max_db": -12.0} #attenuation model 3 -> ATTENUATION_DISABLED
 				)
 	
 	_on_scope_mode_changed(get_scope_mode()) #to refresh all cohorts which change on scope mode change! dont want to assume we r in VIS mode >:)
