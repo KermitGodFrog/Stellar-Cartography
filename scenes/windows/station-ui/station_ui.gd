@@ -164,7 +164,7 @@ func _on_upgrade_mouse_entered(description: String) -> void:
 
 func _on_upgrade_pressed(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	if station: 
-		if not station.is_module_store_disabled:
+		if not station.module_store_disabled:
 			emit_signal("upgradeShip", upgrade_idx, cost)
 		else:
 			disclaimer_label.blink(Color.RED)
@@ -172,7 +172,7 @@ func _on_upgrade_pressed(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 
 func _on_disable_module_store() -> void:
 	if station:
-		station.set("is_module_store_disabled", true)
+		station.set("module_store_disabled", true)
 		get_tree().call_group("audioHandler", "play_once", station_upgrade, 0.0, "SFX") #assumes that every time the module store is disabled, its ALWAYS because a module is bought. pay attention to this 
 	pass
 

@@ -2,6 +2,9 @@ extends glintBodyAPI
 class_name stationBodyAPI
 #any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
-@export var station_classification: int #GAME DATA 
+@export var station_classification: game_data.STATION_CLASSIFICATIONS #GAME DATA 
 @export var sell_percentage_of_market_price: int
-@export var is_module_store_disabled: bool = false
+@export var module_store_disabled: bool = false # <- shouldnt have 'is' in variable name
+
+@export var sell_module_price_multiplier: float # default of 0.25?
+@export var excluded_modules: Array[playerAPI.UPGRADE_ID] = []
