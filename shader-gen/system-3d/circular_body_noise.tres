@@ -1,0 +1,6 @@
+[gd_resource type="FastNoiseLite" format=3 uid="uid://bv1pwhv5v14iw"]
+
+[resource]
+noise_type = 0
+fractal_gain = 0.25
+fractal_weighted_strength = 0.25

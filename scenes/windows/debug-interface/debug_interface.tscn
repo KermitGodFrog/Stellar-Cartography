@@ -92,6 +92,10 @@ text = "REMOVE 5% MORALE"
 layout_mode = 2
 text = "QUICK TRAVERSE (SKIP SYSTEM)"
 
+[node name="regen_system_3d_button" type="Button" parent="debug_interface/scroll"]
+layout_mode = 2
+text = "REGENERATE SYSTEM 3D"
+
 [node name="upgrades_scroll" type="HBoxContainer" parent="debug_interface/scroll"]
 layout_mode = 2
 
@@ -144,6 +148,7 @@ text = "+"
 [connection signal="pressed" from="debug_interface/scroll/max_character_standing_button" to="debug_interface" method="_on_max_character_standing_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/remove_morale_button" to="debug_interface" method="_on_remove_morale_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/quick_traverse_button" to="debug_interface" method="_on_quick_traverse_button_pressed"]
+[connection signal="pressed" from="debug_interface/scroll/regen_system_3d_button" to="debug_interface" method="_on_regen_system_3d_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/upgrades_scroll/unlock_button" to="debug_interface" method="_on_unlock_button_pressed"]
 [connection signal="text_changed" from="debug_interface/scroll/query_scroll/concept_scroll/concept_edit" to="debug_interface/scroll/query_scroll" method="_on_concept_edit_text_changed"]
 [connection signal="pressed" from="debug_interface/scroll/query_scroll/concept_scroll/query_button" to="debug_interface" method="_on_query_button_pressed"]

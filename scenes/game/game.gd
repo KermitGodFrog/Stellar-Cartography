@@ -241,6 +241,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("removePlayerMorale", _on_remove_player_morale)
 	debug_interface.connect("quickTraverse", _on_DEBUG_quick_traverse)
 	debug_interface.connect("unlockUpgrade", _on_unlock_upgrade)
+	debug_interface.connect("regenerateSystem3D", _on_DEBUG_regenerate_system_3d)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -1292,6 +1293,10 @@ func _on_DEBUG_quick_traverse() -> void:
 		adjusted_wormholes.erase(w)
 	var final_wormhole = adjusted_wormholes.pick_random()
 	enter_wormhole(final_wormhole, world.player.current_star_system.get_wormholes(), final_wormhole.destination_system, true)
+	pass
+
+func _on_DEBUG_regenerate_system_3d() -> void:
+	system_3d.regenerate_system()
 	pass
 
 

@@ -27,6 +27,7 @@ var rad_panorama = preload("uid://c7u31smqi45er")
 var glint_large_texture = preload("uid://c236x4bwtcifq")
 var glint_small_texture = preload("uid://kxo1pkvmhml4")
 
+var circular_body_texture = preload("uid://dmcaf8av01hwx")
 
 var TUTORIAL_INGRESS_OVERRIDE: bool = false
 var TUTORIAL_OMISSION_OVERRIDE: bool = false
@@ -193,9 +194,9 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 				var mesh: SphereMesh
 				match body.get_type():
 					starSystemAPI.BODY_TYPES.PLANET:
-						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.25)
+						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.25, null, get_surface_texture_for_circular_body(body))
 					starSystemAPI.BODY_TYPES.STAR:
-						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, body.surface_color, body.surface_color, 1.0)
+						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, body.surface_color, body.surface_color, 1.0, null, get_surface_texture_for_circular_body(body))
 						star_omni_light.light_color = body.surface_color
 						star_omni_light.light_size = body.radius
 						if body is pulsarBodyAPI:
@@ -432,7 +433,60 @@ func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Ar
 	#these points are already rotated according to the stars current beam_rotation variable at the time of the system being loaded! therefore, to find the real rotation for the MeshInstances, do beam_rotation - initial_beam_rotation :>
 	return [points1, points2]
 
-
+func get_surface_texture_for_circular_body(body: circularBodyAPI) -> NoiseTexture2D:
+	var texture = circular_body_texture.duplicate(true)
+	var noise = texture.noise
+	noise.set_seed(randi())
+	texture.color_ramp.colors[0] = body.surface_color.lightened(randfn(0.1, 0.01))
+	
+	if body.get_type() == starSystemAPI.BODY_TYPES.STAR:
+		noise.set_frequency(randfn(0.1, 0.01))
+	elif body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
+		noise.set_frequency(randfn(0.01, 0.0025))
+		
+		match body.metadata.get("planet_classification"):
+			"Terran":
+				match body.metadata.get("planet_type"):
+					"Hycean":
+						texture.color_ramp.colors[0] = Color.GREEN
+						noise.fractal_type = 2 #RIDGED
+						noise.fractal_gain = 0.0
+						noise.fractal_weighted_strength = 1.0
+					"Ocean":
+						texture.color_ramp.colors[0] = Color.BLACK
+						texture.color_ramp.colors[1] = Color.GREEN
+						noise.fractal_gain = 2.0
+						noise.fractal_weighted_strength = 1.0
+						noise.frequency = 0.05
+					"Earth-like":
+						texture.color_ramp.colors[0] = Color.BLACK
+						texture.color_ramp.colors[1] = Color.SKY_BLUE
+						noise.fractal_gain = 0.0
+						noise.fractal_weighted_strength = 1.0
+					_:
+						noise.fractal_type = [FastNoiseLite.FractalType.FRACTAL_FBM, FastNoiseLite.FractalType.FRACTAL_NONE, FastNoiseLite.FractalType.FRACTAL_PING_PONG, FastNoiseLite.FractalType.FRACTAL_RIDGED].pick_random()
+						if randf() > 0.75:
+							texture.color_ramp.colors[0] = [Color.DARK_GRAY, Color.DIM_GRAY, Color.DARK_SLATE_GRAY, Color.LIGHT_SLATE_GRAY, Color.WEB_GRAY].pick_random()
+							texture.color_ramp.colors[0] = texture.color_ramp.colors[0].darkened(randfn(0.25, 0.01))
+			"Neptunian":
+				texture.width = texture.width / 4
+				noise.domain_warp_enabled = true
+				noise.domain_warp_fractal_type = 2 #DOMAIN_WARP_FRACTAL_INDEPENDENT
+				noise.domain_warp_amplitude = global_data.get_randf(20.0, 45.0)
+				texture.seamless_blend_skirt = 0.5
+				if randf() >= 0.99:
+					texture.width = 1
+			"Jovian":
+				texture.width = (texture.width / 4) / 2
+				noise.domain_warp_enabled = true
+				noise.domain_warp_fractal_type = 2 #DOMAIN_WARP_FRACTAL_INDEPENDENT
+				noise.domain_warp_amplitude = global_data.get_randf(15.0, 120.0)
+				texture.seamless_blend_skirt = 0.5
+				if randf() >= 0.975:
+					texture.color_ramp.colors[0] = [Color.CHARTREUSE, Color.DARK_MAGENTA, Color.DARK_SLATE_GRAY, Color.MISTY_ROSE, Color.HOT_PINK, Color.MEDIUM_AQUAMARINE].pick_random()
+					texture.color_ramp.colors[0] = texture.color_ramp.colors[0].darkened(randfn(0.1, 0.01))
+	
+	return texture
 
 
 
