@@ -435,7 +435,6 @@ func get_pulsar_beams_as_3D_points(star: pulsarBodyAPI) -> Array[PackedVector3Ar
 
 func get_surface_texture_for_circular_body(body: circularBodyAPI) -> NoiseTexture2D:
 	var texture = circular_body_texture.duplicate(true)
-	texture.noise = texture.noise.duplicate(true)
 	var noise = texture.noise
 	noise.set_seed(randi())
 	texture.color_ramp.colors[0] = body.surface_color.lightened(randfn(0.1, 0.01))
@@ -475,15 +474,15 @@ func get_surface_texture_for_circular_body(body: circularBodyAPI) -> NoiseTextur
 				noise.domain_warp_fractal_type = 2 #DOMAIN_WARP_FRACTAL_INDEPENDENT
 				noise.domain_warp_amplitude = global_data.get_randf(20.0, 45.0)
 				texture.seamless_blend_skirt = 0.5
-				if randf() > 0.90:
+				if randf() >= 0.99:
 					texture.width = 1
 			"Jovian":
-				texture.width = (texture.width / 4) / 4
+				texture.width = (texture.width / 4) / 2
 				noise.domain_warp_enabled = true
 				noise.domain_warp_fractal_type = 2 #DOMAIN_WARP_FRACTAL_INDEPENDENT
-				noise.domain_warp_amplitude = global_data.get_randf(15.0, 70.0)
+				noise.domain_warp_amplitude = global_data.get_randf(15.0, 120.0)
 				texture.seamless_blend_skirt = 0.5
-				if randf() > 0.95:
+				if randf() >= 0.975:
 					texture.color_ramp.colors[0] = [Color.CHARTREUSE, Color.DARK_MAGENTA, Color.DARK_SLATE_GRAY, Color.MISTY_ROSE, Color.HOT_PINK, Color.MEDIUM_AQUAMARINE].pick_random()
 					texture.color_ramp.colors[0] = texture.color_ramp.colors[0].darkened(randfn(0.1, 0.01))
 	

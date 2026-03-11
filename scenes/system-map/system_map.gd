@@ -395,8 +395,8 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 						item.set_icon(0, load("uid://pbgoomdkkj6h"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					
-					if body.is_habitable():
-						item.set_custom_bg_color(0, Color.GREEN, true)
+					#if body.is_habitable():
+					#	item.set_custom_color(0, Color.GREEN)
 					
 				starSystemAPI.BODY_TYPES.WORMHOLE:
 					item.set_icon(0, load("uid://k50rbp6ri57u"))
