@@ -531,6 +531,12 @@ func generateRandomWeightedStations():
 		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
 		var percentage_markup = global_data.get_randi(75, 200)
 		
+		var _excluded_modules: Array[playerAPI.UPGRADE_ID] = []
+		for iu in global_data.get_randi(0, 3):
+			var upgrade = playerAPI.UPGRADE_ID.values().pick_random()
+			if not _excluded_modules.has(upgrade):
+				_excluded_modules.append(upgrade)
+		
 		var new_station = addOrbitBody(
 			stationBodyAPI.new(),
 			BODY_TYPES.STATION,
@@ -540,7 +546,7 @@ func generateRandomWeightedStations():
 			orbit_distance,
 			orbit_angle_change,
 			radius,
-			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
+			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup, "excluded_modules": _excluded_modules, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
 			{}
 		)
 		

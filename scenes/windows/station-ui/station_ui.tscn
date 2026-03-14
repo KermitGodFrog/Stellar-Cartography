@@ -7,7 +7,6 @@
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="4_0fv2y"]
 [ext_resource type="Script" uid="uid://bgg40ileteb7a" path="res://scenes/windows/station-ui/observed_bodies_list.gd" id="4_ng3on"]
 [ext_resource type="Texture2D" uid="uid://c5r5ok7jmth3o" path="res://graphics/shared/confirmed.png" id="5_nd783"]
-[ext_resource type="Script" uid="uid://cbablbmj0jhq8" path="res://scenes/windows/station-ui/upgrade_button.gd" id="5_nlbm1"]
 [ext_resource type="Texture2D" uid="uid://c5wk5giq8ua5h" path="res://graphics/station-ui/download_icon.png" id="5_oh1b1"]
 [ext_resource type="Script" uid="uid://cq4qo6bsf3emb" path="res://scenes/windows/station-ui/disclaimer_label.gd" id="6_ubeaq"]
 [ext_resource type="Texture2D" uid="uid://cudxvqxk513ea" path="res://graphics/shared/denied.png" id="7_pt3w3"]
@@ -16,6 +15,17 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bvpf3"]
 shader = ExtResource("3_n6881")
 shader_parameter/pixel_size = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hdpq4"]
+bg_color = Color(0.6, 1, 0.6, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_du8uj"]
 bg_color = Color(0.6, 0.6, 0.6, 0.54902)
@@ -106,56 +116,16 @@ offset_bottom = 40.0
 grow_horizontal = 0
 theme = ExtResource("4_0fv2y")
 
+[node name="unlocked_upgrades_container" type="PanelContainer" parent="station_control/upgrade_container"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hdpq4")
+
+[node name="UNLOCKED_UPGRADES" type="VBoxContainer" parent="station_control/upgrade_container/unlocked_upgrades_container"]
+layout_mode = 2
+
 [node name="UPGRADES" type="VBoxContainer" parent="station_control/upgrade_container"]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="0" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
-layout_mode = 2
-theme_type_variation = &"ButtonDull"
-script = ExtResource("5_nlbm1")
-cost = 7500
-description = "Advanced scanning capability. Increases the chance to detect planetary and space anomalies by 10%."
-
-[node name="4" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
-layout_mode = 2
-theme_type_variation = &"ButtonDull"
-script = ExtResource("5_nlbm1")
-upgrade = 4
-cost = 7500
-description = "Scan prediction algorithms. Allow LIDAR scan arcs to be visible on the SYSTEM MAP before the 'PING' button is pressed."
-
-[node name="2" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
-layout_mode = 2
-theme_type_variation = &"ButtonDull"
-script = ExtResource("5_nlbm1")
-upgrade = 2
-cost = 25000
-description = "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost."
-
-[node name="1" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
-layout_mode = 2
-theme_type_variation = &"ButtonDull"
-script = ExtResource("5_nlbm1")
-upgrade = 1
-cost = 35000
-description = "(SPECIAL) Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."
-
-[node name="3" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
-layout_mode = 2
-theme_type_variation = &"ButtonDull"
-script = ExtResource("5_nlbm1")
-upgrade = 3
-cost = 35000
-description = "(SPECIAL) Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."
-
-[node name="5" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
-layout_mode = 2
-theme_type_variation = &"ButtonDull"
-script = ExtResource("5_nlbm1")
-upgrade = 5
-cost = 35000
-description = "(SPECIAL) Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."
 
 [node name="SPL_disclaimer_label" type="Label" parent="station_control/upgrade_container"]
 layout_mode = 2

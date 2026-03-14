@@ -6,5 +6,4 @@ class_name stationBodyAPI
 @export var sell_percentage_of_market_price: int
 @export var module_store_disabled: bool = false # <- shouldnt have 'is' in variable name
 
-@export var sell_module_price_multiplier: float # default of 0.25?
-@export var excluded_modules: Array[playerAPI.UPGRADE_ID] = []
+@export var excluded_upgrades: Array[playerAPI.UPGRADE_ID] = []

@@ -682,6 +682,7 @@ func dock_with_station(following_station):
 	station_ui.player_balance = world.player.balance
 	station_ui.player_hull_stress = world.player.hull_stress
 	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades]
+	station_ui.player_unlocked_upgrades = world.player.get_unlocked_upgrades()
 	
 	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	station_ui.set("pending_audio_profiles", world.get_pending_audio_profiles())
@@ -851,6 +852,8 @@ func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	
 	station_ui.player_balance = world.player.balance
 	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades] #current, max
+	station_ui.player_unlocked_upgrades = world.player.get_unlocked_upgrades()
+	station_ui.update_upgrade_buttons()
 	pass
 
 func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
