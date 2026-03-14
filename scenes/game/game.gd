@@ -440,13 +440,7 @@ func _on_player_following_body(following_body: bodyAPI):
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				"HARD_LEAVE_STATION_OVERRIDE": #for planetary settlements
 					following_body.metadata["planetary_anomaly_available"] = false
-					
-					var temp_station: stationBodyAPI = stationBodyAPI.new()
-					temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
-					temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
-					var random = RandomNumberGenerator.new()
-					random.set_seed(following_body.metadata.get("seed", randi()))
-					temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
+					var temp_station := starSystemAPI.get_temporary_station(following_body)
 					dock_with_station(temp_station)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
@@ -460,13 +454,7 @@ func _on_player_following_body(following_body: bodyAPI):
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				"HARD_LEAVE_STATION_OVERRIDE": #for outposts
 					following_body.metadata["space_anomaly_available"] = false
-					
-					var temp_station: stationBodyAPI = stationBodyAPI.new()
-					temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
-					temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
-					var random = RandomNumberGenerator.new()
-					random.set_seed(following_body.metadata.get("seed", randi()))
-					temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
+					var temp_station := starSystemAPI.get_temporary_station(following_body)
 					dock_with_station(temp_station)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)

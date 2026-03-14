@@ -991,6 +991,20 @@ func is_civilized() -> bool:
 			return true
 	return false
 
+static func get_temporary_station(hook: bodyAPI) -> stationBodyAPI: # for anomalies!
+	var temp_station: stationBodyAPI = stationBodyAPI.new()
+	temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
+	temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
+	var random = RandomNumberGenerator.new()
+	random.set_seed(hook.metadata.get("seed", randi()))
+	temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
+	for iu in random.randi_range(0, 4):
+		var internal_random = RandomNumberGenerator.new()
+		internal_random.set_seed(hash(random.get_seed() - iu))
+		var upgrade = playerAPI.UPGRADE_ID.values()[internal_random.randi_range(0, playerAPI.UPGRADE_ID.values().size() - 1)]
+		temp_station.exclude_upgrade(upgrade)
+	return temp_station
+
 # unit stuff \/
 
 func updateMinesGetDetonations(detonator_position: Vector2, delta) -> int: #returns number of detonating mines this frame
