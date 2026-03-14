@@ -180,6 +180,7 @@ func connect_all_signals() -> void:
 	
 	station_ui.connect("sellExplorationData", _on_sell_exploration_data)
 	station_ui.connect("upgradeShip", _on_upgrade_ship)
+	station_ui.connect("refundUpgrade", _on_refund_upgrade)
 	station_ui.connect("addSavedAudioProfile", _on_add_saved_audio_profile)
 	station_ui.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	station_ui.connect("addPlayerValue", _on_add_player_value)
@@ -849,6 +850,18 @@ func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 		world.player.decreaseBalance(cost)
 		_on_unlock_upgrade(upgrade_idx)
 		station_ui._on_disable_module_store() #i really dont know..... shouldnt do anything if not at a station because of 'if station' keywords in thingi fubhodgifaphjdlghruoetaifjpdvghruaeofisdh
+	
+	station_ui.player_balance = world.player.balance
+	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades] #current, max
+	station_ui.player_unlocked_upgrades = world.player.get_unlocked_upgrades()
+	station_ui.update_upgrade_buttons()
+	pass
+
+func _on_refund_upgrade(upgrade_idx: playerAPI.UPGRADE_ID, refund: int) -> void:
+	print("GAME: REFUNDING UPGRADE")
+	if world.player.get_upgrade_unlocked_state(upgrade_idx) == true:
+		world.player.increaseBalance(refund)
+		_on_lock_upgrade(upgrade_idx)
 	
 	station_ui.player_balance = world.player.balance
 	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades] #current, max

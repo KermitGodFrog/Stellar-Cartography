@@ -47,6 +47,7 @@ var player_saved_audio_profiles_size_matrix: Array = [] #current, max
 
 signal sellExplorationData(sell_percentage_of_market_price: int)
 signal upgradeShip(upgrade_idx: playerAPI.UPGRADE_ID, cost: int)
+signal refundUpgrade(upgrade_idx: playerAPI.UPGRADE_ID, refund: int)
 signal addSavedAudioProfile(helper: audioProfileHelper)
 signal removeHullStressForNanites(amount: int, _nanites_per_percentage: int)
 signal addPlayerValue(amount: int)
@@ -81,7 +82,7 @@ signal addPlayerValue(amount: int)
 @onready var station_repair = preload("uid://dha2d3lx22sd1")
 
 var has_sold_previously: bool = false
-const sell_upgrade_price_multiplier = 0.25
+const refund_upgrade_price_multiplier = 0.25
 
 func _ready():
 	observed_bodies_list.connect("saveAudioProfile", _on_audio_profile_saved)
@@ -169,6 +170,7 @@ func _on_popup():
 		c.queue_free()
 	
 	if station:
+		print("EXCLUDED UPGRADE IDs ", station.excluded_upgrades)
 		save_audio_profiles_info_label.set_text("The wider astronomical community on %s has analyzed the legitimacy of additional observations you have inferred on unknown bodies during your travels." % station.get_display_name())
 		add_relevant_upgrade_buttons()
 	pass
@@ -188,7 +190,7 @@ func add_upgrade_button(upgrade: playerAPI.UPGRADE_ID, unlocked: bool) -> void:
 	var instance = upgrade_button_scene.instantiate()
 	instance.upgrade = upgrade
 	instance.unlocked = unlocked
-	instance._sell_upgrade_price_multiplier = sell_upgrade_price_multiplier
+	instance._refund_upgrade_price_multiplier = refund_upgrade_price_multiplier
 	
 	instance.cost = data.get("cost")
 	instance.description = data.get("description")
@@ -223,8 +225,7 @@ func _on_upgrade_mouse_entered(description: String) -> void:
 func _on_upgrade_pressed(upgrade_idx: playerAPI.UPGRADE_ID, cost: int, already_unlocked: bool):
 	if station: 
 		if already_unlocked:
-			# SELL UPGRADE HERE!
-			#emit_signal("sellUpgrade", upgrade_idx, refund)
+			emit_signal("refundUpgrade", upgrade_idx, cost * refund_upgrade_price_multiplier)
 			pass
 		else:
 			if not station.module_store_disabled:

@@ -1,7 +1,7 @@
 extends Button
 #needs to be in group 'FOLLOW_UPGRADE_STATE'
 
-var _sell_upgrade_price_multiplier: float = 0.0
+var _refund_upgrade_price_multiplier: float = 0.0
 
 @export var upgrade: playerAPI.UPGRADE_ID
 @export var cost: int
@@ -16,7 +16,7 @@ func _ready():
 
 func _on_mouse_entered() -> void:
 	if unlocked:
-		set_text("%s: SELL %.fn" % [get_upgrade_name(), cost * _sell_upgrade_price_multiplier]) #assumes sell_module_price_multiplier is 0.25 - replicate real value from station_ui please
+		set_text("%s: SELL %.fn" % [get_upgrade_name(), cost * _refund_upgrade_price_multiplier]) #assumes sell_module_price_multiplier is 0.25 - replicate real value from station_ui please
 	pass
 
 func _on_mouse_exited() -> void:
