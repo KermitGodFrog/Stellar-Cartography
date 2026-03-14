@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dtbagvxj5to3"]
+[gd_scene load_steps=18 format=3 uid="uid://dtbagvxj5to3"]
 
 [ext_resource type="Script" uid="uid://dyslold788w2p" path="res://scenes/windows/station-ui/station_ui.gd" id="1_8gqs2"]
 [ext_resource type="Script" uid="uid://djc724vbwtd40" path="res://scenes/windows/station-ui/ui_save_audio_profiles_scroll.gd" id="3_b7unw"]
@@ -17,15 +17,10 @@ shader = ExtResource("3_n6881")
 shader_parameter/pixel_size = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hdpq4"]
-bg_color = Color(0.6, 1, 0.6, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
+bg_color = Color(0.23529412, 0.5764706, 0.44313726, 0.54901963)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qstg3"]
+bg_color = Color(0.23529412, 0.43137255, 0.44313726, 0.54901963)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_du8uj"]
 bg_color = Color(0.6, 0.6, 0.6, 0.54902)
@@ -98,7 +93,7 @@ grow_vertical = 2
 theme = ExtResource("4_0fv2y")
 theme_type_variation = &"ButtonDull"
 text = "SELL EXPLORATION DATA
-24242409 (75%)"
+--- (--%)"
 
 [node name="balance_label" type="Label" parent="station_control"]
 layout_mode = 1
@@ -107,6 +102,7 @@ offset_bottom = 23.0
 text = "BALANCE"
 
 [node name="upgrade_container" type="VBoxContainer" parent="station_control"]
+custom_minimum_size = Vector2(330, 200)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -117,13 +113,49 @@ grow_horizontal = 0
 theme = ExtResource("4_0fv2y")
 
 [node name="unlocked_upgrades_container" type="PanelContainer" parent="station_control/upgrade_container"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_hdpq4")
 
-[node name="UNLOCKED_UPGRADES" type="VBoxContainer" parent="station_control/upgrade_container/unlocked_upgrades_container"]
+[node name="title_unlocked_upgrades_scroll" type="VBoxContainer" parent="station_control/upgrade_container/unlocked_upgrades_container"]
 layout_mode = 2
 
-[node name="UPGRADES" type="VBoxContainer" parent="station_control/upgrade_container"]
+[node name="title" type="Label" parent="station_control/upgrade_container/unlocked_upgrades_container/title_unlocked_upgrades_scroll"]
+layout_mode = 2
+text = "INSTALLED"
+vertical_alignment = 1
+
+[node name="margin" type="MarginContainer" parent="station_control/upgrade_container/unlocked_upgrades_container/title_unlocked_upgrades_scroll"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="UNLOCKED_UPGRADES" type="VBoxContainer" parent="station_control/upgrade_container/unlocked_upgrades_container/title_unlocked_upgrades_scroll/margin"]
+layout_mode = 2
+
+[node name="available_upgrades_container" type="PanelContainer" parent="station_control/upgrade_container"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qstg3")
+
+[node name="title_available_upgrades_scroll" type="VBoxContainer" parent="station_control/upgrade_container/available_upgrades_container"]
+layout_mode = 2
+
+[node name="title" type="Label" parent="station_control/upgrade_container/available_upgrades_container/title_available_upgrades_scroll"]
+layout_mode = 2
+text = "AVAILABLE"
+vertical_alignment = 1
+
+[node name="margin" type="MarginContainer" parent="station_control/upgrade_container/available_upgrades_container/title_available_upgrades_scroll"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="AVAILABLE_UPGRADES" type="VBoxContainer" parent="station_control/upgrade_container/available_upgrades_container/title_available_upgrades_scroll/margin"]
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -167,13 +199,13 @@ text = "HULL STRESS"
 [node name="repair_single" type="Button" parent="station_control/repair_container"]
 layout_mode = 2
 theme_type_variation = &"ButtonDull"
-text = "REPAIR 1% (100n)"
+text = "REPAIR 1% (-----n)"
 alignment = 0
 
 [node name="repair_all" type="Button" parent="station_control/repair_container"]
 layout_mode = 2
 theme_type_variation = &"ButtonDull"
-text = "REPAIR 100% (10000n)"
+text = "REPAIR 100% (-----n)"
 alignment = 0
 
 [node name="save_audio_profiles_control" type="Control" parent="station_control"]

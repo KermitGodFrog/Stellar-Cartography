@@ -64,8 +64,8 @@ signal addPlayerValue(amount: int)
 @onready var description_label = $upgrade_container/description_label
 @onready var disclaimer_label = $upgrade_container/disclaimer_label
 @onready var SPL_disclaimer_label = $upgrade_container/SPL_disclaimer_label
-@onready var UPGRADES = $upgrade_container/UPGRADES
-@onready var UNLOCKED_UPGRADES = $upgrade_container/unlocked_upgrades_container/UNLOCKED_UPGRADES
+@onready var AVAILABLE_UPGRADES = $upgrade_container/available_upgrades_container/title_available_upgrades_scroll/margin/AVAILABLE_UPGRADES
+@onready var UNLOCKED_UPGRADES = $upgrade_container/unlocked_upgrades_container/title_unlocked_upgrades_scroll/margin/UNLOCKED_UPGRADES
 
 @onready var hull_stress_label = $repair_container/hull_stress_label
 @onready var repair_single_button = $repair_container/repair_single
@@ -166,7 +166,7 @@ func _on_popup():
 	
 	for c in UNLOCKED_UPGRADES.get_children():
 		c.queue_free()
-	for c in UPGRADES.get_children():
+	for c in AVAILABLE_UPGRADES.get_children():
 		c.queue_free()
 	
 	if station:
@@ -201,7 +201,7 @@ func add_upgrade_button(upgrade: playerAPI.UPGRADE_ID, unlocked: bool) -> void:
 		true:
 			UNLOCKED_UPGRADES.add_child(instance)
 		false:
-			UPGRADES.add_child(instance)
+			AVAILABLE_UPGRADES.add_child(instance)
 	pass
 
 func update_upgrade_buttons() -> void:
@@ -211,7 +211,7 @@ func update_upgrade_buttons() -> void:
 				if not station.excluded_upgrades.has(c.upgrade):
 					add_upgrade_button(c.upgrade, false)
 				c.queue_free()
-		for c in UPGRADES.get_children():
+		for c in AVAILABLE_UPGRADES.get_children():
 			if player_unlocked_upgrades.has(c.upgrade):
 				add_upgrade_button(c.upgrade, true)
 				c.queue_free()
