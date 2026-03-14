@@ -21,11 +21,21 @@ func _on_pause_mode_changed(value):
 
 
 
+const upgrade_data = {
+	playerAPI.UPGRADE_ID.ADVANCED_SCANNING: {"cost": 7500, "description": "Advanced scanning capability. Increases the chance to detect planetary and space anomalies by 10%."},
+	playerAPI.UPGRADE_ID.AUDIO_VISUALIZER: {"cost": 35000, "description": "(SPECIAL) Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."},
+	playerAPI.UPGRADE_ID.NANITE_CONTROLLER: {"cost": 25000, "description": "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost."},
+	playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES: {"cost": 35000, "description": "(SPECIAL) Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."},
+	playerAPI.UPGRADE_ID.SCAN_PREDICTION: {"cost": 7500, "description": "Scan prediction algorithms. Allow LIDAR scan arcs to be visible on the SYSTEM MAP before the 'PING' button is pressed."},
+	playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR: {"cost": 35000, "description": "(SPECIAL) Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."}
+}
+
 var station: stationBodyAPI
 var player_current_value: int = 0
 var player_balance: int = 0
 var player_hull_stress: int = 0
 var player_SPL_upgrades_matrix: Array = [] #current, max
+var player_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = []
 var nanites_per_percentage: int = 100
 
 #FOR AUDIO VISUALIZER \/\/\/\/\/
@@ -37,6 +47,7 @@ var player_saved_audio_profiles_size_matrix: Array = [] #current, max
 
 signal sellExplorationData(sell_percentage_of_market_price: int)
 signal upgradeShip(upgrade_idx: playerAPI.UPGRADE_ID, cost: int)
+signal refundUpgrade(upgrade_idx: playerAPI.UPGRADE_ID, refund: int)
 signal addSavedAudioProfile(helper: audioProfileHelper)
 signal removeHullStressForNanites(amount: int, _nanites_per_percentage: int)
 signal addPlayerValue(amount: int)
@@ -53,7 +64,8 @@ signal addPlayerValue(amount: int)
 @onready var description_label = $upgrade_container/description_label
 @onready var disclaimer_label = $upgrade_container/disclaimer_label
 @onready var SPL_disclaimer_label = $upgrade_container/SPL_disclaimer_label
-@onready var UPGRADES = $upgrade_container/UPGRADES
+@onready var AVAILABLE_UPGRADES = $upgrade_container/available_upgrades_container/title_available_upgrades_scroll/margin/AVAILABLE_UPGRADES
+@onready var UNLOCKED_UPGRADES = $upgrade_container/unlocked_upgrades_container/title_unlocked_upgrades_scroll/margin/UNLOCKED_UPGRADES
 
 @onready var hull_stress_label = $repair_container/hull_stress_label
 @onready var repair_single_button = $repair_container/repair_single
@@ -63,20 +75,19 @@ signal addPlayerValue(amount: int)
 
 @onready var tutorial = $tutorial
 
+@onready var upgrade_button_scene = preload("uid://c3wfhxfh1cg8d")
+
 @onready var station_upgrade = preload("uid://crt73kp6x2bbe")
 @onready var station_sell_data = preload("uid://bbdwwjno15wk3")
 @onready var station_repair = preload("uid://dha2d3lx22sd1")
 
 var has_sold_previously: bool = false
+const refund_upgrade_price_multiplier = 0.25
 
 func _ready():
 	observed_bodies_list.connect("saveAudioProfile", _on_audio_profile_saved)
 	observed_bodies_list.connect("_addPlayerValue", _on_add_player_value)
 	observed_bodies_list.connect("finishedButtonPressed", _on_finished_button_pressed)
-	
-	for child in UPGRADES.get_children():
-		child.connect("pressed", _on_upgrade_pressed.bind(child.upgrade, child.cost))
-		child.connect("mouse_entered", _on_upgrade_mouse_entered.bind(child.description))
 	pass
 
 func _physics_process(_delta):
@@ -153,8 +164,57 @@ func _on_popup():
 	background_animation.play("RESET")
 	background_animation.play(animations.pick_random())
 	
+	for c in UNLOCKED_UPGRADES.get_children():
+		c.queue_free()
+	for c in AVAILABLE_UPGRADES.get_children():
+		c.queue_free()
+	
 	if station:
+		print("EXCLUDED UPGRADE IDs ", station.excluded_upgrades)
 		save_audio_profiles_info_label.set_text("The wider astronomical community on %s has analyzed the legitimacy of additional observations you have inferred on unknown bodies during your travels." % station.get_display_name())
+		add_relevant_upgrade_buttons()
+	pass
+
+
+func add_relevant_upgrade_buttons() -> void:
+	for upgrade in playerAPI.UPGRADE_ID.values():
+		if player_unlocked_upgrades.has(upgrade):
+			add_upgrade_button(upgrade, true)
+		elif not station.excluded_upgrades.has(upgrade):
+			add_upgrade_button(upgrade, false)
+	pass
+
+func add_upgrade_button(upgrade: playerAPI.UPGRADE_ID, unlocked: bool) -> void:
+	#for upgrade in playerAPI.UPGRADE_ID.values(): #.filter(func(u): return not station.excluded_modules.has(u)):
+	var data = upgrade_data.get(upgrade)
+	var instance = upgrade_button_scene.instantiate()
+	instance.upgrade = upgrade
+	instance.unlocked = unlocked
+	instance._refund_upgrade_price_multiplier = refund_upgrade_price_multiplier
+	
+	instance.cost = data.get("cost")
+	instance.description = data.get("description")
+	instance.connect("pressed", _on_upgrade_pressed.bind(instance.upgrade, instance.cost, instance.unlocked))
+	instance.connect("mouse_entered", _on_upgrade_mouse_entered.bind(instance.description))
+	
+	match instance.unlocked:
+		true:
+			UNLOCKED_UPGRADES.add_child(instance)
+		false:
+			AVAILABLE_UPGRADES.add_child(instance)
+	pass
+
+func update_upgrade_buttons() -> void:
+	if station:
+		for c in UNLOCKED_UPGRADES.get_children():
+			if not player_unlocked_upgrades.has(c.upgrade):
+				if not station.excluded_upgrades.has(c.upgrade):
+					add_upgrade_button(c.upgrade, false)
+				c.queue_free()
+		for c in AVAILABLE_UPGRADES.get_children():
+			if player_unlocked_upgrades.has(c.upgrade):
+				add_upgrade_button(c.upgrade, true)
+				c.queue_free()
 	pass
 
 
@@ -162,17 +222,24 @@ func _on_upgrade_mouse_entered(description: String) -> void:
 	description_label.set_text(description)
 	pass
 
-func _on_upgrade_pressed(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
+func _on_upgrade_pressed(upgrade_idx: playerAPI.UPGRADE_ID, cost: int, already_unlocked: bool):
 	if station: 
-		if not station.is_module_store_disabled:
-			emit_signal("upgradeShip", upgrade_idx, cost)
+		if already_unlocked:
+			emit_signal("refundUpgrade", upgrade_idx, cost * refund_upgrade_price_multiplier)
+			pass
 		else:
-			disclaimer_label.blink(Color.RED)
+			if not station.module_store_disabled:
+				emit_signal("upgradeShip", upgrade_idx, cost)
+			else:
+				disclaimer_label.blink(Color.RED)
 	pass
+
+
+
 
 func _on_disable_module_store() -> void:
 	if station:
-		station.set("is_module_store_disabled", true)
+		station.set("module_store_disabled", true)
 		get_tree().call_group("audioHandler", "play_once", station_upgrade, 0.0, "SFX") #assumes that every time the module store is disabled, its ALWAYS because a module is bought. pay attention to this 
 	pass
 

@@ -180,6 +180,7 @@ func connect_all_signals() -> void:
 	
 	station_ui.connect("sellExplorationData", _on_sell_exploration_data)
 	station_ui.connect("upgradeShip", _on_upgrade_ship)
+	station_ui.connect("refundUpgrade", _on_refund_upgrade)
 	station_ui.connect("addSavedAudioProfile", _on_add_saved_audio_profile)
 	station_ui.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	station_ui.connect("addPlayerValue", _on_add_player_value)
@@ -440,13 +441,7 @@ func _on_player_following_body(following_body: bodyAPI):
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				"HARD_LEAVE_STATION_OVERRIDE": #for planetary settlements
 					following_body.metadata["planetary_anomaly_available"] = false
-					
-					var temp_station: stationBodyAPI = stationBodyAPI.new()
-					temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
-					temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
-					var random = RandomNumberGenerator.new()
-					random.set_seed(following_body.metadata.get("seed", randi()))
-					temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
+					var temp_station := starSystemAPI.get_temporary_station(following_body)
 					dock_with_station(temp_station)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
@@ -460,13 +455,7 @@ func _on_player_following_body(following_body: bodyAPI):
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				"HARD_LEAVE_STATION_OVERRIDE": #for outposts
 					following_body.metadata["space_anomaly_available"] = false
-					
-					var temp_station: stationBodyAPI = stationBodyAPI.new()
-					temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
-					temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
-					var random = RandomNumberGenerator.new()
-					random.set_seed(following_body.metadata.get("seed", randi()))
-					temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
+					var temp_station := starSystemAPI.get_temporary_station(following_body)
 					dock_with_station(temp_station)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
@@ -683,6 +672,7 @@ func dock_with_station(following_station):
 	station_ui.player_balance = world.player.balance
 	station_ui.player_hull_stress = world.player.hull_stress
 	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades]
+	station_ui.player_unlocked_upgrades = world.player.get_unlocked_upgrades()
 	
 	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	station_ui.set("pending_audio_profiles", world.get_pending_audio_profiles())
@@ -852,6 +842,20 @@ func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	
 	station_ui.player_balance = world.player.balance
 	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades] #current, max
+	station_ui.player_unlocked_upgrades = world.player.get_unlocked_upgrades()
+	station_ui.update_upgrade_buttons()
+	pass
+
+func _on_refund_upgrade(upgrade_idx: playerAPI.UPGRADE_ID, refund: int) -> void:
+	print("GAME: REFUNDING UPGRADE")
+	if world.player.get_upgrade_unlocked_state(upgrade_idx) == true:
+		world.player.increaseBalance(refund)
+		_on_lock_upgrade(upgrade_idx)
+	
+	station_ui.player_balance = world.player.balance
+	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades] #current, max
+	station_ui.player_unlocked_upgrades = world.player.get_unlocked_upgrades()
+	station_ui.update_upgrade_buttons()
 	pass
 
 func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dtbagvxj5to3"]
+[gd_scene load_steps=18 format=3 uid="uid://dtbagvxj5to3"]
 
 [ext_resource type="Script" uid="uid://dyslold788w2p" path="res://scenes/windows/station-ui/station_ui.gd" id="1_8gqs2"]
 [ext_resource type="Script" uid="uid://djc724vbwtd40" path="res://scenes/windows/station-ui/ui_save_audio_profiles_scroll.gd" id="3_b7unw"]
@@ -7,7 +7,6 @@
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="4_0fv2y"]
 [ext_resource type="Script" uid="uid://bgg40ileteb7a" path="res://scenes/windows/station-ui/observed_bodies_list.gd" id="4_ng3on"]
 [ext_resource type="Texture2D" uid="uid://c5r5ok7jmth3o" path="res://graphics/shared/confirmed.png" id="5_nd783"]
-[ext_resource type="Script" uid="uid://cbablbmj0jhq8" path="res://scenes/windows/station-ui/upgrade_button.gd" id="5_nlbm1"]
 [ext_resource type="Texture2D" uid="uid://c5wk5giq8ua5h" path="res://graphics/station-ui/download_icon.png" id="5_oh1b1"]
 [ext_resource type="Script" uid="uid://cq4qo6bsf3emb" path="res://scenes/windows/station-ui/disclaimer_label.gd" id="6_ubeaq"]
 [ext_resource type="Texture2D" uid="uid://cudxvqxk513ea" path="res://graphics/shared/denied.png" id="7_pt3w3"]
@@ -16,6 +15,12 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bvpf3"]
 shader = ExtResource("3_n6881")
 shader_parameter/pixel_size = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hdpq4"]
+bg_color = Color(0.23529412, 0.5764706, 0.44313726, 0.54901963)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qstg3"]
+bg_color = Color(0.23529412, 0.43137255, 0.44313726, 0.54901963)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_du8uj"]
 bg_color = Color(0.6, 0.6, 0.6, 0.54902)
@@ -28,6 +33,7 @@ bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
 
 [node name="station_window" type="Window"]
 process_mode = 2
+oversampling_override = 1.0
 title = "Station Access"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 500)
@@ -87,7 +93,7 @@ grow_vertical = 2
 theme = ExtResource("4_0fv2y")
 theme_type_variation = &"ButtonDull"
 text = "SELL EXPLORATION DATA
-24242409 (75%)"
+--- (--%)"
 
 [node name="balance_label" type="Label" parent="station_control"]
 layout_mode = 1
@@ -96,6 +102,7 @@ offset_bottom = 23.0
 text = "BALANCE"
 
 [node name="upgrade_container" type="VBoxContainer" parent="station_control"]
+custom_minimum_size = Vector2(330, 200)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -105,56 +112,52 @@ offset_bottom = 40.0
 grow_horizontal = 0
 theme = ExtResource("4_0fv2y")
 
-[node name="UPGRADES" type="VBoxContainer" parent="station_control/upgrade_container"]
+[node name="unlocked_upgrades_container" type="PanelContainer" parent="station_control/upgrade_container"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hdpq4")
+
+[node name="title_unlocked_upgrades_scroll" type="VBoxContainer" parent="station_control/upgrade_container/unlocked_upgrades_container"]
+layout_mode = 2
+
+[node name="title" type="Label" parent="station_control/upgrade_container/unlocked_upgrades_container/title_unlocked_upgrades_scroll"]
+layout_mode = 2
+text = "INSTALLED"
+vertical_alignment = 1
+
+[node name="margin" type="MarginContainer" parent="station_control/upgrade_container/unlocked_upgrades_container/title_unlocked_upgrades_scroll"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="UNLOCKED_UPGRADES" type="VBoxContainer" parent="station_control/upgrade_container/unlocked_upgrades_container/title_unlocked_upgrades_scroll/margin"]
+layout_mode = 2
+
+[node name="available_upgrades_container" type="PanelContainer" parent="station_control/upgrade_container"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qstg3")
+
+[node name="title_available_upgrades_scroll" type="VBoxContainer" parent="station_control/upgrade_container/available_upgrades_container"]
+layout_mode = 2
+
+[node name="title" type="Label" parent="station_control/upgrade_container/available_upgrades_container/title_available_upgrades_scroll"]
+layout_mode = 2
+text = "AVAILABLE"
+vertical_alignment = 1
+
+[node name="margin" type="MarginContainer" parent="station_control/upgrade_container/available_upgrades_container/title_available_upgrades_scroll"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="AVAILABLE_UPGRADES" type="VBoxContainer" parent="station_control/upgrade_container/available_upgrades_container/title_available_upgrades_scroll/margin"]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="0" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
-layout_mode = 2
-theme_type_variation = &"ButtonDull"
-script = ExtResource("5_nlbm1")
-cost = 7500
-description = "Advanced scanning capability. Increases the chance to detect planetary and space anomalies by 10%."
-
-[node name="4" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
-layout_mode = 2
-theme_type_variation = &"ButtonDull"
-script = ExtResource("5_nlbm1")
-upgrade = 4
-cost = 7500
-description = "Scan prediction algorithms. Allow LIDAR scan arcs to be visible on the SYSTEM MAP before the 'PING' button is pressed."
-
-[node name="2" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
-layout_mode = 2
-theme_type_variation = &"ButtonDull"
-script = ExtResource("5_nlbm1")
-upgrade = 2
-cost = 25000
-description = "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost."
-
-[node name="1" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
-layout_mode = 2
-theme_type_variation = &"ButtonDull"
-script = ExtResource("5_nlbm1")
-upgrade = 1
-cost = 35000
-description = "(SPECIAL) Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."
-
-[node name="3" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
-layout_mode = 2
-theme_type_variation = &"ButtonDull"
-script = ExtResource("5_nlbm1")
-upgrade = 3
-cost = 35000
-description = "(SPECIAL) Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."
-
-[node name="5" type="Button" parent="station_control/upgrade_container/UPGRADES" groups=["FOLLOW_UPGRADE_STATE"]]
-layout_mode = 2
-theme_type_variation = &"ButtonDull"
-script = ExtResource("5_nlbm1")
-upgrade = 5
-cost = 35000
-description = "(SPECIAL) Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."
 
 [node name="SPL_disclaimer_label" type="Label" parent="station_control/upgrade_container"]
 layout_mode = 2
@@ -196,13 +199,13 @@ text = "HULL STRESS"
 [node name="repair_single" type="Button" parent="station_control/repair_container"]
 layout_mode = 2
 theme_type_variation = &"ButtonDull"
-text = "REPAIR 1% (100n)"
+text = "REPAIR 1% (-----n)"
 alignment = 0
 
 [node name="repair_all" type="Button" parent="station_control/repair_container"]
 layout_mode = 2
 theme_type_variation = &"ButtonDull"
-text = "REPAIR 100% (10000n)"
+text = "REPAIR 100% (-----n)"
 alignment = 0
 
 [node name="save_audio_profiles_control" type="Control" parent="station_control"]
