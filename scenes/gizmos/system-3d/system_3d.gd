@@ -55,7 +55,6 @@ var actors: Array[actor3D] = []
 
 
 func _ready():
-	tex_gen_thread = Thread.new()
 	mutex = Mutex.new()
 	_on_scope_mode_changed(playerAPI.SCOPE_MODES.VIS)
 	control.connect("targetFOVChange", _on_target_FOV_change)
