@@ -20,8 +20,9 @@ signal addPlayerHullStress(amount: int)
 
 const MAX_DISTANCE = 100.0
 
-var upper_boundry: float = 0.0
-var lower_boundry: float = 0.0
+var upper_boundary: float = 0.0
+var lower_boundary: float = 0.0
+var special_boundary: float = 0.0
 var speed: float = 0.0
 var distance: float = 100.0
 var hull_stress_wormhole: int = 10 #dont worry!! this value is updated every time the player traverses a wormhole - but not every frame! :> :^                                       FUCK YOU
@@ -35,6 +36,7 @@ var awaiting_start: bool = true
 @onready var wormhole_interference = $wormhole_interference
 @onready var deceleration = $deceleration
 @onready var distance_progress = $starship_and_camera/camera/UI_control/distance_container/distance_progress
+@onready var boundaries = $starship_and_camera/camera/UI_control/distance_container/boundaries
 @onready var distance_upper = $starship_and_camera/camera/UI_control/distance_container/distance_upper
 @onready var distance_lower = $starship_and_camera/camera/UI_control/distance_container/distance_lower
 @onready var press_to_start = $starship_and_camera/camera/UI_control/press_to_start_button
@@ -62,7 +64,7 @@ func _physics_process(delta):
 	wormhole_interference.volume_db = linear_to_db(remap(distance, 100, 0, 0, 1))
 	deceleration.stream_paused = _pause_mode != game_data.PAUSE_MODES.WORMHOLE_MINIGAME
 	
-	if (distance <= upper_boundry) and (distance >= lower_boundry):
+	if (distance <= upper_boundary) and (distance >= lower_boundary):
 		brake_button.set_theme_type_variation("BrakeGreen")
 		hull_stress_increase_label.set_text("+%.f%s" % [hull_stress_wormhole, "%"])
 	else:
@@ -77,18 +79,35 @@ func initialize(weirdness_index: float = 0.0, _hull_stress_wormhole: int = 10):
 	press_to_start.show()
 	awaiting_start = true
 	
-	lower_boundry = clamp(randfn(50, 8) * weirdness_index, 0, 75) #normal distribution: 99.7% of lower boundries above 1 and below 49
-	upper_boundry = lower_boundry + clamp(randfn((100 - lower_boundry) / 2, 8) * remap(weirdness_index, 0, 1, 1, 0), 5, (100 - lower_boundry)) #this is a really cool line of code teehee!! :>
+	lower_boundary = clamp(randfn(50, 8) * weirdness_index, 0, 75) #normal distribution: 99.7% of lower boundries above 1 and below 49
+	upper_boundary = lower_boundary + clamp(randfn((100 - lower_boundary) / 2, 8) * remap(weirdness_index, 0, 1, 1, 0), 5, (100 - lower_boundary)) #this is a really cool line of code teehee!! :>
+	special_boundary = clamp(randfn(4, 1), 0, lower_boundary)
 	speed = clamp(randfn(30, 5) * weirdness_index, 2.5, 57.5)
 	
-	distance_upper.value = upper_boundry
-	distance_lower.value = lower_boundry
+	var gradient := Gradient.new()
+	gradient.set_interpolation_mode(Gradient.GRADIENT_INTERPOLATE_CONSTANT)
+	gradient.set_color(0, Color.RED)
+	gradient.set_color(1, Color.DARK_CYAN)
+	gradient.add_point(remap(upper_boundary, 0, 100, 100, 0) / 100.0, Color.GREEN)
+	gradient.add_point(remap(lower_boundary, 0, 100, 100, 0) / 100.0, Color.RED)
+	gradient.add_point(remap(special_boundary, 0, 100, 100, 0) / 100.0, Color.DARK_CYAN)
+	
+	var texture := GradientTexture2D.new()
+	texture.set_gradient(gradient)
+	texture.set_width(10)
+	texture.set_height(100)
+	texture.fill_to = Vector2(0, 1)
+	
+	boundaries.set_under_texture(texture)
+	
+	distance_upper.value = upper_boundary
+	distance_lower.value = lower_boundary
 	
 	hull_stress_wormhole = _hull_stress_wormhole
 	pass
 
 func _on_brake_button_button_up():
-	if (distance <= upper_boundry) and (distance >= lower_boundry):
+	if (distance <= upper_boundary) and (distance >= lower_boundary):
 		if not awaiting_start:
 			finish_minigame(true)
 	elif not awaiting_start:

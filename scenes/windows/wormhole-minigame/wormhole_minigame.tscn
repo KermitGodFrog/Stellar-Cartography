@@ -61,7 +61,6 @@ oversampling_override = 1.0
 title = "Wormhole Traversal"
 position = Vector2i(0, 36)
 size = Vector2i(500, 400)
-visible = false
 unresizable = true
 always_on_top = true
 
@@ -78,7 +77,7 @@ stretch = true
 [node name="minigame_viewport" type="SubViewport" parent="minigame_container"]
 handle_input_locally = false
 size = Vector2i(500, 400)
-render_target_update_mode = 0
+render_target_update_mode = 4
 
 [node name="wormhole_minigame" type="Node3D" parent="minigame_container/minigame_viewport"]
 script = ExtResource("1_u2vnu")
@@ -128,7 +127,14 @@ offset_bottom = 200.0
 grow_vertical = 2
 size_flags_vertical = 3
 
+[node name="boundaries" type="TextureProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container"]
+custom_minimum_size = Vector2(10, 100)
+layout_mode = 2
+value = 100.0
+fill_mode = 3
+
 [node name="distance_upper" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container"]
+visible = false
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_pa1kh")
@@ -137,7 +143,8 @@ fill_mode = 3
 show_percentage = false
 
 [node name="distance_lower" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container"]
-custom_minimum_size = Vector2(0, 100)
+visible = false
+custom_minimum_size = Vector2(10, 100)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_q61wk")
 value = 10.0
