@@ -166,9 +166,9 @@ func get_gradient_boundary(boundary: float) -> float:
 
 func update_boundary_labels() -> void:
 	#this the most ugly thing of all time BLEHHHHH
-	green_label.set_text("%.f" % (hull_stress_wormhole))
-	red_label.set_text("%.f" % (hull_stress_wormhole * 2))
-	cyan_label.set_text("%.f" % (hull_stress_wormhole - 5))
+	green_label.set_text("%.f%%" % (hull_stress_wormhole))
+	red_label.set_text("%.f%%" % (hull_stress_wormhole * 2))
+	cyan_label.set_text("%.f%%" % (hull_stress_wormhole - 5))
 	
 	green_label.set_global_position(Vector2(distance_progress.global_position.x - (green_label.size.x + 5), distance_progress.global_position.y + remap(upper_boundary, 100.0, 0.0, 0.0, distance_progress.size.y) - red_label.size.y / 2))
 	red_label.set_global_position(Vector2(distance_progress.global_position.x - (red_label.size.x + 5), distance_progress.global_position.y - red_label.size.y / 2))
