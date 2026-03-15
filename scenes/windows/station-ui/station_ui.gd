@@ -36,7 +36,7 @@ var player_balance: int = 0
 var player_hull_stress: int = 0
 var player_SPL_upgrades_matrix: Array = [] #current, max
 var player_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = []
-var nanites_per_percentage: int = 100
+var nanites_per_percentage: int = 0 #updated in _physics_process
 
 #FOR AUDIO VISUALIZER \/\/\/\/\/
 var pending_audio_profiles: Array = []:
@@ -101,8 +101,8 @@ func _physics_process(_delta):
 			sell_data_button.set_text(str("SELL EXPLORATION DATA\n", int(player_current_value * (station.sell_percentage_of_market_price / 100.0)), "n\n(", station.sell_percentage_of_market_price, "% OF MARKET PRICE)"))
 		elif has_sold_previously: sell_data_button.set_text("SOLD")
 		
-		repair_single_button.set_text(str("REPAIR 1% (", nanites_per_percentage, "n)"))
-		repair_all_button.set_text(str("REPAIR ", player_hull_stress, "% (", (player_hull_stress * nanites_per_percentage), "n)"))
+		repair_single_button.set_text(str("REPAIR 1% (", roundi(nanites_per_percentage * station.repair_price_multiplier), "n)"))
+		repair_all_button.set_text(str("REPAIR ", player_hull_stress, "% (", roundi(player_hull_stress * roundi(nanites_per_percentage * station.repair_price_multiplier)), "n)"))
 		
 		SPL_disclaimer_label.set_text("(%.f/%.f SPECIAL UPGRADES)" % [player_SPL_upgrades_matrix[0], player_SPL_upgrades_matrix[1]])
 	
@@ -135,17 +135,19 @@ func _on_finished_button_pressed():
 
 
 func _on_repair_single_pressed():
-	if (player_balance >= nanites_per_percentage) and (player_hull_stress > 0): #terrible stupid thing ... shouldnt be computing this redundantly... game.gd _on_remove_hull_stress_for_nanites
-		get_tree().call_group("audioHandler", "play_once", station_repair, -12.0, "SFX")
-	
-	emit_signal("removeHullStressForNanites", 1, nanites_per_percentage)
+	if station:
+		if (player_balance >= nanites_per_percentage) and (player_hull_stress > 0): #terrible stupid thing ... shouldnt be computing this redundantly... game.gd _on_remove_hull_stress_for_nanites
+			get_tree().call_group("audioHandler", "play_once", station_repair, -12.0, "SFX")
+		
+		emit_signal("removeHullStressForNanites", 1, roundi(nanites_per_percentage * station.repair_price_multiplier))
 	pass
 
 func _on_repair_all_pressed():
-	if (player_balance >= player_hull_stress * nanites_per_percentage) and (player_hull_stress > 0): #terrible stupid thing ... shouldnt be computing this redundantly... game.gd _on_remove_hull_stress_for_nanites
-		get_tree().call_group("audioHandler", "play_once", station_repair, -12.0, "SFX")
-	
-	emit_signal("removeHullStressForNanites", player_hull_stress, nanites_per_percentage)
+	if station:
+		if (player_balance >= player_hull_stress * nanites_per_percentage) and (player_hull_stress > 0): #terrible stupid thing ... shouldnt be computing this redundantly... game.gd _on_remove_hull_stress_for_nanites
+			get_tree().call_group("audioHandler", "play_once", station_repair, -12.0, "SFX")
+		
+		emit_signal("removeHullStressForNanites", player_hull_stress, roundi(nanites_per_percentage * station.repair_price_multiplier))
 	pass
 
 func _on_add_player_value(amount: int):
@@ -171,6 +173,7 @@ func _on_popup():
 	
 	if station:
 		print("EXCLUDED UPGRADE IDs ", station.excluded_upgrades)
+		print("REPAIR PRICE MULTIPLIER ", station.repair_price_multiplier)
 		save_audio_profiles_info_label.set_text("The wider astronomical community on %s has analyzed the legitimacy of additional observations you have inferred on unknown bodies during your travels." % station.get_display_name())
 		add_relevant_upgrade_buttons()
 	pass
@@ -226,7 +229,7 @@ func _on_upgrade_pressed(upgrade_idx: playerAPI.UPGRADE_ID, cost: int, already_u
 	if station: 
 		if already_unlocked:
 			emit_signal("refundUpgrade", upgrade_idx, cost * refund_upgrade_price_multiplier)
-			pass
+			get_tree().call_group("audioHandler", "play_once", station_repair, -12.0, "SFX")
 		else:
 			if not station.module_store_disabled:
 				emit_signal("upgradeShip", upgrade_idx, cost)

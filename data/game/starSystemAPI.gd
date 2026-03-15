@@ -531,6 +531,8 @@ func generateRandomWeightedStations():
 		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
 		var percentage_markup = global_data.get_randi(75, 200)
 		
+		var repair_price_multiplier = 1.0
+		
 		var _excluded_upgrades: Array[playerAPI.UPGRADE_ID] = []
 		for iu in global_data.get_randi(0, 3):
 			var upgrade = playerAPI.UPGRADE_ID.values().pick_random()
@@ -546,7 +548,7 @@ func generateRandomWeightedStations():
 			orbit_distance,
 			orbit_angle_change,
 			radius,
-			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup, "excluded_upgrades": _excluded_upgrades, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
+			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup, "repair_price_multiplier": repair_price_multiplier, "excluded_upgrades": _excluded_upgrades, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
 			{}
 		)
 		
@@ -995,6 +997,7 @@ static func get_temporary_station(hook: bodyAPI) -> stationBodyAPI: # for anomal
 	var temp_station: stationBodyAPI = stationBodyAPI.new()
 	temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
 	temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
+	temp_station.repair_price_multiplier = 1.0
 	var random = RandomNumberGenerator.new()
 	random.set_seed(hook.metadata.get("seed", randi()))
 	temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
