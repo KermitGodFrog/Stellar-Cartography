@@ -1,6 +1,36 @@
-[gd_resource type="Theme" load_steps=12 format=3 uid="uid://du8q1tlwo1jt1"]
+[gd_resource type="Theme" load_steps=16 format=3 uid="uid://du8q1tlwo1jt1"]
 
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="1_7m4qy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jdplk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gisx2"]
+bg_color = Color(0, 0, 0, 0.494118)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0.8352941, 1, 1)
+shadow_color = Color(0, 0.3137255, 1, 0.3137255)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uqie8"]
+bg_color = Color(0, 0, 0, 0.494118)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0.8352941, 1, 1)
+shadow_color = Color(0, 0.3137255, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lh0m0"]
+bg_color = Color(0, 0, 0, 0.494118)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.75, 0.9583333, 1, 1)
+shadow_color = Color(1, 0, 0, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r3gxb"]
 
@@ -77,6 +107,13 @@ border_width_top = 1
 [resource]
 default_font = ExtResource("1_7m4qy")
 default_font_size = 16
+BrakeCyan/base_type = &"Button"
+BrakeCyan/colors/font_outline_color = Color(0, 0, 0, 1)
+BrakeCyan/constants/outline_size = 10
+BrakeCyan/styles/focus = SubResource("StyleBoxEmpty_jdplk")
+BrakeCyan/styles/hover = SubResource("StyleBoxFlat_gisx2")
+BrakeCyan/styles/normal = SubResource("StyleBoxFlat_uqie8")
+BrakeCyan/styles/pressed = SubResource("StyleBoxFlat_lh0m0")
 BrakeGreen/base_type = &"Button"
 BrakeGreen/colors/font_outline_color = Color(0, 0, 0, 1)
 BrakeGreen/constants/outline_size = 10
