@@ -30,7 +30,7 @@ func _ready():
 	
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -70,7 +70,7 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -159,6 +159,7 @@ func connect_all_signals() -> void:
 	
 	station_ui.connect("sellExplorationData", _on_sell_exploration_data)
 	station_ui.connect("upgradeShip", _on_upgrade_ship)
+	station_ui.connect("refundUpgrade", _on_refund_upgrade)
 	station_ui.connect("addSavedAudioProfile", _on_add_saved_audio_profile)
 	station_ui.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	station_ui.connect("addPlayerValue", _on_add_player_value)
@@ -220,6 +221,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("removePlayerMorale", _on_remove_player_morale)
 	debug_interface.connect("quickTraverse", _on_DEBUG_quick_traverse)
 	debug_interface.connect("unlockUpgrade", _on_unlock_upgrade)
+	debug_interface.connect("regenerateSystem3D", _on_DEBUG_regenerate_system_3d)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -262,11 +264,9 @@ func _physics_process(delta):
 		world.player.position, 
 		world.player.get_adjusted_scanner_power()
 	))
-	var current_bodies = world.player.current_star_system.bodies
-	if current_bodies:
-		for body in current_bodies:
-			world.player.current_star_system.updateBodyPosition(body.get_identifier(), delta)
-			body.advance(delta) #capacity to do more stuff, can be overriden by classes that inherit bodyAPI
+	world.player.current_star_system.updateBodies(delta)
+	for i in world.player.current_star_system.updateMinesGetDetonations(world.player.position, delta):
+		_on_add_player_hull_stress(world.player.hull_stress_mine)
 	
 	#updating positions of everyhthing for windows
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
@@ -380,10 +380,9 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add_tree_access("space_entity_type", str(game_data.ENTITY_CLASSIFICATIONS.find_key(following_body.entity_classification)))
 		starSystemAPI.BODY_TYPES.STAR:
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
-		starSystemAPI.BODY_TYPES.UNIT:
-			new_query.add("unit_available", following_body.metadata.get("unit_available", true))
-			new_query.add_tree_access("unit_affiliation", str(game_data.UNIT_AFFILIATIONS.find_key(following_body.metadata.get("affiliation"))))
-			new_query.add_tree_access("unit_hostile", following_body.metadata.get("hostile", false))
+		starSystemAPI.BODY_TYPES.SHIP:
+			body_query_add_unit_type_shared(new_query, following_body)
+			new_query.add("ship_available", following_body.metadata.get("ship_available", true))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 			var unlocked_upgrades = world.player.get_unlocked_upgrades()
 			if unlocked_upgrades.size() > 0:
@@ -432,13 +431,7 @@ func _on_player_following_body(following_body: bodyAPI):
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				"HARD_LEAVE_STATION_OVERRIDE": #for planetary settlements
 					following_body.metadata["planetary_anomaly_available"] = false
-					
-					var temp_station: stationBodyAPI = stationBodyAPI.new()
-					temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
-					temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
-					var random = RandomNumberGenerator.new()
-					random.set_seed(following_body.metadata.get("seed", randi()))
-					temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
+					var temp_station := starSystemAPI.get_temporary_station(following_body)
 					dock_with_station(temp_station)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
@@ -452,26 +445,20 @@ func _on_player_following_body(following_body: bodyAPI):
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				"HARD_LEAVE_STATION_OVERRIDE": #for outposts
 					following_body.metadata["space_anomaly_available"] = false
-					
-					var temp_station: stationBodyAPI = stationBodyAPI.new()
-					temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
-					temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
-					var random = RandomNumberGenerator.new()
-					random.set_seed(following_body.metadata.get("seed", randi()))
-					temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
+					var temp_station := starSystemAPI.get_temporary_station(following_body)
 					dock_with_station(temp_station)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
-		starSystemAPI.BODY_TYPES.UNIT:
+		starSystemAPI.BODY_TYPES.SHIP:
 			match RETURN_STATE:
 				"HARD_LEAVE":
-					following_body.metadata["unit_available"] = false
+					following_body.metadata["ship_available"] = false
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 				"SOFT_LEAVE":
-					following_body.metadata["unit_available"] = true
+					following_body.metadata["ship_available"] = true
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 				"HARD_LEAVE_MAKE_PEACEFUL_OVERRIDE":
-					following_body.metadata["unit_available"] = false
+					following_body.metadata["ship_available"] = false
 					following_body.metadata["hostile"] = false
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 				_:
@@ -490,6 +477,11 @@ func body_query_add_custom_type_shared(query: responseQuery, body: bodyAPI) -> v
 	query.add("custom_tag", body.get_dialogue_tag())
 	query.add("custom_available", body.metadata.get("custom_available", true))
 	query.add_tree_access("seed", body.metadata.get("seed", 0))
+	pass
+
+func body_query_add_unit_type_shared(query: responseQuery, body: bodyAPI) -> void:
+	query.add_tree_access("unit_affiliation", str(game_data.UNIT_AFFILIATIONS.find_key(body.metadata.get("affiliation"))))
+	query.add_tree_access("unit_hostile", body.metadata.get("hostile", false))
 	pass
 
 
@@ -670,6 +662,7 @@ func dock_with_station(following_station):
 	station_ui.player_balance = world.player.balance
 	station_ui.player_hull_stress = world.player.hull_stress
 	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades]
+	station_ui.player_unlocked_upgrades = world.player.get_unlocked_upgrades()
 	
 	station_ui.set("player_saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	station_ui.set("pending_audio_profiles", world.get_pending_audio_profiles())
@@ -710,7 +703,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	
 	#this ENSURES that units can follow the player AFTER reload or at any time since _on_switch_star_system is called on both CONTINUE and NEW. unitBodyAPIs must be made *BEFORE* _on_switch_star_system as a result.
 	
-	for unit: unitBodyAPI in to_system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.UNIT):
+	for unit: unitBodyAPI in to_system.get_units():
 		unit.try_reconnect_signal_callable_pairs()
 		var unit_connections: Dictionary = {
 			unit.followingBody: to_system._on_unit_following_body, 
@@ -724,7 +717,9 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	var system_connections: Dictionary = {
 		to_system.unit_following_body: _on_unit_following_body,
 		to_system.unit_orbiting_body: _on_unit_orbiting_body,
-		to_system.unit_play_sound: _on_unit_play_sound
+		to_system.unit_play_sound: _on_unit_play_sound,
+		to_system.mine_detonated: _on_mine_detonated,
+		to_system.body_removed: _on_body_removed
 	}
 	for s: Signal in system_connections:
 		if not s.is_connected(system_connections[s]):
@@ -741,7 +736,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	long_range_scopes.system = to_system
 	dialogue_manager.system = to_system
 	
-	system_3d.spawnBodies()
+	system_3d.regenerate_system()
 	system_3d.reset_locked_body()
 	journey_map.add_new_system(world.player.systems_traversed)
 	journey_map.jumps_remaining = world.player.get_jumps_remaining() #required as it needs to update when the players system on game startup is loaded, not just wormhole traversal!
@@ -771,7 +766,6 @@ func _on_process_system_hazard(system: starSystemAPI):
 			CDP.countdownTick.connect(_on_CME_time_current_updated) # real
 			CDP.countdownTimeout.connect(_on_CME_timeout) # real
 			CDP.initialize(system.get_identifier(), "WARNING", "CORONAL MASS EJECTION", world.player.hull_stress_CME, time_total, time_current)
-			
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
 			pass
 	pass
@@ -838,6 +832,20 @@ func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	
 	station_ui.player_balance = world.player.balance
 	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades] #current, max
+	station_ui.player_unlocked_upgrades = world.player.get_unlocked_upgrades()
+	station_ui.update_upgrade_buttons()
+	pass
+
+func _on_refund_upgrade(upgrade_idx: playerAPI.UPGRADE_ID, refund: int) -> void:
+	print("GAME: REFUNDING UPGRADE")
+	if world.player.get_upgrade_unlocked_state(upgrade_idx) == true:
+		world.player.increaseBalance(refund)
+		_on_lock_upgrade(upgrade_idx)
+	
+	station_ui.player_balance = world.player.balance
+	station_ui.player_SPL_upgrades_matrix = [world.player.current_SPL_upgrades, world.player.max_SPL_upgrades] #current, max
+	station_ui.player_unlocked_upgrades = world.player.get_unlocked_upgrades()
+	station_ui.update_upgrade_buttons()
 	pass
 
 func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
@@ -1170,6 +1178,15 @@ func _on_unit_play_sound(_path: String, _volume_db: float, _bus: StringName, _u:
 	get_tree().call_group("audioHandler", "play_once", load(_path), _volume_db, _bus)
 	pass
 
+func _on_mine_detonated(id: int) -> void: #starSystemAPI signal
+	system_3d._on_mine_detonated(id) #plays directional SFX
+	get_tree().call_group("audioHandler", "plot_radio", load("uid://b56k7w734n8kd"))
+	pass
+
+func _on_body_removed(id: int) -> void: #starSystemAPI signal
+	system_3d._on_body_removed(id)
+	pass
+
 func _on_open_LRS():
 	await get_tree().physics_frame
 	var following_body = world.player.action_body #should be set as playerAPI setting action_body calls _on_player_following_body, which calls dialogue, which calls this.
@@ -1270,6 +1287,10 @@ func _on_DEBUG_quick_traverse() -> void:
 		adjusted_wormholes.erase(w)
 	var final_wormhole = adjusted_wormholes.pick_random()
 	enter_wormhole(final_wormhole, world.player.current_star_system.get_wormholes(), final_wormhole.destination_system, true)
+	pass
+
+func _on_DEBUG_regenerate_system_3d() -> void:
+	system_3d.regenerate_system()
 	pass
 
 

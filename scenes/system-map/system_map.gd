@@ -177,7 +177,7 @@ func _physics_process(delta):
 		orbit_button.set("disabled", true)
 		go_to_button.set("disabled", true)
 	else:
-		if locked_body.get_type() == starSystemAPI.BODY_TYPES.UNIT:
+		if locked_body is unitBodyAPI:
 			orbit_button.set("disabled", true)
 		else:
 			orbit_button.set("disabled", false)
@@ -225,7 +225,7 @@ func _physics_process(delta):
 	scanner_power_time = maxf(0, scanner_power_time - delta)
 	if get_global_mouse_position().distance_to(player_position_matrix[0]) < (1 + pow(camera.zoom.length(), -0.5)):
 		_on_update_scanner_display_times(2.5, 2.5)
-	for unit in system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.UNIT).filter(func(unit): return unit.is_known()): # not very performance motherfucker >:( but i think it makes more sense that this is here and not in update_contact_list, really. but not when CUSTOM_UNIT is added.
+	for unit in system.get_units().filter(func(unit): return unit.is_known()): # not very performance motherfucker >:( but i think it makes more sense that this is here and not in update_contact_list, really. but not when CUSTOM_UNIT is added.
 		if get_global_mouse_position().distance_to(unit.position) < (1 + pow(camera.zoom.length(), -0.5)):
 			_on_update_scanner_display_times(2.5, 2.5)
 	
@@ -245,7 +245,7 @@ func _physics_process(delta):
 				body_attributes_list.add_item("mass : %.2f (earth masses)" % (follow_body.mass * 333000))
 			
 		#metadata
-		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "missing_GL", "seed", "custom_available", "custom_follow_available", "custom_orbit_available", "unit_available"]
+		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "missing_GL", "seed", "custom_available", "custom_follow_available", "custom_orbit_available", "ship_available"]
 		if follow_body.is_known():
 			for entry in follow_body.metadata:
 				if excluding.find(entry) == -1:
@@ -395,6 +395,9 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 						item.set_icon(0, load("uid://pbgoomdkkj6h"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					
+					#if body.is_habitable():
+					#	item.set_custom_color(0, Color.GREEN)
+					
 				starSystemAPI.BODY_TYPES.WORMHOLE:
 					item.set_icon(0, load("uid://k50rbp6ri57u"))
 					
@@ -472,15 +475,14 @@ func update_contact_list() -> void:
 	for item in root.get_children():
 		var identifier = item.get_metadata(0)
 		var body = system.get_body_from_identifier(identifier)
-		
-		if body == follow_body:
-			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
-		elif body.get_identifier() == closest_body_id: 
-			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.2)) #WEB_GRAY
-		else:
-			item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
-		
-		if body is AIUnitAPI:
+		if body != null:
+			if body == follow_body:
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
+			elif body.get_identifier() == closest_body_id: 
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.2)) #WEB_GRAY
+			else:
+				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
+			
 			if body.is_hostile():
 				if body == follow_body:
 					item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.5)) #LIGHT_SKY_BLUE
@@ -488,6 +490,8 @@ func update_contact_list() -> void:
 					item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.2)) #WEB_GRAY
 				else:
 					item.set_custom_bg_color(0, Color.DARK_RED)
+		else:
+			item.free()
 	pass
 
 func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
@@ -497,13 +501,10 @@ func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
 	item.set_metadata(0, unit.get_identifier())
 	item.set_text(0, unit.get_display_name())
 	#icon handling!
-	if unit is AIUnitAPI:
-		if unit.is_hostile():
-			item.set_icon(0, load("uid://dxtvjut27oly0"))
-		else:
-			item.set_icon(0, load("uid://bbdpqnpgh7iy6"))
+	if unit.is_hostile():
+		item.set_icon(0, load("uid://dxtvjut27oly0"))
 	else:
-		item.set_icon(0, load("uid://hv5u4ty18pyd"))
+		item.set_icon(0, load("uid://bbdpqnpgh7iy6"))
 	pass
 
 func _on_player_scanner_contact_lost(unit: unitBodyAPI) -> void:
@@ -666,16 +667,52 @@ func draw_map():
 	if show_overlay: map_overlay.show()
 	else: map_overlay.hide()
 	
+	var scanner_power_points: PackedVector2Array = []
+	var scanner_power_point_count: int = 30
+	for i in scanner_power_point_count:
+		var theta = (360 / scanner_power_point_count) * i
+		var dir = Vector2.UP.rotated(deg_to_rad(theta))
+		var pos = Vector2(player_position_matrix[0] + (dir * player_adj_scanner_matrix[1]))
+		scanner_power_points.append(pos)
+	
 	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT)
 	if asteroid_belts: 
 		for belt in asteroid_belts:
 			if belt.is_known(): 
 				draw_arc(belt.position, belt.orbit_distance, -10, TAU, 50, belt.metadata.get("belt_color"), belt.metadata.get("belt_width"), false)
 	
+	var mines = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.MINE)
+	if mines:
+		for mine in mines:
+			var _exclusion_radius_points: PackedVector2Array = []
+			if mine.exclusion_radius_points.size() > 0:
+				_exclusion_radius_points = mine.exclusion_radius_points
+			else:
+				var point_count: int = 12
+				for i in point_count:
+					var theta = (360 / point_count) * i
+					var dir = Vector2.UP.rotated(deg_to_rad(theta))
+					var pos = Vector2(mine.position + (dir * mine.metadata.get("exclusion_zone_radius")))
+					_exclusion_radius_points.append(pos)
+				mine.exclusion_radius_points = _exclusion_radius_points
+			
+			var intersected_points = Geometry2D.intersect_polygons(scanner_power_points, _exclusion_radius_points)
+			var offset_points = Geometry2D.offset_polygon(_exclusion_radius_points, -(mine.metadata.get("exclusion_zone_radius") * remap(mine.detonation_time_index, 0.0, 1.0, 1.0, 0.0)))
+			
+			if intersected_points.size() > 0:
+				if not intersected_points[0].size() < 3:
+					draw_colored_polygon(intersected_points[0], Color(Color.DARK_RED.darkened(0.75), 0.5))
+			
+			if offset_points.size() > 0:
+				var intersected_offset_points = Geometry2D.intersect_polygons(scanner_power_points, offset_points[0])
+				if intersected_offset_points.size() > 0:
+					if not intersected_offset_points[0].size() < 3:
+						draw_colored_polygon(intersected_offset_points[0], Color.DARK_RED.darkened(0.5))
+	
 	if scanner_profile_time > 0:
 		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), 0.5, false)
 	if scanner_power_time > 0:
-		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[1], -TAU, TAU, 30, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), 0.2, false)
+		draw_multiline(scanner_power_points, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), 0.2, false)
 	
 	for body in system.bodies:
 		
@@ -737,17 +774,16 @@ func draw_map():
 		
 		#INCORRECTLY batch unitBodyAPI drawing (applies two different draws at once, removing any possible benefit of batching)
 		
-		if body is AIUnitAPI and body.is_known(): #unitBodyAPIs are usually not drawn, like bodyAPIs, but AIUnitAPIs are always drawn !!!
+		if body is unitBodyAPI and body.is_known(): #what it should be is this: unitBodyAPIs are usually not drawn, like bodyAPIs, but AIUnitAPIs are always drawn. but this probably isnt good idea. so, therefore, we need to check that the unit is NOT custom when drawing this when we add that feature
 			if show_overlay:
-				var AI_color = Color.SLATE_GRAY
+				var self_color = Color.SLATE_GRAY
 				var blink_color = Color.LIGHT_GRAY
 				if body.is_hostile():
-					AI_color = Color.RED
+					self_color = Color.RED
 					blink_color = Color.DARK_RED
 				
 				draw_arc(body.position, maxf(0.25, sin(Time.get_unix_time_from_system() * 4.0) * size_exponent * 6.0), -TAU, TAU, 5, blink_color, 0.2, false)
-				
-				draw_rect(global_data.get_offset_rect2(body.position, size_exponent * 3.0, size_exponent * 3.0), AI_color)
+				draw_rect(global_data.get_offset_rect2(body.position, size_exponent * 3.0, size_exponent * 3.0), self_color)
 	
 	for body in system.bodies:
 		

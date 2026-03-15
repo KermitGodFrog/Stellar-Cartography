@@ -44,6 +44,7 @@ var total_score: int = 0:
 @export var hull_stress_wormhole: int
 @export var hull_stress_CME: int
 @export var hull_stress_pulsar_beam: int
+@export var hull_stress_mine: int
 
 @export_storage var jumps_remaining: int = 0
 @export_storage var systems_traversed: int = 0

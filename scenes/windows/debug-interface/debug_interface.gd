@@ -17,6 +17,7 @@ signal maxCharacterStanding()
 signal removePlayerMorale(amount: int)
 signal quickTraverse()
 signal unlockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
+signal regenerateSystem3D()
 
 
 func _ready() -> void:
@@ -105,6 +106,10 @@ func _on_quick_traverse_button_pressed() -> void:
 
 func _on_unlock_button_pressed() -> void:
 	emit_signal("unlockUpgrade", playerAPI.UPGRADE_ID.get(upgrade_options.get_item_text(upgrade_options.get_selected_id())))
+	pass
+
+func _on_regen_system_3d_button_pressed() -> void:
+	emit_signal("regenerateSystem3D")
 	pass
 
 
