@@ -55,6 +55,8 @@ var actors: Array[actor3D] = []
 
 
 func _ready():
+	tex_gen_thread = Thread.new()
+	mutex = Mutex.new()
 	_on_scope_mode_changed(playerAPI.SCOPE_MODES.VIS)
 	control.connect("targetFOVChange", _on_target_FOV_change)
 	pass
@@ -175,8 +177,18 @@ func try_discover_orbit_bodies() -> void:
 	pass
 
 
-
+var tex_gen_thread: Thread
+var exit_tex_gen_thread: bool = false
+var mutex: Mutex
 func regenerate_system() -> void: #assumes that 'system' is set by game.gd beforehand - which is what happens.
+	mutex.lock()
+	exit_tex_gen_thread = true
+	mutex.unlock()
+	
+	if tex_gen_thread != null:
+		if tex_gen_thread.is_started():
+			tex_gen_thread.wait_to_finish()
+	
 	var remove_actors: Array[actor3D] = []
 	remove_actors.append_array(actors)
 	for actor in remove_actors:
@@ -186,6 +198,8 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 	actors.clear()
 	remove_actors.clear()
 	
+	var tex_gen_pairs: Dictionary = {} #actor: body
+	
 	for body in system.bodies:
 		
 		match body:
@@ -194,9 +208,9 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 				var mesh: SphereMesh
 				match body.get_type():
 					starSystemAPI.BODY_TYPES.PLANET:
-						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.25, null, get_surface_texture_for_circular_body(body))
+						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.25, null)
 					starSystemAPI.BODY_TYPES.STAR:
-						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, body.surface_color, body.surface_color, 1.0, null, get_surface_texture_for_circular_body(body))
+						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, body.surface_color, body.surface_color, 1.0, null)
 						star_omni_light.light_color = body.surface_color
 						star_omni_light.light_size = body.radius
 						if body is pulsarBodyAPI:
@@ -204,7 +218,7 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					starSystemAPI.BODY_TYPES.WORMHOLE:
 						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
 				
-				add_actor(
+				var new_actor = await add_actor(
 					body.get_identifier(),
 					[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.CIRCULAR_BODY], 
 					{"mesh": mesh},
@@ -212,6 +226,9 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					{},
 					{"playing": true}
 				)
+				
+				if body.get_type() in [starSystemAPI.BODY_TYPES.PLANET, starSystemAPI.BODY_TYPES.STAR]:
+					tex_gen_pairs[new_actor] = body
 				
 			_ when body is glintBodyAPI:
 				
@@ -267,6 +284,10 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 				)
 	
 	_on_scope_mode_changed(get_scope_mode()) #to refresh all cohorts which change on scope mode change! dont want to assume we r in VIS mode >:)
+	
+	exit_tex_gen_thread = false
+	tex_gen_thread = Thread.new()
+	tex_gen_thread.start(threaded_generate_surface_textures.bind(tex_gen_pairs))
 	pass
 
 func add_actor(id: int, cohorts: Array[actor3D.COHORTS], mesh_variables: Dictionary = {}, sprite_variables: Dictionary = {}, audio_variables: Dictionary = {}, flyby_variables: Dictionary = {}, override_script = null) -> Node3D:
@@ -319,6 +340,23 @@ func add_pulsar_beams(_star: pulsarBodyAPI) -> void:
 		
 		new_actor.add_to_group("pulsar_beam_3d_flyby_sfx_%.f" % flyby_sfx)
 	pass
+
+func threaded_generate_surface_textures(_tex_gen_pairs: Dictionary = {}) -> void:
+	for actor in _tex_gen_pairs:
+		mutex.lock()
+		var should_exit = exit_tex_gen_thread
+		mutex.unlock()
+		
+		if should_exit:
+			print("SYSTEM 3D: THREADED SURFACE TEXTURE GENERATION -> EXITED EARLY")
+			return
+		
+		var body = _tex_gen_pairs.get(actor)
+		var material = actor.mesh_instance.mesh.material as StandardMaterial3D
+		material.set_texture(BaseMaterial3D.TEXTURE_EMISSION, get_surface_texture_for_circular_body(body))
+	
+	print("SYSTEM 3D: THREADED SURFACE TEXTURE GENERATION -> COMPLETE")
+	return
 
 func generate_circular_body_sphere_mesh(radius: float, color: Color, emission_color: Color, emission_multiplier: float, overlay_shader_resource = null, surface_texture = null) -> SphereMesh:
 	var mesh = SphereMesh.new()
