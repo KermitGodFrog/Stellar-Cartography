@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dm0mvt8rycewv"
-path="res://.godot/imported/nelson_cropped.png-e2a84f66334b4c2c91ea9fbd9655ac53.ctex"
+uid="uid://cn654nq4ukfk1"
+path="res://.godot/imported/arrow.png-5ea69345f375c398726552f873c6434d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/misc/nelson_cropped.png"
-dest_files=["res://.godot/imported/nelson_cropped.png-e2a84f66334b4c2c91ea9fbd9655ac53.ctex"]
+source_file="res://graphics/wormhole-minigame/arrow.png"
+dest_files=["res://.godot/imported/arrow.png-5ea69345f375c398726552f873c6434d.ctex"]
 
 [params]
 

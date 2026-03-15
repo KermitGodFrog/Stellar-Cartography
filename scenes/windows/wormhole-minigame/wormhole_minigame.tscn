@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c2upluruwt8c"]
+[gd_scene load_steps=19 format=3 uid="uid://c2upluruwt8c"]
 
 [ext_resource type="Shader" uid="uid://ccyhn2jg4jl72" path="res://shader-gen/wormhole-minigame/wormhole_exterior.gdshader" id="1_hg32g"]
 [ext_resource type="Script" uid="uid://b1mml0k67ehdt" path="res://scenes/windows/wormhole-minigame/wormhole_minigame.gd" id="1_u2vnu"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://ct5k4d5fntjjm" path="res://scenes/windows/wormhole-minigame/wormhole_animation.gd" id="4_pmdih"]
 [ext_resource type="Theme" uid="uid://du8q1tlwo1jt1" path="res://theme-gen/wormhole-minigame/wormhole_minigame_HUD_theme.tres" id="7_y6ir1"]
 [ext_resource type="Texture2D" uid="uid://dq25m1n2y5upl" path="res://graphics/system-map/status-panel/hull_stress_icon.png" id="8_41qj7"]
+[ext_resource type="Texture2D" uid="uid://cn654nq4ukfk1" path="res://graphics/wormhole-minigame/arrow.png" id="8_272fy"]
 [ext_resource type="AudioStream" uid="uid://cq2a1gsmblou1" path="res://sound/wormhole-minigame/wormhole_interference.wav" id="9_w5evm"]
 [ext_resource type="AudioStream" uid="uid://dvlokj0bsucd1" path="res://sound/wormhole-minigame/deceleration.wav" id="10_7mbe0"]
 
@@ -35,16 +36,6 @@ material = SubResource("ShaderMaterial_ibrli")
 radius = 100.0
 height = 200.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pa1kh"]
-bg_color = Color(0, 1, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q61wk"]
-bg_color = Color(1, 0, 0, 1)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bgttb"]
-content_margin_left = 50.0
-content_margin_bottom = 140.0
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_17at8"]
 texture = ExtResource("8_41qj7")
 modulate_color = Color(0.211765, 0.211765, 0.211765, 1)
@@ -56,6 +47,7 @@ bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
 process_mode = 2
 own_world_3d = true
 canvas_item_default_texture_filter = 0
+oversampling_override = 1.0
 title = "Wormhole Traversal"
 position = Vector2i(0, 36)
 size = Vector2i(500, 400)
@@ -126,35 +118,35 @@ offset_bottom = 200.0
 grow_vertical = 2
 size_flags_vertical = 3
 
-[node name="distance_upper" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container"]
-custom_minimum_size = Vector2(0, 100)
+[node name="label_boundary_scroll" type="VBoxContainer" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container"]
 layout_mode = 2
-theme_override_styles/fill = SubResource("StyleBoxFlat_pa1kh")
-value = 15.0
-fill_mode = 3
-show_percentage = false
+theme_override_constants/separation = 5
 
-[node name="distance_lower" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container"]
-custom_minimum_size = Vector2(0, 100)
+[node name="distance_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container/label_boundary_scroll"]
 layout_mode = 2
-theme_override_styles/fill = SubResource("StyleBoxFlat_q61wk")
-value = 10.0
-fill_mode = 3
-show_percentage = false
+text = "DISTANCE"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="distance_progress" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container"]
-custom_minimum_size = Vector2(0, 100)
+[node name="boundary_container" type="CenterContainer" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container/label_boundary_scroll"]
+layout_mode = 2
+
+[node name="boundaries" type="TextureProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container/label_boundary_scroll/boundary_container"]
+custom_minimum_size = Vector2(20, 200)
+layout_mode = 2
+value = 100.0
+fill_mode = 3
+
+[node name="distance_progress" type="ProgressBar" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container/label_boundary_scroll/boundary_container"]
+custom_minimum_size = Vector2(20, 200)
 layout_mode = 2
 value = 100.0
 fill_mode = 3
 show_percentage = false
 
-[node name="distance_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container"]
+[node name="separator" type="HSeparator" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/distance_container/label_boundary_scroll"]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_bgttb")
-text = "DISTANCE"
-horizontal_alignment = 1
-vertical_alignment = 1
+theme_override_constants/separation = 22
 
 [node name="brake_button" type="Button" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
 custom_minimum_size = Vector2(100, 100)
@@ -174,22 +166,56 @@ theme = ExtResource("7_y6ir1")
 theme_type_variation = &"BrakeRed"
 text = "BRAKE"
 
-[node name="hull_stress_increase_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
+[node name="hint_scroll" type="HBoxContainer" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 50.0
+pivot_offset = Vector2(0, 25)
+
+[node name="hint_arrow" type="TextureRect" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/hint_scroll"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("8_272fy")
+stretch_mode = 3
+
+[node name="hull_stress_increase_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control/hint_scroll"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -25.0
-offset_top = -100.0
-offset_right = 25.0
-offset_bottom = -50.0
-grow_horizontal = 2
-grow_vertical = 0
+layout_mode = 2
+size_flags_horizontal = 10
 theme_override_styles/normal = SubResource("StyleBoxTexture_17at8")
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="red_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
+layout_mode = 0
+offset_right = 22.0
+offset_bottom = 17.0
+pivot_offset = Vector2(22, 0)
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="green_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
+layout_mode = 0
+offset_right = 22.0
+offset_bottom = 17.0
+pivot_offset = Vector2(22, 0)
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="cyan_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
+layout_mode = 0
+offset_right = 22.0
+offset_bottom = 17.0
+pivot_offset = Vector2(22, 0)
+theme_override_colors/font_color = Color(0, 0.8352941, 1, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="press_to_start_button" type="Button" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]

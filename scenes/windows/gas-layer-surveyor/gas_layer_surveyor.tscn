@@ -18,27 +18,27 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6om7d"]
 bg_color = Color(0.117647, 0.117647, 0.117647, 1)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5y72e"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w817a"]
+bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2cj0f"]
 bg_color = Color(0.466667, 0.466667, 0.466667, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w817a"]
-bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c8gbv"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5y72e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fy5f7"]
 bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5ayti"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c8gbv"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cp8i3"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uddrg"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5ayti"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fd8bf"]
 bg_color = Color(0.156863, 0.156863, 0.156863, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uddrg"]
 
 [sub_resource type="TubeTrailMesh" id="TubeTrailMesh_dwqov"]
 material = ExtResource("4_lygh8")
@@ -46,6 +46,7 @@ radius = 0.005
 
 [node name="gas_layer_surveyor_window" type="Window"]
 own_world_3d = true
+oversampling_override = 1.0
 title = "Gas Layer Surveyor"
 position = Vector2i(0, 36)
 size = Vector2i(500, 500)
@@ -183,9 +184,9 @@ theme_override_constants/margin_bottom = 15
 
 [node name="tabs" type="TabContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin"]
 layout_mode = 2
-theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_5y72e")
-theme_override_styles/tabbar_background = SubResource("StyleBoxFlat_2cj0f")
 theme_override_styles/panel = SubResource("StyleBoxFlat_w817a")
+theme_override_styles/tabbar_background = SubResource("StyleBoxFlat_2cj0f")
+theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_5y72e")
 current_tab = 0
 
 [node name="REPORT" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs"]
@@ -230,8 +231,8 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_c8gbv")
 theme_override_styles/normal = SubResource("StyleBoxFlat_fy5f7")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_c8gbv")
 text = "CONFIRM"
 script = ExtResource("8_3jywn")
 
@@ -240,8 +241,8 @@ visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hovered_color = Color(0.560784, 1, 1, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_5ayti")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_cp8i3")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_5ayti")
 metadata/_tab_index = 1
 
 [node name="ENTRY" type="Control" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs"]
@@ -276,12 +277,12 @@ stretch_mode = 5
 [node name="attributes_list" type="ItemList" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENTRY/scroll"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hovered_color = Color(0.560784, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
-theme_override_styles/focus = SubResource("StyleBoxEmpty_uddrg")
 theme_override_styles/panel = SubResource("StyleBoxFlat_fd8bf")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_uddrg")
 allow_search = false
 max_columns = 2
 same_column_width = true
@@ -310,6 +311,7 @@ emission_ring_axis = Vector3(0, 1, 0)
 emission_ring_height = 1.0
 emission_ring_radius = 7.0
 emission_ring_inner_radius = 6.0
+emission_ring_cone_angle = 90.0
 gravity = Vector3(0, 10, 0)
 
 [connection signal="close_requested" from="." to="gas_layer_surveyor" method="_on_gas_layer_surveyor_window_close_requested"]
