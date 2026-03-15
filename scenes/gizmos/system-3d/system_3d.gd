@@ -50,9 +50,7 @@ func get_scope_mode() -> playerAPI.SCOPE_MODES:
 
 var initial_beam_rotation: float = 0.0 #REQUIRED FOR PULSARS TO WORK. BARELY KNEW WHAT I WAS DOING WHEN I MADE IT WORK SO DONT TOUCH!
 
-
 var actors: Array[actor3D] = []
-
 
 func _ready():
 	mutex = Mutex.new()
@@ -176,6 +174,7 @@ func try_discover_orbit_bodies() -> void:
 	pass
 
 
+
 var tex_gen_thread: Thread
 var exit_tex_gen_thread: bool = false
 var mutex: Mutex
@@ -188,6 +187,8 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 		if tex_gen_thread.is_started():
 			tex_gen_thread.wait_to_finish()
 	
+	var tex_gen_pairs: Dictionary = {} # {actor: body}
+	
 	var remove_actors: Array[actor3D] = []
 	remove_actors.append_array(actors)
 	for actor in remove_actors:
@@ -196,8 +197,6 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 		actor.queue_free()
 	actors.clear()
 	remove_actors.clear()
-	
-	var tex_gen_pairs: Dictionary = {} #actor: body
 	
 	for body in system.bodies:
 		
@@ -340,23 +339,6 @@ func add_pulsar_beams(_star: pulsarBodyAPI) -> void:
 		new_actor.add_to_group("pulsar_beam_3d_flyby_sfx_%.f" % flyby_sfx)
 	pass
 
-func threaded_generate_surface_textures(_tex_gen_pairs: Dictionary = {}) -> void:
-	for actor in _tex_gen_pairs:
-		mutex.lock()
-		var should_exit = exit_tex_gen_thread
-		mutex.unlock()
-		
-		if should_exit:
-			print("SYSTEM 3D: THREADED SURFACE TEXTURE GENERATION -> EXITED EARLY")
-			return
-		
-		var body = _tex_gen_pairs.get(actor)
-		var material = actor.mesh_instance.mesh.material as StandardMaterial3D
-		material.set_texture(BaseMaterial3D.TEXTURE_EMISSION, get_surface_texture_for_circular_body(body))
-	
-	print("SYSTEM 3D: THREADED SURFACE TEXTURE GENERATION -> COMPLETE")
-	return
-
 func generate_circular_body_sphere_mesh(radius: float, color: Color, emission_color: Color, emission_multiplier: float, overlay_shader_resource = null, surface_texture = null) -> SphereMesh:
 	var mesh = SphereMesh.new()
 	mesh.radius = radius
@@ -375,6 +357,22 @@ func generate_circular_body_sphere_mesh(radius: float, color: Color, emission_co
 	mesh.set_material(material)
 	return mesh
 
+func threaded_generate_surface_textures(_tex_gen_pairs: Dictionary = {}) -> void:
+	for actor in _tex_gen_pairs:
+		mutex.lock()
+		var should_exit = exit_tex_gen_thread
+		mutex.unlock()
+		
+		if should_exit:
+			print("SYSTEM 3D: THREADED SURFACE TEXTURE GENERATION -> EXITED EARLY")
+			return
+		
+		var body = _tex_gen_pairs.get(actor)
+		var material = actor.mesh_instance.mesh.material as StandardMaterial3D
+		material.set_texture(BaseMaterial3D.TEXTURE_EMISSION, get_surface_texture_for_circular_body(body))
+	
+	print("SYSTEM 3D: THREADED SURFACE TEXTURE GENERATION -> COMPLETE")
+	return
 
 
 
