@@ -188,6 +188,36 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_17at8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="red_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
+layout_mode = 0
+offset_right = 22.0
+offset_bottom = 17.0
+pivot_offset = Vector2(22, 0)
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="green_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
+layout_mode = 0
+offset_right = 22.0
+offset_bottom = 17.0
+pivot_offset = Vector2(22, 0)
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="cyan_label" type="Label" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
+layout_mode = 0
+offset_right = 22.0
+offset_bottom = 17.0
+pivot_offset = Vector2(22, 0)
+theme_override_colors/font_color = Color(0, 0.8352941, 1, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="press_to_start_button" type="Button" parent="minigame_container/minigame_viewport/wormhole_minigame/starship_and_camera/camera/UI_control"]
 layout_mode = 1
 anchors_preset = 15

@@ -46,6 +46,9 @@ var awaiting_start: bool = true
 @onready var hull_stress_increase_label = $starship_and_camera/camera/UI_control/hint_scroll/hull_stress_increase_label
 @onready var hint_scroll = $starship_and_camera/camera/UI_control/hint_scroll
 @onready var tutorial = $starship_and_camera/camera/UI_control/tutorial
+@onready var red_label = $starship_and_camera/camera/UI_control/red_label
+@onready var green_label = $starship_and_camera/camera/UI_control/green_label
+@onready var cyan_label = $starship_and_camera/camera/UI_control/cyan_label
 
 @onready var failure_sound = preload("uid://bplalt1pic5f")
 @onready var success_sound = preload("uid://c6aiafgr21bxi")
@@ -112,6 +115,8 @@ func initialize(weirdness_index: float = 0.0, _hull_stress_wormhole: int = 0):
 	boundaries.set_under_texture(texture)
 	
 	hull_stress_wormhole = _hull_stress_wormhole
+	
+	update_boundary_labels()
 	pass
 
 func _on_brake_button_button_up():
@@ -158,3 +163,14 @@ func _on_set_tutorial_visible(value: bool) -> void:
 
 func get_gradient_boundary(boundary: float) -> float:
 	return remap(boundary, 0, 100, 100, 0) / 100.0
+
+func update_boundary_labels() -> void:
+	#this the most ugly thing of all time BLEHHHHH
+	green_label.set_text("%.f" % (hull_stress_wormhole))
+	red_label.set_text("%.f" % (hull_stress_wormhole * 2))
+	cyan_label.set_text("%.f" % (hull_stress_wormhole - 5))
+	
+	green_label.set_global_position(Vector2(distance_progress.global_position.x - (green_label.size.x + 5), distance_progress.global_position.y + remap(upper_boundary, 100.0, 0.0, 0.0, distance_progress.size.y) - red_label.size.y / 2))
+	red_label.set_global_position(Vector2(distance_progress.global_position.x - (red_label.size.x + 5), distance_progress.global_position.y - red_label.size.y / 2))
+	cyan_label.set_global_position(Vector2(distance_progress.global_position.x - (cyan_label.size.x + 5), distance_progress.global_position.y + remap(special_upper_boundary, 100.0, 0.0, 0.0, distance_progress.size.y) - red_label.size.y / 2))
+	pass
