@@ -60,7 +60,7 @@ func _physics_process(delta):
 	starship_and_camera.position.x = -starship_offset
 	distance_progress.set_value(distance)
 	
-	hint_scroll.set_global_position(Vector2(distance_progress.global_position.x + distance_progress.size.x, distance_progress.global_position.y + remap(distance, 100.0, 0.0, 0.0, distance_progress.size.y) - hint_scroll.size.y / 2))
+	hint_scroll.set_global_position(Vector2(distance_progress.global_position.x + (distance_progress.size.x + 4), distance_progress.global_position.y + remap(distance, 100.0, 0.0, 0.0, distance_progress.size.y) - hint_scroll.size.y / 2))
 	
 	if (distance <= 0.0) and (not awaiting_start) and (_pause_mode == game_data.PAUSE_MODES.WORMHOLE_MINIGAME):
 		finish_minigame(RESULTS.FAILURE)
@@ -93,18 +93,19 @@ func initialize(weirdness_index: float = 0.0, _hull_stress_wormhole: int = 0):
 	special_lower_boundary = clamp(special_upper_boundary - randfn(1, 0.25), 0.0, special_upper_boundary - 1.0)
 	speed = clamp(randfn(30, 5) * weirdness_index, 2.5, 57.5)
 	
+	#DARK CYAN: #00c3c3
 	var gradient := Gradient.new()
 	gradient.set_interpolation_mode(Gradient.GRADIENT_INTERPOLATE_CONSTANT)
-	gradient.set_color(0, Color.RED)
+	gradient.set_color(0, Color("#bf3f3f")) #Color.RED desaturated 50%: #bf3f3f
 	gradient.remove_point(1)
-	gradient.add_point(get_gradient_boundary(upper_boundary), Color.GREEN)
-	gradient.add_point(get_gradient_boundary(lower_boundary), Color.RED)
-	gradient.add_point(get_gradient_boundary(special_upper_boundary), Color.DARK_CYAN)
+	gradient.add_point(get_gradient_boundary(upper_boundary), Color("#3fbf3f")) #Color.GREEN desaturated 50%: #3fbf3f
+	gradient.add_point(get_gradient_boundary(lower_boundary), Color("#bf3f3f"))
+	gradient.add_point(get_gradient_boundary(special_upper_boundary), Color("#309292")) #Color.DARK_CYAN desaturated 50%: #309292
 	if special_lower_boundary == 0.0:
-		gradient.add_point(get_gradient_boundary(special_lower_boundary), Color.DARK_CYAN)
+		gradient.add_point(get_gradient_boundary(special_lower_boundary), Color("#309292"))
 	else:
-		gradient.add_point(get_gradient_boundary(special_lower_boundary), Color.RED)
-		gradient.add_point(1.0, Color.RED)
+		gradient.add_point(get_gradient_boundary(special_lower_boundary), Color("#bf3f3f"))
+		gradient.add_point(1.0, Color("#bf3f3f"))
 	
 	var texture := GradientTexture2D.new()
 	texture.set_gradient(gradient)
@@ -170,7 +171,7 @@ func update_boundary_labels() -> void:
 	red_label.set_text("%.f%%" % (hull_stress_wormhole * 2))
 	cyan_label.set_text("%.f%%" % (hull_stress_wormhole - 5))
 	
-	green_label.set_global_position(Vector2(distance_progress.global_position.x - (green_label.size.x + 5), distance_progress.global_position.y + remap(upper_boundary, 100.0, 0.0, 0.0, distance_progress.size.y) - red_label.size.y / 2))
-	red_label.set_global_position(Vector2(distance_progress.global_position.x - (red_label.size.x + 5), distance_progress.global_position.y - red_label.size.y / 2))
-	cyan_label.set_global_position(Vector2(distance_progress.global_position.x - (cyan_label.size.x + 5), distance_progress.global_position.y + remap(special_upper_boundary, 100.0, 0.0, 0.0, distance_progress.size.y) - red_label.size.y / 2))
+	green_label.set_global_position(Vector2(distance_progress.global_position.x - (green_label.size.x + 7), distance_progress.global_position.y + remap(upper_boundary, 100.0, 0.0, 0.0, distance_progress.size.y) - red_label.size.y / 2))
+	red_label.set_global_position(Vector2(distance_progress.global_position.x - (red_label.size.x + 7), distance_progress.global_position.y - red_label.size.y / 2))
+	cyan_label.set_global_position(Vector2(distance_progress.global_position.x - (cyan_label.size.x + 7), distance_progress.global_position.y + remap(special_upper_boundary, 100.0, 0.0, 0.0, distance_progress.size.y) - red_label.size.y / 2))
 	pass

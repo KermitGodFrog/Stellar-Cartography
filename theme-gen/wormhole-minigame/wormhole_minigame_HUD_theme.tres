@@ -10,8 +10,8 @@ border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
-border_color = Color(0, 0.8352941, 1, 1)
-shadow_color = Color(0, 0.3137255, 1, 0.3137255)
+border_color = Color(0, 0.56, 0.56, 1)
+shadow_color = Color(0, 0.7647059, 0.7647059, 0.3137255)
 shadow_size = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uqie8"]
@@ -20,8 +20,7 @@ border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
-border_color = Color(0, 0.8352941, 1, 1)
-shadow_color = Color(0, 0.3137255, 1, 0)
+border_color = Color(0, 0.7647059, 0.7647059, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lh0m0"]
 bg_color = Color(0, 0, 0, 0.494118)
@@ -29,7 +28,7 @@ border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
-border_color = Color(0.75, 0.9583333, 1, 1)
+border_color = Color(0.60784316, 0.7607843, 0.7607843, 1)
 shadow_color = Color(1, 0, 0, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r3gxb"]
@@ -40,8 +39,8 @@ border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
-border_color = Color(0, 0.835294, 0, 1)
-shadow_color = Color(0, 0.313726, 0, 0.313726)
+border_color = Color(0, 0.8, 0, 1)
+shadow_color = Color(0, 1, 0, 0.3137255)
 shadow_size = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7qkor"]
@@ -50,8 +49,7 @@ border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
-border_color = Color(0, 0.835294, 0, 1)
-shadow_color = Color(1, 0, 0, 0)
+border_color = Color(0, 1, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aenv6"]
 bg_color = Color(0, 0, 0, 0.494118)
@@ -59,8 +57,7 @@ border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
-border_color = Color(0.823529, 1, 0.823529, 1)
-shadow_color = Color(1, 0, 0, 0)
+border_color = Color(0.8, 1, 0.8, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3xf4m"]
 
@@ -70,8 +67,8 @@ border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
-border_color = Color(0.835294, 0, 0, 1)
-shadow_color = Color(0.313726, 0, 0, 0.313726)
+border_color = Color(0.8, 0, 0, 1)
+shadow_color = Color(1, 0, 0, 0.3137255)
 shadow_size = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nteb7"]
@@ -81,7 +78,6 @@ border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
 border_color = Color(0.835294, 0, 0, 1)
-shadow_color = Color(1, 0, 0, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmfto"]
 bg_color = Color(0, 0, 0, 0.494118)
@@ -89,7 +85,7 @@ border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
-border_color = Color(1, 0.823529, 0.823529, 1)
+border_color = Color(1, 0.8, 0.8, 1)
 shadow_color = Color(1, 0, 0, 0)
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_256lr"]
