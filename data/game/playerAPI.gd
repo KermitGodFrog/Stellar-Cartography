@@ -84,6 +84,7 @@ var current_SPL_upgrades: int = 0:
 @export_storage var CME_immune: bool = false #didnt know where to put this
 @export_storage var supercharge_jumps_remaining: int = 0
 @export_storage var survived_mutiny: bool = false #misc
+@export_storage var invulnerability_time: float = 0.0 #this is only used for mines at the moment - could expand to pulsar beams, marauders, etc later.
 
 @export var characters: Array[characterAPI] = [
 	preload("uid://b0ufsv84pso1i"),
@@ -294,4 +295,20 @@ func updateScannerContacts(r_contacts: Array[unitBodyAPI]) -> void:
 	for c in lost_contacts:
 		emit_signal("scannerContactLost", c)
 	scanner_contacts = r_contacts
+	pass
+
+
+
+
+func is_invulnerable() -> bool:
+	if invulnerability_time > 0:
+		return true
+	return false
+
+func grant_invulnerability(time: float) -> void:
+	invulnerability_time += time
+	pass
+
+func tick_invulnerability_time(delta) -> void:
+	invulnerability_time = maxf(0.0, invulnerability_time - delta)
 	pass

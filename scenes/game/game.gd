@@ -264,8 +264,9 @@ func _physics_process(delta):
 		world.player.position, 
 		world.player.get_adjusted_scanner_power()
 	))
+	world.player.tick_invulnerability_time(delta)
 	world.player.current_star_system.updateBodies(delta)
-	for i in world.player.current_star_system.updateMinesGetDetonations(world.player.position, delta):
+	for i in world.player.current_star_system.updateMinesGetDetonations(world.player.position, delta, world.player.is_invulnerable()):
 		_on_add_player_hull_stress(world.player.hull_stress_mine)
 	
 	#updating positions of everyhthing for windows
@@ -594,6 +595,7 @@ func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
 
 
 func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, skip_minigame: bool = false):
+	world.player.grant_invulnerability(0.3)
 	#spawning new wormholes in destination system if nonexistent
 	if not destination.destination_systems:
 		for i in range(2):

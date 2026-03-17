@@ -799,7 +799,7 @@ func generateRandomMines() -> void: #called by game.gd _on_process_system_hazard
 		
 		#assumes players speed is 3
 		var exclusion_zone_radius = global_data.get_randi(5, 30)
-		var max_detonation_time = exclusion_zone_radius / (3 * 2) # player speed * (boost multiplier - 3) <- (this is so its possible to interact with the mine, and a bit more fair)
+		var max_detonation_time = maxf(1.0, float(exclusion_zone_radius) / (3.0 * 2.0)) # player speed * (boost multiplier - 3) <- (this is so its possible to interact with the mine, and a bit more fair)
 		
 		addUnitBody(
 			mineUnitAPI.new(),
@@ -1010,20 +1010,22 @@ static func get_temporary_station(hook: bodyAPI) -> stationBodyAPI: # for anomal
 
 # unit stuff \/
 
-func updateMinesGetDetonations(detonator_position: Vector2, delta) -> int: #returns number of detonating mines this frame
+func updateMinesGetDetonations(detonator_position: Vector2, delta, detonator_invulnerable: bool = false) -> int: #returns number of detonating mines this frame
 	var detonations_this_frame: int = 0
 	var mines = get_bodies_of_body_type(BODY_TYPES.MINE)
 	if mines:
 		for mine: mineUnitAPI in mines:
 			if detonator_position.distance_to(mine.position) < mine.metadata.get("exclusion_zone_radius"):
-				mine.tick_detonation_time(true, delta)
+				if not detonator_invulnerable:
+					mine.tick_detonation_time(true, delta)
 			else:
 				mine.tick_detonation_time(false, delta)
 			if mine.can_detonate():
-				detonations_this_frame += 1
-				mine.detonate()
-				emit_signal("mine_detonated", mine.get_identifier())
-				removeBody(mine.get_identifier())
+				if not detonator_invulnerable:
+					detonations_this_frame += 1
+					mine.detonate()
+					emit_signal("mine_detonated", mine.get_identifier())
+					removeBody(mine.get_identifier())
 	return detonations_this_frame
 
 func get_units() -> Array[unitBodyAPI]: #gets all bodies extending unitBodyAPI
