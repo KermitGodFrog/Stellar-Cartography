@@ -379,6 +379,9 @@ func threaded_generate_surface_textures(_tex_gen_pairs: Dictionary = {}) -> void
 
 
 
+
+#misc
+
 func reset_locked_body():
 	locked_body_identifier = 0
 	label_locked_body_identifier = 0
@@ -522,6 +525,16 @@ func get_surface_texture_for_circular_body(body: circularBodyAPI) -> NoiseTextur
 					texture.color_ramp.colors[0] = texture.color_ramp.colors[0].darkened(randfn(0.1, 0.01))
 	
 	return texture
+
+func _exit_tree() -> void: #thread stuff
+	mutex.lock()
+	exit_tex_gen_thread = true
+	mutex.unlock()
+	
+	if tex_gen_thread != null:
+		if tex_gen_thread.is_started():
+			tex_gen_thread.wait_to_finish()
+	pass
 
 
 
