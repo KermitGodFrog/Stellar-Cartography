@@ -1053,14 +1053,16 @@ func _on_player_below_CME_ring_radius():
 	if not world.player.CME_immune:
 		world.player.CME_immune = true
 		
-		_on_add_player_hull_stress(world.player.hull_stress_CME)
+		if not world.player.is_invulnerable():
+			_on_add_player_hull_stress(world.player.hull_stress_CME)
 		get_tree().call_group("audioHandler", "play_once", load("uid://c7baaje1ffxh6"), 0.0, "SFX")
 		get_tree().call_group("audioHandler", "plot_radio", load("uid://ddi2c1haas55w"))
 		system_map._on_countdown_overlay_CME_flash()
 	pass
 
 func _on_player_in_pulsar_beam_cooldown_expired() -> void:
-	_on_add_player_hull_stress(world.player.hull_stress_pulsar_beam)
+	if not world.player.is_invulnerable():
+		_on_add_player_hull_stress(world.player.hull_stress_pulsar_beam)
 	pass
 
 func _on_update_countdown_overlay_info(_title: String, _description: String, _hull_stress: int):
