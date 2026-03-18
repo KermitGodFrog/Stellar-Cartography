@@ -26,10 +26,13 @@ known = true
 script = ExtResource("3_5alrp")
 current_variation = 1
 surface_color = Color(0, 1, 0, 1)
+hook_identifier = 1
+orbit_distance = 37.271
+orbit_angle_change = 0.017
+rotation = 5.799
 current_type = 1
 identifier = 2
 display_name = "Ante"
-hook_identifier = 1
 metadata = {
 "iterations": 12,
 "planet_classification": "Terran",
@@ -37,20 +40,20 @@ metadata = {
 "seed": 0,
 "value": 16784
 }
-orbit_distance = 37.271
-orbit_angle_change = 0.017
 radius = 0.004
-rotation = 5.799
 known = true
 
 [sub_resource type="Resource" id="Resource_h7vb3"]
 script = ExtResource("3_5alrp")
 current_variation = 0
 surface_color = Color(1, 1, 1, 1)
+hook_identifier = 1
+orbit_distance = 93.072
+orbit_angle_change = 0.007
+rotation = 3.817
 current_type = 1
 identifier = 3
 display_name = "Arata"
-hook_identifier = 1
 metadata = {
 "iterations": 12,
 "planet_classification": "Terran",
@@ -58,10 +61,7 @@ metadata = {
 "seed": 0,
 "value": 1873
 }
-orbit_distance = 93.072
-orbit_angle_change = 0.007
 radius = 0.006
-rotation = 3.817
 known = true
 
 [sub_resource type="Resource" id="Resource_tk3if"]
@@ -72,17 +72,17 @@ script = ExtResource("5_h2sx4")
 destination_system = SubResource("Resource_tk3if")
 disabled = true
 surface_color = Color(0.502, 0, 0.502, 1)
+hook_identifier = 1
+orbit_distance = 45.252
+orbit_angle_change = 0.015
+rotation = 6.284
 current_type = 3
 identifier = 4
 display_name = "Egress"
-hook_identifier = 1
 metadata = {
 "destination_star_type": "M"
 }
-orbit_distance = 45.252
-orbit_angle_change = 0.015
 radius = 0.005
-rotation = 6.284
 known = true
 
 [sub_resource type="Resource" id="Resource_y01rm"]
@@ -92,30 +92,30 @@ script = ExtResource("2_svsgr")
 script = ExtResource("5_h2sx4")
 destination_system = SubResource("Resource_y01rm")
 surface_color = Color(0.502, 0, 0.502, 1)
+hook_identifier = 1
+orbit_distance = 103.573
+orbit_angle_change = 0.011
+rotation = 2.587
 current_type = 3
 identifier = 5
 display_name = "Peregrination"
-hook_identifier = 1
 metadata = {
 "destination_star_type": "G"
 }
-orbit_distance = 103.573
-orbit_angle_change = 0.011
 radius = 0.004
-rotation = 2.587
 known = true
 
 [sub_resource type="Resource" id="Resource_g738h"]
 script = ExtResource("6_sgroa")
 sell_percentage_of_market_price = 200
-current_type = 4
-identifier = 6
-display_name = "Tomo Sewi Locus"
 hook_identifier = 2
 orbit_distance = 2.592
 orbit_angle_change = 0.01
-radius = 0.004
 rotation = 1.106
+current_type = 4
+identifier = 6
+display_name = "Tomo Sewi Locus"
+radius = 0.004
 known = true
 
 [resource]

@@ -26,10 +26,12 @@ known = true
 script = ExtResource("3_tlaew")
 current_variation = 0
 surface_color = Color(0.663, 0.663, 0.663, 1)
+hook_identifier = 1
+orbit_distance = 20.322
+orbit_angle_change = 0.008
 current_type = 1
 identifier = 2
 display_name = "Prelude"
-hook_identifier = 1
 metadata = {
 "iterations": 12,
 "planet_classification": "Terran",
@@ -39,8 +41,6 @@ metadata = {
 "seed": 0,
 "value": 514
 }
-orbit_distance = 20.322
-orbit_angle_change = 0.008
 radius = 0.008
 
 [sub_resource type="Resource" id="Resource_lw4hu"]
@@ -48,10 +48,13 @@ script = ExtResource("3_tlaew")
 current_variation = 1
 mass = 0.026
 surface_color = Color(0, 0, 0.545, 1)
+hook_identifier = 1
+orbit_distance = 132.267
+orbit_angle_change = 0.005
+rotation = 4.705
 current_type = 1
 identifier = 3
 display_name = "Omission"
-hook_identifier = 1
 metadata = {
 "iterations": 12,
 "planet_classification": "Neptunian",
@@ -59,24 +62,21 @@ metadata = {
 "seed": 0,
 "value": 3029
 }
-orbit_distance = 132.267
-orbit_angle_change = 0.005
 radius = 0.132
-rotation = 4.705
 
 [sub_resource type="Resource" id="Resource_wvc64"]
 script = ExtResource("5_umr8a")
 destination_system = ExtResource("6_brypj")
 surface_color = Color(0.502, 0, 0.502, 1)
+hook_identifier = 1
+orbit_distance = 64.582
+orbit_angle_change = 0.012
 current_type = 3
 identifier = 4
 display_name = "Ingress"
-hook_identifier = 1
 metadata = {
 "destination_star_type": "M"
 }
-orbit_distance = 64.582
-orbit_angle_change = 0.012
 radius = 0.005
 
 [resource]
