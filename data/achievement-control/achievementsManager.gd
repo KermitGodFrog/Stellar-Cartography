@@ -17,7 +17,6 @@ const default_achievements: Dictionary = {
 	preload("uid://b0njvlvfd51jw"): false,
 	preload("uid://h11jp6ylt5p4"): false,
 	preload("uid://bnnk3hpl5vyv5"): false,
-	preload("uid://by1e4fqswofqx"): false,
 	preload("uid://bs3s26w3bcouo"): false,
 	preload("uid://cw60jj5x3nom5"): false,
 	preload("uid://dtkpc2w8p3rlp"): false,
