@@ -596,10 +596,12 @@ func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
 
 func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, skip_minigame: bool = false):
 	world.player.grant_invulnerability(0.3)
+	world.player.systems_traversed += 1
+	
 	#spawning new wormholes in destination system if nonexistent
 	if not destination.destination_systems:
-		for i in range(2):
-			_on_create_new_star_system(destination)
+		_on_create_new_star_system(destination)
+		_on_create_new_star_system(destination, (world.player.systems_traversed + 1) == world.player.total_systems)
 	#setting whether the new system is a civilized system or not
 	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
 	if world.player.get_jumps_remaining() == 0:
@@ -627,9 +629,8 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 		world.remove_systems_excluding_systems(exclude_systems)
 	
 	world.player.previous_star_system = world.player.current_star_system
-	world.player.systems_traversed += 1
 	
-	if world.player.systems_traversed == world.player.total_systems: # will need a global variable for how many ssystems until win at some point, customizability would be sick
+	if world.player.systems_traversed == world.player.total_systems + 1: # will need a global variable for how many ssystems until win at some point, customizability would be sick
 		_on_player_win()
 	
 	#setting position to wormhole??? actually works??????
@@ -689,9 +690,14 @@ func _on_update_target_position(pos: Vector2):
 	system_3d.set("target_position", pos)
 	pass
 
-func _on_create_new_star_system(for_system: starSystemAPI = null):
+func _on_create_new_star_system(for_system: starSystemAPI = null, insa_override: bool = false):
 	game_data.SYSTEM_PREFIX = "" #shuldnt be calling game_data from game.gd but whateverrrrrrr
-	var system = world.createStarSystem("random")
+	var system: starSystemAPI
+	if not insa_override:
+		system = world.createStarSystem("random")
+	else:
+		system = world.createStarSystem("campaign_insa")
+		system.special_system_classification = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA
 	var _advanced_scanning_unlocked = world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.ADVANCED_SCANNING)
 	system.createBase(world.get_adjusted_PA_chance(_advanced_scanning_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_scanning_unlocked), world.missing_GL_chance_per_relevant_planet)
 	if for_system != null:

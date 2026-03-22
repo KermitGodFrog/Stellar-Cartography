@@ -223,23 +223,28 @@ func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_plane
 	pass
 
 func createAuxiliaryCivilized() -> void:
-	generateWormholes()
-	generateRandomWeightedStations()
-	generateRandomWeightedEntities()
-	generateRendezvousPoint()
-	for body in bodies:
-		body.known = true
-	generateRandomWeightedShips()
+	match special_system_classification:
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
+			generateWormholes()
+			print("!! INSA SPECIAL SYSTEM CLASSIFICATION !!")
+		_:
+			generateWormholes()
+			generateRandomWeightedStations()
+			generateRandomWeightedEntities()
+			generateRendezvousPoint()
+			for body in bodies:
+				body.known = true
+			generateRandomWeightedShips()
 	pass
 
 func createAuxiliaryUnexplored() -> void:
-	var new_special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(), "weight")
-	special_system_classification = new_special_system_classification
+	#if special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
+	special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(), "weight")
 	
-	var new_system_hazard_classification = global_data.weighted_pick(game_data.get_weighted_system_hazard_classifications(), "weight")
-	system_hazard_classification = new_system_hazard_classification
+	#if system_hazard_classification == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
+	system_hazard_classification = global_data.weighted_pick(game_data.get_weighted_system_hazard_classifications(), "weight")
 	
-	match new_special_system_classification:
+	match special_system_classification:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
 			generateWormholes()
 			generateRandomWeightedEntities()
@@ -261,9 +266,9 @@ func createAuxiliaryUnexplored() -> void:
 			generateWormholes() #i think this backtracking code is reasonable as something like this is one-of-a-kind and i probably wont be manually clearing bodies again
 		#for example, a completely empty star system could use this match statement to REMOVE all existing bodies (besides the star) and spawn nothing else. Then an event could happen on concept enteringSystem 
 	
-	match new_system_hazard_classification:
+	match system_hazard_classification:
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD:
-			if new_special_system_classification != game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
+			if system_hazard_classification != game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
 				generateRandomMines()
 	pass
 
