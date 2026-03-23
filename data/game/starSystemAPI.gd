@@ -224,10 +224,7 @@ func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_plane
 
 func createAuxiliaryCivilized() -> void:
 	match special_system_classification:
-		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
-			generateWormholes()
-			print("!! INSA SPECIAL SYSTEM CLASSIFICATION !!")
-		_:
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
 			generateWormholes()
 			generateRandomWeightedStations()
 			generateRandomWeightedEntities()
@@ -235,6 +232,9 @@ func createAuxiliaryCivilized() -> void:
 			for body in bodies:
 				body.known = true
 			generateRandomWeightedShips()
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
+			generateWormholes()
+			print("!! INSA SPECIAL SYSTEM CLASSIFICATION !!")
 	pass
 
 func createAuxiliaryUnexplored() -> void:
@@ -256,7 +256,7 @@ func createAuxiliaryUnexplored() -> void:
 			var star = get_first_star()
 			var star_identifier = star.get_identifier()
 			var remove_bodies: Array[bodyAPI] = []
-			for body in get_bodies_with_hook_identifier(star_identifier):
+			for body in get_recursive_bodies_with_hook_identifier(star_identifier):
 				remove_bodies.append(body)
 			for body in remove_bodies:
 				bodies.erase(body)
@@ -950,6 +950,15 @@ func get_bodies_with_hook_identifier(id: int) -> Array:
 			if body.hook_identifier == id:
 				bodies_with_requested_hook_identifier.append(body)
 	return bodies_with_requested_hook_identifier
+
+func get_recursive_bodies_with_hook_identifier(id: int) -> Array[bodyAPI]:
+	var recursive_bodies_with_id: Array[bodyAPI] = []
+	for body in bodies:
+		if body.get("hook_identifier") != null:
+			if body.hook_identifier == id:
+				recursive_bodies_with_id.append(body)
+				recursive_bodies_with_id.append_array(get_recursive_bodies_with_hook_identifier(body.get_identifier()))
+	return recursive_bodies_with_id
 
 func get_bodies_with_metadata_key(metadata_key: String) -> Array:
 	var return_bodies: Array = []
