@@ -233,8 +233,51 @@ func createAuxiliaryCivilized() -> void:
 				body.known = true
 			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
-			generateWormholes()
 			print("!! INSA SPECIAL SYSTEM CLASSIFICATION !!")
+			const excluded_iterations := [0, 1, 10, 24]
+			
+			var insa_system = load("uid://bgyav54iwwu4").duplicate(true)
+			
+			removeAllBodies()
+			post_gen_location_candidates.clear()
+			bodies.append_array(insa_system.bodies)
+			identifier_count = insa_system.identifier_count
+			
+			var insa_star = get_first_star()
+			
+			for b in bodies:
+				if b.get_type() != BODY_TYPES.STAR:
+					b.radius = get_default_radius_solar_radii()
+			
+			#for i in insa_star.metadata.get("iterations"):
+			#	print("ITERATION %.f: %f | %f" % [i, get_orbit_distance(insa_star, i), get_orbit_angle_change(insa_star, get_orbit_distance(insa_star, i))])
+			
+			var wormholes: Array = get_wormholes()
+			var systems = []
+			systems.append(previous_system)
+			systems.append_array(destination_systems)
+			for wi in wormholes.size():
+				var w = wormholes[wi]
+				w.destination_system = systems[wi]
+				w.metadata["destination_star_type"] = w.destination_system.get_first_star().metadata.get("star_type")
+			
+			for i in insa_star.metadata.get("iterations", 0):
+				if i in excluded_iterations:
+					continue
+				post_gen_location_candidates.append([insa_star.get_identifier(), i])
+			
+			
+			#load a preset system from fs w/o the randgen planets and copy + paste the bodies and post_gen_location_candidates into here. then set the wormhole destination_systems and generate the planets. easy!
+			#insa star info:
+			#iteration: orbit distance | orbit angle change -->
+			#iteration 0: 9.473905 | 0.834565 (wormhole #1)
+			#iteration 1: 94.212955 | 0.035174 (insa ship wreck)
+			#iteration 5: 433.169155 | 0.003569
+			#iteration 6: 517.908205 | 0.002730
+			#iteration 10: 856.864405 | 0.001283 (wormhole #2)
+			#iteration 12: 1026.342505 | 0.000979
+			#iteration 18: 1534.776805 | 0.000535
+			#iteration 24: 2043.211105 | 0.000348 (wormhole #3)
 	pass
 
 func createAuxiliaryUnexplored() -> void:
@@ -252,19 +295,12 @@ func createAuxiliaryUnexplored() -> void:
 			generateRandomWeightedSpecialAnomaly()
 			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
-			#!! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !! THIS DOES NOT WORK !!
 			var star = get_first_star()
-			var star_identifier = star.get_identifier()
-			var remove_bodies: Array[bodyAPI] = []
-			for body in get_recursive_bodies_with_hook_identifier(star_identifier):
-				remove_bodies.append(body)
-			for body in remove_bodies:
-				bodies.erase(body)
+			remove_recursive_bodies_with_hook_identifier(star.get_identifier())
 			post_gen_location_candidates.clear()
 			for i in star.metadata.get("iterations", 0):
-				post_gen_location_candidates.append([star_identifier, i])
-			generateWormholes() #i think this backtracking code is reasonable as something like this is one-of-a-kind and i probably wont be manually clearing bodies again
-		#for example, a completely empty star system could use this match statement to REMOVE all existing bodies (besides the star) and spawn nothing else. Then an event could happen on concept enteringSystem 
+				post_gen_location_candidates.append([star.get_identifier(), i])
+			generateWormholes()
 	
 	match system_hazard_classification:
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD:
@@ -501,7 +537,7 @@ func generateWormholes(): #uses variables post_gen_location_candidates, destinat
 		var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 		
 		#any size between the smallest terrestrial world, to half the size of the largest terrestrial world!
-		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5)
+		var radius = global_data.get_randf(pow(pow(10, -1.3), 0.28), pow(pow(10, 0.22), 0.28) * 0.5) # this is divided by 109.1 in the addOrbitBody call 
 		
 		var new_wormhole = addOrbitBody(
 			wormholeBodyAPI.new(),
@@ -883,6 +919,12 @@ func removeBody(id: int):
 			emit_signal("body_removed", id)
 	pass
 
+func removeAllBodies() -> void:
+	for body in bodies:
+		emit_signal("body_removed", body.get_identifier())
+	bodies.clear()
+	pass
+
 func updateBodies(delta) -> void: #position, advance function
 	for body in bodies:
 		updateBodyPosition(body.get_identifier(), delta)
@@ -1021,6 +1063,14 @@ static func get_temporary_station(hook: bodyAPI) -> stationBodyAPI: # for anomal
 		var upgrade = playerAPI.UPGRADE_ID.values()[internal_random.randi_range(0, playerAPI.UPGRADE_ID.values().size() - 1)]
 		temp_station.exclude_upgrade(upgrade)
 	return temp_station
+
+func remove_recursive_bodies_with_hook_identifier(id: int) -> void:
+	var remove_body_ids: PackedInt32Array = []
+	for body in get_recursive_bodies_with_hook_identifier(id):
+		remove_body_ids.append(body.get_identifier())
+	for body_id in remove_body_ids:
+		removeBody(body_id)
+	pass
 
 # unit stuff \/
 

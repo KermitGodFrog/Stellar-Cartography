@@ -667,6 +667,10 @@ func draw_map():
 	if show_overlay: map_overlay.show()
 	else: map_overlay.hide()
 	
+	#SHOW STAR HABITALBE ZONE --->
+	#draw_arc(Vector2.ZERO, ((sqrt((system.get_first_star().metadata.get("luminosity") * 0.53))) * 215), -TAU, TAU, 20, Color.YELLOW, 2)
+	#draw_arc(Vector2.ZERO, ((sqrt((system.get_first_star().metadata.get("luminosity") * 1.1))) * 215), -TAU, TAU, 20, Color.YELLOW, 2)
+	
 	var scanner_power_points: PackedVector2Array = []
 	var scanner_power_point_count: int = 30
 	for i in scanner_power_point_count:
