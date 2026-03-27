@@ -47,40 +47,44 @@ func _on_refresh_timeout() -> void:
 func generate_new_point_weights(for_locked_body : bodyAPI) -> void:
 	for body in system.bodies:
 		if body is circularBodyAPI and body.get_identifier() != locked_body_identifier:
-				
-				if body.is_hidden():
+			
+			if body.is_hidden():
+				continue
+			elif body.get_display_name() == "Omission":
+				if TUTORIAL_OMISSION_OVERRIDE == true:
 					continue
-				elif body.get_display_name() == "Omission":
-					if TUTORIAL_OMISSION_OVERRIDE == true:
-						continue
-				elif body.get_display_name() == "Ingress":
-					if TUTORIAL_INGRESS_OVERRIDE == true:
-						continue
-				
-				var dir = for_locked_body.position.direction_to(body.position)
-				var dist = for_locked_body.position.distance_to(body.position)
-				var mass = body.mass
-				
-				var magnitude: float = global_data.get_randf(0,1)
-				if not body.get_type() == starSystemAPI.BODY_TYPES.WORMHOLE:
-					#magnitude = (dist * mass) as dist increase, magnitude increase - bad
-					magnitude = minf(((mass / dist) * 100), 20.0) #20.0 is maximum magnitude
-				
-				var closest_point = get_closest_point_to_direction(dir)
-				
-				points[closest_point] += 4.0 + magnitude
-				
-				if _player_position.distance_to(body.position) < _ping_length:
-					if _ping_direction != Vector2.ZERO:
-						pingable_points[closest_point] = true
-		elif body is glintBodyAPI and body.get_identifier() != locked_body_identifier:
-				var dir = for_locked_body.position.direction_to(body.position)
-				var closest_point = get_closest_point_to_direction(dir)
-				glint_points[closest_point] = 10.0
-				
-				if _player_position.distance_to(body.position) < _ping_length:
-					if _ping_direction != Vector2.ZERO:
-						pingable_glint_points[closest_point] = true
+			elif body.get_display_name() == "Ingress":
+				if TUTORIAL_INGRESS_OVERRIDE == true:
+					continue
+			
+			var dir = for_locked_body.position.direction_to(body.position)
+			var dist = for_locked_body.position.distance_to(body.position)
+			var mass = body.mass
+			
+			var magnitude: float = global_data.get_randf(0,1)
+			if not body.get_type() == starSystemAPI.BODY_TYPES.WORMHOLE:
+				#magnitude = (dist * mass) as dist increase, magnitude increase - bad
+				magnitude = minf(((mass / dist) * 100), 20.0) #20.0 is maximum magnitude
+			
+			var closest_point = get_closest_point_to_direction(dir)
+			
+			points[closest_point] += 4.0 + magnitude
+			
+			if _player_position.distance_to(body.position) < _ping_length:
+				if _ping_direction != Vector2.ZERO:
+					pingable_points[closest_point] = true
+		elif (body is glintBodyAPI or body is customBodyAPI) and body.get_identifier() != locked_body_identifier:
+			
+			if body.is_hidden():
+				continue
+			
+			var dir = for_locked_body.position.direction_to(body.position)
+			var closest_point = get_closest_point_to_direction(dir)
+			glint_points[closest_point] = 10.0
+			
+			if _player_position.distance_to(body.position) < _ping_length:
+				if _ping_direction != Vector2.ZERO:
+					pingable_glint_points[closest_point] = true
 	pass
 
 
