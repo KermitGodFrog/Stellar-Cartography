@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cvkpic60tsbij"
-path="res://.godot/imported/insaShipWreck.png-460fd1b44a430e874d658246ba7eef12.ctex"
+uid="uid://cf6vp6dyhsi64"
+path="res://.godot/imported/gateway_frame.png-5054bda4c06daf8035da135a3ca51f7c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/system-map/system-list/insaShipWreck.png"
-dest_files=["res://.godot/imported/insaShipWreck.png-460fd1b44a430e874d658246ba7eef12.ctex"]
+source_file="res://graphics/system-map/system-list/gateway_frame.png"
+dest_files=["res://.godot/imported/gateway_frame.png-5054bda4c06daf8035da135a3ca51f7c.ctex"]
 
 [params]
 

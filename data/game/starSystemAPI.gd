@@ -234,7 +234,7 @@ func createAuxiliaryCivilized() -> void:
 			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
 			print("!! INSA SPECIAL SYSTEM CLASSIFICATION !!")
-			const excluded_iterations := [0, 1, 10, 24]
+			const excluded_iterations := [0, 1, 5, 10, 24]
 			
 			var insa_system = load("uid://bgyav54iwwu4").duplicate(true)
 			
@@ -267,12 +267,17 @@ func createAuxiliaryCivilized() -> void:
 				post_gen_location_candidates.append([insa_star.get_identifier(), i])
 			
 			
+			
+			
+			
+			
+			
 			#load a preset system from fs w/o the randgen planets and copy + paste the bodies and post_gen_location_candidates into here. then set the wormhole destination_systems and generate the planets. easy!
 			#insa star info:
 			#iteration: orbit distance | orbit angle change -->
 			#iteration 0: 9.473905 | 0.834565 (wormhole #1)
 			#iteration 1: 94.212955 | 0.035174 (insa ship wreck)
-			#iteration 5: 433.169155 | 0.003569
+			#iteration 5: 433.169155 | 0.003569 (gateway)
 			#iteration 6: 517.908205 | 0.002730
 			#iteration 10: 856.864405 | 0.001283 (wormhole #2)
 			#iteration 12: 1026.342505 | 0.000979

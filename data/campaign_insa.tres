@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="starSystemAPI" load_steps=11 format=3 uid="uid://bgyav54iwwu4"]
+[gd_resource type="Resource" script_class="starSystemAPI" load_steps=12 format=3 uid="uid://bgyav54iwwu4"]
 
 [ext_resource type="Script" uid="uid://cbd8771ytigfk" path="res://data/game/bodyAPIs/bodyAPI.gd" id="1_w6the"]
 [ext_resource type="Script" uid="uid://whlsn7syw5s7" path="res://data/game/starSystemAPI.gd" id="2_38bcc"]
@@ -37,8 +37,8 @@ metadata/_custom_type_script = "uid://cucnh63c8ohpe"
 [sub_resource type="Resource" id="Resource_j14vt"]
 script = ExtResource("4_84cg8")
 dialogue_tag = "insaShipWreck"
-icon_path = "res://graphics/system-map/system-list/insaShipWreck.png"
-post_icon_path = "res://graphics/system-map/system-list/insaShipWreck.png"
+icon_path = "res://graphics/system-map/system-list/insaShipWreck_frame.png"
+post_icon_path = "res://graphics/system-map/system-list/insaShipWreck_frame.png"
 hook_identifier = 1
 orbit_distance = 94.213
 orbit_angle_change = 0.035
@@ -72,9 +72,23 @@ display_name = "wormhole 3"
 hidden = true
 metadata/_custom_type_script = "uid://cucnh63c8ohpe"
 
+[sub_resource type="Resource" id="Resource_84cg8"]
+script = ExtResource("4_84cg8")
+dialogue_tag = "insaGateway"
+icon_path = "res://graphics/system-map/system-list/gateway_frame.png"
+post_icon_path = "res://graphics/system-map/system-list/gateway_frame.png"
+hook_identifier = 1
+orbit_distance = 433.169
+orbit_angle_change = 0.004
+req_scope_mode = 1
+current_type = 8
+identifier = 6
+display_name = "Gateway CL-03"
+metadata/_custom_type_script = "uid://3bfktykp3y0h"
+
 [resource]
 script = ExtResource("2_38bcc")
 display_name = "campaign_insa"
-bodies = Array[ExtResource("1_w6the")]([SubResource("Resource_jnftx"), SubResource("Resource_c1q0o"), SubResource("Resource_j14vt"), SubResource("Resource_c7exk"), SubResource("Resource_qkskp")])
-identifier_count = 6
+bodies = Array[ExtResource("1_w6the")]([SubResource("Resource_jnftx"), SubResource("Resource_c1q0o"), SubResource("Resource_j14vt"), SubResource("Resource_c7exk"), SubResource("Resource_qkskp"), SubResource("Resource_84cg8")])
+identifier_count = 7
 metadata/_custom_type_script = "uid://whlsn7syw5s7"
