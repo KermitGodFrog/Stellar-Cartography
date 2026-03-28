@@ -74,16 +74,16 @@ metadata/_custom_type_script = "uid://cucnh63c8ohpe"
 
 [sub_resource type="Resource" id="Resource_84cg8"]
 script = ExtResource("4_84cg8")
-dialogue_tag = "insaGateway"
-icon_path = "res://graphics/system-map/system-list/gateway_frame.png"
-post_icon_path = "res://graphics/system-map/system-list/gateway_frame.png"
+dialogue_tag = "insaRiftDriver"
+icon_path = "res://graphics/system-map/system-list/rift_driver_frame.png"
+post_icon_path = "res://graphics/system-map/system-list/rift_driver_frame.png"
 hook_identifier = 1
 orbit_distance = 433.169
 orbit_angle_change = 0.004
 req_scope_mode = 1
 current_type = 8
 identifier = 6
-display_name = "Gateway CL-03"
+display_name = "Rift Driver CL-03"
 metadata/_custom_type_script = "uid://3bfktykp3y0h"
 
 [resource]

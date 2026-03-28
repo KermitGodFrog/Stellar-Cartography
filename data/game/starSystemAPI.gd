@@ -249,8 +249,8 @@ func createAuxiliaryCivilized() -> void:
 				if b.get_type() != BODY_TYPES.STAR:
 					b.radius = get_default_radius_solar_radii()
 			
-			#for i in insa_star.metadata.get("iterations"):
-			#	print("ITERATION %.f: %f | %f" % [i, get_orbit_distance(insa_star, i), get_orbit_angle_change(insa_star, get_orbit_distance(insa_star, i))])
+			for i in insa_star.metadata.get("iterations"):
+				print("ITERATION %.f: %f | %f" % [i, get_orbit_distance(insa_star, i), get_orbit_angle_change(insa_star, get_orbit_distance(insa_star, i))])
 			
 			var wormholes: Array = get_wormholes()
 			var systems = []
@@ -282,6 +282,7 @@ func createAuxiliaryCivilized() -> void:
 			#iteration 10: 856.864405 | 0.001283 (wormhole #2)
 			#iteration 12: 1026.342505 | 0.000979
 			#iteration 18: 1534.776805 | 0.000535
+			#iteration 23: 1958.472055 | 0.000371
 			#iteration 24: 2043.211105 | 0.000348 (wormhole #3)
 	pass
 
@@ -374,159 +375,169 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 		if not hook.get_type() == BODY_TYPES.STAR: if randf() >= 0.4: return
 		
 		for i in range(hook.metadata.get("iterations")):
-			#SETTING DISTANCE
-			var orbit_distance = get_orbit_distance(hook, i) #sets a base of the bodies radius + roche limit, increments upwards by 1.5x the bodies radius so subbodies cant touch each other
-			var inner_boundry: float #has to be on this level so it can be used later
-			var outer_boundry: float #has to be on this level so it can be used later
-			if hook.get_type() == BODY_TYPES.STAR:
-				inner_boundry = (sqrt((hook.metadata.get("luminosity") * 0.53))) * 215 #habitable inner boundry in solar radii (CONVERTED FROM AUs) no it isnt lol
-				outer_boundry = (sqrt((hook.metadata.get("luminosity") * 1.1))) * 215 #habitable outer boundry in solar radii (CONVERTED FROM AUs) no it isnt lol
-				#new_distance = ((inner_boundry + outer_boundry) / 2) * i
-			
-			#CHANCE TO SPAWN AN ASTEROID BELT INSTEAD
-			if randf() <= 0.1:
-				var belt_width = global_data.get_randf(hook.radius * 71, hook.radius * 645) #in solar radii. for reference, asteroid belt in the sol system is 215 solar radii
-				#this works STUPID well /\/\/\/\/\
-				if orbit_distance > belt_width:
-					var belt_classification = global_data.weighted_pick(asteroid_belt_classifications, "weight")
-					var belt_mass = global_data.get_randf(pow(10, -1.3) / 333000, pow(10, 0.22) / 333000)
-					
-					var new_belt = addOrbitBody(
-						orbitBodyAPI.new(),
-						BODY_TYPES.ASTEROID_BELT,
-						identifier_count, 
-						game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.ASTEROID_BELT, name_scheme, hook.get_display_name()),
-						hook.get_identifier(),
-						orbit_distance,
-						0.0,
-						0.0, #cant be interacted with so who cares
-						{"hidden": true},
-						{"asteroid_belt_classification": belt_classification, "belt_width": belt_width, "belt_color": Color(0.111765, 0.111765, 0.111765, 0.9), "belt_mass": belt_mass}
-					)
-					
-					if hook.get_type() == BODY_TYPES.STAR:
-						get_body_from_identifier(new_belt).known = true
-					continue
-			
-			#PICKING PLANET CLASSIFICATION + DECIDING WHETHER TO SPAWN MOONS
-			var generate_sub_bodies: bool = randf() > 0.75 #choose whether to give the new planet (hypothetically) moons, coaloquially known as 'sub bodies'
-			if randf() >= 0.75: #choose whehter to have a planet at all
-				var planet_classification
-				if not hook.get_type() == BODY_TYPES.STAR:
-					var corrected_planet_classifications = planet_classifications.duplicate(true)
-					match hook.metadata.get("planet_classification"):
-						"Terran":
-							corrected_planet_classifications.erase("Neptunian")
-							corrected_planet_classifications.erase("Jovian")
-						"Neptunian":
-							corrected_planet_classifications.erase("Neptunian") #this is necessary because neptunian worlds are so damn common. all moons of a neptunian planet would be neptunian moons if not the case!
-							corrected_planet_classifications.erase("Jovian")
-					planet_classification = global_data.weighted_pick(corrected_planet_classifications, "weight")
-				else:
-					planet_classification = global_data.weighted_pick(planet_classifications, "weight")
-				
-				#PICKING PLANET TYPE
-				var planet_type
-				var categories = planet_types.get(planet_classification)
-				var candidates: Dictionary
-				if hook.get_type() == BODY_TYPES.STAR:
-					if orbit_distance < inner_boundry:
-						candidates = categories[0].duplicate()
-						candidates.merge(categories[3])
-					elif orbit_distance > inner_boundry and orbit_distance < outer_boundry:
-						candidates = categories[1].duplicate()
-						candidates.merge(categories[3])
-					elif orbit_distance > outer_boundry: #unsure of the effect of elif statements here
-						candidates = categories[2].duplicate()
-						candidates.merge(categories[3])
-				else: candidates = categories[3]
-				planet_type = global_data.weighted_pick(candidates, "weight")
-				
-				#PICKING PLANET MASS
-				var mass: float
-				var data = planet_classification_data.get(planet_classification)
-				#var normal_mass_calc = global_data.get_randf(data.get("earth_mass_min"), data.get("earth_mass_max"))
-				#dont forget to use minf and other float functions. integers coudl ruin this thing
-				mass = global_data.get_randf(data.get("earth_mass_min"), minf(data.get("earth_mass_max"), hook.mass * 333000 * 0.75))
-				#print("------------")
-				#print("MINIMUM MASS (EARTH MASSES): ", data.get("earth_mass_min"))
-				#print("MAXIMUM MASS (EARTH MASSES): ", data.get("earth_mass_max"))
-				#print("HOST MASS (EARTH MASSSES): ", hook.metadata.get("mass") * 333000)
-				#print("MAXIMUM MASS CONSOLIDATED: ", minf(data.get("earth_mass_max"), hook.metadata.get("mass") * 333000 * 0.75))
-				#print("------------")
-				#if hook.is_planet(): #this assumes that a moon with a radius of 0.75x its host will no longer be orbiting it. this is because i dont understand the maths to find a ""GRAVITATIONAL NULL POINT""
-					
-					#if hook.metadata.get("planet_classification") == "Terran":
-						#mass = global_data.get_randf(data.get("earth_mass_min"), hook.metadata.get("mass") * 0.75)
-					#else: mass = normal_mass_calc
-				#else: mass = normal_mass_calc
-				
-				#PICKING RADIUS
-				#var radius: float = global_data.get_randf(data.get("earth_radius_min"), data.get("earth_radius_max"))
-				var radius: float = global_data.get_randf(data.get("earth_radius_min"), minf(data.get("earth_radius_max"), hook.radius * 109.1 * 0.75))
-				#print("------------")
-				#print("MINIMUM RADIUS (EARTH RADII): ", data.get("earth_radius_min"))
-				#print("MAXIMUM RADIUS (EARTH RADII): ", data.get("earth_radius_max"))
-				#print("HOST RADIUS (EARTH RADII): ", hook.radius * 109.1)
-				#print("MAXIMUM RADIUS CONSOLIDATED: ", minf(data.get("earth_radius_max"), hook.radius * 109.1 * 0.75))
-				#print("------------")
-				
-				#PICKING SPEED
-				var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
-				
-				#PICKING COLOR
-				var color = planet_type_data.get(planet_type).get("color")
-				
-				#PICKING VALUE
-				var avg_value = planet_type_data.get(planet_type).get("avg_value")
-				var value = round(global_data.get_randf(avg_value * 0.5, avg_value * 1.5))
-				
-				#SETTING WHETHER THE BODY HAS A PLANETARY ANOMALY
-				var has_planetary_anomaly: bool = false
-				var is_planetary_anomaly_available: bool = false
-				if randf() >= (1 - PA_chance_per_planet):
-					has_planetary_anomaly = true
-					is_planetary_anomaly_available = true
-				
-				var has_missing_AO: bool = false
-				if randf() >= (1 - missing_AO_chance_per_planet):
-					has_missing_AO = true
-				
-				var has_missing_GL: bool = false
-				var gas_layers_sum: int = -1
-				if randf() >= (1 - missing_GL_chance_per_relevant_planet):
-					match planet_classification:
-						"Terran":
-							pass
-						"Neptunian":
-							has_missing_GL = true
-							gas_layers_sum = global_data.get_randi(3, 5)
-						"Jovian":
-							has_missing_GL = true
-							gas_layers_sum = global_data.get_randi(4, 9)
-				
-				var new_planet = addOrbitBody(
-					planetBodyAPI.new(),
-					BODY_TYPES.PLANET,
-					identifier_count,
-					game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.PLANET, name_scheme, hook.get_display_name(), i, remaining.size()),
-					hook.get_identifier(),
-					orbit_distance,
-					orbit_angle_change,
-					(radius / 109.1),
-					{"mass": (mass / 333000), "surface_color": color, "current_variation": planetBodyAPI.VARIATIONS.values().pick_random(), "layers": gas_layers_sum},
-					{"planet_classification": planet_classification, "planet_type": planet_type, "value": value, "iterations": (hook.metadata.get("iterations") / 2), "planetary_anomaly": has_planetary_anomaly, "planetary_anomaly_available": is_planetary_anomaly_available, "seed": randi(), "missing_AO": has_missing_AO, "missing_GL": has_missing_GL}
-				)
-				
-				get_body_from_identifier(new_planet).rotation = deg_to_rad(global_data.get_randf(0,360))
-				if generate_sub_bodies:
-					generateRandomWeightedPlanets(new_planet, PA_chance_per_planet, missing_AO_chance_per_planet)
-			else: remaining.append([hook_identifier, i]) #else condition all the way from the choice to even have a planet. !! does not check if asteroid belt was spawned instead !!
-		
-		#APPENDING POTENTIAL WORMHOLE LOCATION CANDIDATES TO GLOBAL VARIABLE
-		if remaining:
-			post_gen_location_candidates.append_array(remaining)
+			if randf() < 0.1:
+				addRandomWeightedAsteroidBeltAtIteration(hook_identifier, i)
+			elif randf() >= 0.75:
+				addRandomWeightedPlanetAtIteration(hook_identifier, i, remaining, PA_chance_per_planet, missing_AO_chance_per_planet, missing_GL_chance_per_relevant_planet)
+			else: remaining.append([hook_identifier, i]) 
+	
+	if remaining.size() > 0:
+		post_gen_location_candidates.append_array(remaining)
 	pass
+func addRandomWeightedPlanetAtIteration(hook_identifier: int, i: int, remaining: Array[Array], PA_chance_per_planet: float = 0.0, missing_AO_chance_per_planet: float = 0.0, missing_GL_chance_per_relevant_planet: float = 0.0) -> void:
+	var hook = get_body_from_identifier(hook_identifier)
+	
+	#SETTING DISTANCE
+	var orbit_distance = get_orbit_distance(hook, i) #sets a base of the bodies radius + roche limit, increments upwards by 1.5x the bodies radius so subbodies cant touch each other
+	var inner_boundry: float #has to be on this level so it can be used later
+	var outer_boundry: float #has to be on this level so it can be used later
+	if hook.get_type() == BODY_TYPES.STAR:
+		inner_boundry = (sqrt((hook.metadata.get("luminosity") * 0.53))) * 215 #habitable inner boundry in solar radii (CONVERTED FROM AUs) no it isnt lol
+		outer_boundry = (sqrt((hook.metadata.get("luminosity") * 1.1))) * 215 #habitable outer boundry in solar radii (CONVERTED FROM AUs) no it isnt lol
+		#new_distance = ((inner_boundry + outer_boundry) / 2) * i
+	
+	#PICKING PLANET CLASSIFICATION + DECIDING WHETHER TO SPAWN MOONS
+	var generate_sub_bodies: bool = randf() > 0.75 #choose whether to give the new planet (hypothetically) moons, coaloquially known as 'sub bodies'
+	var planet_classification
+	if not hook.get_type() == BODY_TYPES.STAR:
+		var corrected_planet_classifications = planet_classifications.duplicate(true)
+		match hook.metadata.get("planet_classification"):
+			"Terran":
+				corrected_planet_classifications.erase("Neptunian")
+				corrected_planet_classifications.erase("Jovian")
+			"Neptunian":
+				corrected_planet_classifications.erase("Neptunian") #this is necessary because neptunian worlds are so damn common. all moons of a neptunian planet would be neptunian moons if not the case!
+				corrected_planet_classifications.erase("Jovian")
+		planet_classification = global_data.weighted_pick(corrected_planet_classifications, "weight")
+	else:
+		planet_classification = global_data.weighted_pick(planet_classifications, "weight")
+	
+	#PICKING PLANET TYPE
+	var planet_type
+	var categories = planet_types.get(planet_classification)
+	var candidates: Dictionary
+	if hook.get_type() == BODY_TYPES.STAR:
+		if orbit_distance < inner_boundry:
+			candidates = categories[0].duplicate()
+			candidates.merge(categories[3])
+		elif orbit_distance > inner_boundry and orbit_distance < outer_boundry:
+			candidates = categories[1].duplicate()
+			candidates.merge(categories[3])
+		elif orbit_distance > outer_boundry: #unsure of the effect of elif statements here
+			candidates = categories[2].duplicate()
+			candidates.merge(categories[3])
+	else: candidates = categories[3]
+	planet_type = global_data.weighted_pick(candidates, "weight")
+	
+	#PICKING PLANET MASS
+	var mass: float
+	var data = planet_classification_data.get(planet_classification)
+	#var normal_mass_calc = global_data.get_randf(data.get("earth_mass_min"), data.get("earth_mass_max"))
+	#dont forget to use minf and other float functions. integers coudl ruin this thing
+	mass = global_data.get_randf(data.get("earth_mass_min"), minf(data.get("earth_mass_max"), hook.mass * 333000 * 0.75))
+	#print("------------")
+	#print("MINIMUM MASS (EARTH MASSES): ", data.get("earth_mass_min"))
+	#print("MAXIMUM MASS (EARTH MASSES): ", data.get("earth_mass_max"))
+	#print("HOST MASS (EARTH MASSSES): ", hook.metadata.get("mass") * 333000)
+	#print("MAXIMUM MASS CONSOLIDATED: ", minf(data.get("earth_mass_max"), hook.metadata.get("mass") * 333000 * 0.75))
+	#print("------------")
+	#if hook.is_planet(): #this assumes that a moon with a radius of 0.75x its host will no longer be orbiting it. this is because i dont understand the maths to find a ""GRAVITATIONAL NULL POINT""
+		
+		#if hook.metadata.get("planet_classification") == "Terran":
+			#mass = global_data.get_randf(data.get("earth_mass_min"), hook.metadata.get("mass") * 0.75)
+		#else: mass = normal_mass_calc
+	#else: mass = normal_mass_calc
+	
+	#PICKING RADIUS
+	#var radius: float = global_data.get_randf(data.get("earth_radius_min"), data.get("earth_radius_max"))
+	var radius: float = global_data.get_randf(data.get("earth_radius_min"), minf(data.get("earth_radius_max"), hook.radius * 109.1 * 0.75))
+	#print("------------")
+	#print("MINIMUM RADIUS (EARTH RADII): ", data.get("earth_radius_min"))
+	#print("MAXIMUM RADIUS (EARTH RADII): ", data.get("earth_radius_max"))
+	#print("HOST RADIUS (EARTH RADII): ", hook.radius * 109.1)
+	#print("MAXIMUM RADIUS CONSOLIDATED: ", minf(data.get("earth_radius_max"), hook.radius * 109.1 * 0.75))
+	#print("------------")
+	
+	#PICKING SPEED
+	var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
+	
+	#PICKING COLOR
+	var color = planet_type_data.get(planet_type).get("color")
+	
+	#PICKING VALUE
+	var avg_value = planet_type_data.get(planet_type).get("avg_value")
+	var value = round(global_data.get_randf(avg_value * 0.5, avg_value * 1.5))
+	
+	#SETTING WHETHER THE BODY HAS A PLANETARY ANOMALY
+	var has_planetary_anomaly: bool = false
+	var is_planetary_anomaly_available: bool = false
+	if randf() >= (1 - PA_chance_per_planet):
+		has_planetary_anomaly = true
+		is_planetary_anomaly_available = true
+	
+	var has_missing_AO: bool = false
+	if randf() >= (1 - missing_AO_chance_per_planet):
+		has_missing_AO = true
+	
+	var has_missing_GL: bool = false
+	var gas_layers_sum: int = -1
+	if randf() >= (1 - missing_GL_chance_per_relevant_planet):
+		match planet_classification:
+			"Terran":
+				pass
+			"Neptunian":
+				has_missing_GL = true
+				gas_layers_sum = global_data.get_randi(3, 5)
+			"Jovian":
+				has_missing_GL = true
+				gas_layers_sum = global_data.get_randi(4, 9)
+	
+	var new_planet = addOrbitBody(
+		planetBodyAPI.new(),
+		BODY_TYPES.PLANET,
+		identifier_count,
+		game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.PLANET, name_scheme, hook.get_display_name(), i, remaining.size()),
+		hook_identifier,
+		orbit_distance,
+		orbit_angle_change,
+		(radius / 109.1),
+		{"mass": (mass / 333000), "surface_color": color, "current_variation": planetBodyAPI.VARIATIONS.values().pick_random(), "layers": gas_layers_sum},
+		{"planet_classification": planet_classification, "planet_type": planet_type, "value": value, "iterations": (hook.metadata.get("iterations") / 2), "planetary_anomaly": has_planetary_anomaly, "planetary_anomaly_available": is_planetary_anomaly_available, "seed": randi(), "missing_AO": has_missing_AO, "missing_GL": has_missing_GL}
+	)
+	
+	get_body_from_identifier(new_planet).rotation = deg_to_rad(global_data.get_randf(0,360))
+	
+	if generate_sub_bodies:
+		generateRandomWeightedPlanets(new_planet, PA_chance_per_planet, missing_AO_chance_per_planet, missing_GL_chance_per_relevant_planet)
+	pass
+func addRandomWeightedAsteroidBeltAtIteration(hook_identifier: int, i: int) -> int: # has a chance to fail if orbit_distance > belt_width
+	var hook = get_body_from_identifier(hook_identifier)
+	var orbit_distance = get_orbit_distance(hook, i)
+	
+	var belt_width = global_data.get_randf(hook.radius * 71, hook.radius * 645) #in solar radii. for reference, asteroid belt in the sol system is 215 solar radii
+	#this works STUPID well /\/\/\/\/\
+	if orbit_distance > belt_width:
+		var belt_classification = global_data.weighted_pick(asteroid_belt_classifications, "weight")
+		var belt_mass = global_data.get_randf(pow(10, -1.3) / 333000, pow(10, 0.22) / 333000)
+		
+		var new_belt = addOrbitBody(
+			orbitBodyAPI.new(),
+			BODY_TYPES.ASTEROID_BELT,
+			identifier_count, 
+			game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.ASTEROID_BELT, name_scheme, hook.get_display_name()),
+			hook.get_identifier(),
+			orbit_distance,
+			0.0,
+			0.0, #cant be interacted with so who cares
+			{"hidden": true},
+			{"asteroid_belt_classification": belt_classification, "belt_width": belt_width, "belt_color": Color(0.111765, 0.111765, 0.111765, 0.9), "belt_mass": belt_mass}
+		)
+		
+		if hook.get_type() == BODY_TYPES.STAR:
+			get_body_from_identifier(new_belt).known = true
+		return new_belt
+	return -1
+
 
 func generateWormholes(): #uses variables post_gen_location_candidates, destination_systems
 	randomize()
