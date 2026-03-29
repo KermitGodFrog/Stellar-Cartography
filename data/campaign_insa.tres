@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="starSystemAPI" load_steps=12 format=3 uid="uid://bgyav54iwwu4"]
+[gd_resource type="Resource" script_class="starSystemAPI" load_steps=16 format=3 uid="uid://bgyav54iwwu4"]
 
 [ext_resource type="Script" uid="uid://cbd8771ytigfk" path="res://data/game/bodyAPIs/bodyAPI.gd" id="1_w6the"]
 [ext_resource type="Script" uid="uid://whlsn7syw5s7" path="res://data/game/starSystemAPI.gd" id="2_38bcc"]
 [ext_resource type="Script" uid="uid://b6paa488wsman" path="res://data/game/bodyAPIs/circularBodyAPI.gd" id="2_qkskp"]
 [ext_resource type="Script" uid="uid://cucnh63c8ohpe" path="res://data/game/bodyAPIs/wormholeBodyAPI.gd" id="3_84cg8"]
 [ext_resource type="Script" uid="uid://3bfktykp3y0h" path="res://data/game/bodyAPIs/customBodyAPI.gd" id="4_84cg8"]
+[ext_resource type="Script" uid="uid://otot2sewvo18" path="res://data/game/bodyAPIs/orbitBodyAPI.gd" id="5_jnftx"]
 
 [sub_resource type="Resource" id="Resource_jnftx"]
 script = ExtResource("2_qkskp")
@@ -86,9 +87,60 @@ identifier = 6
 display_name = "Rift Driver CL-03"
 metadata/_custom_type_script = "uid://3bfktykp3y0h"
 
+[sub_resource type="Resource" id="Resource_ofmd8"]
+script = ExtResource("5_jnftx")
+hook_identifier = 1
+orbit_distance = 517.908
+current_type = 2
+identifier = 7
+display_name = "asteroid belt 1"
+metadata = {
+"asteroid_belt_classification": "Carbonaceous",
+"belt_color": Color(0.111765, 0.111765, 0.111765, 0.9),
+"belt_mass": 0.0,
+"belt_width": 450.0
+}
+known = true
+hidden = true
+metadata/_custom_type_script = "uid://otot2sewvo18"
+
+[sub_resource type="Resource" id="Resource_ha0va"]
+script = ExtResource("5_jnftx")
+hook_identifier = 1
+orbit_distance = 1026.343
+current_type = 2
+identifier = 8
+display_name = "asteroid belt 2"
+metadata = {
+"asteroid_belt_classification": "Carbonaceous",
+"belt_color": Color(0.111765, 0.111765, 0.111765, 0.9),
+"belt_mass": 0.0,
+"belt_width": 450.0
+}
+known = true
+hidden = true
+metadata/_custom_type_script = "uid://otot2sewvo18"
+
+[sub_resource type="Resource" id="Resource_5135h"]
+script = ExtResource("5_jnftx")
+hook_identifier = 1
+orbit_distance = 1534.777
+current_type = 2
+identifier = 9
+display_name = "asteroid belt 3"
+metadata = {
+"asteroid_belt_classification": "Carbonaceous",
+"belt_color": Color(0.111765, 0.111765, 0.111765, 0.9),
+"belt_mass": 0.0,
+"belt_width": 450.0
+}
+known = true
+hidden = true
+metadata/_custom_type_script = "uid://otot2sewvo18"
+
 [resource]
 script = ExtResource("2_38bcc")
 display_name = "campaign_insa"
-bodies = Array[ExtResource("1_w6the")]([SubResource("Resource_jnftx"), SubResource("Resource_c1q0o"), SubResource("Resource_j14vt"), SubResource("Resource_c7exk"), SubResource("Resource_qkskp"), SubResource("Resource_84cg8")])
-identifier_count = 7
+bodies = Array[ExtResource("1_w6the")]([SubResource("Resource_jnftx"), SubResource("Resource_c1q0o"), SubResource("Resource_j14vt"), SubResource("Resource_c7exk"), SubResource("Resource_qkskp"), SubResource("Resource_84cg8"), SubResource("Resource_ofmd8"), SubResource("Resource_ha0va"), SubResource("Resource_5135h")])
+identifier_count = 10
 metadata/_custom_type_script = "uid://whlsn7syw5s7"

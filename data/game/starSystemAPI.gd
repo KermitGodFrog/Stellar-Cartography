@@ -234,7 +234,7 @@ func createAuxiliaryCivilized() -> void:
 			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
 			print("!! INSA SPECIAL SYSTEM CLASSIFICATION !!")
-			const excluded_iterations := [0, 1, 5, 10, 24]
+			const excluded_iterations := [0, 1, 5, 6, 10, 12, 18, 24]
 			
 			var insa_system = load("uid://bgyav54iwwu4").duplicate(true)
 			
@@ -242,15 +242,16 @@ func createAuxiliaryCivilized() -> void:
 			post_gen_location_candidates.clear()
 			bodies.append_array(insa_system.bodies)
 			identifier_count = insa_system.identifier_count
+			name_scheme = game_data.NAME_SCHEMES.STANDARD
 			
 			var insa_star = get_first_star()
 			
 			for b in bodies:
-				if b.get_type() != BODY_TYPES.STAR:
+				if b.get_type() != BODY_TYPES.STAR and b.get_type() != BODY_TYPES.ASTEROID_BELT:
 					b.radius = get_default_radius_solar_radii()
 			
-			for i in insa_star.metadata.get("iterations"):
-				print("ITERATION %.f: %f | %f" % [i, get_orbit_distance(insa_star, i), get_orbit_angle_change(insa_star, get_orbit_distance(insa_star, i))])
+			#for i in insa_star.metadata.get("iterations"):
+			#	print("ITERATION %.f: %f | %f" % [i, get_orbit_distance(insa_star, i), get_orbit_angle_change(insa_star, get_orbit_distance(insa_star, i))])
 			
 			var wormholes: Array = get_wormholes()
 			var systems = []
@@ -261,16 +262,39 @@ func createAuxiliaryCivilized() -> void:
 				w.destination_system = systems[wi]
 				w.metadata["destination_star_type"] = w.destination_system.get_first_star().metadata.get("star_type")
 			
+			for belt in get_bodies_of_body_type(BODY_TYPES.ASTEROID_BELT):
+				belt.metadata["belt_width"] = global_data.get_randf(10.0, 450.0)
+			
 			for i in insa_star.metadata.get("iterations", 0):
 				if i in excluded_iterations:
 					continue
 				post_gen_location_candidates.append([insa_star.get_identifier(), i])
 			
+			var target_location = post_gen_location_candidates.pick_random()
+			var target_hook = get_body_from_identifier(target_location.front())
+			var target_i = target_location.back()
+			var target_orbit_distance = get_orbit_distance(target_hook, target_i)
+			var target_orbit_angle_change = get_orbit_angle_change(target_hook, target_orbit_distance)
 			
+			var target = addOrbitBody(
+				planetBodyAPI.new(),
+				BODY_TYPES.PLANET,
+				identifier_count,
+				"Kalama",
+				1,
+				target_orbit_distance,
+				target_orbit_angle_change,
+				pow(pow(10, 0.22), 0.28) / 109.1,
+				{"mass": pow(10, 0.22) / 333000, "surface_color": planet_type_data.get("Lava").get("color"), "current_variation": 1},
+				{"planet_classification": "Terran", "planet_type": "Lava", "value": 3005, "iterations": 12}
+			)
+			get_body_from_identifier(target).rotation = deg_to_rad(global_data.get_randf(0,360))
+			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(target_location))
 			
-			
-			
-			
+			for location in post_gen_location_candidates:
+				if randf() >= 0.75:
+					addRandomWeightedPlanetAtIteration(location.front(), location.back(), [])
+					post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 			
 			#load a preset system from fs w/o the randgen planets and copy + paste the bodies and post_gen_location_candidates into here. then set the wormhole destination_systems and generate the planets. easy!
 			#insa star info:
@@ -278,10 +302,10 @@ func createAuxiliaryCivilized() -> void:
 			#iteration 0: 9.473905 | 0.834565 (wormhole #1)
 			#iteration 1: 94.212955 | 0.035174 (insa ship wreck)
 			#iteration 5: 433.169155 | 0.003569 (gateway)
-			#iteration 6: 517.908205 | 0.002730
+			#iteration 6: 517.908205 | 0.002730 (belt #1)
 			#iteration 10: 856.864405 | 0.001283 (wormhole #2)
-			#iteration 12: 1026.342505 | 0.000979
-			#iteration 18: 1534.776805 | 0.000535
+			#iteration 12: 1026.342505 | 0.000979 (belt #2)
+			#iteration 18: 1534.776805 | 0.000535 (belt #3)
 			#iteration 23: 1958.472055 | 0.000371
 			#iteration 24: 2043.211105 | 0.000348 (wormhole #3)
 	pass
@@ -384,7 +408,7 @@ func generateRandomWeightedPlanets(hook_identifier: int, PA_chance_per_planet: f
 	if remaining.size() > 0:
 		post_gen_location_candidates.append_array(remaining)
 	pass
-func addRandomWeightedPlanetAtIteration(hook_identifier: int, i: int, remaining: Array[Array], PA_chance_per_planet: float = 0.0, missing_AO_chance_per_planet: float = 0.0, missing_GL_chance_per_relevant_planet: float = 0.0) -> void:
+func addRandomWeightedPlanetAtIteration(hook_identifier: int, i: int, remaining: Array, PA_chance_per_planet: float = 0.0, missing_AO_chance_per_planet: float = 0.0, missing_GL_chance_per_relevant_planet: float = 0.0) -> void:
 	var hook = get_body_from_identifier(hook_identifier)
 	
 	#SETTING DISTANCE
@@ -537,7 +561,6 @@ func addRandomWeightedAsteroidBeltAtIteration(hook_identifier: int, i: int) -> i
 			get_body_from_identifier(new_belt).known = true
 		return new_belt
 	return -1
-
 
 func generateWormholes(): #uses variables post_gen_location_candidates, destination_systems
 	randomize()
