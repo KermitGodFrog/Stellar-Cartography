@@ -190,6 +190,8 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("modifyCharacterStanding", _on_modify_character_standing)
 	dialogue_manager.connect("changePlayerScopeMode", _on_change_scope_mode)
 	dialogue_manager.connect("lockUpgrade", _on_lock_upgrade)
+	dialogue_manager.connect("playerWin", _on_player_win)
+	dialogue_manager.connect("insaMakeAllWormholesRevealable", _on_insa_make_all_wormholes_revealable)
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
@@ -472,6 +474,7 @@ func body_query_add_shared(query: responseQuery, body: bodyAPI) -> void:
 	query.add("type", starSystemAPI.BODY_TYPES.find_key(body.get_type()))
 	query.add_tree_access("name", body.get_display_name())
 	query.add("tutorial", init_type == global_data.GAME_INIT_TYPES.TUTORIAL)
+	query.add("insa", world.player.current_star_system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA)
 	pass
 
 func body_query_add_custom_type_shared(query: responseQuery, body: bodyAPI) -> void: #shared between theorisedBody, orbitingBody, followingBody
@@ -1195,6 +1198,13 @@ func _on_mine_detonated(id: int) -> void: #starSystemAPI signal
 
 func _on_body_removed(id: int) -> void: #starSystemAPI signal
 	system_3d._on_body_removed(id)
+	pass
+
+func _on_insa_make_all_wormholes_revealable() -> void:
+	var current = world.player.current_star_system
+	if current.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
+		for wormhole in current.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.WORMHOLE):
+			wormhole.hidden = false
 	pass
 
 func _on_open_LRS():

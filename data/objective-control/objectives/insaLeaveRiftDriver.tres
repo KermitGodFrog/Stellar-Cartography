@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://3lu23xwue2re"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_sihtq"]
+
+[resource]
+script = ExtResource("1_sihtq")
+title = "Leave the System"
+description = "leave rift driver"
+metadata/_custom_type_script = "uid://cxmuiuh6uokvl"

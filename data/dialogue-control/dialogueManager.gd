@@ -39,6 +39,8 @@ signal superchargePlayerForJumps(jumps: int) #saying superchargePlayerForJumps i
 signal modifyCharacterStanding(occupation: characterAPI.OCCUPATIONS, amount: int, _increase: bool)
 signal changePlayerScopeMode(_new_mode: playerAPI.SCOPE_MODES)
 signal lockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
+signal playerWin()
+signal insaMakeAllWormholesRevealable()
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
@@ -749,6 +751,10 @@ func lockUpgradeWithFlair(upgrade) -> void:
 			dialogue.add_text("[color=red](Lost %s upgrade) [/color]" % upgrade)
 	pass
 
+func forcePlayerWin() -> void: # only used for insa Rift Driver launch
+	emit_signal("playerWin")
+	pass
+
 
 
 func categoryActive(wID: String) -> void:
@@ -786,6 +792,12 @@ func objectiveClear(wID: String) -> void:
 func cycleAll(written_state: String) -> void: #dont use ts
 	var change_state = objectiveAPI.STATES.get(written_state)
 	get_tree().call_group("objectivesManager", "cycle_all", change_state)
+	pass
+
+
+
+func _insaMakeAllWormholesRevealable() -> void:
+	emit_signal("insaMakeAllWormholesRevealable")
 	pass
 
 
