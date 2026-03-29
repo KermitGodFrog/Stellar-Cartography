@@ -264,7 +264,7 @@ func createAuxiliaryCivilized() -> void:
 				w.metadata["destination_star_type"] = w.destination_system.get_first_star().metadata.get("star_type")
 			
 			for belt in get_bodies_of_body_type(BODY_TYPES.ASTEROID_BELT):
-				belt.metadata["belt_width"] = global_data.get_randf(10.0, 450.0)
+				belt.metadata["belt_width"] = global_data.get_randf(50.0, 450.0)
 			
 			for i in insa_star.metadata.get("iterations", 0):
 				if i in excluded_iterations:
