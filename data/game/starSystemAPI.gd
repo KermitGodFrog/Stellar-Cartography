@@ -249,6 +249,7 @@ func createAuxiliaryCivilized() -> void:
 			for b in bodies:
 				if b.get_type() != BODY_TYPES.STAR and b.get_type() != BODY_TYPES.ASTEROID_BELT:
 					b.radius = get_default_radius_solar_radii()
+					b.rotation = deg_to_rad(global_data.get_randf(0,360))
 			
 			#for i in insa_star.metadata.get("iterations"):
 			#	print("ITERATION %.f: %f | %f" % [i, get_orbit_distance(insa_star, i), get_orbit_angle_change(insa_star, get_orbit_distance(insa_star, i))])
@@ -290,6 +291,8 @@ func createAuxiliaryCivilized() -> void:
 			)
 			get_body_from_identifier(target).rotation = deg_to_rad(global_data.get_randf(0,360))
 			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(target_location))
+			
+			generateRendezvousPoint()
 			
 			for location in post_gen_location_candidates:
 				if randf() >= 0.75:
