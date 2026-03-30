@@ -251,8 +251,8 @@ func createAuxiliaryCivilized() -> void:
 					b.radius = get_default_radius_solar_radii()
 					b.rotation = deg_to_rad(global_data.get_randf(0,360))
 			
-			#for i in insa_star.metadata.get("iterations"):
-			#	print("ITERATION %.f: %f | %f" % [i, get_orbit_distance(insa_star, i), get_orbit_angle_change(insa_star, get_orbit_distance(insa_star, i))])
+			for i in insa_star.metadata.get("iterations"):
+				print("ITERATION %.f: %f | %f" % [i, get_orbit_distance(insa_star, i), get_orbit_angle_change(insa_star, get_orbit_distance(insa_star, i))])
 			
 			var wormholes: Array = get_wormholes()
 			var systems = []
@@ -264,7 +264,7 @@ func createAuxiliaryCivilized() -> void:
 				w.metadata["destination_star_type"] = w.destination_system.get_first_star().metadata.get("star_type")
 			
 			for belt in get_bodies_of_body_type(BODY_TYPES.ASTEROID_BELT):
-				belt.metadata["belt_width"] = global_data.get_randf(50.0, 450.0)
+				belt.metadata["belt_width"] = global_data.get_randf(20.0, 175.0)
 			
 			for i in insa_star.metadata.get("iterations", 0):
 				if i in excluded_iterations:
@@ -303,8 +303,8 @@ func createAuxiliaryCivilized() -> void:
 			#insa star info:
 			#iteration: orbit distance | orbit angle change -->
 			#iteration 0: 9.473905 | 0.834565 (wormhole #1)
-			#iteration 1: 94.212955 | 0.035174 (insa ship wreck)
-			#iteration 5: 433.169155 | 0.003569 (gateway)
+			#iteration 1: 94.212955 | 0.035174 (rift driver)
+			#iteration 5: 433.169155 | 0.003569 (insa ship wreck)
 			#iteration 6: 517.908205 | 0.002730 (belt #1)
 			#iteration 10: 856.864405 | 0.001283 (wormhole #2)
 			#iteration 12: 1026.342505 | 0.000979 (belt #2)
