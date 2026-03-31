@@ -46,7 +46,7 @@ const SYSTEM_HAZARD_CLASSIFICATION_CURVES = {
 }
 
 #units \/
-enum UNIT_AFFILIATIONS {PROVISIONAL_EXECUTIVE, LOCAL_CIVILIZATION, MARAUDER, NEW_EDEN}
+enum UNIT_AFFILIATIONS {PROVISIONAL_EXECUTIVE, LOCAL_CIVILIZATION, MARAUDER, INSA_CIVILIAN, INSA_MILITARY_A, INSA_MILITARY_B}
 const SHIP_AI_DISTRIBUTION_CURVE = preload("uid://rve257hen6dp") #below the line = wanderingUnitAPI, above the line = interceptingUnitAPI
 const SHIP_QUANTITY_CURVE = preload("uid://dbuj65poalh6t") #the MAX quantity of units spawnable, rounded to the nearest int
 const SHIP_TOTAL_CHANCE_CURVE = preload("uid://lxj6ttsru1wy") #the chance that any units will be spawned in the system at all (so they arent a constant nussiance). zero can still be spawned if the individual chances dont come through!
@@ -92,7 +92,9 @@ const STARSHIP_NAME_FILE_PATHS: Dictionary = {
 	UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE: "res://data/game/gen/names/executive_starship_names.txt",
 	UNIT_AFFILIATIONS.LOCAL_CIVILIZATION: GENERAL_STARSHIP_NAMES_FILE_PATH,
 	UNIT_AFFILIATIONS.MARAUDER: "res://data/game/gen/names/marauder_starship_names.txt",
-	UNIT_AFFILIATIONS.NEW_EDEN: GENERAL_STARSHIP_NAMES_FILE_PATH
+	UNIT_AFFILIATIONS.INSA_CIVILIAN: GENERAL_STARSHIP_NAMES_FILE_PATH,
+	UNIT_AFFILIATIONS.INSA_MILITARY_A: GENERAL_STARSHIP_NAMES_FILE_PATH,
+	UNIT_AFFILIATIONS.INSA_MILITARY_B: GENERAL_STARSHIP_NAMES_FILE_PATH
 }
 
 const CHARACTER_NAMES_FILE_PATH: String = "res://data/game/gen/names/character_names.txt"
@@ -109,8 +111,10 @@ func get_random_starship_name(affiliation: UNIT_AFFILIATIONS) -> String:
 		UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE:
 			pool.append_array(get_lines_from_file(GENERAL_STARSHIP_NAMES_FILE_PATH))
 			return "%s %s" % ["ES", pool.pick_random()]
-		UNIT_AFFILIATIONS.NEW_EDEN:
-			return "%s %s" % ["ISA", pool.pick_random()]
+		UNIT_AFFILIATIONS.INSA_MILITARY_A:
+			return "%s %s" % ["ISAN", pool.pick_random()]
+		UNIT_AFFILIATIONS.INSA_MILITARY_B:
+			return "%s %s" % ["ZFFN", pool.pick_random()]
 		_:
 			return "%s %03d" % [pool.pick_random(), global_data.get_randi(0, 999)]
 

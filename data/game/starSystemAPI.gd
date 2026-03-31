@@ -299,6 +299,48 @@ func createAuxiliaryCivilized() -> void:
 					addRandomWeightedPlanetAtIteration(location.front(), location.back(), [])
 					post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 			
+			var new_rally_point = addUnitBody(
+				load("uid://jqe7kwgdyuxe").new(),
+				starSystemAPI.BODY_TYPES.SHIP,
+				identifier_count,
+				"Rally Point",
+				5,
+				get_default_radius_solar_radii(),
+				{"system": self},
+				{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_CIVILIAN}
+			)
+			
+			for i in 5:
+				addUnitBody(
+					theatreMilitaryUnitAPI.new(),
+					starSystemAPI.BODY_TYPES.SHIP,
+					identifier_count,
+					game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A),
+					4,
+					get_default_radius_solar_radii(),
+					{"system": self, "rally_point": new_rally_point},
+					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A, "hostile": true}
+				)
+			
+			for i in 5:
+				addUnitBody(
+					theatreMilitaryUnitAPI.new(),
+					starSystemAPI.BODY_TYPES.SHIP,
+					identifier_count,
+					game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B),
+					4,
+					get_default_radius_solar_radii(),
+					{"system": self, "rally_point": new_rally_point},
+					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B, "hostile": true}
+				)
+			
+			
+			
+			
+			
+			
+			
+			
 			#load a preset system from fs w/o the randgen planets and copy + paste the bodies and post_gen_location_candidates into here. then set the wormhole destination_systems and generate the planets. easy!
 			#insa star info:
 			#iteration: orbit distance | orbit angle change -->
