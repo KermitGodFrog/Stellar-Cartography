@@ -304,7 +304,7 @@ func createAuxiliaryCivilized() -> void:
 				starSystemAPI.BODY_TYPES.SHIP,
 				identifier_count,
 				"Rally Point",
-				5,
+				10,
 				get_default_radius_solar_radii(),
 				{"system": self},
 				{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_CIVILIAN}

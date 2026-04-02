@@ -1,28 +1,21 @@
 extends AIUnitAPI
 class_name theatreMilitaryUnitAPI
 
-enum TASKS {MOVE_TO_WAIT, WAIT, USE_LIDAR, MOVE_TO_LIDAR, INVESTIGATE_LIDAR, MOVE_TO_INTERCEPT, INTERCEPT, RUN, PROCEED_TO_RALLY_POINT, HARASS_PLAYER}
+enum TASKS {USE_LIDAR, MOVE_TO_LIDAR, INVESTIGATE_LIDAR, MOVE_TO_INTERCEPT, INTERCEPT, RELOCATE, MOVE_TO_RALLY_POINT}
 const task_schedule: Dictionary = {
-	TASKS.MOVE_TO_WAIT: [TASKS.WAIT],
-	TASKS.WAIT: [TASKS.MOVE_TO_WAIT, TASKS.USE_LIDAR, TASKS.PROCEED_TO_RALLY_POINT],
-	TASKS.USE_LIDAR: [TASKS.MOVE_TO_WAIT, TASKS.PROCEED_TO_RALLY_POINT],
+	TASKS.USE_LIDAR: [TASKS.MOVE_TO_RALLY_POINT],
 	TASKS.MOVE_TO_LIDAR: [TASKS.INVESTIGATE_LIDAR],
-	TASKS.INVESTIGATE_LIDAR: [TASKS.MOVE_TO_WAIT, TASKS.USE_LIDAR, TASKS.PROCEED_TO_RALLY_POINT],
+	TASKS.INVESTIGATE_LIDAR: [TASKS.USE_LIDAR, TASKS.MOVE_TO_RALLY_POINT],
 	TASKS.MOVE_TO_INTERCEPT: [TASKS.INTERCEPT],
-	TASKS.INTERCEPT: [TASKS.MOVE_TO_INTERCEPT, TASKS.RUN],
-	TASKS.RUN: [TASKS.PROCEED_TO_RALLY_POINT],
-	TASKS.PROCEED_TO_RALLY_POINT: [TASKS.PROCEED_TO_RALLY_POINT, TASKS.USE_LIDAR],
-	TASKS.HARASS_PLAYER: [TASKS.HARASS_PLAYER, TASKS.USE_LIDAR, TASKS.PROCEED_TO_RALLY_POINT]
+	TASKS.INTERCEPT: [TASKS.MOVE_TO_INTERCEPT, TASKS.RELOCATE],
+	TASKS.RELOCATE: [TASKS.MOVE_TO_RALLY_POINT],
+	TASKS.MOVE_TO_RALLY_POINT: [TASKS.MOVE_TO_RALLY_POINT, TASKS.USE_LIDAR]
 }
 
 @export_storage var current_task: TASKS
 
 @export_storage var propensity_to_boost: float = 0.0 #has to be above 1.0 to boost
 @export_storage var velocity_position_hint: Array[Vector2] = [Vector2.ZERO, Vector2.ZERO] #goal position last frame, self position last frame
-
-@export var valid_wait_target_ids: Array[int] = []
-const MAX_VALID_PLANETS: int = 2
-const MAX_VALID_RIFT_DRIVERS: int = 1
 
 const MAX_SONAR_LENGTH := 300.0 #currently what it is in sonar_interface, but if i ever change it...
 
@@ -69,10 +62,6 @@ func _init() -> void:
 	stun_clock = clock.new()
 	pass
 
-func initialize() -> void:
-	generate_valid_targets()
-	pass
-
 func get_connection_pairs() -> Dictionary:
 	var connections: Dictionary = {
 		cooldown_clock.time_expired: _on_cooldown_clock_time_expired,
@@ -110,9 +99,11 @@ func advance(delta) -> void:
 	pass
 
 func update_boosting_status(delta) -> void:
-	#match current_task:
-		#propensity_to_boost += global_data.get_randf(0.0,1.0) * 10.0 * delta
-		#propensity_to_boost = 0.0
+	match current_task:
+		TASKS.MOVE_TO_LIDAR, TASKS.MOVE_TO_INTERCEPT, TASKS.RELOCATE, TASKS.MOVE_TO_RALLY_POINT:
+			propensity_to_boost += global_data.get_randf(0.0,1.0) * 10.0 * delta
+		TASKS.USE_LIDAR, TASKS.INVESTIGATE_LIDAR, TASKS.INTERCEPT:
+			propensity_to_boost = 0.0
 	
 	propensity_to_boost = maxf(0, propensity_to_boost - global_data.get_randf(0.0,1.0) * 10.0 * delta)
 	
@@ -138,9 +129,7 @@ func process_scanner_contacts() -> void:
 			if unit != null:
 				if unit.metadata.get("affiliation") in hostile_affiliations and randf() > 0.5:
 					async_switch_to_intercept(unit)
-	
-	
-	
+					break
 	
 	ids_last_contacts.clear()
 	ids_last_contacts.append_array(ids_contacts)
@@ -148,24 +137,6 @@ func process_scanner_contacts() -> void:
 
 func check_task_status() -> TASK_STATUSES:
 	match current_task:
-		TASKS.MOVE_TO_WAIT:
-			if target != null:
-				if is_action_pending():
-					if pending_action_body == target:
-						return TASK_STATUSES.ONGOING
-				elif not is_action_pending():
-					if action_body == target:
-						return TASK_STATUSES.COMPLETE
-			return TASK_STATUSES.FAILED
-		TASKS.WAIT:
-			if target != null:
-				if not is_action_pending():
-					if action_body == target:
-						if task_clock.is_stopped():
-							return TASK_STATUSES.COMPLETE
-						else:
-							return TASK_STATUSES.ONGOING
-			return TASK_STATUSES.FAILED
 		TASKS.USE_LIDAR:
 			if get_current_action_type() == ACTION_TYPES.NONE:
 				if task_clock.is_stopped():
@@ -182,14 +153,14 @@ func check_task_status() -> TASK_STATUSES:
 				else:
 					return TASK_STATUSES.ONGOING
 			return TASK_STATUSES.FAILED
-		TASKS.INVESTIGATE_LIDAR, TASKS.INTERCEPT, TASKS.RUN:
+		TASKS.INVESTIGATE_LIDAR, TASKS.INTERCEPT, TASKS.RELOCATE:
 			if get_current_action_type() == ACTION_TYPES.NONE:
 				if task_clock.is_stopped():
 					return TASK_STATUSES.COMPLETE
 				else:
 					return TASK_STATUSES.ONGOING
 			return TASK_STATUSES.FAILED
-		TASKS.PROCEED_TO_RALLY_POINT:
+		TASKS.MOVE_TO_RALLY_POINT:
 			if get_current_action_type() == ACTION_TYPES.NONE:
 				if position.distance_to(target_position) < starSystemAPI.get_default_radius_solar_radii():
 					return TASK_STATUSES.COMPLETE
@@ -219,15 +190,6 @@ func switch_task(override_task = null) -> void:
 		new_task = options.pick_random()
 	
 	match new_task:
-		TASKS.MOVE_TO_WAIT:
-			target = null
-			if valid_wait_target_ids.size() > 0:
-				var new_target_id = valid_wait_target_ids.pick_random()
-				var new_target = system.get_body_from_identifier(new_target_id)
-				target = new_target
-				orbit_body(target)
-		TASKS.WAIT:
-			task_clock.start(global_data.get_randf(10.0,30.0))
 		TASKS.USE_LIDAR:
 			task_clock.start(15.0)
 			emit_signal("play_sound", "res://sound/game/bodyAPIs/unitAPIs/LIDAR_unit_suite.tres", -12.0, "SFX")
@@ -244,22 +206,16 @@ func switch_task(override_task = null) -> void:
 			course_to_position(position)
 			emit_signal("followingBody", goal)
 			task_clock.start(5.0) #(physical) cooldown time before it can move to intercept again
-		TASKS.RUN:
+		TASKS.RELOCATE:
 			task_clock.start(global_data.get_randf(10.0, 15.0))
 			var dir = Vector2.UP.rotated(deg_to_rad(global_data.get_randi(0,360)))
 			var run_position = goal.position + (dir * 100.0)
 			course_to_position(run_position)
-		TASKS.PROCEED_TO_RALLY_POINT:
+		TASKS.MOVE_TO_RALLY_POINT:
 			task_clock.start(global_data.get_randf(10.0, 15.0))
 			var dir = Vector2.UP.rotated(deg_to_rad(global_data.get_randi(0,360)))
 			var offset_position = rally_point.position + (dir * 2.0)
 			course_to_position(offset_position)
-		TASKS.HARASS_PLAYER:
-			task_clock.start(global_data.get_randf(10.0, 15.0))
-			var dir = Vector2.UP.rotated(deg_to_rad(global_data.get_randi(0,360)))
-			var offset_position = player.position + (dir * global_data.get_randf(0.0, 10.0))
-			var final_position = offset_position + (offset_position.direction_to(position) * 100.0)
-			course_to_position(final_position)
 	
 	print("UNIT (%s): NEW TASK -> %s" % [self, TASKS.find_key(new_task)])
 	
@@ -271,45 +227,12 @@ func switch_task(override_task = null) -> void:
 
 
 #MISC FUNCTIONS
-func generate_valid_targets() -> void:
-	valid_wait_target_ids.clear()
-	
-	var planets = system.get_planets()
-	var rift_drivers: Array[customBodyAPI] = []
-	for b in system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.CUSTOM):
-		if b.get_dialogue_tag() in ["riftDriver", "insaRiftDriver"]:
-			rift_drivers.append(b)
-	
-	for i in range(MAX_VALID_PLANETS):
-		if planets.size() > 0:
-			var planet = planets.pick_random()
-			if planet.get_display_name() == "Kalama":
-				if system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
-					planets.erase(planet)
-					continue
-			valid_wait_target_ids.append(planet.get_identifier())
-			planets.erase(planet)
-	
-	for i in range(MAX_VALID_RIFT_DRIVERS):
-		if rift_drivers.size() > 0:
-			var driver = rift_drivers.pick_random()
-			valid_wait_target_ids.append(driver.get_identifier())
-			rift_drivers.erase(driver)
-	
-	#valid_wait_target_ids.append(system.get_first_star().get_identifier()) -> too big to orbit lol
-	pass
-
 func sonar_theorised_hostile() -> bool:
-	#if position.distance_to(player.position) < MAX_SONAR_LENGTH:
-	#	if randf() > 0.5:
-	#		last_goal_position = player.position
-	#		return true
-	#else:
-	print("CHECKING FOR HOSTILE UNITS TO GO LIDAR SOURCE INSTEAD OF THE FUCKING PLAYER")
-	print(hostile_affiliations)
-	for unit in system.get_units():
-		if hostile_affiliations.has(unit.metadata.get("affiliation")):
-			print("UINIT AFFILIATION IN HOSTILE AFFILIATIONS")
+	var units = system.get_units()
+	units.append(player)
+	units.shuffle()
+	for unit in units:
+		if unit.metadata.get("affiliation") in hostile_affiliations:
 			if position.distance_to(unit.position) < MAX_SONAR_LENGTH:
 				if randf() > 0.25:
 					last_goal_position = unit.position
@@ -318,16 +241,19 @@ func sonar_theorised_hostile() -> bool:
 
 func async_switch_to_intercept(new_goal: unitBodyAPI) -> void:
 	if is_hostile():
+		if not cooldown_clock.is_stopped():
+			await cooldown_clock.time_expired
 		goal = new_goal
 		switch_task(TASKS.MOVE_TO_INTERCEPT)
 	pass
 
-func stun() -> void:
+func stun(time: float = 1.0, disable_sfx: bool = false) -> void:
 	if is_hostile():
 		if not is_stunned():
 			set_stunned(true)
-			stun_clock.start(1.0)
-			emit_signal("play_sound", "res://sound/game/bodyAPIs/unitAPIs/stun.wav", -12.0, "SFX")
+			stun_clock.start(time)
+			if not disable_sfx:
+				emit_signal("play_sound", "res://sound/game/bodyAPIs/unitAPIs/stun.wav", -12.0, "SFX")
 	pass
 
 
