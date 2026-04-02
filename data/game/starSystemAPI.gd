@@ -318,7 +318,7 @@ func createAuxiliaryCivilized() -> void:
 					game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A),
 					4,
 					get_default_radius_solar_radii(),
-					{"system": self, "rally_point": new_rally_point},
+					{"system": self, "rally_point": get_body_from_identifier(new_rally_point), "hostile_affiliations": [game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B]},
 					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A, "hostile": true}
 				)
 			
@@ -330,7 +330,7 @@ func createAuxiliaryCivilized() -> void:
 					game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B),
 					4,
 					get_default_radius_solar_radii(),
-					{"system": self, "rally_point": new_rally_point},
+					{"system": self, "rally_point": get_body_from_identifier(new_rally_point), "hostile_affiliations": [game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A]},
 					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B, "hostile": true}
 				)
 			
