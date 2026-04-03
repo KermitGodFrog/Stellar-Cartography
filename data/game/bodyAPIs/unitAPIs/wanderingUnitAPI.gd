@@ -15,7 +15,7 @@ const task_schedule: Dictionary = {
 @export var valid_wait_target_ids: Array[int] = []
 @export var valid_dock_target_ids: Array[int] = []
 const MAX_VALID_PLANETS: int = 1
-var MAX_VALID_WORMHOLES: int = 1
+const MAX_VALID_WORMHOLES: int = 1
 const MAX_VALID_RIFT_DRIVERS: int = 1
 
 func _init() -> void:
@@ -139,8 +139,9 @@ func generate_valid_targets() -> void:
 	for i in range(MAX_VALID_WORMHOLES):
 		if wormholes.size() > 0:
 			var wormhole = wormholes.pick_random()
-			valid_wait_target_ids.append(wormhole.get_identifier())
-			wormholes.erase(wormhole)
+			if not wormhole.is_hidden():
+				valid_wait_target_ids.append(wormhole.get_identifier())
+				wormholes.erase(wormhole)
 	
 	for i in range(MAX_VALID_RIFT_DRIVERS):
 		if rift_drivers.size() > 0:

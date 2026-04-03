@@ -344,7 +344,7 @@ func createAuxiliaryCivilized() -> void:
 					game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.INSA_CIVILIAN),
 					3,
 					get_default_radius_solar_radii(),
-					{"system": self, "MAX_VALID_WORMHOLES": 0},
+					{"system": self},
 					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_CIVILIAN, "hostile": false, "seed": randi()}
 				)
 				get_body_from_identifier(new_ship).position = Vector2.ZERO + (Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360))) * global_data.get_randf(73.60, get_max_body_orbit_distance()))
