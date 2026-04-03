@@ -81,7 +81,7 @@ func switch_task(override_task = null) -> void:
 	
 	start_cooldown()
 	current_task = new_task
-	metadata["_current_task"] = TASKS.find_key(current_task)
+	#metadata["_current_task"] = TASKS.find_key(current_task)
 	pass
 
 

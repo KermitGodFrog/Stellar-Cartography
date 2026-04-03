@@ -17,6 +17,7 @@ const task_schedule: Dictionary = {
 @export_storage var current_task: TASKS
 
 @export_storage var propensity_to_boost: float = 0.0 #has to be above 1.0 to boost
+@export_storage var initial_speed: int
 @export_storage var velocity_position_hint: Array[Vector2] = [Vector2.ZERO, Vector2.ZERO] #goal position last frame, self position last frame
 @export_storage var within_player_profile: bool:
 	set(value):
@@ -80,6 +81,10 @@ func _init() -> void:
 	task_clock = clock.new()
 	cooldown_clock = clock.new()
 	stun_clock = clock.new()
+	pass
+
+func initialize() -> void:
+	initial_speed = speed
 	pass
 
 func get_connection_pairs() -> Dictionary:
@@ -243,7 +248,7 @@ func switch_task(override_task = null) -> void:
 	start_cooldown()
 	current_task = new_task
 	propensity_to_boost = 0.0
-	metadata["_current_task"] = TASKS.find_key(current_task)
+	#metadata["_current_task"] = TASKS.find_key(current_task)
 	pass
 
 
@@ -315,7 +320,7 @@ func _on_exited_player_scanner_profile() -> void:
 	pass
 
 func _on_entered_player_scanner_power() -> void:
-	speed = 4
+	speed = initial_speed
 	pass
 
 func _on_exited_player_scanner_power() -> void:

@@ -306,7 +306,7 @@ func createAuxiliaryCivilized() -> void:
 				"Rally Point",
 				25,
 				get_default_radius_solar_radii(),
-				{"system": self},
+				{"system": self, "hidden": true},
 				{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_CIVILIAN}
 			)
 			
@@ -318,7 +318,7 @@ func createAuxiliaryCivilized() -> void:
 					game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A),
 					4,
 					get_default_radius_solar_radii(),
-					{"system": self, "rally_point": get_body_from_identifier(new_rally_point), "hostile_affiliations": [game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B]},
+					{"system": self, "rally_point": get_body_from_identifier(new_rally_point), "hostile_affiliations": [game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B, game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE]},
 					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A, "hostile": true}
 				)
 				get_body_from_identifier(new_ship).position = Vector2.ZERO + (Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360))) * global_data.get_randf(73.60, get_max_body_orbit_distance()))
@@ -331,7 +331,7 @@ func createAuxiliaryCivilized() -> void:
 					game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B),
 					4,
 					get_default_radius_solar_radii(),
-					{"system": self, "rally_point": get_body_from_identifier(new_rally_point), "hostile_affiliations": [game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A]},
+					{"system": self, "rally_point": get_body_from_identifier(new_rally_point), "hostile_affiliations": [game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A, game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE]},
 					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B, "hostile": true}
 				)
 				get_body_from_identifier(new_ship).position = Vector2.ZERO + (Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360))) * global_data.get_randf(73.60, get_max_body_orbit_distance()))
