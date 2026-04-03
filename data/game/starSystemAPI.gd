@@ -319,7 +319,7 @@ func createAuxiliaryCivilized() -> void:
 					4,
 					get_default_radius_solar_radii(),
 					{"system": self, "rally_point": get_body_from_identifier(new_rally_point), "hostile_affiliations": [game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B, game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE]},
-					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A, "hostile": true}
+					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A, "hostile": true, "seed": randi()}
 				)
 				get_body_from_identifier(new_ship).position = Vector2.ZERO + (Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360))) * global_data.get_randf(73.60, get_max_body_orbit_distance()))
 			
@@ -332,7 +332,20 @@ func createAuxiliaryCivilized() -> void:
 					4,
 					get_default_radius_solar_radii(),
 					{"system": self, "rally_point": get_body_from_identifier(new_rally_point), "hostile_affiliations": [game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A, game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE]},
-					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B, "hostile": true}
+					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B, "hostile": true, "seed": randi()}
+				)
+				get_body_from_identifier(new_ship).position = Vector2.ZERO + (Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360))) * global_data.get_randf(73.60, get_max_body_orbit_distance()))
+			
+			for i in 3:
+				var new_ship = addUnitBody(
+					wanderingUnitAPI.new(),
+					starSystemAPI.BODY_TYPES.SHIP,
+					identifier_count,
+					game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.INSA_CIVILIAN),
+					3,
+					get_default_radius_solar_radii(),
+					{"system": self, "MAX_VALID_WORMHOLES": 0},
+					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_CIVILIAN, "hostile": false, "seed": randi()}
 				)
 				get_body_from_identifier(new_ship).position = Vector2.ZERO + (Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360))) * global_data.get_randf(73.60, get_max_body_orbit_distance()))
 			

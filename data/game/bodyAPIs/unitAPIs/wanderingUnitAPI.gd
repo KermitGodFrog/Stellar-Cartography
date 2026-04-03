@@ -15,7 +15,8 @@ const task_schedule: Dictionary = {
 @export var valid_wait_target_ids: Array[int] = []
 @export var valid_dock_target_ids: Array[int] = []
 const MAX_VALID_PLANETS: int = 1
-const MAX_VALID_WORMHOLES: int = 1
+var MAX_VALID_WORMHOLES: int = 1
+const MAX_VALID_RIFT_DRIVERS: int = 1
 
 func _init() -> void:
 	task_clock = clock.new()
@@ -124,6 +125,10 @@ func generate_valid_targets() -> void:
 	
 	var planets = system.get_planets()
 	var wormholes = system.get_wormholes()
+	var rift_drivers: Array[customBodyAPI] = []
+	for b in system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.CUSTOM):
+		if b.get_dialogue_tag() in ["insaRiftDriver"]: #"riftDriver" -> could be orbited by local civilizations so not a good idea
+			rift_drivers.append(b)
 	
 	for i in range(MAX_VALID_PLANETS):
 		if planets.size() > 0:
@@ -136,6 +141,12 @@ func generate_valid_targets() -> void:
 			var wormhole = wormholes.pick_random()
 			valid_wait_target_ids.append(wormhole.get_identifier())
 			wormholes.erase(wormhole)
+	
+	for i in range(MAX_VALID_RIFT_DRIVERS):
+		if rift_drivers.size() > 0:
+			var driver = rift_drivers.pick_random()
+			valid_wait_target_ids.append(driver.get_identifier())
+			rift_drivers.erase(driver)
 	
 	valid_wait_target_ids.append(system.get_first_star().get_identifier())
 	
