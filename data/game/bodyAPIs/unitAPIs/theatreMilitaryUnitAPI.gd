@@ -1,21 +1,41 @@
 extends AIUnitAPI
 class_name theatreMilitaryUnitAPI
 
-enum TASKS {USE_LIDAR, MOVE_TO_LIDAR, INVESTIGATE_LIDAR, MOVE_TO_INTERCEPT, INTERCEPT, RELOCATE, MOVE_TO_RALLY_POINT}
+enum TASKS {USE_LIDAR, MOVE_TO_LIDAR, INVESTIGATE_LIDAR, MOVE_TO_INTERCEPT, INTERCEPT, RELOCATE, MOVE_TO_RALLY_POINT_A, MOVE_TO_RALLY_POINT_B, LOOK_FOR_GOAL}
 const task_schedule: Dictionary = {
-	TASKS.USE_LIDAR: [TASKS.MOVE_TO_RALLY_POINT],
+	TASKS.USE_LIDAR: [TASKS.MOVE_TO_RALLY_POINT_A],
 	TASKS.MOVE_TO_LIDAR: [TASKS.INVESTIGATE_LIDAR],
-	TASKS.INVESTIGATE_LIDAR: [TASKS.USE_LIDAR, TASKS.MOVE_TO_RALLY_POINT],
+	TASKS.INVESTIGATE_LIDAR: [TASKS.USE_LIDAR, TASKS.MOVE_TO_RALLY_POINT_A],
 	TASKS.MOVE_TO_INTERCEPT: [TASKS.INTERCEPT],
 	TASKS.INTERCEPT: [TASKS.MOVE_TO_INTERCEPT, TASKS.RELOCATE],
-	TASKS.RELOCATE: [TASKS.MOVE_TO_RALLY_POINT],
-	TASKS.MOVE_TO_RALLY_POINT: [TASKS.MOVE_TO_RALLY_POINT, TASKS.USE_LIDAR]
+	TASKS.RELOCATE: [TASKS.MOVE_TO_RALLY_POINT_A],
+	TASKS.MOVE_TO_RALLY_POINT_A: [TASKS.MOVE_TO_RALLY_POINT_B],
+	TASKS.MOVE_TO_RALLY_POINT_B: [TASKS.USE_LIDAR],
+	TASKS.LOOK_FOR_GOAL: [TASKS.MOVE_TO_RALLY_POINT_A, TASKS.USE_LIDAR]
 }
 
 @export_storage var current_task: TASKS
 
 @export_storage var propensity_to_boost: float = 0.0 #has to be above 1.0 to boost
 @export_storage var velocity_position_hint: Array[Vector2] = [Vector2.ZERO, Vector2.ZERO] #goal position last frame, self position last frame
+@export_storage var within_player_profile: bool:
+	set(value):
+		if within_player_profile != value:
+			match value:
+				true:
+					_on_entered_player_scanner_profile()
+				false:
+					_on_exited_player_scanner_profile()
+		within_player_profile = value
+@export_storage var within_player_power: bool:
+	set(value):
+		if within_player_power != value:
+			match value:
+				true:
+					_on_entered_player_scanner_power()
+				false:
+					_on_exited_player_scanner_power()
+		within_player_power = value
 
 const MAX_SONAR_LENGTH := 300.0 #currently what it is in sonar_interface, but if i ever change it...
 
@@ -87,7 +107,6 @@ func advance(delta) -> void:
 			var velocity = displacement / delta
 			var adjusted_target_position = goal.position + (goal_velocity * (goal_velocity - velocity).length() / (pow(get_adjusted_speed(), 2)))
 			target_position = adjusted_target_position
-			
 			velocity_position_hint[0] = goal.position
 			velocity_position_hint[1] = position
 	
@@ -100,7 +119,7 @@ func advance(delta) -> void:
 
 func update_boosting_status(delta) -> void:
 	match current_task:
-		TASKS.MOVE_TO_LIDAR, TASKS.MOVE_TO_INTERCEPT, TASKS.RELOCATE, TASKS.MOVE_TO_RALLY_POINT:
+		TASKS.MOVE_TO_LIDAR, TASKS.MOVE_TO_INTERCEPT, TASKS.RELOCATE, TASKS.MOVE_TO_RALLY_POINT_A, TASKS.MOVE_TO_RALLY_POINT_B:
 			propensity_to_boost += global_data.get_randf(0.0,1.0) * 10.0 * delta
 		TASKS.USE_LIDAR, TASKS.INVESTIGATE_LIDAR, TASKS.INTERCEPT:
 			propensity_to_boost = 0.0
@@ -114,6 +133,9 @@ func update_boosting_status(delta) -> void:
 	pass
 
 func process_scanner_contacts() -> void:
+	var player_contacts = system.get_units_in_scanner_range(player.position, player.get_adjusted_scanner_profile())
+	within_player_profile = player_contacts.has(self)
+	
 	var ids_contacts : Array[int] = []
 	var contacts : Array[unitBodyAPI] = system.get_units_in_scanner_range(position, 25.0)
 	#print(contacts)
@@ -146,25 +168,16 @@ func check_task_status() -> TASK_STATUSES:
 				else:
 					return TASK_STATUSES.ONGOING
 			return TASK_STATUSES.FAILED
-		TASKS.MOVE_TO_LIDAR:
+		TASKS.MOVE_TO_LIDAR, TASKS.MOVE_TO_RALLY_POINT_A, TASKS.MOVE_TO_RALLY_POINT_B:
 			if get_current_action_type() == ACTION_TYPES.NONE:
 				if position.distance_to(target_position) < starSystemAPI.get_default_radius_solar_radii():
 					return TASK_STATUSES.COMPLETE
 				else:
 					return TASK_STATUSES.ONGOING
 			return TASK_STATUSES.FAILED
-		TASKS.INVESTIGATE_LIDAR, TASKS.INTERCEPT, TASKS.RELOCATE:
+		TASKS.INVESTIGATE_LIDAR, TASKS.INTERCEPT, TASKS.RELOCATE, TASKS.LOOK_FOR_GOAL:
 			if get_current_action_type() == ACTION_TYPES.NONE:
 				if task_clock.is_stopped():
-					return TASK_STATUSES.COMPLETE
-				else:
-					return TASK_STATUSES.ONGOING
-			return TASK_STATUSES.FAILED
-		TASKS.MOVE_TO_RALLY_POINT:
-			if get_current_action_type() == ACTION_TYPES.NONE:
-				if position.distance_to(target_position) < starSystemAPI.get_default_radius_solar_radii():
-					return TASK_STATUSES.COMPLETE
-				elif task_clock.is_stopped():
 					return TASK_STATUSES.COMPLETE
 				else:
 					return TASK_STATUSES.ONGOING
@@ -209,13 +222,21 @@ func switch_task(override_task = null) -> void:
 		TASKS.RELOCATE:
 			task_clock.start(global_data.get_randf(10.0, 15.0))
 			var dir = Vector2.UP.rotated(deg_to_rad(global_data.get_randi(0,360)))
-			var run_position = goal.position + (dir * 100.0)
-			course_to_position(run_position)
-		TASKS.MOVE_TO_RALLY_POINT:
-			task_clock.start(global_data.get_randf(10.0, 15.0))
+			var pos = goal.position + (dir * 100.0)
+			course_to_position(pos)
+		TASKS.MOVE_TO_RALLY_POINT_A:
 			var dir = Vector2.UP.rotated(deg_to_rad(global_data.get_randi(0,360)))
-			var offset_position = rally_point.position + (dir * 2.0)
-			course_to_position(offset_position)
+			var pos = rally_point.position + (dir * 100.0)
+			course_to_position(pos)
+		TASKS.MOVE_TO_RALLY_POINT_B:
+			var dir = Vector2.UP.rotated(deg_to_rad(global_data.get_randi(0,360)))
+			var pos = rally_point.position + (dir * 2.0)
+			course_to_position(pos)
+		TASKS.LOOK_FOR_GOAL:
+			task_clock.start(global_data.get_randf(5.0,20.0))
+			var dir = position.direction_to(last_goal_position)
+			var course = position + (dir * 1000.0)
+			course_to_position(course)
 	
 	print("UNIT (%s): NEW TASK -> %s" % [self, TASKS.find_key(new_task)])
 	
@@ -247,6 +268,14 @@ func async_switch_to_intercept(new_goal: unitBodyAPI) -> void:
 		switch_task(TASKS.MOVE_TO_INTERCEPT)
 	pass
 
+func async_switch_to_re_discover(pos: Vector2) -> void:
+	if is_hostile():
+		if not cooldown_clock.is_stopped():
+			await cooldown_clock.time_expired
+		last_goal_position = pos
+		switch_task(TASKS.LOOK_FOR_GOAL)
+	pass
+
 func stun(time: float = 1.0, disable_sfx: bool = false) -> void:
 	if is_hostile():
 		if not is_stunned():
@@ -274,6 +303,24 @@ func _on_cooldown_clock_time_expired() -> void:
 	task_switching_enabled = true
 	pass
 #endregion
+
+func _on_entered_player_scanner_profile() -> void:
+	if randf() > 0.5:
+		async_switch_to_intercept(player)
+	pass
+
+func _on_exited_player_scanner_profile() -> void:
+	if goal == player:
+		async_switch_to_re_discover(player.position)
+	pass
+
+func _on_entered_player_scanner_power() -> void:
+	speed = 4
+	pass
+
+func _on_exited_player_scanner_power() -> void:
+	speed = 30
+	pass
 
 func _on_boosting_changed(new_value: bool):
 	match new_value:
