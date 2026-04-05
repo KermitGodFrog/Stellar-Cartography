@@ -124,7 +124,9 @@ func advance(delta) -> void:
 
 func update_boosting_status(delta) -> void:
 	match current_task:
-		TASKS.MOVE_TO_LIDAR, TASKS.MOVE_TO_INTERCEPT, TASKS.RELOCATE, TASKS.MOVE_TO_RALLY_POINT_A, TASKS.MOVE_TO_RALLY_POINT_B:
+		TASKS.MOVE_TO_INTERCEPT:
+			propensity_to_boost += global_data.get_randf(0.1,1.0) * 10.0 * delta
+		TASKS.MOVE_TO_LIDAR, TASKS.RELOCATE, TASKS.MOVE_TO_RALLY_POINT_A, TASKS.MOVE_TO_RALLY_POINT_B, TASKS.LOOK_FOR_GOAL:
 			propensity_to_boost += global_data.get_randf(0.0,1.0) * 10.0 * delta
 		TASKS.USE_LIDAR, TASKS.INVESTIGATE_LIDAR, TASKS.INTERCEPT:
 			propensity_to_boost = 0.0
