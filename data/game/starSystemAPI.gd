@@ -808,6 +808,21 @@ func generateRandomWeightedSpecialAnomaly():
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
 			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
+		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.RIFT_DRIVER:
+			var new_body = addOrbitBody(
+				riftDriverBodyAPI.new(),
+				BODY_TYPES.CUSTOM,
+				identifier_count,
+				"Unknown Installation",
+				hook.get_identifier(),
+				orbit_distance,
+				orbit_angle_change,
+				radius,
+				{"dialogue_tag": "SpA_RiftDriver", "icon_path": "res://graphics/system-map/system-list/rift_driver_frame.png", "post_icon_path": "res://graphics/system-map/system-list/rift_driver_frame.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
+				{}
+			)
+			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
+			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.NONE:
 			pass
 	pass
