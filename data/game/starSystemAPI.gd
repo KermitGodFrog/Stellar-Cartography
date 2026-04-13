@@ -618,10 +618,15 @@ func addRandomWeightedAsteroidBeltAtIteration(hook_identifier: int, i: int) -> i
 
 func generateWormholes(): #uses variables post_gen_location_candidates, destination_systems
 	randomize()
+	var insa_prerequisite: bool = false
 	var spawn_systems = destination_systems.duplicate()
 	if previous_system:
 		spawn_systems.push_front(previous_system)
 	for dest_system in spawn_systems:
+		
+		if dest_system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
+			insa_prerequisite = true
+		
 		var location = post_gen_location_candidates.pick_random()
 		var hook = get_body_from_identifier(location.front())
 		var i = location.back()
@@ -649,6 +654,11 @@ func generateWormholes(): #uses variables post_gen_location_candidates, destinat
 		if dest_system == previous_system:
 			get_body_from_identifier(new_wormhole).disabled = true
 		post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
+	
+	if insa_prerequisite:
+		for w in get_wormholes():
+			if not w.destination_system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
+				w.disabled = true
 	pass
 
 func generateRandomWeightedStations():
