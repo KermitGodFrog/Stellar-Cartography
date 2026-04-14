@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_tvgxy")
 title = "Go-to the Neutral Planet"
-description = "Lock and 'GO-TO' the promising candidate marked during the last LIDAR ping to initiate first contact.
+description = "Lock and 'GO-TO' the promising candidate to initiate first contact.
 [img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
 metadata/_custom_type_script = "uid://cxmuiuh6uokvl"
