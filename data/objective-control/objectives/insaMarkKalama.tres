@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1_1j7ub")
 title = "Find a Neutral Party"
-description = "Your lead analyst will inform you if a promising candidate is marked after a LIDAR ping. Remember to ping three times to mark."
+description = "Your lead analyst will inform you if a promising candidate is marked after a LIDAR ping."
 metadata/_custom_type_script = "uid://cxmuiuh6uokvl"
