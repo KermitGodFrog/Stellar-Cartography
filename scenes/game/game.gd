@@ -193,6 +193,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("playerWin", _on_player_win)
 	dialogue_manager.connect("insaMakeAllWormholesRevealable", _on_insa_make_all_wormholes_revealable)
 	dialogue_manager.connect("insaMakeRiftDriverUnavailable", _on_insa_make_rift_driver_unavailable)
+	dialogue_manager.connect("insaMakeMilitaryShipsNeutral", _on_insa_make_military_ships_neutral)
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
@@ -1215,8 +1216,16 @@ func _on_insa_make_all_wormholes_revealable() -> void:
 func _on_insa_make_rift_driver_unavailable() -> void:
 	var custom_bodies = world.player.current_star_system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.CUSTOM)
 	for body in custom_bodies:
-		if body.get_dialogue_tag() == "insaShipWreck":
+		if body.get_dialogue_tag() == "insaRiftDriver":
 			body.metadata["custom_available"] = false
+	pass
+
+func _on_insa_make_military_ships_neutral() -> void:
+	var ship_bodies = world.player.current_star_system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.SHIP)
+	for body in ship_bodies:
+		if body.metadata.get("affiliation") in [game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A, game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B]:
+			body.metadata["hostile"] = false
+			body.metadata["ship_available"] = false
 	pass
 
 func _on_open_LRS():

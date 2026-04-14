@@ -105,7 +105,9 @@ func advance(delta) -> void:
 	process_scanner_contacts()
 	
 	match current_task:
-		TASKS.MOVE_TO_INTERCEPT:
+		TASKS.MOVE_TO_INTERCEPT, TASKS.INTERCEPT when not is_hostile():
+			switch_task(TASKS.RELOCATE)
+		TASKS.MOVE_TO_INTERCEPT when goal != null:
 			var goal_displacement = goal.position - velocity_position_hint[0]
 			var goal_velocity = goal_displacement / delta
 			var displacement = position - velocity_position_hint[1]
@@ -140,8 +142,9 @@ func update_boosting_status(delta) -> void:
 	pass
 
 func process_scanner_contacts() -> void:
-	var player_contacts = system.get_units_in_scanner_range(player.position, player.get_adjusted_scanner_profile())
-	within_player_profile = player_contacts.has(self)
+	if player != null:
+		var player_contacts = system.get_units_in_scanner_range(player.position, player.get_adjusted_scanner_profile())
+		within_player_profile = player_contacts.has(self)
 	
 	var ids_contacts : Array[int] = []
 	var contacts : Array[unitBodyAPI] = system.get_units_in_scanner_range(position, 25.0)

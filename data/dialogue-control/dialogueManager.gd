@@ -42,6 +42,7 @@ signal lockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
 signal playerWin()
 signal insaMakeAllWormholesRevealable()
 signal insaMakeRiftDriverUnavailable()
+signal insaMakeMilitaryShipsNeutral()
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
@@ -804,6 +805,7 @@ func _insaMakeAllWormholesRevealable() -> void:
 func _insaPostKalamaSuite() -> void:
 	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/voyage_leitmotif.ogg")
 	emit_signal("insaMakeRiftDriverUnavailable")
+	emit_signal("insaMakeMilitaryShipsNeutral")
 	emit_signal("removePlayerHullStress", 100)
 	pass
 
