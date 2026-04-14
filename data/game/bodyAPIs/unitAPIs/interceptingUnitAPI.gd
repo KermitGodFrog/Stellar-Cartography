@@ -64,21 +64,21 @@ func advance(delta) -> void:
 	match current_task:
 		TASKS.MOVE_TO_INTERCEPT, TASKS.INTERCEPT, TASKS.LOOK_FOR_PLAYER, TASKS.LOOK_FOR_PLAYER_ALT when not is_hostile():
 			switch_task(TASKS.MOVE_TO_WAIT)
-		TASKS.MOVE_TO_INTERCEPT:
+		TASKS.MOVE_TO_INTERCEPT when player != null:
 			var player_displacement = player.position - velocity_position_hint[0]
 			var player_velocity = player_displacement / delta
 			var displacement = position - velocity_position_hint[1]
 			var velocity = displacement / delta
 			var adjusted_target_position = player.position + (player_velocity * (player_velocity - velocity).length() / (pow(get_adjusted_speed(), 2)))
 			target_position = adjusted_target_position
+			velocity_position_hint[0] = player.position
+			velocity_position_hint[1] = position
 	
 	var status = check_task_status()
 	if cooldown_clock.is_stopped():
 		if status in [TASK_STATUSES.COMPLETE, TASK_STATUSES.FAILED]:
 			print("UNIT (%s): TASK %s -> %s" % [self, TASKS.find_key(current_task), TASK_STATUSES.find_key(status)])
 			switch_task()
-	velocity_position_hint[0] = player.position
-	velocity_position_hint[1] = position
 	pass
 
 func update_boosting_status(delta) -> void:
@@ -99,8 +99,9 @@ func update_boosting_status(delta) -> void:
 	pass
 
 func update_scanner_status() -> void:
-	var contacts = system.get_units_in_scanner_range(player.position, player.get_adjusted_scanner_profile())
-	within_player_profile = contacts.has(self)
+	if player != null:
+		var contacts = system.get_units_in_scanner_range(player.position, player.get_adjusted_scanner_profile())
+		within_player_profile = contacts.has(self)
 	pass
 
 func check_task_status() -> TASK_STATUSES:
