@@ -41,6 +41,7 @@ signal changePlayerScopeMode(_new_mode: playerAPI.SCOPE_MODES)
 signal lockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
 signal playerWin()
 signal insaMakeAllWormholesRevealable()
+signal insaMakeRiftDriverUnavailable()
 signal TUTORIALSetIngressOverride(value: bool)
 signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
@@ -798,6 +799,12 @@ func cycleAll(written_state: String) -> void: #dont use ts
 
 func _insaMakeAllWormholesRevealable() -> void:
 	emit_signal("insaMakeAllWormholesRevealable")
+	pass
+
+func _insaPostKalamaSuite() -> void:
+	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/voyage_leitmotif.ogg")
+	emit_signal("insaMakeRiftDriverUnavailable")
+	emit_signal("removePlayerHullStress", 100)
 	pass
 
 

@@ -192,6 +192,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("lockUpgrade", _on_lock_upgrade)
 	dialogue_manager.connect("playerWin", _on_player_win)
 	dialogue_manager.connect("insaMakeAllWormholesRevealable", _on_insa_make_all_wormholes_revealable)
+	dialogue_manager.connect("insaMakeRiftDriverUnavailable", _on_insa_make_rift_driver_unavailable)
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
@@ -1209,6 +1210,13 @@ func _on_insa_make_all_wormholes_revealable() -> void:
 	if current.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
 		for wormhole in current.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.WORMHOLE):
 			wormhole.hidden = false
+	pass
+
+func _on_insa_make_rift_driver_unavailable() -> void:
+	var custom_bodies = world.player.current_star_system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.CUSTOM)
+	for body in custom_bodies:
+		if body.get_dialogue_tag() == "insaShipWreck":
+			body.metadata["custom_available"] = false
 	pass
 
 func _on_open_LRS():
