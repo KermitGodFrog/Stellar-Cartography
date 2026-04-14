@@ -32,7 +32,7 @@ orbit_distance = 7.6
 orbit_angle_change = 0.918
 current_type = 3
 identifier = 2
-display_name = "wormhole 1"
+display_name = "Odyssey"
 known = true
 metadata/_custom_type_script = "uid://cucnh63c8ohpe"
 
@@ -58,7 +58,7 @@ orbit_distance = 667.6
 orbit_angle_change = 0.002
 current_type = 3
 identifier = 4
-display_name = "wormhole 2"
+display_name = "Auspicious Gateway"
 hidden = true
 metadata/_custom_type_script = "uid://cucnh63c8ohpe"
 
@@ -70,7 +70,7 @@ orbit_distance = 1591.6
 orbit_angle_change = 0.001
 current_type = 3
 identifier = 5
-display_name = "wormhole 3"
+display_name = "Lonesome Passage"
 hidden = true
 metadata/_custom_type_script = "uid://cucnh63c8ohpe"
 

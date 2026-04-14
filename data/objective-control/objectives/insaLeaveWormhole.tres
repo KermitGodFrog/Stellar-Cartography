@@ -5,5 +5,6 @@
 [resource]
 script = ExtResource("1_xnqb8")
 title = "Leave the System"
-description = "leave wormhole"
+description = "Find and 'GO-TO' a wormhole. Enter it and begin your long journey back to the Core.
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
 metadata/_custom_type_script = "uid://cxmuiuh6uokvl"
