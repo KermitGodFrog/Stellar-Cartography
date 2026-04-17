@@ -30,7 +30,7 @@ func advance(delta) -> void:
 		TASKS.RELOCATE:
 			var player_displacement = player.position - last_player_position
 			var player_velocity = player_displacement / delta
-			target_position = player.position + (player_velocity * 10.0) + relocation_offset
+			target_position = player.position + (player_velocity * 30.0) + relocation_offset
 	
 	var status = check_task_status()
 	if cooldown_clock.is_stopped():

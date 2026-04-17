@@ -5,16 +5,18 @@ enum TASKS {USE_LIDAR, MOVE_TO_LIDAR, INVESTIGATE_LIDAR, MOVE_TO_INTERCEPT, INTE
 const task_schedule: Dictionary = {
 	TASKS.USE_LIDAR: [TASKS.MOVE_TO_RALLY_POINT_A],
 	TASKS.MOVE_TO_LIDAR: [TASKS.INVESTIGATE_LIDAR],
-	TASKS.INVESTIGATE_LIDAR: [TASKS.USE_LIDAR, TASKS.MOVE_TO_RALLY_POINT_A],
+	TASKS.INVESTIGATE_LIDAR: [TASKS.MOVE_TO_RALLY_POINT_A],
 	TASKS.MOVE_TO_INTERCEPT: [TASKS.INTERCEPT],
-	TASKS.INTERCEPT: [TASKS.MOVE_TO_INTERCEPT, TASKS.RELOCATE],
+	TASKS.INTERCEPT: [TASKS.RELOCATE],
 	TASKS.RELOCATE: [TASKS.MOVE_TO_RALLY_POINT_A],
 	TASKS.MOVE_TO_RALLY_POINT_A: [TASKS.MOVE_TO_RALLY_POINT_B],
-	TASKS.MOVE_TO_RALLY_POINT_B: [TASKS.USE_LIDAR],
+	TASKS.MOVE_TO_RALLY_POINT_B: [TASKS.MOVE_TO_RALLY_POINT_A, TASKS.MOVE_TO_RALLY_POINT_A, TASKS.USE_LIDAR],
 	TASKS.LOOK_FOR_GOAL: [TASKS.MOVE_TO_RALLY_POINT_A, TASKS.USE_LIDAR]
 }
 
 @export_storage var current_task: TASKS
+
+@export_storage var speed_clock: clock
 
 @export_storage var propensity_to_boost: float = 0.0 #has to be above 1.0 to boost
 @export_storage var initial_speed: int
@@ -81,6 +83,7 @@ func _init() -> void:
 	task_clock = clock.new()
 	cooldown_clock = clock.new()
 	stun_clock = clock.new()
+	speed_clock = clock.new()
 	pass
 
 func initialize() -> void:
@@ -91,7 +94,8 @@ func get_connection_pairs() -> Dictionary:
 	var connections: Dictionary = {
 		cooldown_clock.time_expired: _on_cooldown_clock_time_expired,
 		stun_clock.time_expired: _on_stun_clock_time_expired,
-		boosting_changed: _on_boosting_changed
+		boosting_changed: _on_boosting_changed,
+		speed_clock.time_expired: _on_speed_clock_time_expired
 	}
 	return connections
 
@@ -99,6 +103,7 @@ func advance(delta) -> void:
 	task_clock.tick(delta)
 	cooldown_clock.tick(delta)
 	stun_clock.tick(delta)
+	speed_clock.tick(delta)
 	
 	calculate_asteroid_belt_slowdown()
 	update_boosting_status(delta)
@@ -143,12 +148,15 @@ func update_boosting_status(delta) -> void:
 
 func process_scanner_contacts() -> void:
 	if player != null:
-		var player_contacts = system.get_units_in_scanner_range(player.position, player.get_adjusted_scanner_profile())
-		within_player_profile = player_contacts.has(self)
+		var player_profile_contacts = system.get_units_in_scanner_range(player.position, player.get_adjusted_scanner_profile())
+		within_player_profile = player_profile_contacts.has(self)
+		
+		var player_power_contacts = system.get_units_in_scanner_range(player.position, player.get_adjusted_scanner_power())
+		within_player_power = player_power_contacts.has(self)
+		
 	
 	var ids_contacts : Array[int] = []
 	var contacts : Array[unitBodyAPI] = system.get_units_in_scanner_range(position, 25.0)
-	#print(contacts)
 	for c in contacts:
 		if c != self:
 			ids_contacts.append(c.get_identifier())
@@ -236,7 +244,7 @@ func switch_task(override_task = null) -> void:
 			course_to_position(pos)
 		TASKS.MOVE_TO_RALLY_POINT_A:
 			var dir = Vector2.UP.rotated(deg_to_rad(global_data.get_randi(0,360)))
-			var pos = rally_point.position + (dir * 100.0)
+			var pos = rally_point.position + (dir * 200.0)
 			course_to_position(pos)
 		TASKS.MOVE_TO_RALLY_POINT_B:
 			var dir = Vector2.UP.rotated(deg_to_rad(global_data.get_randi(0,360)))
@@ -329,7 +337,7 @@ func _on_entered_player_scanner_power() -> void:
 	pass
 
 func _on_exited_player_scanner_power() -> void:
-	speed = 30
+	speed_clock.start(10.0)
 	pass
 
 func _on_boosting_changed(new_value: bool):
@@ -342,4 +350,9 @@ func _on_boosting_changed(new_value: bool):
 
 func _on_stun_clock_time_expired() -> void:
 	set_stunned(false)
+	pass
+
+func _on_speed_clock_time_expired() -> void:
+	if not within_player_power:
+		speed = 20
 	pass

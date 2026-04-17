@@ -304,11 +304,12 @@ func createAuxiliaryCivilized() -> void:
 				starSystemAPI.BODY_TYPES.SHIP,
 				identifier_count,
 				"Rally Point",
-				25,
+				30,
 				get_default_radius_solar_radii(),
 				{"system": self, "hidden": true},
 				{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_CIVILIAN}
 			)
+			get_body_from_identifier(new_rally_point).position = Vector2.ZERO + (Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360))) * 100.0)
 			
 			for i in 5:
 				var new_ship = addUnitBody(
