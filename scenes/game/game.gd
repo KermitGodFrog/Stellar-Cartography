@@ -190,6 +190,10 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("modifyCharacterStanding", _on_modify_character_standing)
 	dialogue_manager.connect("changePlayerScopeMode", _on_change_scope_mode)
 	dialogue_manager.connect("lockUpgrade", _on_lock_upgrade)
+	dialogue_manager.connect("playerWin", _on_player_win)
+	dialogue_manager.connect("insaMakeAllWormholesRevealable", _on_insa_make_all_wormholes_revealable)
+	dialogue_manager.connect("insaMakeRiftDriverUnavailable", _on_insa_make_rift_driver_unavailable)
+	dialogue_manager.connect("insaMakeMilitaryShipsNeutral", _on_insa_make_military_ships_neutral)
 	dialogue_manager.connect("TUTORIALSetIngressOverride", _on_tutorial_set_ingress_override)
 	dialogue_manager.connect("TUTORIALSetOmissionOverride", _on_tutorial_set_omission_override)
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
@@ -472,6 +476,7 @@ func body_query_add_shared(query: responseQuery, body: bodyAPI) -> void:
 	query.add("type", starSystemAPI.BODY_TYPES.find_key(body.get_type()))
 	query.add_tree_access("name", body.get_display_name())
 	query.add("tutorial", init_type == global_data.GAME_INIT_TYPES.TUTORIAL)
+	query.add("insa", world.player.current_star_system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA)
 	pass
 
 func body_query_add_custom_type_shared(query: responseQuery, body: bodyAPI) -> void: #shared between theorisedBody, orbitingBody, followingBody
@@ -490,6 +495,8 @@ func _on_unit_following_body(_b: bodyAPI, _u: unitBodyAPI) -> void:
 	await get_tree().physics_frame #might fix issues where unit interacts before dialogue_manager receives player on first physics frame causing error
 	if _b == world.player:
 		_on_player_following_body(_u)
+	elif _b is theatreMilitaryUnitAPI:
+		_b.stun(2.5, true)
 	pass
 
 func _on_unit_orbiting_body(_b: bodyAPI, _u: unitBodyAPI) -> void:
@@ -537,8 +544,8 @@ func _on_player_entering_system(system: starSystemAPI):
 	
 	#not awaiting onCloseDialog because wacky shtuff happens!!!!!!! audioHandler should only play it when pause_mode is NONE anyway
 	
-	if world.player.systems_traversed == roundi(world.player.total_systems / 2):
-		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/halfway_point.ogg")
+	if system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
+		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/insa.ogg")
 	elif system.is_civilized():
 		_on_play_civilized_system_leitmotif()
 	pass
@@ -596,10 +603,12 @@ func _on_async_upgrade_tutorial(upgrade_idx: playerAPI.UPGRADE_ID):
 
 func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, skip_minigame: bool = false):
 	world.player.grant_invulnerability(0.3)
+	world.player.systems_traversed += 1
+	
 	#spawning new wormholes in destination system if nonexistent
 	if not destination.destination_systems:
-		for i in range(2):
-			_on_create_new_star_system(destination)
+		_on_create_new_star_system(destination)
+		_on_create_new_star_system(destination, (world.player.systems_traversed + 1) == world.player.total_systems)
 	#setting whether the new system is a civilized system or not
 	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
 	if world.player.get_jumps_remaining() == 0:
@@ -627,9 +636,8 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 		world.remove_systems_excluding_systems(exclude_systems)
 	
 	world.player.previous_star_system = world.player.current_star_system
-	world.player.systems_traversed += 1
 	
-	if world.player.systems_traversed == world.player.total_systems: # will need a global variable for how many ssystems until win at some point, customizability would be sick
+	if world.player.systems_traversed == world.player.total_systems + 1: # will need a global variable for how many ssystems until win at some point, customizability would be sick
 		_on_player_win()
 	
 	#setting position to wormhole??? actually works??????
@@ -689,9 +697,14 @@ func _on_update_target_position(pos: Vector2):
 	system_3d.set("target_position", pos)
 	pass
 
-func _on_create_new_star_system(for_system: starSystemAPI = null):
+func _on_create_new_star_system(for_system: starSystemAPI = null, insa_override: bool = false):
 	game_data.SYSTEM_PREFIX = "" #shuldnt be calling game_data from game.gd but whateverrrrrrr
-	var system = world.createStarSystem("random")
+	var system: starSystemAPI
+	if not insa_override:
+		system = world.createStarSystem("random")
+	else:
+		system = world.createStarSystem("campaign_insa")
+		system.special_system_classification = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA
 	var _advanced_scanning_unlocked = world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.ADVANCED_SCANNING)
 	system.createBase(world.get_adjusted_PA_chance(_advanced_scanning_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_scanning_unlocked), world.missing_GL_chance_per_relevant_planet)
 	if for_system != null:
@@ -1139,20 +1152,22 @@ func _on_change_scope_mode(new_mode: playerAPI.SCOPE_MODES) -> void:
 	pass
 
 func _on_player_scanner_contact_gained(_unit: unitBodyAPI) -> void:
-	print_debug("GAME: PLAYER SCANNER CONTACT GAINED ", _unit)
-	system_map._on_player_scanner_contact_gained(_unit)
-	system_map._on_update_scanner_display_times(1.0, 1.0)
-	if _unit is AIUnitAPI:
-		if _unit.is_hostile():
-			system_map._on_update_scanner_display_times(10.0, 1.0)
-	get_tree().call_group("audioHandler", "play_once", load("uid://d1woqdnpk3xes"), -12.0, "SFX")
+	if not _unit.is_hidden():
+		print_debug("GAME: PLAYER SCANNER CONTACT GAINED ", _unit)
+		system_map._on_player_scanner_contact_gained(_unit)
+		system_map._on_update_scanner_display_times(1.0, 1.0)
+		if _unit is AIUnitAPI:
+			if _unit.is_hostile():
+				system_map._on_update_scanner_display_times(10.0, 1.0)
+		get_tree().call_group("audioHandler", "play_once", load("uid://d1woqdnpk3xes"), -12.0, "SFX")
 	pass
 
 func _on_player_scanner_contact_lost(_unit: unitBodyAPI) -> void:
-	print_debug("GAME: PLAYER SCANNER CONTACT LOST ", _unit)
-	system_map._on_player_scanner_contact_lost(_unit)
-	system_map._on_update_scanner_display_times(1.0, 1.0)
-	get_tree().call_group("audioHandler", "play_once", preload("uid://qpsibe05f4su"), -12.0, "SFX")
+	if not _unit.is_hidden():
+		print_debug("GAME: PLAYER SCANNER CONTACT LOST ", _unit)
+		system_map._on_player_scanner_contact_lost(_unit)
+		system_map._on_update_scanner_display_times(1.0, 1.0)
+		get_tree().call_group("audioHandler", "play_once", preload("uid://qpsibe05f4su"), -12.0, "SFX")
 	
 	#dealing with deselecting the unit EVERYWHERE or else it can cause many errors bc it does not include is_theorised_not_known()
 	#this definitely breaks a lot of rules, but i think its better to have it all centralised here!!!
@@ -1189,6 +1204,28 @@ func _on_mine_detonated(id: int) -> void: #starSystemAPI signal
 
 func _on_body_removed(id: int) -> void: #starSystemAPI signal
 	system_3d._on_body_removed(id)
+	pass
+
+func _on_insa_make_all_wormholes_revealable() -> void:
+	var current = world.player.current_star_system
+	if current.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
+		for wormhole in current.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.WORMHOLE):
+			wormhole.hidden = false
+	pass
+
+func _on_insa_make_rift_driver_unavailable() -> void:
+	var custom_bodies = world.player.current_star_system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.CUSTOM)
+	for body in custom_bodies:
+		if body.get_dialogue_tag() == "insaRiftDriver":
+			body.metadata["custom_available"] = false
+	pass
+
+func _on_insa_make_military_ships_neutral() -> void:
+	var ship_bodies = world.player.current_star_system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.SHIP)
+	for body in ship_bodies:
+		if body.metadata.get("affiliation") in [game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A, game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B]:
+			body.metadata["hostile"] = false
+			body.metadata["ship_available"] = false
 	pass
 
 func _on_open_LRS():

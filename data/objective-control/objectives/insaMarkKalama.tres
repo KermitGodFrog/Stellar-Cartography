@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://dgjh1xiqm7boq"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_1j7ub"]
+
+[resource]
+script = ExtResource("1_1j7ub")
+title = "Find a Neutral Party"
+description = "Your lead analyst will inform you if a promising candidate is marked after a LIDAR ping."
+metadata/_custom_type_script = "uid://cxmuiuh6uokvl"

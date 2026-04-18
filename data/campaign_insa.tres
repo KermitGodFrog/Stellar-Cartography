@@ -1,0 +1,148 @@
+[gd_resource type="Resource" script_class="starSystemAPI" load_steps=17 format=3 uid="uid://bgyav54iwwu4"]
+
+[ext_resource type="Script" uid="uid://cbd8771ytigfk" path="res://data/game/bodyAPIs/bodyAPI.gd" id="1_w6the"]
+[ext_resource type="Script" uid="uid://whlsn7syw5s7" path="res://data/game/starSystemAPI.gd" id="2_38bcc"]
+[ext_resource type="Script" uid="uid://b6paa488wsman" path="res://data/game/bodyAPIs/circularBodyAPI.gd" id="2_qkskp"]
+[ext_resource type="Script" uid="uid://cucnh63c8ohpe" path="res://data/game/bodyAPIs/wormholeBodyAPI.gd" id="3_84cg8"]
+[ext_resource type="Script" uid="uid://3bfktykp3y0h" path="res://data/game/bodyAPIs/customBodyAPI.gd" id="4_84cg8"]
+[ext_resource type="Script" uid="uid://cglclm5io1dgt" path="res://data/game/bodyAPIs/riftDriverBodyAPI.gd" id="5_c1q0o"]
+[ext_resource type="Script" uid="uid://otot2sewvo18" path="res://data/game/bodyAPIs/orbitBodyAPI.gd" id="5_jnftx"]
+
+[sub_resource type="Resource" id="Resource_jnftx"]
+script = ExtResource("2_qkskp")
+mass = 16.0
+surface_color = Color(0, 0, 1, 1)
+identifier = 1
+display_name = "Insa"
+metadata = {
+"discovery_multiplier": 5.0,
+"iterations": 25,
+"luminosity": 43402.742,
+"star_type": "O"
+}
+radius = 6.6
+known = true
+
+[sub_resource type="Resource" id="Resource_c1q0o"]
+script = ExtResource("3_84cg8")
+disabled = true
+surface_color = Color(0.5019608, 0, 0.5019608, 1)
+hook_identifier = 1
+orbit_distance = 7.6
+orbit_angle_change = 0.918
+current_type = 3
+identifier = 2
+display_name = "Odyssey"
+known = true
+metadata/_custom_type_script = "uid://cucnh63c8ohpe"
+
+[sub_resource type="Resource" id="Resource_j14vt"]
+script = ExtResource("4_84cg8")
+dialogue_tag = "insaShipWreck"
+icon_path = "res://graphics/system-map/system-list/insaShipWreck_frame.png"
+post_icon_path = "res://graphics/system-map/system-list/insaShipWreck_frame.png"
+hook_identifier = 1
+orbit_distance = 337.6
+orbit_angle_change = 0.004
+req_scope_mode = 1
+current_type = 8
+identifier = 3
+display_name = "Ship Wreck"
+metadata/_custom_type_script = "uid://3bfktykp3y0h"
+
+[sub_resource type="Resource" id="Resource_c7exk"]
+script = ExtResource("3_84cg8")
+surface_color = Color(0.5019608, 0, 0.5019608, 1)
+hook_identifier = 1
+orbit_distance = 667.6
+orbit_angle_change = 0.002
+current_type = 3
+identifier = 4
+display_name = "Auspicious Gateway"
+hidden = true
+metadata/_custom_type_script = "uid://cucnh63c8ohpe"
+
+[sub_resource type="Resource" id="Resource_qkskp"]
+script = ExtResource("3_84cg8")
+surface_color = Color(0.5019608, 0, 0.5019608, 1)
+hook_identifier = 1
+orbit_distance = 1591.6
+orbit_angle_change = 0.001
+current_type = 3
+identifier = 5
+display_name = "Lonesome Passage"
+hidden = true
+metadata/_custom_type_script = "uid://cucnh63c8ohpe"
+
+[sub_resource type="Resource" id="Resource_wgsv6"]
+script = ExtResource("5_c1q0o")
+driver_line = "CL"
+dialogue_tag = "insaRiftDriver"
+icon_path = "res://graphics/system-map/system-list/rift_driver_frame.png"
+post_icon_path = "res://graphics/system-map/system-list/rift_driver_frame.png"
+hook_identifier = 1
+orbit_distance = 73.6
+orbit_angle_change = 0.043
+req_scope_mode = 1
+current_type = 8
+identifier = 6
+display_name = "Unknown Installation"
+metadata/_custom_type_script = "uid://cglclm5io1dgt"
+
+[sub_resource type="Resource" id="Resource_ofmd8"]
+script = ExtResource("5_jnftx")
+hook_identifier = 1
+orbit_distance = 403.6
+current_type = 2
+identifier = 7
+display_name = "asteroid belt 1"
+metadata = {
+"asteroid_belt_classification": "Carbonaceous",
+"belt_color": Color(0.111765, 0.111765, 0.111765, 0.9),
+"belt_mass": 0.0,
+"belt_width": 450.0
+}
+known = true
+hidden = true
+metadata/_custom_type_script = "uid://otot2sewvo18"
+
+[sub_resource type="Resource" id="Resource_ha0va"]
+script = ExtResource("5_jnftx")
+hook_identifier = 1
+orbit_distance = 799.6
+current_type = 2
+identifier = 8
+display_name = "asteroid belt 2"
+metadata = {
+"asteroid_belt_classification": "Carbonaceous",
+"belt_color": Color(0.111765, 0.111765, 0.111765, 0.9),
+"belt_mass": 0.0,
+"belt_width": 450.0
+}
+known = true
+hidden = true
+metadata/_custom_type_script = "uid://otot2sewvo18"
+
+[sub_resource type="Resource" id="Resource_5135h"]
+script = ExtResource("5_jnftx")
+hook_identifier = 1
+orbit_distance = 1195.6
+current_type = 2
+identifier = 9
+display_name = "asteroid belt 3"
+metadata = {
+"asteroid_belt_classification": "Carbonaceous",
+"belt_color": Color(0.111765, 0.111765, 0.111765, 0.9),
+"belt_mass": 0.0,
+"belt_width": 450.0
+}
+known = true
+hidden = true
+metadata/_custom_type_script = "uid://otot2sewvo18"
+
+[resource]
+script = ExtResource("2_38bcc")
+display_name = "campaign_insa"
+bodies = Array[ExtResource("1_w6the")]([SubResource("Resource_jnftx"), SubResource("Resource_c1q0o"), SubResource("Resource_j14vt"), SubResource("Resource_c7exk"), SubResource("Resource_qkskp"), SubResource("Resource_wgsv6"), SubResource("Resource_ofmd8"), SubResource("Resource_ha0va"), SubResource("Resource_5135h")])
+identifier_count = 10
+metadata/_custom_type_script = "uid://whlsn7syw5s7"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://bspjbtku02iav"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_xnqb8"]
+
+[resource]
+script = ExtResource("1_xnqb8")
+title = "Leave the System"
+description = "Find and 'GO-TO' a wormhole. Enter it and begin your long journey back to the Core.
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
+metadata/_custom_type_script = "uid://cxmuiuh6uokvl"
