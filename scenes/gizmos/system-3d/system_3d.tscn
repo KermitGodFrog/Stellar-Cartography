@@ -55,6 +55,7 @@ script = ExtResource("1_a351o")
 [node name="camera_offset" type="Node3D" parent="system_3d"]
 
 [node name="camera" type="Camera3D" parent="system_3d/camera_offset"]
+far = 100000.0
 
 [node name="canvas_layer" type="CanvasLayer" parent="system_3d/camera_offset/camera"]
 

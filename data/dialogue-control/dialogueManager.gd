@@ -110,7 +110,7 @@ func clear_and_load_rules() -> void:
 					if not dict.is_empty() and new_rule != null:
 						new_rule.criteria = dict
 				"TRIGGER_FUNCTIONS":
-					var dict = convert_to_dictionary(cell)
+					var dict = convert_to_dictionary(cell, true)
 					if not dict.is_empty() and new_rule != null:
 						new_rule.trigger_functions = dict
 				"TRIGGER_RULES":
@@ -152,7 +152,7 @@ func clear_and_load_rules() -> void:
 	csv_rules.close()
 	pass
 
-func convert_to_dictionary(cell : String) -> Dictionary:
+func convert_to_dictionary(cell : String, embedded_values: bool = false) -> Dictionary:
 	if cell.left(1) == "#": return {}
 	
 	var parts = global_data.split_string_multiple_delimeters(cell, [",", ":"])
@@ -181,7 +181,16 @@ func convert_to_dictionary(cell : String) -> Dictionary:
 				
 				#>int or <float et al cannot go here, must be calculated at runtime
 				
-				new_dictionary[corrected_parts[i]] = type_corrected_value
+				if embedded_values: #embedded values appends each 'value' to an array, which is the real value of each key. therefore, keys can have multiple values - this is only used for trigger functions!!
+					if new_dictionary.has(corrected_parts[i]):
+						var instances = new_dictionary[corrected_parts[i]]
+						instances.append(type_corrected_value)
+						new_dictionary[corrected_parts[i]] = instances
+					else:
+						new_dictionary[corrected_parts[i]] = [type_corrected_value]
+				elif not embedded_values:
+					new_dictionary[corrected_parts[i]] = type_corrected_value
+				
 				if corrected_parts.size() < (i + 2): break
 				next_key += 2
 		return new_dictionary
@@ -407,17 +416,19 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 	#trigger_functions: \\\\\\\\\\\\\
 	for trigger_function in rule.trigger_functions:
 		if has_method(trigger_function):
-			var values = rule.trigger_functions.get(trigger_function)
-			if values != null: 
-				match typeof(values):
-					TYPE_STRING:
-						print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
-						call(trigger_function, replace_fact_references(values, incoming_query))
-					_:
-						print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
-						call(trigger_function, values)
-			else:
-				call(trigger_function)
+			var instances = rule.trigger_functions.get(trigger_function)
+			for instance_args in instances:
+				var values = instance_args
+				if values != null: 
+					match typeof(values):
+						TYPE_STRING:
+							print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
+							call(trigger_function, replace_fact_references(values, incoming_query))
+						_:
+							print("QUERY HANDLER: ", calling, " TRIGGERING FUNCTION ", trigger_function)
+							call(trigger_function, values)
+				else:
+					call(trigger_function)
 	
 	#trigger_rules: \\\\\\\\\\\\\
 	for _trigger_rule in rule.trigger_rules:

@@ -5,6 +5,7 @@ extends Control
 @onready var create_button = $new_game_popup/new_game/margin/scroll/create_button
 @onready var name_edit = $new_game_popup/new_game/margin/scroll/name_edit
 @onready var prefix_edit = $new_game_popup/new_game/margin/scroll/prefix_edit
+@onready var ship_name_edit = $new_game_popup/new_game/margin/scroll/ship_name_edit
 @onready var new_game_popup = $new_game_popup
 @onready var achievements_list_popup = $achievements_list_popup
 @onready var background = $background
@@ -85,14 +86,15 @@ func _on_tutorial_button_pressed():
 	pass
 
 func _on_create_button_pressed():
-	if not name_edit.text.is_empty():
+	if (not name_edit.text.is_empty()) and (not ship_name_edit.text.is_empty()):
 		global_data.change_scene.emit("res://scenes/game/game.tscn", {
 			"init_type": global_data.GAME_INIT_TYPES.NEW, 
-			"init_data": {"name": name_edit.get_text(), "prefix": prefix_edit.get_item_text(prefix_edit.selected)}
+			"init_data": {"name": name_edit.get_text(), "ship_name": ship_name_edit.get_text(), "prefix": prefix_edit.get_item_text(prefix_edit.selected)}
 			})
 	else:
 		global_data.change_scene.emit("res://scenes/game/game.tscn", {
-			"init_type": global_data.GAME_INIT_TYPES.NEW})
+			"init_type": global_data.GAME_INIT_TYPES.NEW
+		})
 	pass
 
 func _on_new_button_pressed():

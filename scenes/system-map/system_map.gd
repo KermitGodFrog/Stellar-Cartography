@@ -476,6 +476,7 @@ func update_contact_list() -> void:
 		var identifier = item.get_metadata(0)
 		var body = system.get_body_from_identifier(identifier)
 		if body != null:
+			
 			if body == follow_body:
 				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY.lightened(0.5)) #LIGHT_SKY_BLUE
 			elif body.get_identifier() == closest_body_id: 
@@ -490,6 +491,11 @@ func update_contact_list() -> void:
 					item.set_custom_bg_color(0, Color.DARK_RED.lightened(0.2)) #WEB_GRAY
 				else:
 					item.set_custom_bg_color(0, Color.DARK_RED)
+			
+			if body.get_type() == starSystemAPI.BODY_TYPES.SHIP: #i ont like this :( but it works !
+				if body.metadata.get("ship_available", true) == false:
+					item.set_icon_overlay(0, null)
+			
 		else:
 			item.free()
 	pass
@@ -500,11 +506,15 @@ func _on_player_scanner_contact_gained(unit: unitBodyAPI) -> void:
 	var item: TreeItem = contact_list.create_item(contact_list.get_root())
 	item.set_metadata(0, unit.get_identifier())
 	item.set_text(0, unit.get_display_name())
-	#icon handling!
+	
 	if unit.is_hostile():
 		item.set_icon(0, load("uid://dxtvjut27oly0"))
 	else:
 		item.set_icon(0, load("uid://bbdpqnpgh7iy6"))
+	
+	if unit.get_type() == starSystemAPI.BODY_TYPES.SHIP:
+		if unit.metadata.get("ship_available", true) == true:
+			item.set_icon_overlay(0, load("uid://b205ybcemhe36"))
 	pass
 
 func _on_player_scanner_contact_lost(unit: unitBodyAPI) -> void:
@@ -944,7 +954,7 @@ func get_entity_frame(classification: game_data.ENTITY_CLASSIFICATIONS) -> Resou
 	match classification:
 		game_data.ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: return load("uid://cd2n33fiot3dr")
 		game_data.ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: return load("uid://585th5rg5vak")
-		
+		game_data.ENTITY_CLASSIFICATIONS.OLM_MAELSTROM: return load("uid://wiy2unun0er3")
 		_: return load("uid://id0yg3qh1o32")
 
 func get_planet_frame(classification: String) -> Resource:
