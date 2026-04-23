@@ -33,6 +33,9 @@ var _REWARD_MATRIX: Array = [] #carried to _on_state_changed
 @onready var rangefinder = $camera_offset/camera/canvas_layer/rangefinder
 @onready var shutter = $shutter
 @onready var click = $click
+@onready var world_environment = $world_environment
+@onready var h_rot_slider = $camera_offset/camera/canvas_layer/h_rot_slider
+@onready var v_rot_slider = $camera_offset/camera/canvas_layer/v_rot_slider
 
 var GENERATION_POSITIONS: PackedVector3Array = []
 var REVERSE_GENERATION_POSITIONS: PackedVector3Array = []
@@ -124,7 +127,6 @@ func _unhandled_input(event):
 	pass
 
 func _physics_process(_delta):
-	print(camera.rotation)
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
 	if current_entity:
 		var first_star = system.get_first_star()
@@ -135,6 +137,14 @@ func _physics_process(_delta):
 
 func _on_current_entity_changed(new_entity : entityBodyAPI):
 	if current_entity != new_entity: # to prevent infinite generation by just re-pressing the go-to button, maybe move to game.gd?
+		
+		#setting bg visuals (star pos updated runtime)
+		var star = system.get_first_star()
+		if star != null:
+			directional_light.light_color = star.surface_color
+			world_environment.environment.fog_light_color = star.surface_color
+			world_environment.environment.fog_sun_scatter = maxf(0.02, 1.0 / new_entity.orbit_distance)
+		
 		no_current_entity_bg.hide()
 		current_entity = new_entity
 		captures_remaining_label.text = str(current_entity.captures_remaining)
@@ -271,6 +281,8 @@ func hide_all_hud_elements() -> void:
 	captures_remaining_label.hide()
 	fov_container.hide()
 	value_label.hide()
+	h_rot_slider.hide()
+	v_rot_slider.hide()
 	pass
 
 func show_all_hud_elements() -> void:
@@ -278,6 +290,8 @@ func show_all_hud_elements() -> void:
 	captures_remaining_label.show()
 	fov_container.show()
 	value_label.hide()
+	h_rot_slider.show()
+	v_rot_slider.show()
 	pass
 
 func set_state(new_state: STATES):
@@ -350,13 +364,11 @@ func _on_fov_slider_value_changed(value):
 
 var last_h_rot_value: float = 0.0
 var last_v_rot_value: float = 0.0
-
 func _on_h_rot_slider_value_changed(value) -> void:
 	camera.rotate_object_local(Vector3.DOWN, deg_to_rad(value - last_h_rot_value))
 	camera.orthonormalize()
 	last_h_rot_value = value
 	pass
-
 func _on_v_rot_slider_value_changed(value) -> void:
 	camera.rotate_object_local(Vector3.RIGHT, deg_to_rad(value - last_v_rot_value))
 	camera.orthonormalize()

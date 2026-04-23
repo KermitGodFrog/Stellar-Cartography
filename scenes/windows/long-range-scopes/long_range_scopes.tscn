@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://b0frxj5cysipi"]
+[gd_scene load_steps=30 format=3 uid="uid://b0frxj5cysipi"]
 
 [ext_resource type="Theme" uid="uid://dvp6gmpuweabh" path="res://theme-gen/long-range-scopes/long_range_scopes_MAIN_theme.tres" id="1_njahj"]
 [ext_resource type="Script" uid="uid://cec3e0bhmaoxt" path="res://scenes/windows/long-range-scopes/long_range_scopes.gd" id="1_syfdy"]
@@ -7,9 +7,8 @@
 [ext_resource type="Shader" uid="uid://c8yxk67y2u80y" path="res://shader-gen/pixelate_shader.gdshader" id="2_oxd33"]
 [ext_resource type="Script" uid="uid://cdv8lviwsrhdv" path="res://scenes/windows/long-range-scopes/rangefinder.gd" id="2_rbmww"]
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="3_drepj"]
-[ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://shader-gen/system-3d/sky_shader.tres" id="3_iyrid"]
-[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/system-3d/star_backdrop.jpeg" id="4_kwwow"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="4_mjqhh"]
+[ext_resource type="Environment" uid="uid://d3xo6hd26rjnn" path="res://scenes/windows/long-range-scopes/long_range_scopes_environment.tres" id="9_uncnc"]
 [ext_resource type="AudioStream" uid="uid://c4ia3frwfyqim" path="res://sound/long-range-scopes/shutter1.wav" id="10_0oh6i"]
 [ext_resource type="AudioStream" uid="uid://dynsxxaf7y458" path="res://sound/long-range-scopes/shutter2.wav" id="11_o2hra"]
 [ext_resource type="AudioStream" uid="uid://c7im5vvinagcw" path="res://sound/long-range-scopes/shutter3.wav" id="12_5dcf7"]
@@ -45,26 +44,6 @@ border_width_top = 5
 border_color = Color(0.203922, 0.227451, 0.25098, 1)
 expand_margin_left = 100.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ch2h2"]
-shader = ExtResource("3_iyrid")
-shader_parameter/source_panorama = ExtResource("4_kwwow")
-
-[sub_resource type="Sky" id="Sky_4kfpl"]
-sky_material = SubResource("ShaderMaterial_ch2h2")
-
-[sub_resource type="Environment" id="Environment_368mg"]
-background_mode = 2
-background_energy_multiplier = 0.75
-sky = SubResource("Sky_4kfpl")
-ambient_light_source = 2
-ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_sky_contribution = 0.0
-ambient_light_energy = 0.1
-reflected_light_source = 1
-tonemap_mode = 1
-tonemap_exposure = 2.0
-tonemap_white = 0.5
-
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_12p7g"]
 streams_count = 5
 stream_0/stream = ExtResource("10_0oh6i")
@@ -88,6 +67,7 @@ oversampling_override = 1.0
 title = "Long Range Scopes"
 position = Vector2i(0, 36)
 size = Vector2i(820, 500)
+visible = false
 min_size = Vector2i(820, 500)
 
 [node name="split" type="HBoxContainer" parent="."]
@@ -197,7 +177,7 @@ size_flags_vertical = 4
 [node name="lrs_viewport" type="SubViewport" parent="split/lrs_center/lrs_container"]
 handle_input_locally = false
 size = Vector2i(500, 500)
-render_target_update_mode = 4
+render_target_update_mode = 0
 
 [node name="long_range_scopes" type="Node3D" parent="split/lrs_center/lrs_container/lrs_viewport"]
 script = ExtResource("1_syfdy")
@@ -289,7 +269,6 @@ grow_vertical = 2
 [node name="fov_slider" type="VSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-theme_override_constants/grabber_offset = 0
 min_value = 10.0
 max_value = 75.0
 value = 75.0
@@ -329,9 +308,11 @@ max_value = 90.0
 step = 0.1
 
 [node name="world_environment" type="WorldEnvironment" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes"]
-environment = SubResource("Environment_368mg")
+environment = ExtResource("9_uncnc")
 
 [node name="directional_light" type="DirectionalLight3D" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes"]
+light_angular_distance = 0.5
+light_specular = 2.0
 
 [node name="shutter" type="AudioStreamPlayer" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes"]
 stream = SubResource("AudioStreamRandomizer_12p7g")
