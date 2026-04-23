@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://b0frxj5cysipi"]
+[gd_scene load_steps=31 format=3 uid="uid://b0frxj5cysipi"]
 
 [ext_resource type="Theme" uid="uid://dvp6gmpuweabh" path="res://theme-gen/long-range-scopes/long_range_scopes_MAIN_theme.tres" id="1_njahj"]
 [ext_resource type="Script" uid="uid://cec3e0bhmaoxt" path="res://scenes/windows/long-range-scopes/long_range_scopes.gd" id="1_syfdy"]
@@ -9,6 +9,7 @@
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="3_drepj"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="4_mjqhh"]
 [ext_resource type="Environment" uid="uid://d3xo6hd26rjnn" path="res://scenes/windows/long-range-scopes/long_range_scopes_environment.tres" id="9_uncnc"]
+[ext_resource type="Texture2D" uid="uid://ivehqojgwndc" path="res://graphics/long-range-scopes/rotation_icon.png" id="9_vlq3c"]
 [ext_resource type="AudioStream" uid="uid://c4ia3frwfyqim" path="res://sound/long-range-scopes/shutter1.wav" id="10_0oh6i"]
 [ext_resource type="AudioStream" uid="uid://dynsxxaf7y458" path="res://sound/long-range-scopes/shutter2.wav" id="11_o2hra"]
 [ext_resource type="AudioStream" uid="uid://c7im5vvinagcw" path="res://sound/long-range-scopes/shutter3.wav" id="12_5dcf7"]
@@ -67,7 +68,6 @@ oversampling_override = 1.0
 title = "Long Range Scopes"
 position = Vector2i(0, 36)
 size = Vector2i(820, 500)
-visible = false
 min_size = Vector2i(820, 500)
 
 [node name="split" type="HBoxContainer" parent="."]
@@ -177,7 +177,7 @@ size_flags_vertical = 4
 [node name="lrs_viewport" type="SubViewport" parent="split/lrs_center/lrs_container"]
 handle_input_locally = false
 size = Vector2i(500, 500)
-render_target_update_mode = 0
+render_target_update_mode = 4
 
 [node name="long_range_scopes" type="Node3D" parent="split/lrs_center/lrs_container/lrs_viewport"]
 script = ExtResource("1_syfdy")
@@ -237,6 +237,8 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 23.0
 grow_horizontal = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="value_label" type="Label" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 visible = false
@@ -276,15 +278,16 @@ tick_count = 3
 ticks_on_borders = true
 
 [node name="h_rot_slider" type="HSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
-custom_minimum_size = Vector2(200, 0)
+custom_minimum_size = Vector2(60, 0)
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -4.0
-offset_top = -16.0
-offset_right = 4.0
+offset_left = 140.0
+offset_top = -46.0
+offset_right = 200.0
+offset_bottom = -30.0
 grow_horizontal = 2
 grow_vertical = 0
 min_value = -90.0
@@ -292,20 +295,40 @@ max_value = 90.0
 step = 0.1
 
 [node name="v_rot_slider" type="VSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
-custom_minimum_size = Vector2(0, 200)
+custom_minimum_size = Vector2(0, 60)
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -16.0
-offset_top = -100.0
-offset_bottom = 100.0
+offset_left = -46.0
+offset_top = 140.0
+offset_right = -30.0
+offset_bottom = 200.0
 grow_horizontal = 0
 grow_vertical = 2
 min_value = -90.0
 max_value = 90.0
 step = 0.1
+
+[node name="rotation_icon" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+modulate = Color(0.49803922, 0.49803922, 0.49803922, 1)
+texture_filter = 1
+texture_repeat = 1
+custom_minimum_size = Vector2(16, 16)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -46.0
+offset_top = -46.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("9_vlq3c")
+expand_mode = 2
 
 [node name="world_environment" type="WorldEnvironment" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes"]
 environment = ExtResource("9_uncnc")
