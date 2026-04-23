@@ -84,10 +84,10 @@ stream_4/stream = ExtResource("19_qvp7y")
 [node name="long_range_scopes_window" type="Window"]
 process_mode = 3
 own_world_3d = true
+oversampling_override = 1.0
 title = "Long Range Scopes"
 position = Vector2i(0, 36)
 size = Vector2i(820, 500)
-visible = false
 min_size = Vector2i(820, 500)
 
 [node name="split" type="HBoxContainer" parent="."]
@@ -197,7 +197,7 @@ size_flags_vertical = 4
 [node name="lrs_viewport" type="SubViewport" parent="split/lrs_center/lrs_container"]
 handle_input_locally = false
 size = Vector2i(500, 500)
-render_target_update_mode = 0
+render_target_update_mode = 4
 
 [node name="long_range_scopes" type="Node3D" parent="split/lrs_center/lrs_container/lrs_viewport"]
 script = ExtResource("1_syfdy")
@@ -296,6 +296,38 @@ value = 75.0
 tick_count = 3
 ticks_on_borders = true
 
+[node name="h_rot_slider" type="HSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+custom_minimum_size = Vector2(200, 0)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -16.0
+offset_right = 4.0
+grow_horizontal = 2
+grow_vertical = 0
+min_value = -90.0
+max_value = 90.0
+step = 0.1
+
+[node name="v_rot_slider" type="VSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+custom_minimum_size = Vector2(0, 200)
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -100.0
+offset_bottom = 100.0
+grow_horizontal = 0
+grow_vertical = 2
+min_value = -90.0
+max_value = 90.0
+step = 0.1
+
 [node name="world_environment" type="WorldEnvironment" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes"]
 environment = SubResource("Environment_368mg")
 
@@ -312,3 +344,5 @@ bus = &"SFX"
 [connection signal="close_requested" from="." to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_long_range_scopes_window_close_requested"]
 [connection signal="item_activated" from="split/bestiary/tabs/INDEX/bestiary_list" to="split/bestiary" method="_on_bestiary_list_item_activated"]
 [connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/fov_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_fov_slider_value_changed"]
+[connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/h_rot_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_h_rot_slider_value_changed"]
+[connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/v_rot_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_v_rot_slider_value_changed"]

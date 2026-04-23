@@ -53,22 +53,6 @@ func _unhandled_input(event):
 			if current_state == STATES.DISPLAY_PHOTO or current_state == STATES.DISPLAY_RANGEFINDER:
 				set_state(STATES.DEFAULT)
 	
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() and current_state == STATES.DEFAULT:
-			var viewport_size_y = get_viewport().get_visible_rect().size.y
-			var viewport_size_x = get_viewport().get_visible_rect().size.x
-			var mouse_pos_y = get_viewport().get_mouse_position().y
-			var mouse_pos_x = get_viewport().get_mouse_position().x
-			
-			if mouse_pos_y > (viewport_size_y - viewport_size_y / 10):
-				rotate_camera_basis(Vector3.LEFT, CAMERA_ROTATION_MAGNITUDE)
-			if mouse_pos_y < (viewport_size_y / 10):
-				rotate_camera_basis(Vector3.RIGHT, CAMERA_ROTATION_MAGNITUDE)
-			if mouse_pos_x > (viewport_size_x - viewport_size_x / 10):
-				rotate_camera_basis(Vector3.DOWN, CAMERA_ROTATION_MAGNITUDE)
-			if mouse_pos_x < (viewport_size_x / 10):
-				rotate_camera_basis(Vector3.UP, CAMERA_ROTATION_MAGNITUDE)
-	
 	if event.is_action_pressed("SC_INTERACT4_USE_RANGEFINDER") and current_state == STATES.DEFAULT:
 		var DRAW_MATRICIES: Array[Array] = [[]]
 		for prop in get_tree().get_nodes_in_group("long_range_scopes_prop"):
@@ -139,11 +123,8 @@ func _unhandled_input(event):
 			set_state(STATES.DISPLAY_PHOTO)
 	pass
 
-func rotate_camera_basis(dir: Vector3, camera_rotation_magnitude: int) -> void:
-	camera.transform.basis = camera.transform.basis.rotated(dir, deg_to_rad(camera_rotation_magnitude))
-	pass
-
 func _physics_process(_delta):
+	print(camera.rotation)
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
 	if current_entity:
 		var first_star = system.get_first_star()
@@ -366,6 +347,23 @@ func _on_state_change_lock_timeout() -> void:
 func _on_fov_slider_value_changed(value):
 	target_fov = value
 	pass
+
+var last_h_rot_value: float = 0.0
+var last_v_rot_value: float = 0.0
+
+func _on_h_rot_slider_value_changed(value) -> void:
+	camera.rotate_object_local(Vector3.DOWN, deg_to_rad(value - last_h_rot_value))
+	camera.orthonormalize()
+	last_h_rot_value = value
+	pass
+
+func _on_v_rot_slider_value_changed(value) -> void:
+	camera.rotate_object_local(Vector3.RIGHT, deg_to_rad(value - last_v_rot_value))
+	camera.orthonormalize()
+	last_v_rot_value = value
+	pass
+
+
 
 func _on_long_range_scopes_window_close_requested():
 	owner.hide()
