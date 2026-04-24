@@ -3,17 +3,16 @@
 [ext_resource type="Texture2D" uid="uid://dpw8mhw4yhkus" path="res://graphics/ui/top_panel_16_9.svg" id="1_vufps"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gwvpy"]
-content_margin_left = 32.0
-content_margin_top = 32.0
-content_margin_right = 32.0
-content_margin_bottom = 32.0
 texture = ExtResource("1_vufps")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
 
 [node name="top_panel_16_9" type="AspectRatioContainer"]
 offset_right = 64.0
 offset_bottom = 64.0
 ratio = 1.7778
-stretch_mode = 1
 
 [node name="top_panel" type="PanelContainer" parent="."]
 layout_mode = 2
