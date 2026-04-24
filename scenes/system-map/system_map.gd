@@ -82,6 +82,7 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var help_overlay = $camera/canvas/help_overlay
 @onready var tabs = $camera/canvas/control/tabs_and_ca_scroll/tabs
 @onready var enable_scope_mode_switch = $enable_scope_mode_switch
+@onready var info_popups = $camera/canvas/info_popups
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -1046,6 +1047,9 @@ func _on_update_current_action_display(_type: playerAPI.ACTION_TYPES, _body: bod
 
 func _on_active_objectives_changed(_active_objectives: Array[objectiveAPI]):
 	view_objective_label._on_active_objectives_changed(_active_objectives)
+	
+	for popup in info_popups.get_children(): #prerttyyy dangerous...
+		popup._on_active_objectives_changed(_active_objectives)
 	pass
 
 func _on_update_scanner_display_times(new_profile_time: float, new_power_time: float) -> void:

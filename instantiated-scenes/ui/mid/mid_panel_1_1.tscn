@@ -12,6 +12,7 @@ texture_margin_bottom = 32.0
 [node name="mid_panel_1_1" type="AspectRatioContainer"]
 offset_right = 64.0
 offset_bottom = 64.0
+stretch_mode = 3
 
 [node name="mid_panel" type="PanelContainer" parent="."]
 layout_mode = 2

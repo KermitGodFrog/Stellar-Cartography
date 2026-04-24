@@ -1,9 +1,28 @@
-[gd_scene format=3 uid="uid://b8pahjiip8jiw"]
+[gd_scene load_steps=3 format=3 uid="uid://b8pahjiip8jiw"]
 
-[node name="auto_popup" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[ext_resource type="PackedScene" uid="uid://ctmbvx27mkjjb" path="res://instantiated-scenes/ui/mid/mid_panel_1_1.tscn" id="1_2hsuj"]
+[ext_resource type="Script" uid="uid://c1fp0e13eh3d5" path="res://instantiated-scenes/info-popups/auto_popup.gd" id="1_kxgqv"]
+
+[node name="auto_popup" type="CenterContainer"]
+offset_right = 65.0
+offset_bottom = 64.0
+script = ExtResource("1_kxgqv")
+text_box_path = "./mid_panel_1_1/mid_panel/text"
+
+[node name="mid_panel_1_1" parent="." instance=ExtResource("1_2hsuj")]
+layout_mode = 2
+
+[node name="background" type="ColorRect" parent="mid_panel_1_1/mid_panel" index="0"]
+layout_mode = 2
+color = Color(0.18039216, 0.18039216, 0.18039216, 0.41568628)
+
+[node name="text" type="RichTextLabel" parent="mid_panel_1_1/mid_panel" index="1"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+bbcode_enabled = true
+scroll_active = false
+shortcut_keys_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+
+[editable path="mid_panel_1_1"]
