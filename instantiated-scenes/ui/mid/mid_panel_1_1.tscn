@@ -10,6 +10,7 @@ content_margin_bottom = 5.0
 texture = ExtResource("1_yxfdy")
 
 [node name="mid_panel_1_1" type="AspectRatioContainer"]
+stretch_mode = 1
 
 [node name="mid_panel" type="PanelContainer" parent="."]
 layout_mode = 2
