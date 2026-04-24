@@ -1,17 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://bph1iqtdv2hk8"]
+[gd_scene load_steps=3 format=3 uid="uid://bph1iqtdv2hk8"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cxhxu"]
-content_margin_left = 2.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 2.0
-bg_color = Color(0, 0, 0, 0)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.7647059, 0.5686275, 0.5568628, 1)
-corner_detail = 1
+[ext_resource type="Texture2D" uid="uid://dpw8mhw4yhkus" path="res://graphics/ui/top_panel_16_9.svg" id="1_vufps"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gwvpy"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+texture = ExtResource("1_vufps")
 
 [node name="top_panel_16_9" type="AspectRatioContainer"]
 offset_left = 2.0
@@ -22,6 +18,4 @@ ratio = 1.7778
 
 [node name="top_panel" type="PanelContainer" parent="."]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_cxhxu")
-
-[connection signal="resized" from="top_panel" to="top_panel" method="_on_resized"]
+theme_override_styles/panel = SubResource("StyleBoxTexture_gwvpy")
