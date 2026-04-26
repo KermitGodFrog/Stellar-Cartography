@@ -4,6 +4,7 @@ extends CenterContainer
 var last_popup_state: int = -1 #below STATES constituting 0, 1, 2
 
 @export var text_box_path: String
+@export var text_box_size: Vector2
 @export_node_path() var track
 @export var track_offset: Vector2
 
@@ -11,6 +12,8 @@ var last_popup_state: int = -1 #below STATES constituting 0, 1, 2
 
 func _ready() -> void:
 	get_node(NodePath(text_box_path)).set_text(info)
+	if text_box_size != Vector2.ZERO:
+		get_node(NodePath(text_box_path)).set_custom_minimum_size(text_box_size)
 	connect("visibility_changed", _on_visibility_changed)
 	pass
 
