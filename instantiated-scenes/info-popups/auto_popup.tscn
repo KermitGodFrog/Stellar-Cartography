@@ -5,18 +5,25 @@
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="3_sgtkb"]
 
 [node name="auto_popup" type="CenterContainer"]
+mouse_filter = 2
 script = ExtResource("1_kxgqv")
 text_box_path = "./mid_panel_fluid/mid_panel/margin/text"
 
 [node name="mid_panel_fluid" parent="." instance=ExtResource("2_kxgqv")]
 layout_mode = 2
+mouse_filter = 2
+
+[node name="mid_panel" parent="mid_panel_fluid" index="0"]
+mouse_filter = 2
 
 [node name="background" type="ColorRect" parent="mid_panel_fluid/mid_panel" index="0"]
 layout_mode = 2
+mouse_filter = 2
 color = Color(0.18039216, 0.18039216, 0.18039216, 0.41568628)
 
 [node name="margin" type="MarginContainer" parent="mid_panel_fluid/mid_panel" index="1"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
@@ -25,6 +32,7 @@ theme_override_constants/margin_bottom = 4
 [node name="text" type="RichTextLabel" parent="mid_panel_fluid/mid_panel/margin"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+mouse_filter = 2
 theme = ExtResource("3_sgtkb")
 bbcode_enabled = true
 fit_content = true

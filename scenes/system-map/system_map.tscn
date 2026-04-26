@@ -858,7 +858,16 @@ offset_bottom = 170.0
 grow_horizontal = 2
 grow_vertical = 2
 target_objective_wID = "tutorialOptionalBoost"
-info = "Press LShift to boost."
+info = "Hold [KEY_LSHIFT] to boost. "
+
+[node name="auto_popup2" parent="system/camera/canvas/info_popups" instance=ExtResource("42_d1v4g")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialMarkPrelude"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container")
+track_offset = Vector2(-100, -250)
+info = "HOW TO FIND BODY INFO TEXT"
 
 [node name="scan_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
 show_behind_parent = true

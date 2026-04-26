@@ -28,7 +28,7 @@ func _on_active_objectives_changed(active_objectives: Array[objectiveAPI]):
 
 func _on_visibility_changed() -> void:
 	if track != null:
-		set_position(get_node(track).position + track_offset)
+		set_global_position((get_node(track).get_global_position() + (get_node(track).get_size() / 2) - (get_size() / 2)) + track_offset)
 	pass
 
 
