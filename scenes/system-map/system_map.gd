@@ -40,9 +40,6 @@ signal journeyMapPopup
 signal longRangeScopesPopup
 signal gasLayerSurveyorPopup
 
-var TUTORIAL_INGRESS_OVERRIDE: bool = false
-var TUTORIAL_OMISSION_OVERRIDE: bool = false
-
 var system: starSystemAPI:
 	set(value):
 		system = value
@@ -865,12 +862,6 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	for body in system.bodies:
 		if body.is_hidden():
 			continue
-		elif body.get_display_name() == "Ingress":
-			if TUTORIAL_INGRESS_OVERRIDE == true:
-				continue
-		elif body.get_display_name() == "Omission":
-			if TUTORIAL_OMISSION_OVERRIDE == true:
-				continue
 		
 		if Geometry2D.is_point_in_polygon(body.position, points):
 			if body is orbitBodyAPI:

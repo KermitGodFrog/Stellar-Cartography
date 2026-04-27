@@ -29,9 +29,6 @@ var glint_small_texture = preload("uid://kxo1pkvmhml4")
 
 var circular_body_texture = preload("uid://dmcaf8av01hwx")
 
-var TUTORIAL_INGRESS_OVERRIDE: bool = false
-var TUTORIAL_OMISSION_OVERRIDE: bool = false
-
 var system: starSystemAPI
 var player_position: Vector2
 var target_position: Vector2
@@ -157,15 +154,8 @@ func try_discover_orbit_bodies() -> void:
 						if associated_body.get_required_scope_mode() == get_scope_mode():
 							var detection_scalar = camera_offset.position.distance_to(actor.position) * camera.fov
 							if detection_scalar < body_detection_range and associated_body.is_known() == false:
-								
 								if associated_body.is_hidden():
 									continue
-								elif associated_body.get_display_name() == "Ingress":
-									if TUTORIAL_INGRESS_OVERRIDE == true:
-										continue
-								elif associated_body.get_display_name() == "Omission":
-									if TUTORIAL_OMISSION_OVERRIDE == true:
-										continue
 								
 								emit_signal("foundBody", actor.get_identifier())
 								var star_rarity_multiplier = system.get_first_star_discovery_multiplier()

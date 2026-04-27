@@ -975,15 +975,15 @@ func _on_theorised_body(id: int):
 	pass
 
 func _on_tutorial_set_ingress_override(value: bool):
-	barycenter_visualizer.TUTORIAL_INGRESS_OVERRIDE = value
-	system_3d.TUTORIAL_INGRESS_OVERRIDE = value
-	system_map.TUTORIAL_INGRESS_OVERRIDE = value
+	var ingress = world.player.current_star_system.get_first_body_from_display_name("Ingress")
+	if ingress != null:
+		ingress.hidden = value
 	pass
 
 func _on_tutorial_set_omission_override(value: bool):
-	barycenter_visualizer.TUTORIAL_OMISSION_OVERRIDE = value
-	system_3d.TUTORIAL_OMISSION_OVERRIDE = value
-	system_map.TUTORIAL_OMISSION_OVERRIDE = value
+	var omission = world.player.current_star_system.get_first_body_from_display_name("Omission")
+	if omission != null:
+		omission.hidden = value
 	pass
 
 func _on_tutorial_player_win():

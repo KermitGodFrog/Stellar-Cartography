@@ -1191,6 +1191,14 @@ func remove_recursive_bodies_with_hook_identifier(id: int) -> void:
 		removeBody(body_id)
 	pass
 
+func get_first_body_from_display_name(name: String) -> bodyAPI:
+	var get_body: bodyAPI = null
+	for body in bodies:
+		if body.get_display_name() == name:
+			get_body = body
+			break
+	return get_body
+
 # unit stuff \/
 
 func updateMinesGetDetonations(detonator_position: Vector2, delta, detonator_invulnerable: bool = false) -> int: #returns number of detonating mines this frame
