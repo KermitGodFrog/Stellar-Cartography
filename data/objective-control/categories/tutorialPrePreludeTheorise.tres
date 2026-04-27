@@ -4,4 +4,4 @@
 
 [resource]
 script = ExtResource("1_mpgvh")
-objective_wIDs = ["tutorialOptionalScopeMode", "tutorialOptionalTestSystemMap", "tutorialMarkPrelude", "tutorialOptionalHelpOverlay"]
+objective_wIDs = ["tutorialOptionalScopeMode", "tutorialOptionalTestSystemMap", "tutorialMarkPrelude", "tutorialOptionalHelpOverlay", "tutorialOptionalViewObjectives"]

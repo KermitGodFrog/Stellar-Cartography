@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=58 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
@@ -43,6 +43,7 @@
 [ext_resource type="Texture2D" uid="uid://dxiksctsg7w41" path="res://graphics/system-map/cog_normal.svg" id="38_ji0h2"]
 [ext_resource type="BitMap" uid="uid://vsyxkeka6b8c" path="res://graphics/system-map/cog_click_mask.png" id="40_ji0h2"]
 [ext_resource type="PackedScene" uid="uid://b8pahjiip8jiw" path="res://instantiated-scenes/info-popups/auto_popup.tscn" id="42_d1v4g"]
+[ext_resource type="PackedScene" uid="uid://bfv6vpv00usg3" path="res://instantiated-scenes/info-popups/closable_popup.tscn" id="43_ppms7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ciwjv"]
 atlas = ExtResource("3_bft1b")
@@ -845,7 +846,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="auto_popup" parent="system/camera/canvas/info_popups" instance=ExtResource("42_d1v4g")]
+[node name="tutorialOptionalBoost" parent="system/camera/canvas/info_popups" instance=ExtResource("42_d1v4g")]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -853,21 +854,44 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+offset_left = -120.0
 offset_top = 170.0
+offset_right = 120.0
 offset_bottom = 170.0
 grow_horizontal = 2
 grow_vertical = 2
 target_objective_wID = "tutorialOptionalBoost"
 info = "Hold [KEY_LSHIFT] to boost. "
 
-[node name="auto_popup2" parent="system/camera/canvas/info_popups" instance=ExtResource("42_d1v4g")]
+[node name="tutorialMarkPrelude" parent="system/camera/canvas/info_popups" instance=ExtResource("42_d1v4g")]
 visible = false
 layout_mode = 0
 target_objective_wID = "tutorialMarkPrelude"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container")
-track_offset = Vector2(-100, -250)
-info = "HOW TO FIND BODY INFO TEXT"
+track_offset = Vector2(-50, -350)
+info = "A planet named Prelude is situated in low orbit around a nearby M-Class star named King.
+
+Mark a body by pinging it three times. Adjust the LIDAR scan direction so it points towards the star by clicking, set the arc to its maximum with the slider, and press the ‘PING’ button.
+[img=75%x75%]res://graphics/objective/tutorial_LIDAR_example.png[/img]"
+
+[node name="tutorialOptionalViewObjectives" parent="system/camera/canvas/info_popups" instance=ExtResource("43_ppms7")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -33.0
+offset_right = 120.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+target_objective_wID = "tutorialOptionalViewObjectives"
+text_box_size = Vector2(400, 0)
+info = "At any time, press [KEY_ESCAPE] to pause the game and view the OBJECTIVES LIST in the top right-hand corner of the screen. The OBJECTIVES LIST will provide you with more detailed information regarding your current objective(s). Some objectives are [b]not[b] shown via info popups (like this)."
 
 [node name="scan_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
 show_behind_parent = true

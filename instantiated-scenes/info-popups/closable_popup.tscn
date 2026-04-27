@@ -1,18 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://b8pahjiip8jiw"]
+[gd_scene load_steps=5 format=3 uid="uid://bfv6vpv00usg3"]
 
-[ext_resource type="Script" uid="uid://c1fp0e13eh3d5" path="res://instantiated-scenes/info-popups/auto_popup.gd" id="1_kxgqv"]
-[ext_resource type="PackedScene" uid="uid://vckukatyjp27" path="res://instantiated-scenes/ui/mid/mid_panel_fluid.tscn" id="2_kxgqv"]
-[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="3_sgtkb"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_mlj3f"]
+[ext_resource type="Script" uid="uid://b1p0bgdrgy8yl" path="res://instantiated-scenes/info-popups/closable_popup.gd" id="2_mlj3f"]
+[ext_resource type="PackedScene" uid="uid://vckukatyjp27" path="res://instantiated-scenes/ui/mid/mid_panel_fluid.tscn" id="3_af5f3"]
+[ext_resource type="Texture2D" uid="uid://bkvwgdists7up" path="res://graphics/misc/mouse/mouse_left.png" id="4_mvpl6"]
 
-[node name="auto_popup" type="CenterContainer"]
-offset_right = 240.0
-offset_bottom = 40.0
+[node name="closable_popup" type="CenterContainer"]
 mouse_filter = 2
-theme = ExtResource("3_sgtkb")
-script = ExtResource("1_kxgqv")
+theme = ExtResource("1_mlj3f")
+script = ExtResource("2_mlj3f")
 text_box_path = "./mid_panel_fluid/mid_panel/margin/text"
+close_button_path = "./mid_panel_fluid/close_button"
 
-[node name="mid_panel_fluid" parent="." instance=ExtResource("2_kxgqv")]
+[node name="mid_panel_fluid" parent="." instance=ExtResource("3_af5f3")]
 layout_mode = 2
 mouse_filter = 2
 
@@ -48,5 +48,12 @@ scroll_active = false
 shortcut_keys_enabled = false
 deselect_on_focus_loss_enabled = false
 drag_and_drop_selection_enabled = false
+
+[node name="close_button" type="Button" parent="mid_panel_fluid"]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+text = "UNDERSTOOD"
+icon = ExtResource("4_mvpl6")
+expand_icon = true
 
 [editable path="mid_panel_fluid"]

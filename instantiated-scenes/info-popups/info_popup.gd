@@ -10,11 +10,17 @@ var last_popup_state: int = -1 #below STATES constituting 0, 1, 2
 
 @export_multiline var info: String
 
+##if applicable
+@export var close_button_path: String
+
 func _ready() -> void:
 	get_node(NodePath(text_box_path)).set_text(info)
 	if text_box_size != Vector2.ZERO:
 		get_node(NodePath(text_box_path)).set_custom_minimum_size(text_box_size)
 	connect("visibility_changed", _on_visibility_changed)
+	
+	if close_button_path.length() > 0:
+		get_node(NodePath(close_button_path)).connect("pressed", _on_close_button_pressed)
 	pass
 
 func _on_active_objectives_changed(active_objectives: Array[objectiveAPI]):
@@ -31,6 +37,9 @@ func _on_visibility_changed() -> void:
 		set_global_position((get_node(track).get_global_position() + (get_node(track).get_size() / 2) - (get_size() / 2)) + track_offset)
 	pass
 
+func _on_close_button_pressed() -> void:
+	hide()
+	pass
 
 
 
