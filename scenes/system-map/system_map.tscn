@@ -869,7 +869,7 @@ layout_mode = 0
 target_objective_wID = "tutorialMarkPrelude"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container")
-track_offset = Vector2(-50, -450)
+track_offset = Vector2(0, -300)
 info = "A planet named Prelude is situated in low orbit around a nearby M-Class star named King.
 
 Mark a body by pinging it three times. Adjust the LIDAR scan direction so it points towards the star by clicking, set the arc to its maximum with the slider, and press the ‘PING’ button.
@@ -915,6 +915,18 @@ info = "Welcome, Captain!
 In [i]Stellar Cartographer[/i], you will gather exploration data (value) and sell it to space stations for nanites so that you can repair and upgrade your starship. A primary method of gaining exploration data is by discovering bodies. 
 
 This comprehensive tutorial will teach you how to move, discover, interact, traverse wormholes, use space stations and will establish the story continued in the campaign."
+
+[node name="tutorialDiscoverPrelude" parent="system/camera/canvas/info_popups" instance=ExtResource("42_d1v4g")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialDiscoverPrelude"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel")
+track_offset = Vector2(0, -300)
+info = "The location of Prelude has been added to the SYSTEM LIST. However, it has not yet been discovered.
+
+Discover a body by visually acquiring it. Click on the the triple question mark on the SYSTEM LIST to lock, and then press the 'ORBIT' action in the ACTIONS PANEL.
+[img]res://graphics/system-map/actions-panel/orbit_icon.png[/img]"
 
 [node name="scan_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
 show_behind_parent = true
