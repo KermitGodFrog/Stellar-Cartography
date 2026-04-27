@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://b2ucx4r4j3qyg"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_sxmys"]
+
+[resource]
+script = ExtResource("1_sxmys")
+title = "(Optional) Understand Premise"
+description = "Press the 'UNDERSTOOD' button on the info popup corresponding to this objective."
+metadata/_custom_type_script = "uid://cxmuiuh6uokvl"

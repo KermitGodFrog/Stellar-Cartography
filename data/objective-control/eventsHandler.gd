@@ -25,6 +25,7 @@ signal markObjective(_wID: String, _state: objectiveAPI.STATES)
 #hull_stress_status_hover
 #scope_mode_switch
 #pause_menu_show
+#info_popup_close_press
 
 var init_type: int #FROM GLOBAL DATA INIT TYPES
 
@@ -59,6 +60,10 @@ func process_tutorial_event(_calling: Node, incoming_wID: String, _incoming_valu
 			emit_signal("markObjective", "tutorialOptionalScopeMode", objectiveAPI.STATES.SUCCESS)
 		"pause_menu_show":
 			emit_signal("markObjective", "tutorialOptionalViewObjectives", objectiveAPI.STATES.SUCCESS)
+		"info_popup_close_press":
+			match _incoming_value: #not all info popup close presses should instantly complete objectives
+				"tutorialOptionalUnderstandPremise":
+					emit_signal("markObjective", _incoming_value, objectiveAPI.STATES.SUCCESS)
 	pass
 
 func process_campaign_event(_calling: Node, _incoming_wID: String, _incoming_value: Variant = null) -> void:

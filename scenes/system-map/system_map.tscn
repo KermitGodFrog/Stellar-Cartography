@@ -869,10 +869,11 @@ layout_mode = 0
 target_objective_wID = "tutorialMarkPrelude"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container")
-track_offset = Vector2(-50, -350)
+track_offset = Vector2(-50, -450)
 info = "A planet named Prelude is situated in low orbit around a nearby M-Class star named King.
 
 Mark a body by pinging it three times. Adjust the LIDAR scan direction so it points towards the star by clicking, set the arc to its maximum with the slider, and press the ‘PING’ button.
+[i] * Marking a body establishes its location on the SYSTEM LIST. It is usually necessary to mark a body before discovering it.[/i]
 [img=75%x75%]res://graphics/objective/tutorial_LIDAR_example.png[/img]"
 
 [node name="tutorialOptionalViewObjectives" parent="system/camera/canvas/info_popups" instance=ExtResource("43_ppms7")]
@@ -891,7 +892,29 @@ grow_horizontal = 2
 grow_vertical = 2
 target_objective_wID = "tutorialOptionalViewObjectives"
 text_box_size = Vector2(400, 0)
-info = "At any time, press [KEY_ESCAPE] to pause the game and view the OBJECTIVES LIST in the top right-hand corner of the screen. The OBJECTIVES LIST will provide you with more detailed information regarding your current objective(s). Some objectives are [b]not[b] shown via info popups (like this)."
+info = "At any time, press [KEY_ESCAPE] to pause the game and view the OBJECTIVES LIST in the top right-hand corner of the screen. The OBJECTIVES LIST will provide you with more detailed information regarding your current objective(s). Some objectives are [b]NOT[/b] shown via info popups (like this)."
+
+[node name="tutorialOptionalUnderstandPremise" parent="system/camera/canvas/info_popups" instance=ExtResource("43_ppms7")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -250.0
+offset_right = 120.0
+offset_bottom = -183.99994
+grow_horizontal = 2
+grow_vertical = 2
+target_objective_wID = "tutorialOptionalUnderstandPremise"
+text_box_size = Vector2(400, 0)
+info = "Welcome, Captain!
+
+In [i]Stellar Cartographer[/i], you will gather exploration data (value) and sell it to space stations for nanites so that you can repair and upgrade your starship. A primary method of gaining exploration data is by discovering bodies. 
+
+This comprehensive tutorial will teach you how to move, discover, interact, traverse wormholes, use space stations and will establish the story continued in the campaign."
 
 [node name="scan_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
 show_behind_parent = true

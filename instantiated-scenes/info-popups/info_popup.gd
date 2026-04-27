@@ -39,6 +39,7 @@ func _on_visibility_changed() -> void:
 
 func _on_close_button_pressed() -> void:
 	hide()
+	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "info_popup_close_press", target_objective_wID)
 	pass
 
 
