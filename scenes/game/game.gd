@@ -1031,6 +1031,17 @@ func _on_remove_player_morale(amount : int) -> void:
 	pass
 
 func _on_stats_menu_quit(_init_type: int) -> void:
+	var history = FileAccess.open("user://stellar_cartographer_history.csv", FileAccess.WRITE)
+	history.store_csv_line(PackedStringArray([
+		ProjectSettings.get_setting("application/config/version"),
+		world.player.name, 
+		world.player.ship_name, 
+		world.player.total_score, 
+		world.player.systems_traversed, 
+		stats_menu.INIT_TYPES.find_key(_init_type)
+	]))
+	history.close()
+	
 	match _init_type:
 		stats_menu.INIT_TYPES.TUTORIAL:
 			global_data.change_scene.emit("res://scenes/main-menu/main_menu.tscn")

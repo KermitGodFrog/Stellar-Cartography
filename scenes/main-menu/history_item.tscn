@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://6rp5mwt3o17w"]
+
+[ext_resource type="Script" uid="uid://b76jodpdq5cwx" path="res://scenes/main-menu/history_item.gd" id="1_5k0c4"]
+
+[node name="history_item" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 100)
+script = ExtResource("1_5k0c4")
+
+[node name="history_scroll" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="current_line" type="Label" parent="history_scroll"]
+layout_mode = 2
+
+[node name="player_name" type="Label" parent="history_scroll"]
+layout_mode = 2
+
+[node name="player_ship_name" type="Label" parent="history_scroll"]
+layout_mode = 2
+
+[node name="total_score" type="Label" parent="history_scroll"]
+layout_mode = 2
+
+[node name="systems_traversed" type="Label" parent="history_scroll"]
+layout_mode = 2
+
+[node name="stats_menu_init_type" type="Label" parent="history_scroll"]
+layout_mode = 2

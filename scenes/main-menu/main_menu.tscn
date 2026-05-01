@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=24 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" uid="uid://dq4gkj1n823v0" path="res://scenes/main-menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_b84fj"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://njcr66sajfan" path="res://scenes/achievements-list/achievements_list_popup.tscn" id="5_7l6aj"]
 [ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/misc/denied_monochrome.png" id="5_uqij0"]
 [ext_resource type="Script" uid="uid://dncoypj63awau" path="res://scenes/main-menu/line_edit_length_label.gd" id="6_lhle4"]
+[ext_resource type="Script" uid="uid://5ggnqnnre8ff" path="res://scenes/main-menu/history_popup.gd" id="8_eel2y"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_srvhc"]
 texture = ExtResource("2_1jdbj")
@@ -39,6 +40,21 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xbeg8"]
 bg_color = Color(0.235294, 0.431373, 0.443137, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kgvlk"]
+bg_color = Color(0.207843, 0.207843, 0.207843, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7m0km"]
+bg_color = Color(0.235294, 0.431373, 0.443137, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f371p"]
+bg_color = Color(0.235294, 0.431373, 0.443137, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0n1sh"]
+bg_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hw4jk"]
+content_margin_right = 10.0
 
 [node name="main_menu" type="Control"]
 layout_mode = 3
@@ -124,6 +140,12 @@ custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
 theme = ExtResource("2_2eiki")
 text = "CREDITS"
+
+[node name="history_button" type="Button" parent="options_scroll"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme = ExtResource("2_2eiki")
+text = "HISTORY"
 
 [node name="new_game_popup" type="Control" parent="."]
 visible = false
@@ -402,12 +424,98 @@ autowrap_mode = 2
 [node name="achievements_list_popup" parent="." instance=ExtResource("5_7l6aj")]
 layout_mode = 1
 
+[node name="history_popup" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("8_eel2y")
+
+[node name="background" type="ColorRect" parent="history_popup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.235294, 0.235294, 0.235294, 0.313726)
+
+[node name="panel" type="PanelContainer" parent="history_popup"]
+custom_minimum_size = Vector2(700, 800)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kgvlk")
+
+[node name="margin" type="MarginContainer" parent="history_popup/panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="actions_items_split" type="VBoxContainer" parent="history_popup/panel/margin"]
+layout_mode = 2
+
+[node name="actions_panel" type="PanelContainer" parent="history_popup/panel/margin/actions_items_split"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7m0km")
+
+[node name="actions_hbox" type="HBoxContainer" parent="history_popup/panel/margin/actions_items_split/actions_panel"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="title_label" type="Label" parent="history_popup/panel/margin/actions_items_split/actions_panel/actions_hbox"]
+layout_mode = 2
+text = "HISTORY"
+vertical_alignment = 1
+
+[node name="history_return_button" type="Button" parent="history_popup/panel/margin/actions_items_split/actions_panel/actions_hbox"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+theme_type_variation = &"ButtonDull"
+theme_override_styles/normal = SubResource("StyleBoxFlat_f371p")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0n1sh")
+icon = ExtResource("5_uqij0")
+icon_alignment = 1
+expand_icon = true
+
+[node name="scroll" type="ScrollContainer" parent="history_popup/panel/margin/actions_items_split"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_hw4jk")
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="spawn_scroll" type="VBoxContainer" parent="history_popup/panel/margin/actions_items_split/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
 [connection signal="pressed" from="options_scroll/continue_button" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="options_scroll/new_button" to="." method="_on_new_button_pressed"]
 [connection signal="pressed" from="options_scroll/tutorial_button" to="." method="_on_tutorial_button_pressed"]
 [connection signal="pressed" from="options_scroll/settings_button" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="options_scroll/achievements_button" to="." method="_on_achievements_button_pressed"]
 [connection signal="pressed" from="options_scroll/credits_button" to="." method="_on_credits_button_pressed"]
+[connection signal="pressed" from="options_scroll/history_button" to="." method="_on_history_button_pressed"]
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/actions_hbox/new_game_return_button" to="." method="_on_new_game_return_button_pressed"]
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/create_button" to="." method="_on_create_button_pressed"]
 [connection signal="pressed" from="credits_popup/margin/panel/panel_margin/scroll/actions_hbox/credits_return_button" to="." method="_on_credits_return_button_pressed"]
+[connection signal="visibility_changed" from="history_popup" to="history_popup" method="_on_visibility_changed"]
+[connection signal="pressed" from="history_popup/panel/margin/actions_items_split/actions_panel/actions_hbox/history_return_button" to="." method="_on_history_return_button_pressed"]
