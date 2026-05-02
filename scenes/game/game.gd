@@ -1031,7 +1031,8 @@ func _on_remove_player_morale(amount : int) -> void:
 	pass
 
 func _on_stats_menu_quit(_init_type: int) -> void:
-	var history = FileAccess.open("user://stellar_cartographer_history.csv", FileAccess.WRITE)
+	var history = FileAccess.open("user://stellar_cartographer_history.csv", FileAccess.READ_WRITE)
+	history.seek_end()
 	history.store_csv_line(PackedStringArray([
 		ProjectSettings.get_setting("application/config/version"),
 		world.player.name, 

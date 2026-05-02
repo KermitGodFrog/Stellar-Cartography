@@ -15,28 +15,23 @@ func update_history() -> void:
 	
 	if FileAccess.file_exists("user://stellar_cartographer_history.csv"):
 		var history = FileAccess.open("user://stellar_cartographer_history.csv", FileAccess.READ)
-		var current_line: int = 0
-		var eof_override: bool = true
+		var item_count: int = 0
 		
-		while (not history.eof_reached()) or eof_override:
-			if history.eof_reached():
-				eof_override = false
+		while not history.eof_reached():
 			var line = history.get_csv_line()
 			
-			current_line += 1
-			
 			if line.is_empty(): continue
+			elif line[0] == String(): continue
+			
+			item_count += 1
 			
 			var new_item = item_scene.instantiate()
-			new_item.connect("ready", _on_history_item_ready.bind(new_item, line, current_line))
+			new_item.connect("ready", _on_history_item_ready.bind(new_item, line, item_count))
 			spawn_scroll.add_child(new_item)
-			
 		
 		history.close()
-	
-	
 	pass
 
-func _on_history_item_ready(item: Node, line: PackedStringArray, current_line: int) -> void:
-	item.create_from_csv(line, current_line)
+func _on_history_item_ready(item: Node, line: PackedStringArray, item_count: int) -> void:
+	item.create_from_csv(line, item_count)
 	pass
