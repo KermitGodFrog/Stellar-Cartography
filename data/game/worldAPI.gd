@@ -2,6 +2,8 @@ extends Resource
 class_name worldAPI
 #any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
+@export_storage var play_time: float = 0.0 #probably the LEAST EFFICIENT WAY OF DOING THIS
+
 @export var star_systems: Array[starSystemAPI]
 @export var player: playerAPI
 @export_storage var identifier_count: int = 1
