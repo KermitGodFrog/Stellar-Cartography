@@ -274,6 +274,7 @@ func _physics_process(delta):
 		_on_add_player_hull_stress(world.player.hull_stress_mine)
 	
 	#updating positions of everyhthing for windows
+	pause_mode_handler.set("world", world)
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_map.set("_player_status_matrix", [world.player.balance, world.player.hull_stress, world.player.hull_deterioration, world.player.morale])
 	system_map.set("player_adj_scanner_matrix", [world.player.get_adjusted_scanner_profile(), world.player.get_adjusted_scanner_power()])
@@ -1031,12 +1032,31 @@ func _on_remove_player_morale(amount : int) -> void:
 	pass
 
 func _on_stats_menu_quit(_init_type: int) -> void:
+	if FileAccess.file_exists("user://stellar_cartographer_history.csv"):
+		write_history(_init_type, FileAccess.ModeFlags.READ_WRITE)
+	else:
+		write_history(_init_type, FileAccess.ModeFlags.WRITE)
+	
 	match _init_type:
 		stats_menu.INIT_TYPES.TUTORIAL:
 			global_data.change_scene.emit("res://scenes/main-menu/main_menu.tscn")
 		_:
 			global_data.change_scene.emit("res://scenes/main-menu/main_menu.tscn") #WIN, DEATH
 			game_data.deleteWorld()
+	pass
+func write_history(_init_type: int, mode: FileAccess.ModeFlags) -> void:
+	var history = FileAccess.open("user://stellar_cartographer_history.csv", mode)
+	history.seek_end()
+	history.store_csv_line(PackedStringArray([
+		ProjectSettings.get_setting("application/config/version"),
+		world.player.name, 
+		world.player.ship_name, 
+		world.player.total_score, 
+		world.player.systems_traversed, 
+		stats_menu.INIT_TYPES.find_key(_init_type),
+		roundi(world.play_time)
+	]))
+	history.close()
 	pass
 
 func _on_player_data_value_changed(new_value: int):

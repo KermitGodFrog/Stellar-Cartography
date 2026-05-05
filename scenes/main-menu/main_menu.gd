@@ -10,6 +10,7 @@ extends Control
 @onready var achievements_list_popup = $achievements_list_popup
 @onready var background = $background
 @onready var credits_popup = $credits_popup
+@onready var history_popup = $history_popup
 
 var SHOW_NEW_GAME_POPUP: bool = false:
 	set(value):
@@ -32,6 +33,13 @@ var SHOW_CREDITS_POPUP: bool = false:
 			credits_popup.show()
 		if value == false:
 			credits_popup.hide()
+var SHOW_HISTORY_POPUP: bool = false:
+	set(value):
+		SHOW_HISTORY_POPUP = value
+		if value == true:
+			history_popup.show()
+		if value == false:
+			history_popup.hide()
 
 const background_images: Array = [
 	preload("uid://y2kguswkl4v4"),
@@ -119,6 +127,14 @@ func _on_credits_button_pressed() -> void:
 
 func _on_credits_return_button_pressed() -> void:
 	SHOW_CREDITS_POPUP = false
+	pass
+
+func _on_history_button_pressed() -> void:
+	SHOW_HISTORY_POPUP = true
+	pass
+
+func _on_history_return_button_pressed() -> void:
+	SHOW_HISTORY_POPUP = false
 	pass
 
 func _on_settings_button_pressed() -> void:

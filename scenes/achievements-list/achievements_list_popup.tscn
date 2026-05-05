@@ -97,6 +97,7 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_t5pok")
 follow_focus = true
 horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
 
 [node name="spawn_scroll" type="VBoxContainer" parent="panel/margin/actions_items_split/scroll"]
 layout_mode = 2
