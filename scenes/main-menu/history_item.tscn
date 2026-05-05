@@ -27,73 +27,78 @@ theme = ExtResource("1_06w5u")
 theme_override_styles/panel = SubResource("StyleBoxFlat_yyk7f")
 script = ExtResource("1_5k0c4")
 
-[node name="history_scroll" type="HBoxContainer" parent="."]
+[node name="margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="history_scroll" type="HBoxContainer" parent="margin"]
 layout_mode = 2
 
-[node name="current_line" type="Label" parent="history_scroll"]
+[node name="current_line" type="Label" parent="margin/history_scroll"]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_06w5u")
-text = "1"
 vertical_alignment = 1
 
-[node name="key_info_scroll" type="VBoxContainer" parent="history_scroll"]
+[node name="key_info_scroll" type="VBoxContainer" parent="margin/history_scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="player_container" type="HBoxContainer" parent="history_scroll/key_info_scroll"]
+[node name="player_container" type="HBoxContainer" parent="margin/history_scroll/key_info_scroll"]
 layout_mode = 2
 
-[node name="player_name" type="Label" parent="history_scroll/key_info_scroll/player_container"]
+[node name="player_name" type="Label" parent="margin/history_scroll/key_info_scroll/player_container"]
 layout_mode = 2
 
-[node name="separator" type="Label" parent="history_scroll/key_info_scroll/player_container"]
+[node name="separator" type="Label" parent="margin/history_scroll/key_info_scroll/player_container"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 text = "|"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="player_ship_name" type="Label" parent="history_scroll/key_info_scroll/player_container"]
+[node name="player_ship_name" type="Label" parent="margin/history_scroll/key_info_scroll/player_container"]
 layout_mode = 2
 
-[node name="data_container" type="HBoxContainer" parent="history_scroll/key_info_scroll"]
+[node name="data_container" type="HBoxContainer" parent="margin/history_scroll/key_info_scroll"]
 layout_mode = 2
 
-[node name="total_score" type="Label" parent="history_scroll/key_info_scroll/data_container"]
+[node name="total_score" type="Label" parent="margin/history_scroll/key_info_scroll/data_container"]
 layout_mode = 2
 vertical_alignment = 1
 
-[node name="separator" type="Label" parent="history_scroll/key_info_scroll/data_container"]
+[node name="separator" type="Label" parent="margin/history_scroll/key_info_scroll/data_container"]
 layout_mode = 2
 text = "|"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="systems_traversed" type="Label" parent="history_scroll/key_info_scroll/data_container"]
+[node name="systems_traversed" type="Label" parent="margin/history_scroll/key_info_scroll/data_container"]
 layout_mode = 2
 vertical_alignment = 1
 
-[node name="separator2" type="Label" parent="history_scroll/key_info_scroll/data_container"]
+[node name="separator2" type="Label" parent="margin/history_scroll/key_info_scroll/data_container"]
 layout_mode = 2
 text = "|"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="total_play_time" type="Label" parent="history_scroll/key_info_scroll/data_container"]
+[node name="total_play_time" type="Label" parent="margin/history_scroll/key_info_scroll/data_container"]
 layout_mode = 2
-text = "TIME"
 vertical_alignment = 1
 
-[node name="modifiers_panel" type="PanelContainer" parent="history_scroll/key_info_scroll"]
+[node name="modifiers_panel" type="PanelContainer" parent="margin/history_scroll/key_info_scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="separator" type="VSeparator" parent="history_scroll"]
+[node name="separator" type="VSeparator" parent="margin/history_scroll"]
 layout_mode = 2
 
-[node name="stats_menu_init_type" type="Label" parent="history_scroll"]
+[node name="stats_menu_init_type" type="Label" parent="margin/history_scroll"]
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -101,11 +106,10 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_yft2n")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="version" type="Label" parent="."]
+[node name="version" type="Label" parent="margin"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_colors/font_color = Color(0.20784314, 0.20784314, 0.20784314, 1)
 theme_override_font_sizes/font_size = 10
-text = "v0.8.0.0"
 vertical_alignment = 1

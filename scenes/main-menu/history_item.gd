@@ -1,13 +1,13 @@
 extends PanelContainer
 
-@onready var current_line_label = $history_scroll/current_line
-@onready var player_name_label = $history_scroll/key_info_scroll/player_container/player_name
-@onready var player_ship_name_label = $history_scroll/key_info_scroll/player_container/player_ship_name
-@onready var total_score_label = $history_scroll/key_info_scroll/data_container/total_score
-@onready var systems_traversed_label = $history_scroll/key_info_scroll/data_container/systems_traversed
-@onready var stats_menu_init_type_label = $history_scroll/stats_menu_init_type
-@onready var total_play_time_label = $history_scroll/key_info_scroll/data_container/total_play_time
-@onready var version_label = $version
+@onready var current_line_label = $margin/history_scroll/current_line
+@onready var player_name_label = $margin/history_scroll/key_info_scroll/player_container/player_name
+@onready var player_ship_name_label = $margin/history_scroll/key_info_scroll/player_container/player_ship_name
+@onready var total_score_label = $margin/history_scroll/key_info_scroll/data_container/total_score
+@onready var systems_traversed_label = $margin/history_scroll/key_info_scroll/data_container/systems_traversed
+@onready var stats_menu_init_type_label = $margin/history_scroll/stats_menu_init_type
+@onready var total_play_time_label = $margin/history_scroll/key_info_scroll/data_container/total_play_time
+@onready var version_label = $margin/version
 
 @onready var v0_8_0_0_conversions: Dictionary = {
 	1: player_name_label,
@@ -30,6 +30,7 @@ func create_from_csv(csv_line: PackedStringArray, _item_count: int) -> void:
 				apply_to_target(_target, cell)
 	
 	current_line_label.set_text("%.f)" % _item_count)
+	version_label.set_text(version)
 	pass
 
 func apply_to_target(target: Node, _cell: String) -> void:
@@ -64,7 +65,7 @@ func apply_to_target(target: Node, _cell: String) -> void:
 			var minutes = (time_in_sec / 60) % 60
 			var hours = (time_in_sec / 60) / 60
 			var row: String = String()
-			if minutes > 0:
+			if seconds > 0:
 				row = "%.fs %s" % [seconds, row]
 			if minutes > 0:
 				row = "%.fm %s" % [minutes, row]

@@ -15,6 +15,7 @@ func update_history() -> void:
 	
 	if FileAccess.file_exists("user://stellar_cartographer_history.csv"):
 		var history = FileAccess.open("user://stellar_cartographer_history.csv", FileAccess.READ)
+		var items: Array[Node] = []
 		var item_count: int = 0
 		
 		while not history.eof_reached():
@@ -27,9 +28,13 @@ func update_history() -> void:
 			
 			var new_item = item_scene.instantiate()
 			new_item.connect("ready", _on_history_item_ready.bind(new_item, line, item_count))
-			spawn_scroll.add_child(new_item)
+			items.append(new_item)
 		
 		history.close()
+		
+		items.reverse()
+		for item in items:
+			spawn_scroll.add_child(item)
 	pass
 
 func _on_history_item_ready(item: Node, line: PackedStringArray, item_count: int) -> void:
