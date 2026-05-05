@@ -63,6 +63,7 @@ layout_mode = 2
 
 [node name="total_score" type="Label" parent="history_scroll/key_info_scroll/data_container"]
 layout_mode = 2
+vertical_alignment = 1
 
 [node name="separator" type="Label" parent="history_scroll/key_info_scroll/data_container"]
 layout_mode = 2
@@ -72,6 +73,7 @@ vertical_alignment = 1
 
 [node name="systems_traversed" type="Label" parent="history_scroll/key_info_scroll/data_container"]
 layout_mode = 2
+vertical_alignment = 1
 
 [node name="separator2" type="Label" parent="history_scroll/key_info_scroll/data_container"]
 layout_mode = 2
@@ -79,9 +81,10 @@ text = "|"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="total_playtime" type="Label" parent="history_scroll/key_info_scroll/data_container"]
+[node name="total_play_time" type="Label" parent="history_scroll/key_info_scroll/data_container"]
 layout_mode = 2
-text = "PLAYTIME"
+text = "TIME"
+vertical_alignment = 1
 
 [node name="modifiers_panel" type="PanelContainer" parent="history_scroll/key_info_scroll"]
 layout_mode = 2

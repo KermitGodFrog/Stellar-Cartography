@@ -6,7 +6,7 @@ extends PanelContainer
 @onready var total_score_label = $history_scroll/key_info_scroll/data_container/total_score
 @onready var systems_traversed_label = $history_scroll/key_info_scroll/data_container/systems_traversed
 @onready var stats_menu_init_type_label = $history_scroll/stats_menu_init_type
-@onready var total_playtime_label = $history_scroll/key_info_scroll/data_container/total_playtime
+@onready var total_play_time_label = $history_scroll/key_info_scroll/data_container/total_play_time
 @onready var version_label = $version
 
 @onready var v0_8_0_0_conversions: Dictionary = {
@@ -14,12 +14,13 @@ extends PanelContainer
 	2: player_ship_name_label,
 	3: total_score_label,
 	4: systems_traversed_label,
-	5: stats_menu_init_type_label
+	5: stats_menu_init_type_label,
+	6: total_play_time_label
 }
 
 func create_from_csv(csv_line: PackedStringArray, _item_count: int) -> void:
 	var version: String = csv_line[0]
-	for cell_i in csv_line.size() - 1:
+	for cell_i in csv_line.size():
 		if cell_i == 0: continue
 		var cell = csv_line[cell_i]
 		
@@ -42,17 +43,34 @@ func apply_to_target(target: Node, _cell: String) -> void:
 		systems_traversed_label:
 			target.set_text("SYSTEMS: %s" % _cell)
 		stats_menu_init_type_label:
+			var style_box: StyleBoxFlat = target.get("theme_override_styles/normal")
+			style_box = style_box.duplicate()
+			
 			match _cell:
 				"DEATH":
 					target.set_text("MISSION\nFAILED")
-					stats_menu_init_type_label.set("theme_override_styles/normal/bg_color", Color("7f170e"))
-					print("death")
+					style_box.bg_color = Color("7f170e")
 				"WIN":
 					target.set_text("MISSION\nSUCCESS")
-					stats_menu_init_type_label.set("theme_override_styles/normal/bg_color", Color("#3c9371"))
+					style_box.bg_color = Color("#3c9371")
 				"TUTORIAL":
 					target.set_text("TUTORIAL")
-					stats_menu_init_type_label.set("theme_override_styles/normal/bg_color", Color("#284b63"))
+					style_box.bg_color = Color("#284b63")
+			
+			target.set("theme_override_styles/normal", style_box)
+		total_play_time_label:
+			var time_in_sec: int = roundi(float(_cell))
+			var seconds = time_in_sec % 60
+			var minutes = (time_in_sec / 60) % 60
+			var hours = (time_in_sec / 60) / 60
+			var row: String = String()
+			if minutes > 0:
+				row = "%.fs %s" % [seconds, row]
+			if minutes > 0:
+				row = "%.fm %s" % [minutes, row]
+			if hours > 0:
+				row = "%.fh %s" % [hours, row]
+			total_play_time_label.set_text("TIME: %s" % row)
 		_:
 			target.set_text(_cell)
 	pass

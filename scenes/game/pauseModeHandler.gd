@@ -11,7 +11,7 @@ var pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE:
 var pause_queue: Array[game_data.PAUSE_MODES] = []
 
 var world: worldAPI
-var allow_play_time_change: bool = false
+var allow_play_time_change: bool = true
 
 func _ready():
 	pauseModeChanged.connect(_on_pause_mode_changed)
