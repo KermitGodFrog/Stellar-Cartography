@@ -65,6 +65,9 @@ func _ready():
 		
 		await get_tree().create_timer(1.0, true).timeout
 		
+		system_map.setup_tutorial_processor()
+		system_map.setup_tutorial_info_popups()
+		
 		var new_query = responseQuery.new()
 		new_query.add("concept", "tutorialPlayerStart")
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
@@ -150,6 +153,7 @@ func connect_all_signals() -> void:
 	system_map.connect("playerInPulsarBeamCooldownExpired", _on_player_in_pulsar_beam_cooldown_expired)
 	system_map.connect("toggleScopeModeSwitchButton", _on_toggle_scope_mode_switch_button)
 	system_map.connect("openPauseMenu", _on_open_pause_menu)
+	system_map.connect("tutorialIngressThresholdReached", _on_tutorial_ingress_threshold_reached)
 	
 	system_3d.connect("foundBody", _on_found_body)
 	system_3d.connect("addConsoleEntry", _on_add_console_entry)
@@ -1021,6 +1025,10 @@ func _on_tutorial_enter_ingress(): #override for INGRESS, not a return value so 
 func _on_tutorial_set_window_tutorials(value: bool):
 	station_ui._on_set_tutorial_visible(value)
 	wormhole_minigame._on_set_tutorial_visible(value)
+	pass
+
+func _on_tutorial_ingress_threshold_reached() -> void: #comes from system_map not dialogueManager! only _on_tutorial exception cos couldnt do it otherwise
+	print("INGRESS THRESHOLD REACHED")
 	pass
 
 func _on_add_player_morale(amount : int) -> void:

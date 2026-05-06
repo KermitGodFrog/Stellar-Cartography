@@ -1,0 +1,202 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxd20qjvft4hb"]
+
+[ext_resource type="PackedScene" uid="uid://bfv6vpv00usg3" path="res://instantiated-scenes/info-popups/closable_popup.tscn" id="1_fpin1"]
+[ext_resource type="PackedScene" uid="uid://b8pahjiip8jiw" path="res://instantiated-scenes/info-popups/auto_popup.tscn" id="2_7r03o"]
+
+[node name="tutorial" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="tutorialOptionalUnderstandPremise" parent="." instance=ExtResource("1_fpin1")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -250.0
+offset_right = 120.0
+offset_bottom = -183.99994
+grow_horizontal = 2
+grow_vertical = 2
+target_objective_wID = "tutorialOptionalUnderstandPremise"
+text_box_size = Vector2(400, 0)
+info = "Welcome, Captain!
+
+In [i]Stellar Cartographer[/i], you will gather exploration data (value) and sell it to space stations for nanites so that you can repair and upgrade your starship. A primary method of gaining exploration data is by discovering bodies. 
+
+This comprehensive tutorial will teach you how to move, discover, interact, traverse wormholes, use space stations and will establish the story continued in the campaign."
+
+[node name="tutorialOptionalViewObjectives" parent="." instance=ExtResource("1_fpin1")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -33.0
+offset_right = 120.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+target_objective_wID = "tutorialOptionalViewObjectives"
+text_box_size = Vector2(400, 0)
+info = "At any time, press [KEY_ESCAPE] to pause the game and view the OBJECTIVES LIST in the top right-hand corner of the screen. The OBJECTIVES LIST will provide you with more detailed information regarding your current objective(s). Some objectives are [b]NOT[/b] shown via info popups (like this)."
+
+[node name="tutorialOptionalHelpOverlay" parent="." instance=ExtResource("1_fpin1")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 110.0
+offset_right = 120.0
+offset_bottom = 176.0
+grow_horizontal = 2
+grow_vertical = 2
+target_objective_wID = "tutorialOptionalHelpOverlay"
+text_box_size = Vector2(400, 0)
+info = "Press and hold [KEY_1] to show the help overlay. The help overlay displays the name of each UI component referenced in this tutorial."
+
+[node name="tutorialMarkPrelude" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialMarkPrelude"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container")
+track_offset = Vector2(0, -300)
+info = "A planet named Prelude is situated in low orbit around a nearby M-Class star named King.
+
+Mark a body by pinging it three times. Adjust the LIDAR scan direction so it points towards the star by clicking, set the arc to its maximum with the slider, and press the ‘PING’ button.
+[i] * Marking a body establishes its location on the SYSTEM LIST. It is usually necessary to mark a body before discovering it.[/i]
+[img=75%x75%]res://graphics/objective/tutorial_LIDAR_example.png[/img]"
+
+[node name="tutorialOptionalScopeMode" parent="." instance=ExtResource("1_fpin1")]
+visible = false
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 66.0
+target_objective_wID = "tutorialOptionalScopeMode"
+text_box_size = Vector2(250, 100)
+track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
+track_offset = Vector2(-307, 0)
+info = "Press the 'RAD' button on SCOPES (or press [KEY_SPACE]) to switch the scope mode. Depending on the scope mode, different bodies can be discovered. 
+[i] * 'RAD' enabled -> small bodies discoverable. 'RAD' disabled -> large bodies (like planets) discoverable. [/i]"
+
+[node name="tutorialOptionalZoomScopes" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialOptionalZoomScopes"
+track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
+track_offset = Vector2(0, -225)
+info = "Click and drag up or down (or scroll) on SCOPES to zoom in or out. Zooming in allows bodies to be visually acquired sooner."
+
+[node name="tutorialDiscoverPrelude" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialDiscoverPrelude"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel")
+track_offset = Vector2(0, -300)
+info = "[b]The location of Prelude has been added to the SYSTEM LIST. However, it has not yet been discovered.
+
+Discover a body by visually acquiring it. Click on the the triple question mark on the SYSTEM LIST to lock, and then press the 'ORBIT' action in the ACTIONS PANEL.[/b]
+[img]res://graphics/system-map/actions-panel/orbit_icon.png[/img]"
+
+[node name="tutorialFollowPrelude" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialFollowPrelude"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/tabs_and_ca_scroll/tabs/OVERVIEW")
+info = "[i] * An estimated value of 514 nanites has been gleaned from the discovery of Prelude. There is still another way to gain exploration data from it.[/i]
+
+The question mark adjacent to Prelude on the SYSTEM LIST symbolises an undocumented anomaly - these can result in rewards or tragedy. Investigating an anomaly requires interacting with it.
+
+Click on Prelude on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. Wormholes, space stations, planetary anomalies, and other phenomena are all interacted with through the 'GO-TO' action.
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
+
+[node name="tutorialMarkIngress" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialMarkIngress"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container")
+track_offset = Vector2(0, -350)
+info = "[i] * Your data value is maximised by discovering all bodies within a star system. The SYSTEM LIST currently underlines a missing body further than Prelude. [/i]
+
+A wormhole named Ingress is situated in a higher orbit around King.
+
+The BARYCENTER VISUALIZER displays the direction of other bodies from the locked body with a blip. Click on Prelude on the SYSTEM LIST to lock, adjust your LIDAR direction so it matches the direction of the blip which is oscillating (only wormholes oscillate), use a smaller scan arc, and press the 'PING' button. Dark red blips are beyond your current scan arc. Remember to ping three times to mark.
+[img=150%x75%]res://graphics/objective/tutorial_barycenter_example.png[/img]"
+
+[node name="tutorialOptionalBoost" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 150.0
+offset_right = 120.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+target_objective_wID = "tutorialOptionalBoost"
+info = "Hold [KEY_LSHIFT] to boost. "
+
+[node name="tutorialOptionalManualControl" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 190.0
+offset_top = 150.0
+offset_right = 430.0
+offset_bottom = 190.00006
+grow_horizontal = 2
+grow_vertical = 2
+target_objective_wID = "tutorialOptionalManualControl"
+text_box_size = Vector2(300, 0)
+info = "On the SYSTEM MAP, right click to lay in a course to your mouse pointer."
+
+[node name="tutorialDiscoverIngress" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialDiscoverIngress"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel")
+track_offset = Vector2(0, -300)
+info = "[b]The location of Ingress has been added to the SYSTEM LIST. However, it has not yet been discovered.
+Discover a body by visually acquiring it. Click on the the triple question mark on the SYSTEM LIST to lock, and then press the 'ORBIT' action in the ACTIONS PANEL.[/b]
+[img]res://graphics/system-map/actions-panel/orbit_icon.png[/img]"
+
+[node name="tutorialFollowIngress" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialFollowIngress"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/tabs_and_ca_scroll/tabs/OVERVIEW")
+info = "[i] * As soon as all activities in a star system are exhausted, it becomes time to travel to the next one.[/i]
+
+Wormholes allow for travel between star systems. Traversing a wormhole requires interacting with it.
+
+Click on Ingress on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. Wormholes, space stations, planetary anomalies, and other phenomena are all interacted with through the 'GO-TO' action.
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"

@@ -34,6 +34,7 @@ signal updatePlayerInAsteroidBelt(_player_in_asteroid_belt: bool)
 signal updatePlayerInPulsarBeam(_player_in_pulsar_beam: bool)
 signal toggleScopeModeSwitchButton
 signal openPauseMenu
+signal tutorialIngressThresholdReached
 
 signal audioVisualizerPopup
 signal journeyMapPopup
@@ -80,6 +81,7 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var tabs = $camera/canvas/control/tabs_and_ca_scroll/tabs
 @onready var enable_scope_mode_switch = $enable_scope_mode_switch
 @onready var info_popups = $camera/canvas/info_popups
+@onready var tutorial_processor: Node
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -158,6 +160,10 @@ func _physics_process(delta):
 	scan_prediction_upgrade._player_position_matrix = player_position_matrix
 	scan_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME
 	current_action_label._player_position_matrix = player_position_matrix
+	if tutorial_processor != null:
+		tutorial_processor._system = system
+		tutorial_processor._player_position_matrix = player_position_matrix
+	
 	#If body clicked on in system list, follow the body with the camera (follow body).
 	#If body clicked on in system list, actions can itneract with the body (locked body).
 	#If actions pressed, perform on locked body (action body).
@@ -1046,6 +1052,28 @@ func _on_active_objectives_changed(_active_objectives: Array[objectiveAPI]):
 func _on_update_scanner_display_times(new_profile_time: float, new_power_time: float) -> void:
 	scanner_profile_time = new_profile_time
 	scanner_power_time = new_power_time
+	pass
+
+func _on_tutorial_ingress_threshold_reached() -> void:
+	emit_signal("tutorialIngressThresholdReached")
+	pass
+
+
+
+func setup_tutorial_processor() -> void:
+	var processor = load("uid://b4lh43qyyit6h").instantiate()
+	add_child(processor)
+	tutorial_processor = processor
+	processor.connect("tutorialIngressThresholdReached", _on_tutorial_ingress_threshold_reached)
+	pass
+
+func setup_tutorial_info_popups() -> void:
+	var tutorial = load("uid://cxd20qjvft4hb").instantiate()
+	for popup in tutorial.get_children():
+		popup.set_owner(null)
+		popup.reparent(info_popups, false)
+		popup.set_owner(info_popups)
+	tutorial.queue_free()
 	pass
 
 
