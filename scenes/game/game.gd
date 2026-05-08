@@ -1020,6 +1020,10 @@ func _on_tutorial_enter_ingress(): #override for INGRESS, not a return value so 
 	system_map.locked_body = null
 	system_map.action_body = null
 	
+	suno.addRandomWeightedShip(egress)
+	suno.addRandomWeightedShip(suno.get_random_body())
+	suno.addRandomWeightedShip(suno.get_random_body())
+	
 	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
 	_on_wormhole_minigame_popup()
 	_on_player_entering_system(suno)
