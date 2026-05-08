@@ -8,12 +8,17 @@ signal queuePauseMode(new_mode: game_data.PAUSE_MODES)
 signal setPauseMode(new_mode: game_data.PAUSE_MODES)
 func _on_pause_mode_changed(value):
 	match value:
-		game_data.PAUSE_MODES.NONE:
-			pause_canvas.hide()
 		game_data.PAUSE_MODES.PAUSE_MENU:
 			can_unpause = false
 			unpause_possible_timer.start()
 			pause_canvas.show()
+		game_data.PAUSE_MODES.QUICK_PAUSE:
+			can_unpause = false
+			unpause_possible_timer.start()
+			quick_pause_canvas.show()
+		_:
+			pause_canvas.hide()
+			quick_pause_canvas.hide()
 	pass
 
 signal saveWorld
@@ -28,6 +33,7 @@ var is_open = false
 @onready var save_button = $pause_canvas/pause_control/pause_scroll/save_button
 @onready var save_and_quit_button = $pause_canvas/pause_control/pause_scroll/save_and_quit_button
 @onready var pause_canvas = $pause_canvas
+@onready var quick_pause_canvas = $quick_pause_canvas
 @onready var objectives_panel = $pause_canvas/pause_control/console_cover_panel/scroll/objectives_panel
 
 @onready var fullscreen_objectives = preload("uid://d7m4h6j7mma7")
@@ -36,6 +42,10 @@ var is_open = false
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("SC_PAUSE"):
 		if can_unpause == true and _pause_mode == game_data.PAUSE_MODES.PAUSE_MENU:
+			emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
+	
+	if Input.is_action_just_pressed("SC_QUICK_PAUSE"):
+		if can_unpause == true and _pause_mode == game_data.PAUSE_MODES.QUICK_PAUSE:
 			emit_signal("setPauseMode", game_data.PAUSE_MODES.NONE)
 	pass
 
