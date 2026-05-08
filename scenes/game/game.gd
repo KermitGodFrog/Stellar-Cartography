@@ -1047,9 +1047,7 @@ func _on_tutorial_ingress_threshold_reached() -> void: #comes from system_map no
 	if ingress != null:
 		marauder.position = world.player.position + (world.player.position.direction_to(ingress.position) * (world.player.scanner_profile - 1))
 	
-	#get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.NONE)
-	
-	
+	get_tree().call_group("objectivesManager", "mark_category", "tutorialPostMarauderAppear", objectiveAPI.STATES.NONE)
 	pass
 
 func _on_add_player_morale(amount : int) -> void:

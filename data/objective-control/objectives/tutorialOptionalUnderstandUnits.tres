@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://c8l3dg6sgqq3o"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_sbcir"]
+
+[resource]
+script = ExtResource("1_sbcir")
+metadata/_custom_type_script = "uid://cxmuiuh6uokvl"
