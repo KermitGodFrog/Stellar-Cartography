@@ -17,12 +17,14 @@ var last_popup_state: int = -1 #below STATES constituting 0, 1, 2
 
 #primary
 func _ready() -> void:
-	get_node(NodePath(text_box_path)).set_text(info)
+	get_node(NodePath(text_box_path)).set_text(global_data.replace_keybind_references(info))
 	if text_box_size != Vector2.ZERO:
 		get_node(NodePath(text_box_path)).set_custom_minimum_size(text_box_size)
 	if close_button_path.length() > 0:
 		get_node(NodePath(close_button_path)).connect("pressed", _on_close_button_pressed)
 	pass
+
+
 
 func _process(_delta: float) -> void:
 	if track != null:
@@ -45,7 +47,6 @@ func _on_close_button_pressed() -> void:
 	hide()
 	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "info_popup_close_press", target_objective_wID)
 	pass
-
 
 
 #misc

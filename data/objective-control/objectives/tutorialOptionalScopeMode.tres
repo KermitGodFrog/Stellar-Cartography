@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_lie2m")
 title = "(Optional) Change Scope Mode"
-description = "Press the 'RAD' button on SCOPES (or press [KEY_BACKSPACE]) to switch the scope mode. Depending on the scope mode, different bodies can be discovered.
+description = "Press the 'RAD' button on SCOPES (or press $SC_SCOPE_SWITCH) to switch the scope mode. Depending on the scope mode, different bodies can be discovered.
 When 'RAD' is enabled, space anomalies, stellar phenomena and other small bodies can be discovered while in range. When disabled, planets and other large bodies can be discovered while in range."
 metadata/_custom_type_script = "uid://cxmuiuh6uokvl"

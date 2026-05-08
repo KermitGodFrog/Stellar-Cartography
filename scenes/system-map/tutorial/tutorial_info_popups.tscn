@@ -50,7 +50,7 @@ grow_horizontal = 2
 grow_vertical = 2
 target_objective_wID = "tutorialOptionalViewObjectives"
 text_box_size = Vector2(400, 0)
-info = "At any time, press [KEY_ESCAPE] to pause the game and view the OBJECTIVES LIST in the top right-hand corner of the screen. The OBJECTIVES LIST will provide you with more detailed information regarding your current objective(s). Some objectives are [b]NOT[/b] shown via info popups (like this)."
+info = "At any time, press $SC_PAUSE to pause the game and view the OBJECTIVES LIST in the top right-hand corner of the screen. The OBJECTIVES LIST will provide you with more detailed information regarding your current objective(s). Some objectives are [b]NOT[/b] shown via info popups (like this)."
 
 [node name="tutorialOptionalHelpOverlay" parent="." instance=ExtResource("1_fpin1")]
 visible = false
@@ -68,7 +68,7 @@ grow_horizontal = 2
 grow_vertical = 2
 target_objective_wID = "tutorialOptionalHelpOverlay"
 text_box_size = Vector2(400, 0)
-info = "Press and hold [KEY_1] to show the help overlay. The help overlay displays the name of each UI component referenced in this tutorial."
+info = "Press and hold $SC_OPEN_HELP_OVERLAY to show the help overlay. The help overlay displays the name of each UI component referenced in this tutorial."
 
 [node name="tutorialMarkPrelude" parent="." instance=ExtResource("2_7r03o")]
 visible = false
@@ -92,7 +92,7 @@ target_objective_wID = "tutorialOptionalScopeMode"
 text_box_size = Vector2(250, 100)
 track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
 track_offset = Vector2(-307, 0)
-info = "Press the 'RAD' button on SCOPES (or press [KEY_SPACE]) to switch the scope mode. Depending on the scope mode, different bodies can be discovered. 
+info = "Press the 'RAD' button on SCOPES (or press $SC_SCOPE_SWITCH) to switch the scope mode. Depending on the scope mode, different bodies can be discovered. 
 [i] * 'RAD' enabled -> small bodies discoverable. 'RAD' disabled -> large bodies (like planets) discoverable. [/i]"
 
 [node name="tutorialOptionalZoomScopes" parent="." instance=ExtResource("2_7r03o")]
@@ -157,7 +157,7 @@ offset_bottom = 190.0
 grow_horizontal = 2
 grow_vertical = 2
 target_objective_wID = "tutorialOptionalBoost"
-info = "Hold [KEY_LSHIFT] to boost. "
+info = "Hold $SC_BOOST to boost. "
 
 [node name="tutorialOptionalManualControl" parent="." instance=ExtResource("2_7r03o")]
 visible = false

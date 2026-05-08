@@ -223,3 +223,46 @@ func get_offset_rect2(_position: Vector2, _width: float, _height: float) -> Rect
 	
 	var final = Rect2(offset_x, offset_y, _width, _height)
 	return final
+
+func convert_events_to_readable(input_array: Array[InputEvent]) -> String: #this is NEARLY the function in keybind_option.gd (besides the brackets and spacing) - might want to have both functions in game_data or smth later. kinda a temp fix
+	var s: String = ""
+	for event in input_array:
+		if event is InputEventKey:
+			if event.keycode != KEY_NONE:
+				s += "[%s]" % OS.get_keycode_string(event.get_keycode_with_modifiers())
+			else:
+				var keycode = DisplayServer.keyboard_get_keycode_from_physical(event.get_physical_keycode_with_modifiers())
+				s += "[%s]" % OS.get_keycode_string(keycode)
+		if event is InputEventJoypadButton:
+			s += "[JOY_%s]" % event.button_index
+		if event is InputEventMouseButton:
+			s += "[MOUSE_%s]" % event.button_index
+	return s
+
+func replace_keybind_references(text: String) -> String: #shameless copy of replace_fact_references in dialogueManager LMAO. used in objectiveAPI, info_popup
+	var a: PackedStringArray = []
+	for action in global_data.get_relevant_input_actions():
+		a.append(action)
+	
+	var regex_args = "|\\$".join(a)
+	var formatted_regex_args = "%s%s" % ["\\$", regex_args]
+	var pattern = "(%s)(?![_\\w])" % formatted_regex_args
+	
+	var regex = RegEx.new()
+	regex.compile(pattern)
+	
+	var results = regex.search_all(text)
+	var offset: int = 0
+	for result in results:
+		var start: int = result.get_start()
+		var end: int = result.get_end()
+		var length: int = end - start
+		var action = result.get_string().right(-1)
+		var replacement = convert_events_to_readable(InputMap.action_get_events(action))
+		
+		var new_text: String = str(text.substr(0, start + offset), replacement, text.substr(end + offset))
+		
+		offset += str(replacement).length() - length
+		text = new_text
+	
+	return text

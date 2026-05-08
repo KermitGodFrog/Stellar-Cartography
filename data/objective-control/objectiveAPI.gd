@@ -9,7 +9,9 @@ enum STATES {NONE, SUCCESS, FAILURE}
 	get = get_state, set = set_state
 
 @export var title: String = String()
-@export_multiline var description = String()
+@export_multiline var description = String():
+	set(value):
+		description = global_data.replace_keybind_references(value)
 
 func get_state() -> STATES:
 	return current_state
