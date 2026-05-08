@@ -298,11 +298,10 @@ func _physics_process(delta):
 	game_data.player_weirdness_index = world.player.weirdness_index #really hacky solution which should not have been done this way but im too tired to change the entire game now to accomodate it.
 	
 	if Input.is_action_just_pressed("SC_PAUSE"):
-		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
+		_on_open_pause_menu(true) #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
 		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "pause_menu_show")
 	elif Input.is_action_just_pressed("SC_QUICK_PAUSE"):
-		#if pause_mode_handler.pause_mode != game_data.PAUSE_MODES.QUICK_PAUSE:
-		pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.QUICK_PAUSE)
+		_on_open_pause_menu(false)
 	
 	#ultra miscellanious:
 	_on_update_countdown_overlay_shown(countdown_processor != null)
@@ -952,8 +951,9 @@ func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int
 	station_ui.player_hull_stress = world.player.hull_stress
 	pass
 
-func _on_open_pause_menu():
-	pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.PAUSE_MENU)
+func _on_open_pause_menu(full_pause: bool = true):
+	if full_pause: pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.PAUSE_MENU)
+	else: pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.QUICK_PAUSE)
 	pass
 
 func _on_open_stats_menu(_init_type: int): #init type is from statsMenu INIT_TYPES
@@ -1051,6 +1051,8 @@ func _on_tutorial_ingress_threshold_reached() -> void: #comes from system_map no
 		marauder.position = world.player.position + (world.player.position.direction_to(ingress.position) * (world.player.scanner_profile - 1))
 	
 	get_tree().call_group("objectivesManager", "mark_category", "tutorialPostMarauderAppear", objectiveAPI.STATES.NONE)
+	
+	_on_open_pause_menu(false)
 	pass
 
 func _on_add_player_morale(amount : int) -> void:
