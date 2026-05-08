@@ -4,4 +4,6 @@
 
 [resource]
 script = ExtResource("1_sbcir")
+title = "(Optional) Understand Units"
+description = "Press the 'UNDERSTOOD' button on the info popup corresponding to this objective."
 metadata/_custom_type_script = "uid://cxmuiuh6uokvl"

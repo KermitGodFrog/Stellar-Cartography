@@ -200,3 +200,37 @@ Wormholes allow for travel between star systems. Traversing a wormhole requires 
 
 Click on Ingress on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. Wormholes, space stations, planetary anomalies, and other phenomena are all interacted with through the 'GO-TO' action.
 [img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
+
+[node name="tutorialOptionalStunMarauder" parent="." instance=ExtResource("1_fpin1")]
+visible = false
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 66.0
+target_objective_wID = "tutorialOptionalStunMarauder"
+text_box_size = Vector2(250, 100)
+track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
+track_offset = Vector2(0, 40)
+info = "Stunning a hostile (red) unit stops it from chasing you temporarily. Adjust your LIDAR direction so it matches the direction of the marauder on the SYSTEM MAP and press the 'PING' button.
+[i] * The smaller the scan arc, the longer a hostile unit stays stunned.[/i]"
+
+[node name="tutorialOptionalUnderstandUnits" parent="." instance=ExtResource("1_fpin1")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -275.0
+offset_right = 120.0
+offset_bottom = -208.99968
+grow_horizontal = 2
+grow_vertical = 2
+target_objective_wID = "tutorialOptionalUnderstandUnits"
+text_box_size = Vector2(500, 0)
+info = "Units are bodies that move on their own terms, e.g. starships. Units within your ship's 'SCANNER POWER' (dotted grey outer circle) are appended to the CONTACT LIST. Units within your ship's 'SCANNER PROFILE' (brown inner circle) can see your starship and respond to its presence.
+
+A marauder starship has appeared within your 'SCANNER PROFILE'. It will steal your technology if it catches you on the SYSTEM MAP. 
+[imgres://graphics/objective/tutorial_hostile_unit_example.png[/img]
+Evade the marauder by manually laying in courses away from it so that it exits your 'SCANNER PROFILE', and then proceed to discover Ingress while avoiding redetection."

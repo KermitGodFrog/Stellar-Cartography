@@ -62,7 +62,7 @@ func process_tutorial_event(_calling: Node, incoming_wID: String, _incoming_valu
 			emit_signal("markObjective", "tutorialOptionalViewObjectives", objectiveAPI.STATES.SUCCESS)
 		"info_popup_close_press":
 			match _incoming_value: #not all info popup close presses should instantly complete objectives
-				"tutorialOptionalUnderstandPremise":
+				"tutorialOptionalUnderstandPremise", "tutorialOptionalUnderstandUnits":
 					emit_signal("markObjective", _incoming_value, objectiveAPI.STATES.SUCCESS)
 	pass
 

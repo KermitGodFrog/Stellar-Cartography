@@ -1052,6 +1052,7 @@ func _on_tutorial_ingress_threshold_reached() -> void: #comes from system_map no
 	
 	get_tree().call_group("objectivesManager", "mark_category", "tutorialPostMarauderAppear", objectiveAPI.STATES.NONE)
 	
+	await get_tree().physics_frame
 	_on_open_pause_menu(false)
 	pass
 
