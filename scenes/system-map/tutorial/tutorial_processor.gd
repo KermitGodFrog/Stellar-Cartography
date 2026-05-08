@@ -11,7 +11,8 @@ func _process(_delta: float) -> void:
 		var ingress = _system.get_first_body_from_display_name("Ingress")
 		if ingress != null:
 			if _player_position_matrix[0].distance_to(ingress.position) < 20.0:
-				if ingress_threshold_prev == false:
-					emit_signal("tutorialIngressThresholdReached")
-					ingress_threshold_prev = true
+				if ingress.is_theorised():
+					if ingress_threshold_prev == false:
+						emit_signal("tutorialIngressThresholdReached")
+						ingress_threshold_prev = true
 	pass

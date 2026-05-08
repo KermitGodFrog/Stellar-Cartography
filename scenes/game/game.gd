@@ -1029,6 +1029,27 @@ func _on_tutorial_set_window_tutorials(value: bool):
 
 func _on_tutorial_ingress_threshold_reached() -> void: #comes from system_map not dialogueManager! only _on_tutorial exception cos couldnt do it otherwise
 	print("INGRESS THRESHOLD REACHED")
+	var system = world.player.current_star_system
+	var id = system.addUnitBody(
+		interceptingUnitAPI.new(),
+		starSystemAPI.BODY_TYPES.SHIP,
+		system.identifier_count,
+		game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.MARAUDER),
+		1,
+		starSystemAPI.get_default_radius_solar_radii(),
+		{"system": system, "player": world.player},
+		{"affiliation": game_data.UNIT_AFFILIATIONS.MARAUDER, "hostile": true, "seed": randi()}
+	)
+	
+	var marauder = system.get_body_from_identifier(id)
+	var ingress = system.get_first_body_from_display_name("Ingress")
+	
+	if ingress != null:
+		marauder.position = world.player.position + (world.player.position.direction_to(ingress.position) * (world.player.scanner_profile - 1))
+	
+	#get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.NONE)
+	
+	
 	pass
 
 func _on_add_player_morale(amount : int) -> void:
