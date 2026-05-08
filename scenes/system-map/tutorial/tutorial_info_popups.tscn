@@ -234,3 +234,12 @@ info = "Units are bodies that move on their own terms, e.g. starships. Units wit
 A marauder starship has appeared within your 'SCANNER PROFILE'. It will steal your technology if it catches you on the SYSTEM MAP. 
 [img]res://graphics/objective/tutorial_hostile_unit_example.png[/img]
 Evade the marauder by manually laying in courses away from it so that it exits your 'SCANNER PROFILE', and then proceed to discover Ingress while avoiding redetection."
+
+[node name="tutorialOptionalCheckStress" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialOptionalCheckStress"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel")
+track_offset = Vector2(-250, 0)
+info = "Check your 'HULL STRESS' status in the STATUS PANEL. View the tooltip for entries in the STATUS PANEL by hovering over them. 'HULL STRESS' increases as a result of wormhole traversal, system hazards and certain anomalies. Note that gaining 100% 'HULL DETERIORATION' makes you lose a run."
