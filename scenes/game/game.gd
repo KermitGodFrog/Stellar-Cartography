@@ -300,6 +300,9 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("SC_PAUSE"):
 		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
 		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "pause_menu_show")
+	elif Input.is_action_just_pressed("SC_QUICK_PAUSE"):
+		#if pause_mode_handler.pause_mode != game_data.PAUSE_MODES.QUICK_PAUSE:
+		pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.QUICK_PAUSE)
 	
 	#ultra miscellanious:
 	_on_update_countdown_overlay_shown(countdown_processor != null)

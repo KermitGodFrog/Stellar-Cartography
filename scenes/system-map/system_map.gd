@@ -13,6 +13,10 @@ func _on_pause_mode_changed(value):
 			canvas.show()
 		game_data.PAUSE_MODES.DIALOGUE:
 			canvas.hide()
+		game_data.PAUSE_MODES.QUICK_PAUSE:
+			quick_pause_control.show()
+	if value != game_data.PAUSE_MODES.QUICK_PAUSE:
+		quick_pause_control.hide()
 	pass
 
 
@@ -82,6 +86,7 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var enable_scope_mode_switch = $enable_scope_mode_switch
 @onready var info_popups = $camera/canvas/info_popups
 @onready var tutorial_processor: Node
+@onready var quick_pause_control = $camera/canvas/quick_pause_control
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -152,6 +157,7 @@ var player_supercharged: bool = false:
 
 func _ready():
 	status_scroll.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
+	quick_pause_control.connect("_setPauseMode", _on_quick_pause_control_set_pause_mode)
 	contact_list.create_item(null)
 	pass
 
@@ -160,6 +166,7 @@ func _physics_process(delta):
 	scan_prediction_upgrade._player_position_matrix = player_position_matrix
 	scan_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME
 	current_action_label._player_position_matrix = player_position_matrix
+	quick_pause_control.set("_pause_mode", _pause_mode) # what the fuck is this bro ???
 	if tutorial_processor != null:
 		tutorial_processor._system = system
 		tutorial_processor._player_position_matrix = player_position_matrix
@@ -1056,6 +1063,10 @@ func _on_update_scanner_display_times(new_profile_time: float, new_power_time: f
 
 func _on_tutorial_ingress_threshold_reached() -> void:
 	emit_signal("tutorialIngressThresholdReached")
+	pass
+
+func _on_quick_pause_control_set_pause_mode(_new_mode: game_data.PAUSE_MODES) -> void:
+	emit_signal("setPauseMode", _new_mode)
 	pass
 
 

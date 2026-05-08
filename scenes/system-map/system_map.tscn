@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=58 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
@@ -42,6 +42,8 @@
 [ext_resource type="PackedScene" uid="uid://b2o2eo8ls2ldp" path="res://scenes/system-map/help-overlay/help_overlay_label.tscn" id="38_6mn7q"]
 [ext_resource type="Texture2D" uid="uid://dxiksctsg7w41" path="res://graphics/system-map/cog_normal.svg" id="38_ji0h2"]
 [ext_resource type="BitMap" uid="uid://vsyxkeka6b8c" path="res://graphics/system-map/cog_click_mask.png" id="40_ji0h2"]
+[ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="42_d1v4g"]
+[ext_resource type="Script" uid="uid://b3fg1cmr8wr02" path="res://scenes/system-map/quick_pause_control.gd" id="42_ppms7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ciwjv"]
 atlas = ExtResource("3_bft1b")
@@ -843,6 +845,35 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="quick_pause_control" type="Control" parent="system/camera/canvas"]
+process_mode = 2
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("42_ppms7")
+
+[node name="quick_pause_label" type="Label" parent="system/camera/canvas/quick_pause_control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -162.5
+offset_top = -11.5
+offset_right = 162.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("42_d1v4g")
+text = "PAUSED - PRESS [KEY_SPACE] TO UNPAUSE"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="scan_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
 show_behind_parent = true
