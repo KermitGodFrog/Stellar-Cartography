@@ -232,5 +232,5 @@ text_box_size = Vector2(500, 0)
 info = "Units are bodies that move on their own terms, e.g. starships. Units within your ship's 'SCANNER POWER' (dotted grey outer circle) are appended to the CONTACT LIST. Units within your ship's 'SCANNER PROFILE' (brown inner circle) can see your starship and respond to its presence.
 
 A marauder starship has appeared within your 'SCANNER PROFILE'. It will steal your technology if it catches you on the SYSTEM MAP. 
-[imgres://graphics/objective/tutorial_hostile_unit_example.png[/img]
+[img]res://graphics/objective/tutorial_hostile_unit_example.png[/img]
 Evade the marauder by manually laying in courses away from it so that it exits your 'SCANNER PROFILE', and then proceed to discover Ingress while avoiding redetection."
