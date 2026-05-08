@@ -913,6 +913,7 @@ func async_add_unit_ping(unit: unitBodyAPI) -> void:
 	if unit is AIUnitAPI:
 		if player_position_matrix[0].distance_to(unit.position) < player_adj_scanner_matrix[0]: #distance below profile
 			unit.stun()
+			get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "player_stun_unit")
 	
 	get_tree().call_group("audioHandler", "play_once", LIDAR_bounceback, 0.0, "SFX")
 	pass

@@ -60,6 +60,8 @@ func process_tutorial_event(_calling: Node, incoming_wID: String, _incoming_valu
 			emit_signal("markObjective", "tutorialOptionalScopeMode", objectiveAPI.STATES.SUCCESS)
 		"pause_menu_show":
 			emit_signal("markObjective", "tutorialOptionalViewObjectives", objectiveAPI.STATES.SUCCESS)
+		"player_stun_unit":
+			emit_signal("markObjective", "tutorialOptionalStunMarauder", objectiveAPI.STATES.SUCCESS)
 		"info_popup_close_press":
 			match _incoming_value: #not all info popup close presses should instantly complete objectives
 				"tutorialOptionalUnderstandPremise", "tutorialOptionalUnderstandUnits":
