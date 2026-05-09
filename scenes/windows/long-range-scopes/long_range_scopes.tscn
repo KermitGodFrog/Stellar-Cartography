@@ -271,9 +271,6 @@ grow_vertical = 2
 [node name="fov_slider" type="VSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-min_value = 10.0
-max_value = 75.0
-value = 75.0
 tick_count = 3
 ticks_on_borders = true
 

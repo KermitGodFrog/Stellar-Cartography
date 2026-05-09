@@ -359,22 +359,25 @@ func _on_state_change_lock_timeout() -> void:
 
 
 func _on_fov_slider_value_changed(value):
-	target_fov = value
+	target_fov = remap(value, 0, 100, 75, 5)
 	pass
 
 var last_h_rot_value: float = 0.0
 var last_v_rot_value: float = 0.0
 func _on_h_rot_slider_value_changed(value) -> void:
-	camera.rotate_object_local(Vector3.DOWN, deg_to_rad(value - last_h_rot_value))
-	camera.orthonormalize()
 	last_h_rot_value = value
+	recalculate_camera_rotation()
 	pass
 func _on_v_rot_slider_value_changed(value) -> void:
-	camera.rotate_object_local(Vector3.RIGHT, deg_to_rad(value - last_v_rot_value))
-	camera.orthonormalize()
 	last_v_rot_value = value
+	recalculate_camera_rotation()
 	pass
-
+func recalculate_camera_rotation() -> void:
+	camera.basis = Basis()
+	camera.rotate_object_local(Vector3.DOWN, deg_to_rad(last_h_rot_value))
+	camera.rotate_object_local(Vector3.RIGHT, deg_to_rad(last_v_rot_value))
+	camera.orthonormalize()
+	pass
 
 
 func _on_long_range_scopes_window_close_requested():
