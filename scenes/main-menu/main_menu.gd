@@ -11,6 +11,7 @@ extends Control
 @onready var background = $background
 @onready var credits_popup = $credits_popup
 @onready var new_game_label = $new_game_popup/new_game/margin/scroll/actions_hbox/new_game_label
+@onready var history_popup = $history_popup
 
 var SHOW_NEW_GAME_POPUP: bool = false:
 	set(value):
@@ -33,6 +34,13 @@ var SHOW_CREDITS_POPUP: bool = false:
 			credits_popup.show()
 		if value == false:
 			credits_popup.hide()
+var SHOW_HISTORY_POPUP: bool = false:
+	set(value):
+		SHOW_HISTORY_POPUP = value
+		if value == true:
+			history_popup.show()
+		if value == false:
+			history_popup.hide()
 
 var NEW_GAME_INIT_TYPE: global_data.GAME_INIT_TYPES = global_data.GAME_INIT_TYPES.NEW
 
@@ -126,6 +134,14 @@ func _on_credits_button_pressed() -> void:
 
 func _on_credits_return_button_pressed() -> void:
 	SHOW_CREDITS_POPUP = false
+	pass
+
+func _on_history_button_pressed() -> void:
+	SHOW_HISTORY_POPUP = true
+	pass
+
+func _on_history_return_button_pressed() -> void:
+	SHOW_HISTORY_POPUP = false
 	pass
 
 func _on_settings_button_pressed() -> void:
