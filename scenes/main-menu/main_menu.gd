@@ -10,6 +10,7 @@ extends Control
 @onready var achievements_list_popup = $achievements_list_popup
 @onready var background = $background
 @onready var credits_popup = $credits_popup
+@onready var new_game_label = $new_game_popup/new_game/margin/scroll/actions_hbox/new_game_label
 
 var SHOW_NEW_GAME_POPUP: bool = false:
 	set(value):
@@ -32,6 +33,8 @@ var SHOW_CREDITS_POPUP: bool = false:
 			credits_popup.show()
 		if value == false:
 			credits_popup.hide()
+
+var NEW_GAME_INIT_TYPE: global_data.GAME_INIT_TYPES = global_data.GAME_INIT_TYPES.NEW
 
 const background_images: Array = [
 	preload("uid://y2kguswkl4v4"),
@@ -81,24 +84,28 @@ func _on_continue_button_pressed():
 	global_data.change_scene.emit("res://scenes/game/game.tscn", {"init_type": global_data.GAME_INIT_TYPES.CONTINUE})
 	pass
 
-func _on_tutorial_button_pressed():
-	global_data.change_scene.emit("res://scenes/game/game.tscn", {"init_type": global_data.GAME_INIT_TYPES.TUTORIAL})
-	pass
-
 func _on_create_button_pressed():
 	if (not name_edit.text.is_empty()) and (not ship_name_edit.text.is_empty()):
 		global_data.change_scene.emit("res://scenes/game/game.tscn", {
-			"init_type": global_data.GAME_INIT_TYPES.NEW, 
+			"init_type": NEW_GAME_INIT_TYPE, 
 			"init_data": {"name": name_edit.get_text(), "ship_name": ship_name_edit.get_text(), "prefix": prefix_edit.get_item_text(prefix_edit.selected)}
 			})
 	else:
 		global_data.change_scene.emit("res://scenes/game/game.tscn", {
-			"init_type": global_data.GAME_INIT_TYPES.NEW
+			"init_type": NEW_GAME_INIT_TYPE
 		})
 	pass
 
 func _on_new_button_pressed():
 	SHOW_NEW_GAME_POPUP = true
+	NEW_GAME_INIT_TYPE = global_data.GAME_INIT_TYPES.NEW
+	new_game_label.set_text("CREATING NEW GAME")
+	pass
+
+func _on_tutorial_button_pressed() -> void:
+	SHOW_NEW_GAME_POPUP = true
+	NEW_GAME_INIT_TYPE = global_data.GAME_INIT_TYPES.TUTORIAL
+	new_game_label.set_text("CREATING TUTORIAL")
 	pass
 
 func _on_new_game_return_button_pressed():
