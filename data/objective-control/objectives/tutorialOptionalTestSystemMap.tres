@@ -4,7 +4,5 @@
 
 [resource]
 script = ExtResource("1_0lwex")
-written_identifier = ""
-current_state = 0
 title = "(Optional) Test the System Map"
-description = "Use W, A, S and D to move the camera and Q or E (or scroll) to zoom the camera in or out. The red sphere is King, the white square is your starship."
+description = "Use $SC_SYSTEM_MAP_UP, $SC_SYSTEM_MAP_LEFT, $SC_SYSTEM_MAP_DOWN and $SC_SYSTEM_MAP_RIGHT to move the camera and $SC_SYSTEM_MAP_ZOOM_IN or $SC_SYSTEM_MAP_ZOOM_OUT (or scroll) to zoom the camera in or out. The red sphere is King, the white square is your starship."

@@ -34,14 +34,12 @@ signal updatePlayerInAsteroidBelt(_player_in_asteroid_belt: bool)
 signal updatePlayerInPulsarBeam(_player_in_pulsar_beam: bool)
 signal toggleScopeModeSwitchButton
 signal openPauseMenu
+signal tutorialIngressThresholdReached
 
 signal audioVisualizerPopup
 signal journeyMapPopup
 signal longRangeScopesPopup
 signal gasLayerSurveyorPopup
-
-var TUTORIAL_INGRESS_OVERRIDE: bool = false
-var TUTORIAL_OMISSION_OVERRIDE: bool = false
 
 var system: starSystemAPI:
 	set(value):
@@ -82,6 +80,8 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var help_overlay = $camera/canvas/help_overlay
 @onready var tabs = $camera/canvas/control/tabs_and_ca_scroll/tabs
 @onready var enable_scope_mode_switch = $enable_scope_mode_switch
+@onready var info_popups = $camera/canvas/info_popups
+@onready var tutorial_processor: Node
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -160,6 +160,10 @@ func _physics_process(delta):
 	scan_prediction_upgrade._player_position_matrix = player_position_matrix
 	scan_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME
 	current_action_label._player_position_matrix = player_position_matrix
+	if tutorial_processor != null:
+		tutorial_processor._system = system
+		tutorial_processor._player_position_matrix = player_position_matrix
+	
 	#If body clicked on in system list, follow the body with the camera (follow body).
 	#If body clicked on in system list, actions can itneract with the body (locked body).
 	#If actions pressed, perform on locked body (action body).
@@ -864,12 +868,6 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	for body in system.bodies:
 		if body.is_hidden():
 			continue
-		elif body.get_display_name() == "Ingress":
-			if TUTORIAL_INGRESS_OVERRIDE == true:
-				continue
-		elif body.get_display_name() == "Omission":
-			if TUTORIAL_OMISSION_OVERRIDE == true:
-				continue
 		
 		if Geometry2D.is_point_in_polygon(body.position, points):
 			if body is orbitBodyAPI:
@@ -915,6 +913,7 @@ func async_add_unit_ping(unit: unitBodyAPI) -> void:
 	if unit is AIUnitAPI:
 		if player_position_matrix[0].distance_to(unit.position) < player_adj_scanner_matrix[0]: #distance below profile
 			unit.stun()
+			get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "player_stun_unit")
 	
 	get_tree().call_group("audioHandler", "play_once", LIDAR_bounceback, 0.0, "SFX")
 	pass
@@ -1046,11 +1045,36 @@ func _on_update_current_action_display(_type: playerAPI.ACTION_TYPES, _body: bod
 
 func _on_active_objectives_changed(_active_objectives: Array[objectiveAPI]):
 	view_objective_label._on_active_objectives_changed(_active_objectives)
+	
+	for popup in info_popups.get_children(): #prerttyyy dangerous...
+		popup._on_active_objectives_changed(_active_objectives)
 	pass
 
 func _on_update_scanner_display_times(new_profile_time: float, new_power_time: float) -> void:
 	scanner_profile_time = new_profile_time
 	scanner_power_time = new_power_time
+	pass
+
+func _on_tutorial_ingress_threshold_reached() -> void:
+	emit_signal("tutorialIngressThresholdReached")
+	pass
+
+
+
+func setup_tutorial_processor() -> void:
+	var processor = load("uid://b4lh43qyyit6h").instantiate()
+	add_child(processor)
+	tutorial_processor = processor
+	processor.connect("tutorialIngressThresholdReached", _on_tutorial_ingress_threshold_reached)
+	pass
+
+func setup_tutorial_info_popups() -> void:
+	var tutorial = load("uid://cxd20qjvft4hb").instantiate()
+	for popup in tutorial.get_children():
+		popup.set_owner(null)
+		popup.reparent(info_popups, false)
+		popup.set_owner(info_popups)
+	tutorial.queue_free()
 	pass
 
 

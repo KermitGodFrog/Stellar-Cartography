@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://vckukatyjp27"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgeak"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+border_width_left = 16
+border_width_top = 16
+border_width_right = 16
+border_width_bottom = 16
+border_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0.20906562, 0.20906562, 0.20906562, 0.6)
+shadow_size = 2
+
+[node name="mid_panel_fluid" type="VBoxContainer"]
+offset_right = 32.0
+offset_bottom = 32.0
+
+[node name="mid_panel" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dgeak")

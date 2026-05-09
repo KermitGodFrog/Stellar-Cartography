@@ -123,3 +123,4 @@ script = ExtResource("2_svsgr")
 identifier = 1
 display_name = "tutorial_suno"
 bodies = Array[ExtResource("1_wqt4h")]([SubResource("Resource_2k4rg"), SubResource("Resource_uenxk"), SubResource("Resource_h7vb3"), SubResource("Resource_kf63k"), SubResource("Resource_bk4fa"), SubResource("Resource_g738h")])
+identifier_count = 7

@@ -4,5 +4,4 @@
 
 [resource]
 script = ExtResource("1_y0w4s")
-written_identifier = ""
-objective_wIDs = ["tutorialOptionalBoost", "tutorialDiscoverIngress"]
+objective_wIDs = ["tutorialOptionalManualControl", "tutorialOptionalBoost", "tutorialDiscoverIngress"]

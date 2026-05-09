@@ -202,7 +202,6 @@ layout_mode = 2
 
 [node name="new_game_label" type="Label" parent="new_game_popup/new_game/margin/scroll/actions_hbox"]
 layout_mode = 2
-text = "CREATING NEW GAME"
 
 [node name="new_game_return_button" type="Button" parent="new_game_popup/new_game/margin/scroll/actions_hbox"]
 custom_minimum_size = Vector2(30, 0)

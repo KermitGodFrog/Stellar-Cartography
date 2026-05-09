@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://b8pahjiip8jiw"]
+
+[ext_resource type="Script" uid="uid://c1fp0e13eh3d5" path="res://instantiated-scenes/info-popups/auto_popup.gd" id="1_kxgqv"]
+[ext_resource type="PackedScene" uid="uid://vckukatyjp27" path="res://instantiated-scenes/ui/mid/mid_panel_fluid.tscn" id="2_kxgqv"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="3_sgtkb"]
+[ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="4_hekai"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="5_bl6yd"]
+
+[node name="auto_popup" type="CenterContainer"]
+offset_right = 240.0
+offset_bottom = 40.0
+mouse_filter = 2
+theme = ExtResource("3_sgtkb")
+script = ExtResource("1_kxgqv")
+text_box_path = "./mid_panel_fluid/mid_panel/margin/text"
+
+[node name="mid_panel_fluid" parent="." instance=ExtResource("2_kxgqv")]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="mid_panel" parent="mid_panel_fluid" index="0"]
+self_modulate = Color(1, 1, 1, 0.75000006)
+mouse_filter = 2
+
+[node name="background" type="ColorRect" parent="mid_panel_fluid/mid_panel" index="0"]
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.18039216, 0.18039216, 0.18039216, 0.41568628)
+
+[node name="margin" type="MarginContainer" parent="mid_panel_fluid/mid_panel" index="1"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="text" type="RichTextLabel" parent="mid_panel_fluid/mid_panel/margin"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_fonts/bold_font = ExtResource("4_hekai")
+theme_override_fonts/italics_font = ExtResource("5_bl6yd")
+theme_override_font_sizes/normal_font_size = 12
+theme_override_font_sizes/bold_font_size = 12
+theme_override_font_sizes/bold_italics_font_size = 12
+theme_override_font_sizes/italics_font_size = 12
+theme_override_font_sizes/mono_font_size = 12
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+
+[editable path="mid_panel_fluid"]
