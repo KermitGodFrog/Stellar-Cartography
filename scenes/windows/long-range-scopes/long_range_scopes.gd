@@ -362,16 +362,43 @@ func _on_fov_slider_value_changed(value):
 	target_fov = remap(value, 0, 100, 75, 5)
 	pass
 
+var rot_change_lock: bool = false
 var last_h_rot_value: float = 0.0
 var last_v_rot_value: float = 0.0
 func _on_h_rot_slider_value_changed(value) -> void:
-	last_h_rot_value = value
-	recalculate_camera_rotation()
+	if not rot_change_lock:
+		print("H VALUE CHANGED")
+		last_h_rot_value = value
+		recalculate_camera_rotation()
 	pass
 func _on_v_rot_slider_value_changed(value) -> void:
-	last_v_rot_value = value
-	recalculate_camera_rotation()
+	if not rot_change_lock:
+		print("V VALUE CHANGED")
+		last_v_rot_value = value
+		recalculate_camera_rotation()
 	pass
+func _on_h_rot_slider_drag_started() -> void:
+	print("H DRAG STARTED")
+	var pos = h_rot_slider.get_screen_position()
+	var rect = h_rot_slider.get_global_rect()
+	
+	pos.y += rect.size.y / 2
+	pos.x += remap(last_h_rot_value, -90.0, 90.0, 0.0, 1.0) * rect.size.x
+	
+	rot_change_lock = true
+	Input.warp_mouse(pos)
+	await get_tree().physics_frame
+	rot_change_lock = false
+	h_rot_slider.set_value(last_h_rot_value)
+	pass
+func _on_v_rot_slider_drag_started() -> void:
+	
+	
+	
+	pass
+
+
+
 func recalculate_camera_rotation() -> void:
 	camera.basis = Basis()
 	camera.rotate_object_local(Vector3.DOWN, deg_to_rad(last_h_rot_value))

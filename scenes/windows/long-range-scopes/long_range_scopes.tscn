@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://b0frxj5cysipi"]
+[gd_scene load_steps=35 format=3 uid="uid://b0frxj5cysipi"]
 
 [ext_resource type="Theme" uid="uid://dvp6gmpuweabh" path="res://theme-gen/long-range-scopes/long_range_scopes_MAIN_theme.tres" id="1_njahj"]
 [ext_resource type="Script" uid="uid://cec3e0bhmaoxt" path="res://scenes/windows/long-range-scopes/long_range_scopes.gd" id="1_syfdy"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://cdv8lviwsrhdv" path="res://scenes/windows/long-range-scopes/rangefinder.gd" id="2_rbmww"]
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="3_drepj"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="4_mjqhh"]
+[ext_resource type="Texture2D" uid="uid://bm4yhhssy7mww" path="res://graphics/long-range-scopes/camera_icon.png" id="9_txgyv"]
 [ext_resource type="Environment" uid="uid://d3xo6hd26rjnn" path="res://scenes/windows/long-range-scopes/long_range_scopes_environment.tres" id="9_uncnc"]
 [ext_resource type="Texture2D" uid="uid://ivehqojgwndc" path="res://graphics/long-range-scopes/rotation_icon.png" id="9_vlq3c"]
 [ext_resource type="AudioStream" uid="uid://c4ia3frwfyqim" path="res://sound/long-range-scopes/shutter1.wav" id="10_0oh6i"]
@@ -20,6 +21,12 @@
 [ext_resource type="AudioStream" uid="uid://hri8wjdxrgf5" path="res://sound/long-range-scopes/click3.wav" id="17_olq2m"]
 [ext_resource type="AudioStream" uid="uid://b8xrcplx7vrgi" path="res://sound/long-range-scopes/click4.wav" id="18_5iyy6"]
 [ext_resource type="AudioStream" uid="uid://fybg1yaoioou" path="res://sound/long-range-scopes/click5.wav" id="19_qvp7y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fv023"]
+bg_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j2a2b"]
+bg_color = Color(0.15686275, 0.29411766, 0.3882353, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v3gny"]
 
@@ -44,6 +51,9 @@ skew = Vector2(0.5, 0)
 border_width_top = 5
 border_color = Color(0.203922, 0.227451, 0.25098, 1)
 expand_margin_left = 100.0
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_txgyv"]
+color = Color(0.49803922, 0.49803922, 0.49803922, 1)
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_12p7g"]
 streams_count = 5
@@ -97,7 +107,16 @@ metadata/_tab_index = 0
 [node name="bestiary_list" type="ItemList" parent="split/bestiary/tabs/INDEX"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 8
+theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("3_drepj")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_fv023")
+theme_override_styles/hovered_selected = SubResource("StyleBoxFlat_j2a2b")
+theme_override_styles/hovered_selected_focus = SubResource("StyleBoxFlat_j2a2b")
+theme_override_styles/selected = SubResource("StyleBoxFlat_j2a2b")
+theme_override_styles/selected_focus = SubResource("StyleBoxFlat_j2a2b")
 
 [node name="INFO" type="VBoxContainer" parent="split/bestiary/tabs"]
 custom_minimum_size = Vector2(280, 0)
@@ -268,11 +287,27 @@ offset_right = 200.0
 offset_bottom = 50.0
 grow_vertical = 2
 
-[node name="fov_slider" type="VSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container"]
+[node name="scroll" type="VBoxContainer" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="camera_icon" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/scroll"]
+modulate = Color(0.49803922, 0.49803922, 0.49803922, 1)
+texture_filter = 1
+layout_mode = 2
+texture = ExtResource("9_txgyv")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="fov_slider" type="VSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/scroll"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-tick_count = 3
-ticks_on_borders = true
+ticks_position = 3
+
+[node name="separator" type="HSeparator" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/scroll"]
+layout_mode = 2
+theme_override_constants/separation = 16
+theme_override_styles/separator = SubResource("StyleBoxLine_txgyv")
 
 [node name="h_rot_slider" type="HSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 custom_minimum_size = Vector2(60, 0)
@@ -290,6 +325,8 @@ grow_vertical = 0
 min_value = -90.0
 max_value = 90.0
 step = 0.1
+tick_count = 3
+ticks_position = 3
 
 [node name="v_rot_slider" type="VSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 custom_minimum_size = Vector2(0, 60)
@@ -307,6 +344,8 @@ grow_vertical = 2
 min_value = -90.0
 max_value = 90.0
 step = 0.1
+tick_count = 3
+ticks_position = 3
 
 [node name="rotation_icon" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 modulate = Color(0.49803922, 0.49803922, 0.49803922, 1)
@@ -344,6 +383,8 @@ bus = &"SFX"
 
 [connection signal="close_requested" from="." to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_long_range_scopes_window_close_requested"]
 [connection signal="item_activated" from="split/bestiary/tabs/INDEX/bestiary_list" to="split/bestiary" method="_on_bestiary_list_item_activated"]
-[connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/fov_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_fov_slider_value_changed"]
+[connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/scroll/fov_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_fov_slider_value_changed"]
+[connection signal="drag_started" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/h_rot_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_h_rot_slider_drag_started"]
 [connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/h_rot_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_h_rot_slider_value_changed"]
+[connection signal="drag_started" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/v_rot_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_v_rot_slider_drag_started"]
 [connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/v_rot_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_v_rot_slider_value_changed"]
