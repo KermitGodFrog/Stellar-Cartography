@@ -881,7 +881,7 @@ func generateRandomWeightedShips() -> void:
 		
 	print_rich("[color=RED]UNITS GENERATED: %.f" % _units_generated)
 	pass
-func addRandomWeightedShip(orbiting_body: bodyAPI) -> void:
+func addRandomWeightedShip(orbiting_body: orbitBodyAPI) -> void:
 	randomize()
 	var distribution_y_value = game_data.SHIP_AI_DISTRIBUTION_CURVE.sample(game_data.player_weirdness_index)
 	var wandering: bool = randf() <= distribution_y_value

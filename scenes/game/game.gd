@@ -44,8 +44,8 @@ func _ready():
 		
 		connect_all_player_signals(new_player)
 		
-		var king: starSystemAPI = load("uid://bpnb60fo3ghca")
-		var suno: starSystemAPI = load("uid://bhqtlq0blu17n")
+		var king: starSystemAPI = load("uid://bpnb60fo3ghca").duplicate(true)
+		var suno: starSystemAPI = load("uid://bhqtlq0blu17n").duplicate(true)
 		world.star_systems.append(king)
 		world.star_systems.append(suno)
 		
