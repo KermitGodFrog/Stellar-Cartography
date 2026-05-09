@@ -571,7 +571,7 @@ tutorialPlayerStart,concept: tutorialPlayerStart,"_TUTORIALSetIngressOverride: t
 tutorialPreludeTheorised,"concept: theorisedBody, type: PLANET, name: Prelude, tutorial: true","objectiveSuccess: tutorialMarkPrelude, categoryActive: tutorialPrePreludeOrbit",,,,,,,,
 ,,,,,,,,,,
 tutorialPreludeOrbitingPortal,"concept: orbitingBody, type: PLANET, name: Prelude, tutorial: true",,,,,,tutorialPreludeOrbitingPortalResponse,,,
-tutorialPreludeOrbiting,concept: tutorialPreludeOrbitingPortalResponse,"objectiveSuccess: tutorialDiscoverPrelude, categoryActive: tutorialPrePreludeFollow",,,,,,,,tutorialPreludeOrbitingPREV: true
+tutorialPreludeOrbiting,concept: tutorialPreludeOrbitingPortalResponse,"changeScopeMode: $required_scope_mode, objectiveSuccess: tutorialDiscoverPrelude, categoryActive: tutorialPrePreludeFollow",,,,,,,,tutorialPreludeOrbitingPREV: true
 tutorialPreludeOrbitingCancel,"concept: tutorialPreludeOrbitingPortalResponse, tutorialPreludeOrbitingPREV: true",,,,,,,,,
 ,,,,,,,,,,
 tutorialPreludeFollowingPortal,"concept: followingBody, type: PLANET, name: Prelude, tutorial: true, planetary_anomaly: true, planetary_anomaly_available: true",,,,,,tutorialPreludeFollowingPortalResponse,,,
@@ -582,7 +582,7 @@ tutorialPreludeFollowingPlotCancel,"concept: tutorialPreludeFollowingPortalRespo
 tutorialIngressTheorised,"concept: theorisedBody, type: WORMHOLE, name: Ingress, tutorial: true","_TUTORIALSetOmissionOverride: false, objectiveSuccess: tutorialMarkIngress, categoryActive: tutorialPreIngressOrbit",,,,,,,,
 ,,,,,,,,,,
 tutorialIngressOrbitingPortal,"concept: orbitingBody, type: WORMHOLE, name: Ingress, tutorial: true",,,,,,tutorialIngressOrbitingPortalResponse,,,
-tutorialIngressOrbiting,concept: tutorialIngressOrbitingPortalResponse,"objectiveSuccess: tutorialDiscoverIngress, categoryActive: tutorialPreIngressFollow",,,,,,,,tutorialIngressOrbitingPREV: true
+tutorialIngressOrbiting,concept: tutorialIngressOrbitingPortalResponse,"changeScopeMode: $required_scope_mode, objectiveSuccess: tutorialDiscoverIngress, categoryActive: tutorialPreIngressFollow",,,,,,,,tutorialIngressOrbitingPREV: true
 tutorialIngressOrbitingCancel,"concept: tutorialIngressOrbitingPortalResponse, tutorialIngressOrbitingPREV: true",,,,,,,,,
 ,,,,,,,,,,
 tutorialIngressFollowingPortal,"concept: followingBody, type: WORMHOLE, name: Ingress, tutorial: true",,,,,,tutorialIngressFollowingPortalResponse,,,

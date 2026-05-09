@@ -724,28 +724,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	print_debug("GAME: SWITCHING STAR SYSTEM ", to_system)
 	
 	#this ENSURES that units can follow the player AFTER reload or at any time since _on_switch_star_system is called on both CONTINUE and NEW. unitBodyAPIs must be made *BEFORE* _on_switch_star_system as a result.
-	
-	for unit: unitBodyAPI in to_system.get_units():
-		unit.try_reconnect_signal_callable_pairs()
-		var unit_connections: Dictionary = {
-			unit.followingBody: to_system._on_unit_following_body, 
-			unit.orbitingBody: to_system._on_unit_orbiting_body,
-			unit.play_sound: to_system._on_unit_play_sound,
-		}
-		for s: Signal in unit_connections:
-			if not s.is_connected(unit_connections[s]):
-				s.connect(unit_connections[s].bind(unit))
-	
-	var system_connections: Dictionary = {
-		to_system.unit_following_body: _on_unit_following_body,
-		to_system.unit_orbiting_body: _on_unit_orbiting_body,
-		to_system.unit_play_sound: _on_unit_play_sound,
-		to_system.mine_detonated: _on_mine_detonated,
-		to_system.body_removed: _on_body_removed
-	}
-	for s: Signal in system_connections:
-		if not s.is_connected(system_connections[s]):
-			s.connect(system_connections[s])
+	_on_reconnect_system_signals(to_system)
 	
 	#if world.player.current_star_system:
 		#if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1: #this was the thing throwing TypedArray does not inherit from GDScript errors, so I just removed it.... hopefully ok. does not look important at all
@@ -765,6 +744,30 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	system_map.player_supercharged = world.player.supercharged #also updated when player supercharge_jumps_remaining is updated
 	_on_process_system_hazard(to_system)
 	return to_system
+
+func _on_reconnect_system_signals(system: starSystemAPI) -> void:
+	for unit: unitBodyAPI in system.get_units():
+		unit.try_reconnect_signal_callable_pairs()
+		var unit_connections: Dictionary = {
+			unit.followingBody: system._on_unit_following_body, 
+			unit.orbitingBody: system._on_unit_orbiting_body,
+			unit.play_sound: system._on_unit_play_sound,
+		}
+		for s: Signal in unit_connections:
+			if not s.is_connected(unit_connections[s]):
+				s.connect(unit_connections[s].bind(unit))
+	
+	var system_connections: Dictionary = {
+		system.unit_following_body: _on_unit_following_body,
+		system.unit_orbiting_body: _on_unit_orbiting_body,
+		system.unit_play_sound: _on_unit_play_sound,
+		system.mine_detonated: _on_mine_detonated,
+		system.body_removed: _on_body_removed
+	}
+	for s: Signal in system_connections:
+		if not s.is_connected(system_connections[s]):
+			s.connect(system_connections[s])
+	pass
 
 func _on_process_system_hazard(system: starSystemAPI):
 	#clear prior system hazard utility
@@ -1012,6 +1015,11 @@ func _on_tutorial_enter_ingress(): #override for INGRESS, not a return value so 
 	world.player.setTargetPosition(world.player.position)
 	world.player.updatePosition(get_physics_process_delta_time())
 	
+	#these have to be added BEFORE _on_switch_star_system for signal connections !
+	suno.addRandomWeightedShip(egress)
+	suno.addRandomWeightedShip(suno.get_planets().pick_random())
+	suno.addRandomWeightedShip(suno.get_planets().pick_random())
+	
 	system_map._on_clear_console_entries()
 	_on_switch_star_system(suno)
 	barycenter_visualizer.locked_body_identifier = 0
@@ -1019,10 +1027,6 @@ func _on_tutorial_enter_ingress(): #override for INGRESS, not a return value so 
 	system_map.follow_body = null
 	system_map.locked_body = null
 	system_map.action_body = null
-	
-	suno.addRandomWeightedShip(egress)
-	suno.addRandomWeightedShip(suno.get_random_body())
-	suno.addRandomWeightedShip(suno.get_random_body())
 	
 	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
 	_on_wormhole_minigame_popup()
@@ -1053,6 +1057,8 @@ func _on_tutorial_ingress_threshold_reached() -> void: #comes from system_map no
 	
 	if ingress != null:
 		marauder.position = world.player.position + (world.player.position.direction_to(ingress.position) * (world.player.scanner_profile - 1))
+	
+	_on_reconnect_system_signals(system)
 	
 	get_tree().call_group("objectivesManager", "mark_category", "tutorialPostMarauderAppear", objectiveAPI.STATES.NONE)
 	
