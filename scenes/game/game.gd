@@ -1047,7 +1047,7 @@ func _on_tutorial_ingress_threshold_reached() -> void: #comes from system_map no
 		starSystemAPI.BODY_TYPES.SHIP,
 		system.identifier_count,
 		game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.MARAUDER),
-		2,
+		1,
 		starSystemAPI.get_default_radius_solar_radii(),
 		{"system": system, "player": world.player},
 		{"affiliation": game_data.UNIT_AFFILIATIONS.MARAUDER, "hostile": true, "seed": randi()}
