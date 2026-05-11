@@ -26,7 +26,8 @@ var _REWARD_MATRIX: Array = [] #carried to _on_state_changed
 @onready var camera_offset = $camera_offset
 @onready var no_current_entity_bg = $camera_offset/camera/canvas_layer/no_current_entity_bg
 @onready var photo_texture = $camera_offset/camera/canvas_layer/photo_texture
-@onready var captures_remaining_label = $camera_offset/camera/canvas_layer/captures_remaining_label
+@onready var captures_container = $camera_offset/camera/canvas_layer/captures_container
+@onready var captures_remaining_label = $camera_offset/camera/canvas_layer/captures_container/captures_remaining_label
 @onready var hud = $camera_offset/camera/canvas_layer/hud
 @onready var fov_container = $camera_offset/camera/canvas_layer/fov_container
 @onready var value_label = $camera_offset/camera/canvas_layer/value_label
@@ -129,6 +130,12 @@ func _unhandled_input(event):
 func _physics_process(_delta):
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
 	if current_entity:
+		
+		if current_entity.captures_remaining > 0:
+			captures_remaining_label.set("theme_override_colors/font_color", Color.WHITE)
+		else:
+			captures_remaining_label.set("theme_override_colors/font_color", Color.RED)
+		
 		var first_star = system.get_first_star()
 		if first_star:
 			var star_dir_from_entity = current_entity.position.direction_to(first_star.position)
@@ -278,7 +285,7 @@ func get_average_to_screen_centre_from_points(fixed_positions: PackedVector2Arra
 
 func hide_all_hud_elements() -> void:
 	hud.hide()
-	captures_remaining_label.hide()
+	captures_container.hide()
 	fov_container.hide()
 	value_label.hide()
 	h_rot_slider.hide()
@@ -287,7 +294,7 @@ func hide_all_hud_elements() -> void:
 
 func show_all_hud_elements() -> void:
 	hud.show()
-	captures_remaining_label.show()
+	captures_container.show()
 	fov_container.show()
 	value_label.hide()
 	h_rot_slider.show()
