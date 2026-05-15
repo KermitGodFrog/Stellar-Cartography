@@ -48,11 +48,11 @@ shader = ExtResource("2_oxd33")
 shader_parameter/pixel_size = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1m0fw"]
-bg_color = Color(0.129412, 0.145098, 0.160784, 1)
-skew = Vector2(0.5, 0)
-border_width_top = 5
-border_color = Color(0.203922, 0.227451, 0.25098, 1)
-expand_margin_left = 100.0
+bg_color = Color(0, 0, 0, 1)
+expand_margin_left = 500.0
+expand_margin_top = 500.0
+expand_margin_right = 500.0
+expand_margin_bottom = 500.0
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_txgyv"]
 color = Color(0.49803922, 0.49803922, 0.49803922, 1)
@@ -224,13 +224,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="photo_texture" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="no_current_entity_bg" type="ColorRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -239,8 +232,52 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="hud" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="photo_elements" type="Control" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="photo_scroll" type="HBoxContainer" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/photo_elements"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="value_label" type="Label" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/photo_elements/photo_scroll"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_stretch_ratio = 0.3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.266667, 0.266667, 0.266667, 1)
+theme_override_fonts/font = ExtResource("4_mjqhh")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_1m0fw")
+
+[node name="photo_texture" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/photo_elements/photo_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+expand_mode = 5
+stretch_mode = 5
+
+[node name="hud_elements" type="Control" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="hud" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements"]
 texture_filter = 1
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -250,7 +287,8 @@ texture = ExtResource("2_d3gep")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="captures_container" type="CenterContainer" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="captures_container" type="CenterContainer" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements"]
+layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -260,54 +298,36 @@ offset_right = 20.0
 offset_bottom = 60.0
 grow_horizontal = 2
 
-[node name="captures_background" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/captures_container"]
+[node name="captures_background" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements/captures_container"]
 modulate = Color(0.49803922, 0.49803922, 0.49803922, 1)
 show_behind_parent = true
 layout_mode = 2
 texture = ExtResource("8_fv023")
 stretch_mode = 5
 
-[node name="captures_remaining_label" type="Label" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/captures_container"]
+[node name="captures_remaining_label" type="Label" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements/captures_container"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("8_b035l")
-text = "2"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="value_label" type="Label" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
-visible = false
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -24.5
-offset_right = 164.0
-offset_bottom = 24.5
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0.266667, 0.266667, 0.266667, 1)
-theme_override_fonts/font = ExtResource("4_mjqhh")
-theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("StyleBoxFlat_1m0fw")
-text = "
-"
-vertical_alignment = 1
-
-[node name="fov_container" type="CenterContainer" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="fov_container" type="CenterContainer" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements"]
 custom_minimum_size = Vector2(200, 100)
+layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_top = -50.0
+offset_top = -66.0
 offset_right = 200.0
-offset_bottom = 50.0
+offset_bottom = 66.0
 grow_vertical = 2
 
-[node name="scroll" type="VBoxContainer" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container"]
+[node name="scroll" type="VBoxContainer" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements/fov_container"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="camera_icon" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/scroll"]
+[node name="camera_icon" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements/fov_container/scroll"]
 modulate = Color(0.49803922, 0.49803922, 0.49803922, 1)
 texture_filter = 1
 layout_mode = 2
@@ -315,18 +335,19 @@ texture = ExtResource("9_txgyv")
 expand_mode = 4
 stretch_mode = 5
 
-[node name="fov_slider" type="VSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/scroll"]
+[node name="fov_slider" type="VSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements/fov_container/scroll"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 ticks_position = 3
 
-[node name="separator" type="HSeparator" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/scroll"]
+[node name="separator" type="HSeparator" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements/fov_container/scroll"]
 layout_mode = 2
 theme_override_constants/separation = 16
 theme_override_styles/separator = SubResource("StyleBoxLine_txgyv")
 
-[node name="h_rot_slider" type="HSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="h_rot_slider" type="HSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements"]
 custom_minimum_size = Vector2(60, 0)
+layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -344,8 +365,9 @@ step = 0.1
 tick_count = 3
 ticks_position = 3
 
-[node name="v_rot_slider" type="VSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="v_rot_slider" type="VSlider" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements"]
 custom_minimum_size = Vector2(0, 60)
+layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -363,11 +385,12 @@ step = 0.1
 tick_count = 3
 ticks_position = 3
 
-[node name="rotation_icon" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
+[node name="rotation_icon" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements"]
 modulate = Color(0.49803922, 0.49803922, 0.49803922, 1)
 texture_filter = 1
 texture_repeat = 1
 custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -399,6 +422,6 @@ bus = &"SFX"
 
 [connection signal="close_requested" from="." to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_long_range_scopes_window_close_requested"]
 [connection signal="item_activated" from="split/bestiary/tabs/INDEX/bestiary_list" to="split/bestiary" method="_on_bestiary_list_item_activated"]
-[connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/fov_container/scroll/fov_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_fov_slider_value_changed"]
-[connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/h_rot_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_h_rot_slider_value_changed"]
-[connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/v_rot_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_v_rot_slider_value_changed"]
+[connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements/fov_container/scroll/fov_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_fov_slider_value_changed"]
+[connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements/h_rot_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_h_rot_slider_value_changed"]
+[connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements/v_rot_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_v_rot_slider_value_changed"]

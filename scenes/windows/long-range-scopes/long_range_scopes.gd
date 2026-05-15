@@ -25,18 +25,16 @@ var _REWARD_MATRIX: Array = [] #carried to _on_state_changed
 @onready var camera = $camera_offset/camera
 @onready var camera_offset = $camera_offset
 @onready var no_current_entity_bg = $camera_offset/camera/canvas_layer/no_current_entity_bg
-@onready var photo_texture = $camera_offset/camera/canvas_layer/photo_texture
-@onready var captures_container = $camera_offset/camera/canvas_layer/captures_container
-@onready var captures_remaining_label = $camera_offset/camera/canvas_layer/captures_container/captures_remaining_label
-@onready var hud = $camera_offset/camera/canvas_layer/hud
-@onready var fov_container = $camera_offset/camera/canvas_layer/fov_container
-@onready var value_label = $camera_offset/camera/canvas_layer/value_label
+@onready var photo_texture = $camera_offset/camera/canvas_layer/photo_elements/photo_scroll/photo_texture #
+@onready var captures_remaining_label = $camera_offset/camera/canvas_layer/hud_elements/captures_container/captures_remaining_label #
+@onready var hud = $camera_offset/camera/canvas_layer/hud_elements/hud #
+@onready var value_label = $camera_offset/camera/canvas_layer/photo_elements/photo_scroll/value_label #
 @onready var rangefinder = $camera_offset/camera/canvas_layer/rangefinder
 @onready var shutter = $shutter
 @onready var click = $click
 @onready var world_environment = $world_environment
-@onready var h_rot_slider = $camera_offset/camera/canvas_layer/h_rot_slider
-@onready var v_rot_slider = $camera_offset/camera/canvas_layer/v_rot_slider
+@onready var hud_elements = $camera_offset/camera/canvas_layer/hud_elements # 
+@onready var photo_elements = $camera_offset/camera/canvas_layer/photo_elements #
 
 var GENERATION_POSITIONS: PackedVector3Array = []
 var REVERSE_GENERATION_POSITIONS: PackedVector3Array = []
@@ -88,6 +86,10 @@ func _unhandled_input(event):
 		if current_entity: if current_entity.captures_remaining > 0:
 			current_entity.remove_captures_remaining(1)
 			captures_remaining_label.text = str(current_entity.captures_remaining)
+			if current_entity.captures_remaining > 0:
+				captures_remaining_label.set("theme_override_colors/font_color", Color.WHITE)
+			else:
+				captures_remaining_label.set("theme_override_colors/font_color", Color.RED)
 			
 			var photo_total_value: int = 0
 			var photo_total_size_reward: int = 0
@@ -130,12 +132,6 @@ func _unhandled_input(event):
 func _physics_process(_delta):
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
 	if current_entity:
-		
-		if current_entity.captures_remaining > 0:
-			captures_remaining_label.set("theme_override_colors/font_color", Color.WHITE)
-		else:
-			captures_remaining_label.set("theme_override_colors/font_color", Color.RED)
-		
 		var first_star = system.get_first_star()
 		if first_star:
 			var star_dir_from_entity = current_entity.position.direction_to(first_star.position)
@@ -284,22 +280,21 @@ func get_average_to_screen_centre_from_points(fixed_positions: PackedVector2Arra
 
 
 func hide_all_hud_elements() -> void:
-	hud.hide()
-	captures_container.hide()
-	fov_container.hide()
-	value_label.hide()
-	h_rot_slider.hide()
-	v_rot_slider.hide()
+	hud_elements.hide()
 	pass
 
 func show_all_hud_elements() -> void:
-	hud.show()
-	captures_container.show()
-	fov_container.show()
-	value_label.hide()
-	h_rot_slider.show()
-	v_rot_slider.show()
+	hud_elements.show()
 	pass
+
+func hide_all_photo_elements() -> void:
+	photo_elements.hide()
+	pass
+
+func show_all_photo_elements() -> void:
+	photo_elements.show()
+	pass
+
 
 func set_state(new_state: STATES):
 	if STATE_CHANGE_LOCK == false:
@@ -316,6 +311,7 @@ func _on_state_changed(new_state: STATES):
 			click.play()
 			
 			photo_texture.texture = null
+			hide_all_photo_elements()
 			show_all_hud_elements()
 			
 			hud.set_texture(hud_release)
@@ -325,11 +321,13 @@ func _on_state_changed(new_state: STATES):
 		STATES.DISPLAY_PHOTO:
 			shutter.play()
 			
+			show_all_photo_elements()
 			hide_all_hud_elements()
+			value_label.hide()
 			
 			await RenderingServer.frame_post_draw
 			var image: Image = camera.get_viewport().get_texture().get_image()
-			#image.save_png("Debug/test.png")
+			#image.save_png("test.png")
 			var image_texture: ImageTexture = ImageTexture.create_from_image(image)
 			photo_texture.texture = image_texture
 			
@@ -340,7 +338,9 @@ func _on_state_changed(new_state: STATES):
 			rangefinder.draw_rangefinder(_DRAW_MATRICIES)
 			await RenderingServer.frame_post_draw
 			
+			show_all_photo_elements()
 			hide_all_hud_elements()
+			value_label.hide()
 			
 			await RenderingServer.frame_post_draw
 			var image: Image = camera.get_viewport().get_texture().get_image()
