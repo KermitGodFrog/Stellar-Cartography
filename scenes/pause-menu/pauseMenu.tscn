@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://cu8n2e53bgc37"]
+[gd_scene load_steps=14 format=3 uid="uid://cu8n2e53bgc37"]
 
 [ext_resource type="Script" uid="uid://bo10h285vqmij" path="res://scenes/pause-menu/pauseMenu.gd" id="1_u73yd"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="2_r6vbf"]
 [ext_resource type="Texture2D" uid="uid://wj8xwuug1m0o" path="res://graphics/misc/tree_arrow.png" id="3_0rvr6"]
 [ext_resource type="Script" uid="uid://dm5vhmppi3dol" path="res://scenes/pause-menu/objectives-panel/objectives_panel.gd" id="3_77jva"]
+[ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="5_0rvr6"]
+[ext_resource type="Script" uid="uid://ekr38cekwwve" path="res://scenes/pause-menu/quick_pause_label.gd" id="6_3odcv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yykag"]
 bg_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
@@ -36,6 +38,19 @@ bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
 skew = Vector2(-0.2, 0)
 expand_margin_left = 10.0
 expand_margin_right = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41u1c"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 75
+border_width_top = 75
+border_width_right = 75
+border_width_bottom = 75
+border_color = Color(0, 0, 0, 0)
+border_blend = true
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
 
 [node name="pauseMenu" type="Node"]
 process_mode = 2
@@ -151,6 +166,38 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="quick_pause_canvas" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="quick_pause_control" type="Control" parent="quick_pause_canvas"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_r6vbf")
+
+[node name="quick_pause_label" type="Label" parent="quick_pause_canvas/quick_pause_control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -178.0
+offset_top = 100.0
+offset_right = 178.0
+offset_bottom = 123.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_0rvr6")
+theme_override_styles/normal = SubResource("StyleBoxFlat_41u1c")
+text = "PAUSED - PRESS [KEY_SPACE] TO UNPAUSE"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("6_3odcv")
+
 [node name="unpause_possible_timer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
@@ -161,4 +208,5 @@ one_shot = true
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/save_and_quit_button" to="." method="_on_save_and_quit_button_pressed"]
 [connection signal="pressed" from="pause_canvas/pause_control/pause_scroll/exit_button" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="pause_canvas/pause_control/console_cover_panel/scroll/fullscreen_button" to="." method="_on_objectives_fullscreen_button_pressed"]
+[connection signal="visibility_changed" from="quick_pause_canvas/quick_pause_control/quick_pause_label" to="quick_pause_canvas/quick_pause_control/quick_pause_label" method="_on_visibility_changed"]
 [connection signal="timeout" from="unpause_possible_timer" to="." method="_on_unpause_possible_timer_timeout"]

@@ -1,6 +1,6 @@
 extends Node
 #used mostly to trigger objectives. just takes in a whole lot of updates which would be too expensive/too often to pass through dialogueManager and responds to em
-#game.gd not allowed to use speak() <<<<<< IMPORTANT !!!!
+#game.gd not allowed to use speak() <<<<<< IMPORTANT !!!! (lol it uses it for pause_menu_show but no others - pause_mode_show is just its territory tho so idk)
 #incoming_wIDs must be in the present tense >>>> [name][state]
 #must be called with flags and subsequently UNIQUE and DEFERRED
 #cannot be called every frame nontheless
@@ -24,6 +24,8 @@ signal markObjective(_wID: String, _state: objectiveAPI.STATES)
 #scopes_fov_change
 #hull_stress_status_hover
 #scope_mode_switch
+#pause_menu_show
+#info_popup_close_press
 
 var init_type: int #FROM GLOBAL DATA INIT TYPES
 
@@ -56,6 +58,14 @@ func process_tutorial_event(_calling: Node, incoming_wID: String, _incoming_valu
 			emit_signal("markObjective", "tutorialOptionalCheckStress", objectiveAPI.STATES.SUCCESS)
 		"scope_mode_switch":
 			emit_signal("markObjective", "tutorialOptionalScopeMode", objectiveAPI.STATES.SUCCESS)
+		"pause_menu_show":
+			emit_signal("markObjective", "tutorialOptionalViewObjectives", objectiveAPI.STATES.SUCCESS)
+		"player_stun_unit":
+			emit_signal("markObjective", "tutorialOptionalStunMarauder", objectiveAPI.STATES.SUCCESS)
+		"info_popup_close_press":
+			match _incoming_value: #not all info popup close presses should instantly complete objectives
+				"tutorialOptionalUnderstandPremise", "tutorialOptionalUnderstandUnits":
+					emit_signal("markObjective", _incoming_value, objectiveAPI.STATES.SUCCESS)
 	pass
 
 func process_campaign_event(_calling: Node, _incoming_wID: String, _incoming_value: Variant = null) -> void:

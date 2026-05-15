@@ -7,15 +7,49 @@
    viewBox="0 0 423.33333 238.125"
    version="1.1"
    id="svg1"
+   sodipodi:docname="inkspace_top_panel_16_9.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="0.29898308"
+     inkscape:cx="526.78567"
+     inkscape:cy="267.57367"
+     inkscape:window-width="1512"
+     inkscape:window-height="839"
+     inkscape:window-x="0"
+     inkscape:window-y="38"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="423.33334"
+       height="238.125"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
   <defs
      id="defs1" />
   <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
      id="layer1">
     <path
        id="path1"
-       style="fill:#262626;fill-opacity:1;stroke-width:0.269544"
+       style="fill:#c3918e;fill-opacity:1;stroke-width:0.269544"
        d="M 4.2333333,4.2333333 V 233.89167 H 419.1 V 4.2333333 Z M 8.4666666,8.4666666 H 414.86667 V 229.65833 H 8.4666666 Z" />
   </g>
 </svg>

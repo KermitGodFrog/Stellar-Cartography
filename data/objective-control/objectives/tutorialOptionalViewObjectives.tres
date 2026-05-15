@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="objectiveAPI" load_steps=2 format=3 uid="uid://bvnfvvuq5oy22"]
+
+[ext_resource type="Script" uid="uid://cxmuiuh6uokvl" path="res://data/objective-control/objectiveAPI.gd" id="1_7r04q"]
+
+[resource]
+script = ExtResource("1_7r04q")
+title = "(Optional) View Objectives"
+description = "Press $SC_PAUSE to pause the game and view the OBJECTIVES LIST in the top right-hand corner of the screen. Press the popout button at the top of the OBJECTIVES LIST to enter fullscreen mode."
+metadata/_custom_type_script = "uid://cxmuiuh6uokvl"

@@ -44,8 +44,8 @@ func _ready():
 		
 		connect_all_player_signals(new_player)
 		
-		var king: starSystemAPI = load("uid://bpnb60fo3ghca")
-		var suno: starSystemAPI = load("uid://bhqtlq0blu17n")
+		var king: starSystemAPI = load("uid://bpnb60fo3ghca").duplicate(true)
+		var suno: starSystemAPI = load("uid://bhqtlq0blu17n").duplicate(true)
 		world.star_systems.append(king)
 		world.star_systems.append(suno)
 		
@@ -64,6 +64,9 @@ func _ready():
 		objectives_manager.start_receive_init_type(init_type)
 		
 		await get_tree().create_timer(1.0, true).timeout
+		
+		system_map.setup_tutorial_processor()
+		system_map.setup_tutorial_info_popups()
 		
 		var new_query = responseQuery.new()
 		new_query.add("concept", "tutorialPlayerStart")
@@ -150,6 +153,7 @@ func connect_all_signals() -> void:
 	system_map.connect("playerInPulsarBeamCooldownExpired", _on_player_in_pulsar_beam_cooldown_expired)
 	system_map.connect("toggleScopeModeSwitchButton", _on_toggle_scope_mode_switch_button)
 	system_map.connect("openPauseMenu", _on_open_pause_menu)
+	system_map.connect("tutorialIngressThresholdReached", _on_tutorial_ingress_threshold_reached)
 	
 	system_3d.connect("foundBody", _on_found_body)
 	system_3d.connect("addConsoleEntry", _on_add_console_entry)
@@ -274,6 +278,7 @@ func _physics_process(delta):
 		_on_add_player_hull_stress(world.player.hull_stress_mine)
 	
 	#updating positions of everyhthing for windows
+	pause_mode_handler.set("world", world)
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_map.set("_player_status_matrix", [world.player.balance, world.player.hull_stress, world.player.hull_deterioration, world.player.morale])
 	system_map.set("player_adj_scanner_matrix", [world.player.get_adjusted_scanner_profile(), world.player.get_adjusted_scanner_power()])
@@ -293,7 +298,10 @@ func _physics_process(delta):
 	game_data.player_weirdness_index = world.player.weirdness_index #really hacky solution which should not have been done this way but im too tired to change the entire game now to accomodate it.
 	
 	if Input.is_action_just_pressed("SC_PAUSE"):
-		_on_open_pause_menu() #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
+		_on_open_pause_menu(true) #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
+		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "pause_menu_show")
+	elif Input.is_action_just_pressed("SC_QUICK_PAUSE"):
+		_on_open_pause_menu(false)
 	
 	#ultra miscellanious:
 	_on_update_countdown_overlay_shown(countdown_processor != null)
@@ -716,28 +724,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	print_debug("GAME: SWITCHING STAR SYSTEM ", to_system)
 	
 	#this ENSURES that units can follow the player AFTER reload or at any time since _on_switch_star_system is called on both CONTINUE and NEW. unitBodyAPIs must be made *BEFORE* _on_switch_star_system as a result.
-	
-	for unit: unitBodyAPI in to_system.get_units():
-		unit.try_reconnect_signal_callable_pairs()
-		var unit_connections: Dictionary = {
-			unit.followingBody: to_system._on_unit_following_body, 
-			unit.orbitingBody: to_system._on_unit_orbiting_body,
-			unit.play_sound: to_system._on_unit_play_sound,
-		}
-		for s: Signal in unit_connections:
-			if not s.is_connected(unit_connections[s]):
-				s.connect(unit_connections[s].bind(unit))
-	
-	var system_connections: Dictionary = {
-		to_system.unit_following_body: _on_unit_following_body,
-		to_system.unit_orbiting_body: _on_unit_orbiting_body,
-		to_system.unit_play_sound: _on_unit_play_sound,
-		to_system.mine_detonated: _on_mine_detonated,
-		to_system.body_removed: _on_body_removed
-	}
-	for s: Signal in system_connections:
-		if not s.is_connected(system_connections[s]):
-			s.connect(system_connections[s])
+	_on_reconnect_system_signals(to_system)
 	
 	#if world.player.current_star_system:
 		#if world.player.current_star_system.bodies.find(audio_visualizer.current_audio_profile) != -1: #this was the thing throwing TypedArray does not inherit from GDScript errors, so I just removed it.... hopefully ok. does not look important at all
@@ -757,6 +744,30 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	system_map.player_supercharged = world.player.supercharged #also updated when player supercharge_jumps_remaining is updated
 	_on_process_system_hazard(to_system)
 	return to_system
+
+func _on_reconnect_system_signals(system: starSystemAPI) -> void:
+	for unit: unitBodyAPI in system.get_units():
+		unit.try_reconnect_signal_callable_pairs()
+		var unit_connections: Dictionary = {
+			unit.followingBody: system._on_unit_following_body, 
+			unit.orbitingBody: system._on_unit_orbiting_body,
+			unit.play_sound: system._on_unit_play_sound,
+		}
+		for s: Signal in unit_connections:
+			if not s.is_connected(unit_connections[s]):
+				s.connect(unit_connections[s].bind(unit))
+	
+	var system_connections: Dictionary = {
+		system.unit_following_body: _on_unit_following_body,
+		system.unit_orbiting_body: _on_unit_orbiting_body,
+		system.unit_play_sound: _on_unit_play_sound,
+		system.mine_detonated: _on_mine_detonated,
+		system.body_removed: _on_body_removed
+	}
+	for s: Signal in system_connections:
+		if not s.is_connected(system_connections[s]):
+			s.connect(system_connections[s])
+	pass
 
 func _on_process_system_hazard(system: starSystemAPI):
 	#clear prior system hazard utility
@@ -943,8 +954,9 @@ func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int
 	station_ui.player_hull_stress = world.player.hull_stress
 	pass
 
-func _on_open_pause_menu():
-	pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.PAUSE_MENU)
+func _on_open_pause_menu(full_pause: bool = true):
+	if full_pause: pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.PAUSE_MENU)
+	else: pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.QUICK_PAUSE)
 	pass
 
 func _on_open_stats_menu(_init_type: int): #init type is from statsMenu INIT_TYPES
@@ -973,15 +985,15 @@ func _on_theorised_body(id: int):
 	pass
 
 func _on_tutorial_set_ingress_override(value: bool):
-	barycenter_visualizer.TUTORIAL_INGRESS_OVERRIDE = value
-	system_3d.TUTORIAL_INGRESS_OVERRIDE = value
-	system_map.TUTORIAL_INGRESS_OVERRIDE = value
+	var ingress = world.player.current_star_system.get_first_body_from_display_name("Ingress")
+	if ingress != null:
+		ingress.hidden = value
 	pass
 
 func _on_tutorial_set_omission_override(value: bool):
-	barycenter_visualizer.TUTORIAL_OMISSION_OVERRIDE = value
-	system_3d.TUTORIAL_OMISSION_OVERRIDE = value
-	system_map.TUTORIAL_OMISSION_OVERRIDE = value
+	var omission = world.player.current_star_system.get_first_body_from_display_name("Omission")
+	if omission != null:
+		omission.hidden = value
 	pass
 
 func _on_tutorial_player_win():
@@ -1003,6 +1015,11 @@ func _on_tutorial_enter_ingress(): #override for INGRESS, not a return value so 
 	world.player.setTargetPosition(world.player.position)
 	world.player.updatePosition(get_physics_process_delta_time())
 	
+	#these have to be added BEFORE _on_switch_star_system for signal connections !
+	suno.addRandomWeightedShip(egress)
+	suno.addRandomWeightedShip(suno.get_planets().pick_random())
+	suno.addRandomWeightedShip(suno.get_planets().pick_random())
+	
 	system_map._on_clear_console_entries()
 	_on_switch_star_system(suno)
 	barycenter_visualizer.locked_body_identifier = 0
@@ -1021,6 +1038,34 @@ func _on_tutorial_set_window_tutorials(value: bool):
 	wormhole_minigame._on_set_tutorial_visible(value)
 	pass
 
+func _on_tutorial_ingress_threshold_reached() -> void: #comes from system_map not dialogueManager! only _on_tutorial exception cos couldnt do it otherwise
+	print("INGRESS THRESHOLD REACHED")
+	var system = world.player.current_star_system
+	var id = system.addUnitBody(
+		interceptingUnitAPI.new(),
+		starSystemAPI.BODY_TYPES.SHIP,
+		system.identifier_count,
+		game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.MARAUDER),
+		1,
+		starSystemAPI.get_default_radius_solar_radii(),
+		{"system": system, "player": world.player},
+		{"affiliation": game_data.UNIT_AFFILIATIONS.MARAUDER, "hostile": true, "seed": randi()}
+	)
+	
+	var marauder = system.get_body_from_identifier(id)
+	var ingress = system.get_first_body_from_display_name("Ingress")
+	
+	if ingress != null:
+		marauder.position = world.player.position + (world.player.position.direction_to(ingress.position) * (world.player.scanner_profile - 1))
+	
+	_on_reconnect_system_signals(system)
+	
+	get_tree().call_group("objectivesManager", "mark_category", "tutorialPostMarauderAppear", objectiveAPI.STATES.NONE)
+	
+	await get_tree().physics_frame
+	_on_open_pause_menu(false)
+	pass
+
 func _on_add_player_morale(amount : int) -> void:
 	world.player.addMorale(amount)
 	pass
@@ -1030,12 +1075,31 @@ func _on_remove_player_morale(amount : int) -> void:
 	pass
 
 func _on_stats_menu_quit(_init_type: int) -> void:
+	if FileAccess.file_exists("user://stellar_cartographer_history.csv"):
+		write_history(_init_type, FileAccess.ModeFlags.READ_WRITE)
+	else:
+		write_history(_init_type, FileAccess.ModeFlags.WRITE)
+	
 	match _init_type:
 		stats_menu.INIT_TYPES.TUTORIAL:
 			global_data.change_scene.emit("res://scenes/main-menu/main_menu.tscn")
 		_:
 			global_data.change_scene.emit("res://scenes/main-menu/main_menu.tscn") #WIN, DEATH
 			game_data.deleteWorld()
+	pass
+func write_history(_init_type: int, mode: FileAccess.ModeFlags) -> void:
+	var history = FileAccess.open("user://stellar_cartographer_history.csv", mode)
+	history.seek_end()
+	history.store_csv_line(PackedStringArray([
+		ProjectSettings.get_setting("application/config/version"),
+		world.player.name, 
+		world.player.ship_name, 
+		world.player.total_score, 
+		world.player.systems_traversed, 
+		stats_menu.INIT_TYPES.find_key(_init_type),
+		roundi(world.play_time)
+	]))
+	history.close()
 	pass
 
 func _on_player_data_value_changed(new_value: int):

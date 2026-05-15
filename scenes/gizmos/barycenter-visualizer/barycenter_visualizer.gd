@@ -2,9 +2,6 @@ extends Control
 
 @onready var locked_body_label = $locked_body_label
 
-var TUTORIAL_INGRESS_OVERRIDE: bool = false
-var TUTORIAL_OMISSION_OVERRIDE: bool = false
-
 var system: starSystemAPI
 var locked_body_identifier: int:
 	set(value):
@@ -47,15 +44,8 @@ func _on_refresh_timeout() -> void:
 func generate_new_point_weights(for_locked_body : bodyAPI) -> void:
 	for body in system.bodies:
 		if body is circularBodyAPI and body.get_identifier() != locked_body_identifier:
-			
 			if body.is_hidden():
 				continue
-			elif body.get_display_name() == "Omission":
-				if TUTORIAL_OMISSION_OVERRIDE == true:
-					continue
-			elif body.get_display_name() == "Ingress":
-				if TUTORIAL_INGRESS_OVERRIDE == true:
-					continue
 			
 			var dir = for_locked_body.position.direction_to(body.position)
 			var dist = for_locked_body.position.distance_to(body.position)

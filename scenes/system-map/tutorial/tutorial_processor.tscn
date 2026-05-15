@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4lh43qyyit6h"]
+
+[ext_resource type="Script" uid="uid://3phqopqfdjqi" path="res://scenes/system-map/tutorial/tutorial_processor.gd" id="1_iogg5"]
+
+[node name="tutorial_processor" type="Node"]
+script = ExtResource("1_iogg5")

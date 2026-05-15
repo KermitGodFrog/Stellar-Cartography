@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctmbvx27mkjjb"]
+
+[ext_resource type="Texture2D" uid="uid://dk5v31xquuiky" path="res://graphics/ui/mid_panel_1_1.svg" id="1_yxfdy"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3fhbr"]
+texture = ExtResource("1_yxfdy")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+
+[node name="mid_panel_1_1" type="AspectRatioContainer"]
+offset_right = 64.0
+offset_bottom = 64.0
+stretch_mode = 3
+
+[node name="mid_panel" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3fhbr")

@@ -83,3 +83,4 @@ radius = 0.005
 script = ExtResource("4_762sj")
 display_name = "tutorial_king"
 bodies = Array[ExtResource("1_5t5jn")]([SubResource("Resource_ne0u5"), SubResource("Resource_pkjv2"), SubResource("Resource_lw4hu"), SubResource("Resource_wvc64")])
+identifier_count = 5

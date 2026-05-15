@@ -835,6 +835,15 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "system map"
 
+[node name="info_popups" type="Control" parent="system/camera/canvas"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
 [node name="scan_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
 show_behind_parent = true
 script = ExtResource("31_k5t5q")
