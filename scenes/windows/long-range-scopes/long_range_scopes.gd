@@ -100,6 +100,7 @@ func _unhandled_input(event):
 				var photo_total_distance_reward: int = 0
 				var photo_total_posing_reward: int = 0
 				var photo_total_characteristics_reward: int = 0
+				var photo_duplicate_reward: int = 0
 				
 				for prop in get_tree().get_nodes_in_group("long_range_scopes_prop"):
 					if get_viewport().get_camera_3d().is_position_in_frustum(prop.transform.origin):
@@ -109,7 +110,7 @@ func _unhandled_input(event):
 						var vertical_size: int = get_vertical_size_from_points(projected_positions)
 						var avg_distance_from_centre: int = get_average_to_screen_centre_from_points(fixed_positions)
 						
-						var is_posing: bool = prop.is_posing()
+						var posing: bool = prop.is_posing()
 						
 						var vertical_size_remapped = remap(vertical_size, 0, 800, 0, 1)
 						var distance_remapped = remap(avg_distance_from_centre, 0, 400, 0, 1)
@@ -120,7 +121,7 @@ func _unhandled_input(event):
 						
 						if vertical_size <= 800: vertical_size_reward = int(prop.size_reward_curve.sample(vertical_size_remapped))
 						if avg_distance_from_centre <= 400: distance_reward = int(prop.distance_reward_curve.sample(distance_remapped) * vertical_size_remapped)
-						if is_posing: posing_reward = distance_reward + vertical_size_reward
+						if posing: posing_reward = distance_reward + vertical_size_reward
 						
 						photo_total_value += vertical_size_reward + distance_reward + posing_reward + characteristics_reward
 						photo_total_size_reward += vertical_size_reward
@@ -128,14 +129,29 @@ func _unhandled_input(event):
 						photo_total_posing_reward += posing_reward
 						photo_total_characteristics_reward += characteristics_reward
 				
+				var duplicate_composition: bool = false
+				for i in current_entity.prev_photo_bases.size():
+					var photo_basis = current_entity.prev_photo_bases[i]
+					var photo_fov = current_entity.prev_photo_fovs[i]
+					
+					if camera.transform.basis == photo_basis:
+						if (photo_fov - target_fov) <= 2.5:
+							duplicate_composition = true
+							break
+				
+				if duplicate_composition:
+					photo_duplicate_reward = -(photo_total_value * 0.6)
+					photo_total_value += photo_duplicate_reward
+				
 				emit_signal("addPlayerValue", photo_total_value)
-				_REWARD_MATRIX = [photo_total_size_reward, photo_total_distance_reward, photo_total_posing_reward, photo_total_characteristics_reward, photo_total_value]
+				_REWARD_MATRIX = [photo_total_size_reward, photo_total_distance_reward, photo_total_posing_reward, photo_total_characteristics_reward, photo_duplicate_reward, photo_total_value]
 				set_state(STATES.DISPLAY_PHOTO)
+				
+				current_entity.prev_photo_bases.append(camera.transform.basis)
+				current_entity.prev_photo_fovs.append(target_fov)
 	pass
 
 func _physics_process(_delta):
-	#print(STATE_CHANGE_LOCK)
-	print(current_state)
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
 	if current_entity:
 		var first_star = system.get_first_star()
@@ -361,7 +377,12 @@ func _on_state_changed(new_state: STATES):
 
 func _on_state_display_photo_advance() -> void:
 	if current_state == STATES.DISPLAY_PHOTO:
-		value_label.set_text("Size of subject(s): %s\nFraming of subject(s): %s\nPosing of subject(s): %s\nCharacteristics of subject(s): %s\nTotal photo value: %s\n\nPRESS ANY >>>" % _REWARD_MATRIX)
+		if not _REWARD_MATRIX.is_empty():
+			if _REWARD_MATRIX[4] == 0: #no photo_duplicate_reward
+				_REWARD_MATRIX.remove_at(4)
+				value_label.set_text("Size of subject(s): %s\nFraming of subject(s): %s\nPosing of subject(s): %s\nCharacteristics of subject(s): %s\nTotal photo value: %s\n\nPRESS ANY >>>" % _REWARD_MATRIX)
+			else:
+				value_label.set_text("Size of subject(s): %s\nFraming of subject(s): %s\nPosing of subject(s): %s\nCharacteristics of subject(s): %s\n\n!!! DUPLICATE COMPOSITION: %s\n\nTotal photo value: %s\n\nPRESS ANY >>>" % _REWARD_MATRIX)
 		value_label.show()
 	pass
 
