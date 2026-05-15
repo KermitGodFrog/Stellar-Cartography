@@ -7,6 +7,12 @@ class_name entityBodyAPI
 var stored_generation_positions: PackedVector3Array = []
 var stored_generation_basis: Basis
 
+var prev_photo_bases: Array[Basis] = []
+var prev_photo_fovs: Array[float] = []
+
+
+
+
 func remove_captures_remaining(amount: int):
 	captures_remaining = maxi(0, captures_remaining - amount)
 	pass

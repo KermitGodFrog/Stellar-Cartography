@@ -1,9 +1,6 @@
 extends PanelContainer
 
-var discovered_entities_matrix: PackedInt32Array = []:
-	set(value):
-		discovered_entities_matrix = value
-		_on_discovered_entities_matrix_changed(value)
+var discovered_entities_matrix: PackedInt32Array = []
 
 var current_entity : entityBodyAPI = null
 
@@ -36,6 +33,7 @@ func update_bestiary_list(_discovered_entities_matrix: PackedInt32Array = []):
 	for classification in _discovered_entities_matrix:
 		var new = bestiary_list.add_item(game_data.ENTITY_CLASSIFICATIONS.find_key(classification).capitalize())
 		bestiary_list.set_item_metadata(new, classification)
+		bestiary_list.set_item_icon(new, game_data.get_entity_frame(classification))
 	pass
 
 func update_info(for_classification: game_data.ENTITY_CLASSIFICATIONS):
@@ -53,12 +51,8 @@ func update_info(for_classification: game_data.ENTITY_CLASSIFICATIONS):
 			info_reward_widgets_list.add_item(widget)
 	pass
 
-func _on_bestiary_list_item_activated(index):
+func _on_bestiary_list_item_selected(index: int) -> void:
 	var classification = bestiary_list.get_item_metadata(index)
 	update_info(classification)
 	tabs.set_current_tab(1) #info
-	pass
-
-func _on_discovered_entities_matrix_changed(value):
-	update_bestiary_list(value)
 	pass

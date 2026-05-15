@@ -290,7 +290,6 @@ func _physics_process(delta):
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
-	lrs_bestiary.set("discovered_entities_matrix", world.player.discovered_entities)
 	gas_layer_surveyor.set("_discovered_gas_layers_matrix", world.player.discovered_gas_layers)
 	
 	audio_handler.enable_music_criteria["audio_visualizer_not_visible"] = !$audio_visualizer_window.is_visible()
@@ -1297,9 +1296,12 @@ func _on_open_LRS():
 	var following_body = world.player.action_body #should be set as playerAPI setting action_body calls _on_player_following_body, which calls dialogue, which calls this.
 	if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) == true:
 		long_range_scopes._on_current_entity_changed(following_body)
-		lrs_bestiary._on_current_entity_changed(following_body)
+		
 		if world.player.discovered_entities.find(following_body.entity_classification) == -1:
 			world.player.discovered_entities.append(following_body.entity_classification)
+		lrs_bestiary.set("discovered_entities_matrix", world.player.discovered_entities)
+		lrs_bestiary._on_current_entity_changed(following_body)
+		
 		if not $long_range_scopes_window.is_visible():
 			_on_long_range_scopes_popup()
 	pass

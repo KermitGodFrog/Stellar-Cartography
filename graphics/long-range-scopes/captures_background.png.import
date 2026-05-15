@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2l8jru3uvove"
-path="res://.godot/imported/module_tutorial_lrs_view_boundary_example.png-0ecad9ad9d5b803c7ab5388d25ddf043.ctex"
+uid="uid://c0olyufuaaty7"
+path="res://.godot/imported/captures_background.png-9ad0dc0231df0dce6d8117cd4744b194.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/objective/module_tutorial_lrs_view_boundary_example.png"
-dest_files=["res://.godot/imported/module_tutorial_lrs_view_boundary_example.png-0ecad9ad9d5b803c7ab5388d25ddf043.ctex"]
+source_file="res://graphics/long-range-scopes/captures_background.png"
+dest_files=["res://.godot/imported/captures_background.png-9ad0dc0231df0dce6d8117cd4744b194.ctex"]
 
 [params]
 

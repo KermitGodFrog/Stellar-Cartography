@@ -25,20 +25,21 @@ var _REWARD_MATRIX: Array = [] #carried to _on_state_changed
 @onready var camera = $camera_offset/camera
 @onready var camera_offset = $camera_offset
 @onready var no_current_entity_bg = $camera_offset/camera/canvas_layer/no_current_entity_bg
-@onready var photo_texture = $camera_offset/camera/canvas_layer/photo_texture
-@onready var captures_remaining_label = $camera_offset/camera/canvas_layer/captures_remaining_label
-@onready var hud = $camera_offset/camera/canvas_layer/hud
-@onready var fov_container = $camera_offset/camera/canvas_layer/fov_container
-@onready var value_label = $camera_offset/camera/canvas_layer/value_label
+@onready var photo_texture = $camera_offset/camera/canvas_layer/photo_elements/photo_scroll/photo_texture #
+@onready var captures_remaining_label = $camera_offset/camera/canvas_layer/hud_elements/captures_container/captures_remaining_label #
+@onready var hud = $camera_offset/camera/canvas_layer/hud_elements/hud #
+@onready var value_label = $camera_offset/camera/canvas_layer/photo_elements/photo_scroll/value_label #
 @onready var rangefinder = $camera_offset/camera/canvas_layer/rangefinder
 @onready var shutter = $shutter
 @onready var click = $click
+@onready var world_environment = $world_environment
+@onready var hud_elements = $camera_offset/camera/canvas_layer/hud_elements # 
+@onready var photo_elements = $camera_offset/camera/canvas_layer/photo_elements #
 
 var GENERATION_POSITIONS: PackedVector3Array = []
 var REVERSE_GENERATION_POSITIONS: PackedVector3Array = []
 var GENERATION_BASIS: Basis
 const GENERATION_POSITION_ITERATIONS = 30
-const CAMERA_ROTATION_MAGNITUDE = 2
 
 var target_fov: float = 75
 var state_on_photo_held: STATES = STATES.DEFAULT
@@ -48,99 +49,106 @@ var current_entity : entityBodyAPI = null
 var player_position: Vector2 = Vector2.ZERO
 
 func _unhandled_input(event):
-	if event is InputEventKey:
-		if event.is_pressed():
-			if current_state == STATES.DISPLAY_PHOTO or current_state == STATES.DISPLAY_RANGEFINDER:
-				set_state(STATES.DEFAULT)
-	
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() and current_state == STATES.DEFAULT:
-			var viewport_size_y = get_viewport().get_visible_rect().size.y
-			var viewport_size_x = get_viewport().get_visible_rect().size.x
-			var mouse_pos_y = get_viewport().get_mouse_position().y
-			var mouse_pos_x = get_viewport().get_mouse_position().x
-			
-			if mouse_pos_y > (viewport_size_y - viewport_size_y / 10):
-				rotate_camera_basis(Vector3.LEFT, CAMERA_ROTATION_MAGNITUDE)
-			if mouse_pos_y < (viewport_size_y / 10):
-				rotate_camera_basis(Vector3.RIGHT, CAMERA_ROTATION_MAGNITUDE)
-			if mouse_pos_x > (viewport_size_x - viewport_size_x / 10):
-				rotate_camera_basis(Vector3.DOWN, CAMERA_ROTATION_MAGNITUDE)
-			if mouse_pos_x < (viewport_size_x / 10):
-				rotate_camera_basis(Vector3.UP, CAMERA_ROTATION_MAGNITUDE)
-	
-	if event.is_action_pressed("SC_INTERACT4_USE_RANGEFINDER") and current_state == STATES.DEFAULT:
-		var DRAW_MATRICIES: Array[Array] = [[]]
-		for prop in get_tree().get_nodes_in_group("long_range_scopes_prop"):
-			if get_viewport().get_camera_3d().is_position_in_frustum(prop.transform.origin):
-				var prop_positions: PackedVector3Array = prop.get_positions() # MUST BE 4 POINTS!!!!
-				var fixed_positions: PackedVector2Array = get_fixed_positions(prop_positions)
-				var projected_positions: Array = get_projected_positions(fixed_positions)
-				var vertical_size: int = get_vertical_size_from_points(projected_positions)
-				
-				var x_axis_fixed_positions: Array = []
-				var y_axis_fixed_positions: Array = []
-				
-				for pos in fixed_positions:
-					x_axis_fixed_positions.append(pos.x)
-					y_axis_fixed_positions.append(pos.y)
-				
-				var average_position = Vector2(global_data.average(x_axis_fixed_positions), global_data.average(y_axis_fixed_positions))
-				
-				DRAW_MATRICIES.append([average_position, vertical_size])
+	if current_state == STATES.DISPLAY_PHOTO or current_state == STATES.DISPLAY_RANGEFINDER:
 		
-		_DRAW_MATRICIES = DRAW_MATRICIES
-		set_state(STATES.DISPLAY_RANGEFINDER)
-	
-	if event.is_action_pressed("SC_INTERACT3_TAKE_PHOTO"):
-		hud.set_texture(hud_holding)
-		state_on_photo_held = current_state
-	
-	if event.is_action_released("SC_INTERACT3_TAKE_PHOTO") and current_state == STATES.DEFAULT and state_on_photo_held == STATES.DEFAULT:
-		if current_entity: if current_entity.captures_remaining > 0:
-			current_entity.remove_captures_remaining(1)
-			captures_remaining_label.text = str(current_entity.captures_remaining)
-			
-			var photo_total_value: int = 0
-			var photo_total_size_reward: int = 0
-			var photo_total_distance_reward: int = 0
-			var photo_total_posing_reward: int = 0
-			var photo_total_characteristics_reward: int = 0
-			
+		if event is InputEventKey:
+			if event.is_pressed():
+				set_state(STATES.DEFAULT)
+		
+	elif current_state == STATES.DEFAULT:
+		
+		if event.is_action_pressed("SC_INTERACT4_USE_RANGEFINDER") and current_state == STATES.DEFAULT:
+			var DRAW_MATRICIES: Array[Array] = [[]]
 			for prop in get_tree().get_nodes_in_group("long_range_scopes_prop"):
 				if get_viewport().get_camera_3d().is_position_in_frustum(prop.transform.origin):
 					var prop_positions: PackedVector3Array = prop.get_positions() # MUST BE 4 POINTS!!!!
 					var fixed_positions: PackedVector2Array = get_fixed_positions(prop_positions)
 					var projected_positions: Array = get_projected_positions(fixed_positions)
 					var vertical_size: int = get_vertical_size_from_points(projected_positions)
-					var avg_distance_from_centre: int = get_average_to_screen_centre_from_points(fixed_positions)
 					
-					var is_posing: bool = prop.is_posing()
+					var x_axis_fixed_positions: Array = []
+					var y_axis_fixed_positions: Array = []
 					
-					var vertical_size_remapped = remap(vertical_size, 0, 800, 0, 1)
-					var distance_remapped = remap(avg_distance_from_centre, 0, 400, 0, 1)
-					var vertical_size_reward: int = 0
-					var distance_reward: int = 0
-					var posing_reward: int = 0
-					var characteristics_reward: int = prop.get_characteristics()
+					for pos in fixed_positions:
+						x_axis_fixed_positions.append(pos.x)
+						y_axis_fixed_positions.append(pos.y)
 					
-					if vertical_size <= 800: vertical_size_reward = int(prop.size_reward_curve.sample(vertical_size_remapped))
-					if avg_distance_from_centre <= 400: distance_reward = int(prop.distance_reward_curve.sample(distance_remapped) * vertical_size_remapped)
-					if is_posing: posing_reward = distance_reward + vertical_size_reward
+					var average_position = Vector2(global_data.average(x_axis_fixed_positions), global_data.average(y_axis_fixed_positions))
 					
-					photo_total_value += vertical_size_reward + distance_reward + posing_reward + characteristics_reward
-					photo_total_size_reward += vertical_size_reward
-					photo_total_distance_reward += distance_reward
-					photo_total_posing_reward += posing_reward
-					photo_total_characteristics_reward += characteristics_reward
+					DRAW_MATRICIES.append([average_position, vertical_size])
 			
-			emit_signal("addPlayerValue", photo_total_value)
-			_REWARD_MATRIX = [photo_total_size_reward, photo_total_distance_reward, photo_total_posing_reward, photo_total_characteristics_reward, photo_total_value]
-			set_state(STATES.DISPLAY_PHOTO)
-	pass
-
-func rotate_camera_basis(dir: Vector3, camera_rotation_magnitude: int) -> void:
-	camera.transform.basis = camera.transform.basis.rotated(dir, deg_to_rad(camera_rotation_magnitude))
+			_DRAW_MATRICIES = DRAW_MATRICIES
+			set_state(STATES.DISPLAY_RANGEFINDER)
+		
+		if event.is_action_pressed("SC_INTERACT3_TAKE_PHOTO"):
+			hud.set_texture(hud_holding)
+			state_on_photo_held = current_state
+		
+		elif event.is_action_released("SC_INTERACT3_TAKE_PHOTO") and current_state == STATES.DEFAULT and state_on_photo_held == STATES.DEFAULT:
+			if current_entity: if current_entity.captures_remaining > 0:
+				current_entity.remove_captures_remaining(1)
+				captures_remaining_label.text = str(current_entity.captures_remaining)
+				if current_entity.captures_remaining > 0:
+					captures_remaining_label.set("theme_override_colors/font_color", Color.WHITE)
+				else:
+					captures_remaining_label.set("theme_override_colors/font_color", Color.RED)
+				
+				state_on_photo_held = STATES.DISPLAY_PHOTO #so it doesnt uhhhh
+				
+				var photo_total_value: int = 0
+				var photo_total_size_reward: int = 0
+				var photo_total_distance_reward: int = 0
+				var photo_total_posing_reward: int = 0
+				var photo_total_characteristics_reward: int = 0
+				var photo_duplicate_reward: int = 0
+				
+				for prop in get_tree().get_nodes_in_group("long_range_scopes_prop"):
+					if get_viewport().get_camera_3d().is_position_in_frustum(prop.transform.origin):
+						var prop_positions: PackedVector3Array = prop.get_positions() # MUST BE 4 POINTS!!!!
+						var fixed_positions: PackedVector2Array = get_fixed_positions(prop_positions)
+						var projected_positions: Array = get_projected_positions(fixed_positions)
+						var vertical_size: int = get_vertical_size_from_points(projected_positions)
+						var avg_distance_from_centre: int = get_average_to_screen_centre_from_points(fixed_positions)
+						
+						var posing: bool = prop.is_posing()
+						
+						var vertical_size_remapped = remap(vertical_size, 0, 800, 0, 1)
+						var distance_remapped = remap(avg_distance_from_centre, 0, 400, 0, 1)
+						var vertical_size_reward: int = 0
+						var distance_reward: int = 0
+						var posing_reward: int = 0
+						var characteristics_reward: int = prop.get_characteristics()
+						
+						if vertical_size <= 800: vertical_size_reward = int(prop.size_reward_curve.sample(vertical_size_remapped))
+						if avg_distance_from_centre <= 400: distance_reward = int(prop.distance_reward_curve.sample(distance_remapped) * vertical_size_remapped)
+						if posing: posing_reward = distance_reward + vertical_size_reward
+						
+						photo_total_value += vertical_size_reward + distance_reward + posing_reward + characteristics_reward
+						photo_total_size_reward += vertical_size_reward
+						photo_total_distance_reward += distance_reward
+						photo_total_posing_reward += posing_reward
+						photo_total_characteristics_reward += characteristics_reward
+				
+				var duplicate_composition: bool = false
+				for i in current_entity.prev_photo_bases.size():
+					var photo_basis = current_entity.prev_photo_bases[i]
+					var photo_fov = current_entity.prev_photo_fovs[i]
+					
+					if camera.transform.basis == photo_basis:
+						if (photo_fov - target_fov) <= 2.5:
+							duplicate_composition = true
+							break
+				
+				if duplicate_composition:
+					photo_duplicate_reward = -(photo_total_value * 0.6)
+					photo_total_value += photo_duplicate_reward
+				
+				emit_signal("addPlayerValue", photo_total_value)
+				_REWARD_MATRIX = [photo_total_size_reward, photo_total_distance_reward, photo_total_posing_reward, photo_total_characteristics_reward, photo_duplicate_reward, photo_total_value]
+				set_state(STATES.DISPLAY_PHOTO)
+				
+				current_entity.prev_photo_bases.append(camera.transform.basis)
+				current_entity.prev_photo_fovs.append(target_fov)
 	pass
 
 func _physics_process(_delta):
@@ -154,6 +162,14 @@ func _physics_process(_delta):
 
 func _on_current_entity_changed(new_entity : entityBodyAPI):
 	if current_entity != new_entity: # to prevent infinite generation by just re-pressing the go-to button, maybe move to game.gd?
+		
+		#setting bg visuals (star pos updated runtime)
+		var star = system.get_first_star()
+		if star != null:
+			directional_light.light_color = star.surface_color
+			world_environment.environment.fog_light_color = star.surface_color
+			world_environment.environment.fog_sun_scatter = maxf(0.02, 1.0 / new_entity.orbit_distance)
+		
 		no_current_entity_bg.hide()
 		current_entity = new_entity
 		captures_remaining_label.text = str(current_entity.captures_remaining)
@@ -286,21 +302,24 @@ func get_average_to_screen_centre_from_points(fixed_positions: PackedVector2Arra
 
 
 func hide_all_hud_elements() -> void:
-	hud.hide()
-	captures_remaining_label.hide()
-	fov_container.hide()
-	value_label.hide()
+	hud_elements.hide()
 	pass
 
 func show_all_hud_elements() -> void:
-	hud.show()
-	captures_remaining_label.show()
-	fov_container.show()
-	value_label.hide()
+	hud_elements.show()
 	pass
 
+func hide_all_photo_elements() -> void:
+	photo_elements.hide()
+	pass
+
+func show_all_photo_elements() -> void:
+	photo_elements.show()
+	pass
+
+
 func set_state(new_state: STATES):
-	if STATE_CHANGE_LOCK == false:
+	if not STATE_CHANGE_LOCK:
 		current_state = new_state
 	pass
 
@@ -314,6 +333,7 @@ func _on_state_changed(new_state: STATES):
 			click.play()
 			
 			photo_texture.texture = null
+			hide_all_photo_elements()
 			show_all_hud_elements()
 			
 			hud.set_texture(hud_release)
@@ -323,11 +343,13 @@ func _on_state_changed(new_state: STATES):
 		STATES.DISPLAY_PHOTO:
 			shutter.play()
 			
+			show_all_photo_elements()
 			hide_all_hud_elements()
+			value_label.hide()
 			
 			await RenderingServer.frame_post_draw
 			var image: Image = camera.get_viewport().get_texture().get_image()
-			#image.save_png("Debug/test.png")
+			#image.save_png("test.png")
 			var image_texture: ImageTexture = ImageTexture.create_from_image(image)
 			photo_texture.texture = image_texture
 			
@@ -338,7 +360,9 @@ func _on_state_changed(new_state: STATES):
 			rangefinder.draw_rangefinder(_DRAW_MATRICIES)
 			await RenderingServer.frame_post_draw
 			
+			show_all_photo_elements()
 			hide_all_hud_elements()
+			value_label.hide()
 			
 			await RenderingServer.frame_post_draw
 			var image: Image = camera.get_viewport().get_texture().get_image()
@@ -353,7 +377,12 @@ func _on_state_changed(new_state: STATES):
 
 func _on_state_display_photo_advance() -> void:
 	if current_state == STATES.DISPLAY_PHOTO:
-		value_label.set_text("Size of subject(s): %s\nFraming of subject(s): %s\nPosing of subject(s): %s\nCharacteristics of subject(s): %s\nTotal photo value: %s\n\nPRESS ANY >>>" % _REWARD_MATRIX)
+		if not _REWARD_MATRIX.is_empty():
+			if _REWARD_MATRIX[4] == 0: #no photo_duplicate_reward
+				_REWARD_MATRIX.remove_at(4)
+				value_label.set_text("Size of subject(s): %s\nFraming of subject(s): %s\nPosing of subject(s): %s\nCharacteristics of subject(s): %s\nTotal photo value: %s\n\nPRESS ANY >>>" % _REWARD_MATRIX)
+			else:
+				value_label.set_text("Size of subject(s): %s\nFraming of subject(s): %s\nPosing of subject(s): %s\nCharacteristics of subject(s): %s\n\n!!! DUPLICATE COMPOSITION: %s\n\nTotal photo value: %s\n\nPRESS ANY >>>" % _REWARD_MATRIX)
 		value_label.show()
 	pass
 
@@ -364,8 +393,26 @@ func _on_state_change_lock_timeout() -> void:
 
 
 func _on_fov_slider_value_changed(value):
-	target_fov = value
+	target_fov = remap(value, 0, 100, 75, 5)
 	pass
+
+var last_h_rot_value: float = 0.0
+var last_v_rot_value: float = 0.0
+func _on_h_rot_slider_value_changed(value) -> void:
+	last_h_rot_value = value
+	recalculate_camera_rotation()
+	pass
+func _on_v_rot_slider_value_changed(value) -> void:
+	last_v_rot_value = value
+	recalculate_camera_rotation()
+	pass
+func recalculate_camera_rotation() -> void:
+	camera.basis = Basis()
+	camera.rotate_object_local(Vector3.DOWN, deg_to_rad(last_h_rot_value))
+	camera.rotate_object_local(Vector3.RIGHT, deg_to_rad(last_v_rot_value))
+	camera.orthonormalize()
+	pass
+
 
 func _on_long_range_scopes_window_close_requested():
 	owner.hide()

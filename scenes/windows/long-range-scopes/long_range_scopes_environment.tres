@@ -1,0 +1,33 @@
+[gd_resource type="Environment" load_steps=5 format=3 uid="uid://d3xo6hd26rjnn"]
+
+[ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://shader-gen/system-3d/sky_shader.tres" id="1_ipp3e"]
+[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/system-3d/star_backdrop.jpeg" id="2_yjvyu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ch2h2"]
+shader = ExtResource("1_ipp3e")
+shader_parameter/source_panorama = ExtResource("2_yjvyu")
+
+[sub_resource type="Sky" id="Sky_4kfpl"]
+sky_material = SubResource("ShaderMaterial_ch2h2")
+
+[resource]
+background_mode = 2
+background_energy_multiplier = 0.25
+sky = SubResource("Sky_4kfpl")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.0
+reflected_light_source = 1
+tonemap_mode = 2
+tonemap_exposure = 2.0
+glow_bloom = 0.5
+fog_enabled = true
+fog_light_color = Color(0, 0, 0, 1)
+fog_light_energy = 0.01
+fog_sun_scatter = 0.02
+fog_sky_affect = 0.5
+volumetric_fog_emission_energy = 0.0
+volumetric_fog_gi_inject = 0.0
+volumetric_fog_anisotropy = 0.75
+volumetric_fog_length = 6.06
+volumetric_fog_sky_affect = 0.02
