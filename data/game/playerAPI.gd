@@ -126,6 +126,12 @@ func get_adjusted_scanner_power() -> float:
 
 var scanner_contacts: Array[unitBodyAPI] = []
 
+@export_storage var analytics_exploration_data_payouts: PackedInt32Array = []
+
+
+
+
+
 func get_jumps_remaining():
 	return jumps_remaining
 

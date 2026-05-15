@@ -846,6 +846,8 @@ func _on_sell_exploration_data(sell_percentage_of_market_price: int):
 	world.player.increaseBalance(sell_for)
 	world.player.current_value = 0
 	station_ui.player_balance = world.player.balance
+	
+	world.player.analytics_exploration_data_payouts.append(sell_for)
 	pass
 
 func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
@@ -1097,7 +1099,8 @@ func write_history(_init_type: int, mode: FileAccess.ModeFlags) -> void:
 		world.player.total_score, 
 		world.player.systems_traversed, 
 		stats_menu.INIT_TYPES.find_key(_init_type),
-		roundi(world.play_time)
+		roundi(world.play_time),
+		world.player.analytics_exploration_data_payouts
 	]))
 	history.close()
 	pass

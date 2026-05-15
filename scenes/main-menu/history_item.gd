@@ -15,7 +15,8 @@ extends PanelContainer
 	3: total_score_label,
 	4: systems_traversed_label,
 	5: stats_menu_init_type_label,
-	6: total_play_time_label
+	6: total_play_time_label,
+	7: null
 }
 
 func create_from_csv(csv_line: PackedStringArray, _item_count: int) -> void:
@@ -35,6 +36,8 @@ func create_from_csv(csv_line: PackedStringArray, _item_count: int) -> void:
 
 func apply_to_target(target: Node, _cell: String) -> void:
 	match target:
+		null:
+			return
 		player_name_label:
 			target.set_text("Captain %s" % _cell)
 		player_ship_name_label:
