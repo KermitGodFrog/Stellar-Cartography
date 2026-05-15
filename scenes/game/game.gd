@@ -187,7 +187,6 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("removePlayerMorale", _on_remove_player_morale)
 	dialogue_manager.connect("killCharacterWithOccupation", _on_kill_character_with_occupation)
 	dialogue_manager.connect("foundBody", _on_found_body)
-	dialogue_manager.connect("addPlayerMutinyBacking", _on_add_player_mutiny_backing)
 	dialogue_manager.connect("upgradeShip", _on_upgrade_ship)
 	dialogue_manager.connect("rollNavBuoy", _on_roll_nav_buoy)
 	dialogue_manager.connect("superchargePlayerForJumps", _on_supercharge_player_for_jumps)
@@ -1107,10 +1106,6 @@ func write_history(_init_type: int, mode: FileAccess.ModeFlags) -> void:
 
 func _on_player_data_value_changed(new_value: int):
 	system_map._on_player_data_value_changed(new_value)
-	pass
-
-func _on_add_player_mutiny_backing(amount : int) -> void:
-	world.player.addMutinyBacking(amount)
 	pass
 
 func _on_CME_time_current_updated(_time_current: float, _system_id: int):

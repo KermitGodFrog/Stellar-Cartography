@@ -32,7 +32,6 @@ signal addPlayerMorale(amount: int)
 signal removePlayerMorale(amount: int)
 signal killCharacterWithOccupation(occupation: characterAPI.OCCUPATIONS)
 signal foundBody(id: int)
-signal addPlayerMutinyBacking(amount: int)
 signal upgradeShip(_upgrade_idx: playerAPI.UPGRADE_ID, _cost: int)
 signal rollNavBuoy(anomaly_seed: int)
 signal superchargePlayerForJumps(jumps: int) #saying superchargePlayerForJumps is like saying addPlayerValueForPlayerInternalValueCounter
