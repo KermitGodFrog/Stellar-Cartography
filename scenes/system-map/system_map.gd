@@ -429,7 +429,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					
 				starSystemAPI.BODY_TYPES.SPACE_ENTITY:
 					item.set_text(0, game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
-					item.set_icon(0, get_entity_frame(body.entity_classification))
+					item.set_icon(0, game_data.get_entity_frame(body.entity_classification))
 					
 				starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
 					item.set_icon(0, load("uid://hdeudc7u2rsm"))
@@ -949,13 +949,6 @@ func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction:
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:
 	emit_signal("removeHullStressForNanites", amount, nanites_per_percentage)
 	pass
-
-func get_entity_frame(classification: game_data.ENTITY_CLASSIFICATIONS) -> Resource:
-	match classification:
-		game_data.ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: return load("uid://cd2n33fiot3dr")
-		game_data.ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: return load("uid://585th5rg5vak")
-		game_data.ENTITY_CLASSIFICATIONS.OLM_MAELSTROM: return load("uid://wiy2unun0er3")
-		_: return load("uid://id0yg3qh1o32")
 
 func get_planet_frame(classification: String) -> Resource:
 	match classification:

@@ -40,7 +40,6 @@ var GENERATION_POSITIONS: PackedVector3Array = []
 var REVERSE_GENERATION_POSITIONS: PackedVector3Array = []
 var GENERATION_BASIS: Basis
 const GENERATION_POSITION_ITERATIONS = 30
-const CAMERA_ROTATION_MAGNITUDE = 2
 
 var target_fov: float = 75
 var state_on_photo_held: STATES = STATES.DEFAULT
@@ -130,6 +129,7 @@ func _unhandled_input(event):
 	pass
 
 func _physics_process(_delta):
+	#print(STATE_CHANGE_LOCK)
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
 	if current_entity:
 		var first_star = system.get_first_star()

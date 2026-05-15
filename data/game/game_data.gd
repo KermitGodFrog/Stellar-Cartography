@@ -255,6 +255,12 @@ func get_weighted_system_hazard_classifications() -> Dictionary:
 
 
 
+func get_entity_frame(classification: ENTITY_CLASSIFICATIONS) -> Resource:
+	match classification:
+		ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: return load("uid://cd2n33fiot3dr")
+		ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: return load("uid://585th5rg5vak")
+		ENTITY_CLASSIFICATIONS.OLM_MAELSTROM: return load("uid://wiy2unun0er3")
+		_: return load("uid://id0yg3qh1o32")
 
 
 
