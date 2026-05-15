@@ -53,7 +53,7 @@ func update_info(for_classification: game_data.ENTITY_CLASSIFICATIONS):
 			info_reward_widgets_list.add_item(widget)
 	pass
 
-func _on_bestiary_list_item_activated(index):
+func _on_bestiary_list_item_selected(index: int) -> void:
 	var classification = bestiary_list.get_item_metadata(index)
 	update_info(classification)
 	tabs.set_current_tab(1) #info

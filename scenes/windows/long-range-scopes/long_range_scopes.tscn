@@ -112,13 +112,15 @@ size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
 theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 8
-theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("3_drepj")
 theme_override_styles/hovered = SubResource("StyleBoxFlat_fv023")
 theme_override_styles/hovered_selected = SubResource("StyleBoxFlat_j2a2b")
 theme_override_styles/hovered_selected_focus = SubResource("StyleBoxFlat_j2a2b")
 theme_override_styles/selected = SubResource("StyleBoxFlat_j2a2b")
 theme_override_styles/selected_focus = SubResource("StyleBoxFlat_j2a2b")
+allow_reselect = true
+allow_rmb_select = true
+allow_search = false
 
 [node name="INFO" type="VBoxContainer" parent="split/bestiary/tabs"]
 custom_minimum_size = Vector2(280, 0)
@@ -421,7 +423,7 @@ stream = SubResource("AudioStreamRandomizer_cnul4")
 bus = &"SFX"
 
 [connection signal="close_requested" from="." to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_long_range_scopes_window_close_requested"]
-[connection signal="item_activated" from="split/bestiary/tabs/INDEX/bestiary_list" to="split/bestiary" method="_on_bestiary_list_item_activated"]
+[connection signal="item_selected" from="split/bestiary/tabs/INDEX/bestiary_list" to="split/bestiary" method="_on_bestiary_list_item_selected"]
 [connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements/fov_container/scroll/fov_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_fov_slider_value_changed"]
 [connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements/h_rot_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_h_rot_slider_value_changed"]
 [connection signal="value_changed" from="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/hud_elements/v_rot_slider" to="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes" method="_on_v_rot_slider_value_changed"]
