@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://3fhmxb40q311"
+path="res://.godot/imported/approach_planet.png-39be7f6f7a3f1c7cd33554764b0e20f7.image"
+
+[deps]
+
+source_file="res://graphics/dialogue/approach_planet.png"
+dest_files=["res://.godot/imported/approach_planet.png-39be7f6f7a3f1c7cd33554764b0e20f7.image"]
+
+[params]
+
