@@ -53,7 +53,9 @@ func initialize(current_layers: PackedStringArray) -> void:
 	
 	#clear and populate ENCYCLOPEDIA
 	encyclopedia.clear()
-	for idx in discovered_gas_layers_matrix:
+	var converted_matrix = Array(discovered_gas_layers_matrix)
+	converted_matrix.shuffle() # this stops the encyclopedia from revealing the layer order 
+	for idx in converted_matrix:
 		var tag = _layer_data.keys()[idx]
 		var new = encyclopedia.add_item(tag.to_upper())
 		encyclopedia.set_item_metadata(new, tag)
@@ -147,6 +149,7 @@ func switch_to_entry(tag: String) -> void:
 	noise_style_box.border_color = data.get("fog_albedo", Color.WHITE)
 	noise_style_box.bg_color = data.get("bg_color", Color.WHITE)
 	noise_texture.set_texture(data.get("bg_sampler", load("uid://d3lyxr2u3bbd3")))
+	
 	fun_fact_label.generate_new_fact()
 	
 	tabs.set_current_tab(2)
