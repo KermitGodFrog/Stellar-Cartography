@@ -38,7 +38,7 @@ func _ready() -> void:
 #yoinking this from system_map
 @onready var custom_tooltip = preload("uid://cer7wk3ixuyb6")
 var tooltip_title: String
-func _make_custom_tooltip(for_text):
+func _make_custom_tooltip(for_text): # mouse img references in this nodes tooltip text in inspector :)
 	var custom_tooltip_instance = custom_tooltip.instantiate()
 	custom_tooltip_instance.initialize(tooltip_title, for_text)
 	return custom_tooltip_instance
