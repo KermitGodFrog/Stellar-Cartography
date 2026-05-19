@@ -15,7 +15,7 @@ var current_planet_value: int = 0
 @onready var choices_list = $margin/tabs/REPORT/scroll/choices_list
 @onready var encyclopedia = $margin/tabs/ENCYCLOPEDIA
 @onready var tabs = $margin/tabs
-@onready var confirm_button = $margin/tabs/REPORT/confirm
+@onready var confirm_button = $margin/tabs/REPORT/confirm_view_scroll/confirm
 #ENTRY tab
 @onready var tag_label = $margin/tabs/ENTRY/scroll/tag_back_margin/tag_back_scroll/tag_label
 @onready var noise_panel = $margin/tabs/ENTRY/scroll/noise_panel
