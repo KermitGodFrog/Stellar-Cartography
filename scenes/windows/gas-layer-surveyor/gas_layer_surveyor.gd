@@ -6,14 +6,17 @@ signal addPlayerValue(amount: int)
 var _discovered_gas_layers_matrix: PackedInt32Array = []
 
 @onready var world_environment = $world_environment
-@onready var no_current_planet_bg = $camera_offset/camera/canvas_layer/control/no_current_planet_bg
-@onready var press_to_start = $camera_offset/camera/canvas_layer/control/press_to_start_button
-@onready var depth_indicator = $camera_offset/camera/canvas_layer/control/depth_margin/depth_panel/depth_indicator
-@onready var selection_screen = $camera_offset/camera/canvas_layer/control/selection_screen
+@onready var no_current_planet_bg = $camera_offset/camera/canvas_layer/draw_handler/no_current_planet_bg
+@onready var press_to_start = $camera_offset/camera/canvas_layer/draw_handler/press_to_start_button
+@onready var depth_ui = $camera_offset/camera/canvas_layer/draw_handler/depth_margin
+@onready var depth_indicator = $camera_offset/camera/canvas_layer/draw_handler/depth_margin/depth_panel/depth_indicator
+@onready var selection_screen = $camera_offset/camera/canvas_layer/draw_handler/selection_screen
 @onready var speed_lines = $speed_lines
 @onready var spaceship_model = $gas_harvesting_spaceship
-@onready var post_process = $camera_offset/camera/canvas_layer/post_process
 @onready var camera = $camera_offset/camera
+@onready var view_buttonA = $camera_offset/camera/canvas_layer/draw_handler/view_buttonA
+@onready var draw_handler = $camera_offset/camera/canvas_layer/draw_handler
+@onready var atmospheric_interference = $atmospheric_interference
 
 const layer_data = { #name (color(s)-noise-property): properties
 	"default": {
@@ -333,23 +336,28 @@ func _on_state_changed(new_state: STATES) -> void:
 	no_current_planet_bg.visible = new_state == STATES.INVALID
 	press_to_start.visible = new_state == STATES.WAITING
 	selection_screen.visible = new_state == STATES.SELECTING
+	view_buttonA.visible = new_state == STATES.SELECTING
 	speed_lines.emitting = new_state == STATES.SURVEYING
-	spaceship_model.visible = new_state == STATES.SURVEYING or new_state == STATES.WAITING
+	spaceship_model.visible = new_state == STATES.WAITING or new_state == STATES.SURVEYING or new_state == STATES.SELECTING
+	depth_ui.visible = new_state == STATES.SURVEYING
+	atmospheric_interference.playing = new_state == STATES.SURVEYING
 	
 	match new_state:
 		STATES.INVALID:
 			current_planet = null
 			current_offsets = []
 			current_layers = []
-			active_layer = "default"
+			apply_new_layer()
 			checkpoint = int()
 			depth = float()
+			draw_handler.reset_drawing()
 		STATES.WAITING:
 			depth = float()
 			depth_indicator.value = float()
 		STATES.SURVEYING:
 			pass
 		STATES.SELECTING:
+			apply_new_layer()
 			selection_screen.initialize(current_layers)
 			get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "GLS_state_selecting")
 	pass
@@ -373,4 +381,10 @@ func _on_selection_screen_confirmed_twice() -> void:
 	if current_planet != null:
 		current_planet.metadata["missing_GL"] = false
 	state = STATES.INVALID
+	pass
+
+
+
+func _on_view_button_pressed() -> void: #if either A or B is pressed 
+	selection_screen.visible = !selection_screen.visible
 	pass

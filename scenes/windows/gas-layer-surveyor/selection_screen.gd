@@ -15,11 +15,13 @@ var current_planet_value: int = 0
 @onready var choices_list = $margin/tabs/REPORT/scroll/choices_list
 @onready var encyclopedia = $margin/tabs/ENCYCLOPEDIA
 @onready var tabs = $margin/tabs
-@onready var confirm_button = $margin/tabs/REPORT/confirm
+@onready var confirm_button = $margin/tabs/REPORT/confirm_view_scroll/confirm
 #ENTRY tab
-@onready var tag_label = $margin/tabs/ENTRY/scroll/tag_label
-@onready var noise_texture = $margin/tabs/ENTRY/scroll/noise_texture
-@onready var attributes_list = $margin/tabs/ENTRY/scroll/attributes_list 
+@onready var tag_label = $margin/tabs/ENTRY/scroll/tag_back_margin/tag_back_scroll/tag_label
+@onready var noise_panel = $margin/tabs/ENTRY/scroll/noise_panel
+@onready var noise_texture = $margin/tabs/ENTRY/scroll/noise_panel/noise_texture
+@onready var attributes_list = $margin/tabs/ENTRY/scroll/attributes_fact_scroll/attributes_list
+@onready var fun_fact_label = $margin/tabs/ENTRY/scroll/attributes_fact_scroll/fun_fact_label
 
 @onready var layer_representation = preload("uid://4yeivroypj5")
 
@@ -51,7 +53,9 @@ func initialize(current_layers: PackedStringArray) -> void:
 	
 	#clear and populate ENCYCLOPEDIA
 	encyclopedia.clear()
-	for idx in discovered_gas_layers_matrix:
+	var converted_matrix = Array(discovered_gas_layers_matrix)
+	converted_matrix.shuffle() # this stops the encyclopedia from revealing the layer order 
+	for idx in converted_matrix:
 		var tag = _layer_data.keys()[idx]
 		var new = encyclopedia.add_item(tag.to_upper())
 		encyclopedia.set_item_metadata(new, tag)
@@ -74,14 +78,14 @@ func add_layer_instance(tag: String, list: LISTS):
 func get_tag_cover_path(_tag: String) -> String:
 	match Array(_tag.split("-")).back():
 		"bacterium":
-			return "res://Graphics/gas-layer-surveyor/cover_bacterium.png"
+			return "res://graphics/gas-layer-surveyor/cover_bacterium.png"
 		"complex":
-			return "res://Graphics/gas-layer-surveyor/cover_complex.png"
+			return "res://graphics/gas-layer-surveyor/cover_complex.png"
 		"ridges":
-			return "res://Graphics/gas-layer-surveyor/cover_ridges.png"
+			return "res://graphics/gas-layer-surveyor/cover_ridges.png"
 		"splotches":
-			return "res://Graphics/gas-layer-surveyor/cover_splotches.png"
-	return "res://Graphics/gas-layer-surveyor/cover_default.png"
+			return "res://graphics/gas-layer-surveyor/cover_splotches.png"
+	return "res://graphics/gas-layer-surveyor/cover_default.png"
 
 func remove_layer_instance(tag: String, list: LISTS):
 	match list:
@@ -119,10 +123,13 @@ func _on_encyclopedia_item_activated(index: int) -> void:
 
 func switch_to_entry(tag: String) -> void:
 	var data = _layer_data.get(tag)
-	tag_label.set_text(tag.to_upper())
-	noise_texture.set_texture(data.get("bg_sampler", load("res://Scenes/Gas Layer Surveyor/bg_default.tres")))
-	attributes_list.clear()
 	
+	tag_label.set_text(tag.to_upper())
+	var tag_shadow_color = data.get("bg_color", Color.WHITE)
+	tag_shadow_color.a = 0.1
+	tag_label.set("theme_override_colors/font_shadow_color", tag_shadow_color)
+	
+	attributes_list.clear()
 	attributes_list.add_item("TIME")
 	attributes_list.add_item("%.f" % data.get("bg_time_divisor", 100.0))
 	
@@ -137,6 +144,13 @@ func switch_to_entry(tag: String) -> void:
 		attributes_list.add_item(text)
 		var idx = attributes_list.add_item(color.to_html())
 		attributes_list.set_item_custom_bg_color(idx, color)
+	
+	var noise_style_box = noise_panel.get("theme_override_styles/panel")
+	noise_style_box.border_color = data.get("fog_albedo", Color.WHITE)
+	noise_style_box.bg_color = data.get("bg_color", Color.WHITE)
+	noise_texture.set_texture(data.get("bg_sampler", load("uid://d3lyxr2u3bbd3")))
+	
+	fun_fact_label.generate_new_fact()
 	
 	tabs.set_current_tab(2)
 	pass

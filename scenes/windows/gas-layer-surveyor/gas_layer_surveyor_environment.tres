@@ -15,7 +15,8 @@ sky_material = SubResource("ShaderMaterial_77pv1")
 [resource]
 background_mode = 2
 sky = SubResource("Sky_fdcw4")
-ambient_light_source = 1
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
 reflected_light_source = 1
 tonemap_white = 0.5
 glow_intensity = 7.08

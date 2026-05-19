@@ -1,6 +1,7 @@
-[gd_scene load_steps=25 format=3 uid="uid://b75u7e1b1ddb2"]
+[gd_scene load_steps=46 format=3 uid="uid://b75u7e1b1ddb2"]
 
 [ext_resource type="Script" uid="uid://bx8vghsv23ue3" path="res://scenes/windows/gas-layer-surveyor/gas_layer_surveyor.gd" id="1_retla"]
+[ext_resource type="Script" uid="uid://cgq18aopgnhi5" path="res://scenes/windows/gas-layer-surveyor/draw_handler.gd" id="3_ia7p8"]
 [ext_resource type="Texture2D" uid="uid://dmutb3ak7n4l2" path="res://graphics/system-map/system-list/gas_layer_surveyor_frame.png" id="3_iy7ju"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="3_lxufc"]
 [ext_resource type="Environment" uid="uid://6jnjxqc5yhk1" path="res://scenes/windows/gas-layer-surveyor/gas_layer_surveyor_environment.tres" id="3_sw2d4"]
@@ -10,10 +11,18 @@
 [ext_resource type="Script" uid="uid://bu4ae2yi4kvvi" path="res://scenes/windows/gas-layer-surveyor/selection_screen.gd" id="5_kjlie"]
 [ext_resource type="Texture2D" uid="uid://wj8xwuug1m0o" path="res://graphics/misc/tree_arrow.png" id="5_rwvyv"]
 [ext_resource type="Script" uid="uid://bfksj5fcwnejb" path="res://scenes/windows/gas-layer-surveyor/confirm_button.gd" id="8_3jywn"]
-[ext_resource type="Texture2D" uid="uid://hr0rrky8ghq6" path="res://scenes/windows/gas-layer-surveyor/bg_splotches.tres" id="9_8ov42"]
-[ext_resource type="Texture2D" uid="uid://daimftgepff4u" path="res://graphics/misc/mouse_pointer_movement.png" id="9_e8ikj"]
+[ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="9_luw0u"]
+[ext_resource type="StyleBox" uid="uid://t53tmp88dts0" path="res://theme-gen/general_focus.tres" id="10_fwdhx"]
+[ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/shared/denied_monochrome.png" id="10_lc4kt"]
+[ext_resource type="Texture2D" uid="uid://byd0djjhrxoug" path="res://graphics/misc/collapse_window_icon.png" id="11_2upog"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="11_24t8i"]
+[ext_resource type="Script" uid="uid://rkkrtk68rjva" path="res://scenes/windows/gas-layer-surveyor/fun_fact_label.gd" id="11_luw0u"]
+[ext_resource type="AudioStream" uid="uid://cq2a1gsmblou1" path="res://sound/wormhole-minigame/wormhole_interference.wav" id="18_wketm"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_isjh6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fy5f7"]
+bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6om7d"]
 bg_color = Color(0.117647, 0.117647, 0.117647, 1)
@@ -26,19 +35,82 @@ bg_color = Color(0.466667, 0.466667, 0.466667, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5y72e"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fy5f7"]
-bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c8gbv"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cp8i3"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5ayti"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fd8bf"]
-bg_color = Color(0.156863, 0.156863, 0.156863, 1)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lxo37"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uddrg"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vln8b"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0c1y1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0ght6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l6yww"]
+
+[sub_resource type="Gradient" id="Gradient_24t8i"]
+colors = PackedColorArray(0.46666667, 0.46666667, 0.46666667, 1, 0.09411765, 0.09411765, 0.09411765, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ia7p8"]
+gradient = SubResource("Gradient_24t8i")
+fill_from = Vector2(1, 0)
+fill_to = Vector2(1, 0.2)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3ntqu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_punbi"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fd8bf"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.20784314, 0.20784314, 0.20784314, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wketm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0vwco"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_24t8i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ia7p8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fwdhx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2upog"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lc4kt"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.15686275, 0.15686275, 0.15686275, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="TubeTrailMesh" id="TubeTrailMesh_dwqov"]
 material = ExtResource("4_lygh8")
@@ -66,16 +138,7 @@ rotation_edit_mode = 2
 
 [node name="canvas_layer" type="CanvasLayer" parent="gas_layer_surveyor/camera_offset/camera"]
 
-[node name="post_process" type="ColorRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer"]
-visible = false
-texture_filter = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="control" type="Control" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer"]
+[node name="draw_handler" type="Control" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -83,8 +146,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_lxufc")
+script = ExtResource("3_ia7p8")
 
-[node name="depth_margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control"]
+[node name="depth_margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler"]
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 1
 anchors_preset = 12
@@ -99,10 +163,10 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="depth_panel" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/depth_margin"]
+[node name="depth_panel" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/depth_margin"]
 layout_mode = 2
 
-[node name="depth_indicator" type="TextureProgressBar" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/depth_margin/depth_panel"]
+[node name="depth_indicator" type="TextureProgressBar" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/depth_margin/depth_panel"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_vertical = 4
@@ -111,17 +175,7 @@ nine_patch_stretch = true
 texture_progress = SubResource("CanvasTexture_isjh6")
 texture_progress_offset = Vector2(0, -10)
 
-[node name="press_to_start_button" type="Button" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "CLICK TO START"
-
-[node name="no_current_planet_bg" type="ColorRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control"]
+[node name="no_current_planet_bg" type="ColorRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -131,7 +185,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="gas_layer_surveyor_frame" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/no_current_planet_bg"]
+[node name="gas_layer_surveyor_frame" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/no_current_planet_bg"]
 modulate = Color(0.211765, 0.211765, 0.211765, 1)
 texture_filter = 1
 custom_minimum_size = Vector2(128, 0)
@@ -151,7 +205,7 @@ texture = ExtResource("3_iy7ju")
 expand_mode = 4
 stretch_mode = 5
 
-[node name="directions_label" type="Label" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/no_current_planet_bg"]
+[node name="directions_label" type="Label" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/no_current_planet_bg"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -164,7 +218,38 @@ text = "FOLLOW A VALID PLANET TO BEGIN"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="selection_screen" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control"]
+[node name="view_buttonA" type="Button" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = -47.0
+offset_right = -15.0
+offset_bottom = -15.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_type_variation = &"ButtonDull"
+theme_override_styles/normal = SubResource("StyleBoxFlat_fy5f7")
+theme_override_styles/focus = ExtResource("10_fwdhx")
+text = "VIEW"
+icon = ExtResource("11_2upog")
+icon_alignment = 2
+
+[node name="press_to_start_button" type="Button" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "CLICK TO START"
+
+[node name="selection_screen" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -175,36 +260,36 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_6om7d")
 script = ExtResource("5_kjlie")
 
-[node name="margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen"]
+[node name="margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="tabs" type="TabContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin"]
+[node name="tabs" type="TabContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_w817a")
 theme_override_styles/tabbar_background = SubResource("StyleBoxFlat_2cj0f")
 theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_5y72e")
 current_tab = 0
 
-[node name="REPORT" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs"]
+[node name="REPORT" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="scroll" type="HBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT"]
+[node name="scroll" type="HBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="hierachy_texture" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT/scroll"]
+[node name="hierachy_texture" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT/scroll"]
 clip_contents = true
 custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
 texture = ExtResource("5_rwvyv")
 stretch_mode = 1
 
-[node name="hierachy_margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT/scroll/hierachy_texture"]
+[node name="hierachy_margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT/scroll/hierachy_texture"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -215,85 +300,172 @@ theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 10
 
-[node name="hierachy_list" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT/scroll/hierachy_texture/hierachy_margin"]
+[node name="hierachy_list" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT/scroll/hierachy_texture/hierachy_margin"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="separator" type="VSeparator" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT/scroll"]
+[node name="separator" type="VSeparator" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT/scroll"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="choices_list" type="HFlowContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT/scroll"]
+[node name="choices_list" type="HFlowContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT/scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="confirm" type="Button" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT"]
+[node name="confirm_view_scroll" type="HBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT"]
+layout_mode = 2
+
+[node name="confirm" type="Button" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT/confirm_view_scroll"]
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"ButtonDull"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_fy5f7")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_c8gbv")
 text = "CONFIRM"
 script = ExtResource("8_3jywn")
 
-[node name="ENCYCLOPEDIA" type="ItemList" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs"]
+[node name="view_buttonB" type="Button" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT/confirm_view_scroll"]
+layout_mode = 2
+theme_type_variation = &"ButtonDull"
+theme_override_styles/normal = SubResource("StyleBoxFlat_fy5f7")
+theme_override_styles/focus = ExtResource("10_fwdhx")
+text = "VIEW"
+icon = ExtResource("11_2upog")
+icon_alignment = 2
+
+[node name="ENCYCLOPEDIA" type="ItemList" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs"]
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hovered_color = Color(0.560784, 1, 1, 1)
+theme_override_colors/font_hovered_selected_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
+theme_override_colors/font_selected_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
+theme_override_colors/guide_color = Color(0.4977886, 0.4977886, 0.4977886, 0.2)
+theme_override_constants/v_separation = 8
+theme_override_constants/outline_size = 5
 theme_override_styles/panel = SubResource("StyleBoxEmpty_cp8i3")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_5ayti")
+theme_override_styles/hovered = SubResource("StyleBoxEmpty_lxo37")
+theme_override_styles/hovered_selected = SubResource("StyleBoxEmpty_vln8b")
+theme_override_styles/hovered_selected_focus = SubResource("StyleBoxEmpty_0c1y1")
+theme_override_styles/selected = SubResource("StyleBoxEmpty_0ght6")
+theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_l6yww")
+allow_search = false
 metadata/_tab_index = 1
 
-[node name="ENTRY" type="Control" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs"]
+[node name="ENTRY" type="Control" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="scroll" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENTRY"]
+[node name="background" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/ENTRY"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 5
+texture = SubResource("GradientTexture2D_ia7p8")
+expand_mode = 1
 
-[node name="tag_label" type="Label" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENTRY/scroll"]
-custom_minimum_size = Vector2(0, 30)
+[node name="scroll" type="VBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/ENTRY"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="tag_back_margin" type="MarginContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/ENTRY/scroll"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 0
+
+[node name="tag_back_scroll" type="HBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/ENTRY/scroll/tag_back_margin"]
+layout_mode = 2
+alignment = 1
+
+[node name="tag_label" type="Label" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/ENTRY/scroll/tag_back_margin/tag_back_scroll"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 1, 1, 0)
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_outline_size = 6
+theme_override_fonts/font = ExtResource("9_luw0u")
+vertical_alignment = 1
+
+[node name="back_button" type="Button" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/ENTRY/scroll/tag_back_margin/tag_back_scroll"]
+modulate = Color(0.9063318, 0.9063318, 0.9063318, 1)
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 10
+theme = ExtResource("3_lxufc")
+theme_type_variation = &"ButtonDull"
+theme_override_styles/focus = SubResource("StyleBoxEmpty_3ntqu")
+icon = ExtResource("10_lc4kt")
+icon_alignment = 1
+expand_icon = true
+
+[node name="noise_panel" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/ENTRY/scroll"]
+custom_minimum_size = Vector2(0, 130)
 layout_mode = 2
 size_flags_vertical = 0
-horizontal_alignment = 1
-vertical_alignment = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_punbi")
 
-[node name="noise_texture" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENTRY/scroll"]
-custom_minimum_size = Vector2(130, 130)
+[node name="noise_texture" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/ENTRY/scroll/noise_panel"]
 layout_mode = 2
-size_flags_vertical = 0
-texture = ExtResource("9_8ov42")
 expand_mode = 2
-stretch_mode = 5
+stretch_mode = 1
 
-[node name="attributes_list" type="ItemList" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENTRY/scroll"]
+[node name="attributes_fact_scroll" type="HBoxContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/ENTRY/scroll"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 4
+
+[node name="attributes_list" type="ItemList" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/ENTRY/scroll/attributes_fact_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.6
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hovered_color = Color(0.560784, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hovered_selected_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
+theme_override_colors/font_selected_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
+theme_override_colors/guide_color = Color(0.49803922, 0.49803922, 0.49803922, 0.2)
 theme_override_constants/outline_size = 5
 theme_override_styles/panel = SubResource("StyleBoxFlat_fd8bf")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_uddrg")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wketm")
+theme_override_styles/hovered = SubResource("StyleBoxEmpty_0vwco")
+theme_override_styles/hovered_selected = SubResource("StyleBoxEmpty_24t8i")
+theme_override_styles/hovered_selected_focus = SubResource("StyleBoxEmpty_ia7p8")
+theme_override_styles/selected = SubResource("StyleBoxEmpty_fwdhx")
+theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_2upog")
 allow_search = false
 max_columns = 2
 same_column_width = true
 fixed_column_width = 100
 
-[node name="back_button" type="TextureButton" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENTRY"]
-layout_mode = 1
-offset_right = 40.0
-offset_bottom = 40.0
-texture_normal = ExtResource("9_e8ikj")
-flip_h = true
+[node name="fun_fact_label" type="RichTextLabel" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/ENTRY/scroll/attributes_fact_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.4
+theme_override_colors/default_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
+theme_override_fonts/bold_font = ExtResource("9_luw0u")
+theme_override_fonts/italics_font = ExtResource("11_24t8i")
+theme_override_font_sizes/normal_font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_lc4kt")
+bbcode_enabled = true
+text = "
+
+"
+script = ExtResource("11_luw0u")
 
 [node name="world_environment" type="WorldEnvironment" parent="gas_layer_surveyor"]
 environment = ExtResource("3_sw2d4")
@@ -314,8 +486,19 @@ emission_ring_inner_radius = 6.0
 emission_ring_cone_angle = 90.0
 gravity = Vector3(0, 10, 0)
 
+[node name="atmospheric_interference" type="AudioStreamPlayer" parent="gas_layer_surveyor"]
+stream = ExtResource("18_wketm")
+volume_db = -6.0
+pitch_scale = 2.0
+bus = &"SFX"
+
 [connection signal="close_requested" from="." to="gas_layer_surveyor" method="_on_gas_layer_surveyor_window_close_requested"]
-[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/press_to_start_button" to="gas_layer_surveyor" method="_on_press_to_start_button_pressed"]
-[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/REPORT/confirm" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen" method="_on_confirm_pressed"]
-[connection signal="item_activated" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENCYCLOPEDIA" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen" method="_on_encyclopedia_item_activated"]
-[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen/margin/tabs/ENTRY/back_button" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/control/selection_screen" method="_on_back_button_pressed"]
+[connection signal="mouse_entered" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler" method="_on_mouse_exited"]
+[connection signal="visibility_changed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler" method="_on_visibility_changed"]
+[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/view_buttonA" to="gas_layer_surveyor" method="_on_view_button_pressed"]
+[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/press_to_start_button" to="gas_layer_surveyor" method="_on_press_to_start_button_pressed"]
+[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT/confirm_view_scroll/confirm" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen" method="_on_confirm_pressed"]
+[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT/confirm_view_scroll/view_buttonB" to="gas_layer_surveyor" method="_on_view_button_pressed"]
+[connection signal="item_activated" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/ENCYCLOPEDIA" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen" method="_on_encyclopedia_item_activated"]
+[connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/ENTRY/scroll/tag_back_margin/tag_back_scroll/back_button" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen" method="_on_back_button_pressed"]

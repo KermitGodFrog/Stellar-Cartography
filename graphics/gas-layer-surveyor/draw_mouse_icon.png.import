@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3gha56exlusq"
-path="res://.godot/imported/denied_monochrome.png-7f29abe476379e70f119d19962b046f5.ctex"
+uid="uid://l8jr4r03jelq"
+path="res://.godot/imported/draw_mouse_icon.png-2046ad64c08639830ced398a1183a433.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/misc/denied_monochrome.png"
-dest_files=["res://.godot/imported/denied_monochrome.png-7f29abe476379e70f119d19962b046f5.ctex"]
+source_file="res://graphics/gas-layer-surveyor/draw_mouse_icon.png"
+dest_files=["res://.godot/imported/draw_mouse_icon.png-2046ad64c08639830ced398a1183a433.ctex"]
 
 [params]
 

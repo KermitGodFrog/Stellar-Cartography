@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://nav04ap3rdbe" path="res://graphics/main-menu/new_game_popup.png" id="2_1jdbj"]
 [ext_resource type="Theme" uid="uid://skdebllj6ft7" path="res://theme-gen/main-menu/main_menu_MAIN_theme.tres" id="2_2eiki"]
 [ext_resource type="PackedScene" uid="uid://njcr66sajfan" path="res://scenes/achievements-list/achievements_list_popup.tscn" id="5_7l6aj"]
-[ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/misc/denied_monochrome.png" id="5_uqij0"]
+[ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/shared/denied_monochrome.png" id="5_uqij0"]
 [ext_resource type="Script" uid="uid://dncoypj63awau" path="res://scenes/main-menu/line_edit_length_label.gd" id="6_lhle4"]
 [ext_resource type="Script" uid="uid://5ggnqnnre8ff" path="res://scenes/main-menu/history_popup.gd" id="8_eel2y"]
 
