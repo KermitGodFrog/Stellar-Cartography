@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://chwm82adl21cm"]
+[gd_scene load_steps=7 format=3 uid="uid://chwm82adl21cm"]
 
 [ext_resource type="Script" uid="uid://j6p3dv2arp7u" path="res://scenes/gizmos/sonar-interface/sonar_interface.gd" id="1_bmylm"]
 [ext_resource type="Texture2D" uid="uid://bu4clhu1rmiwq" path="res://graphics/sonar-interface/sonar_64x.png" id="1_t5fig"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="2_1p42e"]
+[ext_resource type="StyleBox" uid="uid://t53tmp88dts0" path="res://theme-gen/general_focus.tres" id="4_1f73o"]
+[ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="4_jmhbk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_njxhc"]
 bg_color = Color(0.184314, 0.14902, 0.156863, 0.784314)
@@ -29,6 +32,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_1p42e")
 script = ExtResource("1_bmylm")
 
 [node name="info_panel" type="Panel" parent="sonar_control"]
@@ -54,19 +58,25 @@ step = 27.0
 value = 9.0
 
 [node name="ping_button" type="Button" parent="sonar_control/info_panel/scroll_vertical"]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
+theme_type_variation = &"ButtonDull"
 text = "PING!"
+icon_alignment = 1
 
 [node name="cooldown_label" type="Label" parent="sonar_control"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 23.0
+offset_left = -10.0
+offset_right = -5.0
+offset_bottom = 26.0
 grow_horizontal = 0
-text = "5
-"
+theme_override_colors/font_outline_color = Color(0.49803922, 0.29411766, 0.29411766, 0.47058824)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("4_jmhbk")
+theme_override_styles/focus = ExtResource("4_1f73o")
 horizontal_alignment = 2
 
 [node name="reset_button" type="Button" parent="sonar_control"]
@@ -77,6 +87,7 @@ anchor_bottom = 1.0
 offset_top = -31.0
 offset_right = 37.0
 grow_vertical = 0
+theme_type_variation = &"ButtonDull"
 text = "RST"
 
 [node name="ping_cooldown_timer" type="Timer" parent="sonar_control"]
