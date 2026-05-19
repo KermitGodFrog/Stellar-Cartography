@@ -15,6 +15,7 @@ var _discovered_gas_layers_matrix: PackedInt32Array = []
 @onready var spaceship_model = $gas_harvesting_spaceship
 @onready var camera = $camera_offset/camera
 @onready var view_buttonA = $camera_offset/camera/canvas_layer/draw_handler/view_buttonA
+@onready var draw_handler = $camera_offset/camera/canvas_layer/draw_handler
 
 const layer_data = { #name (color(s)-noise-property): properties
 	"default": {
@@ -344,15 +345,17 @@ func _on_state_changed(new_state: STATES) -> void:
 			current_planet = null
 			current_offsets = []
 			current_layers = []
-			active_layer = "default"
+			apply_new_layer()
 			checkpoint = int()
 			depth = float()
+			draw_handler.reset_drawing()
 		STATES.WAITING:
 			depth = float()
 			depth_indicator.value = float()
 		STATES.SURVEYING:
 			pass
 		STATES.SELECTING:
+			apply_new_layer()
 			selection_screen.initialize(current_layers)
 			get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "GLS_state_selecting")
 	pass
@@ -377,6 +380,8 @@ func _on_selection_screen_confirmed_twice() -> void:
 		current_planet.metadata["missing_GL"] = false
 	state = STATES.INVALID
 	pass
+
+
 
 func _on_view_button_pressed() -> void: #if either A or B is pressed 
 	selection_screen.visible = !selection_screen.visible

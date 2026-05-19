@@ -45,3 +45,7 @@ func _draw() -> void:
 		elif line_arr.size() == 1:
 			draw_circle(line_arr[0], 2.5, Color.RED)
 	pass
+
+func reset_drawing() -> void:
+	draw_matrix.clear()
+	pass
