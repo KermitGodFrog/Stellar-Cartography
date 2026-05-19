@@ -488,10 +488,13 @@ gravity = Vector3(0, 10, 0)
 [node name="atmospheric_interference" type="AudioStreamPlayer" parent="gas_layer_surveyor"]
 stream = ExtResource("18_wketm")
 volume_db = -6.0
-pitch_scale = 0.5
+pitch_scale = 2.0
 bus = &"SFX"
 
 [connection signal="close_requested" from="." to="gas_layer_surveyor" method="_on_gas_layer_surveyor_window_close_requested"]
+[connection signal="mouse_entered" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler" method="_on_mouse_exited"]
+[connection signal="visibility_changed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler" method="_on_visibility_changed"]
 [connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/view_buttonA" to="gas_layer_surveyor" method="_on_view_button_pressed"]
 [connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/press_to_start_button" to="gas_layer_surveyor" method="_on_press_to_start_button_pressed"]
 [connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT/confirm_view_scroll/confirm" to="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen" method="_on_confirm_pressed"]

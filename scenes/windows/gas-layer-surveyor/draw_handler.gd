@@ -1,5 +1,7 @@
 extends Control
 
+@onready var draw_mouse_icon = preload("uid://l8jr4r03jelq")
+
 var draw_matrix: Array[PackedVector2Array] = []
 var drawing: bool = false
 
@@ -48,4 +50,16 @@ func _draw() -> void:
 
 func reset_drawing() -> void:
 	draw_matrix.clear()
+	pass
+
+func _on_mouse_entered() -> void:
+	Input.set_custom_mouse_cursor(draw_mouse_icon)
+	pass
+
+func _on_mouse_exited() -> void:
+	Input.set_custom_mouse_cursor(null)
+	pass
+
+func _on_visibility_changed() -> void:
+	Input.set_custom_mouse_cursor(null)
 	pass
