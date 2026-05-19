@@ -16,6 +16,7 @@ var _discovered_gas_layers_matrix: PackedInt32Array = []
 @onready var camera = $camera_offset/camera
 @onready var view_buttonA = $camera_offset/camera/canvas_layer/draw_handler/view_buttonA
 @onready var draw_handler = $camera_offset/camera/canvas_layer/draw_handler
+@onready var atmospheric_interference = $atmospheric_interference
 
 const layer_data = { #name (color(s)-noise-property): properties
 	"default": {
@@ -339,6 +340,7 @@ func _on_state_changed(new_state: STATES) -> void:
 	speed_lines.emitting = new_state == STATES.SURVEYING
 	spaceship_model.visible = new_state == STATES.WAITING or new_state == STATES.SURVEYING or new_state == STATES.SELECTING
 	depth_ui.visible = new_state == STATES.SURVEYING
+	atmospheric_interference.playing = new_state == STATES.SURVEYING
 	
 	match new_state:
 		STATES.INVALID:

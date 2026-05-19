@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://b75u7e1b1ddb2"]
+[gd_scene load_steps=46 format=3 uid="uid://b75u7e1b1ddb2"]
 
 [ext_resource type="Script" uid="uid://bx8vghsv23ue3" path="res://scenes/windows/gas-layer-surveyor/gas_layer_surveyor.gd" id="1_retla"]
 [ext_resource type="Script" uid="uid://cgq18aopgnhi5" path="res://scenes/windows/gas-layer-surveyor/draw_handler.gd" id="3_ia7p8"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://byd0djjhrxoug" path="res://graphics/misc/collapse_window_icon.png" id="11_2upog"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="11_24t8i"]
 [ext_resource type="Script" uid="uid://rkkrtk68rjva" path="res://scenes/windows/gas-layer-surveyor/fun_fact_label.gd" id="11_luw0u"]
+[ext_resource type="AudioStream" uid="uid://cq2a1gsmblou1" path="res://sound/wormhole-minigame/wormhole_interference.wav" id="18_wketm"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_isjh6"]
 
@@ -483,6 +484,12 @@ emission_ring_radius = 7.0
 emission_ring_inner_radius = 6.0
 emission_ring_cone_angle = 90.0
 gravity = Vector3(0, 10, 0)
+
+[node name="atmospheric_interference" type="AudioStreamPlayer" parent="gas_layer_surveyor"]
+stream = ExtResource("18_wketm")
+volume_db = -6.0
+pitch_scale = 0.5
+bus = &"SFX"
 
 [connection signal="close_requested" from="." to="gas_layer_surveyor" method="_on_gas_layer_surveyor_window_close_requested"]
 [connection signal="pressed" from="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/view_buttonA" to="gas_layer_surveyor" method="_on_view_button_pressed"]
