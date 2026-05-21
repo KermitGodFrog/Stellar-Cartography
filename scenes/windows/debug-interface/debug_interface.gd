@@ -2,10 +2,13 @@ extends Control
 
 @onready var nanites_label = $scroll/nanites_scroll/nanites_label
 @onready var nanites_slider = $scroll/nanites_scroll/nanites_slider
+@onready var data_value_label = $scroll/data_value_scroll/data_value_label
+@onready var data_value_slider = $scroll/data_value_scroll/data_value_slider
 @onready var upgrade_options = $scroll/upgrades_scroll/upgrade_options
 @onready var query_scroll = $scroll/query_scroll
 
 signal increasePlayerBalance(amount: int)
+signal addPlayerDataValue(amount: int)
 
 signal addPlayerHullStress(amount: int)
 signal clearLoadRules()
@@ -42,10 +45,18 @@ func _on_nanites_slider_drag_ended(value_changed: bool) -> void:
 		nanites_label.set_text("+%.fn" % nanites_slider.get_value())
 	pass
 
+func _on_data_value_slider_drag_ended(value_changed: bool) -> void:
+	if value_changed:
+		data_value_label.set_text("+%.fň" % data_value_slider.get_value())
+	pass
+
 func _on_nanites_button_pressed() -> void:
 	emit_signal("increasePlayerBalance", nanites_slider.get_value())
 	pass
 
+func _on_data_value_button_pressed() -> void:
+	emit_signal("addPlayerDataValue", data_value_slider.get_value())
+	pass
 
 func _on_clear_load_rules_button_pressed() -> void:
 	emit_signal("clearLoadRules")
