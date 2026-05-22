@@ -157,9 +157,13 @@ func _ready():
 
 func _physics_process(delta):
 	status_scroll.player_status_matrix = _player_status_matrix
+	status_scroll.player_adj_scanner_matrix = player_adj_scanner_matrix
+	
 	scan_prediction_upgrade._player_position_matrix = player_position_matrix
 	scan_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME
+	
 	current_action_label._player_position_matrix = player_position_matrix
+	
 	if tutorial_processor != null:
 		tutorial_processor._system = system
 		tutorial_processor._player_position_matrix = player_position_matrix
@@ -911,7 +915,7 @@ func async_add_unit_ping(unit: unitBodyAPI) -> void:
 	SONAR_PINGS.append(ping)
 	
 	if unit is AIUnitAPI:
-		if player_position_matrix[0].distance_to(unit.position) < player_adj_scanner_matrix[0]: #distance below profile
+		if player_position_matrix[0].distance_to(unit.position) < player_adj_scanner_matrix[1]: #distance below power
 			unit.stun()
 			get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "player_stun_unit")
 	
