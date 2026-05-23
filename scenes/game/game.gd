@@ -276,6 +276,9 @@ func _physics_process(delta):
 	for i in world.player.current_star_system.updateMinesGetDetonations(world.player.position, delta, world.player.is_invulnerable()):
 		_on_add_player_hull_stress(world.player.hull_stress_mine)
 	
+	system_map.update_alarm_sound(world.is_player_in_interception_danger())
+	system_map.update_proximity_blinker(world.is_player_in_proximity_danger())
+	
 	#updating positions of everyhthing for windows
 	pause_mode_handler.set("world", world)
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])

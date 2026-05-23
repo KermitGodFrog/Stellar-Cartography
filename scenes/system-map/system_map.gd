@@ -82,6 +82,8 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var enable_scope_mode_switch = $enable_scope_mode_switch
 @onready var info_popups = $camera/canvas/info_popups
 @onready var tutorial_processor: Node
+@onready var alarm_sound = $alarm_sound
+@onready var proximity_blinker = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -536,8 +538,24 @@ func _on_player_scanner_contact_lost(unit: unitBodyAPI) -> void:
 
 
 
+#what the hell are these functions (the area)
 func oscillate_item_icon_color(item: TreeItem, color: Color, c: int = 0) -> void:
 	item.set_icon_modulate(c, color * maxf(sin(Time.get_unix_time_from_system()), 0.75))
+	pass
+
+func update_alarm_sound(data: Array = []) -> void:
+	if data.size() == 2:
+		var danger = data[0]
+		var distance = data[1]
+		
+		alarm_sound.set_playing(danger)
+		
+		if danger:
+			alarm_sound.set_pitch_scale(clampf(remap(distance, 30.0, 0.0, 1.0, 2.0), 1.0, 3.0))
+	pass
+
+func update_proximity_blinker(_active: bool) -> void:
+	proximity_blinker.active = _active
 	pass
 
 
@@ -1055,6 +1073,7 @@ func _on_update_scanner_display_times(new_profile_time: float, new_power_time: f
 func _on_tutorial_ingress_threshold_reached() -> void:
 	emit_signal("tutorialIngressThresholdReached")
 	pass
+
 
 
 

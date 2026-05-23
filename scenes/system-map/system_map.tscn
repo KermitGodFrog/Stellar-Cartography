@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=64 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
@@ -39,6 +39,9 @@
 [ext_resource type="Texture2D" uid="uid://mnev4hvv0mub" path="res://graphics/system-map/status-panel/scanner_profile_icon.png" id="30_5qywx"]
 [ext_resource type="Texture2D" uid="uid://cqr6y83p5bh5a" path="res://graphics/system-map/similarity_symbol.png" id="31_da46s"]
 [ext_resource type="Script" uid="uid://xtwaxv24g3hj" path="res://scenes/system-map/scan_prediction_upgrade.gd" id="31_k5t5q"]
+[ext_resource type="Script" uid="uid://bkq2b05nxx8pu" path="res://scenes/system-map/proximity_blinker.gd" id="32_wbki1"]
+[ext_resource type="Texture2D" uid="uid://cxco07ala0607" path="res://graphics/system-map/status-panel/light.png" id="33_dx6jv"]
+[ext_resource type="Texture2D" uid="uid://bdjtfvb35byds" path="res://graphics/system-map/status-panel/blinker_standby.png" id="33_ned7s"]
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="34_6kjaj"]
 [ext_resource type="Script" uid="uid://dm8nvnfggth6n" path="res://scenes/system-map/view_objectives_label.gd" id="35_1xeuo"]
 [ext_resource type="Texture2D" uid="uid://dtpw5k24arv17" path="res://graphics/system-map/apps-dock/gas_layer_surveyor_icon.png" id="35_digdi"]
@@ -46,6 +49,7 @@
 [ext_resource type="PackedScene" uid="uid://b2o2eo8ls2ldp" path="res://scenes/system-map/help-overlay/help_overlay_label.tscn" id="38_6mn7q"]
 [ext_resource type="Texture2D" uid="uid://dxiksctsg7w41" path="res://graphics/system-map/cog_normal.svg" id="38_ji0h2"]
 [ext_resource type="BitMap" uid="uid://vsyxkeka6b8c" path="res://graphics/system-map/cog_click_mask.png" id="40_ji0h2"]
+[ext_resource type="AudioStream" uid="uid://oyrc4tfk4fl8" path="res://sound/system-map/alarm.wav" id="47_da46s"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ciwjv"]
 atlas = ExtResource("3_bft1b")
@@ -689,6 +693,7 @@ theme = ExtResource("15_534fl")
 theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
 theme_override_font_sizes/font_size = 14
 icon = ExtResource("29_gyk4x")
+expand_icon = true
 script = ExtResource("11_1rwmm")
 current_danger_rule = 2
 tooltip_title = "Scanner Power"
@@ -712,22 +717,61 @@ script = ExtResource("11_1rwmm")
 current_danger_rule = 2
 tooltip_title = "Scanner Profile"
 
-[node name="modifier_morale_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
+[node name="modifier_prox_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="status_modifier_label" type="Label" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_morale_scroll"]
+[node name="status_modifier_label" type="Label" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.8
 
-[node name="warning" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_morale_scroll"]
+[node name="proximity_blinker" type="Control" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll"]
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_stretch_ratio = 0.2
+theme = ExtResource("5_yv8xl")
+script = ExtResource("32_wbki1")
+
+[node name="scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 83.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="texture_container" type="CenterContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker/scroll"]
+layout_mode = 2
+
+[node name="blinker" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker/scroll/texture_container"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+texture = ExtResource("33_ned7s")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="light" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker/scroll/texture_container"]
+visible = false
+modulate = Color(0.49803922, 0.29411766, 0.29411766, 1)
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+texture = ExtResource("33_dx6jv")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="prox_label" type="Label" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker/scroll"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
+theme_override_font_sizes/font_size = 10
+text = "PROX"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="core_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll"]
 custom_minimum_size = Vector2(460, 235)
@@ -957,6 +1001,12 @@ script = ExtResource("31_k5t5q")
 one_shot = true
 autostart = true
 ignore_time_scale = true
+
+[node name="alarm_sound" type="AudioStreamPlayer" parent="system"]
+stream = ExtResource("47_da46s")
+volume_db = 6.0
+mix_target = 2
+bus = &"SFX"
 
 [connection signal="timeout" from="system/camera/canvas/map_overlay/frame_update" to="system/camera/canvas/map_overlay" method="_on_frame_update_timeout"]
 [connection signal="tab_changed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs" to="system" method="_on_tabs_tab_changed"]
