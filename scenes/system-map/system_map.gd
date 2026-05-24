@@ -1028,7 +1028,7 @@ func _on_clear_console_entries():
 	pass
 
 func _on_player_data_value_changed(new_value: int):
-	data_value_increase_label.set_text("%.fn" % new_value)
+	data_value_increase_label.set_text("%.fň" % new_value)
 	if new_value != 0:
 		data_value_increase_label.blink()
 	pass

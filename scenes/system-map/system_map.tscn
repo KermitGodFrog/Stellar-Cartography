@@ -90,7 +90,7 @@ bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vdy1a"]
 texture = ExtResource("12_6oeqo")
 region_rect = Rect2(0, 0, 67, 32)
-modulate_color = Color(0.0666667, 0.0666667, 0.0666667, 1)
+modulate_color = Color(0.101960786, 0.101960786, 0.101960786, 0.6)
 
 [sub_resource type="Curve" id="Curve_j23tm"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.35, 1), 0.0, 0.0, 0, 0, Vector2(0.9, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
