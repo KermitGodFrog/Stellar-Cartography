@@ -1004,6 +1004,7 @@ ignore_time_scale = true
 
 [node name="alarm_sound" type="AudioStreamPlayer" parent="system"]
 stream = ExtResource("47_da46s")
+volume_db = -12.0
 mix_target = 2
 bus = &"SFX"
 

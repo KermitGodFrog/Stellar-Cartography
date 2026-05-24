@@ -548,10 +548,13 @@ func update_alarm_sound(data: Array = []) -> void:
 		var danger = data[0]
 		var distance = data[1]
 		
-		alarm_sound.set_playing(danger)
-		
-		if danger:
-			alarm_sound.set_pitch_scale(clampf(remap(distance, 30.0, 0.0, 1.0, 2.0), 1.0, 2.0))
+		match danger:
+			true:
+				if not alarm_sound.is_playing():
+					alarm_sound.set_playing(true)
+				alarm_sound.set_pitch_scale(clampf(remap(distance, 30.0, 0.0, 1.0, 2.0), 1.0, 2.0))
+			false:
+				alarm_sound.set_playing(false)
 	pass
 
 func update_proximity_blinker(_active: bool) -> void:
