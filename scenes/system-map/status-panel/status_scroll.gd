@@ -27,8 +27,8 @@ func _physics_process(_delta):
 	hull_stress.text = "%.f%%" % player_status_matrix[1]
 	hull_deterioration.text = "%.f%%" % player_status_matrix[2]
 	morale.text = "%.f%%" % player_status_matrix[3]
-	scanner_power.text = "%.f" % player_adj_scanner_matrix[0]
-	scanner_profile.text = "%.f" % player_adj_scanner_matrix[1]
+	scanner_power.text = "%.f" % player_adj_scanner_matrix[1]
+	scanner_profile.text = "%.f" % player_adj_scanner_matrix[0]
 	
 	last_player_status_matrix = player_status_matrix
 	pass

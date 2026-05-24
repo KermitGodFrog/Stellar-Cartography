@@ -162,7 +162,7 @@ func is_player_in_interception_danger() -> Array:
 	return [false, null]
 
 func is_player_in_proximity_danger() -> bool:
-	for c in player.current_star_system.get_units_in_scanner_range(player.position, player.scanner_power * 1.25): # within NON ADJUSTED scanner power +25%
+	for c in player.current_star_system.get_units_in_scanner_range(player.position, player.scanner_power * 4.0): # within NOT ADJUSTED scanner power +400%
 		if c.is_hostile():
 			return true
 	return false
