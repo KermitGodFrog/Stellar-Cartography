@@ -51,8 +51,8 @@ var player_adj_scanner_matrix: Array = [0.0, 0.0] #this does NOT have to be upda
 var player_is_boosting: bool = false:
 	set(value):
 		if player_is_boosting != value:
-			#travel_modifier_label.check_modifier("boosting", "Boosting (5x R%c/s)" % "☉", value)
-			travel_modifier_label.check_modifier("boosting", "Boosting", value)
+			travel_modifier_organizer.check_modifier("boosting", "Boosting", "(BOOSTING DESCRITPION)", "* [color=green]5.0x speed[/color]", value)
+			status_modifier_organizer.check_modifier("boosting", "Boosting", "(BOOSTING DESCRIPTION)", "* [color=red]+0.20 scanner profile multiplier[/color]", value)
 		player_is_boosting = value
 var player_audio_visualizer_unlocked: bool = false
 var player_gas_layer_surveyor_unlocked: bool = false
@@ -75,7 +75,8 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var scan_prediction_upgrade = $scan_prediction_upgrade
 @onready var countdown_overlay = $camera/canvas/countdown_overlay
 @onready var current_action_label = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll/current_action_label
-@onready var travel_modifier_label = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll/travel_modifier_label
+@onready var travel_modifier_organizer = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll/travel_modifier_organizer
+@onready var status_modifier_organizer = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/status_modifier_organizer
 @onready var view_objective_label = $camera/canvas/control/view_objectives_label
 @onready var help_overlay = $camera/canvas/help_overlay
 @onready var tabs = $camera/canvas/control/tabs_and_ca_scroll/tabs
@@ -138,18 +139,19 @@ var player_in_asteroid_belt: bool = false:
 	set(value):
 		if player_in_asteroid_belt != value:
 			emit_signal("updatePlayerInAsteroidBelt", value)
-			#travel_modifier_label.check_modifier("asteroid_belt", "Asteroid belt (0.5x R%c/s)" % "☉", value)
-			travel_modifier_label.check_modifier("asteroid_belt", "Asteroid belt", value)
+			travel_modifier_organizer.check_modifier("asteroid_belt", "Asteroid belt", "A loose collection of small rocks floating through the void.", "* [color=red]0.5x speed[/color]", value)
+			status_modifier_organizer.check_modifier("asteroid_belt", "Asteroid belt", "A loose collection of small rocks floating through the void.", "* [color=green]-0.70 scanner profile multiplier[/color]\n* [color=red]-0.75 scanner power multiplier[/color]", value)
 		player_in_asteroid_belt = value
 var player_in_pulsar_beam: bool = false: #doesnt impact speed ATM
 	set(value):
 		if player_in_pulsar_beam != value:
 			emit_signal("updatePlayerInPulsarBeam", value)
+			status_modifier_organizer.check_modifier("pulsar_beam", "Pulsar beam", "(PULSAR BEAM DESCRIPTION)", "* [color=green]-0.80 scanner profile multiplier[/color]\n* [color=red]-0.50 scanner power multiplier[/color]", value)
 		player_in_pulsar_beam = value
 var player_supercharged: bool = false:
 	set(value):
 		player_supercharged = value
-		travel_modifier_label.check_modifier("supercharged", "Supercharged", value)
+		travel_modifier_organizer.check_modifier("supercharged", "Supercharged", "(SUPERCHARGED DESCRIPTION)", "* [color=green]2.0x speed[/color]", value)
 
 
 func _ready():

@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://c080lw7341ugp"]
+
+[ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://theme-gen/custom-tooltip/custom_tooltip_host.tres" id="1_2ijk2"]
+[ext_resource type="Script" uid="uid://dhqfvc38qugwj" path="res://scenes/system-map/shared/modifier_indicator.gd" id="1_nhmlq"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="2_2ijk2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y7ari"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+bg_color = Color(0.18039216, 0.18039216, 0.18039216, 1)
+border_width_bottom = 1
+border_color = Color(0.20784314, 0.20784314, 0.20784314, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="modifier_indicator" type="PanelContainer"]
+custom_minimum_size = Vector2(50, 10)
+theme = ExtResource("1_2ijk2")
+theme_override_styles/panel = SubResource("StyleBoxFlat_y7ari")
+script = ExtResource("1_nhmlq")
+
+[node name="title_label" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
+theme_override_fonts/font = ExtResource("2_2ijk2")
+theme_override_font_sizes/font_size = 12
+text = "Asteroid belt"

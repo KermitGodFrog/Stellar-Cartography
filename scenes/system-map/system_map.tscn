@@ -31,7 +31,7 @@
 [ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://theme-gen/custom-tooltip/custom_tooltip_host.tres" id="15_534fl"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="15_y0hnn"]
 [ext_resource type="Script" uid="uid://dk17fp0f0cm0" path="res://scenes/system-map/current-action-panel/current_action_label.gd" id="16_vo58t"]
-[ext_resource type="Script" uid="uid://cfkdo3f7q5aks" path="res://scenes/system-map/current-action-panel/travel_modifier_label.gd" id="17_ow1c8"]
+[ext_resource type="Script" uid="uid://cfkdo3f7q5aks" path="res://scenes/system-map/shared/modifier_organizer.gd" id="17_ow1c8"]
 [ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://graphics/system-map/apps-dock/journey_map_icon.png" id="19_36y85"]
 [ext_resource type="Texture2D" uid="uid://dka6vwu04ir6e" path="res://graphics/system-map/apps-dock/long_range_scopes_icon.png" id="22_sph0q"]
 [ext_resource type="Texture2D" uid="uid://bniwls30eph6s" path="res://graphics/system-map/relationship_symbol.png" id="25_5qywx"]
@@ -480,13 +480,11 @@ autowrap_mode = 3
 text_overrun_behavior = 4
 script = ExtResource("16_vo58t")
 
-[node name="travel_modifier_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll"]
+[node name="travel_modifier_organizer" type="HFlowContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll"]
 custom_minimum_size = Vector2(177, 0)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_fonts/font = ExtResource("15_y0hnn")
-theme_override_font_sizes/font_size = 12
-autowrap_mode = 3
+reverse_fill = true
 script = ExtResource("17_ow1c8")
 
 [node name="console" type="RichTextLabel" parent="system/camera/canvas/control"]
@@ -590,7 +588,7 @@ grow_vertical = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_bottom = 5
 
 [node name="status_scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin"]
 layout_mode = 2
@@ -685,6 +683,25 @@ texture = ExtResource("31_da46s")
 expand_mode = 3
 stretch_mode = 5
 
+[node name="scanner_profile_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/power_profile_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "SCANNER PROFILE DESCRIPTION"
+theme = ExtResource("15_534fl")
+theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
+theme_override_font_sizes/font_size = 14
+icon = ExtResource("30_5qywx")
+script = ExtResource("11_1rwmm")
+current_danger_rule = 2
+tooltip_title = "Scanner Profile"
+
+[node name="similarity_symbol2" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/power_profile_scroll"]
+modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
+layout_mode = 2
+texture = ExtResource("31_da46s")
+expand_mode = 3
+stretch_mode = 5
+
 [node name="scanner_power_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/power_profile_scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -698,35 +715,18 @@ script = ExtResource("11_1rwmm")
 current_danger_rule = 2
 tooltip_title = "Scanner Power"
 
-[node name="similarity_symbol2" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/power_profile_scroll"]
-modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
-layout_mode = 2
-texture = ExtResource("31_da46s")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="scanner_profile_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/power_profile_scroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-tooltip_text = "SCANNER PROFILE DESCRIPTION"
-theme = ExtResource("15_534fl")
-theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
-theme_override_font_sizes/font_size = 14
-icon = ExtResource("30_5qywx")
-script = ExtResource("11_1rwmm")
-current_danger_rule = 2
-tooltip_title = "Scanner Profile"
-
 [node name="modifier_prox_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="status_modifier_label" type="Label" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll"]
+[node name="status_modifier_organizer" type="HFlowContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.8
+reverse_fill = true
+script = ExtResource("17_ow1c8")
 
 [node name="proximity_blinker" type="Control" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll"]
 custom_minimum_size = Vector2(40, 0)
