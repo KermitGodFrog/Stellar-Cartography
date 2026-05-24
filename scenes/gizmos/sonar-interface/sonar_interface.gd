@@ -16,6 +16,7 @@ var ping_direction: Vector2 = Vector2.ZERO
 
 func _physics_process(_delta):
 	ping_width = ping_width_slider.value
+	ping_length = remap(ping_width, 5, 90, 300, 100)
 	
 	if not ping_cooldown_timer.is_stopped():
 		cooldown_label.set_text(str(roundi(ping_cooldown_timer.time_left)))
@@ -33,16 +34,15 @@ func _gui_input(event):
 	pass
 
 func _draw():
-	ping_length = remap(ping_width, 5, 90, 300, 100)
-	var line = get_screen_centre() + ping_direction * ping_length
+	var line = get_screen_centre() + ping_direction * (ping_length / 3.0)
 	
 	#draw_arc(get_screen_centre(), radii, get_screen_centre().angle_to_point(line) + deg_to_rad(ping_length), get_screen_centre().angle_to_point(line) - deg_to_rad(ping_length), 100, Color.WHITE, 2)
 	#draw_arc(get_screen_centre(), radii + 10, get_screen_centre().angle_to_point(line) + deg_to_rad(ping_length), get_screen_centre().angle_to_point(line) - deg_to_rad(ping_length), 100, Color.WHITE, 4)
 	#draw_arc(get_screen_centre(), radii + 20, get_screen_centre().angle_to_point(line) + deg_to_rad(ping_length), get_screen_centre().angle_to_point(line) - deg_to_rad(ping_length), 100, Color.WHITE, 8)
 	
 	var a = get_screen_centre()
-	var b = line + Vector2(0,ping_width).rotated(get_screen_centre().angle_to_point(line))
-	var c = line + Vector2(0,-ping_width).rotated(get_screen_centre().angle_to_point(line))
+	var b = line + Vector2(0,(ping_width / 3.0)).rotated(get_screen_centre().angle_to_point(line))
+	var c = line + Vector2(0,(-ping_width / 3.0)).rotated(get_screen_centre().angle_to_point(line))
 	var points: PackedVector2Array = [a,b,c]
 	draw_colored_polygon(points, Color.RED)
 	pass
