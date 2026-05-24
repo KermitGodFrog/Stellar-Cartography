@@ -54,6 +54,8 @@ func _on_ping_button_pressed():
 	if ping_cooldown_timer.is_stopped():
 		emit_signal("sonarPing", ping_width, ping_length, ping_direction)
 		ping_cooldown_timer.start()
+	else:
+		cooldown_label.invalid_blink()
 	pass
 
 

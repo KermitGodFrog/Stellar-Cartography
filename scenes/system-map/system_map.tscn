@@ -39,7 +39,7 @@
 [ext_resource type="Texture2D" uid="uid://mnev4hvv0mub" path="res://graphics/system-map/status-panel/scanner_profile_icon.png" id="30_5qywx"]
 [ext_resource type="Texture2D" uid="uid://cqr6y83p5bh5a" path="res://graphics/system-map/similarity_symbol.png" id="31_da46s"]
 [ext_resource type="Script" uid="uid://xtwaxv24g3hj" path="res://scenes/system-map/scan_prediction_upgrade.gd" id="31_k5t5q"]
-[ext_resource type="Script" uid="uid://bkq2b05nxx8pu" path="res://scenes/system-map/proximity_blinker.gd" id="32_wbki1"]
+[ext_resource type="Script" uid="uid://bkq2b05nxx8pu" path="res://scenes/system-map/status-panel/proximity_blinker.gd" id="32_wbki1"]
 [ext_resource type="Texture2D" uid="uid://cxco07ala0607" path="res://graphics/system-map/status-panel/light.png" id="33_dx6jv"]
 [ext_resource type="Texture2D" uid="uid://bdjtfvb35byds" path="res://graphics/system-map/status-panel/blinker_standby.png" id="33_ned7s"]
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="34_6kjaj"]
@@ -794,13 +794,13 @@ theme_override_constants/margin_bottom = 20
 layout_mode = 2
 alignment = 1
 
-[node name="barycenter_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
+[node name="sonar_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 4
 stretch = true
 
-[node name="barycenter_visualizer_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container" instance=ExtResource("9_2aiel")]
+[node name="sonar_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container" instance=ExtResource("10_48t0n")]
 handle_input_locally = false
 render_target_update_mode = 4
 
@@ -810,13 +810,13 @@ layout_mode = 2
 theme_override_constants/separation = 20
 theme_override_styles/separator = SubResource("StyleBoxLine_5218o")
 
-[node name="sonar_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
+[node name="barycenter_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 4
 stretch = true
 
-[node name="sonar_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container" instance=ExtResource("10_48t0n")]
+[node name="barycenter_visualizer_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container" instance=ExtResource("9_2aiel")]
 handle_input_locally = false
 render_target_update_mode = 4
 

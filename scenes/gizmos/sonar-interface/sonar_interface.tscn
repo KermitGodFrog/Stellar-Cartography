@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://chwm82adl21cm"]
+[gd_scene load_steps=8 format=3 uid="uid://chwm82adl21cm"]
 
 [ext_resource type="Script" uid="uid://j6p3dv2arp7u" path="res://scenes/gizmos/sonar-interface/sonar_interface.gd" id="1_bmylm"]
 [ext_resource type="Texture2D" uid="uid://bu4clhu1rmiwq" path="res://graphics/sonar-interface/sonar_64x.png" id="1_t5fig"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="2_1p42e"]
 [ext_resource type="StyleBox" uid="uid://t53tmp88dts0" path="res://theme-gen/general_focus.tres" id="4_1f73o"]
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="4_jmhbk"]
+[ext_resource type="Script" uid="uid://cj6mnrnbrx2yd" path="res://scenes/gizmos/sonar-interface/cooldown_label.gd" id="6_ovydm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_njxhc"]
 bg_color = Color(0.184314, 0.14902, 0.156863, 0.784314)
@@ -73,11 +74,13 @@ offset_left = -10.0
 offset_right = -5.0
 offset_bottom = 26.0
 grow_horizontal = 0
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
 theme_override_colors/font_outline_color = Color(0.49803922, 0.29411766, 0.29411766, 0.47058824)
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("4_jmhbk")
 theme_override_styles/focus = ExtResource("4_1f73o")
 horizontal_alignment = 2
+script = ExtResource("6_ovydm")
 
 [node name="reset_button" type="Button" parent="sonar_control"]
 layout_mode = 1
