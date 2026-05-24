@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=65 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
@@ -34,6 +34,7 @@
 [ext_resource type="Script" uid="uid://cfkdo3f7q5aks" path="res://scenes/system-map/shared/modifier_organizer.gd" id="17_ow1c8"]
 [ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://graphics/system-map/apps-dock/journey_map_icon.png" id="19_36y85"]
 [ext_resource type="Texture2D" uid="uid://dka6vwu04ir6e" path="res://graphics/system-map/apps-dock/long_range_scopes_icon.png" id="22_sph0q"]
+[ext_resource type="Script" uid="uid://dvoejg0bu6h77" path="res://scenes/system-map/custom_tooltip_control.gd" id="24_pnmav"]
 [ext_resource type="Texture2D" uid="uid://bniwls30eph6s" path="res://graphics/system-map/relationship_symbol.png" id="25_5qywx"]
 [ext_resource type="Texture2D" uid="uid://ckex2ufxqcw22" path="res://graphics/system-map/status-panel/scanner_power_icon.png" id="29_gyk4x"]
 [ext_resource type="Texture2D" uid="uid://mnev4hvv0mub" path="res://graphics/system-map/status-panel/scanner_profile_icon.png" id="30_5qywx"]
@@ -601,9 +602,13 @@ alignment = 1
 [node name="relationship_symbol" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/value_nanites_scroll"]
 modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
 layout_mode = 2
+tooltip_text = "DESCRIPTION"
+theme = ExtResource("15_534fl")
 texture = ExtResource("25_5qywx")
 expand_mode = 3
 stretch_mode = 5
+script = ExtResource("24_pnmav")
+tooltip_title = "Data Value -> Nanites"
 
 [node name="nanites_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/value_nanites_scroll"]
 layout_mode = 2
@@ -658,9 +663,13 @@ tooltip_title = "Hull Stress"
 [node name="relationship_symbol" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/stress_deterioration_scroll"]
 modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
 layout_mode = 2
+tooltip_text = "DESCRIPTION"
+theme = ExtResource("15_534fl")
 texture = ExtResource("25_5qywx")
 expand_mode = 3
 stretch_mode = 5
+script = ExtResource("24_pnmav")
+tooltip_title = "Hull Stress -> Hull Deterioration"
 
 [node name="hull_deterioration_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/stress_deterioration_scroll"]
 layout_mode = 2
@@ -737,15 +746,19 @@ theme = ExtResource("5_yv8xl")
 script = ExtResource("32_wbki1")
 
 [node name="scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 83.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="texture_container" type="CenterContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker/scroll"]
 layout_mode = 2
+tooltip_text = "DESCRIPTION"
+script = ExtResource("24_pnmav")
+tooltip_title = "Proximity Blinker"
 
 [node name="blinker" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker/scroll/texture_container"]
 custom_minimum_size = Vector2(40, 0)
