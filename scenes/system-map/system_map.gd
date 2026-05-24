@@ -48,11 +48,11 @@ var system: starSystemAPI:
 var player_position_matrix: Array = [Vector2(0,0), Vector2(0,0)]
 var _player_status_matrix: Array = [0,0,0,0]
 var player_adj_scanner_matrix: Array = [0.0, 0.0] #this does NOT have to be updated every frame lmfao BRRRRRRRRRRRRR
+var player_adj_speed: int = 0
 var player_is_boosting: bool = false:
 	set(value):
 		if player_is_boosting != value:
-			travel_modifier_organizer.check_modifier("boosting", "Boosting", "(BOOSTING DESCRITPION)", "* [color=green]5.0x speed[/color]", value)
-			status_modifier_organizer.check_modifier("boosting", "Boosting", "(BOOSTING DESCRIPTION)", "* [color=red]+0.20 scanner profile multiplier[/color]", value)
+			status_modifier_organizer.check_modifier("boosting", "Boosting", "(BOOSTING DESCRIPTION)", "* [color=red]+0.20 scanner profile multiplier[/color]\n* [color=green]5.0x speed[/color]", value)
 		player_is_boosting = value
 var player_audio_visualizer_unlocked: bool = false
 var player_gas_layer_surveyor_unlocked: bool = false
@@ -69,14 +69,13 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var picker_label = $camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_label
 @onready var picker_button = $camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
 @onready var console = $camera/canvas/control/console
-@onready var status_scroll = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll
+@onready var status_control = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control
 @onready var map_overlay = $camera/canvas/map_overlay
 @onready var data_value_increase_label = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/data_value_increase_label
 @onready var scan_prediction_upgrade = $scan_prediction_upgrade
 @onready var countdown_overlay = $camera/canvas/countdown_overlay
-@onready var current_action_label = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll/current_action_label
-@onready var travel_modifier_organizer = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll/travel_modifier_organizer
-@onready var status_modifier_organizer = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/status_modifier_organizer
+@onready var current_action_label = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/current_action_label
+@onready var status_modifier_organizer = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel1/secondary_margin/status_modifier_organizer
 @onready var view_objective_label = $camera/canvas/control/view_objectives_label
 @onready var help_overlay = $camera/canvas/help_overlay
 @onready var tabs = $camera/canvas/control/tabs_and_ca_scroll/tabs
@@ -84,7 +83,7 @@ var player_gas_layer_surveyor_unlocked: bool = false
 @onready var info_popups = $camera/canvas/info_popups
 @onready var tutorial_processor: Node
 @onready var alarm_sound = $alarm_sound
-@onready var proximity_blinker = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker
+@onready var proximity_blinker = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/proximity_blinker
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -139,8 +138,7 @@ var player_in_asteroid_belt: bool = false:
 	set(value):
 		if player_in_asteroid_belt != value:
 			emit_signal("updatePlayerInAsteroidBelt", value)
-			travel_modifier_organizer.check_modifier("asteroid_belt", "Asteroid belt", "A loose collection of small rocks floating through the void.", "* [color=red]0.5x speed[/color]", value)
-			status_modifier_organizer.check_modifier("asteroid_belt", "Asteroid belt", "A loose collection of small rocks floating through the void.", "* [color=green]-0.70 scanner profile multiplier[/color]\n* [color=red]-0.75 scanner power multiplier[/color]", value)
+			status_modifier_organizer.check_modifier("asteroid_belt", "Asteroid belt", "A loose collection of small rocks floating through the void.", "* [color=green]-0.70 scanner profile multiplier[/color]\n* [color=red]-0.75 scanner power multiplier[/color]\n* [color=red]0.5x speed[/color]", value)
 		player_in_asteroid_belt = value
 var player_in_pulsar_beam: bool = false: #doesnt impact speed ATM
 	set(value):
@@ -151,17 +149,18 @@ var player_in_pulsar_beam: bool = false: #doesnt impact speed ATM
 var player_supercharged: bool = false:
 	set(value):
 		player_supercharged = value
-		travel_modifier_organizer.check_modifier("supercharged", "Supercharged", "(SUPERCHARGED DESCRIPTION)", "* [color=green]2.0x speed[/color]", value)
+		status_modifier_organizer.check_modifier("supercharged", "Supercharged", "(SUPERCHARGED DESCRIPTION)", "* [color=green]2.0x speed[/color]", value)
 
 
 func _ready():
-	status_scroll.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
+	status_control.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	contact_list.create_item(null)
 	pass
 
 func _physics_process(delta):
-	status_scroll.player_status_matrix = _player_status_matrix
-	status_scroll.player_adj_scanner_matrix = player_adj_scanner_matrix
+	status_control.player_status_matrix = _player_status_matrix
+	status_control.player_adj_scanner_matrix = player_adj_scanner_matrix
+	status_control.player_adj_speed = player_adj_speed
 	
 	scan_prediction_upgrade._player_position_matrix = player_position_matrix
 	scan_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME

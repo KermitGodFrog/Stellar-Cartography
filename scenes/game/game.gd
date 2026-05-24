@@ -7,8 +7,8 @@ var world: worldAPI
 
 @onready var system_map = $system_window/system
 @onready var system_3d = $system_window/system/camera/canvas/control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container/system_3d_window/system_3d
-@onready var sonar = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container/sonar_window/sonar_control
-@onready var barycenter_visualizer = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container/barycenter_visualizer_window/barycenter_control
+@onready var sonar = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/sonar_container/sonar_window/sonar_control
+@onready var barycenter_visualizer = $system_window/system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/barycenter_container/barycenter_visualizer_window/barycenter_control
 @onready var audio_visualizer = $audio_visualizer_window/audio_control
 @onready var long_range_scopes = $long_range_scopes_window/split/lrs_center/lrs_container/lrs_viewport/long_range_scopes
 @onready var lrs_bestiary = $long_range_scopes_window/split/bestiary
@@ -284,6 +284,7 @@ func _physics_process(delta):
 	system_map.set("player_position_matrix", [world.player.position, world.player.target_position])
 	system_map.set("_player_status_matrix", [world.player.balance, world.player.hull_stress, world.player.hull_deterioration, world.player.morale])
 	system_map.set("player_adj_scanner_matrix", [world.player.get_adjusted_scanner_profile(), world.player.get_adjusted_scanner_power()])
+	system_map.set("player_adj_speed", world.player.get_adjusted_speed())
 	system_map.set("player_audio_visualizer_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.AUDIO_VISUALIZER) != -1))
 	system_map.set("player_gas_layer_surveyor_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) != -1))
 	system_3d.set("player_position", world.player.position)

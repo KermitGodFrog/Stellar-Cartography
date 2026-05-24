@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=66 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
@@ -16,8 +16,8 @@
 [ext_resource type="PackedScene" uid="uid://chwm82adl21cm" path="res://scenes/gizmos/sonar-interface/sonar_interface.tscn" id="10_48t0n"]
 [ext_resource type="Texture2D" uid="uid://4r5ju0dq0137" path="res://graphics/system-map/status-panel/nanites_icon.png" id="10_e6b7x"]
 [ext_resource type="Texture2D" uid="uid://7klr1mcpbsc4" path="res://graphics/system-map/actions-panel/go_to_icon.png" id="10_xhqpl"]
-[ext_resource type="Script" uid="uid://oifivdox788" path="res://scenes/system-map/status-panel/status_scroll.gd" id="10_ydc85"]
-[ext_resource type="Script" uid="uid://dskivfpkly04v" path="res://scenes/system-map/status-panel/status_button.gd" id="11_1rwmm"]
+[ext_resource type="Script" uid="uid://oifivdox788" path="res://scenes/system-map/status-panel/status_control.gd" id="10_ydc85"]
+[ext_resource type="Script" uid="uid://dskivfpkly04v" path="res://scenes/system-map/status-panel/primary_status_button.gd" id="11_1rwmm"]
 [ext_resource type="Texture2D" uid="uid://dq25m1n2y5upl" path="res://graphics/system-map/status-panel/hull_stress_icon.png" id="11_1tiv0"]
 [ext_resource type="PackedScene" uid="uid://co52u63cyk220" path="res://scenes/gizmos/system-3d/system_3d.tscn" id="11_domud"]
 [ext_resource type="Texture2D" uid="uid://csvtv1sy2k3ns" path="res://graphics/system-map/apps-dock/audio_visualizer_icon.png" id="11_lvg8y"]
@@ -31,7 +31,7 @@
 [ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://theme-gen/custom-tooltip/custom_tooltip_host.tres" id="15_534fl"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="15_y0hnn"]
 [ext_resource type="Script" uid="uid://dk17fp0f0cm0" path="res://scenes/system-map/current-action-panel/current_action_label.gd" id="16_vo58t"]
-[ext_resource type="Script" uid="uid://cfkdo3f7q5aks" path="res://scenes/system-map/shared/modifier_organizer.gd" id="17_ow1c8"]
+[ext_resource type="Script" uid="uid://cfkdo3f7q5aks" path="res://scenes/system-map/status-panel/modifier_organizer.gd" id="17_ow1c8"]
 [ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://graphics/system-map/apps-dock/journey_map_icon.png" id="19_36y85"]
 [ext_resource type="Texture2D" uid="uid://dka6vwu04ir6e" path="res://graphics/system-map/apps-dock/long_range_scopes_icon.png" id="22_sph0q"]
 [ext_resource type="Script" uid="uid://dvoejg0bu6h77" path="res://scenes/system-map/custom_tooltip_control.gd" id="24_pnmav"]
@@ -42,6 +42,7 @@
 [ext_resource type="Script" uid="uid://xtwaxv24g3hj" path="res://scenes/system-map/scan_prediction_upgrade.gd" id="31_k5t5q"]
 [ext_resource type="Script" uid="uid://bkq2b05nxx8pu" path="res://scenes/system-map/status-panel/proximity_blinker.gd" id="32_wbki1"]
 [ext_resource type="Texture2D" uid="uid://cxco07ala0607" path="res://graphics/system-map/status-panel/light.png" id="33_dx6jv"]
+[ext_resource type="Texture2D" uid="uid://cviufbmi76n7f" path="res://graphics/system-map/status-panel/data_value_icon.png" id="33_gpqda"]
 [ext_resource type="Texture2D" uid="uid://bdjtfvb35byds" path="res://graphics/system-map/status-panel/blinker_standby.png" id="33_ned7s"]
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="34_6kjaj"]
 [ext_resource type="Script" uid="uid://dm8nvnfggth6n" path="res://scenes/system-map/view_objectives_label.gd" id="35_1xeuo"]
@@ -222,6 +223,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+theme = ExtResource("5_yv8xl")
 
 [node name="post_process" type="ColorRect" parent="system/camera/canvas/control"]
 visible = false
@@ -449,7 +451,7 @@ layout_mode = 2
 size_flags_vertical = 8
 
 [node name="arrow_texture" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll"]
-modulate = Color(0.180392, 0.180392, 0.180392, 0.415686)
+modulate = Color(0.101960786, 0.101960786, 0.101960786, 0.6)
 custom_minimum_size = Vector2(13, 32)
 layout_mode = 2
 size_flags_vertical = 4
@@ -460,33 +462,24 @@ custom_minimum_size = Vector2(187, 100)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
+theme_type_variation = &"PanelContainerTransparentA"
 
 [node name="margin" type="MarginContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel"]
 layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
-[node name="scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin"]
-layout_mode = 2
-
-[node name="current_action_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll"]
+[node name="current_action_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin"]
 custom_minimum_size = Vector2(177, 0)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("15_y0hnn")
 theme_override_font_sizes/font_size = 12
 autowrap_mode = 3
-text_overrun_behavior = 4
+text_overrun_behavior = 3
 script = ExtResource("16_vo58t")
-
-[node name="travel_modifier_organizer" type="HFlowContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/scroll"]
-custom_minimum_size = Vector2(177, 0)
-layout_mode = 2
-size_flags_vertical = 3
-reverse_fill = true
-script = ExtResource("17_ow1c8")
 
 [node name="console" type="RichTextLabel" parent="system/camera/canvas/control"]
 custom_minimum_size = Vector2(500, 200)
@@ -560,12 +553,11 @@ vertical_alignment = 1
 script = ExtResource("13_6i2x8")
 hide_curve = SubResource("Curve_j23tm")
 
-[node name="core_panel_bg" type="ColorRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll"]
+[node name="core" type="Control" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll"]
 custom_minimum_size = Vector2(790, 235)
 layout_mode = 2
-color = Color(0.18039216, 0.18039216, 0.18039216, 0)
 
-[node name="core_panel_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg"]
+[node name="core_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -575,31 +567,40 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 2
 
-[node name="status_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll"]
+[node name="status_control" type="Control" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll"]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
+script = ExtResource("10_ydc85")
 
-[node name="status_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel"]
+[node name="status_scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="primary_panel" type="PanelContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"PanelContainerTransparentA"
+
+[node name="primary_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel"]
+layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_bottom = 10
 
-[node name="status_scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin"]
-layout_mode = 2
-script = ExtResource("10_ydc85")
-
-[node name="value_nanites_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
+[node name="unadjusted_values" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin"]
 layout_mode = 2
 alignment = 1
 
-[node name="relationship_symbol" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/value_nanites_scroll"]
+[node name="value_nanites_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values"]
+layout_mode = 2
+alignment = 1
+
+[node name="relationship_symbol" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/value_nanites_scroll"]
 modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
 layout_mode = 2
 tooltip_text = "DESCRIPTION"
@@ -610,7 +611,7 @@ stretch_mode = 5
 script = ExtResource("24_pnmav")
 tooltip_title = "Data Value -> Nanites"
 
-[node name="nanites_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/value_nanites_scroll"]
+[node name="nanites_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/value_nanites_scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Universally recognised currency. Can be obtained via trading in exploration data at a space station. "
@@ -621,14 +622,14 @@ script = ExtResource("11_1rwmm")
 current_danger_rule = 2
 tooltip_title = "Nanites"
 
-[node name="similarity_symbol" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/value_nanites_scroll"]
+[node name="similarity_symbol" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/value_nanites_scroll"]
 modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
 layout_mode = 2
 texture = ExtResource("31_da46s")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="morale_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/value_nanites_scroll"]
+[node name="morale_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/value_nanites_scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "The willingness of a starships crew to follow their superiors. Depending on circumstance, an uprising may occur at 0%."
@@ -639,18 +640,18 @@ script = ExtResource("11_1rwmm")
 current_danger_rule = 1
 tooltip_title = "Morale"
 
-[node name="stress_deterioration_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
+[node name="stress_deterioration_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values"]
 layout_mode = 2
 alignment = 1
 
-[node name="similarity_symbol" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/stress_deterioration_scroll"]
+[node name="similarity_symbol" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/stress_deterioration_scroll"]
 modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
 layout_mode = 2
 texture = ExtResource("31_da46s")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/stress_deterioration_scroll" groups=["FOLLOW_UPGRADE_STATE", "playUIClickSFX"]]
+[node name="hull_stress_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/stress_deterioration_scroll" groups=["FOLLOW_UPGRADE_STATE", "playUIClickSFX"]]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("15_534fl")
@@ -660,7 +661,7 @@ script = ExtResource("14_u08qu")
 current_danger_rule = 2
 tooltip_title = "Hull Stress"
 
-[node name="relationship_symbol" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/stress_deterioration_scroll"]
+[node name="relationship_symbol" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/stress_deterioration_scroll"]
 modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
 layout_mode = 2
 tooltip_text = "DESCRIPTION"
@@ -671,7 +672,7 @@ stretch_mode = 5
 script = ExtResource("24_pnmav")
 tooltip_title = "Hull Stress -> Hull Deterioration"
 
-[node name="hull_deterioration_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/stress_deterioration_scroll"]
+[node name="hull_deterioration_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/stress_deterioration_scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Permanent damage to a starship. Catastrophic, and often explosive, ship breakdown occurs at 100%."
@@ -681,86 +682,71 @@ icon = ExtResource("12_3bh3s")
 script = ExtResource("11_1rwmm")
 tooltip_title = "Hull Deterioration"
 
-[node name="power_profile_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
-layout_mode = 2
-alignment = 1
-
-[node name="similarity_symbol" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/power_profile_scroll"]
-modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
-layout_mode = 2
-texture = ExtResource("31_da46s")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="scanner_profile_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/power_profile_scroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-tooltip_text = "SCANNER PROFILE DESCRIPTION"
-theme = ExtResource("15_534fl")
-theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
-theme_override_font_sizes/font_size = 14
-icon = ExtResource("30_5qywx")
-script = ExtResource("11_1rwmm")
-current_danger_rule = 2
-tooltip_title = "Scanner Profile"
-
-[node name="similarity_symbol2" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/power_profile_scroll"]
-modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
-layout_mode = 2
-texture = ExtResource("31_da46s")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="scanner_power_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/power_profile_scroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-tooltip_text = "SCANNER POWER DESCRIPTION"
-theme = ExtResource("15_534fl")
-theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
-theme_override_font_sizes/font_size = 14
-icon = ExtResource("29_gyk4x")
-expand_icon = true
-script = ExtResource("11_1rwmm")
-current_danger_rule = 2
-tooltip_title = "Scanner Power"
-
-[node name="modifier_prox_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll"]
+[node name="secondary_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll"]
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_vertical = 3
-alignment = 1
+alignment = 2
 
-[node name="status_modifier_organizer" type="HFlowContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll"]
+[node name="secondary_panel1" type="PanelContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PanelContainerTransparentA"
+
+[node name="secondary_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel1"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="status_modifier_organizer" type="HFlowContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel1/secondary_margin"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.8
-reverse_fill = true
+alignment = 1
+last_wrap_alignment = 1
 script = ExtResource("17_ow1c8")
 
-[node name="proximity_blinker" type="Control" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll"]
-custom_minimum_size = Vector2(40, 0)
+[node name="arrow_texture" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll"]
+modulate = Color(0.101960786, 0.101960786, 0.101960786, 0.6)
+custom_minimum_size = Vector2(13, 32)
 layout_mode = 2
-size_flags_horizontal = 10
-size_flags_stretch_ratio = 0.2
+size_flags_vertical = 4
+texture = ExtResource("15_4xoy6")
+
+[node name="secondary_panel2" type="PanelContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_type_variation = &"PanelContainerTransparentA"
+
+[node name="secondary_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="bisect" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="proximity_blinker" type="Control" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
 theme = ExtResource("5_yv8xl")
 script = ExtResource("32_wbki1")
 
-[node name="scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 0
-
-[node name="texture_container" type="CenterContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker/scroll"]
-layout_mode = 2
+[node name="texture_container" type="CenterContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/proximity_blinker"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_vertical = 0
 tooltip_text = "DESCRIPTION"
 script = ExtResource("24_pnmav")
 tooltip_title = "Proximity Blinker"
 
-[node name="blinker" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker/scroll/texture_container"]
+[node name="blinker" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/proximity_blinker/texture_container"]
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 size_flags_horizontal = 10
@@ -768,7 +754,7 @@ texture = ExtResource("33_ned7s")
 expand_mode = 5
 stretch_mode = 5
 
-[node name="light" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker/scroll/texture_container"]
+[node name="light" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/proximity_blinker/texture_container"]
 visible = false
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
@@ -777,24 +763,63 @@ texture = ExtResource("33_dx6jv")
 expand_mode = 5
 stretch_mode = 5
 
-[node name="prox_label" type="Label" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker/scroll"]
+[node name="adjusted_values" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect"]
+custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
-theme_override_font_sizes/font_size = 10
-text = "PROX"
-horizontal_alignment = 1
-vertical_alignment = 1
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
+theme_override_constants/separation = 0
+alignment = 1
 
-[node name="core_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll"]
+[node name="scanner_profile_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/adjusted_values"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "SCANNER PROFILE DESCRIPTION"
+theme = ExtResource("15_534fl")
+theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
+theme_override_font_sizes/font_size = 8
+text = "100"
+icon = ExtResource("30_5qywx")
+expand_icon = true
+script = ExtResource("24_pnmav")
+tooltip_title = "Scanner Profile"
+
+[node name="scanner_power_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/adjusted_values"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "SCANNER POWER DESCRIPTION"
+theme = ExtResource("15_534fl")
+theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
+theme_override_font_sizes/font_size = 8
+text = "100"
+icon = ExtResource("29_gyk4x")
+expand_icon = true
+script = ExtResource("24_pnmav")
+tooltip_title = "Scanner Power"
+
+[node name="speed_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/adjusted_values"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "SPEED DESCRIPTION"
+theme = ExtResource("15_534fl")
+theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
+theme_override_font_sizes/font_size = 8
+text = "10"
+icon = ExtResource("33_gpqda")
+expand_icon = true
+script = ExtResource("24_pnmav")
+tooltip_title = "Speed"
+
+[node name="core_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll"]
 custom_minimum_size = Vector2(460, 235)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_da46s")
 
-[node name="core_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="core_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel"]
+layout_mode = 0
+offset_right = 468.0
+offset_bottom = 240.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 20
@@ -802,42 +827,42 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="core_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin"]
+[node name="core_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin"]
 layout_mode = 2
 alignment = 1
 
-[node name="sonar_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
+[node name="sonar_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 4
 stretch = true
 
-[node name="sonar_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container" instance=ExtResource("10_48t0n")]
+[node name="sonar_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/sonar_container" instance=ExtResource("10_48t0n")]
 handle_input_locally = false
 render_target_update_mode = 4
 
-[node name="separator1" type="VSeparator" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
+[node name="separator1" type="VSeparator" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll"]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 theme_override_constants/separation = 20
 theme_override_styles/separator = SubResource("StyleBoxLine_5218o")
 
-[node name="barycenter_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll"]
+[node name="barycenter_container" type="SubViewportContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 4
 stretch = true
 
-[node name="barycenter_visualizer_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container" instance=ExtResource("9_2aiel")]
+[node name="barycenter_visualizer_window" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/barycenter_container" instance=ExtResource("9_2aiel")]
 handle_input_locally = false
 render_target_update_mode = 4
 
-[node name="apps_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll"]
+[node name="apps_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll"]
 custom_minimum_size = Vector2(100, 235)
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
 
-[node name="apps_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel"]
+[node name="apps_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -849,11 +874,11 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="apps_scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin" groups=["FOLLOW_UPGRADE_STATE"]]
+[node name="apps_scroll" type="VBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin" groups=["FOLLOW_UPGRADE_STATE"]]
 layout_mode = 2
 script = ExtResource("9_pw1kh")
 
-[node name="journey_map_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
+[node name="journey_map_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll"]
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
 text = "JUR"
@@ -861,7 +886,7 @@ icon = ExtResource("19_36y85")
 clip_text = true
 icon_alignment = 2
 
-[node name="audio_visualizer_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
+[node name="audio_visualizer_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll"]
 visible = false
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
@@ -870,7 +895,7 @@ icon = ExtResource("11_lvg8y")
 clip_text = true
 icon_alignment = 2
 
-[node name="long_range_scopes_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
+[node name="long_range_scopes_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll"]
 visible = false
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
@@ -879,7 +904,7 @@ icon = ExtResource("22_sph0q")
 clip_text = true
 icon_alignment = 2
 
-[node name="gas_layer_surveyor_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll"]
+[node name="gas_layer_surveyor_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll"]
 visible = false
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
@@ -939,7 +964,7 @@ track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scope
 [node name="apps_dock" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
 layout_mode = 0
 text = "apps dock"
-track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel")
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel")
 
 [node name="system_list" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
 layout_mode = 0
@@ -964,17 +989,17 @@ track = NodePath("../../control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel"
 [node name="status_panel" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
 layout_mode = 0
 text = "status panel"
-track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel")
+track = NodePath("")
 
 [node name="barycenter_visualizer" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
 layout_mode = 0
 text = "barycenter visualizer"
-track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container")
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/barycenter_container")
 
 [node name="LIDAR" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
 layout_mode = 0
 text = "LIDAR"
-track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container")
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/sonar_container")
 
 [node name="console" parent="system/camera/canvas/help_overlay" instance=ExtResource("38_6mn7q")]
 layout_mode = 0
@@ -1030,10 +1055,10 @@ bus = &"SFX"
 [connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]
 [connection signal="item_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button" to="system" method="_on_picker_button_item_selected"]
-[connection signal="mouse_entered" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/stress_deterioration_scroll/hull_stress_button" to="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/stress_deterioration_scroll/hull_stress_button" method="_on_mouse_entered"]
-[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/stress_deterioration_scroll/hull_stress_button" to="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/stress_deterioration_scroll/hull_stress_button" method="_on_pressed"]
-[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/journey_map_button" to="system" method="_on_journey_map_button_pressed"]
-[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_pressed"]
-[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/long_range_scopes_button" to="system" method="_on_long_range_scopes_button_pressed"]
-[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/apps_panel/apps_margin/apps_scroll/gas_layer_surveyor_button" to="system" method="_on_gas_layer_surveyor_button_pressed"]
+[connection signal="mouse_entered" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/stress_deterioration_scroll/hull_stress_button" to="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/stress_deterioration_scroll/hull_stress_button" method="_on_mouse_entered"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/stress_deterioration_scroll/hull_stress_button" to="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/stress_deterioration_scroll/hull_stress_button" method="_on_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll/journey_map_button" to="system" method="_on_journey_map_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll/long_range_scopes_button" to="system" method="_on_long_range_scopes_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll/gas_layer_surveyor_button" to="system" method="_on_gas_layer_surveyor_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/settings_button" to="system" method="_on_settings_button_pressed"]

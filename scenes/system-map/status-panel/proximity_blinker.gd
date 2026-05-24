@@ -2,8 +2,8 @@ extends Control
 
 signal condition_changed(_active: bool)
 
-@onready var blinker = $scroll/texture_container/blinker
-@onready var light = $scroll/texture_container/light
+@onready var blinker = $texture_container/blinker
+@onready var light = $texture_container/light
 
 @onready var blinker_standby_tex = preload("uid://bdjtfvb35byds")
 @onready var blinker_warn_tex = preload("uid://3afy6kavs1kh")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://c080lw7341ugp"]
 
 [ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://theme-gen/custom-tooltip/custom_tooltip_host.tres" id="1_2ijk2"]
-[ext_resource type="Script" uid="uid://dhqfvc38qugwj" path="res://scenes/system-map/shared/modifier_indicator.gd" id="1_nhmlq"]
+[ext_resource type="Script" uid="uid://dhqfvc38qugwj" path="res://scenes/system-map/status-panel/modifier_indicator.gd" id="1_nhmlq"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="2_2ijk2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y7ari"]
