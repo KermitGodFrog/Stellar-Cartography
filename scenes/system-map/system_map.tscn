@@ -757,7 +757,6 @@ stretch_mode = 5
 
 [node name="light" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel/status_margin/status_scroll/modifier_prox_scroll/proximity_blinker/scroll/texture_container"]
 visible = false
-modulate = Color(0.49803922, 0.29411766, 0.29411766, 1)
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 size_flags_horizontal = 10

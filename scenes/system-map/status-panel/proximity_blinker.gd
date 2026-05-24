@@ -8,6 +8,8 @@ signal condition_changed(_active: bool)
 @onready var blinker_standby_tex = preload("uid://bdjtfvb35byds")
 @onready var blinker_warn_tex = preload("uid://3afy6kavs1kh")
 
+var time: float = 0.0
+
 var active: bool = false:
 	set(value):
 		if value != active:
@@ -28,5 +30,9 @@ func _on_condition_changed(_active: bool) -> void:
 			light.hide()
 	pass
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	time += delta
+	var update_color = Color.DARK_RED
+	update_color.a = clampf(sin(time), 0.0, 0.3)
+	light.set_modulate(update_color)
 	pass
