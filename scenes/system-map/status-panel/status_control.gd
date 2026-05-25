@@ -33,9 +33,12 @@ func _physics_process(_delta):
 	morale.text = "%.f%%" % player_status_matrix[3]
 	last_player_status_matrix = player_status_matrix
 	#secondary
-	scanner_power.text = "%.f" % player_adj_scanner_matrix[1]
 	scanner_profile.text = "%.f" % player_adj_scanner_matrix[0]
+	scanner_profile.tooltip_title = "Scanner Profile (%dR%c)" % [player_adj_scanner_matrix[0], "☉"]
+	scanner_power.text = "%.f" % player_adj_scanner_matrix[1]
+	scanner_power.tooltip_title = "Scanner Power (%dR%c)" % [player_adj_scanner_matrix[1], "☉"]
 	speed.text = "%.f" % player_adj_speed
+	speed.tooltip_title = "Speed (%dR%c/s)" % [player_adj_speed, "☉"]
 	pass
 
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:
