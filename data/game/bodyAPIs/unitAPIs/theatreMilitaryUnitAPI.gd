@@ -294,11 +294,11 @@ func async_switch_to_re_discover(pos: Vector2) -> void:
 		switch_task(TASKS.LOOK_FOR_GOAL)
 	pass
 
-func stun(time: float = 1.0, disable_sfx: bool = false) -> void:
+func stun(duration: float = 1.0, disable_sfx: bool = false) -> void:
 	if is_hostile():
 		if not is_stunned():
 			set_stunned(true)
-			stun_clock.start(time)
+			stun_clock.start(duration)
 			if not disable_sfx:
 				emit_signal("play_sound", "res://sound/game/bodyAPIs/unitAPIs/stun.wav", -12.0, "SFX")
 	pass

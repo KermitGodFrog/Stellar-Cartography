@@ -62,7 +62,7 @@ func switch_task() -> void: #func switch_task(override: TASKS = null) -> void:
 
 #misc functions!
 
-func stun() -> void: #this is called by system_map async_add_unit_ping directly
+func stun(_duration: float = 1.0) -> void: #this is called by system_map async_add_unit_ping directly
 	pass
 
 func calculate_asteroid_belt_slowdown() -> void:
