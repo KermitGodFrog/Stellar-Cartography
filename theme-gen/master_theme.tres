@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=16 format=3 uid="uid://isea3lf5tnwr"]
+[gd_resource type="Theme" load_steps=18 format=3 uid="uid://isea3lf5tnwr"]
 
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="1_gyi8i"]
 
@@ -67,6 +67,22 @@ border_width_right = 20
 border_color = Color(0.643137, 0.698039, 0.858824, 1)
 expand_margin_right = 10.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alxsv"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.101960786, 0.101960786, 0.101960786, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gj56j"]
+bg_color = Color(0.18039216, 0.18039216, 0.18039216, 0.41568628)
+corner_detail = 5
+
 [resource]
 default_font = ExtResource("1_gyi8i")
 default_font_size = 16
@@ -93,3 +109,7 @@ ButtonPaletteRight/styles/focus = SubResource("StyleBoxEmpty_lufxy")
 ButtonPaletteRight/styles/hover = SubResource("StyleBoxFlat_c11eu")
 ButtonPaletteRight/styles/normal = SubResource("StyleBoxFlat_20ogi")
 ButtonPaletteRight/styles/pressed = SubResource("StyleBoxFlat_xf504")
+PanelContainerTransparentA/base_type = &"PanelContainer"
+PanelContainerTransparentA/styles/panel = SubResource("StyleBoxFlat_alxsv")
+PanelContainerTransparentB/base_type = &"PanelContainer"
+PanelContainerTransparentB/styles/panel = SubResource("StyleBoxFlat_gj56j")

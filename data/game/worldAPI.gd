@@ -145,3 +145,24 @@ func roll_nav_buoy(anomaly_seed: int) -> Array: #had no beter place to put this
 		else:
 			nav_buoy_tag = new_tag
 			return [nav_buoy_tag, true]
+
+func is_player_in_interception_danger() -> Array:
+	var distances: PackedFloat32Array = []
+	for c in player.scanner_contacts:
+		if c.is_hostile():
+			if c is interceptingUnitAPI:
+				if c.current_task == c.TASKS.MOVE_TO_INTERCEPT:
+					distances.append(c.position.distance_to(player.position))
+			elif c is theatreMilitaryUnitAPI:
+				if c.current_task == c.TASKS.MOVE_TO_INTERCEPT and c.goal == player:
+					distances.append(c.position.distance_to(player.position))
+	distances.sort()
+	if distances.size() > 0:
+		return [true, distances[0]]
+	return [false, null]
+
+func is_player_in_proximity_danger() -> bool:
+	for c in player.current_star_system.get_units_in_scanner_range(player.position, player.scanner_power * 4.0): # within NOT ADJUSTED scanner power +400%
+		if c.is_hostile():
+			return true
+	return false

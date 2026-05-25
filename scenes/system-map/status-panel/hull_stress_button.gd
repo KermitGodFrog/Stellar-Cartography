@@ -1,4 +1,4 @@
-extends "res://scenes/system-map/status-panel/status_button.gd"
+extends "res://scenes/system-map/status-panel/primary_status_button.gd"
 
 signal removeHullStressForNanites(amount: int, _nanites_per_percentage: int)
 

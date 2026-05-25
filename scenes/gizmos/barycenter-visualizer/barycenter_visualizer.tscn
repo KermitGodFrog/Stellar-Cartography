@@ -16,6 +16,7 @@ grow_vertical = 2
 script = ExtResource("1_tynt4")
 
 [node name="locked_body_label" type="Label" parent="barycenter_control"]
+show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

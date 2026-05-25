@@ -75,7 +75,7 @@ visible = false
 layout_mode = 0
 target_objective_wID = "tutorialMarkPrelude"
 text_box_size = Vector2(300, 100)
-track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/sonar_container")
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/sonar_container")
 track_offset = Vector2(0, -300)
 info = "A planet named Prelude is situated in low orbit around a nearby M-Class star named King.
 
@@ -108,7 +108,7 @@ visible = false
 layout_mode = 0
 target_objective_wID = "tutorialDiscoverPrelude"
 text_box_size = Vector2(300, 100)
-track = NodePath("../../control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel")
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel")
 track_offset = Vector2(0, -300)
 info = "[b]The location of Prelude has been added to the SYSTEM LIST. However, it has not yet been discovered.
 
@@ -120,7 +120,7 @@ visible = false
 layout_mode = 0
 target_objective_wID = "tutorialFollowPrelude"
 text_box_size = Vector2(300, 100)
-track = NodePath("../../control/tabs_and_ca_scroll/tabs/OVERVIEW")
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW")
 info = "[i] * An estimated value of 514 nanites has been gleaned from the discovery of Prelude. There is still another way to gain exploration data from it.[/i]
 
 The question mark adjacent to Prelude on the SYSTEM LIST symbolises an undocumented anomaly - these can result in rewards or tragedy. Investigating an anomaly requires interacting with it.
@@ -133,7 +133,7 @@ visible = false
 layout_mode = 0
 target_objective_wID = "tutorialMarkIngress"
 text_box_size = Vector2(300, 100)
-track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/core_panel/core_margin/core_scroll/barycenter_container")
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/barycenter_container")
 track_offset = Vector2(0, -350)
 info = "[i] * Your data value is maximised by discovering all bodies within a star system. The SYSTEM LIST currently underlines a missing body further than Prelude. [/i]
 
@@ -182,7 +182,7 @@ visible = false
 layout_mode = 0
 target_objective_wID = "tutorialDiscoverIngress"
 text_box_size = Vector2(300, 100)
-track = NodePath("../../control/tabs_and_ca_scroll/tabs/OVERVIEW/actions_panel")
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel")
 track_offset = Vector2(0, -300)
 info = "[b]The location of Ingress has been added to the SYSTEM LIST. However, it has not yet been discovered.
 Discover a body by visually acquiring it. Click on the the triple question mark on the SYSTEM LIST to lock, and then press the 'ORBIT' action in the ACTIONS PANEL.[/b]
@@ -193,7 +193,7 @@ visible = false
 layout_mode = 0
 target_objective_wID = "tutorialFollowIngress"
 text_box_size = Vector2(300, 100)
-track = NodePath("../../control/tabs_and_ca_scroll/tabs/OVERVIEW")
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW")
 info = "[i] * As soon as all activities in a star system are exhausted, it becomes time to travel to the next one.[/i]
 
 Wormholes allow for travel between star systems. Traversing a wormhole requires interacting with it.
@@ -240,6 +240,6 @@ visible = false
 layout_mode = 0
 target_objective_wID = "tutorialOptionalCheckStress"
 text_box_size = Vector2(300, 100)
-track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core_panel_bg/core_panel_scroll/status_panel")
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control")
 track_offset = Vector2(-250, 0)
 info = "Check your 'HULL STRESS' status in the STATUS PANEL. View the tooltip for entries in the STATUS PANEL by hovering over them. 'HULL STRESS' increases as a result of wormhole traversal, system hazards and certain anomalies. Note that gaining 100% 'HULL DETERIORATION' makes you lose a run."
