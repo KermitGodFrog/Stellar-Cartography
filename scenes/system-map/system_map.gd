@@ -938,7 +938,7 @@ func async_add_unit_ping(unit: unitBodyAPI, _ping_width: int) -> void:
 		if player_position_matrix[0].distance_to(unit.position) < player_adj_scanner_matrix[1]: #distance below power
 			var duration = remap(_ping_width, 5, 90, 7.5, 1.5)
 			unit.stun(duration)
-			if unit.is_hostile():
+			if unit.is_hostile() and (not unit is mineUnitAPI):
 				_on_add_text_ping("res://data/system-map/ping-display-helpers/text_stun.tres", unit.position, "Stunned!(%.1fs)" % duration)
 			get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "player_stun_unit")
 	
