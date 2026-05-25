@@ -1,6 +1,7 @@
-[gd_scene load_steps=18 format=3 uid="uid://dtbagvxj5to3"]
+[gd_scene load_steps=19 format=3 uid="uid://dtbagvxj5to3"]
 
 [ext_resource type="Script" uid="uid://dyslold788w2p" path="res://scenes/windows/station-ui/station_ui.gd" id="1_8gqs2"]
+[ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://theme-gen/window_theme.tres" id="1_hdpq4"]
 [ext_resource type="Script" uid="uid://djc724vbwtd40" path="res://scenes/windows/station-ui/ui_save_audio_profiles_scroll.gd" id="3_b7unw"]
 [ext_resource type="Theme" uid="uid://pb8t4wekexd8" path="res://theme-gen/station-ui/station_ui_SAVE_AUDIO_PROFILES_theme.tres" id="3_bcdrx"]
 [ext_resource type="Shader" uid="uid://c8yxk67y2u80y" path="res://shader-gen/pixelate_shader.gdshader" id="3_n6881"]
@@ -39,6 +40,7 @@ position = Vector2i(0, 36)
 size = Vector2i(1000, 500)
 visible = false
 always_on_top = true
+theme = ExtResource("1_hdpq4")
 
 [node name="station_control" type="Control" parent="."]
 layout_mode = 3
