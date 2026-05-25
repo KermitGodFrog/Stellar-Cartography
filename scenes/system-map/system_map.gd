@@ -897,7 +897,7 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 			if body is orbitBodyAPI:
 				async_add_ping(body)
 			elif body is unitBodyAPI:
-				async_add_unit_ping(body)
+				async_add_unit_ping(body, ping_width)
 	
 	#random pings \/\/\/\/
 	#for random_ping in global_data.get_randi(0, remap(ping_width, 5, 90, 0, 10)):
@@ -926,7 +926,7 @@ func async_add_ping(body: orbitBodyAPI) -> void:
 	get_tree().call_group("audioHandler", "play_once", LIDAR_bounceback, 0.0, "SFX")
 	pass
 
-func async_add_unit_ping(unit: unitBodyAPI) -> void:
+func async_add_unit_ping(unit: unitBodyAPI, _ping_width: int) -> void:
 	await get_tree().create_timer((player_position_matrix[0].distance_to(unit.position) / 100)).timeout
 	
 	var ping = load("uid://do24617ugegbj").duplicate(true)
@@ -936,7 +936,9 @@ func async_add_unit_ping(unit: unitBodyAPI) -> void:
 	
 	if unit is AIUnitAPI:
 		if player_position_matrix[0].distance_to(unit.position) < player_adj_scanner_matrix[1]: #distance below power
-			unit.stun()
+			var duration = remap(_ping_width, 5, 90, 7.5, 1.5)
+			unit.stun(duration)
+			_on_add_text_ping("res://data/system-map/ping-display-helpers/text_stun.tres", unit.position, "Stunned!(%.1fs)" % duration)
 			get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "player_stun_unit")
 	
 	get_tree().call_group("audioHandler", "play_once", LIDAR_bounceback, 0.0, "SFX")
