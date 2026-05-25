@@ -26,7 +26,8 @@ func _physics_process(_delta):
 			order[i].update_danger(player_status_matrix[i])
 	
 	#primary
-	nanites.text = "%s" % player_status_matrix[0]
+	nanites.text = "%.fK" % (player_status_matrix[0] / 1000)
+	nanites.tooltip_title = "Nanites (%d)" % player_status_matrix[0]
 	hull_stress.text = "%.f%%" % player_status_matrix[1]
 	hull_deterioration.text = "%.f%%" % player_status_matrix[2]
 	morale.text = "%.f%%" % player_status_matrix[3]

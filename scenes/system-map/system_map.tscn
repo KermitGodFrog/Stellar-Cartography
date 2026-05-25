@@ -706,6 +706,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 last_wrap_alignment = 1
+reverse_fill = true
 script = ExtResource("17_ow1c8")
 
 [node name="arrow_texture" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll"]
