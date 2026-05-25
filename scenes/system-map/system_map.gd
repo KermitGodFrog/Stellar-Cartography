@@ -100,6 +100,8 @@ enum BOOST_SOUND_TYPES {START, END}
 
 @onready var target_texture = preload("uid://diuwq6pqf7xir")
 
+@onready var default_font = preload("uid://xrcqj2080elm")
+
 var camera_target_position: Vector2 = Vector2.ZERO
 var follow_body_modifier : bodyAPI #used for drawing scope direction imdicator accurately and nothinh eklse
 var follow_body : bodyAPI
@@ -115,6 +117,8 @@ var SONAR_POLYGON: PackedVector2Array
 var SONAR_POLYGON_DISPLAY_TIME: float = 0
 
 var MOVEMENT_PINGS: Array[pingDisplayHelper]
+
+var TEXT_PINGS: Array[pingDisplayHelper]
 
 #to display CME data
 var CME_RING_RADIUS: int = 0
@@ -211,18 +215,13 @@ func _physics_process(delta):
 	
 	#updating sonar ping visualization time values & sonar polygon display time
 	SONAR_POLYGON_DISPLAY_TIME = maxi(0, SONAR_POLYGON_DISPLAY_TIME - delta)
-	if SONAR_PINGS:
-		for ping in SONAR_PINGS:
-			ping.updateTime(delta)
-			if ping.is_expired():
-				SONAR_PINGS.erase(ping)
-	#updating movement ping stuff
-	if MOVEMENT_PINGS:
-		for ping in MOVEMENT_PINGS:
-			ping.updateTime(delta)
-			if ping.is_expired():
-				MOVEMENT_PINGS.erase(ping)
-	# ew, ugly! ^^^
+	var PING_ARRAYS = [SONAR_PINGS, MOVEMENT_PINGS, TEXT_PINGS]
+	for PINGS in PING_ARRAYS:
+		if PINGS:
+			for ping in PINGS:
+				ping.updateTime(delta)
+				if ping.is_expired():
+					PINGS.erase(ping)
 	
 	#CME shenanigans
 	if CME_RING_SHOWN:
@@ -640,6 +639,7 @@ func _draw():
 	draw_map()
 	draw_sonar()
 	draw_movement()
+	draw_text()
 	draw_CME()
 	draw_pulsar_beams()
 	pass
@@ -659,11 +659,33 @@ func draw_movement() -> void: # draw movement pings (manual set course)
 		ping.updateDisplay()
 		var size = size_exponent * (ping.current_radius * 15.0)
 		target_texture.draw_rect(
-			get_canvas_item(), 
+			get_canvas_item(),
 			global_data.get_offset_rect2(ping.position, size, size), 
-			false, 
+			false,
 			ping.current_color
 		)
+	pass
+
+func draw_text() -> void:
+	var size_exponent = pow(camera.zoom.length(), -0.5)
+	
+	for ping in TEXT_PINGS:
+		ping.updateDisplay()
+		var size = maxi(2, roundi((size_exponent * 4) * ping.current_radius))
+		default_font.draw_string(
+			get_canvas_item(),
+			ping.position,
+			ping.text,
+			HORIZONTAL_ALIGNMENT_LEFT,
+			-1,
+			size,
+			ping.current_color,
+			TextServer.JUSTIFICATION_NONE,
+			TextServer.DIRECTION_AUTO,
+			TextServer.ORIENTATION_HORIZONTAL,
+			16.0
+		)
+	
 	pass
 
 func draw_CME():
@@ -989,6 +1011,10 @@ func get_planet_frame(classification: String) -> Resource:
 func _on_found_body(id: int):
 	var body = system.get_body_from_identifier(id)
 	var body_pos = body.position
+	
+	if body.metadata.has("value"):
+		_on_add_text_ping("res://data/system-map/ping-display-helpers/text_discovery.tres", body.position, "+%d%c" % [body.metadata.get("value"), "ň"])
+	
 	match body:
 		_ when body is unitBodyAPI:
 			var ping = load("uid://xurvu36ugl05").duplicate(true)
@@ -1079,6 +1105,13 @@ func _on_tutorial_ingress_threshold_reached() -> void:
 	emit_signal("tutorialIngressThresholdReached")
 	pass
 
+func _on_add_text_ping(ping_path: String, pos: Vector2, text: String) -> void:
+	var ping = load(ping_path).duplicate(true)
+	ping.position = pos
+	ping.text = text
+	ping.resetTime()
+	TEXT_PINGS.append(ping)
+	pass
 
 
 

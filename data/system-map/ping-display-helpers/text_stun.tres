@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="pingDisplayHelper" load_steps=2 format=3 uid="uid://dp0fg48r1l7ug"]
+
+[ext_resource type="Script" uid="uid://d1aliwh3uy1j8" path="res://data/system-map/pingDisplayHelper.gd" id="1_ocbxr"]
+
+[resource]
+script = ExtResource("1_ocbxr")
+metadata/_custom_type_script = "uid://d1aliwh3uy1j8"

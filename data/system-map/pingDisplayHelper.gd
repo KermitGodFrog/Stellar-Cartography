@@ -10,6 +10,8 @@ var current_color: Color
 @export var max_time: float = 500.0
 var time: float = 0
 
+@export_storage var text: String = String() #used for text pings
+
 func resetTime():
 	time = max_time
 
