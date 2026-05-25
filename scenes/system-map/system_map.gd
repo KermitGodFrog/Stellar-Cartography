@@ -108,9 +108,6 @@ var follow_body : bodyAPI
 var locked_body : bodyAPI
 var action_body : bodyAPI
 
-var orbit_line_opacity_hint: float = 0.0
-var body_size_multiplier_hint: float = 0.0
-
 #to dispaly data from sonar interface
 var SONAR_PINGS: Array[pingDisplayHelper]
 var SONAR_POLYGON: PackedVector2Array
@@ -645,19 +642,20 @@ func _draw():
 	pass
 
 func draw_sonar():
+	var zoom_multiplier = pow(camera.zoom.length(), -1.0)
 	if SONAR_POLYGON_DISPLAY_TIME != 0 and SONAR_POLYGON:
 		draw_colored_polygon(SONAR_POLYGON, Color.DARK_GRAY)
 	for ping in SONAR_PINGS:
 		ping.updateDisplay()
-		draw_circle(ping.position, ping.current_radius, ping.current_color)
+		draw_circle(ping.position, zoom_multiplier * 10.0 * ping.current_radius, ping.current_color)
 	pass
 
 func draw_movement() -> void: # draw movement pings (manual set course)
-	var size_exponent = pow(camera.zoom.length(), -0.5)
+	var zoom_multiplier = pow(camera.zoom.length(), -1.0)
 	
 	for ping in MOVEMENT_PINGS:
 		ping.updateDisplay()
-		var size = size_exponent * (ping.current_radius * 15.0)
+		var size = zoom_multiplier * 40.0 * ping.current_radius
 		target_texture.draw_rect(
 			get_canvas_item(),
 			global_data.get_offset_rect2(ping.position, size, size), 
@@ -667,11 +665,11 @@ func draw_movement() -> void: # draw movement pings (manual set course)
 	pass
 
 func draw_text() -> void:
-	var size_exponent = pow(camera.zoom.length(), -0.5)
+	var zoom_multiplier = pow(camera.zoom.length(), -1.0)
 	
 	for ping in TEXT_PINGS:
 		ping.updateDisplay()
-		var size = maxi(2, roundi((size_exponent * 4) * ping.current_radius))
+		var size = maxi(2, roundi(zoom_multiplier * 4.0 * ping.current_radius))
 		default_font.draw_string(
 			get_canvas_item(),
 			ping.position,
@@ -724,11 +722,8 @@ func get_pulsar_beams_as_points(star: pulsarBodyAPI) -> Array[PackedVector2Array
 	return [points1, points2]
 
 func draw_map():
-	var show_overlay: bool = camera.zoom.length() < 100
-	var size_exponent = pow(camera.zoom.length(), -0.5)
-	
-	if show_overlay: map_overlay.show()
-	else: map_overlay.hide()
+	var zoom_multiplier = pow(camera.zoom.length(), -1.0)
+	var standard_size = zoom_multiplier * 10.0
 	
 	#SHOW STAR HABITALBE ZONE --->
 	#draw_arc(Vector2.ZERO, ((sqrt((system.get_first_star().metadata.get("luminosity") * 0.53))) * 215), -TAU, TAU, 20, Color.YELLOW, 2)
@@ -786,71 +781,53 @@ func draw_map():
 		#batch customBodyAPI texture drawing
 		
 		if body is customBodyAPI and body.is_known():
-			if show_overlay:
-				var texture: Object
-				if body.is_available(): texture = load(body.texture_path)
-				else: texture = load(body.post_texture_path)
-				texture.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false)
+			var texture: Object
+			if body.is_available(): texture = load(body.texture_path)
+			else: texture = load(body.post_texture_path)
+			texture.draw_rect(get_canvas_item(), global_data.get_offset_rect2(body.position, standard_size, standard_size), false)
 	
 	for body in system.bodies:
 		
 		#batch orbit line drawing:
 		
 		if body is circularBodyAPI and body.is_known():
-			if show_overlay:
-				orbit_line_opacity_hint = lerp(orbit_line_opacity_hint, 0.2, 0.05)
-				if system.get_body_from_identifier(body.hook_identifier):
-					draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.orbit_distance, -TAU, TAU, 30, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, orbit_line_opacity_hint), 1.0, false)
+			if system.get_body_from_identifier(body.hook_identifier):
+				draw_arc(system.get_body_from_identifier(body.hook_identifier).position, body.orbit_distance, -TAU, TAU, 30, Color(0.23529411764705882, 0.43137254901960786, 0.44313725490196076, 0.2), 1.0, false)
 	
 	for body in system.bodies:
 		
 		#batching circle drawing:
 		
 		if body is circularBodyAPI and body.is_known():
-			if show_overlay:
-				body_size_multiplier_hint = lerp(body_size_multiplier_hint, pow(camera.zoom.length(), -0.5) * 2.5, 0.05)
-				
-				if body == follow_body:
-					draw_circle(body.position, body_size_multiplier_hint * 1.75, body.surface_color.lerp(Color(1.0, 1.0, 1.0, 0.0), 0.50))
-					draw_circle(body.position, body_size_multiplier_hint, body.surface_color)
-				elif body.get_identifier() == closest_body_id:
-					draw_circle(body.position, body_size_multiplier_hint * 1.5, body.surface_color.lerp(Color(1.0, 1.0, 1.0, 0.0), 0.75))
-					draw_circle(body.position, body_size_multiplier_hint, body.surface_color)
-				else:
-					draw_circle(body.position, body_size_multiplier_hint, body.surface_color)
+			if body == follow_body:
+				draw_circle(body.position, standard_size * 1.75, body.surface_color.lerp(Color(1.0, 1.0, 1.0, 0.0), 0.50))
+				draw_circle(body.position, standard_size, body.surface_color)
+			elif body.get_identifier() == closest_body_id:
+				draw_circle(body.position, standard_size * 1.5, body.surface_color.lerp(Color(1.0, 1.0, 1.0, 0.0), 0.75))
+				draw_circle(body.position, standard_size, body.surface_color)
 			else:
-				body_size_multiplier_hint = lerp(body_size_multiplier_hint, body.radius, 0.05)
-				draw_circle(body.position, body_size_multiplier_hint, body.surface_color)
+				draw_circle(body.position, standard_size, body.surface_color)
 		
-		if body is glintBodyAPI and body.is_known():
-			if not show_overlay:
-				draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
-		if body is customBodyAPI and body.is_known():
-			if not show_overlay:
-				draw_circle(body.position, body.radius, Color.NAVAJO_WHITE)
-	
 	for body in system.bodies:
 		
 		#batching entity icons:
 		
 		if body is glintBodyAPI and body.is_known():
-			if show_overlay:
-				entity_texture.draw_rect(get_canvas_item(), Rect2(body.position.x - (size_exponent * 2.5 / 2), body.position.y - (size_exponent * 2.5 / 2), size_exponent * 2.5, size_exponent * 2.5), false)
+			entity_texture.draw_rect(get_canvas_item(), global_data.get_offset_rect2(body.position, standard_size * 1.5, standard_size * 1.5), false)
 	
 	for body in system.bodies:
 		
 		#INCORRECTLY batch unitBodyAPI drawing (applies two different draws at once, removing any possible benefit of batching)
 		
 		if body is unitBodyAPI and body.is_known(): #what it should be is this: unitBodyAPIs are usually not drawn, like bodyAPIs, but AIUnitAPIs are always drawn. but this probably isnt good idea. so, therefore, we need to check that the unit is NOT custom when drawing this when we add that feature
-			if show_overlay:
-				var self_color = Color.SLATE_GRAY
-				var blink_color = Color.LIGHT_GRAY
-				if body.is_hostile():
-					self_color = Color.RED
-					blink_color = Color.DARK_RED
-				
-				draw_arc(body.position, maxf(0.25, sin(Time.get_unix_time_from_system() * 4.0) * size_exponent * 6.0), -TAU, TAU, 5, blink_color, 0.2, false)
-				draw_rect(global_data.get_offset_rect2(body.position, size_exponent * 3.0, size_exponent * 3.0), self_color)
+			var self_color = Color.SLATE_GRAY
+			var blink_color = Color.LIGHT_GRAY
+			if body.is_hostile():
+				self_color = Color.RED
+				blink_color = Color.DARK_RED
+			
+			draw_arc(body.position, standard_size * maxf(0.25, sin(Time.get_unix_time_from_system() * 4.0)), -TAU, TAU, 5, blink_color, standard_size, false)
+			draw_rect(global_data.get_offset_rect2(body.position, standard_size, standard_size), self_color)
 	
 	for body in system.bodies:
 		
@@ -858,23 +835,21 @@ func draw_map():
 		
 		if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_known(): 
 			if body.is_PA_valid():
-				if show_overlay:
-					question_mark_texture.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
+				var rect = global_data.get_offset_rect2(body.position, standard_size * 2, standard_size * 2)
+				rect.position += Vector2(standard_size * 1.5, standard_size * 1.5)
+				question_mark_texture.draw_rect(get_canvas_item(), rect, false)
 		elif body.get_type() == starSystemAPI.BODY_TYPES.SPACE_ANOMALY and body.is_known(): 
 			if body.is_SA_valid():
-				if show_overlay:
-					question_mark_texture.draw_rect(get_canvas_item(), Rect2(body.position.x + (size_exponent * 5.0 / 2), body.position.y + (size_exponent * 5.0 / 2), size_exponent * 5.0, size_exponent * 5.0), false)
+				var rect = global_data.get_offset_rect2(body.position, standard_size * 2, standard_size * 2)
+				rect.position += Vector2(standard_size * 1.5, standard_size * 1.5)
+				question_mark_texture.draw_rect(get_canvas_item(), rect, false)
 	
-	#draw_dashed_line(camera.position, system.get_first_star().position, Color(255,255,255,100), size_exponent, 1.0, false)
-	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, size_exponent)
-	#player_icon.draw_rect(get_canvas_item(), Rect2(player_position_matrix[0].x - (size_exponent * 3.0 / 2), player_position_matrix[0].y - (size_exponent * 3.0 / 2), size_exponent * 3.0, size_exponent * 3.0), false, Color(1,1,1,1), false)
-	draw_rect(Rect2(player_position_matrix[0].x - (size_exponent * 3.0 / 2), player_position_matrix[0].y - (size_exponent * 3.0 / 2), size_exponent * 3.0, size_exponent * 3.0), Color.WHITE, true)
-	
-	#draw_circle(player_position_matrix[0], size_exponent, Color.WHITE)
+	#drawing player and player trajectory and player look direction
+	draw_line(player_position_matrix[0], player_position_matrix[1], Color.ANTIQUE_WHITE, zoom_multiplier * 2)
+	draw_rect(global_data.get_offset_rect2(player_position_matrix[0], standard_size, standard_size), Color.WHITE)
 	if camera_target_position != Vector2.ZERO:
-		draw_circle(camera_target_position, size_exponent * 1.5, Color.LIGHT_SKY_BLUE)
-		draw_line(player_position_matrix[0], player_position_matrix[0] + (player_position_matrix[0].direction_to(camera_target_position) * 100.0), Color.LIGHT_SKY_BLUE, size_exponent)
-	#draw_texture_rect(camera_here_tex, Rect2(Vector2(camera_target_position.x - size_exponent, camera_target_position.y - size_exponent), Vector2(size_exponent,size_exponent)), false)
+		draw_circle(camera_target_position, zoom_multiplier * 2, Color.LIGHT_SKY_BLUE)
+		draw_line(player_position_matrix[0], player_position_matrix[0] + (player_position_matrix[0].direction_to(camera_target_position) * 100.0), Color.LIGHT_SKY_BLUE, zoom_multiplier * 2)
 	pass
 
 
