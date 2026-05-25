@@ -154,6 +154,7 @@ var player_supercharged: bool = false:
 
 func _ready():
 	status_control.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
+	status_control.connect("updateScannerDisplayTimes", _on_update_scanner_display_times)
 	contact_list.create_item(null)
 	pass
 

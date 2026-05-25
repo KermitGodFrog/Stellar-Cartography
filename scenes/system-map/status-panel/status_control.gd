@@ -1,5 +1,6 @@
 extends Control
 signal removeHullStressForNanites(amount: int, nanites_per_percentage: int)
+signal updateScannerDisplayTimes(_new_profile_time: float, _new_power_time: float)
 
 var last_player_status_matrix: Array = [0,0,0,0]
 var player_status_matrix: Array = [0,0,0,0]
@@ -43,4 +44,12 @@ func _physics_process(_delta):
 
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:
 	emit_signal("removeHullStressForNanites", amount, nanites_per_percentage)
+	pass
+
+func _on_scanner_profile_button_mouse_entered() -> void:
+	emit_signal("updateScannerDisplayTimes", 5.0, 0.0)
+	pass
+
+func _on_scanner_power_button_mouse_entered() -> void:
+	emit_signal("updateScannerDisplayTimes", 0.0, 5.0)
 	pass
