@@ -674,7 +674,7 @@ func generateRandomWeightedStations():
 		var radius = get_default_radius_solar_radii()
 		
 		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
-		var percentage_markup = global_data.get_randi(75, 200)
+		var percentage_markup = clampi(roundi(randfn(100.0, 15.0)), 25, 200)
 		
 		var repair_price_multiplier = 1.0
 		
@@ -1175,7 +1175,7 @@ static func get_temporary_station(hook: bodyAPI) -> stationBodyAPI: # for anomal
 	temp_station.repair_price_multiplier = 1.0
 	var random = RandomNumberGenerator.new()
 	random.set_seed(hook.metadata.get("seed", randi()))
-	temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
+	temp_station.sell_percentage_of_market_price = clampi(roundi(random.randfn(50.0, 10.0)), 15, 100)
 	for iu in random.randi_range(0, 4):
 		var internal_random = RandomNumberGenerator.new()
 		internal_random.set_seed(hash(random.get_seed() - iu))

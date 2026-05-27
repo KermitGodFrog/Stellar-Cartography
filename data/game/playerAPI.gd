@@ -138,7 +138,7 @@ var sys_survey_ping_ratio: float = 0.0:
 			return float(sys_survey_hit_pings) / float(sys_survey_total_pings)
 		else:
 			return float()
-func reset_all_sys_survey_values() -> void:
+func reset_all_sys_survey_data() -> void:
 	sys_survey_value = int()
 	sys_survey_time_start = float()
 	sys_survey_hit_pings = int()

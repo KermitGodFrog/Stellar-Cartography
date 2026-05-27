@@ -663,6 +663,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	world.player.updatePosition(get_physics_process_delta_time())
 	
 	system_map._on_clear_console_entries()
+	print_debug("LAST SYSTEM SURVEY VALUE: %d" % world.player.sys_survey_value)
 	_on_switch_star_system(destination)
 	barycenter_visualizer.locked_body_identifier = 0
 	
@@ -746,7 +747,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	journey_map.add_new_system(world.player.systems_traversed)
 	journey_map.jumps_remaining = world.player.get_jumps_remaining() #required as it needs to update when the players system on game startup is loaded, not just wormhole traversal!
 	system_map.player_supercharged = world.player.supercharged #also updated when player supercharge_jumps_remaining is updated
-	world.player.reset_all_sys_survey_values() #for sys survey efficiency bonus
+	world.player.reset_all_sys_survey_data() #for sys survey efficiency bonus
 	world.player.sys_survey_time_start = world.play_time
 	_on_process_system_hazard(to_system)
 	return to_system
