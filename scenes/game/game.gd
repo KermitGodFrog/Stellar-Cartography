@@ -1290,7 +1290,7 @@ func _on_document_ping_hit_status(hit: bool) -> void:
 
 func _on_sys_survey_efficiency_bonus() -> void:
 	var base: int = world.player.sys_survey_value * 0.25
-	var reward: int = base
+	var reward = base
 	var time_seconds: float = world.play_time - world.player.sys_survey_time_start
 	var time_minutes: float = time_seconds / 60
 	
@@ -1299,13 +1299,17 @@ func _on_sys_survey_efficiency_bonus() -> void:
 	if time_minutes > 5.0: # 5 minutes * 25 systems = basically 2 hours. so if people are spending more than 5 minutes in a system, then thats bad
 		reward /= time_minutes - 4.0 #e.g 6 minutes would divide the score by 2, 7 minutes by 3 etc
 	
-	world.player.current_value += reward
+	world.player.current_value += roundi(reward)
 	
-	var ratio = reward / base
+	var ratio = float(reward) / float(base)
 	
 	print_debug("GAME: SYSTEM SURVEY EFFICIENCY BONUS: %d (BASE: %d , PING RATIO: %f , MINUTES: %f)" % [reward, base, world.player.sys_survey_ping_ratio, time_minutes])
 	
-	_on_add_console_entry("SYSTEM SURVEY EFFICIENCY BONUS: +%d%c (%.1f%%)" % [reward, "ň", ratio * 100.0], Color.DARK_GREEN)
+	var console_base_secs = roundi(time_seconds)
+	var console_secs = console_base_secs % 60
+	var console_mins = (console_base_secs / 60) % 60
+	
+	_on_add_console_entry("SYSTEM SURVEY EFFICIENCY BONUS: +%d%c (%.1f%%) (%dm %ds)" % [reward, "ň", ratio * 100.0, console_mins, console_secs], Color.GREEN)
 	get_tree().call_group("audioHandler", "play_once", load("uid://dg602vfmho6fq"), 0.0, "SFX")
 	pass
 

@@ -157,10 +157,10 @@ func try_discover_orbit_bodies() -> void:
 								if associated_body.is_hidden():
 									continue
 								
-								emit_signal("foundBody", actor.get_identifier())
 								var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
 								if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name()), Color.DARK_GREEN)
 								elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", roundi(associated_body.metadata.get("value") * star_rarity_multiplier), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
+								emit_signal("foundBody", actor.get_identifier())
 	pass
 
 
