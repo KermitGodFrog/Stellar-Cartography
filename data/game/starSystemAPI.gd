@@ -1199,6 +1199,16 @@ func get_first_body_from_display_name(name: String) -> bodyAPI:
 			break
 	return get_body
 
+func is_survey_complete() -> bool:
+	for body in bodies:
+		if body.is_hidden():
+			continue
+		elif body is unitBodyAPI:
+			continue
+		elif not body.is_known():
+			return false
+	return true
+
 # unit stuff \/
 
 func updateMinesGetDetonations(detonator_position: Vector2, delta, detonator_invulnerable: bool = false) -> int: #returns number of detonating mines this frame

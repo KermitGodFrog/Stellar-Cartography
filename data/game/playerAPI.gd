@@ -128,7 +128,23 @@ var scanner_contacts: Array[unitBodyAPI] = []
 
 @export_storage var analytics_exploration_data_payouts: PackedInt32Array = []
 
+@export_storage var sys_survey_value: int = 0 #done
+@export_storage var sys_survey_time_start: float = 0.0 #not done
+@export_storage var sys_survey_hit_pings: int = 0 #not done
+@export_storage var sys_survey_total_pings: int = 0 #not done
+var sys_survey_ping_ratio: float = 0.0:
+	get():
+		if sys_survey_total_pings > 0: #avoiding division by 0 error
+			return sys_survey_hit_pings / sys_survey_total_pings
+		else:
+			return float()
 
+func reset_all_sys_survey_values() -> void:
+	sys_survey_value = int()
+	sys_survey_time_start = float()
+	sys_survey_hit_pings = int()
+	sys_survey_total_pings = int()
+	pass
 
 
 
