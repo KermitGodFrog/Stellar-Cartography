@@ -38,6 +38,8 @@ signal superchargePlayerForJumps(jumps: int) #saying superchargePlayerForJumps i
 signal modifyCharacterStanding(occupation: characterAPI.OCCUPATIONS, amount: int, _increase: bool)
 signal changePlayerScopeMode(_new_mode: playerAPI.SCOPE_MODES)
 signal lockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
+signal addCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int)
+signal removeCharacterInitiativeXP(occupation: characterAPI.OCCUPATIONS)
 signal playerWin()
 signal insaMakeAllWormholesRevealable()
 signal insaMakeRiftDriverUnavailable()
@@ -766,6 +768,47 @@ func lockUpgradeWithFlair(upgrade) -> void:
 func forcePlayerWin() -> void: # only used for insa Rift Driver launch
 	emit_signal("playerWin")
 	pass
+
+func addLowCharacterXPWithFlair(written_occupation: String) -> void:
+	addCharacterXPWithFlair(written_occupation, 50)
+	pass
+
+func addMediumCharacterXPWithFlair(written_occupation: String) -> void:
+	addCharacterXPWithFlair(written_occupation, 100)
+	pass
+
+func addHighCharacterXPWithFlair(written_occupation: String) -> void:
+	addCharacterXPWithFlair(written_occupation, 300)
+	pass
+
+func addCharacterXPWithFlair(written_occupation: String, amount: int) -> void:
+	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
+	emit_signal("addCharacterXP", occupation, amount)
+	var department_name: String
+	match occupation:
+		characterAPI.OCCUPATIONS.FIRST_OFFICER:
+			department_name = "command"
+		characterAPI.OCCUPATIONS.CHIEF_ENGINEER:
+			department_name = "engineering"
+		characterAPI.OCCUPATIONS.SECURITY_OFFICER:
+			department_name = "security"
+		characterAPI.OCCUPATIONS.MEDICAL_OFFICER:
+			department_name = "medical"
+	
+	dialogue.add_text("[color=green][font_size=8]The %s department has gained %d XP[/font_size][/color]" % [department_name, amount])
+	pass
+
+func addRandomCharacterXPWithFlair(amount) -> void:
+	var written_occupation = ["FIRST_OFFICER", "CHIEF_ENGINEER", "MEDICAL_OFFICER"].pick_random()
+	addCharacterXPWithFlair(written_occupation, int(amount))
+	pass
+
+func removeCharacterSpecialInitiativeXP(written_occupation: String) -> void:
+	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
+	emit_signal("removeCharacterInitiativeXP", occupation)
+	pass
+
+
 
 
 

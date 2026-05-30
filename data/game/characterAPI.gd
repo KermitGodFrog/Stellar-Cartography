@@ -46,6 +46,19 @@ func set_occupation(value: OCCUPATIONS) -> void:
 	current_occupation = value
 	pass
 
+@export var initiative_xp: int = 0
+@export_storage var xp: int = 0
+func add_xp(amount: int) -> void:
+	xp += amount
+	pass
+func remove_xp(amount: int) -> void:
+	xp = maxi(0, xp - amount)
+	pass
+func remove_initiative_xp() -> void:
+	remove_xp(initiative_xp)
+	pass
+func is_initiative_ready() -> bool:
+	return xp >= initiative_xp
 
 
 #func generateRandomWeighted(force_occupation: OCCUPATIONS) -> void: #DEPRECIATED

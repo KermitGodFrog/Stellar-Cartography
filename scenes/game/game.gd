@@ -194,6 +194,8 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("modifyCharacterStanding", _on_modify_character_standing)
 	dialogue_manager.connect("changePlayerScopeMode", _on_change_scope_mode)
 	dialogue_manager.connect("lockUpgrade", _on_lock_upgrade)
+	dialogue_manager.connect("addCharacterXP", _on_add_character_xp)
+	dialogue_manager.connect("removeCharacterInitiativeXP", _on_remove_character_initiative_xp)
 	dialogue_manager.connect("playerWin", _on_player_win)
 	dialogue_manager.connect("insaMakeAllWormholesRevealable", _on_insa_make_all_wormholes_revealable)
 	dialogue_manager.connect("insaMakeRiftDriverUnavailable", _on_insa_make_rift_driver_unavailable)
@@ -405,6 +407,13 @@ func _on_player_following_body(following_body: bodyAPI):
 				new_query.add_tree_access("target_upgrade", playerAPI.UPGRADE_ID.find_key(unlocked_upgrades[global_data.get_randi(0, unlocked_upgrades.size() - 1, following_body.metadata.get("seed", 0))]))
 			else:
 				new_query.add_tree_access("target_upgrade", null)
+		starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
+			#this kinda isnt like the rest since it adds stuff about the player but i do think its too bulky and unnecessary to cram into responseQuery so whateva
+			#rendezvous is about the player anyway...
+			for character in world.player.characters:
+				new_query.add_tree_access("player_%s_xp" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.xp)
+				new_query.add_tree_access("player_%s_initiative_xp" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.initiative_xp)
+			pass
 	
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
@@ -1312,6 +1321,14 @@ func _on_sys_survey_efficiency_bonus() -> void:
 	
 	_on_add_console_entry("SYSTEM SURVEY EFFICIENCY BONUS: +%d%c (%.1f%%) (%dm %ds)" % [reward, "ň", ratio * 100.0, console_mins, console_secs], Color.GREEN)
 	get_tree().call_group("audioHandler", "play_once", load("uid://dg602vfmho6fq"), 0.0, "SFX")
+	pass
+
+func _on_add_character_xp(occupation: characterAPI.OCCUPATIONS, amount: int) -> void:
+	world.player.addCharacterXP(occupation, amount)
+	pass
+
+func _on_remove_character_initiative_xp(occupation: characterAPI.OCCUPATIONS) -> void:
+	world.player.removeCharacterInitiativeXP(occupation)
 	pass
 
 func _on_insa_make_all_wormholes_revealable() -> void:

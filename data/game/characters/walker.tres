@@ -5,6 +5,5 @@
 [resource]
 script = ExtResource("1_2o5it")
 display_name = "Walker"
-is_known = true
-current_gender = 0
 current_occupation = 2
+initiative_xp = 1000

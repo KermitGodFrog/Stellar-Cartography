@@ -308,6 +308,21 @@ func modifyCharacterStanding(_occupation: characterAPI.OCCUPATIONS, _amount: int
 
 
 
+func addCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int) -> void:
+	var c = get_character_with_occupation(occupation)
+	if c:
+		c.add_xp(amount)
+	pass
+
+func removeCharacterInitiativeXP(occupation: characterAPI.OCCUPATIONS) -> void:
+	var c = get_character_with_occupation(occupation)
+	if c:
+		c.remove_initiative_xp()
+	pass
+
+
+
+
 func updateScannerContacts(r_contacts: Array[unitBodyAPI]) -> void:
 	var gained_contacts: Array[unitBodyAPI] = r_contacts.filter(func(c): return not scanner_contacts.has(c))
 	var lost_contacts: Array[unitBodyAPI] = scanner_contacts.filter(func(c): return not r_contacts.has(c))
