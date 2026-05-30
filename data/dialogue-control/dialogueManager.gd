@@ -26,6 +26,7 @@ signal openGLS()
 
 signal decreasePlayerBalance(amount: int)
 signal addPlayerValue(amount: int)
+signal removePlayerValue(amount: int)
 signal addPlayerHullStress(amount: int)
 signal removePlayerHullStress(amount: int)
 signal addPlayerMorale(amount: int)
@@ -563,6 +564,12 @@ func addValueWithFlair(amount: int):
 	playSoundEffect("success.wav") #easier than putting it in every single rule?
 	pass
 
+func removeValueWithFlair(amount: int): #not commonly used !!!!!!! only used in (currently): UA01G
+	emit_signal("removePlayerValue", amount)
+	dialogue.add_text(str("[color=red](Lost ", amount, " nanites in data value) [/color]"))
+	playSoundEffect("failure.wav")
+	pass
+
 func addHullStressWithFlair(amount: int):
 	emit_signal("addPlayerHullStress", amount)
 	dialogue.add_text(str("[color=red](Plus ", amount, "% hull stress) [/color]"))
@@ -806,6 +813,29 @@ func addRandomCharacterXPWithFlair(amount) -> void:
 func removeCharacterSpecialInitiativeXP(written_occupation: String) -> void:
 	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
 	emit_signal("removeCharacterInitiativeXP", occupation)
+	pass
+
+func transferDataValue_UA01G(sent_value: int) -> void:
+	var anomaly_seed = tree_access_memory.get("seed", randi()) #this goes against all of the rules for this class... DO NOT DO THIS ANYWHERE ELSE!!! I AM CUTTING CORNERS BY DOING THIS AND ITS *BAD* - ONLY DOING BC CAN ONLY HAVE ONE ARGUMENT FOR DIALOGUE METHODS
+	var random = RandomNumberGenerator.new()
+	random.set_seed(hash(int(anomaly_seed) - rules_triggered))
+	
+	var normal_conversion = bool(random.randi() % 7)
+	
+	match normal_conversion:
+		true:
+			var multiplier = random.randf_range(0.75, 1.30)
+			var received_value = sent_value * multiplier
+			removeValueWithFlair(sent_value)
+			addValueWithFlair(received_value)
+		false:
+			var multiplier = random.randf_range(0.80, 0.95)
+			var received_value = sent_value * multiplier
+			removeValueWithFlair(sent_value)
+			addValueWithFlair(received_value)
+			
+			discoverRandomBodyWithFlair(str(anomaly_seed))
+			discoverRandomBodyWithFlair(str(anomaly_seed))
 	pass
 
 

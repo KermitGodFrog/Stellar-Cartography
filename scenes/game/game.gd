@@ -182,6 +182,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("openGLS", _on_open_GLS)
 	dialogue_manager.connect("decreasePlayerBalance", _on_decrease_player_balance)
 	dialogue_manager.connect("addPlayerValue", _on_add_player_value)
+	dialogue_manager.connect("removePlayerValue", _on_remove_player_value)
 	dialogue_manager.connect("addPlayerHullStress", _on_add_player_hull_stress)
 	dialogue_manager.connect("removePlayerHullStress", _on_remove_player_hull_stress)
 	dialogue_manager.connect("addPlayerMorale", _on_add_player_morale)
@@ -221,6 +222,7 @@ func connect_all_signals() -> void:
 	gas_layer_surveyor.connect("addPlayerValue", _on_add_player_value)
 	
 	debug_interface.connect("increasePlayerBalance", _on_increase_player_balance)
+	debug_interface.connect("addPlayerDataValue", _on_add_player_value)
 	debug_interface.connect("addPlayerHullStress", _on_add_player_hull_stress)
 	debug_interface.connect("clearLoadRules", _on_DEBUG_clear_load_rules)
 	debug_interface.connect("revealAllWormholes", _on_DEBUG_reveal_all_wormholes)
@@ -932,7 +934,11 @@ func _on_increase_player_balance(amount: int) -> void: #shouldnt be used for any
 	pass
 
 func _on_add_player_value(amount: int) -> void:
-	world.player.current_value += amount
+	world.player.addValue(amount)
+	pass
+
+func _on_remove_player_value(amount: int) -> void:
+	world.player.removeValue(amount)
 	pass
 
 func _on_add_player_hull_stress(amount: int) -> void:

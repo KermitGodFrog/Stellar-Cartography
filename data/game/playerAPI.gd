@@ -226,6 +226,14 @@ func decreaseBalance(amount: int):
 	balance = maxi(0, balance - amount)
 	pass
 
+func addValue(amount: int) -> void:
+	current_value += amount
+	pass
+
+func removeValue(amount: int) -> void:
+	current_value = maxi(0, current_value - amount)
+	pass
+
 
 
 
