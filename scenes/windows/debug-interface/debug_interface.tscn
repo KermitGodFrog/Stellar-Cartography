@@ -46,10 +46,33 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 size_flags_stretch_ratio = 2.0
 max_value = 100000.0
-step = 10000.0
+step = 5000.0
 rounded = true
 
 [node name="nanites_button" type="Button" parent="debug_interface/scroll/nanites_scroll"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "ADD"
+
+[node name="data_value_scroll" type="HBoxContainer" parent="debug_interface/scroll"]
+layout_mode = 2
+
+[node name="data_value_label" type="Label" parent="debug_interface/scroll/data_value_scroll"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "+100000ň"
+vertical_alignment = 1
+
+[node name="data_value_slider" type="HSlider" parent="debug_interface/scroll/data_value_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 2.0
+max_value = 100000.0
+step = 5000.0
+rounded = true
+
+[node name="data_value_button" type="Button" parent="debug_interface/scroll/data_value_scroll"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "ADD"
@@ -140,6 +163,8 @@ text = "+"
 [connection signal="close_requested" from="." to="debug_interface" method="_on_debug_interface_window_close_requested"]
 [connection signal="drag_ended" from="debug_interface/scroll/nanites_scroll/nanites_slider" to="debug_interface" method="_on_nanites_slider_drag_ended"]
 [connection signal="pressed" from="debug_interface/scroll/nanites_scroll/nanites_button" to="debug_interface" method="_on_nanites_button_pressed"]
+[connection signal="drag_ended" from="debug_interface/scroll/data_value_scroll/data_value_slider" to="debug_interface" method="_on_data_value_slider_drag_ended"]
+[connection signal="pressed" from="debug_interface/scroll/data_value_scroll/data_value_button" to="debug_interface" method="_on_data_value_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/add_hull_stress_button" to="debug_interface" method="_on_add_hull_stress_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/clear_load_rules_button" to="debug_interface" method="_on_clear_load_rules_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/reveal_wormholes_button" to="debug_interface" method="_on_reveal_wormholes_button_pressed"]
