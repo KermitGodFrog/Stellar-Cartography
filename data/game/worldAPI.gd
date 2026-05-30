@@ -56,7 +56,7 @@ func createPlayer(name: String, ship_name: String, prefix: String) -> playerAPI:
 	new_player.name = name
 	new_player.ship_name = ship_name
 	new_player.prefix = prefix
-	new_player.speed = 3
+	new_player.speed = 5
 	new_player.radius = starSystemAPI.get_default_radius_solar_radii()
 	new_player.metadata["affiliation"] = game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE
 	

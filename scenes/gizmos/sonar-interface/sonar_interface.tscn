@@ -94,7 +94,7 @@ theme_type_variation = &"ButtonDull"
 text = "RST"
 
 [node name="ping_cooldown_timer" type="Timer" parent="sonar_control"]
-wait_time = 5.0
+wait_time = 3.0
 one_shot = true
 
 [node name="width_value_changed_cooldown" type="Timer" parent="sonar_control"]

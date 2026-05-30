@@ -949,7 +949,7 @@ func async_add_unit_ping(unit: unitBodyAPI, _ping_width: int) -> void:
 	
 	if unit is AIUnitAPI:
 		if player_position_matrix[0].distance_to(unit.position) < player_adj_scanner_matrix[1]: #distance below power
-			var duration = remap(_ping_width, 5, 90, 7.5, 1.5)
+			var duration = remap(_ping_width, 5, 90, 5.5, 1.0)
 			unit.stun(duration)
 			if unit.is_hostile() and (not unit is mineUnitAPI):
 				_on_add_text_ping("res://data/system-map/ping-display-helpers/text_stun.tres", unit.position, "Stunned!(%.1fs)" % duration)
