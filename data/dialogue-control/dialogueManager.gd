@@ -776,41 +776,44 @@ func forcePlayerWin() -> void: # only used for insa Rift Driver launch
 	emit_signal("playerWin")
 	pass
 
-func addLowCharacterXPWithFlair(written_occupation: String) -> void:
-	addCharacterXPWithFlair(written_occupation, 50)
+func addXP_LOW(written_occupation: String) -> void:
+	addXPWithFlair(written_occupation, 50)
 	pass
 
-func addMediumCharacterXPWithFlair(written_occupation: String) -> void:
-	addCharacterXPWithFlair(written_occupation, 100)
+func addXP_MEDIUM(written_occupation: String) -> void:
+	addXPWithFlair(written_occupation, 100)
 	pass
 
-func addHighCharacterXPWithFlair(written_occupation: String) -> void:
-	addCharacterXPWithFlair(written_occupation, 300)
+func addXP_HIGH(written_occupation: String) -> void:
+	addXPWithFlair(written_occupation, 300)
 	pass
 
-func addCharacterXPWithFlair(written_occupation: String, amount: int) -> void:
+func addXPWithFlair(written_occupation: String, amount: int) -> void:
 	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
 	emit_signal("addCharacterXP", occupation, amount)
 	var department_name: String
 	match occupation:
 		characterAPI.OCCUPATIONS.FIRST_OFFICER:
-			department_name = "command"
+			department_name = "Command staff"
 		characterAPI.OCCUPATIONS.CHIEF_ENGINEER:
-			department_name = "engineering"
+			department_name = "Engineering"
 		characterAPI.OCCUPATIONS.SECURITY_OFFICER:
-			department_name = "security"
+			department_name = "Security"
 		characterAPI.OCCUPATIONS.MEDICAL_OFFICER:
-			department_name = "medical"
+			department_name = "Medical-science department"
 	
-	dialogue.add_text("[color=green][font_size=8]The %s department has gained %d XP[/font_size][/color]" % [department_name, amount])
+	dialogue.add_text("[color=green][font_size=8]{ %s gained %d XP }[/font_size][/color]" % [department_name, amount])
 	pass
 
-func addRandomCharacterXPWithFlair(amount) -> void:
-	var written_occupation = ["FIRST_OFFICER", "CHIEF_ENGINEER", "MEDICAL_OFFICER"].pick_random()
-	addCharacterXPWithFlair(written_occupation, int(amount))
+func addRandomXP_LOW(anomaly_seed: String = String()) -> void:
+	var random = RandomNumberGenerator.new()
+	random.set_seed(hash(int(anomaly_seed) - rules_triggered))
+	const occupation_strings: Array = ["FIRST_OFFICER", "CHIEF_ENGINEER", "MEDICAL_OFFICER"]
+	var written_occupation = occupation_strings[random.randi_range(0, occupation_strings.size() - 1)]
+	addXPWithFlair(written_occupation, 50)
 	pass
 
-func removeCharacterSpecialInitiativeXP(written_occupation: String) -> void:
+func removeSpecialInitiativeXP(written_occupation: String) -> void:
 	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
 	emit_signal("removeCharacterInitiativeXP", occupation)
 	pass
@@ -837,8 +840,6 @@ func transferDataValue_UA01G(sent_value: int) -> void:
 			discoverRandomBodyWithFlair(str(anomaly_seed))
 			discoverRandomBodyWithFlair(str(anomaly_seed))
 	pass
-
-
 
 
 
