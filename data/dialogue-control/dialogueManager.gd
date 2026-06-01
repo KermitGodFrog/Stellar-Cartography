@@ -431,6 +431,8 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 							call(trigger_function, values)
 				else:
 					call(trigger_function)
+		else:
+			push_error("QUERY HANDLER: ERROR ATTEMPTING TO CALL FUNCTION THAT DOES NOT EXIST: ", trigger_function)
 	
 	#trigger_rules: \\\\\\\\\\\\\
 	for _trigger_rule in rule.trigger_rules:
@@ -800,9 +802,9 @@ func addXPWithFlair(written_occupation: String, amount: int) -> void:
 		characterAPI.OCCUPATIONS.SECURITY_OFFICER:
 			department_name = "Security"
 		characterAPI.OCCUPATIONS.MEDICAL_OFFICER:
-			department_name = "Medical-science department"
+			department_name = "Science department"
 	
-	dialogue.add_text("[color=green][font_size=8]{ %s gained %d XP }[/font_size][/color]" % [department_name, amount])
+	dialogue.add_text("[color=darkgreen][font_size=8]{ %s gained %d XP }[/font_size][/color]" % [department_name, amount])
 	pass
 
 func addRandomXP_LOW(anomaly_seed: String = String()) -> void:

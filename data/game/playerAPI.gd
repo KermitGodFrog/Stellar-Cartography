@@ -57,7 +57,7 @@ enum STORYLINES {THE_DETECTIVE, THE_CONGLOMERATE}
 
 @export_storage var hull_deterioration: int = 0
 @export_storage var hull_stress: int = 0
-@export_storage var morale: int = 95:
+@export_storage var morale: int = 100:
 	get:
 		if survived_mutiny: return 0
 		else: return morale
@@ -86,12 +86,7 @@ var current_SPL_upgrades: int = 0:
 @export_storage var survived_mutiny: bool = false #misc
 @export_storage var invulnerability_time: float = 0.0 #this is only used for mines at the moment - could expand to pulsar beams, marauders, etc later.
 
-@export var characters: Array[characterAPI] = [
-	preload("uid://b0ufsv84pso1i"),
-	preload("uid://dshniitnvqmdm"),
-	preload("uid://bg402hymen2yw"),
-	preload("uid://btatr08y80g7t")
-	]
+@export var characters: Array[characterAPI] = []
 func get_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> characterAPI:
 	for c in characters:
 		if c.get_occupation() == occupation:

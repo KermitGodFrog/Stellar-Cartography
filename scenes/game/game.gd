@@ -234,6 +234,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("quickTraverse", _on_DEBUG_quick_traverse)
 	debug_interface.connect("unlockUpgrade", _on_unlock_upgrade)
 	debug_interface.connect("regenerateSystem3D", _on_DEBUG_regenerate_system_3d)
+	debug_interface.connect("addCharacterXP", _on_add_character_xp)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -409,13 +410,6 @@ func _on_player_following_body(following_body: bodyAPI):
 				new_query.add_tree_access("target_upgrade", playerAPI.UPGRADE_ID.find_key(unlocked_upgrades[global_data.get_randi(0, unlocked_upgrades.size() - 1, following_body.metadata.get("seed", 0))]))
 			else:
 				new_query.add_tree_access("target_upgrade", null)
-		starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
-			#this kinda isnt like the rest since it adds stuff about the player but i do think its too bulky and unnecessary to cram into responseQuery so whateva
-			#rendezvous is about the player anyway...
-			for character in world.player.characters:
-				new_query.add_tree_access("player_%s_xp" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.xp)
-				new_query.add_tree_access("player_%s_initiative_xp" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.initiative_xp)
-			pass
 	
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
