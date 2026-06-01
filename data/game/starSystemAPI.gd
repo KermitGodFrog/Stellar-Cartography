@@ -214,7 +214,13 @@ const asteroid_belt_classifications = {
 
 # core gen methods \/
 
-func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0, _missing_GL_chance_per_relevant_planet: float = 0.0) -> void:
+func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0, _missing_GL_chance_per_relevant_planet: float = 0.0, weirdness_index: float = 0.0) -> void:
+	if special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
+		special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(weirdness_index), "weight")
+	
+	if system_hazard_classification == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
+		system_hazard_classification = global_data.weighted_pick(game_data.get_weighted_system_hazard_classifications(weirdness_index), "weight")
+	
 	#generate just planets, stars and space anomalies!
 	var hook_star = generateRandomWeightedHookStar()
 	generateRandomWeightedPlanets(hook_star, _PA_chance_per_planet, _missing_AO_chance_per_planet, _missing_GL_chance_per_relevant_planet)
@@ -225,6 +231,7 @@ func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_plane
 func createAuxiliaryCivilized() -> void:
 	match special_system_classification:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
+			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
 			generateWormholes()
 			generateRandomWeightedStations()
 			generateRandomWeightedEntities()
@@ -233,6 +240,7 @@ func createAuxiliaryCivilized() -> void:
 				body.known = true
 			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
+			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
 			print("!! INSA SPECIAL SYSTEM CLASSIFICATION !!")
 			const excluded_iterations := [0, 1, 5, 6, 10, 12, 18, 24]
 			
@@ -366,12 +374,6 @@ func createAuxiliaryCivilized() -> void:
 	pass
 
 func createAuxiliaryUnexplored() -> void:
-	#if special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
-	special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(), "weight")
-	
-	#if system_hazard_classification == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
-	system_hazard_classification = global_data.weighted_pick(game_data.get_weighted_system_hazard_classifications(), "weight")
-	
 	match special_system_classification:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
 			generateWormholes()
@@ -380,6 +382,7 @@ func createAuxiliaryUnexplored() -> void:
 			generateRandomWeightedSpecialAnomaly()
 			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
+			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
 			var star = get_first_star()
 			remove_recursive_bodies_with_hook_identifier(star.get_identifier())
 			post_gen_location_candidates.clear()
@@ -389,8 +392,7 @@ func createAuxiliaryUnexplored() -> void:
 	
 	match system_hazard_classification:
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD:
-			if system_hazard_classification != game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
-				generateRandomMines()
+			generateRandomMines()
 	pass
 
 # gen methods \/

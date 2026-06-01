@@ -379,6 +379,12 @@ func _on_player_following_body(following_body: bodyAPI):
 		starSystemAPI.BODY_TYPES.WORMHOLE:
 			new_query.add_tree_access("wormhole_disabled", following_body.is_disabled())
 			new_query.add_tree_access("pending_audio_profiles", world.get_pending_audio_profiles().size() > 0) #for AV FLAIR
+			if following_body.destination_system != null:
+				new_query.add_tree_access("dest_special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(following_body.destination_system.special_system_classification)))
+				new_query.add_tree_access("dest_system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(following_body.destination_system.system_hazard_classification)))
+			else:
+				new_query.add_tree_access("dest_special_system_classification", null)
+				new_query.add_tree_access("dest_system_hazard_classification", null)
 		starSystemAPI.BODY_TYPES.STATION:
 			var station_abandoned: bool = following_body.station_classification in [game_data.STATION_CLASSIFICATIONS.ABANDONED, game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS, game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL, game_data.STATION_CLASSIFICATIONS.COVERUP, game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED]
 			var station_inhabited: bool = following_body.station_classification in [game_data.STATION_CLASSIFICATIONS.STANDARD, game_data.STATION_CLASSIFICATIONS.PIRATE]
@@ -623,8 +629,9 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	
 	#spawning new wormholes in destination system if nonexistent
 	if not destination.destination_systems:
-		_on_create_new_star_system(destination)
-		_on_create_new_star_system(destination, (world.player.systems_traversed + 1) == world.player.total_systems)
+		var next_weirdness_index: float = remap(world.player.systems_traversed + 1, 0, world.player.total_systems, 0.0, 1.0)
+		_on_create_new_star_system(destination, next_weirdness_index, false)
+		_on_create_new_star_system(destination, next_weirdness_index, (world.player.systems_traversed + 1) == world.player.total_systems)
 	#setting whether the new system is a civilized system or not
 	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
 	if world.player.get_jumps_remaining() == 0:
@@ -714,7 +721,7 @@ func _on_update_target_position(pos: Vector2):
 	system_3d.set("target_position", pos)
 	pass
 
-func _on_create_new_star_system(for_system: starSystemAPI = null, insa_override: bool = false):
+func _on_create_new_star_system(for_system: starSystemAPI = null, for_weirdness_index: float = 0.0, insa_override: bool = false):
 	game_data.SYSTEM_PREFIX = "" #shuldnt be calling game_data from game.gd but whateverrrrrrr
 	var system: starSystemAPI
 	if not insa_override:
@@ -723,7 +730,7 @@ func _on_create_new_star_system(for_system: starSystemAPI = null, insa_override:
 		system = world.createStarSystem("campaign_insa")
 		system.special_system_classification = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA
 	var _advanced_scanning_unlocked = world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.ADVANCED_SCANNING)
-	system.createBase(world.get_adjusted_PA_chance(_advanced_scanning_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_scanning_unlocked), world.missing_GL_chance_per_relevant_planet)
+	system.createBase(world.get_adjusted_PA_chance(_advanced_scanning_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_scanning_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index)
 	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
