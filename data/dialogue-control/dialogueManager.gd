@@ -796,11 +796,11 @@ func addXPWithFlair(written_occupation: String, amount: int) -> void:
 	var department_name: String
 	match occupation:
 		characterAPI.OCCUPATIONS.FIRST_OFFICER:
-			department_name = "Command staff"
+			department_name = "Command department"
 		characterAPI.OCCUPATIONS.CHIEF_ENGINEER:
-			department_name = "Engineering"
+			department_name = "Engineering department"
 		characterAPI.OCCUPATIONS.SECURITY_OFFICER:
-			department_name = "Security"
+			department_name = "Security department"
 		characterAPI.OCCUPATIONS.MEDICAL_OFFICER:
 			department_name = "Science department"
 	
