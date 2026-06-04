@@ -541,37 +541,40 @@ ESDPortal,"concept: enteringSystem, system_hazard_classification: UNKNOWN_DANGER
 ,,,,,,,,,,
 ESD01GNothing,"concept: ESDPortalDispatch, player_in_ANY_region: true",openDialog: null,enteringSystemMessage,Nothing happens.,Proceed: defaultLeave,,,,,
 ,,,,,,,,,,
-ESD02GFilamentOpenDialog,"concept: ESDPortalDispatch, player_in_ANY_region: true",openDialog: null,enteringSystemMessage,"During traversal of the wormhole's interior, the navigator grazed a particularly large filament, and now an outer compartment is leaking oxygen. You have under one minute until the damage widens and the compartment undergoes explosive decompression.","Evacuate the comparment: ESD02GFilamentEvacuate, Plug the hole: ESD02GFilamentPlug",,,,,
+ESD02GFilamentOpenDialog,"concept: ESDPortalDispatch, player_in_ANY_region: true",openDialog: null,enteringSystemMessage,"During traversal of the wormhole's interior, the navigator grazed a particularly large filament, and now an outer compartment is leaking oxygen. You have under one minute until the damage widens and the compartment undergoes explosive decompression.","Evacuate the compartment: ESD02GFilamentEvacuate, Plug the hole: ESD02GFilamentPlug",,,,,
 ESD02GFilamentEvacuate,"concept: optionSelected, option: ESD02GFilamentEvacuate",addHullStressWithFlair: 15,,"Crew exit the compartment with practiced efficiency and seal the surrounding bulkheads. The decompression escalates,  widening the hole and flinging tacsteel into the void until the oxygen supply is exhausted. Damage control begins shortly afterwards.",Proceed: defaultLeave,,,,,
 ESD02GFilamentPlug,"concept: optionSelected, option: ESD02GFilamentPlug","removeMoraleWithFlair: 10, addHullStressWithFlair: 5",,"On your command, and with extreme risk, the crew inside the compartment manually seal the hole with small patches and putty. The leak is abandoned for nanites to fix as soon as it becomes microscopic in size. The compartment is saved, but a small amount of residual damage is still sustained.",Proceed: defaultLeave,,,,,
 ,,,,,,,,,,
 #ESD03GFilamentOpenDialog,"concept: ESDPortalDispatch, player_in_ANY_region: true",openDialog: null,enteringSystemMessage,Alternate scenario for hitting a filament on the way through. PERHAPS: Navigator hit particularly large filament on the way through (+hull stress) (MAYBE DONT INCLUDE UNFAIR ONES LIKE THIS),Proceed: defaultLeave,,,,,
 ,,,,,,,,,,
-ESD04GDebrisFieldOpenDialog,"concept: ESDPortalDispatch, player_in_FRONTIER_region: true",openDialog: null,enteringSystemMessage,A debris field rapidly approaches.,"Brace for impact: ESD04GDebrisFieldBrace, Attempt to escape: ESD04GDebrisFieldEscape",,,,,
+ESD04GDebrisFieldOpenDialog,"concept: ESDPortalDispatch, player_in_FRONTIER_region: true","openDialog: null, playMusic: combat_low.wav",enteringSystemMessage,A debris field rapidly approaches.,"Brace for impact: ESD04GDebrisFieldBrace, Attempt to escape: ESD04GDebrisFieldEscape",,,,,
 ESD04GDebrisFieldBrace,"concept: optionSelected, option: ESD04GDebrisFieldBrace",addHullStressWithFlair: 15,,Your starship is hit by hundreds of tiny pieces of debris.,Proceed: defaultLeave,,,,,
-ESD04GDebrisFieldEscape,"concept: optionSelected, option: ESD04GDebrisFieldEscape",,,,Proceed: defaultLeave,,,ESD04GDebrisFieldEscapeDispatch,,
-ESD04GDebrisFieldEscapeResponseA,concept: ESD04GDebrisFieldEscapeDispatch,"addHullStressWithFlair: 15, removeMoraleWithFlair: 10",,"Your starship doesn't make it far before being pelted with debris. 
+ESD04GDebrisFieldEscape,"concept: optionSelected, option: ESD04GDebrisFieldEscape",,,,Proceed: defaultLeave,,ESD04GDebrisFieldEscapeDispatch,,,
+ESD04GDebrisFieldEscapeResponseA,"concept: ESD04GDebrisFieldEscapeDispatch, randf: >=0.25","addHullStressWithFlair: 15, removeMoraleWithFlair: 10",,"Your starship doesn't make it far before being pelted with debris. 
 
 It is widely understood that nothing would have changed if the [i]$player_ship_name[/i] simply stayed put.",,,,,,
-ESD04GDebrisFieldEscapeResponseB,concept: ESD04GDebrisFieldEscapeDispatch,,,"Miraculously, your starship manages to avoid the debris entirely. ",,,,,,
+ESD04GDebrisFieldEscapeResponseB,"concept: ESD04GDebrisFieldEscapeDispatch, randf: <0.25",,,"Miraculously, your starship manages to avoid the debris entirely. ",,,,,,
 ,,,,,,,,,,
-#ESD05GEngineOverheatOpenDialog,"concept: ESDPortalDispatch, player_in_ANY_region: true",openDialog: null,enteringSystemMessage,Engine overheating. Either keep it on (-nanites) so you are prepared for any undetected threats OR shut it down (+hull stress OR chance for nothing to happen),Shut it down: ESD05GEngineOverheatOff,populateESD05GEngineOverheatOptions,,,,
+ESD05GEngineOverheatOpenDialog,"concept: ESDPortalDispatch, player_in_ANY_region: true",openDialog: null,enteringSystemMessage,"Engineering informs you that the drive, fatigued from exceeding its operational limits during the traversal, is now overheating. There isn’t an extreme risk - the drive isn’t going to slag itself, according to the chief, but several nanite regiments will self-immolate while automatically repairing the damage if the drive is left on. As preliminary scans of the surrounding area haven’t been completed, shutting it down has its own set of risks. Engineering awaits your orders. ",Shut it down: ESD05GEngineOverheatOff,populateESD05GEngineOverheatOptions,,,,
 ESD05GEngineOverheatOnOption,"concept: populateESD05GEngineOverheatOptions, player_balance: >=10000",,,,Keep it on: ESD05GEngineOverheatOn,,,,,
-ESD05GEngineOverheatOn,"concept: optionSelected, option: ESD05GEngineOverheatOn",,,thnakfully nothing happens until initial returns complete,Proceed: defaultLeave,,,,,
+ESD05GEngineOverheatOn,"concept: optionSelected, option: ESD05GEngineOverheatOn",decreaseBalanceWithFlair: 10000,,"Returning scans reveal that nothing is amiss. 
+
+The drive is promptly shut down to prevent further damage.",Proceed: defaultLeave,,,,,
 ESD05GEngineOverheatOff,"concept: optionSelected, option: ESD05GEngineOverheatOff",,,,Proceed: defaultLeave,,,ESD05GEngineOverheatOffDispatch,,
-ESD05GEngineOverheatOffResponseA,concept: ESD05GEngineOverheatOffDispatch,,,nothing happens,,,,,,
-ESD05GEngineOverheatOffResponseB,concept: ESD05GEngineOverheatOffDispatch,,,,,,,,,
-ESD05GEngineOverheatOffResponseC,concept: ESD05GEngineOverheatOffDispatch,,,,,,,,,
-ESD05GEngineOverheatOffResponseD,concept: ESD05GEngineOverheatOffDispatch,,,,,,,,,
+ESD05GEngineOverheatOffResponseA,"concept: ESD05GEngineOverheatOffDispatch, randf: <0.25",,,"Returning scans reveal that nothing is amiss. 
+
+The drive is reactivated as soon as it returns to a safe temperature.",,,,,,
+ESD05GEngineOverheatOffResponseB,"concept: ESD05GEngineOverheatOffDispatch, player_in_FRONTIER_or_ABYSS_region: true",addHullStressWithFlair: 15,,An ancient defence satellite is detected right next to your starship. You are powerless to respond to its light attacks for several minutes until the drive is reactivated. It is then cut down by suppressive fire.,,,,,,
+ESD05GEngineOverheatOffResponseC,"concept: ESD05GEngineOverheatOffDispatch, player_in_ANY_region: true",addHullStressWithFlair: 15,,A cluster of micrometeoroids - an insignificant hazard for the mobile [i]$player_ship_name[/i] - are detected on an intercept course. You are powerless to avoid them. They slam into your starship shortly afterwards.,,,,,,
 ,,,,,,,,,,
-ESD06GLoneMineOpenDialog,"concept: ESDPortalDispatch, player_in_FRONTIER_or_ABYSS_region: true",openDialog: null,enteringSystemMessage,A lone mine is immediately detected just beyond the reaches of the destination wormhole. You hypothesize that it was placed by marauders to catch Executive ships off guard. The mine's proximity fuse burns.,"Creep away: ESD06GLoneMineSilent, Demagnetize the hull: ESD06GLoneMineDemagnetize, Go to flank speed: ESD06GLoneMineEscape",,,,,
+ESD06GLoneMineOpenDialog,"concept: ESDPortalDispatch, player_in_FRONTIER_or_ABYSS_region: true","openDialog: null, playMusic: combat_low.wav",enteringSystemMessage,A lone mine is immediately detected just beyond the reaches of the destination wormhole. You hypothesize that it was placed by marauders to catch Executive ships off guard. The mine's proximity fuse burns.,"Creep away: ESD06GLoneMineSilent, Demagnetize the hull: ESD06GLoneMineDemagnetize, Go to flank speed: ESD06GLoneMineEscape",,,,,
 ESD06GLoneMineSilent,"concept: optionSelected, option: ESD06GLoneMineSilent",,,,,,,ESD06GLoneMineSilentDispatch,,
 ESD06GLoneMineSilentResponseA,concept: ESD06GLoneMineSilentDispatch,addHullStressWithFlair: 15,,"Attempting to leverage the makeshift design of the mine, you make the [i]$player_ship_name[/i] minimize its profile and then put it on course to abandon the area. 
 
 It appears to work for a moment before the mine stubbornly detonates.",,,,,,
 ESD06GLoneMineSilentResponseB,concept: ESD06GLoneMineSilentDispatch,,,"Leveraging the makeshift design of the mine, you make the [i]$player_ship_name[/i] minimize its profile and then abandon the area. 
 
-Once out of the range, the mine is safely detonated. ",,,,,,
+Once out of the range, the mine is safely detonated.",,,,,,
 ESD06GLoneMineDemagnetize,"concept: optionSelected, option: ESD06GLoneMineDemagnetize",addHullStressWithFlair 15,,The mine instantly detonates.,,,,,,
 ESD06GLoneMineEscape,"concept: optionSelected, option: ESD06GLoneMineEscape",addHullStressWithFlair 15,,The mine instantly detonates.,,,,,,
 ,,,,,,,,,,
