@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=25 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" uid="uid://dq4gkj1n823v0" path="res://scenes/main-menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_b84fj"]
@@ -28,6 +28,19 @@ border_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lhle4"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eel2y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eel2y"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_de2wi"]
 
@@ -263,13 +276,28 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_sg3tv")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_eel2y")
 text = "SHIP NAME"
 
-[node name="ship_name_edit" type="LineEdit" parent="new_game_popup/new_game/margin/scroll"]
+[node name="ship_name_scroll" type="HBoxContainer" parent="new_game_popup/new_game/margin/scroll"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+
+[node name="ship_prefix_label" type="Label" parent="new_game_popup/new_game/margin/scroll/ship_name_scroll"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.8745098, 0.8745098, 0.8745098, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_eel2y")
+text = "ES"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ship_name_edit" type="LineEdit" parent="new_game_popup/new_game/margin/scroll/ship_name_scroll"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
 placeholder_text = "Valiant"
 max_length = 20
 
-[node name="length_label" type="Label" parent="new_game_popup/new_game/margin/scroll/ship_name_edit"]
+[node name="length_label" type="Label" parent="new_game_popup/new_game/margin/scroll/ship_name_scroll/ship_name_edit"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0

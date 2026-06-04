@@ -5,7 +5,7 @@ extends Control
 @onready var create_button = $new_game_popup/new_game/margin/scroll/create_button
 @onready var name_edit = $new_game_popup/new_game/margin/scroll/name_edit
 @onready var prefix_edit = $new_game_popup/new_game/margin/scroll/prefix_edit
-@onready var ship_name_edit = $new_game_popup/new_game/margin/scroll/ship_name_edit
+@onready var ship_name_edit = $new_game_popup/new_game/margin/scroll/ship_name_scroll/ship_name_edit
 @onready var new_game_popup = $new_game_popup
 @onready var achievements_list_popup = $achievements_list_popup
 @onready var background = $background
