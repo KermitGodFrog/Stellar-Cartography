@@ -25,6 +25,7 @@ const time: int = 1
 @export var special_system_classification: game_data.SPECIAL_SYSTEM_CLASSIFICATIONS = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE
 @export var system_hazard_classification: game_data.SYSTEM_HAZARD_CLASSIFICATIONS = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
 @export var system_hazard_metadata: Dictionary = {}
+@export var system_scenario_classification: game_data.SYSTEM_SCENARIO_CLASSIFICATIONS = game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.NONE
 
 func get_identifier():
 	return identifier
@@ -221,6 +222,9 @@ func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_plane
 	if system_hazard_classification == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
 		system_hazard_classification = global_data.weighted_pick(game_data.get_weighted_system_hazard_classifications(weirdness_index), "weight")
 	
+	if system_scenario_classification == game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.NONE:
+		system_scenario_classification = global_data.weighted_pick(game_data.get_weighted_system_scenario_classifications(weirdness_index), "weight")
+	
 	#generate just planets, stars and space anomalies!
 	var hook_star = generateRandomWeightedHookStar()
 	generateRandomWeightedPlanets(hook_star, _PA_chance_per_planet, _missing_AO_chance_per_planet, _missing_GL_chance_per_relevant_planet)
@@ -241,7 +245,8 @@ func createAuxiliaryCivilized() -> void:
 			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
 			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
-			print("!! INSA SPECIAL SYSTEM CLASSIFICATION !!")
+			system_scenario_classification = game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.NONE
+			print_debug("!! INSA SPECIAL SYSTEM CLASSIFICATION !!")
 			const excluded_iterations := [0, 1, 5, 6, 10, 12, 18, 24]
 			
 			var insa_system = load("uid://bgyav54iwwu4").duplicate(true)
@@ -260,7 +265,7 @@ func createAuxiliaryCivilized() -> void:
 					b.rotation = deg_to_rad(global_data.get_randf(0,360))
 			
 			for i in insa_star.metadata.get("iterations"):
-				print("ITERATION %.f: %f | %f" % [i, get_orbit_distance(insa_star, i), get_orbit_angle_change(insa_star, get_orbit_distance(insa_star, i))])
+				print_debug("ITERATION %.f: %f | %f" % [i, get_orbit_distance(insa_star, i), get_orbit_angle_change(insa_star, get_orbit_distance(insa_star, i))])
 			
 			var wormholes: Array = get_wormholes()
 			var systems = []
@@ -383,6 +388,7 @@ func createAuxiliaryUnexplored() -> void:
 			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
 			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
+			system_scenario_classification = game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.NONE
 			var star = get_first_star()
 			remove_recursive_bodies_with_hook_identifier(star.get_identifier())
 			post_gen_location_candidates.clear()

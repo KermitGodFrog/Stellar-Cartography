@@ -382,9 +382,11 @@ func _on_player_following_body(following_body: bodyAPI):
 			if following_body.destination_system != null:
 				new_query.add_tree_access("dest_special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(following_body.destination_system.special_system_classification)))
 				new_query.add_tree_access("dest_system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(following_body.destination_system.system_hazard_classification)))
+				new_query.add_tree_access("dest_system_scenario_classification", str(game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.find_key(following_body.destination_system.system_scenario_classification)))
 			else:
 				new_query.add_tree_access("dest_special_system_classification", null)
 				new_query.add_tree_access("dest_system_hazard_classification", null)
+				new_query.add_tree_access("dest_system_scenario_classification", null)
 		starSystemAPI.BODY_TYPES.STATION:
 			var station_abandoned: bool = following_body.station_classification in [game_data.STATION_CLASSIFICATIONS.ABANDONED, game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS, game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL, game_data.STATION_CLASSIFICATIONS.COVERUP, game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED]
 			var station_inhabited: bool = following_body.station_classification in [game_data.STATION_CLASSIFICATIONS.STANDARD, game_data.STATION_CLASSIFICATIONS.PIRATE]
@@ -560,6 +562,7 @@ func _on_player_entering_system(system: starSystemAPI):
 	#new_query.add_tree_access("name", system.get_display_name()) # no point to do this as the system display name will always be 'random' or 'tutorial' or whatever!
 	new_query.add_tree_access("special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(system.special_system_classification)))
 	new_query.add_tree_access("system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(system.system_hazard_classification)))
+	new_query.add_tree_access("system_scenario_classification", str(game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.find_key(system.system_scenario_classification)))
 	new_query.add_tree_access("system_star_type", system.get_first_star().metadata.get("star_type"))
 	new_query.add_tree_access("system_civilized", system.is_civilized())
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
