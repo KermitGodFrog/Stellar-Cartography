@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cer7wk3ixuyb6"]
+[gd_scene load_steps=5 format=3 uid="uid://cer7wk3ixuyb6"]
 
 [ext_resource type="Theme" uid="uid://bx7nt7mq77cly" path="res://theme-gen/custom-tooltip/custom_tooltip_local.tres" id="1_cvnkk"]
 [ext_resource type="Script" uid="uid://dcdgymqf7a2py" path="res://instantiated-scenes/custom-tooltip/custom_tooltip.gd" id="2_3l2yr"]
-[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="3_sqrh6"]
+[ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="3_ld4kn"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="4_8m4vm"]
 
 [node name="custom_tooltip" type="PanelContainer"]
 custom_minimum_size = Vector2(350, 20)
@@ -28,13 +29,14 @@ theme_override_constants/separation = 0
 custom_minimum_size = Vector2(340, 0)
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_fonts/font = ExtResource("3_sqrh6")
 autowrap_mode = 3
 
 [node name="tooltip_text" type="RichTextLabel" parent="tooltip_margin/tooltip_scroll"]
 custom_minimum_size = Vector2(340, 0)
 layout_mode = 2
 size_flags_vertical = 0
+theme_override_fonts/bold_font = ExtResource("3_ld4kn")
+theme_override_fonts/italics_font = ExtResource("4_8m4vm")
 bbcode_enabled = true
 fit_content = true
 scroll_active = false

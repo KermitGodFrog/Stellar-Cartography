@@ -52,7 +52,7 @@ var player_adj_speed: int = 0
 var player_is_boosting: bool = false:
 	set(value):
 		if player_is_boosting != value:
-			status_modifier_organizer.check_modifier("boosting", "Boosting", "(BOOSTING DESCRIPTION)", "* [color=red]+0.20 scanner profile multiplier[/color]\n* [color=green]5.0x speed[/color]", value)
+			status_modifier_organizer.check_modifier("boosting", "Boosting", "Travelling at the maximum (safe) speed that a starship's drive is rated for.", "* [color=red]+0.20 scanner profile multiplier[/color]\n* [color=green]5.0x speed[/color]", value)
 		player_is_boosting = value
 var player_audio_visualizer_unlocked: bool = false
 var player_gas_layer_surveyor_unlocked: bool = false
@@ -139,18 +139,18 @@ var player_in_asteroid_belt: bool = false:
 	set(value):
 		if player_in_asteroid_belt != value:
 			emit_signal("updatePlayerInAsteroidBelt", value)
-			status_modifier_organizer.check_modifier("asteroid_belt", "Asteroid belt", "A loose collection of small rocks floating through the void.", "* [color=green]-0.70 scanner profile multiplier[/color]\n* [color=red]-0.75 scanner power multiplier[/color]\n* [color=red]0.5x speed[/color]", value)
+			status_modifier_organizer.check_modifier("asteroid_belt", "Asteroid belt", "A ring composed of dust, small rocks, large rocks and lots of empty space. In this area, colliding rocks can eventually form planets and/or moons. Asteroid belts create a large amount of scanner interference and present a navigation risk for starships, which must slow down to avoid being hit by undetected rubble.", "* [color=green]-0.70 scanner profile multiplier[/color]\n* [color=red]-0.75 scanner power multiplier[/color]\n* [color=red]0.5x speed[/color]", value)
 		player_in_asteroid_belt = value
 var player_in_pulsar_beam: bool = false: #doesnt impact speed ATM
 	set(value):
 		if player_in_pulsar_beam != value:
 			emit_signal("updatePlayerInPulsarBeam", value)
-			status_modifier_organizer.check_modifier("pulsar_beam", "Pulsar beam", "(PULSAR BEAM DESCRIPTION)", "* [color=green]-0.80 scanner profile multiplier[/color]\n* [color=red]-0.50 scanner power multiplier[/color]", value)
+			status_modifier_organizer.check_modifier("pulsar_beam", "Pulsar beam", "A beam of electromagnetic radiation originating from the poles of a Pulsar class star. Pulsar beams are extremely dangerous and create a huge amount of scanner interference. It is wise to stay as far away as possible from them.", "* [color=green]-0.80 scanner profile multiplier[/color]\n* [color=red]-0.50 scanner power multiplier[/color]", value)
 		player_in_pulsar_beam = value
 var player_supercharged: bool = false:
 	set(value):
 		player_supercharged = value
-		status_modifier_organizer.check_modifier("supercharged", "Supercharged", "(SUPERCHARGED DESCRIPTION)", "* [color=green]2.0x speed[/color]", value)
+		status_modifier_organizer.check_modifier("supercharged", "Supercharged", "The state wherein a starship is travelling well above its usual safe speeed. This can be made possible by any number of reasons, including unsafe drive changes, or comprehensive navigation data mitigating the risk of travelling at such a high speed. A supercharged state can only be maintained for a number of wormhole traversals.", "* [color=green]2.0x speed[/color]", value)
 
 
 func _ready():
