@@ -605,7 +605,7 @@ alignment = 1
 [node name="relationship_symbol" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/value_nanites_scroll"]
 modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
 layout_mode = 2
-tooltip_text = "DESCRIPTION"
+tooltip_text = "Trading in exploration data at a space station or certain anomalies will convert data value into nanites."
 theme = ExtResource("15_534fl")
 texture = ExtResource("25_5qywx")
 expand_mode = 3
@@ -616,7 +616,7 @@ tooltip_title = "Data Value -> Nanites"
 [node name="nanites_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/value_nanites_scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Universally recognised currency. Can be obtained via trading in exploration data at a space station. "
+tooltip_text = "Universally recognised currency. Can be obtained by trading in exploration data at a space station. "
 theme = ExtResource("15_534fl")
 theme_override_font_sizes/font_size = 14
 icon = ExtResource("10_e6b7x")
@@ -666,7 +666,7 @@ tooltip_title = "Hull Stress"
 [node name="relationship_symbol" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/stress_deterioration_scroll"]
 modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
 layout_mode = 2
-tooltip_text = "DESCRIPTION"
+tooltip_text = "Any damage sustained that leads to hull stress exceeding 100% will transfer the excess to hull deterioration. "
 theme = ExtResource("15_534fl")
 texture = ExtResource("25_5qywx")
 expand_mode = 3
@@ -745,7 +745,7 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_vertical = 0
-tooltip_text = "DESCRIPTION"
+tooltip_text = "A passive, non-directional hostile detection system. Blinks red if there are any hostile units within 4x the scanner power of a starship."
 script = ExtResource("24_pnmav")
 tooltip_title = "Proximity Blinker"
 
@@ -777,7 +777,9 @@ alignment = 1
 [node name="scanner_profile_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/adjusted_values"]
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "SCANNER PROFILE DESCRIPTION"
+tooltip_text = "The range at which other units can detect a starship. 
+
+[i]Represented on the system map as the brown inner circle.[/i]"
 theme = ExtResource("15_534fl")
 theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
 theme_override_font_sizes/font_size = 8
@@ -790,7 +792,9 @@ tooltip_title = "Scanner Profile"
 [node name="scanner_power_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/adjusted_values"]
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "SCANNER POWER DESCRIPTION"
+tooltip_text = "The range at which a starship can detect other units. 
+
+[i]Represented on the system map as the dotted grey outer circle.[/i]"
 theme = ExtResource("15_534fl")
 theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
 theme_override_font_sizes/font_size = 8
@@ -804,7 +808,7 @@ tooltip_title = "Scanner Power"
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 size_flags_vertical = 0
-tooltip_text = "SPEED DESCRIPTION"
+tooltip_text = "The measure of how fast a starship is moving. It is displayed as the quantity of solar radii (☉R) that a starship is travelling across each second."
 theme = ExtResource("15_534fl")
 theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
 theme_override_font_sizes/font_size = 8

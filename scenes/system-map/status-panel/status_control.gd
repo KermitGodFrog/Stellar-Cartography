@@ -14,6 +14,7 @@ var player_adj_speed: int = 0
 @onready var scanner_power = $status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/adjusted_values/scanner_power_button
 @onready var scanner_profile = $status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/adjusted_values/scanner_profile_button
 @onready var speed = $status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/adjusted_values/speed_button
+@onready var prox_blinker_container = $status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/proximity_blinker/texture_container
 @onready var order = [nanites, hull_stress, hull_deterioration, morale]
 
 func _ready():
@@ -40,6 +41,7 @@ func _physics_process(_delta):
 	scanner_power.tooltip_title = "Scanner Power (%dR%c)" % [player_adj_scanner_matrix[1], "☉"]
 	speed.text = "%.f" % player_adj_speed
 	speed.tooltip_title = "Speed (%dR%c/s)" % [player_adj_speed, "☉"]
+	prox_blinker_container.tooltip_title = "Proximity Blinker (%dR%c)" % [int(player_adj_scanner_matrix[1] * 4.0), "☉"]
 	pass
 
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:

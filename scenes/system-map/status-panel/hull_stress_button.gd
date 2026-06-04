@@ -4,7 +4,7 @@ signal removeHullStressForNanites(amount: int, _nanites_per_percentage: int)
 
 var increase_for_nanites: bool = false
 var nanites_per_percentage: int
-const default_tooltip: String = "General starship wear-and-tear. Principally may be reduced at a space station in exchange for nanites. Damage over 100% will be transferred to hull deterioration."
+const default_tooltip: String = "General starship wear-and-tear. Can be reduced at a space station in exchange for nanites. Damage over 100% will be transferred to hull deterioration."
 
 
 
@@ -13,9 +13,9 @@ func _physics_process(_delta):
 	
 	match increase_for_nanites:
 		true:
-			set_tooltip_text("%s \n\n[color=red]Cost of repairing 1%% hull stress: %dn (Nanite Controller) [/color]" % [default_tooltip, nanites_per_percentage])
+			set_tooltip_text("%s \n\n[color=yellow]Cost of repairing 1%% hull stress: %dn (Nanite Controller) [/color]" % [default_tooltip, nanites_per_percentage])
 			if is_hovered():
-				set_text("> (-1%) <") 
+				set_text(">-1%<") 
 		false:
 			set_tooltip_text(default_tooltip)
 	pass
