@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_mpaaa")
 display_name = "Rui"
-initiative_xp = 1000
+initiative_xp = 600

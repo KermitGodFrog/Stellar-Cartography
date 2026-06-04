@@ -6,4 +6,4 @@
 script = ExtResource("1_2o5it")
 display_name = "Walker"
 current_occupation = 2
-initiative_xp = 1000
+initiative_xp = 600

@@ -7,4 +7,4 @@ script = ExtResource("1_xos5w")
 display_name = "Jiya"
 current_gender = 1
 current_occupation = 1
-initiative_xp = 1000
+initiative_xp = 600
