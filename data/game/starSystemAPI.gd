@@ -378,7 +378,7 @@ func createAuxiliaryCivilized() -> void:
 			#iteration 24: 2043.211105 | 0.000348 (wormhole #3)
 	pass
 
-func createAuxiliaryUnexplored() -> void:
+func createAuxiliaryUnexplored(_player_speed: int) -> void:
 	match special_system_classification:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
 			generateWormholes()
@@ -398,7 +398,7 @@ func createAuxiliaryUnexplored() -> void:
 	
 	match system_hazard_classification:
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD:
-			generateRandomMines()
+			generateRandomMines(_player_speed)
 	pass
 
 # gen methods \/
@@ -944,7 +944,7 @@ func addRandomWeightedShip(orbiting_body: orbitBodyAPI) -> void:
 	unit.updatePosition(1.0)
 	pass
 
-func generateRandomMines() -> void: #called by game.gd _on_process_system_hazard
+func generateRandomMines(player_speed: int = 5) -> void: #called by game.gd _on_process_system_hazard
 	var preset_distances: Array = []
 	var star_id = get_first_star().get_identifier()
 	for body in bodies:
@@ -965,9 +965,8 @@ func generateRandomMines() -> void: #called by game.gd _on_process_system_hazard
 			false, _:
 				pos = Vector2.ZERO + (dir * global_data.get_randf(35.0, max_distance))
 		
-		#assumes players speed is 3
 		var exclusion_zone_radius = global_data.get_randi(5, 30)
-		var max_detonation_time = maxf(1.0, float(exclusion_zone_radius) / (3.0 * 2.0)) # player speed * (boost multiplier - 3) <- (this is so its possible to interact with the mine, and a bit more fair)
+		var max_detonation_time = maxf(1.0, float(exclusion_zone_radius) / (player_speed * 2.0)) # player speed * (boost multiplier - 3) <- (this is so its possible to interact with the mine, and a bit more fair) [what does this mean lol]
 		
 		addUnitBody(
 			mineUnitAPI.new(),

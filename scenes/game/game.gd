@@ -641,7 +641,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 		world.player.resetJumpsRemaining()
 		destination.createAuxiliaryCivilized()
 	else:
-		destination.createAuxiliaryUnexplored()
+		destination.createAuxiliaryUnexplored(world.player.speed)
 	
 	
 	var destination_wormhole: wormholeBodyAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
@@ -1440,7 +1440,7 @@ func _on_DEBUG_force_quit_dialogue() -> void:
 
 func _on_DEBUG_force_unexplored_system() -> void:
 	var new = _on_create_new_star_system()
-	new.createAuxiliaryUnexplored()
+	new.createAuxiliaryUnexplored(world.player.speed)
 	_on_switch_star_system(new)
 	_on_player_entering_system(new)
 	
