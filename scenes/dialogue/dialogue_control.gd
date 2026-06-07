@@ -34,17 +34,20 @@ func add_options(new_options: Dictionary):
 	for option_text in new_options:
 		options_added += 1
 		var adjusted_option_text: String = String()
+		adjusted_option_text = option_text
 		var option_instance = option.instantiate() as Button
-		match option_text.left(1):
-			"#":
-				#locked
-				adjusted_option_text = option_text.trim_prefix("#")
-				option_instance.set_disabled(true)
-			"!":
-				#danger - does not do anything yet
-				adjusted_option_text = option_text.trim_prefix("!")
-			_:
-				adjusted_option_text = option_text
+		
+		#[07/06/26] code for special prefix characters to change the apperance/use of options. put on hold as i couldnt see any use for it at the moment
+		#match option_text.left(1):
+		#	"#":
+		#		#locked
+		#		adjusted_option_text = option_text.trim_prefix("#")
+		#		option_instance.set_disabled(true)
+		#	"!":
+		#		#danger - does not do anything yet
+		#		adjusted_option_text = option_text.trim_prefix("!")
+		#	_:
+		#		adjusted_option_text = option_text
 		
 		var rule = new_options.get(option_text, "defaultLeave")
 		option_instance.initialize(rule, adjusted_option_text, options_added)
