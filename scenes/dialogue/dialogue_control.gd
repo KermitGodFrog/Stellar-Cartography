@@ -37,7 +37,7 @@ func add_options(new_options: Dictionary):
 		adjusted_option_text = option_text
 		var option_instance = option.instantiate() as Button
 		
-		#[07/06/26] code for special prefix characters to change the apperance/use of options. put on hold as i couldnt see any use for it at the moment
+		#[07/06/26] code for special prefix characters to change the apperance/use of options. put on hold as i couldnt see any use for it at the moment. note that locked options can still be selected via number keys if this is ever re-enabled.
 		#match option_text.left(1):
 		#	"#":
 		#		#locked
