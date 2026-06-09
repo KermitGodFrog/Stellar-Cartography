@@ -10,6 +10,7 @@ signal mine_detonated(id: int)
 
 @export var identifier: int
 @export var display_name: String
+@export_storage var non_gen_seed: int = 0 #used by ESDs
 
 @export var previous_system: starSystemAPI
 @export var destination_systems: Array[starSystemAPI]
@@ -860,9 +861,10 @@ func generateFallbackAnomalies():
 	
 	if not PAs and not SAs: #no anomalies
 		if randf() >= 0.5:
-			var target = planets.pick_random()
-			target.metadata["planetary_anomaly"] = true
-			target.metadata["planetary_anomaly_available"] = true
+			if planets.size() > 0:
+				var target = planets.pick_random()
+				target.metadata["planetary_anomaly"] = true
+				target.metadata["planetary_anomaly_available"] = true
 		else:
 			addRandomSpaceAnomaly()
 	pass

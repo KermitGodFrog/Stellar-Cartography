@@ -565,6 +565,7 @@ func _on_player_entering_system(system: starSystemAPI):
 	new_query.add_tree_access("system_scenario_classification", str(game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.find_key(system.system_scenario_classification)))
 	new_query.add_tree_access("system_star_type", system.get_first_star().metadata.get("star_type"))
 	new_query.add_tree_access("system_civilized", system.is_civilized())
+	new_query.add_tree_access("seed", system.non_gen_seed)
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	#not awaiting onCloseDialog because wacky shtuff happens!!!!!!! audioHandler should only play it when pause_mode is NONE anyway
@@ -733,6 +734,7 @@ func _on_create_new_star_system(for_system: starSystemAPI = null, for_weirdness_
 		system = world.createStarSystem("campaign_insa")
 		system.special_system_classification = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA
 	var _advanced_scanning_unlocked = world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.ADVANCED_SCANNING)
+	system.non_gen_seed = randi() #for ESDs
 	system.createBase(world.get_adjusted_PA_chance(_advanced_scanning_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_scanning_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index)
 	if for_system != null:
 		for_system.destination_systems.append(system)
