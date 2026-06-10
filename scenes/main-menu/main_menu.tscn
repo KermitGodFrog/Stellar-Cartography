@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=26 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" uid="uid://dq4gkj1n823v0" path="res://scenes/main-menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_b84fj"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/shared/denied_monochrome.png" id="5_uqij0"]
 [ext_resource type="Script" uid="uid://dncoypj63awau" path="res://scenes/main-menu/line_edit_length_label.gd" id="6_lhle4"]
 [ext_resource type="Script" uid="uid://5ggnqnnre8ff" path="res://scenes/main-menu/history_popup.gd" id="8_eel2y"]
+[ext_resource type="Script" uid="uid://b3enlmexh3m01" path="res://scenes/main-menu/open_user_button.gd" id="9_kgvlk"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_srvhc"]
 texture = ExtResource("2_1jdbj")
@@ -470,6 +471,17 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.235294, 0.235294, 0.235294, 0.313726)
 
+[node name="open_user_button" type="Button" parent="history_popup"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -191.0
+offset_bottom = 30.0
+grow_horizontal = 0
+text = "OPEN USER:// FOLDER"
+script = ExtResource("9_kgvlk")
+
 [node name="panel" type="PanelContainer" parent="history_popup"]
 custom_minimum_size = Vector2(700, 800)
 layout_mode = 1
@@ -546,4 +558,5 @@ size_flags_vertical = 3
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/create_button" to="." method="_on_create_button_pressed"]
 [connection signal="pressed" from="credits_popup/margin/panel/panel_margin/scroll/actions_hbox/credits_return_button" to="." method="_on_credits_return_button_pressed"]
 [connection signal="visibility_changed" from="history_popup" to="history_popup" method="_on_visibility_changed"]
+[connection signal="pressed" from="history_popup/open_user_button" to="history_popup/open_user_button" method="_on_pressed"]
 [connection signal="pressed" from="history_popup/panel/margin/actions_items_split/actions_panel/actions_hbox/history_return_button" to="." method="_on_history_return_button_pressed"]
