@@ -679,7 +679,8 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	world.player.updatePosition(get_physics_process_delta_time())
 	
 	system_map._on_clear_console_entries()
-	print_debug("LAST SYSTEM SURVEY VALUE: %d" % world.player.sys_survey_value)
+	var time_dict = Time.get_time_dict_from_system()
+	print_debug("[%02d:%02d:%02d] LAST SYSTEM SURVEY VALUE: %d" % [time_dict.hour, time_dict.minute, time_dict.second, world.player.sys_survey_value])
 	_on_switch_star_system(destination)
 	barycenter_visualizer.locked_body_identifier = 0
 	
@@ -849,6 +850,10 @@ func _on_found_body(id: int):
 						sub_body.known = true
 			
 			if system.is_survey_complete():
+				
+				if init_type == global_data.GAME_INIT_TYPES.TUTORIAL and body.get_display_name() == "Prelude": #ugly tutorial override UGHH
+					return
+				
 				_on_sys_survey_efficiency_bonus()
 	pass
 
