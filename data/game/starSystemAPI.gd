@@ -10,6 +10,7 @@ signal mine_detonated(id: int)
 
 @export var identifier: int
 @export var display_name: String
+@export_storage var non_gen_seed: int = 0 #used by ESDs
 
 @export var previous_system: starSystemAPI
 @export var destination_systems: Array[starSystemAPI]
@@ -25,6 +26,7 @@ const time: int = 1
 @export var special_system_classification: game_data.SPECIAL_SYSTEM_CLASSIFICATIONS = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE
 @export var system_hazard_classification: game_data.SYSTEM_HAZARD_CLASSIFICATIONS = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
 @export var system_hazard_metadata: Dictionary = {}
+@export var system_scenario_classification: game_data.SYSTEM_SCENARIO_CLASSIFICATIONS = game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.NONE
 
 func get_identifier():
 	return identifier
@@ -214,7 +216,16 @@ const asteroid_belt_classifications = {
 
 # core gen methods \/
 
-func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0, _missing_GL_chance_per_relevant_planet: float = 0.0) -> void:
+func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0, _missing_GL_chance_per_relevant_planet: float = 0.0, weirdness_index: float = 0.0) -> void:
+	if special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
+		special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(weirdness_index), "weight")
+	
+	if system_hazard_classification == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
+		system_hazard_classification = global_data.weighted_pick(game_data.get_weighted_system_hazard_classifications(weirdness_index), "weight")
+	
+	if system_scenario_classification == game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.NONE:
+		system_scenario_classification = global_data.weighted_pick(game_data.get_weighted_system_scenario_classifications(weirdness_index), "weight")
+	
 	#generate just planets, stars and space anomalies!
 	var hook_star = generateRandomWeightedHookStar()
 	generateRandomWeightedPlanets(hook_star, _PA_chance_per_planet, _missing_AO_chance_per_planet, _missing_GL_chance_per_relevant_planet)
@@ -225,6 +236,7 @@ func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_plane
 func createAuxiliaryCivilized() -> void:
 	match special_system_classification:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
+			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
 			generateWormholes()
 			generateRandomWeightedStations()
 			generateRandomWeightedEntities()
@@ -233,7 +245,9 @@ func createAuxiliaryCivilized() -> void:
 				body.known = true
 			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
-			print("!! INSA SPECIAL SYSTEM CLASSIFICATION !!")
+			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
+			system_scenario_classification = game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.NONE
+			print_debug("!! INSA SPECIAL SYSTEM CLASSIFICATION !!")
 			const excluded_iterations := [0, 1, 5, 6, 10, 12, 18, 24]
 			
 			var insa_system = load("uid://bgyav54iwwu4").duplicate(true)
@@ -252,7 +266,7 @@ func createAuxiliaryCivilized() -> void:
 					b.rotation = deg_to_rad(global_data.get_randf(0,360))
 			
 			for i in insa_star.metadata.get("iterations"):
-				print("ITERATION %.f: %f | %f" % [i, get_orbit_distance(insa_star, i), get_orbit_angle_change(insa_star, get_orbit_distance(insa_star, i))])
+				print_debug("ITERATION %.f: %f | %f" % [i, get_orbit_distance(insa_star, i), get_orbit_angle_change(insa_star, get_orbit_distance(insa_star, i))])
 			
 			var wormholes: Array = get_wormholes()
 			var systems = []
@@ -365,13 +379,7 @@ func createAuxiliaryCivilized() -> void:
 			#iteration 24: 2043.211105 | 0.000348 (wormhole #3)
 	pass
 
-func createAuxiliaryUnexplored() -> void:
-	#if special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
-	special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(), "weight")
-	
-	#if system_hazard_classification == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
-	system_hazard_classification = global_data.weighted_pick(game_data.get_weighted_system_hazard_classifications(), "weight")
-	
+func createAuxiliaryUnexplored(_player_speed: int) -> void:
 	match special_system_classification:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
 			generateWormholes()
@@ -380,6 +388,8 @@ func createAuxiliaryUnexplored() -> void:
 			generateRandomWeightedSpecialAnomaly()
 			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
+			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
+			system_scenario_classification = game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.NONE
 			var star = get_first_star()
 			remove_recursive_bodies_with_hook_identifier(star.get_identifier())
 			post_gen_location_candidates.clear()
@@ -389,8 +399,7 @@ func createAuxiliaryUnexplored() -> void:
 	
 	match system_hazard_classification:
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD:
-			if system_hazard_classification != game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
-				generateRandomMines()
+			generateRandomMines(_player_speed)
 	pass
 
 # gen methods \/
@@ -674,7 +683,7 @@ func generateRandomWeightedStations():
 		var radius = get_default_radius_solar_radii()
 		
 		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
-		var percentage_markup = global_data.get_randi(75, 200)
+		var percentage_markup = clampi(roundi(randfn(100.0, 15.0)), 25, 200)
 		
 		var repair_price_multiplier = 1.0
 		
@@ -852,9 +861,10 @@ func generateFallbackAnomalies():
 	
 	if not PAs and not SAs: #no anomalies
 		if randf() >= 0.5:
-			var target = planets.pick_random()
-			target.metadata["planetary_anomaly"] = true
-			target.metadata["planetary_anomaly_available"] = true
+			if planets.size() > 0:
+				var target = planets.pick_random()
+				target.metadata["planetary_anomaly"] = true
+				target.metadata["planetary_anomaly_available"] = true
 		else:
 			addRandomSpaceAnomaly()
 	pass
@@ -936,7 +946,7 @@ func addRandomWeightedShip(orbiting_body: orbitBodyAPI) -> void:
 	unit.updatePosition(1.0)
 	pass
 
-func generateRandomMines() -> void: #called by game.gd _on_process_system_hazard
+func generateRandomMines(player_speed: int = 5) -> void: #called by game.gd _on_process_system_hazard
 	var preset_distances: Array = []
 	var star_id = get_first_star().get_identifier()
 	for body in bodies:
@@ -957,9 +967,8 @@ func generateRandomMines() -> void: #called by game.gd _on_process_system_hazard
 			false, _:
 				pos = Vector2.ZERO + (dir * global_data.get_randf(35.0, max_distance))
 		
-		#assumes players speed is 3
 		var exclusion_zone_radius = global_data.get_randi(5, 30)
-		var max_detonation_time = maxf(1.0, float(exclusion_zone_radius) / (3.0 * 2.0)) # player speed * (boost multiplier - 3) <- (this is so its possible to interact with the mine, and a bit more fair)
+		var max_detonation_time = maxf(1.0, float(exclusion_zone_radius) / (player_speed * 2.0)) # player speed * (boost multiplier - 3) <- (this is so its possible to interact with the mine, and a bit more fair) [what does this mean lol]
 		
 		addUnitBody(
 			mineUnitAPI.new(),
@@ -1175,7 +1184,7 @@ static func get_temporary_station(hook: bodyAPI) -> stationBodyAPI: # for anomal
 	temp_station.repair_price_multiplier = 1.0
 	var random = RandomNumberGenerator.new()
 	random.set_seed(hook.metadata.get("seed", randi()))
-	temp_station.sell_percentage_of_market_price = random.randi_range(25,75)
+	temp_station.sell_percentage_of_market_price = clampi(roundi(random.randfn(50.0, 10.0)), 15, 100)
 	for iu in random.randi_range(0, 4):
 		var internal_random = RandomNumberGenerator.new()
 		internal_random.set_seed(hash(random.get_seed() - iu))
@@ -1198,6 +1207,16 @@ func get_first_body_from_display_name(name: String) -> bodyAPI:
 			get_body = body
 			break
 	return get_body
+
+func is_survey_complete() -> bool:
+	for body in bodies:
+		if body.is_hidden():
+			continue
+		elif body is unitBodyAPI:
+			continue
+		elif not body.is_known():
+			return false
+	return true
 
 # unit stuff \/
 

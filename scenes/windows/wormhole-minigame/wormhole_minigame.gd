@@ -91,7 +91,7 @@ func initialize(weirdness_index: float = 0.0, _hull_stress_wormhole: int = 0):
 	upper_boundary = lower_boundary + clamp(randfn((100 - lower_boundary) / 2, 8) * remap(weirdness_index, 0, 1, 1, 0), 5, (100 - lower_boundary)) #this is a really cool line of code teehee!! :>
 	special_upper_boundary = clamp(global_data.get_randf(1, lower_boundary), 1, lower_boundary)
 	special_lower_boundary = clamp(special_upper_boundary - randfn(1.125, 0.25), 0.0, special_upper_boundary - 1.0)
-	speed = clamp(randfn(30, 5) * weirdness_index, 2.5, 57.5)
+	speed = clamp(randfn(30, 5) * weirdness_index, 10.0, 57.5)
 	
 	#DARK CYAN: #00c3c3
 	var gradient := Gradient.new()

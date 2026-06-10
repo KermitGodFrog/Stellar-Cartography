@@ -35,6 +35,7 @@ signal updatePlayerInPulsarBeam(_player_in_pulsar_beam: bool)
 signal toggleScopeModeSwitchButton
 signal openPauseMenu
 signal tutorialIngressThresholdReached
+signal documentPingHitStatus(hit: bool)
 
 signal audioVisualizerPopup
 signal journeyMapPopup
@@ -892,6 +893,8 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 	SONAR_POLYGON = points
 	SONAR_POLYGON_DISPLAY_TIME = 50
 	
+	var ping_hit: bool = false
+	
 	for body in system.bodies:
 		if body.is_hidden():
 			continue
@@ -899,8 +902,15 @@ func _on_sonar_ping(ping_width: int, ping_length: int, ping_direction: Vector2):
 		if Geometry2D.is_point_in_polygon(body.position, points):
 			if body is orbitBodyAPI:
 				async_add_ping(body)
+				
+				if not body.is_hidden():
+					if not body.is_theorised():
+						ping_hit = true
+				
 			elif body is unitBodyAPI:
 				async_add_unit_ping(body, ping_width)
+	
+	emit_signal("documentPingHitStatus", ping_hit)
 	
 	#random pings \/\/\/\/
 	#for random_ping in global_data.get_randi(0, remap(ping_width, 5, 90, 0, 10)):
@@ -939,7 +949,7 @@ func async_add_unit_ping(unit: unitBodyAPI, _ping_width: int) -> void:
 	
 	if unit is AIUnitAPI:
 		if player_position_matrix[0].distance_to(unit.position) < player_adj_scanner_matrix[1]: #distance below power
-			var duration = remap(_ping_width, 5, 90, 7.5, 1.5)
+			var duration = remap(_ping_width, 5, 90, 5.5, 1.0)
 			unit.stun(duration)
 			if unit.is_hostile() and (not unit is mineUnitAPI):
 				_on_add_text_ping("res://data/system-map/ping-display-helpers/text_stun.tres", unit.position, "Stunned!(%.1fs)" % duration)
@@ -991,7 +1001,6 @@ func get_planet_frame(classification: String) -> Resource:
 
 func _on_found_body(id: int):
 	var body = system.get_body_from_identifier(id)
-	var body_pos = body.position
 	
 	if body.metadata.has("value"):
 		_on_add_text_ping("res://data/system-map/ping-display-helpers/text_discovery.tres", body.position, "+%d%c" % [body.metadata.get("value"), "ň"])
@@ -999,12 +1008,12 @@ func _on_found_body(id: int):
 	match body:
 		_ when body is unitBodyAPI:
 			var ping = load("uid://xurvu36ugl05").duplicate(true)
-			ping.position = body_pos
+			ping.position = body.position
 			ping.resetTime()
 			SONAR_PINGS.append(ping)
 		_ when body is orbitBodyAPI:
 			var ping = load("uid://d3ntmvsq6pv83").duplicate(true)
-			ping.position = body_pos
+			ping.position = body.position
 			ping.resetTime()
 			SONAR_PINGS.append(ping)
 			

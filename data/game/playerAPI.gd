@@ -57,7 +57,7 @@ enum STORYLINES {THE_DETECTIVE, THE_CONGLOMERATE}
 
 @export_storage var hull_deterioration: int = 0
 @export_storage var hull_stress: int = 0
-@export_storage var morale: int = 95:
+@export_storage var morale: int = 100:
 	get:
 		if survived_mutiny: return 0
 		else: return morale
@@ -86,12 +86,7 @@ var current_SPL_upgrades: int = 0:
 @export_storage var survived_mutiny: bool = false #misc
 @export_storage var invulnerability_time: float = 0.0 #this is only used for mines at the moment - could expand to pulsar beams, marauders, etc later.
 
-@export var characters: Array[characterAPI] = [
-	preload("uid://b0ufsv84pso1i"),
-	preload("uid://dshniitnvqmdm"),
-	preload("uid://bg402hymen2yw"),
-	preload("uid://btatr08y80g7t")
-	]
+@export var characters: Array[characterAPI] = []
 func get_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> characterAPI:
 	for c in characters:
 		if c.get_occupation() == occupation:
@@ -128,7 +123,22 @@ var scanner_contacts: Array[unitBodyAPI] = []
 
 @export_storage var analytics_exploration_data_payouts: PackedInt32Array = []
 
-
+@export_storage var sys_survey_value: int = 0
+@export_storage var sys_survey_time_start: float = 0.0 
+@export_storage var sys_survey_hit_pings: int = 0 
+@export_storage var sys_survey_total_pings: int = 0 
+var sys_survey_ping_ratio: float = 0.0:
+	get():
+		if sys_survey_total_pings != 0: #avoiding division by 0 error
+			return float(sys_survey_hit_pings) / float(sys_survey_total_pings)
+		else:
+			return float()
+func reset_all_sys_survey_data() -> void:
+	sys_survey_value = int()
+	sys_survey_time_start = float()
+	sys_survey_hit_pings = int()
+	sys_survey_total_pings = int()
+	pass
 
 
 
@@ -296,6 +306,21 @@ func modifyCharacterStanding(_occupation: characterAPI.OCCUPATIONS, _amount: int
 			increaseCharacterStanding(_occupation, _amount)
 		false:
 			decreaseCharacterStanding(_occupation, _amount)
+	pass
+
+
+
+
+func addCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int) -> void:
+	var c = get_character_with_occupation(occupation)
+	if c:
+		c.add_xp(amount)
+	pass
+
+func removeCharacterInitiativeXP(occupation: characterAPI.OCCUPATIONS) -> void:
+	var c = get_character_with_occupation(occupation)
+	if c:
+		c.remove_initiative_xp()
 	pass
 
 

@@ -5,11 +5,6 @@
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="3_t047s"]
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="4_uyogt"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3xbd0"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nj2bj"]
-bg_color = Color(0.615686, 0.615686, 0.615686, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xoltw"]
 content_margin_left = 10.0
 content_margin_top = 10.0
@@ -21,14 +16,19 @@ corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nj2bj"]
+bg_color = Color(0.615686, 0.615686, 0.615686, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3xbd0"]
+
 [node name="dialogue_option" type="Button" groups=["playUIClickSFX"]]
 custom_minimum_size = Vector2(0, 35)
 offset_right = 8.0
 offset_bottom = 8.0
 size_flags_horizontal = 3
-theme_override_styles/focus = SubResource("StyleBoxEmpty_3xbd0")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_nj2bj")
 theme_override_styles/normal = SubResource("StyleBoxFlat_xoltw")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_nj2bj")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_3xbd0")
 script = ExtResource("1_sumuu")
 
 [node name="option_margin" type="MarginContainer" parent="."]
@@ -51,8 +51,8 @@ mouse_filter = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_colors/font_selected_color = Color(0.117647, 0.117647, 0.117647, 1)
 theme_override_fonts/normal_font = ExtResource("2_qoyp0")
-theme_override_fonts/italics_font = ExtResource("3_t047s")
 theme_override_fonts/bold_font = ExtResource("4_uyogt")
+theme_override_fonts/italics_font = ExtResource("3_t047s")
 bbcode_enabled = true
 fit_content = true
 scroll_active = false

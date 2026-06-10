@@ -154,6 +154,7 @@ func connect_all_signals() -> void:
 	system_map.connect("toggleScopeModeSwitchButton", _on_toggle_scope_mode_switch_button)
 	system_map.connect("openPauseMenu", _on_open_pause_menu)
 	system_map.connect("tutorialIngressThresholdReached", _on_tutorial_ingress_threshold_reached)
+	system_map.connect("documentPingHitStatus", _on_document_ping_hit_status)
 	
 	system_3d.connect("foundBody", _on_found_body)
 	system_3d.connect("addConsoleEntry", _on_add_console_entry)
@@ -194,6 +195,8 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("modifyCharacterStanding", _on_modify_character_standing)
 	dialogue_manager.connect("changePlayerScopeMode", _on_change_scope_mode)
 	dialogue_manager.connect("lockUpgrade", _on_lock_upgrade)
+	dialogue_manager.connect("addCharacterXP", _on_add_character_xp)
+	dialogue_manager.connect("removeCharacterInitiativeXP", _on_remove_character_initiative_xp)
 	dialogue_manager.connect("playerWin", _on_player_win)
 	dialogue_manager.connect("insaMakeAllWormholesRevealable", _on_insa_make_all_wormholes_revealable)
 	dialogue_manager.connect("insaMakeRiftDriverUnavailable", _on_insa_make_rift_driver_unavailable)
@@ -231,6 +234,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("quickTraverse", _on_DEBUG_quick_traverse)
 	debug_interface.connect("unlockUpgrade", _on_unlock_upgrade)
 	debug_interface.connect("regenerateSystem3D", _on_DEBUG_regenerate_system_3d)
+	debug_interface.connect("addCharacterXP", _on_add_character_xp)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -375,6 +379,14 @@ func _on_player_following_body(following_body: bodyAPI):
 		starSystemAPI.BODY_TYPES.WORMHOLE:
 			new_query.add_tree_access("wormhole_disabled", following_body.is_disabled())
 			new_query.add_tree_access("pending_audio_profiles", world.get_pending_audio_profiles().size() > 0) #for AV FLAIR
+			if following_body.destination_system != null:
+				new_query.add_tree_access("dest_special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(following_body.destination_system.special_system_classification)))
+				new_query.add_tree_access("dest_system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(following_body.destination_system.system_hazard_classification)))
+				new_query.add_tree_access("dest_system_scenario_classification", str(game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.find_key(following_body.destination_system.system_scenario_classification)))
+			else:
+				new_query.add_tree_access("dest_special_system_classification", null)
+				new_query.add_tree_access("dest_system_hazard_classification", null)
+				new_query.add_tree_access("dest_system_scenario_classification", null)
 		starSystemAPI.BODY_TYPES.STATION:
 			var station_abandoned: bool = following_body.station_classification in [game_data.STATION_CLASSIFICATIONS.ABANDONED, game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS, game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL, game_data.STATION_CLASSIFICATIONS.COVERUP, game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED]
 			var station_inhabited: bool = following_body.station_classification in [game_data.STATION_CLASSIFICATIONS.STANDARD, game_data.STATION_CLASSIFICATIONS.PIRATE]
@@ -550,8 +562,10 @@ func _on_player_entering_system(system: starSystemAPI):
 	#new_query.add_tree_access("name", system.get_display_name()) # no point to do this as the system display name will always be 'random' or 'tutorial' or whatever!
 	new_query.add_tree_access("special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(system.special_system_classification)))
 	new_query.add_tree_access("system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(system.system_hazard_classification)))
+	new_query.add_tree_access("system_scenario_classification", str(game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.find_key(system.system_scenario_classification)))
 	new_query.add_tree_access("system_star_type", system.get_first_star().metadata.get("star_type"))
 	new_query.add_tree_access("system_civilized", system.is_civilized())
+	new_query.add_tree_access("seed", system.non_gen_seed)
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	#not awaiting onCloseDialog because wacky shtuff happens!!!!!!! audioHandler should only play it when pause_mode is NONE anyway
@@ -619,15 +633,16 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	
 	#spawning new wormholes in destination system if nonexistent
 	if not destination.destination_systems:
-		_on_create_new_star_system(destination)
-		_on_create_new_star_system(destination, (world.player.systems_traversed + 1) == world.player.total_systems)
+		var next_weirdness_index: float = remap(world.player.systems_traversed + 1, 0, world.player.total_systems, 0.0, 1.0)
+		_on_create_new_star_system(destination, next_weirdness_index, false)
+		_on_create_new_star_system(destination, next_weirdness_index, (world.player.systems_traversed + 1) == world.player.total_systems)
 	#setting whether the new system is a civilized system or not
 	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
 	if world.player.get_jumps_remaining() == 0:
 		world.player.resetJumpsRemaining()
 		destination.createAuxiliaryCivilized()
 	else:
-		destination.createAuxiliaryUnexplored()
+		destination.createAuxiliaryUnexplored(world.player.speed)
 	
 	
 	var destination_wormhole: wormholeBodyAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
@@ -664,6 +679,8 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	world.player.updatePosition(get_physics_process_delta_time())
 	
 	system_map._on_clear_console_entries()
+	var time_dict = Time.get_time_dict_from_system()
+	print_debug("[%02d:%02d:%02d] LAST SYSTEM SURVEY VALUE: %d" % [time_dict.hour, time_dict.minute, time_dict.second, world.player.sys_survey_value])
 	_on_switch_star_system(destination)
 	barycenter_visualizer.locked_body_identifier = 0
 	
@@ -709,7 +726,7 @@ func _on_update_target_position(pos: Vector2):
 	system_3d.set("target_position", pos)
 	pass
 
-func _on_create_new_star_system(for_system: starSystemAPI = null, insa_override: bool = false):
+func _on_create_new_star_system(for_system: starSystemAPI = null, for_weirdness_index: float = 0.0, insa_override: bool = false):
 	game_data.SYSTEM_PREFIX = "" #shuldnt be calling game_data from game.gd but whateverrrrrrr
 	var system: starSystemAPI
 	if not insa_override:
@@ -718,7 +735,8 @@ func _on_create_new_star_system(for_system: starSystemAPI = null, insa_override:
 		system = world.createStarSystem("campaign_insa")
 		system.special_system_classification = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA
 	var _advanced_scanning_unlocked = world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.ADVANCED_SCANNING)
-	system.createBase(world.get_adjusted_PA_chance(_advanced_scanning_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_scanning_unlocked), world.missing_GL_chance_per_relevant_planet)
+	system.non_gen_seed = randi() #for ESDs
+	system.createBase(world.get_adjusted_PA_chance(_advanced_scanning_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_scanning_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index)
 	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
@@ -747,6 +765,8 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	journey_map.add_new_system(world.player.systems_traversed)
 	journey_map.jumps_remaining = world.player.get_jumps_remaining() #required as it needs to update when the players system on game startup is loaded, not just wormhole traversal!
 	system_map.player_supercharged = world.player.supercharged #also updated when player supercharge_jumps_remaining is updated
+	world.player.reset_all_sys_survey_data() #for sys survey efficiency bonus
+	world.player.sys_survey_time_start = world.play_time
 	_on_process_system_hazard(to_system)
 	return to_system
 
@@ -813,18 +833,28 @@ func _on_locked_body_depreciated():
 	pass
 
 func _on_found_body(id: int):
-	var system: starSystemAPI = world.get_system_from_identifier(world.player.current_star_system.get_identifier())
+	var system: starSystemAPI = world.get_system_from_identifier(world.player.current_star_system.get_identifier()) #are we deadass. what is this.
 	if system:
 		var body = system.get_body_from_identifier(id)
 		if body:
 			body.known = true
-			if body.metadata.has("value"): world.player.current_value += (body.metadata.get("value") * system.get_first_star_discovery_multiplier())
+			if body.metadata.has("value"): 
+				var adjusted_value: int = (body.metadata.get("value") * system.get_first_star_discovery_multiplier())
+				world.player.current_value += adjusted_value
+				world.player.sys_survey_value += adjusted_value
 			system_map._on_found_body(id)
 			var sub_bodies = system.get_bodies_with_hook_identifier(id)
 			if sub_bodies:
 				for sub_body in sub_bodies:
 					if sub_body.get_type() == starSystemAPI.BODY_TYPES.ASTEROID_BELT:
 						sub_body.known = true
+			
+			if system.is_survey_complete():
+				
+				if init_type == global_data.GAME_INIT_TYPES.TUTORIAL and body.get_display_name() == "Prelude": #ugly tutorial override UGHH
+					return
+				
+				_on_sys_survey_efficiency_bonus()
 	pass
 
 func _on_add_console_entry(entry_text: String, text_color: Color = Color.WHITE): #called via systtem 3d
@@ -1277,6 +1307,47 @@ func _on_body_removed(id: int) -> void: #starSystemAPI signal
 	system_3d._on_body_removed(id)
 	pass
 
+func _on_document_ping_hit_status(hit: bool) -> void:
+	if hit:
+		world.player.sys_survey_hit_pings += 1
+		world.player.sys_survey_total_pings += 1
+	else:
+		world.player.sys_survey_total_pings += 1
+	pass
+
+func _on_sys_survey_efficiency_bonus() -> void:
+	var base: int = world.player.sys_survey_value * 0.25
+	var reward = base
+	var time_seconds: float = world.play_time - world.player.sys_survey_time_start
+	var time_minutes: float = time_seconds / 60
+	
+	reward *= world.player.sys_survey_ping_ratio
+	
+	if time_minutes > 5.0: # 5 minutes * 25 systems = basically 2 hours. so if people are spending more than 5 minutes in a system, then thats bad
+		reward /= time_minutes - 4.0 #e.g 6 minutes would divide the score by 2, 7 minutes by 3 etc
+	
+	world.player.current_value += roundi(reward)
+	
+	var ratio = float(reward) / float(base)
+	
+	print_debug("GAME: SYSTEM SURVEY EFFICIENCY BONUS: %d (BASE: %d , PING RATIO: %f , MINUTES: %f)" % [reward, base, world.player.sys_survey_ping_ratio, time_minutes])
+	
+	var console_base_secs = roundi(time_seconds)
+	var console_secs = console_base_secs % 60
+	var console_mins = (console_base_secs / 60) % 60
+	
+	_on_add_console_entry("SYSTEM SURVEY EFFICIENCY BONUS: +%d%c (%.1f%%) (%dm %ds)" % [reward, "ň", ratio * 100.0, console_mins, console_secs], Color.GREEN)
+	get_tree().call_group("audioHandler", "play_once", load("uid://dg602vfmho6fq"), 0.0, "SFX")
+	pass
+
+func _on_add_character_xp(occupation: characterAPI.OCCUPATIONS, amount: int) -> void:
+	world.player.addCharacterXP(occupation, amount)
+	pass
+
+func _on_remove_character_initiative_xp(occupation: characterAPI.OCCUPATIONS) -> void:
+	world.player.removeCharacterInitiativeXP(occupation)
+	pass
+
 func _on_insa_make_all_wormholes_revealable() -> void:
 	var current = world.player.current_star_system
 	if current.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
@@ -1329,7 +1400,6 @@ func _on_open_GLS():
 
 
 
-
 #handshake between game.gd and pauseModeHandler.gd
 func _on_queue_pause_mode(new_mode: game_data.PAUSE_MODES) -> void:
 	pause_mode_handler._on_queue_pause_mode(new_mode)
@@ -1377,7 +1447,7 @@ func _on_DEBUG_force_quit_dialogue() -> void:
 
 func _on_DEBUG_force_unexplored_system() -> void:
 	var new = _on_create_new_star_system()
-	new.createAuxiliaryUnexplored()
+	new.createAuxiliaryUnexplored(world.player.speed)
 	_on_switch_star_system(new)
 	_on_player_entering_system(new)
 	

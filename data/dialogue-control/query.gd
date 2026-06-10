@@ -76,6 +76,8 @@ func populateWithPlayerData(player: playerAPI):
 	for character in player.characters:
 		add("player_%s_alive" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.is_alive())
 		add("player_%s_standing" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.get_standing())
+		add("player_%s_xp" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.xp)
+		add("player_%s_initiative_xp" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.initiative_xp)
 	pass
 
 func populateWithSystemData(system: starSystemAPI):

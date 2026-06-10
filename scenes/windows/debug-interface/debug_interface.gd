@@ -6,6 +6,8 @@ extends Control
 @onready var data_value_slider = $scroll/data_value_scroll/data_value_slider
 @onready var upgrade_options = $scroll/upgrades_scroll/upgrade_options
 @onready var query_scroll = $scroll/query_scroll
+@onready var xp_character_options = $scroll/xp_scroll/xp_character_options
+
 
 signal increasePlayerBalance(amount: int)
 signal addPlayerDataValue(amount: int)
@@ -21,12 +23,16 @@ signal removePlayerMorale(amount: int)
 signal quickTraverse()
 signal unlockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
 signal regenerateSystem3D()
+signal addCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int)
 
 
 func _ready() -> void:
 	_on_nanites_slider_drag_ended(true)
+	_on_data_value_slider_drag_ended(true)
 	for upgrade in playerAPI.UPGRADE_ID:
 		upgrade_options.add_item(str(upgrade))
+	for occupation in characterAPI.OCCUPATIONS:
+		xp_character_options.add_item(str(occupation))
 	pass
 
 func _process(_delta: float) -> void:
@@ -117,6 +123,10 @@ func _on_quick_traverse_button_pressed() -> void:
 
 func _on_unlock_button_pressed() -> void:
 	emit_signal("unlockUpgrade", playerAPI.UPGRADE_ID.get(upgrade_options.get_item_text(upgrade_options.get_selected_id())))
+	pass
+
+func _on_add_xp_button_pressed() -> void:
+	emit_signal("addCharacterXP", characterAPI.OCCUPATIONS.get(xp_character_options.get_item_text(xp_character_options.get_selected_id())), 50)
 	pass
 
 func _on_regen_system_3d_button_pressed() -> void:

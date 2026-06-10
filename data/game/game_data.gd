@@ -39,11 +39,18 @@ const SPECIAL_SYSTEM_CLASSIFICATION_CURVES = {
 	SPECIAL_SYSTEM_CLASSIFICATIONS.INSA: preload("uid://d3pgn3q3k3a3n")
 }
 
-enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE, CORONAL_MASS_EJECTION, MINE_FIELD}
+enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE, CORONAL_MASS_EJECTION, MINE_FIELD, NEBULA}
 const SYSTEM_HAZARD_CLASSIFICATION_CURVES = {
 	SYSTEM_HAZARD_CLASSIFICATIONS.NONE: preload("uid://oua44qc1agpd"),
 	SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION: preload("uid://ceicfkufoj2g2"),
-	SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD: preload("uid://cgf1r33t2b51")
+	SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD: preload("uid://cgf1r33t2b51"),
+	SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA: preload("uid://xhum3g6hgsa")
+}
+
+enum SYSTEM_SCENARIO_CLASSIFICATIONS {NONE, UNKNOWN_DANGER}
+const SYSTEM_SCENARIO_CLASSIFICATION_CURVES = {
+	SYSTEM_SCENARIO_CLASSIFICATIONS.NONE: preload("uid://mgolswynb6gl"),
+	SYSTEM_SCENARIO_CLASSIFICATIONS.UNKNOWN_DANGER: preload("uid://cndjgi88qkju7")
 }
 
 #units \/
@@ -230,11 +237,11 @@ func get_lines_from_file(file_path: String) -> Array:
 
 
 
-func get_weighted_classifications(dict: Dictionary) -> Dictionary:
+func get_weighted_classifications(dict: Dictionary, weirdness_index: float = player_weirdness_index) -> Dictionary:
 	var weighted: Dictionary = {}
 	for classification in dict:
 		var curve = dict.get(classification)
-		var weight = curve.sample(player_weirdness_index)
+		var weight = curve.sample(weirdness_index)
 		weighted[classification] = {"name": classification, "weight": weight}
 	return weighted
 
@@ -247,11 +254,14 @@ func get_weighted_entity_classifications() -> Dictionary:
 func get_weighted_special_anomaly_classifications() -> Dictionary:
 	return get_weighted_classifications(SPECIAL_ANOMALY_CLASSIFICATION_CURVES)
 
-func get_weighted_special_system_classifications() -> Dictionary:
-	return get_weighted_classifications(SPECIAL_SYSTEM_CLASSIFICATION_CURVES)
+func get_weighted_special_system_classifications(weirdness_index: float = player_weirdness_index) -> Dictionary:
+	return get_weighted_classifications(SPECIAL_SYSTEM_CLASSIFICATION_CURVES, weirdness_index)
 
-func get_weighted_system_hazard_classifications() -> Dictionary:
-	return get_weighted_classifications(SYSTEM_HAZARD_CLASSIFICATION_CURVES)
+func get_weighted_system_hazard_classifications(weirdness_index: float = player_weirdness_index) -> Dictionary:
+	return get_weighted_classifications(SYSTEM_HAZARD_CLASSIFICATION_CURVES, weirdness_index)
+
+func get_weighted_system_scenario_classifications(weirdness_index: float = player_weirdness_index) -> Dictionary:
+	return get_weighted_classifications(SYSTEM_SCENARIO_CLASSIFICATION_CURVES, weirdness_index)
 
 
 

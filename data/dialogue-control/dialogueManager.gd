@@ -39,6 +39,8 @@ signal superchargePlayerForJumps(jumps: int) #saying superchargePlayerForJumps i
 signal modifyCharacterStanding(occupation: characterAPI.OCCUPATIONS, amount: int, _increase: bool)
 signal changePlayerScopeMode(_new_mode: playerAPI.SCOPE_MODES)
 signal lockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
+signal addCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int)
+signal removeCharacterInitiativeXP(occupation: characterAPI.OCCUPATIONS)
 signal playerWin()
 signal insaMakeAllWormholesRevealable()
 signal insaMakeRiftDriverUnavailable()
@@ -429,6 +431,8 @@ func trigger_rule(calling: Node, rule: responseRule, incoming_query: responseQue
 							call(trigger_function, values)
 				else:
 					call(trigger_function)
+		else:
+			push_error("QUERY HANDLER: ERROR ATTEMPTING TO CALL FUNCTION THAT DOES NOT EXIST: ", trigger_function)
 	
 	#trigger_rules: \\\\\\\\\\\\\
 	for _trigger_rule in rule.trigger_rules:
@@ -772,6 +776,48 @@ func lockUpgradeWithFlair(upgrade) -> void:
 
 func forcePlayerWin() -> void: # only used for insa Rift Driver launch
 	emit_signal("playerWin")
+	pass
+
+func addXP_LOW(written_occupation: String) -> void:
+	addXPWithFlair(written_occupation, 50)
+	pass
+
+func addXP_MEDIUM(written_occupation: String) -> void:
+	addXPWithFlair(written_occupation, 100)
+	pass
+
+func addXP_HIGH(written_occupation: String) -> void:
+	addXPWithFlair(written_occupation, 300)
+	pass
+
+func addXPWithFlair(written_occupation: String, amount: int) -> void:
+	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
+	emit_signal("addCharacterXP", occupation, amount)
+	var department_name: String
+	match occupation:
+		characterAPI.OCCUPATIONS.FIRST_OFFICER:
+			department_name = "Command department"
+		characterAPI.OCCUPATIONS.CHIEF_ENGINEER:
+			department_name = "Engineering department"
+		characterAPI.OCCUPATIONS.SECURITY_OFFICER:
+			department_name = "Security department"
+		characterAPI.OCCUPATIONS.MEDICAL_OFFICER:
+			department_name = "Science department"
+	
+	dialogue.add_text("[color=darkgreen][font_size=8]{ %s gained %d XP }[/font_size][/color]" % [department_name, amount])
+	pass
+
+func addRandomXP_LOW(anomaly_seed: String = String()) -> void:
+	var random = RandomNumberGenerator.new()
+	random.set_seed(hash(int(anomaly_seed) - rules_triggered))
+	const occupation_strings: Array = ["FIRST_OFFICER", "CHIEF_ENGINEER", "MEDICAL_OFFICER"]
+	var written_occupation = occupation_strings[random.randi_range(0, occupation_strings.size() - 1)]
+	addXPWithFlair(written_occupation, 50)
+	pass
+
+func removeSpecialInitiativeXP(written_occupation: String) -> void:
+	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
+	emit_signal("removeCharacterInitiativeXP", occupation)
 	pass
 
 func transferDataValue_UA01G(sent_value: int) -> void:
