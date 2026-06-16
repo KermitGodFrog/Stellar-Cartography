@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://b1p0bgdrgy8yl" path="res://instantiated-scenes/info-popups/closable_popup.gd" id="2_mlj3f"]
 [ext_resource type="PackedScene" uid="uid://vckukatyjp27" path="res://instantiated-scenes/ui/mid/mid_panel_fluid.tscn" id="3_af5f3"]
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="4_1rjt1"]
-[ext_resource type="Texture2D" uid="uid://bkvwgdists7up" path="res://graphics/misc/mouse/mouse_left.png" id="4_mvpl6"]
+[ext_resource type="Texture2D" uid="uid://bkvwgdists7up" path="res://graphics/shared/mouse/mouse_left.png" id="4_mvpl6"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="5_58560"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rjt1"]
