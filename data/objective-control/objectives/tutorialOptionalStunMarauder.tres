@@ -5,5 +5,7 @@
 [resource]
 script = ExtResource("1_ovg2v")
 title = "(Optional) Stun the Marauder"
-description = "Stunning a hostile (red) unit stops it from chasing you temporarily. Adjust your LIDAR direction so it matches the direction of the marauder on the SYSTEM MAP and press the 'PING' button."
+description = "Sometimes, a hostile unit is too fast to evade normally. A way to still evade such units is to stun them, stopping them from chasing you temporarily. Hostile units can be stunned by pinging them. 
+To ping the marauder starship, adjust the LIDAR direction so it matches the direction of the ship on the SYSTEM MAP, and press the 'PING' button.
+[i] * The smaller the scan arc, the longer a hostile unit stays stunned.[/i]"
 metadata/_custom_type_script = "uid://cxmuiuh6uokvl"

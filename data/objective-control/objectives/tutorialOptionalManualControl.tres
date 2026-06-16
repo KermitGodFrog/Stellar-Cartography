@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_dssi5")
-written_identifier = ""
-current_state = 0
 title = "(Optional) Set Course Manually"
-description = "On the SYSTEM MAP, right click to lay in a course to your mouse pointer, left click to direct SCOPES towards your mouse pointer, right click on a body to quick orbit, and left click on a body to quick lock. "
+description = "On the SYSTEM MAP, right click to travel to your mouse pointer.
+* [i]Left click to direct SCOPES towards your mouse pointer.[/i]
+* [i]Right click on a body to quick orbit.[/i]
+* [i]Left click on a body to quick lock.[/i]"

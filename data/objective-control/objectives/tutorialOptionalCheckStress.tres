@@ -5,5 +5,7 @@
 [resource]
 script = ExtResource("1_tiu0v")
 title = "(Optional) Check Hull Stress"
-description = "Check your 'HULL STRESS' status in the STATUS PANEL. View the tooltip for entries in the STATUS PANEL by hovering over them. 'HULL STRESS' increases as a result of wormhole traversal, system hazards and certain anomalies. Note that gaining 100% 'HULL DETERIORATION' makes you lose a run.
-[img=70%x90%]res://graphics/objective/tutorial_hull_stress_example.png[/img]"
+description = "Check your 'HULL STRESS' status in the STATUS PANEL. To do this, view the tooltip for entries in the STATUS PANEL by hovering over them.
+* [i]'HULL STRESS' increases as a result of wormhole traversal, system hazards and certain anomalies.[/i]
+* [i]Gaining 100% 'HULL DETERIORATION' makes you lose a run.[/i]
+[img]graphics/system-map/status-panel/hull_stress_icon.png[/img]"
