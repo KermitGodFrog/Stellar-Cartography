@@ -17,7 +17,11 @@ defaultHardLeave,"concept: optionSelected, option: defaultHardLeave",closeDialog
 defaultSoftLeave,"concept: optionSelected, option: defaultSoftLeave",closeDialog: SOFT_LEAVE,,,,,,,,
 ,,,,,,,,,,
 "# player start, win, death and story",,,,,,,,,,
-defaultPlayerStart,concept: playerStart,objectiveActive: reachNewEden,,,,,,,,
+defaultPlayerStart,concept: playerStart,"openDialog: null, objectiveActive: reachNewEden",,"You have orders from the 289 Standing Committee to establish diplomatic relations, and ideally reconcile, the human network in New Eden.
+
+[color=yellow]HOW TO WIN:[/color] Discover and traverse 25 wormholes to reach New Eden, and then complete your assignment. Avoid dying in the process of either.",Exit: defaultLeave,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
 #defaultPlayerStartOpenDialog,concept: playerStart,"openDialog: null, objectiveActive: reachNewEden",,"[i]You are a newly established Captain of a starship on a mission of exploration. You have requested for a route to be calculated into an area of space known as New Eden, which reportedly houses a fragment of human civilisation long forgotten. The journey to New Eden be perilous, and the dangers you will face cannot be predicted. [/i]",Continue:defaultPlayerStartContinue,,,,,
 defaultPlayerStartContinue,"concept: optionSelected, option: defaultPlayerStartContinue",,,Your transport attaches to a docking port of your new command with a series of whines. The hatch twists open.,Step out of the transport:defaultPlayerStartPortal,,,,,
 defaultPlayerStartPortal,"concept: optionSelected, option: defaultPlayerStartPortal",,,,,,,defaultPlayerStartPortalResponse,,
