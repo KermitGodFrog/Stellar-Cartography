@@ -76,8 +76,8 @@ layout_mode = 0
 target_objective_wID = "tutorialMarkPrelude"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/sonar_container")
-track_offset = Vector2(0, -300)
-info = "Firstly, let's mark a body named Prelude. Marking a body establishes its location on the SYSTEM LIST and is usually required before [color=yellow]discovering[/color] it. A body can be marked by pinging it [color=yellow]three times[/color].
+track_offset = Vector2(0, -275)
+info = "Firstly, let's mark a body named Prelude. Marking a body establishes its location on the SYSTEM LIST and is usually required before [color=yellow]discovering[/color] it. A body can be marked by [color=yellow]pinging[/color] it [color=yellow]three times[/color].
 
 To ping Prelude, adjust the LIDAR direction with [[img=16]graphics/shared/mouse/mouse_left.png[/img]] so it points towards the red circle, set the arc to max with the slider, and press the ‘PING!’ button.
 [img=75%x75%]res://graphics/objective/tutorial_LIDAR_example.png[/img]"
@@ -99,7 +99,7 @@ layout_mode = 0
 target_objective_wID = "tutorialOptionalZoomScopes"
 track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
 track_offset = Vector2(0, -225)
-info = "Click and drag up or down (or scroll [[img=16]graphics/shared/mouse/mouse_scroll.png[/img]]) on SCOPES to zoom in or out. [color=yellow]Zooming in allows bodies to be seen up close sooner[/color]."
+info = "[[img=16]graphics/shared/mouse/mouse_left.png[/img]] and drag up or down (or scroll [[img=16]graphics/shared/mouse/mouse_scroll.png[/img]]) on SCOPES to zoom in or out. [color=yellow]Zooming in allows bodies to be seen up close sooner[/color]."
 
 [node name="tutorialDiscoverPrelude" parent="." instance=ExtResource("2_7r03o")]
 visible = false
@@ -110,7 +110,7 @@ track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_p
 track_offset = Vector2(0, -300)
 info = "Great job - the location of Prelude has been added to the SYSTEM LIST! However, it has not yet been discovered. A body can be discovered by [color=yellow]seeing it up close[/color].
 
-To discover Prelude, click on '???' on the SYSTEM LIST to lock, and then press the 'ORBIT' action in the ACTIONS PANEL.
+To discover Prelude, press on '???' on the SYSTEM LIST to lock, and then press the 'ORBIT' action in the ACTIONS PANEL.
 [img]res://graphics/system-map/actions-panel/orbit_icon.png[/img]"
 
 [node name="tutorialFollowPrelude" parent="." instance=ExtResource("2_7r03o")]
@@ -123,7 +123,7 @@ info = "Amazing effort! We have discovered Prelude and gained 514 nanites in val
 
 The question mark next to Prelude on the SYSTEM LIST shows an undocumented anomaly. All anomalies can result in rewards or tragedy. Investigating an anomaly requires interacting with it.
 
-To investigate the anomaly on Prelude, click on 'Prelude' on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL.
+To investigate the anomaly on Prelude, press on 'Prelude' on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL.
 [img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
 
 [node name="tutorialMarkIngress" parent="." instance=ExtResource("2_7r03o")]
@@ -132,14 +132,14 @@ layout_mode = 0
 target_objective_wID = "tutorialMarkIngress"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/barycenter_container")
-track_offset = Vector2(0, -350)
+track_offset = Vector2(0, -355)
 info = "You did it!
 
 The SYSTEM LIST currently underlines a missing body named Ingress situated further than Prelude. [color=yellow]Our value is maximised by discovering all bodies within a star system[/color]. Let's mark Ingress!
 
 To learn the [i]direction[/i] to ping Ingress, the BARYCENTER VISUALIZER should be used. It displays the [color=yellow]direction[/color] to other bodies [color=yellow]from the locked body[/color] with a [color=yellow]blip[/color]. Dark red blips are beyond the current scan arc.
 
-To ping Ingress, click on 'Prelude' on the SYSTEM LIST to lock, adjust the LIDAR direction so it matches the direction of the blip which is oscillating, set the arc to a lower length, and press the 'PING!' button.
+To ping Ingress, press on 'Prelude' on the SYSTEM LIST to lock, adjust the LIDAR direction so it matches the direction of the blip which is oscillating, set the arc to a lower length, and press the 'PING!' button.
 [img=150%x75%]res://graphics/objective/tutorial_barycenter_example.png[/img]"
 
 [node name="tutorialOptionalBoost" parent="." instance=ExtResource("2_7r03o")]
@@ -186,7 +186,7 @@ track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_p
 track_offset = Vector2(0, -300)
 info = "Awesome - the location of Ingress has been added to the SYSTEM LIST! However, it has not yet been discovered. A body can be discovered by seeing it up close.
 
-To discover Ingress, click on '???' on the SYSTEM LIST to lock, and then press the 'ORBIT' action in the ACTIONS PANEL.
+To discover Ingress, press on '???' on the SYSTEM LIST to lock, and then press the 'ORBIT' action in the ACTIONS PANEL.
 [img]res://graphics/system-map/actions-panel/orbit_icon.png[/img]"
 
 [node name="tutorialFollowIngress" parent="." instance=ExtResource("2_7r03o")]
@@ -199,7 +199,7 @@ info = "Excellent work!
 
 Wormholes like Ingress are how you progress in [i]Stellar Cartographer[/i]. When all bodies are discovered, or a star system is too dangerous, find a wormhole to take you to the next star system. [color=yellow]Traversing a wormhole requires interacting with it[/color].
 
-To traverse Ingress, click on 'Ingress' on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. 
+To traverse Ingress, press on 'Ingress' on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. 
 [img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
 
 [node name="tutorialOptionalStunMarauder" parent="." instance=ExtResource("1_fpin1")]
@@ -210,7 +210,6 @@ offset_bottom = 66.0
 target_objective_wID = "tutorialOptionalStunMarauder"
 text_box_size = Vector2(250, 100)
 track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
-track_offset = Vector2(0, 40)
 info = "Sometimes, a hostile unit is too fast to evade normally. A way to still evade such units is to [color=yellow]stun them[/color], stopping them from chasing you temporarily. Hostile units can be stunned by [color=yellow]pinging them[/color]. 
 
 To ping the marauder starship, adjust the LIDAR direction so it matches the direction of the ship on the SYSTEM MAP, and press the 'PING' button."
@@ -243,6 +242,6 @@ layout_mode = 0
 target_objective_wID = "tutorialOptionalCheckStress"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control")
-track_offset = Vector2(-250, 0)
+track_offset = Vector2(-300, 0)
 info = "Check your 'HULL STRESS' status in the STATUS PANEL. To do this, [color=yellow]view the tooltip for entries in the STATUS PANEL by hovering over them.[/color]
 [img]graphics/system-map/status-panel/hull_stress_icon.png[/img]"
