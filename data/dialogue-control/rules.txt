@@ -667,9 +667,9 @@ insaKalamaPreparationUseRiftDriver,"concept: optionSelected, option: insaKalamaP
 ,,,,,,,,,,
 ,,,,,,,,,,
 # tutorials,,,,,,,,,,
-tutorialPlayerStart,concept: tutorialPlayerStart,"_TUTORIALSetIngressOverride: true, _TUTORIALSetOmissionOverride: true, _TUTORIALSetWindowTutorials: true, categoryActive: tutorialPrePreludeTheorise",,,,,,,,"tutorialPreludeOrbitingPREV: false, tutorialIngressOrbitingPREV: false"
+tutorialPlayerStart,concept: tutorialPlayerStart,"_TUTORIALSetIngressOverride: true, _TUTORIALSetOmissionOverride: true, _TUTORIALSetWindowTutorials: true, _TUTORIALSetPlayerActionLock: true, categoryActive: tutorialPrePreludeTheorise",,,,,,,,"tutorialPreludeOrbitingPREV: false, tutorialIngressOrbitingPREV: false"
 ,,,,,,,,,,
-tutorialPreludeTheorised,"concept: theorisedBody, type: PLANET, name: Prelude, tutorial: true","objectiveSuccess: tutorialMarkPrelude, categoryActive: tutorialPrePreludeOrbit",,,,,,,,
+tutorialPreludeTheorised,"concept: theorisedBody, type: PLANET, name: Prelude, tutorial: true","_TUTORIALSetPlayerActionLock: false, objectiveSuccess: tutorialMarkPrelude, categoryActive: tutorialPrePreludeOrbit",,,,,,,,
 ,,,,,,,,,,
 tutorialPreludeOrbitingPortal,"concept: orbitingBody, type: PLANET, name: Prelude, tutorial: true",,,,,,tutorialPreludeOrbitingPortalResponse,,,
 tutorialPreludeOrbiting,concept: tutorialPreludeOrbitingPortalResponse,"changeScopeMode: $required_scope_mode, objectiveSuccess: tutorialDiscoverPrelude, categoryActive: tutorialPrePreludeFollow",,,,,,,,tutorialPreludeOrbitingPREV: true

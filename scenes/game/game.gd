@@ -206,6 +206,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("TUTORIALPlayerWin", _on_tutorial_player_win)
 	dialogue_manager.connect("TUTORIALEnterIngress", _on_tutorial_enter_ingress)
 	dialogue_manager.connect("TUTORIALSetWindowTutorials", _on_tutorial_set_window_tutorials)
+	dialogue_manager.connect("TUTORIALSetPlayerActionLock", _on_tutorial_set_player_action_lock)
 	
 	pause_menu.connect("saveWorld", _on_save_world)
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
@@ -293,6 +294,7 @@ func _physics_process(delta):
 	system_map.set("player_adj_speed", world.player.get_adjusted_speed())
 	system_map.set("player_audio_visualizer_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.AUDIO_VISUALIZER) != -1))
 	system_map.set("player_gas_layer_surveyor_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) != -1))
+	system_map.set("player_action_lock", world.player.action_lock)
 	system_3d.set("player_position", world.player.position)
 	long_range_scopes.set("player_position", world.player.position)
 	barycenter_visualizer.set("_player_position", world.player.position)
@@ -1074,9 +1076,13 @@ func _on_tutorial_enter_ingress(): #override for INGRESS, not a return value so 
 	_on_player_entering_system(suno)
 	pass
 
-func _on_tutorial_set_window_tutorials(value: bool):
+func _on_tutorial_set_window_tutorials(value: bool) -> void:
 	station_ui._on_set_tutorial_visible(value)
 	wormhole_minigame._on_set_tutorial_visible(value)
+	pass
+
+func _on_tutorial_set_player_action_lock(value: bool) -> void:
+	world.player.action_lock = value
 	pass
 
 func _on_tutorial_ingress_threshold_reached() -> void: #comes from system_map not dialogueManager! only _on_tutorial exception cos couldnt do it otherwise

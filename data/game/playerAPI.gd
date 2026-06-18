@@ -84,7 +84,8 @@ var current_SPL_upgrades: int = 0:
 @export_storage var CME_immune: bool = false #didnt know where to put this
 @export_storage var supercharge_jumps_remaining: int = 0
 @export_storage var survived_mutiny: bool = false #misc
-@export_storage var invulnerability_time: float = 0.0 #this is only used for mines at the moment - could expand to pulsar beams, marauders, etc later.
+@export_storage var invulnerability_time: float = 0.0
+@export_storage var action_lock: bool = false #doesnt directly do anything in this class but used by system_map to stop any actions if true
 
 @export var characters: Array[characterAPI] = []
 func get_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> characterAPI:

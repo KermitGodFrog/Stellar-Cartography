@@ -57,6 +57,7 @@ var player_is_boosting: bool = false:
 		player_is_boosting = value
 var player_audio_visualizer_unlocked: bool = false
 var player_gas_layer_surveyor_unlocked: bool = false
+var player_action_lock: bool = false
 
 @onready var camera = $camera
 @onready var canvas = $camera/canvas
@@ -567,26 +568,27 @@ func _unhandled_input(event):
 	var standard_size = zoom_multiplier * 10.0
 	
 	if event.is_action_pressed("SC_INTERACT2_RIGHT_MOUSE"):
-		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
-		if get_global_mouse_position().distance_to(closest_body.position) < (1 + standard_size) \
-		and (not closest_body.is_not_known_or_is_hidden()) \
-		and (not closest_body is unitBodyAPI):
-			emit_signal("updatedLockedBody", closest_body)
-			locked_body = closest_body
-			follow_body = closest_body
-			camera.follow_body = closest_body
-			follow_body_modifier = closest_body
-			action_body = closest_body
-			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
-			async_add_movement_ping(closest_body.position, closest_body)
-			return
-		
-		locked_body = null
-		action_body = null
-		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
-		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
-		async_add_movement_ping(get_global_mouse_position())
-		get_tree().call_group("eventsHandler", "speak", self, "player_target_position_update")
+		if not player_action_lock:
+			var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
+			if get_global_mouse_position().distance_to(closest_body.position) < (1 + standard_size) \
+			and (not closest_body.is_not_known_or_is_hidden()) \
+			and (not closest_body is unitBodyAPI):
+				emit_signal("updatedLockedBody", closest_body)
+				locked_body = closest_body
+				follow_body = closest_body
+				camera.follow_body = closest_body
+				follow_body_modifier = closest_body
+				action_body = closest_body
+				emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
+				async_add_movement_ping(closest_body.position, closest_body)
+				return
+			
+			locked_body = null
+			action_body = null
+			emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
+			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
+			async_add_movement_ping(get_global_mouse_position())
+			get_tree().call_group("eventsHandler", "speak", self, "player_target_position_update")
 	
 	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE"):
 		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
@@ -860,17 +862,18 @@ func draw_map():
 
 func _on_go_to_button_pressed():
 	if locked_body:
-		action_body = locked_body
-		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.GO_TO, action_body)
-		async_add_movement_ping(action_body.position, action_body)
+		if not player_action_lock:
+			action_body = locked_body
+			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.GO_TO, action_body)
+			async_add_movement_ping(action_body.position, action_body)
 	pass
 
 func _on_orbit_button_pressed():
-	#not sure who will have jurisdiction
 	if locked_body:
-		action_body = locked_body
-		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
-		async_add_movement_ping(action_body.position, action_body)
+		if not player_action_lock:
+			action_body = locked_body
+			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
+			async_add_movement_ping(action_body.position, action_body)
 	pass
 
 func _on_stop_button_pressed():

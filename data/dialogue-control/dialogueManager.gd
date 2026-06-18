@@ -50,6 +50,7 @@ signal TUTORIALSetOmissionOverride(value: bool)
 signal TUTORIALPlayerWin()
 signal TUTORIALEnterIngress()
 signal TUTORIALSetWindowTutorials(value: bool)
+signal TUTORIALSetPlayerActionLock(value: bool)
 
 var dialogue_memory: Dictionary = {} #memory that is added by any query, and is always accessible indefinitely. from worldAPI dialogue_memory which is sent via game.gd HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
@@ -919,4 +920,8 @@ func _TUTORIALSetWindowTutorials(value: bool):
 
 func _TUTORIALQueueVoyageLeitmotif():
 	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/voyage_leitmotif.ogg")
+	pass
+
+func _TUTORIALSetPlayerActionLock(value: bool) -> void:
+	emit_signal("TUTORIALSetPlayerActionLock", value)
 	pass
