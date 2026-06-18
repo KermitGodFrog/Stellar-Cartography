@@ -10,6 +10,7 @@ var ping_direction: Vector2 = Vector2.ZERO
 @onready var ping_width_slider = $info_panel/scroll_vertical/ping_width_slider
 @onready var ping_cooldown_timer = $ping_cooldown_timer
 @onready var cooldown_label = $cooldown_label
+@onready var highlight_panel = $highlight_panel
 
 @onready var LIDAR_arc_change = preload("uid://dkx5h7gy177m8")
 @onready var LIDAR_rotate = preload("uid://cdhsp5c4fxgx8")
@@ -79,4 +80,14 @@ func _on_reset_button_pressed():
 
 func _on_ping_width_slider_drag_ended(value_changed: bool) -> void:
 	if value_changed: get_tree().call_group("audioHandler", "play_once", LIDAR_arc_change, 0.0, "SFX")
+	pass
+
+
+
+func _on_mouse_entered() -> void:
+	highlight_panel.show()
+	pass
+
+func _on_mouse_exited() -> void:
+	highlight_panel.hide()
 	pass
