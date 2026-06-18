@@ -333,7 +333,7 @@ offset_bottom = 11.5
 grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_0u5xa")
 text = "INFORMATION:
-- 'EXPLORATION DATA' is aquired by discovering bodies, using certain upgrades and as a result of certain anomalies.
+- 'EXPLORATION DATA' (data) is gained by discovering bodies, using certain upgrades and as a result of certain anomalies.
 - 'n' stands for nanites. Refer to the STATUS PANEL to view 'NANITE' status while not docked at a station."
 vertical_alignment = 1
 autowrap_mode = 3

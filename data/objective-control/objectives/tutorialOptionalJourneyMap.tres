@@ -4,7 +4,9 @@
 
 [resource]
 script = ExtResource("1_2asna")
-written_identifier = ""
-current_state = 0
 title = "(Optional) Check the Journey Map"
-description = "Check your exploration progress with the Journey Map in the APPS DOCK. Click to open, click and drag up or down (or scroll) to offset the map. Every fifth system on the path to New Eden is populated with space stations. Bought modules also appear in the APPS DOCK."
+description = "The Journey Map shows your exploration progress.
+To check the Journey Map, press on 'JUR' in the APPS DOCK. Left click and drag up or down (or scroll) to offset the map.
+* [i]Every fifth system on the path to New Eden is populated with space stations.[/i]
+* [i]Some bought modules also appear in the APPS DOCK.[/i]
+[img]graphics/system-map/apps-dock/journey_map_icon.png[/img]"

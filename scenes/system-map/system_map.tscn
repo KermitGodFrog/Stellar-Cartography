@@ -112,6 +112,7 @@ vertical = true
 script = ExtResource("1_nhsfb")
 
 [node name="camera" type="Camera2D" parent="system"]
+zoom = Vector2(3, 3)
 script = ExtResource("2_miyro")
 
 [node name="canvas" type="CanvasLayer" parent="system/camera"]

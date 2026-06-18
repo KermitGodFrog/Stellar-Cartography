@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_6uen5")
 title = "Discover Ingress"
-description = "The location of Ingress has been added to the SYSTEM LIST. However, it has not yet been discovered.
-Discover a body by visually acquiring it. Click on the the triple question mark on the SYSTEM LIST to lock, and then press the 'ORBIT' action in the ACTIONS PANEL.
+description = "The location of Ingress has been added to the SYSTEM LIST. However, it has not yet been discovered. A body can be discovered by seeing it up close.
+To discover Ingress, press on '???' on the SYSTEM LIST to lock, and then press the 'ORBIT' action in the ACTIONS PANEL.
 [img]res://graphics/system-map/actions-panel/orbit_icon.png[/img]"
