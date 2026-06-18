@@ -121,6 +121,7 @@ grow_vertical = 2
 [node name="continue_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 disabled = true
 text = "CONTINUE"
@@ -128,36 +129,42 @@ text = "CONTINUE"
 [node name="new_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "NEW"
 
 [node name="tutorial_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "TUTORIAL"
 
 [node name="settings_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "SETTINGS"
 
 [node name="achievements_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "ACHIEVEMENTS"
 
 [node name="credits_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "CREDITS"
 
 [node name="history_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "HISTORY"
 
@@ -221,6 +228,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 10
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 theme_override_styles/normal = SubResource("StyleBoxFlat_2i1us")
 theme_override_styles/hover = SubResource("StyleBoxFlat_qyn1f")
@@ -320,6 +328,7 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_de2wi")
 [node name="create_button" type="Button" parent="new_game_popup/new_game/margin/scroll"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "CREATE"
 
 [node name="credits_popup" type="Control" parent="."]
@@ -383,6 +392,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 8
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 theme_override_styles/normal = SubResource("StyleBoxFlat_2i1us")
 theme_override_styles/hover = SubResource("StyleBoxFlat_qyn1f")
@@ -479,6 +489,7 @@ anchor_right = 1.0
 offset_left = -191.0
 offset_bottom = 30.0
 grow_horizontal = 0
+mouse_default_cursor_shape = 2
 text = "OPEN USER:// FOLDER"
 script = ExtResource("9_kgvlk")
 
@@ -527,6 +538,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 10
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 theme_override_styles/normal = SubResource("StyleBoxFlat_f371p")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0n1sh")

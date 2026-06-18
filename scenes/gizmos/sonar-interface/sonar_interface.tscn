@@ -33,6 +33,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_1p42e")
 script = ExtResource("1_bmylm")
 
@@ -61,6 +62,7 @@ value = 9.0
 [node name="ping_button" type="Button" parent="sonar_control/info_panel/scroll_vertical"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "PING!"
 icon_alignment = 1
@@ -90,6 +92,7 @@ anchor_bottom = 1.0
 offset_top = -31.0
 offset_right = 37.0
 grow_vertical = 0
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "RST"
 

@@ -234,6 +234,7 @@ offset_right = -15.0
 offset_bottom = -15.0
 grow_horizontal = 0
 grow_vertical = 0
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 theme_override_styles/normal = SubResource("StyleBoxFlat_fy5f7")
 theme_override_styles/focus = ExtResource("10_fwdhx")
@@ -249,6 +250,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 text = "CLICK TO START"
 
 [node name="selection_screen" type="PanelContainer" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler"]
@@ -321,6 +323,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_fy5f7")
@@ -330,6 +333,7 @@ script = ExtResource("8_3jywn")
 
 [node name="view_buttonB" type="Button" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT/confirm_view_scroll"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 theme_override_styles/normal = SubResource("StyleBoxFlat_fy5f7")
 theme_override_styles/focus = ExtResource("10_fwdhx")

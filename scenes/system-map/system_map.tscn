@@ -888,6 +888,7 @@ script = ExtResource("9_pw1kh")
 
 [node name="journey_map_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("8_a7cgy")
 text = "JUR"
 icon = ExtResource("19_36y85")
@@ -897,6 +898,7 @@ icon_alignment = 2
 [node name="audio_visualizer_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll"]
 visible = false
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("8_a7cgy")
 text = "AUD"
 icon = ExtResource("11_lvg8y")
@@ -906,6 +908,7 @@ icon_alignment = 2
 [node name="long_range_scopes_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll"]
 visible = false
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("8_a7cgy")
 text = "LON"
 icon = ExtResource("22_sph0q")
@@ -915,6 +918,7 @@ icon_alignment = 2
 [node name="gas_layer_surveyor_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll"]
 visible = false
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("8_a7cgy")
 text = "GAS"
 icon = ExtResource("35_digdi")

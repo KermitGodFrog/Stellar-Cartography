@@ -61,17 +61,20 @@ theme_override_constants/separation = 200
 
 [node name="save_button" type="Button" parent="top_panel_16_9/top_panel/margin/panel_scroll/options_scroll"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "SAVE"
 
 [node name="reset_button" type="Button" parent="top_panel_16_9/top_panel/margin/panel_scroll/options_scroll"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("1_ksgtm")
 theme_type_variation = &"ButtonDull"
 text = "RESET TO DEFAULTS"
 
 [node name="back_button" type="Button" parent="top_panel_16_9/top_panel/margin/panel_scroll/options_scroll"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "BACK"
 

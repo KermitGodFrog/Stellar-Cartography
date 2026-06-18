@@ -92,6 +92,7 @@ offset_right = 102.0
 offset_bottom = 27.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("4_0fv2y")
 theme_type_variation = &"ButtonDull"
 text = "SELL EXPLORATION DATA
@@ -200,12 +201,14 @@ text = "HULL STRESS"
 
 [node name="repair_single" type="Button" parent="station_control/repair_container"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "REPAIR 1% (-----n)"
 alignment = 0
 
 [node name="repair_all" type="Button" parent="station_control/repair_container"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "REPAIR 100% (-----n)"
 alignment = 0
@@ -318,6 +321,7 @@ script = ExtResource("4_ng3on")
 [node name="finished_button" type="Button" parent="station_control/save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll"]
 custom_minimum_size = Vector2(880, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "FINISHED"
 
 [node name="tutorial" type="Label" parent="station_control"]
