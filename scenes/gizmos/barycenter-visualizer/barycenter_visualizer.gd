@@ -119,7 +119,7 @@ func get_screen_centre():
 func _on_locked_body_identifier_changed(_new_identifier: int) -> void:
 	var body = system.get_body_from_identifier(_new_identifier)
 	if body:
-		var icon = game_data.get_default_body_icon(body)
+		var icon = game_data.get_body_icon_or_null(body)
 		if icon:
 			locked_body_texture.set_texture(icon)
 		else:

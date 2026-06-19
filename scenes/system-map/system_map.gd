@@ -378,8 +378,8 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 			item.set_text(0, body.get_display_name())
 			item.set_icon_overlay(0, default_frame)
 			
-			item.set_icon(0, game_data.get_default_body_icon(body))
-			if item.get_icon(0) == null:
+			item.set_icon(0, game_data.get_body_icon_or_null(body))
+			if not item.get_icon(0):
 				item.set_icon(0, default_icon)
 			
 			match body.get_type():
@@ -415,7 +415,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					
 					const disabled_color = Color("#7f4b4b")
 					
-					match body.is_disabled(): #is_disabled() will be a function in new wormholeAPI
+					match body.is_disabled():
 						true:
 							if body == follow_body:
 								item.set_custom_bg_color(0, disabled_color.lightened(0.5))
@@ -438,12 +438,6 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					
 				starSystemAPI.BODY_TYPES.SPACE_ENTITY:
 					item.set_text(0, game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
-					
-				starSystemAPI.BODY_TYPES.CUSTOM:
-					var icon: Object
-					if body.is_available(): icon = load(body.icon_path)
-					else: icon = load(body.post_icon_path)
-					item.set_icon(0, icon)
 					
 		
 		var c = collapsed_cache.get(body.get_identifier())

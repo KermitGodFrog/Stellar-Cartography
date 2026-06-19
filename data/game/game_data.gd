@@ -287,7 +287,7 @@ func get_planet_icon(classification: String) -> Resource:
 		_:
 			return load("uid://ldgef1pamgcu")
 
-func get_default_body_icon(body: bodyAPI) -> Resource: #returns null if no default icon (custom, space anomaly, etc)
+func get_body_icon_or_null(body: bodyAPI) -> Resource: #returns null if no default icon (space anomaly, etc)
 	match body.get_type():
 		starSystemAPI.BODY_TYPES.STAR:
 			return load("uid://cv82yae3hopyp")
@@ -301,6 +301,9 @@ func get_default_body_icon(body: bodyAPI) -> Resource: #returns null if no defau
 			return get_entity_icon(body.entity_classification)
 		starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
 			return load("uid://dihwni2a0rkow")
+		starSystemAPI.BODY_TYPES.CUSTOM:
+			if body.is_available(): return load(body.icon_path)
+			else: return load(body.post_icon_path)
 		_:
 			return null
 
