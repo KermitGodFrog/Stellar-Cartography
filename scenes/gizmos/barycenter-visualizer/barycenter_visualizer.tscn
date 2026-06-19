@@ -18,7 +18,8 @@ script = ExtResource("1_tynt4")
 [node name="locked_body_texture" type="TextureRect" parent="barycenter_control"]
 modulate = Color(0.21176471, 0.21176471, 0.21176471, 1)
 show_behind_parent = true
-custom_minimum_size = Vector2(32, 32)
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
