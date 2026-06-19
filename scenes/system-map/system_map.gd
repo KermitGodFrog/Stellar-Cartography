@@ -96,9 +96,10 @@ var player_action_lock: bool = false
 enum BOOST_SOUND_TYPES {START, END}
 
 @onready var entity_texture = preload("uid://bdxkekgntbyc5")
-@onready var question_mark_frame = preload("uid://gmtqybky5mo")
 @onready var question_mark_texture = preload("uid://diwsd0k5wno8h")
-@onready var empty_frame = preload("uid://id0yg3qh1o32")
+@onready var question_mark_frame = preload("uid://gmtqybky5mo")
+@onready var default_frame = preload("uid://id0yg3qh1o32")
+@onready var default_icon = preload("uid://ldgef1pamgcu")
 
 @onready var target_texture = preload("uid://diuwq6pqf7xir")
 
@@ -375,12 +376,15 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
 			
 			item.set_text(0, body.get_display_name())
-			item.set_icon(0, empty_frame)
+			item.set_icon_overlay(0, default_frame)
+			
+			item.set_icon(0, game_data.get_default_body_icon(body))
+			if item.get_icon(0) == null:
+				item.set_icon(0, default_icon)
 			
 			match body.get_type():
 				starSystemAPI.BODY_TYPES.STAR:
 					#item.set_text(0, "%s - %s Class Star" % [body.get_display_name(), body.metadata.get("star_type")])
-					item.set_icon(0, load("uid://d0r4v5pr3cutt"))
 					item.set_tooltip_text(0, "%s - %s Class Star" % [item.get_text(0), body.metadata.get("star_type")])
 					
 					if body == follow_body:
@@ -392,24 +396,22 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					
 				starSystemAPI.BODY_TYPES.PLANET:
 					#item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
-					item.set_icon(0, get_planet_frame(body.metadata.get("planet_classification")))
 					item.set_tooltip_text(0, "%s - %s Planet" % [item.get_text(0), body.metadata.get("planet_type")])
 					
 					if (body.metadata.get("planetary_anomaly", false) == true) and (body.metadata.get("planetary_anomaly_available", false) == true):
-						item.set_icon(0, question_mark_frame)
+						item.set_icon_overlay(0, question_mark_frame)
 						oscillate_item_icon_color(item, Color.GREEN)
 					elif (body.metadata.get("missing_GL", false) == true) and (player_gas_layer_surveyor_unlocked == true):
-						item.set_icon(0, load("uid://dmutb3ak7n4l2"))
+						item.set_icon_overlay(0, load("uid://dmutb3ak7n4l2"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					elif (body.metadata.get("missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
-						item.set_icon(0, load("uid://pbgoomdkkj6h"))
+						item.set_icon_overlay(0, load("uid://pbgoomdkkj6h"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					
 					#if body.is_habitable():
 					#	item.set_custom_color(0, Color.GREEN)
 					
 				starSystemAPI.BODY_TYPES.WORMHOLE:
-					item.set_icon(0, load("uid://k50rbp6ri57u"))
 					
 					const disabled_color = Color("#7f4b4b")
 					
@@ -428,21 +430,14 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 								item.set_custom_bg_color(0, Color.WEB_PURPLE.lightened(0.2))
 							else:
 								item.set_custom_bg_color(0, Color.WEB_PURPLE)
-					
-				starSystemAPI.BODY_TYPES.STATION:
-					item.set_icon(0, load("uid://csrl0hs7rc0hn"))
-					
+				
 				starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
 					if body.metadata.get("space_anomaly_available", true) == true:
-						item.set_icon(0, question_mark_frame)
+						item.set_icon_overlay(0, question_mark_frame)
 						oscillate_item_icon_color(item, Color.GREEN)
 					
 				starSystemAPI.BODY_TYPES.SPACE_ENTITY:
 					item.set_text(0, game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
-					item.set_icon(0, game_data.get_entity_frame(body.entity_classification))
-					
-				starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
-					item.set_icon(0, load("uid://hdeudc7u2rsm"))
 					
 				starSystemAPI.BODY_TYPES.CUSTOM:
 					var icon: Object
@@ -991,16 +986,6 @@ func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction:
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:
 	emit_signal("removeHullStressForNanites", amount, nanites_per_percentage)
 	pass
-
-func get_planet_frame(classification: String) -> Resource:
-	match classification:
-		"Terran":
-			return load("uid://u5b3uh7kbj25")
-		"Neptunian":
-			return load("uid://ddxxk0gbwi37a")
-		"Jovian":
-			return load("uid://dt4ghhmgofelr")
-	return null
 
 func _on_found_body(id: int):
 	var body = system.get_body_from_identifier(id)

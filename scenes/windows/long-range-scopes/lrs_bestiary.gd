@@ -33,7 +33,11 @@ func update_bestiary_list(_discovered_entities_matrix: PackedInt32Array = []):
 	for classification in _discovered_entities_matrix:
 		var new = bestiary_list.add_item(game_data.ENTITY_CLASSIFICATIONS.find_key(classification).capitalize())
 		bestiary_list.set_item_metadata(new, classification)
-		bestiary_list.set_item_icon(new, game_data.get_entity_frame(classification))
+		# manually creating system-list icon-frame pair via blending \/
+		var frame = load("uid://id0yg3qh1o32").get_image()
+		var icon = game_data.get_entity_icon(classification).get_image()
+		icon.blend_rect(frame, Rect2i(0, 0, icon.get_width(), icon.get_height()), Vector2i(0, 0))
+		bestiary_list.set_item_icon(new, ImageTexture.create_from_image(icon))
 	pass
 
 func update_info(for_classification: game_data.ENTITY_CLASSIFICATIONS):

@@ -265,13 +265,44 @@ func get_weighted_system_scenario_classifications(weirdness_index: float = playe
 
 
 
-func get_entity_frame(classification: ENTITY_CLASSIFICATIONS) -> Resource:
+func get_entity_icon(classification: ENTITY_CLASSIFICATIONS) -> Resource:
 	match classification:
-		ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD: return load("uid://cd2n33fiot3dr")
-		ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD: return load("uid://585th5rg5vak")
-		ENTITY_CLASSIFICATIONS.OLM_MAELSTROM: return load("uid://wiy2unun0er3")
-		_: return load("uid://id0yg3qh1o32")
+		ENTITY_CLASSIFICATIONS.SPACE_WHALE_POD:
+			return load("uid://ck2u2ljvbdb1g")
+		ENTITY_CLASSIFICATIONS.LAGRANGE_CLOUD:
+			return load("uid://dro4kckwqijo8")
+		ENTITY_CLASSIFICATIONS.OLM_MAELSTROM:
+			return load("uid://dhf3j8qst2gnq")
+		_:
+			return load("uid://ldgef1pamgcu")
 
+func get_planet_icon(classification: String) -> Resource:
+	match classification:
+		"Terran":
+			return load("uid://cjflmydbwgymp")
+		"Neptunian":
+			return load("uid://co6ng25bjg2jn")
+		"Jovian":
+			return load("uid://c1kt0d22l0mt5")
+		_:
+			return load("uid://ldgef1pamgcu")
+
+func get_default_body_icon(body: bodyAPI) -> Resource: #returns null if no default icon (custom, space anomaly, etc)
+	match body.get_type():
+		starSystemAPI.BODY_TYPES.STAR:
+			return load("uid://cv82yae3hopyp")
+		starSystemAPI.BODY_TYPES.PLANET:
+			return get_planet_icon(body.metadata.get("planet_classification"))
+		starSystemAPI.BODY_TYPES.WORMHOLE:
+			return load("uid://cd0ngf4imskbp")
+		starSystemAPI.BODY_TYPES.STATION:
+			return load("uid://bh57lngfca4xf")
+		starSystemAPI.BODY_TYPES.SPACE_ENTITY:
+			return get_entity_icon(body.entity_classification)
+		starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
+			return load("uid://dihwni2a0rkow")
+		_:
+			return null
 
 
 func loadWorld():
