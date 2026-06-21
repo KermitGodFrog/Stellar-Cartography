@@ -782,9 +782,9 @@ func draw_map():
 						draw_colored_polygon(intersected_offset_points[0], Color.DARK_RED.darkened(0.5))
 	
 	if scanner_profile_time > 0:
-		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), 0.5, false)
+		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), zoom_multiplier * 2, false)
 	if scanner_power_time > 0:
-		draw_multiline(scanner_power_points, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), 0.2, false)
+		draw_multiline(scanner_power_points, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), zoom_multiplier * 2, false)
 	
 	for body in system.bodies:
 		
