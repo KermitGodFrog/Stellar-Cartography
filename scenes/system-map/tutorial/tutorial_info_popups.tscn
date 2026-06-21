@@ -77,7 +77,7 @@ target_objective_wID = "tutorialMarkPrelude"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/sonar_container")
 track_offset = Vector2(0, -275)
-info = "Firstly, let's mark a body named Prelude. Marking a body establishes its location on the SYSTEM LIST and is usually required before [color=yellow]discovery[/color]. A body can be marked by [color=yellow]pinging it three times[/color].
+info = "Firstly, let's mark a body named Prelude. Marking a body establishes its location on the SYSTEM LIST and is [color=yellow][b]usually[/b] required[/color] before [color=yellow]discovery[/color]. A body can be marked by [color=yellow]pinging it three times[/color].
 
 To ping Prelude, adjust the LIDAR direction with left click [[img=2em2em]graphics/shared/mouse/mouse_left.png[/img]] so it points towards the red circle, set the arc to max with the slider, and press the ‘PING!’ button.
 [img=75%x75%]res://graphics/objective/tutorial_LIDAR_example.png[/img]"
