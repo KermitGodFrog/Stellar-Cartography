@@ -79,7 +79,7 @@ track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/co
 track_offset = Vector2(0, -275)
 info = "Firstly, let's mark a body named Prelude. Marking a body establishes its location on the SYSTEM LIST and is usually required before [color=yellow]discovery[/color]. A body can be marked by [color=yellow]pinging it three times[/color].
 
-To ping Prelude, adjust the LIDAR direction with [[img=16]graphics/shared/mouse/mouse_left.png[/img]] so it points towards the red circle, set the arc to max with the slider, and press the ‘PING!’ button.
+To ping Prelude, adjust the LIDAR direction with left click [[img=2em2em]graphics/shared/mouse/mouse_left.png[/img]] so it points towards the red circle, set the arc to max with the slider, and press the ‘PING!’ button.
 [img=75%x75%]res://graphics/objective/tutorial_LIDAR_example.png[/img]"
 
 [node name="tutorialOptionalScopeMode" parent="." instance=ExtResource("1_fpin1")]
@@ -99,7 +99,7 @@ layout_mode = 0
 target_objective_wID = "tutorialOptionalZoomScopes"
 track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
 track_offset = Vector2(0, -225)
-info = "[[img=16]graphics/shared/mouse/mouse_left.png[/img]] and drag up or down (or scroll [[img=16]graphics/shared/mouse/mouse_scroll.png[/img]]) on SCOPES to zoom in or out. [color=yellow]Zooming in allows bodies to be seen up close sooner[/color]."
+info = "Left click [[img=2em2em]graphics/shared/mouse/mouse_left.png[/img]] and drag up or down (or scroll [[img=2em2em]graphics/shared/mouse/mouse_scroll.png[/img]]) on SCOPES to zoom in or out. [color=yellow]Zooming in allows bodies to be seen up close sooner[/color]."
 
 [node name="tutorialDiscoverPrelude" parent="." instance=ExtResource("2_7r03o")]
 visible = false
@@ -175,7 +175,7 @@ grow_horizontal = 2
 grow_vertical = 2
 target_objective_wID = "tutorialOptionalManualControl"
 text_box_size = Vector2(300, 0)
-info = "On the SYSTEM MAP, [[img=16]graphics/shared/mouse/mouse_right.png[/img]] to travel to your mouse pointer."
+info = "On the SYSTEM MAP, right click [[img=2em2em]graphics/shared/mouse/mouse_right.png[/img]] to travel to your mouse pointer."
 
 [node name="tutorialDiscoverIngress" parent="." instance=ExtResource("2_7r03o")]
 visible = false
@@ -209,7 +209,7 @@ offset_right = 240.0
 offset_bottom = 66.0
 target_objective_wID = "tutorialOptionalStunMarauder"
 text_box_size = Vector2(250, 100)
-track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
+track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin")
 info = "Sometimes, a hostile unit is too fast to evade normally. A way to still evade such units is to [color=yellow]stun them[/color], stopping them from chasing you temporarily. Hostile units can be stunned by [color=yellow]pinging them[/color]. 
 
 To ping the marauder starship, adjust the LIDAR direction so it matches the direction of the ship on the SYSTEM MAP, and press the 'PING' button."
@@ -234,7 +234,7 @@ info = "Oh no - a marauder ship has appeared within your 'SCANNER PROFILE'! It w
 [img]res://graphics/objective/tutorial_hostile_unit_example.png[/img]
 Units are [color=yellow]bodies that move on their own terms[/color] - like ships. Units within your ship's 'SCANNER POWER' (dotted grey outer circle) are appended to the CONTACT LIST. Units within your ship's 'SCANNER PROFILE' (brown inner circle) [color=yellow]can see your ship and respond to its presence[/color].
 
-To evade the marauder, [[img=16]graphics/shared/mouse/mouse_right.png[/img]] to travel to your mouse pointer and hold $SC_BOOST to boost - [color=yellow]lead your starship away from the marauder so that it exits your 'SCANNER PROFILE'[/color], and then discover Ingress while avoiding redetection."
+To evade the marauder, right click [[img=2em2em]graphics/shared/mouse/mouse_right.png[/img]] to travel to your mouse pointer and hold $SC_BOOST to boost - [color=yellow]lead your starship away from the marauder so that it exits your 'SCANNER PROFILE'[/color], and then discover Ingress while avoiding redetection."
 
 [node name="tutorialOptionalCheckStress" parent="." instance=ExtResource("2_7r03o")]
 visible = false
