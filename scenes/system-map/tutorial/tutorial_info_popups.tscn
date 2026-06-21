@@ -30,7 +30,7 @@ target_objective_wID = "tutorialOptionalUnderstandPremise"
 text_box_size = Vector2(400, 0)
 info = "Welcome, Captain!
 
-In [i]Stellar Cartographer[/i], you will gather exploration data (value) and sell it to space stations for nanites so that you can repair and upgrade your starship. A way to gain exploration data is by [color=yellow]discovering bodies[/color].
+In [i]Stellar Cartographer[/i], you will gather exploration data (value) and sell it to space stations for nanites so that you can repair and upgrade your starship. A way to gain exploration data is by [color=yellow]discovering bodies (stuff within star systems)[/color].
 
 This tutorial will teach you how to move, discover, interact, traverse wormholes, use space stations and will establish the story continued in the campaign."
 
