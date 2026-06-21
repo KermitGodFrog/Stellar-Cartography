@@ -852,6 +852,9 @@ func _on_found_body(id: int):
 					if sub_body.get_type() == starSystemAPI.BODY_TYPES.ASTEROID_BELT:
 						sub_body.known = true
 			
+			if barycenter_visualizer.locked_body_identifier == id:
+				barycenter_visualizer.set("locked_body_identifier", id)
+			
 			if system.is_survey_complete():
 				
 				if init_type == global_data.GAME_INIT_TYPES.TUTORIAL and body.get_display_name() == "Prelude": #ugly tutorial override UGHH
