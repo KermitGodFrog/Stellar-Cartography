@@ -294,6 +294,7 @@ func _physics_process(delta):
 	system_map.set("player_adj_speed", world.player.get_adjusted_speed())
 	system_map.set("player_audio_visualizer_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.AUDIO_VISUALIZER) != -1))
 	system_map.set("player_gas_layer_surveyor_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) != -1))
+	system_map.set("player_long_range_scopes_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) != -1))
 	system_map.set("player_action_lock", world.player.action_lock)
 	system_3d.set("player_position", world.player.position)
 	long_range_scopes.set("player_position", world.player.position)

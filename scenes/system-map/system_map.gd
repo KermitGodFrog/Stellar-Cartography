@@ -57,6 +57,7 @@ var player_is_boosting: bool = false:
 		player_is_boosting = value
 var player_audio_visualizer_unlocked: bool = false
 var player_gas_layer_surveyor_unlocked: bool = false
+var player_long_range_scopes_unlocked: bool = false
 var player_action_lock: bool = false
 
 @onready var camera = $camera
@@ -356,6 +357,11 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 		var item: TreeItem = system_list.create_item(parent)
 		item.set_metadata(0, body.get_identifier())
 		
+		var get_darker_icon = func(_item: TreeItem) -> ImageTexture:
+			var img = _item.get_icon(0).get_image()
+			img.adjust_bcs(0.75, 1.0, 1.0)
+			return ImageTexture.create_from_image(img)
+		
 		if body.is_theorised_not_known():
 			item.set_text(0, "???")
 			
@@ -399,12 +405,15 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					item.set_tooltip_text(0, "%s - %s Planet" % [item.get_text(0), body.metadata.get("planet_type")])
 					
 					if (body.metadata.get("planetary_anomaly", false) == true) and (body.metadata.get("planetary_anomaly_available", false) == true):
+						item.set_icon(0, get_darker_icon.call(item))
 						item.set_icon_overlay(0, question_mark_frame)
 						oscillate_item_icon_color(item, Color.GREEN)
 					elif (body.metadata.get("missing_GL", false) == true) and (player_gas_layer_surveyor_unlocked == true):
+						item.set_icon(0, get_darker_icon.call(item))
 						item.set_icon_overlay(0, load("uid://dhy4crqvmsgoy"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					elif (body.metadata.get("missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
+						item.set_icon(0, get_darker_icon.call(item))
 						item.set_icon_overlay(0, load("uid://pbgoomdkkj6h"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					
@@ -433,11 +442,17 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				
 				starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
 					if body.metadata.get("space_anomaly_available", true) == true:
+						item.set_icon(0, get_darker_icon.call(item))
 						item.set_icon_overlay(0, question_mark_frame)
 						oscillate_item_icon_color(item, Color.GREEN)
 					
 				starSystemAPI.BODY_TYPES.SPACE_ENTITY:
 					item.set_text(0, game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
+					
+					if (body.captures_remaining > 0) and (player_long_range_scopes_unlocked == true):
+						item.set_icon(0, get_darker_icon.call(item))
+						item.set_icon_overlay(0, load("uid://crpj5eyl2ijxb"))
+						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					
 		
 		var c = collapsed_cache.get(body.get_identifier())
