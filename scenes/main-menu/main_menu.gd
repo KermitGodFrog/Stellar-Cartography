@@ -50,6 +50,11 @@ const background_images: Array = [
 ]
 
 func _ready():
+	#for i in colorOscillateIterator.new(Color.WHITE, Color.GREEN, 20, 3, false):
+	#	print_rich("[color=%s]current value[/color]" % Color(i).to_html())
+	#for i in colorOscillateIterator.new(Color.WHITE, Color.GREEN, 20, 3, true):
+	#	print_rich("[color=%s]current value[/color]" % Color(i).to_html())
+	
 	achievements_list_popup.connect("returnButtonPressed", _on_achievements_list_return_button_pressed)
 	background.set_texture(ImageTexture.create_from_image(background_images.pick_random()))
 	

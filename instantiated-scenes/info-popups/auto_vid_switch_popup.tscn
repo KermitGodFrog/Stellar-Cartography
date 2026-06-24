@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://d02n0mwa2bmdf"]
+[gd_scene load_steps=11 format=3 uid="uid://d02n0mwa2bmdf"]
 
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_17aoj"]
 [ext_resource type="Script" uid="uid://c76lyytvvk0wj" path="res://instantiated-scenes/info-popups/auto_vid_switch_popup.gd" id="2_eho3s"]
@@ -6,6 +6,7 @@
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="4_qy2qi"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="5_fyx3d"]
 [ext_resource type="Texture2D" uid="uid://diwsd0k5wno8h" path="res://graphics/system-map/question_mark.png" id="6_sbbtb"]
+[ext_resource type="PackedScene" uid="uid://dekj38tqs61np" path="res://data/misc/colorOscillate.tscn" id="7_eho3s"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rjt1"]
 bg_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
@@ -113,5 +114,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_58560")
 theme_override_styles/hover = SubResource("StyleBoxFlat_1skfv")
 icon = ExtResource("6_sbbtb")
 expand_icon = true
+
+[node name="switch_button_flash" parent="." instance=ExtResource("7_eho3s")]
 
 [editable path="mid_panel_fluid"]
