@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=27 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" uid="uid://dq4gkj1n823v0" path="res://scenes/main-menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_b84fj"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://njcr66sajfan" path="res://scenes/achievements-list/achievements_list_popup.tscn" id="5_7l6aj"]
 [ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/shared/denied_monochrome.png" id="5_uqij0"]
 [ext_resource type="Script" uid="uid://dncoypj63awau" path="res://scenes/main-menu/line_edit_length_label.gd" id="6_lhle4"]
+[ext_resource type="PackedScene" uid="uid://dc7b0agnokter" path="res://scenes/main-menu/credits_content_panel.tscn" id="7_f371p"]
 [ext_resource type="Script" uid="uid://5ggnqnnre8ff" path="res://scenes/main-menu/history_popup.gd" id="8_eel2y"]
 [ext_resource type="Script" uid="uid://b3enlmexh3m01" path="res://scenes/main-menu/open_user_button.gd" id="9_kgvlk"]
 
@@ -400,34 +401,32 @@ icon = ExtResource("5_uqij0")
 icon_alignment = 1
 expand_icon = true
 
-[node name="content_vbox" type="VBoxContainer" parent="credits_popup/margin/panel/panel_margin/scroll"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="kermit_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
-layout_mode = 2
-text = "* KermitTheGodFrog - Developer (https://kermitthegodfrog.itch.io)"
-
-[node name="phoenix_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
-layout_mode = 2
-text = "* Phoenix1509 - Some dialogue/main menu backgrounds (https://itch.io/profile/phoenix1509)"
-
-[node name="separator" type="HSeparator" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-
-[node name="audio_scroll" type="ScrollContainer" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
+[node name="content_scroll" type="ScrollContainer" parent="credits_popup/margin/panel/panel_margin/scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="audio_vbox" type="VBoxContainer" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox/audio_scroll"]
+[node name="content_vbox" type="VBoxContainer" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="audio_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox/audio_scroll/audio_vbox"]
-custom_minimum_size = Vector2(1360, 0)
+[node name="development" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2
+title = "development"
+text = "* KermitTheGodFrog - Developer (https://kermitthegodfrog.itch.io)
+* Phoenix1509 - Some dialogue/main menu backgrounds (https://itch.io/profile/phoenix1509)"
+
+[node name="playtesters" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
+layout_mode = 2
+title = "playtesters"
+text = "Phoenix1509
+Lizardinasuit"
+
+[node name="sound_effects" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
+layout_mode = 2
+title = "sound #1 - sound effects"
 text = "Office01.wav by LG -- https://freesound.org/s/14856/ -- License: Attribution 4.0
 (Retrieved 23rd August 2025)
 
@@ -457,7 +456,179 @@ Fizzle by Mike Koenig -- https://soundbible.com/1308-Fizzle.html -- License: Att
 
 Grenade Explosion by Mike Koenig -- https://soundbible.com/1467-Grenade-Explosion.html -- License: Attribution 3.0
 (Retrieved 3rd March 2026)"
+
+[node name="packs" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
+layout_mode = 2
+title = "sound #2 - packs"
+text = "Core Wavetables for Vital by David Dumais Audio (A$0.00+ version) -- https://daviddumaisaudio.gumroad.com/l/core-wavetables -- License: none
+
+Densine's Orchestral by clarkristaino -- https://www.mediafire.com/file/6slz9kw2zy7u6i1/Densine%27sOrchestral.zip -- License: none, \"free sample pack\" (Retrieved 24th June 2026 via https://www.reddit.com/r/edmproduction/comments/2bs0he/hey_guys_here_is_a_free_sample_pack_of_orchestral/)
+
+Ultimate Boom Bap Drum Kit by Beatsmith -- https://soundpacks.com/free-sound-packs/ultimate-boom-bap-drum-kit/ -- License: none, \"FREE SOUND PACKS\" (Retrieved 24th June 2026)
+
+Utopia by Cymatics -- https://cymatics.fm/products/utopia -- License: Royalty Free (Retrieved 24th June 2026)
+
+Free Riser Sound Effects Sample Pack by Abletunes -- https://abletunes.com/blog/free-riser-sound-effects-sample-pack/ -- License: Royalty Free (Retrieved 24th June 2026)
+
+Free Tribal Drum Kit by Producer Spot -- https://www.producerspot.com/download-free-tribal-drum-kit-samples-by-producer-spot/ -- License: Royalty Free (Retrieved 24th June 2026 via https://www.mediafire.com/download/03br7rc101f0ur3/ProducerSpot-Tribal-Drums.zip via https://web.archive.org/web/20190306202704/http://www.producerspot.com/download-free-tribal-drum-kit-samples-by-producer-spot)"
+
+[node name="title_label" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/packs/scroll" index="0"]
+text = "sample packs"
+
+[node name="license_fold" type="FoldableContainer" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/packs/scroll" index="2"]
+layout_mode = 2
+folded = true
+title = "Free Tribal Drum Kit by Producer Spot LICENSE AGREEMENT"
+title_text_overrun_behavior = 4
+
+[node name="license_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/packs/scroll/license_fold"]
+visible = false
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 2
+text = "LICENSE AGREEMENT
+
+All samples in this package are covered by a Royalty-Free license, it means you CAN
+use those samples as part of your commercial and non-commercial MUSIC
+COMPOSITIONS for CDs, DVDs, VIDEO, MOVIES, GAMES, WEBSITES, PRESENTATIONS
+etc. 
+
+Sounds that You have purchased are licensed NOT sold to You. You can NOT resell
+entire or separate elements of this pack as your own or as a part of sample
+library or software/hardware. Copyright © ProducerSpot.com. All rights reserved"
 autowrap_mode = 2
+
+[node name="fonts" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
+layout_mode = 2
+title = "fonts"
+text = "Copyright 2015 The Roboto Mono Project Authors (https://github.com/googlefonts/robotomono)
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+https://openfontlicense.org
+
+Copyright 2019 The Tomorrow Project Authors (github.com/MonicaRizzolli/Tomorrow)
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+https://openfontlicense.org"
+
+[node name="title_label" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/fonts/scroll" index="0"]
+text = "fonts"
+
+[node name="license_fold" type="FoldableContainer" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/fonts/scroll" index="2"]
+layout_mode = 2
+folded = true
+title = "SIL OPEN FONT LICENSE Version 1.1"
+title_text_overrun_behavior = 4
+
+[node name="license_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/fonts/scroll/license_fold"]
+visible = false
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 2
+text = "-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded, 
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+\"Font Software\" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+\"Reserved Font Name\" refers to any names specified as such after the
+copyright statement(s).
+
+\"Original Version\" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+\"Modified Version\" refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+\"Author\" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE."
+autowrap_mode = 2
+
+[node name="software" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
+layout_mode = 2
+title = "software used"
+text = "The developers of [i]Stellar Cartographer[/i] frequently utilized the software below to develop the game. The creators of the software below did not endorse or sponsor the development of [i]Stellar Cartographer[/i], and are not affiliated with the developers of [i]Stellar Cartographer[/i]. The software below is listed merely to provide credit and attribution, and all links provided are merely to show the digital source of their corresponding software on the web.
+
+Godot
+Git
+Krita
+Blender
+Inkscape
+Aseprite
+FFmpeg
+ImageMagick
+FL Studio
+External plugins used in FL Studio:
+* Vital [VST] -- https://vital.audio/ (Retrieved 24th June 2026)
+* Valhalla Supermassive [Plugin] -- https://valhalladsp.com/shop/reverb/valhalla-supermassive/ (Retrieved 24th June 2026)
+* LABS [VST] -- https://www.spitfireaudio.com/ (Retrieved 24th June 2026)"
 
 [node name="achievements_list_popup" parent="." instance=ExtResource("5_7l6aj")]
 layout_mode = 1
@@ -572,3 +743,6 @@ size_flags_vertical = 3
 [connection signal="visibility_changed" from="history_popup" to="history_popup" method="_on_visibility_changed"]
 [connection signal="pressed" from="history_popup/open_user_button" to="history_popup/open_user_button" method="_on_pressed"]
 [connection signal="pressed" from="history_popup/panel/margin/actions_items_split/actions_panel/actions_hbox/history_return_button" to="." method="_on_history_return_button_pressed"]
+
+[editable path="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/packs"]
+[editable path="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/fonts"]
