@@ -47,8 +47,6 @@ corner_radius_bottom_left = 4
 mouse_filter = 2
 theme = ExtResource("1_17aoj")
 script = ExtResource("2_eho3s")
-video_path = "./mid_panel_fluid/mid_Panel/margin/vid"
-switch_button_path = "./mid_panel_fluid/switch_button"
 text_box_path = "./mid_panel_fluid/mid_panel/margin/text"
 
 [node name="mid_panel_fluid" parent="." instance=ExtResource("3_s08vq")]
@@ -93,8 +91,9 @@ drag_and_drop_selection_enabled = false
 
 [node name="vid" type="VideoStreamPlayer" parent="mid_panel_fluid/mid_panel/margin"]
 visible = false
-custom_minimum_size = Vector2(0, 97.81)
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+bus = &"SFX"
 
 [node name="switch_button" type="Button" parent="mid_panel_fluid"]
 custom_minimum_size = Vector2(32, 32)

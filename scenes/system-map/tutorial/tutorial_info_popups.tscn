@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cxd20qjvft4hb"]
+[gd_scene load_steps=4 format=3 uid="uid://cxd20qjvft4hb"]
 
 [ext_resource type="PackedScene" uid="uid://bfv6vpv00usg3" path="res://instantiated-scenes/info-popups/closable_popup.tscn" id="1_fpin1"]
 [ext_resource type="PackedScene" uid="uid://b8pahjiip8jiw" path="res://instantiated-scenes/info-popups/auto_popup.tscn" id="2_7r03o"]
+[ext_resource type="PackedScene" uid="uid://d02n0mwa2bmdf" path="res://instantiated-scenes/info-popups/auto_vid_switch_popup.tscn" id="2_k3c6j"]
 
 [node name="tutorial" type="Control"]
 layout_mode = 3
@@ -70,9 +71,12 @@ target_objective_wID = "tutorialOptionalHelpOverlay"
 text_box_size = Vector2(400, 0)
 info = "[color=yellow]Press and hold $SC_OPEN_HELP_OVERLAY to show the help overlay. The help overlay displays the name of each UI component referenced in this tutorial.[/color]"
 
-[node name="tutorialMarkPrelude" parent="." instance=ExtResource("2_7r03o")]
+[node name="tutorialMarkPrelude" parent="." instance=ExtResource("2_k3c6j")]
 visible = false
 layout_mode = 0
+offset_right = 240.0
+offset_bottom = 72.0
+video_file = "uid://begkjipiksog1"
 target_objective_wID = "tutorialMarkPrelude"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/sonar_container")
@@ -126,9 +130,12 @@ The question mark next to Prelude on the SYSTEM LIST shows an undocumented anoma
 To investigate the anomaly on Prelude, press on 'Prelude' on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL.
 [img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
 
-[node name="tutorialMarkIngress" parent="." instance=ExtResource("2_7r03o")]
+[node name="tutorialMarkIngress" parent="." instance=ExtResource("2_k3c6j")]
 visible = false
 layout_mode = 0
+offset_right = 240.0
+offset_bottom = 72.0
+video_file = "uid://bv1qxl75ribc8"
 target_objective_wID = "tutorialMarkIngress"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/barycenter_container")
