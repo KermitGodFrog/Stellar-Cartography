@@ -1,28 +1,34 @@
 extends "res://instantiated-scenes/info-popups/info_popup.gd"
 
-@onready var video = $mid_panel_fluid/mid_panel/margin/vid
+@onready var video = $mid_panel_fluid/mid_panel/margin/vid_container/vid
+@onready var video_container = $mid_panel_fluid/mid_panel/margin/vid_container
 @onready var switch_button = $mid_panel_fluid/switch_button
 
 @export var video_file: String
+@export_range(0.001, 10.0, 0.001) var video_aspect_ratio: float
 
 func _ready() -> void:
-	if text_box_size != Vector2.ZERO:
-		video.set_custom_minimum_size(text_box_size)
 	switch_button.connect("pressed", _on_switch_button_pressed)
+	
+	video_container.set_ratio(video_aspect_ratio)
 	
 	var stream = VideoStreamTheora.new()
 	stream.set_file(video_file)
 	video.set_stream(stream)
+	
 	super()
 	pass
 
 func _on_switch_button_pressed() -> void:
 	get_node(NodePath(text_box_path)).visible = !get_node(NodePath(text_box_path)).visible
-	video.visible = !video.visible
-	if video.visible:
+	video_container.visible = !video_container.visible
+	if video_container.visible:
 		video.play()
 	else:
 		video.stop()
+	
+	video_container.set_custom_minimum_size(get_node(NodePath(text_box_path)).get_size())
+	video_container.set_size(get_node(NodePath(text_box_path)).get_size())
 	pass
 
 func set_popup_state(_state: objectiveAPI.STATES) -> void:

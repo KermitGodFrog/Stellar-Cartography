@@ -89,10 +89,17 @@ shortcut_keys_enabled = false
 deselect_on_focus_loss_enabled = false
 drag_and_drop_selection_enabled = false
 
-[node name="vid" type="VideoStreamPlayer" parent="mid_panel_fluid/mid_panel/margin"]
+[node name="vid_container" type="AspectRatioContainer" parent="mid_panel_fluid/mid_panel/margin"]
 visible = false
+clip_contents = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+mouse_filter = 2
+
+[node name="vid" type="VideoStreamPlayer" parent="mid_panel_fluid/mid_panel/margin/vid_container"]
+layout_mode = 2
+mouse_filter = 2
+expand = true
 bus = &"SFX"
 
 [node name="switch_button" type="Button" parent="mid_panel_fluid"]
