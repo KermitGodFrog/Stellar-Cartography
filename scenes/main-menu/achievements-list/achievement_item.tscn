@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://b34lxvbuquaso"]
 
-[ext_resource type="StyleBox" uid="uid://cnaci0fj8gv3d" path="res://scenes/achievements-list/item_locked_stylebox.tres" id="1_m3mrf"]
-[ext_resource type="Script" uid="uid://brp0htq10t46k" path="res://scenes/achievements-list/achievement_item.gd" id="2_74jvj"]
+[ext_resource type="StyleBox" uid="uid://cnaci0fj8gv3d" path="res://scenes/main-menu/achievements-list/item_locked_stylebox.tres" id="1_m3mrf"]
+[ext_resource type="Script" uid="uid://brp0htq10t46k" path="res://scenes/main-menu/achievements-list/achievement_item.gd" id="2_74jvj"]
 [ext_resource type="Texture2D" uid="uid://bkagb0wi4hewb" path="res://graphics/achievements-list/trophy.png" id="3_rp7wn"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="4_nbish"]
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="5_kx5i0"]
