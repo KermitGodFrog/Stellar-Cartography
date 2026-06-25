@@ -54,6 +54,7 @@ func _ready():
 	#	print_rich("[color=%s]current value[/color]" % Color(i).to_html())
 	
 	achievements_list_popup.connect("returnButtonPressed", _on_achievements_list_return_button_pressed)
+	history_popup.connect("returnButtonPressed", _on_history_return_button_pressed)
 	background.set_texture(ImageTexture.create_from_image(background_images.pick_random()))
 	
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):

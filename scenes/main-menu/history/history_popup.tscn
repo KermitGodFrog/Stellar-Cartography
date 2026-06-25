@@ -118,3 +118,4 @@ size_flags_vertical = 3
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="open_user_button" to="open_user_button" method="_on_pressed"]
+[connection signal="pressed" from="panel/margin/actions_items_split/actions_panel/actions_hbox/history_return_button" to="." method="_on_history_return_button_pressed"]

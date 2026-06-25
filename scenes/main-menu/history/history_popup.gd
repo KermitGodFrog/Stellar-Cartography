@@ -1,5 +1,7 @@
 extends Control
 
+signal returnButtonPressed
+
 @onready var item_scene = preload("uid://6rp5mwt3o17w")
 @onready var spawn_scroll = $panel/margin/actions_items_split/scroll/spawn_scroll
 
@@ -40,3 +42,8 @@ func update_history() -> void:
 func _on_history_item_ready(item: Node, line: PackedStringArray, item_count: int) -> void:
 	item.create_from_csv(line, item_count)
 	pass
+
+
+func _on_history_return_button_pressed() -> void:
+	emit_signal("returnButtonPressed")
+	pass 
