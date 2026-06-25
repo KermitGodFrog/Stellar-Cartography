@@ -46,7 +46,7 @@ func _process(delta: float) -> void:
 				var nearest_color = colors.get(nearest_step) as Color
 				var color: Color
 				
-				if colors.size() >= nearest_step + 1:
+				if colors.size() > (nearest_step + 1):
 					var next_color = colors.get(nearest_step + 1) as Color
 					var weight = current_time - nearest_step #should be between 0 and 1!
 					color = nearest_color.lerp(next_color, weight)

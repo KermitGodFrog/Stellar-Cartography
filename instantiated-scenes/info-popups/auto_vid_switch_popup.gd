@@ -19,7 +19,7 @@ func _ready() -> void:
 	video.set_stream(stream)
 	
 	if flash_switch_button_until_pressed:
-		switch_button_flash.oscillate_property(switch_button, "theme_override_colors/icon_normal_color", Color.WHITE, Color.GREEN, 20, 10, true)
+		switch_button_flash.oscillate_property(switch_button, "theme_override_colors/icon_normal_color", Color.WHITE, Color.YELLOW, 20, 10, true)
 	
 	super()
 	pass

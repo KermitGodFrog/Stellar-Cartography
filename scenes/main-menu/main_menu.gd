@@ -50,8 +50,6 @@ const background_images: Array = [
 ]
 
 func _ready():
-	#for i in colorOscillateIterator.new(Color.WHITE, Color.GREEN, 20, 3, false):
-	#	print_rich("[color=%s]current value[/color]" % Color(i).to_html())
 	#for i in colorOscillateIterator.new(Color.WHITE, Color.GREEN, 20, 3, true):
 	#	print_rich("[color=%s]current value[/color]" % Color(i).to_html())
 	
