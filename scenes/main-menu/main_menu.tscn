@@ -1,14 +1,18 @@
-[gd_scene load_steps=26 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=28 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" uid="uid://dq4gkj1n823v0" path="res://scenes/main-menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_b84fj"]
 [ext_resource type="Texture2D" uid="uid://nav04ap3rdbe" path="res://graphics/main-menu/new_game_popup.png" id="2_1jdbj"]
 [ext_resource type="Theme" uid="uid://skdebllj6ft7" path="res://theme-gen/main-menu/main_menu_MAIN_theme.tres" id="2_2eiki"]
-[ext_resource type="PackedScene" uid="uid://njcr66sajfan" path="res://scenes/achievements-list/achievements_list_popup.tscn" id="5_7l6aj"]
+[ext_resource type="FontFile" uid="uid://n0hwhfbdcomy" path="res://graphics/fonts/Tomorrow-Regular.ttf" id="3_hw4jk"]
+[ext_resource type="PackedScene" uid="uid://njcr66sajfan" path="res://scenes/main-menu/achievements-list/achievements_list_popup.tscn" id="5_7l6aj"]
 [ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/shared/denied_monochrome.png" id="5_uqij0"]
 [ext_resource type="Script" uid="uid://dncoypj63awau" path="res://scenes/main-menu/line_edit_length_label.gd" id="6_lhle4"]
-[ext_resource type="Script" uid="uid://5ggnqnnre8ff" path="res://scenes/main-menu/history_popup.gd" id="8_eel2y"]
-[ext_resource type="Script" uid="uid://b3enlmexh3m01" path="res://scenes/main-menu/open_user_button.gd" id="9_kgvlk"]
+[ext_resource type="Script" uid="uid://do3nwyhoqumx0" path="res://scenes/main-menu/game_type_scroll.gd" id="7_0n1sh"]
+[ext_resource type="PackedScene" uid="uid://dc7b0agnokter" path="res://scenes/main-menu/credits/credits_content_panel.tscn" id="7_f371p"]
+[ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="8_0n1sh"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="9_hw4jk"]
+[ext_resource type="PackedScene" uid="uid://cqveyx1gdyfvw" path="res://scenes/main-menu/history/history_popup.tscn" id="10_7m0km"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_srvhc"]
 texture = ExtResource("2_1jdbj")
@@ -43,6 +47,13 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7m0km"]
+bg_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_de2wi"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cskqv"]
@@ -55,20 +66,27 @@ corner_radius_bottom_left = 10
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xbeg8"]
 bg_color = Color(0.235294, 0.431373, 0.443137, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kgvlk"]
-bg_color = Color(0.207843, 0.207843, 0.207843, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7m0km"]
-bg_color = Color(0.235294, 0.431373, 0.443137, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f371p"]
-bg_color = Color(0.235294, 0.431373, 0.443137, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0n1sh"]
-bg_color = Color(0.501961, 0.501961, 0.501961, 1)
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.15686275, 0.29411766, 0.3882353, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hw4jk"]
-content_margin_right = 10.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hw4jk"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.15686275, 0.29411766, 0.3882353, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [node name="main_menu" type="Control"]
 layout_mode = 3
@@ -103,6 +121,7 @@ theme_override_colors/font_outline_color = Color(0.0588235, 0.0784314, 0.14902, 
 theme_override_constants/shadow_offset_x = 0
 theme_override_constants/shadow_offset_y = 6
 theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("3_hw4jk")
 theme_override_font_sizes/font_size = 60
 text = "STELLAR CARTOGRAPHER"
 horizontal_alignment = 1
@@ -121,6 +140,7 @@ grow_vertical = 2
 [node name="continue_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 disabled = true
 text = "CONTINUE"
@@ -128,36 +148,35 @@ text = "CONTINUE"
 [node name="new_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "NEW"
-
-[node name="tutorial_button" type="Button" parent="options_scroll"]
-custom_minimum_size = Vector2(175, 0)
-layout_mode = 2
-theme = ExtResource("2_2eiki")
-text = "TUTORIAL"
 
 [node name="settings_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "SETTINGS"
 
 [node name="achievements_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "ACHIEVEMENTS"
 
 [node name="credits_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "CREDITS"
 
 [node name="history_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "HISTORY"
 
@@ -216,11 +235,14 @@ layout_mode = 2
 
 [node name="new_game_label" type="Label" parent="new_game_popup/new_game/margin/scroll/actions_hbox"]
 layout_mode = 2
+text = "creating new game"
+uppercase = true
 
 [node name="new_game_return_button" type="Button" parent="new_game_popup/new_game/margin/scroll/actions_hbox"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 10
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 theme_override_styles/normal = SubResource("StyleBoxFlat_2i1us")
 theme_override_styles/hover = SubResource("StyleBoxFlat_qyn1f")
@@ -312,6 +334,37 @@ horizontal_alignment = 2
 script = ExtResource("6_lhle4")
 line_edit_path = NodePath("..")
 
+[node name="game_type_label" type="Label" parent="new_game_popup/new_game/margin/scroll"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_sg3tv")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_eel2y")
+text = "GAME TYPE"
+
+[node name="game_type_scroll" type="HBoxContainer" parent="new_game_popup/new_game/margin/scroll"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+script = ExtResource("7_0n1sh")
+
+[node name="game_type_edit" type="OptionButton" parent="new_game_popup/new_game/margin/scroll/game_type_scroll"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text_overrun_behavior = 5
+autowrap_mode = 3
+
+[node name="game_type_info" type="RichTextLabel" parent="new_game_popup/new_game/margin/scroll/game_type_scroll"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+theme_override_fonts/bold_font = ExtResource("8_0n1sh")
+theme_override_fonts/italics_font = ExtResource("9_hw4jk")
+theme_override_styles/normal = SubResource("StyleBoxFlat_7m0km")
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="seperator1" type="HSeparator" parent="new_game_popup/new_game/margin/scroll"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -320,6 +373,7 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_de2wi")
 [node name="create_button" type="Button" parent="new_game_popup/new_game/margin/scroll"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "CREATE"
 
 [node name="credits_popup" type="Control" parent="."]
@@ -383,6 +437,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 8
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 theme_override_styles/normal = SubResource("StyleBoxFlat_2i1us")
 theme_override_styles/hover = SubResource("StyleBoxFlat_qyn1f")
@@ -390,34 +445,37 @@ icon = ExtResource("5_uqij0")
 icon_alignment = 1
 expand_icon = true
 
-[node name="content_vbox" type="VBoxContainer" parent="credits_popup/margin/panel/panel_margin/scroll"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="kermit_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
-layout_mode = 2
-text = "* KermitTheGodFrog - Developer (https://kermitthegodfrog.itch.io)"
-
-[node name="phoenix_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
-layout_mode = 2
-text = "* Phoenix1509 - Some dialogue/main menu backgrounds (https://itch.io/profile/phoenix1509)"
-
-[node name="separator" type="HSeparator" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-
-[node name="audio_scroll" type="ScrollContainer" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox"]
+[node name="content_scroll" type="ScrollContainer" parent="credits_popup/margin/panel/panel_margin/scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="audio_vbox" type="VBoxContainer" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox/audio_scroll"]
+[node name="content_vbox" type="VBoxContainer" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="development" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0n1sh")
+title = "development"
+text = "* KermitTheGodFrog - Developer (https://kermitthegodfrog.itch.io)
+* Phoenix1509 - Some dialogue/main menu backgrounds (https://itch.io/profile/phoenix1509)"
+
+[node name="playtesters" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hw4jk")
+title = "playtesters"
+text = "* Phoenix1509
+* Lizardinasuit"
+
+[node name="separator" type="HSeparator" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox"]
 layout_mode = 2
 
-[node name="audio_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_vbox/audio_scroll/audio_vbox"]
-custom_minimum_size = Vector2(1360, 0)
+[node name="sound_effects" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2
+title = "sound #1 - sound effects"
 text = "Office01.wav by LG -- https://freesound.org/s/14856/ -- License: Attribution 4.0
 (Retrieved 23rd August 2025)
 
@@ -447,116 +505,196 @@ Fizzle by Mike Koenig -- https://soundbible.com/1308-Fizzle.html -- License: Att
 
 Grenade Explosion by Mike Koenig -- https://soundbible.com/1467-Grenade-Explosion.html -- License: Attribution 3.0
 (Retrieved 3rd March 2026)"
+
+[node name="packs" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
+layout_mode = 2
+title = "sound #2 - packs"
+text = "Core Wavetables for Vital by David Dumais Audio (A$0.00+ version) -- https://daviddumaisaudio.gumroad.com/l/core-wavetables -- License: none (Retrieved 24th June 2026)
+
+Densine's Orchestral by clarkristaino -- https://www.mediafire.com/file/6slz9kw2zy7u6i1/Densine%27sOrchestral.zip -- License: none, \"free sample pack\" (Retrieved 24th June 2026 via https://www.reddit.com/r/edmproduction/comments/2bs0he/hey_guys_here_is_a_free_sample_pack_of_orchestral/)
+
+Ultimate Boom Bap Drum Kit by Beatsmith -- https://soundpacks.com/free-sound-packs/ultimate-boom-bap-drum-kit/ -- License: none, \"FREE SOUND PACKS\" (Retrieved 24th June 2026)
+
+Utopia by Cymatics -- https://cymatics.fm/products/utopia -- License: Royalty Free (Retrieved 24th June 2026)
+
+Free Riser Sound Effects Sample Pack by Abletunes -- https://abletunes.com/blog/free-riser-sound-effects-sample-pack/ -- License: Royalty Free (Retrieved 24th June 2026)
+
+Free Tribal Drum Kit by Producer Spot -- https://www.producerspot.com/download-free-tribal-drum-kit-samples-by-producer-spot/ -- License: Royalty Free (Retrieved 24th June 2026 via https://www.mediafire.com/download/03br7rc101f0ur3/ProducerSpot-Tribal-Drums.zip via https://web.archive.org/web/20190306202704/http://www.producerspot.com/download-free-tribal-drum-kit-samples-by-producer-spot)"
+
+[node name="title_label" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/packs/scroll" index="0"]
+text = "sound #2 - packs"
+
+[node name="license_fold" type="FoldableContainer" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/packs/scroll" index="2"]
+layout_mode = 2
+folded = true
+title = "Free Tribal Drum Kit by Producer Spot LICENSE AGREEMENT"
+title_text_overrun_behavior = 4
+
+[node name="license_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/packs/scroll/license_fold"]
+visible = false
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 2
+text = "LICENSE AGREEMENT
+
+All samples in this package are covered by a Royalty-Free license, it means you CAN
+use those samples as part of your commercial and non-commercial MUSIC
+COMPOSITIONS for CDs, DVDs, VIDEO, MOVIES, GAMES, WEBSITES, PRESENTATIONS
+etc. 
+
+Sounds that You have purchased are licensed NOT sold to You. You can NOT resell
+entire or separate elements of this pack as your own or as a part of sample
+library or software/hardware. Copyright © ProducerSpot.com. All rights reserved"
 autowrap_mode = 2
+
+[node name="fonts" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
+layout_mode = 2
+title = "fonts"
+text = "Copyright 2015 The Roboto Mono Project Authors (https://github.com/googlefonts/robotomono)
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+https://openfontlicense.org
+
+Copyright 2019 The Tomorrow Project Authors (github.com/MonicaRizzolli/Tomorrow)
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+https://openfontlicense.org"
+
+[node name="title_label" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/fonts/scroll" index="0"]
+text = "fonts"
+
+[node name="license_fold" type="FoldableContainer" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/fonts/scroll" index="2"]
+layout_mode = 2
+folded = true
+title = "SIL OPEN FONT LICENSE Version 1.1"
+title_text_overrun_behavior = 4
+
+[node name="license_label" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/fonts/scroll/license_fold"]
+visible = false
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 2
+text = "-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded, 
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+\"Font Software\" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+\"Reserved Font Name\" refers to any names specified as such after the
+copyright statement(s).
+
+\"Original Version\" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+\"Modified Version\" refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+\"Author\" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE."
+autowrap_mode = 2
+
+[node name="software" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
+layout_mode = 2
+title = "software used"
+text = "The developers of [i]Stellar Cartographer[/i] frequently utilized the software below to develop the game. The creators of the software below did not endorse or sponsor the development of [i]Stellar Cartographer[/i], and are not affiliated with the developers of [i]Stellar Cartographer[/i]. The software below is listed merely to provide credit and attribution, and all links provided are merely to show the digital source of their corresponding software on the web.
+
+* Godot
+* Git
+* Krita
+* Blender
+* Inkscape
+* Aseprite
+* FFmpeg
+* ImageMagick
+* FL Studio
+External plugins used in FL Studio:
+* Vital [VST] -- https://vital.audio/ (Retrieved 24th June 2026)
+* Valhalla Supermassive [Plugin] -- https://valhalladsp.com/shop/reverb/valhalla-supermassive/ (Retrieved 24th June 2026)
+* LABS [VST] -- https://www.spitfireaudio.com/ (Retrieved 24th June 2026)"
 
 [node name="achievements_list_popup" parent="." instance=ExtResource("5_7l6aj")]
 layout_mode = 1
 
-[node name="history_popup" type="Control" parent="."]
-visible = false
+[node name="history_popup" parent="." instance=ExtResource("10_7m0km")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("8_eel2y")
-
-[node name="background" type="ColorRect" parent="history_popup"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.235294, 0.235294, 0.235294, 0.313726)
-
-[node name="open_user_button" type="Button" parent="history_popup"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -191.0
-offset_bottom = 30.0
-grow_horizontal = 0
-text = "OPEN USER:// FOLDER"
-script = ExtResource("9_kgvlk")
-
-[node name="panel" type="PanelContainer" parent="history_popup"]
-custom_minimum_size = Vector2(700, 800)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_kgvlk")
-
-[node name="margin" type="MarginContainer" parent="history_popup/panel"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="actions_items_split" type="VBoxContainer" parent="history_popup/panel/margin"]
-layout_mode = 2
-
-[node name="actions_panel" type="PanelContainer" parent="history_popup/panel/margin/actions_items_split"]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-size_flags_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_7m0km")
-
-[node name="actions_hbox" type="HBoxContainer" parent="history_popup/panel/margin/actions_items_split/actions_panel"]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-
-[node name="title_label" type="Label" parent="history_popup/panel/margin/actions_items_split/actions_panel/actions_hbox"]
-layout_mode = 2
-text = "HISTORY"
-vertical_alignment = 1
-
-[node name="history_return_button" type="Button" parent="history_popup/panel/margin/actions_items_split/actions_panel/actions_hbox"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-size_flags_horizontal = 10
-theme_type_variation = &"ButtonDull"
-theme_override_styles/normal = SubResource("StyleBoxFlat_f371p")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0n1sh")
-icon = ExtResource("5_uqij0")
-icon_alignment = 1
-expand_icon = true
-
-[node name="scroll" type="ScrollContainer" parent="history_popup/panel/margin/actions_items_split"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxEmpty_hw4jk")
-follow_focus = true
-horizontal_scroll_mode = 0
-vertical_scroll_mode = 2
-
-[node name="spawn_scroll" type="VBoxContainer" parent="history_popup/panel/margin/actions_items_split/scroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 
 [connection signal="pressed" from="options_scroll/continue_button" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="options_scroll/new_button" to="." method="_on_new_button_pressed"]
-[connection signal="pressed" from="options_scroll/tutorial_button" to="." method="_on_tutorial_button_pressed"]
 [connection signal="pressed" from="options_scroll/settings_button" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="options_scroll/achievements_button" to="." method="_on_achievements_button_pressed"]
 [connection signal="pressed" from="options_scroll/credits_button" to="." method="_on_credits_button_pressed"]
 [connection signal="pressed" from="options_scroll/history_button" to="." method="_on_history_button_pressed"]
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/actions_hbox/new_game_return_button" to="." method="_on_new_game_return_button_pressed"]
+[connection signal="item_selected" from="new_game_popup/new_game/margin/scroll/game_type_scroll/game_type_edit" to="new_game_popup/new_game/margin/scroll/game_type_scroll" method="_on_game_type_edit_item_selected"]
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/create_button" to="." method="_on_create_button_pressed"]
 [connection signal="pressed" from="credits_popup/margin/panel/panel_margin/scroll/actions_hbox/credits_return_button" to="." method="_on_credits_return_button_pressed"]
-[connection signal="visibility_changed" from="history_popup" to="history_popup" method="_on_visibility_changed"]
-[connection signal="pressed" from="history_popup/open_user_button" to="history_popup/open_user_button" method="_on_pressed"]
-[connection signal="pressed" from="history_popup/panel/margin/actions_items_split/actions_panel/actions_hbox/history_return_button" to="." method="_on_history_return_button_pressed"]
+
+[editable path="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/packs"]
+[editable path="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/fonts"]

@@ -57,6 +57,8 @@ var player_is_boosting: bool = false:
 		player_is_boosting = value
 var player_audio_visualizer_unlocked: bool = false
 var player_gas_layer_surveyor_unlocked: bool = false
+var player_long_range_scopes_unlocked: bool = false
+var player_action_lock: bool = false
 
 @onready var camera = $camera
 @onready var canvas = $camera/canvas
@@ -95,9 +97,10 @@ var player_gas_layer_surveyor_unlocked: bool = false
 enum BOOST_SOUND_TYPES {START, END}
 
 @onready var entity_texture = preload("uid://bdxkekgntbyc5")
-@onready var question_mark_frame = preload("uid://gmtqybky5mo")
 @onready var question_mark_texture = preload("uid://diwsd0k5wno8h")
-@onready var empty_frame = preload("uid://id0yg3qh1o32")
+@onready var question_mark_frame = preload("uid://gmtqybky5mo")
+@onready var default_frame = preload("uid://id0yg3qh1o32")
+@onready var default_icon = preload("uid://ldgef1pamgcu")
 
 @onready var target_texture = preload("uid://diuwq6pqf7xir")
 
@@ -354,6 +357,11 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 		var item: TreeItem = system_list.create_item(parent)
 		item.set_metadata(0, body.get_identifier())
 		
+		var get_darker_icon = func(_item: TreeItem) -> ImageTexture:
+			var img = _item.get_icon(0).get_image()
+			img.adjust_bcs(0.75, 1.0, 1.0)
+			return ImageTexture.create_from_image(img)
+		
 		if body.is_theorised_not_known():
 			item.set_text(0, "???")
 			
@@ -374,12 +382,15 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 				item.set_custom_bg_color(0, Color.DARK_SLATE_GRAY)
 			
 			item.set_text(0, body.get_display_name())
-			item.set_icon(0, empty_frame)
+			item.set_icon_overlay(0, default_frame)
+			
+			item.set_icon(0, game_data.get_body_icon_or_null(body))
+			if not item.get_icon(0):
+				item.set_icon(0, default_icon)
 			
 			match body.get_type():
 				starSystemAPI.BODY_TYPES.STAR:
 					#item.set_text(0, "%s - %s Class Star" % [body.get_display_name(), body.metadata.get("star_type")])
-					item.set_icon(0, load("uid://d0r4v5pr3cutt"))
 					item.set_tooltip_text(0, "%s - %s Class Star" % [item.get_text(0), body.metadata.get("star_type")])
 					
 					if body == follow_body:
@@ -391,28 +402,29 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					
 				starSystemAPI.BODY_TYPES.PLANET:
 					#item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
-					item.set_icon(0, get_planet_frame(body.metadata.get("planet_classification")))
 					item.set_tooltip_text(0, "%s - %s Planet" % [item.get_text(0), body.metadata.get("planet_type")])
 					
 					if (body.metadata.get("planetary_anomaly", false) == true) and (body.metadata.get("planetary_anomaly_available", false) == true):
-						item.set_icon(0, question_mark_frame)
+						item.set_icon(0, get_darker_icon.call(item))
+						item.set_icon_overlay(0, question_mark_frame)
 						oscillate_item_icon_color(item, Color.GREEN)
 					elif (body.metadata.get("missing_GL", false) == true) and (player_gas_layer_surveyor_unlocked == true):
-						item.set_icon(0, load("uid://dmutb3ak7n4l2"))
+						item.set_icon(0, get_darker_icon.call(item))
+						item.set_icon_overlay(0, load("uid://dhy4crqvmsgoy"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					elif (body.metadata.get("missing_AO", false) == true) and (body.get_guessed_variation() == -1) and (player_audio_visualizer_unlocked == true): #body.get_guessed_variation() will be a function in planetAPI or circularBodyAPI
-						item.set_icon(0, load("uid://pbgoomdkkj6h"))
+						item.set_icon(0, get_darker_icon.call(item))
+						item.set_icon_overlay(0, load("uid://pbgoomdkkj6h"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					
 					#if body.is_habitable():
 					#	item.set_custom_color(0, Color.GREEN)
 					
 				starSystemAPI.BODY_TYPES.WORMHOLE:
-					item.set_icon(0, load("uid://k50rbp6ri57u"))
 					
 					const disabled_color = Color("#7f4b4b")
 					
-					match body.is_disabled(): #is_disabled() will be a function in new wormholeAPI
+					match body.is_disabled():
 						true:
 							if body == follow_body:
 								item.set_custom_bg_color(0, disabled_color.lightened(0.5))
@@ -427,27 +439,20 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 								item.set_custom_bg_color(0, Color.WEB_PURPLE.lightened(0.2))
 							else:
 								item.set_custom_bg_color(0, Color.WEB_PURPLE)
-					
-				starSystemAPI.BODY_TYPES.STATION:
-					item.set_icon(0, load("uid://csrl0hs7rc0hn"))
-					
+				
 				starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
 					if body.metadata.get("space_anomaly_available", true) == true:
-						item.set_icon(0, question_mark_frame)
+						item.set_icon(0, get_darker_icon.call(item))
+						item.set_icon_overlay(0, question_mark_frame)
 						oscillate_item_icon_color(item, Color.GREEN)
 					
 				starSystemAPI.BODY_TYPES.SPACE_ENTITY:
 					item.set_text(0, game_data.ENTITY_CLASSIFICATIONS.find_key(body.entity_classification).capitalize())
-					item.set_icon(0, game_data.get_entity_frame(body.entity_classification))
 					
-				starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
-					item.set_icon(0, load("uid://hdeudc7u2rsm"))
-					
-				starSystemAPI.BODY_TYPES.CUSTOM:
-					var icon: Object
-					if body.is_available(): icon = load(body.icon_path)
-					else: icon = load(body.post_icon_path)
-					item.set_icon(0, icon)
+					if (body.captures_remaining > 0) and (player_long_range_scopes_unlocked == true):
+						item.set_icon(0, get_darker_icon.call(item))
+						item.set_icon_overlay(0, load("uid://crpj5eyl2ijxb"))
+						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					
 		
 		var c = collapsed_cache.get(body.get_identifier())
@@ -567,26 +572,27 @@ func _unhandled_input(event):
 	var standard_size = zoom_multiplier * 10.0
 	
 	if event.is_action_pressed("SC_INTERACT2_RIGHT_MOUSE"):
-		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
-		if get_global_mouse_position().distance_to(closest_body.position) < (1 + standard_size) \
-		and (not closest_body.is_not_known_or_is_hidden()) \
-		and (not closest_body is unitBodyAPI):
-			emit_signal("updatedLockedBody", closest_body)
-			locked_body = closest_body
-			follow_body = closest_body
-			camera.follow_body = closest_body
-			follow_body_modifier = closest_body
-			action_body = closest_body
-			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
-			async_add_movement_ping(closest_body.position, closest_body)
-			return
-		
-		locked_body = null
-		action_body = null
-		emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
-		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
-		async_add_movement_ping(get_global_mouse_position())
-		get_tree().call_group("eventsHandler", "speak", self, "player_target_position_update")
+		if not player_action_lock:
+			var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
+			if get_global_mouse_position().distance_to(closest_body.position) < (1 + standard_size) \
+			and (not closest_body.is_not_known_or_is_hidden()) \
+			and (not closest_body is unitBodyAPI):
+				emit_signal("updatedLockedBody", closest_body)
+				locked_body = closest_body
+				follow_body = closest_body
+				camera.follow_body = closest_body
+				follow_body_modifier = closest_body
+				action_body = closest_body
+				emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
+				async_add_movement_ping(closest_body.position, closest_body)
+				return
+			
+			locked_body = null
+			action_body = null
+			emit_signal("updatePlayerTargetPosition", get_global_mouse_position())
+			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
+			async_add_movement_ping(get_global_mouse_position())
+			get_tree().call_group("eventsHandler", "speak", self, "player_target_position_update")
 	
 	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE"):
 		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
@@ -776,9 +782,9 @@ func draw_map():
 						draw_colored_polygon(intersected_offset_points[0], Color.DARK_RED.darkened(0.5))
 	
 	if scanner_profile_time > 0:
-		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), 0.5, false)
+		draw_arc(player_position_matrix[0], player_adj_scanner_matrix[0], -TAU, TAU, 30, Color("#7f4b4b", clampf(remap(scanner_profile_time, 0.0, 1.0, 0.0, 0.25), 0.0, 0.25)), zoom_multiplier * 2, false)
 	if scanner_power_time > 0:
-		draw_multiline(scanner_power_points, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), 0.2, false)
+		draw_multiline(scanner_power_points, Color(0.98039216, 0.92156863, 0.84313726, clampf(remap(scanner_power_time, 0.0, 1.0, 0.0, 0.1), 0.0, 0.1)), zoom_multiplier * 2, false)
 	
 	for body in system.bodies:
 		
@@ -860,17 +866,18 @@ func draw_map():
 
 func _on_go_to_button_pressed():
 	if locked_body:
-		action_body = locked_body
-		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.GO_TO, action_body)
-		async_add_movement_ping(action_body.position, action_body)
+		if not player_action_lock:
+			action_body = locked_body
+			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.GO_TO, action_body)
+			async_add_movement_ping(action_body.position, action_body)
 	pass
 
 func _on_orbit_button_pressed():
-	#not sure who will have jurisdiction
 	if locked_body:
-		action_body = locked_body
-		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
-		async_add_movement_ping(action_body.position, action_body)
+		if not player_action_lock:
+			action_body = locked_body
+			emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.ORBIT, action_body)
+			async_add_movement_ping(action_body.position, action_body)
 	pass
 
 func _on_stop_button_pressed():
@@ -988,16 +995,6 @@ func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction:
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:
 	emit_signal("removeHullStressForNanites", amount, nanites_per_percentage)
 	pass
-
-func get_planet_frame(classification: String) -> Resource:
-	match classification:
-		"Terran":
-			return load("uid://u5b3uh7kbj25")
-		"Neptunian":
-			return load("uid://ddxxk0gbwi37a")
-		"Jovian":
-			return load("uid://dt4ghhmgofelr")
-	return null
 
 func _on_found_body(id: int):
 	var body = system.get_body_from_identifier(id)

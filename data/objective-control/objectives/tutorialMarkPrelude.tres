@@ -7,5 +7,5 @@ script = ExtResource("1_8aoqp")
 title = "Mark Prelude"
 description = "Marking a body establishes its location on the SYSTEM LIST and is usually required before discovering it. A body can be marked by pinging it three times.
 To ping Prelude, adjust the LIDAR direction with left click so it points towards the red circle, set the arc to max with the slider, and press the ‘PING!’ button.
-* [i]The 'red circle' is a nearby M class star named King.
+* [i]The 'red circle' is a nearby M class star named King.[/i]
 [img=75%x75%]res://graphics/objective/tutorial_LIDAR_example.png[/img]"

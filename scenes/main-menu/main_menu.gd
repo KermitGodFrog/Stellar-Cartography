@@ -6,11 +6,11 @@ extends Control
 @onready var name_edit = $new_game_popup/new_game/margin/scroll/name_edit
 @onready var prefix_edit = $new_game_popup/new_game/margin/scroll/prefix_edit
 @onready var ship_name_edit = $new_game_popup/new_game/margin/scroll/ship_name_scroll/ship_name_edit
+@onready var game_type_edit = $new_game_popup/new_game/margin/scroll/game_type_scroll/game_type_edit
 @onready var new_game_popup = $new_game_popup
 @onready var achievements_list_popup = $achievements_list_popup
 @onready var background = $background
 @onready var credits_popup = $credits_popup
-@onready var new_game_label = $new_game_popup/new_game/margin/scroll/actions_hbox/new_game_label
 @onready var history_popup = $history_popup
 
 var SHOW_NEW_GAME_POPUP: bool = false:
@@ -50,7 +50,11 @@ const background_images: Array = [
 ]
 
 func _ready():
+	#for i in colorOscillateIterator.new(Color.WHITE, Color.GREEN, 20, 3, true):
+	#	print_rich("[color=%s]current value[/color]" % Color(i).to_html())
+	
 	achievements_list_popup.connect("returnButtonPressed", _on_achievements_list_return_button_pressed)
+	history_popup.connect("returnButtonPressed", _on_history_return_button_pressed)
 	background.set_texture(ImageTexture.create_from_image(background_images.pick_random()))
 	
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
@@ -93,6 +97,7 @@ func _on_continue_button_pressed():
 	pass
 
 func _on_create_button_pressed():
+	NEW_GAME_INIT_TYPE = game_type_edit.get_selected_metadata()
 	if (not name_edit.text.is_empty()) and (not ship_name_edit.text.is_empty()):
 		global_data.change_scene.emit("res://scenes/game/game.tscn", {
 			"init_type": NEW_GAME_INIT_TYPE, 
@@ -106,14 +111,6 @@ func _on_create_button_pressed():
 
 func _on_new_button_pressed():
 	SHOW_NEW_GAME_POPUP = true
-	NEW_GAME_INIT_TYPE = global_data.GAME_INIT_TYPES.NEW
-	new_game_label.set_text("CREATING NEW GAME")
-	pass
-
-func _on_tutorial_button_pressed() -> void:
-	SHOW_NEW_GAME_POPUP = true
-	NEW_GAME_INIT_TYPE = global_data.GAME_INIT_TYPES.TUTORIAL
-	new_game_label.set_text("CREATING TUTORIAL")
 	pass
 
 func _on_new_game_return_button_pressed():

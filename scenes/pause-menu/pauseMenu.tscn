@@ -92,27 +92,32 @@ grow_vertical = 2
 
 [node name="resume_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "RESUME"
 
 [node name="settings_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "SETTINGS
 "
 
 [node name="save_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "SAVE"
 
 [node name="save_and_quit_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "SAVE AND QUIT TO MAIN MENU"
 
 [node name="exit_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "EXIT TO MAIN MENU"
 
@@ -133,6 +138,7 @@ layout_mode = 2
 [node name="fullscreen_button" type="Button" parent="pause_canvas/pause_control/console_cover_panel/scroll"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_0rvr6")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_3odcv")
 theme_override_styles/hover = SubResource("StyleBoxFlat_xraqk")

@@ -79,6 +79,7 @@ vertical_alignment = 1
 
 [node name="exit_to_main_menu_button" type="Button" parent="stats_canvas/stats_control/main_panel/main_scroll"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "EXIT TO MAIN MENU"
 

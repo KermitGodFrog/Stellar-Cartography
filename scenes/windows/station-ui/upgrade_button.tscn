@@ -5,5 +5,6 @@
 [node name="upgrade_button" type="Button" groups=["FOLLOW_UPGRADE_STATE"]]
 offset_right = 8.0
 offset_bottom = 8.0
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 script = ExtResource("1_yol3m")

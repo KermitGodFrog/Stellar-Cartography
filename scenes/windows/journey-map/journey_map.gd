@@ -8,7 +8,7 @@ var systems: Array = []
 const label_font = preload("uid://xrcqj2080elm")
 var draw_landmarks: Dictionary = {"The Core": -(0 * 100), "The Frontier": -(5 * 100), "The Abyss": -(15 * 100), "New Eden": -(25 * 100)}
 
-@onready var station_frame = preload("uid://csrl0hs7rc0hn")
+@onready var station_icon = preload("uid://bh57lngfca4xf")
 
 func _ready():
 	connect("map_updated", _on_map_updated)
@@ -34,7 +34,7 @@ func _draw():
 	var station_size: int = 32
 	
 	draw_line(Vector2(highest_pos.x, station_v_offset), Vector2(highest_pos.x - station_size, station_v_offset), Color.GREEN, 3.0)
-	station_frame.draw_rect(get_canvas_item(), Rect2((highest_pos.x - station_size * 2) - station_size / 2, station_v_offset - station_size / 2, station_size, station_size), false, Color.GREEN)
+	station_icon.draw_rect(get_canvas_item(), Rect2((highest_pos.x - station_size * 2) - station_size / 2, station_v_offset - station_size / 2, station_size, station_size), false, Color.GREEN)
 	pass
 
 func _on_map_updated():

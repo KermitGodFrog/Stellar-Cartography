@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://chwm82adl21cm"]
+[gd_scene load_steps=9 format=3 uid="uid://chwm82adl21cm"]
 
 [ext_resource type="Script" uid="uid://j6p3dv2arp7u" path="res://scenes/gizmos/sonar-interface/sonar_interface.gd" id="1_bmylm"]
 [ext_resource type="Texture2D" uid="uid://bu4clhu1rmiwq" path="res://graphics/sonar-interface/sonar_64x.png" id="1_t5fig"]
@@ -6,6 +6,16 @@
 [ext_resource type="StyleBox" uid="uid://t53tmp88dts0" path="res://theme-gen/general_focus.tres" id="4_1f73o"]
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="4_jmhbk"]
 [ext_resource type="Script" uid="uid://cj6mnrnbrx2yd" path="res://scenes/gizmos/sonar-interface/cooldown_label.gd" id="6_ovydm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ovydm"]
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.9058309, 0.9058309, 0.9058309, 0.15)
+border_blend = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_njxhc"]
 bg_color = Color(0.184314, 0.14902, 0.156863, 0.784314)
@@ -33,8 +43,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 theme = ExtResource("2_1p42e")
 script = ExtResource("1_bmylm")
+
+[node name="highlight_panel" type="Panel" parent="sonar_control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ovydm")
 
 [node name="info_panel" type="Panel" parent="sonar_control"]
 custom_minimum_size = Vector2(60, 50)
@@ -61,6 +83,7 @@ value = 9.0
 [node name="ping_button" type="Button" parent="sonar_control/info_panel/scroll_vertical"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "PING!"
 icon_alignment = 1
@@ -90,6 +113,7 @@ anchor_bottom = 1.0
 offset_top = -31.0
 offset_right = 37.0
 grow_vertical = 0
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "RST"
 
@@ -101,6 +125,8 @@ one_shot = true
 wait_time = 0.25
 autostart = true
 
+[connection signal="mouse_entered" from="sonar_control" to="sonar_control" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="sonar_control" to="sonar_control" method="_on_mouse_exited"]
 [connection signal="drag_ended" from="sonar_control/info_panel/scroll_vertical/ping_width_slider" to="sonar_control" method="_on_ping_width_slider_drag_ended"]
 [connection signal="value_changed" from="sonar_control/info_panel/scroll_vertical/ping_width_slider" to="sonar_control" method="_on_ping_width_slider_value_changed"]
 [connection signal="pressed" from="sonar_control/info_panel/scroll_vertical/ping_button" to="sonar_control" method="_on_ping_button_pressed"]

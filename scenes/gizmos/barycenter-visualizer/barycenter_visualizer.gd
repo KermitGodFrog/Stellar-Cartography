@@ -1,6 +1,7 @@
 extends Control
 
 @onready var locked_body_label = $locked_body_label
+@onready var locked_body_texture = $locked_body_texture
 
 var system: starSystemAPI
 var locked_body_identifier: int:
@@ -116,6 +117,19 @@ func get_screen_centre():
 	return (get_viewport_rect().size / 2)
 
 func _on_locked_body_identifier_changed(_new_identifier: int) -> void:
+	var body = system.get_body_from_identifier(_new_identifier)
+	if body:
+		if body.is_known():
+			var icon = game_data.get_body_icon_or_null(body)
+			if icon:
+				locked_body_texture.set_texture(icon)
+			else:
+				locked_body_texture.set_texture(load("uid://ldgef1pamgcu"))
+		else:
+			locked_body_texture.set_texture(load("uid://ldgef1pamgcu"))
+	else:
+		locked_body_texture.set_texture(null)
+	
 	points.clear()
 	pingable_points.clear()
 	glint_points.clear()

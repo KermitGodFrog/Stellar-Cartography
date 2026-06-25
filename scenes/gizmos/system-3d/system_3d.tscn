@@ -104,6 +104,7 @@ anchor_bottom = 1.0
 offset_top = -40.0
 offset_right = 77.0
 grow_vertical = 0
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("5_u5io5")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_tx8l4")
 theme_override_icons/checked = ExtResource("6_a5f52")

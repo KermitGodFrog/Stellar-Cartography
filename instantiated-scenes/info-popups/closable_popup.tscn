@@ -92,6 +92,7 @@ drag_and_drop_selection_enabled = false
 
 [node name="close_button" type="Button" parent="mid_panel_fluid"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 theme_override_styles/normal = SubResource("StyleBoxFlat_1rjt1")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_58560")

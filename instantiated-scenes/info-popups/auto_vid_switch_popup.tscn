@@ -1,0 +1,120 @@
+[gd_scene load_steps=11 format=3 uid="uid://d02n0mwa2bmdf"]
+
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_17aoj"]
+[ext_resource type="Script" uid="uid://c76lyytvvk0wj" path="res://instantiated-scenes/info-popups/auto_vid_switch_popup.gd" id="2_eho3s"]
+[ext_resource type="PackedScene" uid="uid://vckukatyjp27" path="res://instantiated-scenes/ui/mid/mid_panel_fluid.tscn" id="3_s08vq"]
+[ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="4_qy2qi"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="5_fyx3d"]
+[ext_resource type="Texture2D" uid="uid://diwsd0k5wno8h" path="res://graphics/system-map/question_mark.png" id="6_sbbtb"]
+[ext_resource type="PackedScene" uid="uid://dekj38tqs61np" path="res://data/misc/colorOscillate.tscn" id="7_eho3s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rjt1"]
+bg_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_58560"]
+bg_color = Color(0.85098, 0.85098, 0.85098, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.23529412, 0.5764706, 0.44313726, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1skfv"]
+bg_color = Color(0.20784314, 0.20784314, 0.20784314, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="auto_vid_switch_popup" type="CenterContainer"]
+mouse_filter = 2
+theme = ExtResource("1_17aoj")
+script = ExtResource("2_eho3s")
+text_box_path = "./mid_panel_fluid/mid_panel/margin/text"
+
+[node name="mid_panel_fluid" parent="." instance=ExtResource("3_s08vq")]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="mid_panel" parent="mid_panel_fluid" index="0"]
+self_modulate = Color(1, 1, 1, 0.75000006)
+mouse_filter = 2
+
+[node name="background" type="ColorRect" parent="mid_panel_fluid/mid_panel" index="0"]
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.18039216, 0.18039216, 0.18039216, 0.41568628)
+
+[node name="margin" type="MarginContainer" parent="mid_panel_fluid/mid_panel" index="1"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="text" type="RichTextLabel" parent="mid_panel_fluid/mid_panel/margin"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_fonts/bold_font = ExtResource("4_qy2qi")
+theme_override_fonts/italics_font = ExtResource("5_fyx3d")
+theme_override_font_sizes/normal_font_size = 12
+theme_override_font_sizes/bold_font_size = 12
+theme_override_font_sizes/bold_italics_font_size = 12
+theme_override_font_sizes/italics_font_size = 12
+theme_override_font_sizes/mono_font_size = 12
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+
+[node name="vid_container" type="AspectRatioContainer" parent="mid_panel_fluid/mid_panel/margin"]
+visible = false
+clip_contents = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="vid" type="VideoStreamPlayer" parent="mid_panel_fluid/mid_panel/margin/vid_container"]
+layout_mode = 2
+mouse_filter = 2
+expand = true
+bus = &"SFX"
+
+[node name="switch_button" type="Button" parent="mid_panel_fluid"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ButtonDull"
+theme_override_styles/normal = SubResource("StyleBoxFlat_1rjt1")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_58560")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1skfv")
+icon = ExtResource("6_sbbtb")
+expand_icon = true
+
+[node name="switch_button_flash" parent="." instance=ExtResource("7_eho3s")]
+
+[editable path="mid_panel_fluid"]
