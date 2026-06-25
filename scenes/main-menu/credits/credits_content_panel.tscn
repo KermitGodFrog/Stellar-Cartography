@@ -22,6 +22,7 @@ size_flags_horizontal = 3
 theme = ExtResource("1_1exg8")
 theme_override_styles/panel = SubResource("StyleBoxFlat_1exg8")
 script = ExtResource("1_xxcg1")
+panel_color = Color(0.09411765, 0.09411765, 0.09411765, 1)
 
 [node name="scroll" type="VBoxContainer" parent="."]
 layout_mode = 2

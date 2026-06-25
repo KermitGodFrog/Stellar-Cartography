@@ -1,9 +1,10 @@
-[gd_scene load_steps=25 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=28 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" uid="uid://dq4gkj1n823v0" path="res://scenes/main-menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_b84fj"]
 [ext_resource type="Texture2D" uid="uid://nav04ap3rdbe" path="res://graphics/main-menu/new_game_popup.png" id="2_1jdbj"]
 [ext_resource type="Theme" uid="uid://skdebllj6ft7" path="res://theme-gen/main-menu/main_menu_MAIN_theme.tres" id="2_2eiki"]
+[ext_resource type="FontFile" uid="uid://n0hwhfbdcomy" path="res://graphics/fonts/Tomorrow-Regular.ttf" id="3_hw4jk"]
 [ext_resource type="PackedScene" uid="uid://njcr66sajfan" path="res://scenes/main-menu/achievements-list/achievements_list_popup.tscn" id="5_7l6aj"]
 [ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/shared/denied_monochrome.png" id="5_uqij0"]
 [ext_resource type="Script" uid="uid://dncoypj63awau" path="res://scenes/main-menu/line_edit_length_label.gd" id="6_lhle4"]
@@ -65,6 +66,28 @@ corner_radius_bottom_left = 10
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xbeg8"]
 bg_color = Color(0.235294, 0.431373, 0.443137, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0n1sh"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.15686275, 0.29411766, 0.3882353, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hw4jk"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.15686275, 0.29411766, 0.3882353, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [node name="main_menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -98,6 +121,7 @@ theme_override_colors/font_outline_color = Color(0.0588235, 0.0784314, 0.14902, 
 theme_override_constants/shadow_offset_x = 0
 theme_override_constants/shadow_offset_y = 6
 theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("3_hw4jk")
 theme_override_font_sizes/font_size = 60
 text = "STELLAR CARTOGRAPHER"
 horizontal_alignment = 1
@@ -434,15 +458,20 @@ size_flags_vertical = 3
 
 [node name="development" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0n1sh")
 title = "development"
 text = "* KermitTheGodFrog - Developer (https://kermitthegodfrog.itch.io)
 * Phoenix1509 - Some dialogue/main menu backgrounds (https://itch.io/profile/phoenix1509)"
 
 [node name="playtesters" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hw4jk")
 title = "playtesters"
-text = "Phoenix1509
-Lizardinasuit"
+text = "* Phoenix1509
+* Lizardinasuit"
+
+[node name="separator" type="HSeparator" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox"]
+layout_mode = 2
 
 [node name="sound_effects" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2
@@ -480,7 +509,7 @@ Grenade Explosion by Mike Koenig -- https://soundbible.com/1467-Grenade-Explosio
 [node name="packs" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2
 title = "sound #2 - packs"
-text = "Core Wavetables for Vital by David Dumais Audio (A$0.00+ version) -- https://daviddumaisaudio.gumroad.com/l/core-wavetables -- License: none
+text = "Core Wavetables for Vital by David Dumais Audio (A$0.00+ version) -- https://daviddumaisaudio.gumroad.com/l/core-wavetables -- License: none (Retrieved 24th June 2026)
 
 Densine's Orchestral by clarkristaino -- https://www.mediafire.com/file/6slz9kw2zy7u6i1/Densine%27sOrchestral.zip -- License: none, \"free sample pack\" (Retrieved 24th June 2026 via https://www.reddit.com/r/edmproduction/comments/2bs0he/hey_guys_here_is_a_free_sample_pack_of_orchestral/)
 
@@ -636,15 +665,15 @@ layout_mode = 2
 title = "software used"
 text = "The developers of [i]Stellar Cartographer[/i] frequently utilized the software below to develop the game. The creators of the software below did not endorse or sponsor the development of [i]Stellar Cartographer[/i], and are not affiliated with the developers of [i]Stellar Cartographer[/i]. The software below is listed merely to provide credit and attribution, and all links provided are merely to show the digital source of their corresponding software on the web.
 
-Godot
-Git
-Krita
-Blender
-Inkscape
-Aseprite
-FFmpeg
-ImageMagick
-FL Studio
+* Godot
+* Git
+* Krita
+* Blender
+* Inkscape
+* Aseprite
+* FFmpeg
+* ImageMagick
+* FL Studio
 External plugins used in FL Studio:
 * Vital [VST] -- https://vital.audio/ (Retrieved 24th June 2026)
 * Valhalla Supermassive [Plugin] -- https://valhalladsp.com/shop/reverb/valhalla-supermassive/ (Retrieved 24th June 2026)
