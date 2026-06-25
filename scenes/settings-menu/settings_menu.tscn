@@ -2,8 +2,15 @@
 
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_ksgtm"]
 [ext_resource type="Script" uid="uid://b53cc3i80umc7" path="res://scenes/settings-menu/settings_menu.gd" id="2_fub1k"]
-[ext_resource type="PackedScene" uid="uid://bph1iqtdv2hk8" path="res://instantiated-scenes/ui/top/top_panel_16_9.tscn" id="3_fub1k"]
 [ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://theme-gen/window_theme.tres" id="4_peeu5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fub1k"]
+draw_center = false
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.7647059, 0.5686275, 0.5568628, 1)
 
 [node name="settings_menu" type="Control"]
 layout_mode = 3
@@ -15,22 +22,20 @@ grow_vertical = 2
 theme = ExtResource("1_ksgtm")
 script = ExtResource("2_fub1k")
 
-[node name="top_panel_16_9" parent="." instance=ExtResource("3_fub1k")]
+[node name="panel" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 0.0
-offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(800, 452)
+theme_override_styles/panel = SubResource("StyleBoxFlat_fub1k")
 
-[node name="background" type="ColorRect" parent="top_panel_16_9/top_panel" index="0"]
+[node name="background" type="ColorRect" parent="panel"]
 layout_mode = 2
 color = Color(0.14733289, 0.14733289, 0.14733289, 0.95000005)
 
-[node name="margin" type="MarginContainer" parent="top_panel_16_9/top_panel" index="1"]
+[node name="margin" type="MarginContainer" parent="panel"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 20
@@ -38,41 +43,41 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="panel_scroll" type="VBoxContainer" parent="top_panel_16_9/top_panel/margin"]
+[node name="panel_scroll" type="VBoxContainer" parent="panel/margin"]
 layout_mode = 2
 
-[node name="list_container" type="ScrollContainer" parent="top_panel_16_9/top_panel/margin/panel_scroll"]
+[node name="list_container" type="ScrollContainer" parent="panel/margin/panel_scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="settings_list" type="VBoxContainer" parent="top_panel_16_9/top_panel/margin/panel_scroll/list_container"]
+[node name="settings_list" type="VBoxContainer" parent="panel/margin/panel_scroll/list_container"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="options_scroll" type="HBoxContainer" parent="top_panel_16_9/top_panel/margin/panel_scroll"]
+[node name="options_scroll" type="HBoxContainer" parent="panel/margin/panel_scroll"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_constants/separation = 200
 
-[node name="save_button" type="Button" parent="top_panel_16_9/top_panel/margin/panel_scroll/options_scroll"]
+[node name="save_button" type="Button" parent="panel/margin/panel_scroll/options_scroll"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "SAVE"
 
-[node name="reset_button" type="Button" parent="top_panel_16_9/top_panel/margin/panel_scroll/options_scroll"]
+[node name="reset_button" type="Button" parent="panel/margin/panel_scroll/options_scroll"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("1_ksgtm")
 theme_type_variation = &"ButtonDull"
 text = "RESET TO DEFAULTS"
 
-[node name="back_button" type="Button" parent="top_panel_16_9/top_panel/margin/panel_scroll/options_scroll"]
+[node name="back_button" type="Button" parent="panel/margin/panel_scroll/options_scroll"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
@@ -90,9 +95,7 @@ dialog_text = "If you proceed, you will lose all the changes you've made. This c
 dialog_autowrap = true
 cancel_button_text = "Keep editing"
 
-[connection signal="pressed" from="top_panel_16_9/top_panel/margin/panel_scroll/options_scroll/save_button" to="." method="_on_save_button_pressed"]
-[connection signal="pressed" from="top_panel_16_9/top_panel/margin/panel_scroll/options_scroll/reset_button" to="." method="_on_reset_button_pressed"]
-[connection signal="pressed" from="top_panel_16_9/top_panel/margin/panel_scroll/options_scroll/back_button" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="panel/margin/panel_scroll/options_scroll/save_button" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="panel/margin/panel_scroll/options_scroll/reset_button" to="." method="_on_reset_button_pressed"]
+[connection signal="pressed" from="panel/margin/panel_scroll/options_scroll/back_button" to="." method="_on_back_button_pressed"]
 [connection signal="confirmed" from="confirmation_dialog" to="." method="_on_confirmation_dialog_confirmed"]
-
-[editable path="top_panel_16_9"]

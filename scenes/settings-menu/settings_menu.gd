@@ -6,7 +6,7 @@ signal exiting()
 @onready var keybind_option = preload("uid://cbaykf0eovygh")
 @onready var audio_slider_option = preload("uid://b564nt73u2b3j")
 
-@onready var settings_list = $top_panel_16_9/top_panel/margin/panel_scroll/list_container/settings_list
+@onready var settings_list = $panel/margin/panel_scroll/list_container/settings_list
 @onready var confirmation_dialog = $confirmation_dialog
 
 var keybind_options: Array[Node] = []
