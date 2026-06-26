@@ -87,6 +87,7 @@ var player_action_lock: bool = false
 @onready var tutorial_processor: Node
 @onready var alarm_sound = $alarm_sound
 @onready var proximity_blinker = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/proximity_blinker
+@onready var background_handler = $camera/canvas/background_handler
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -1098,6 +1099,10 @@ func _on_add_text_ping(ping_path: String, pos: Vector2, text: String) -> void:
 	ping.text = text
 	ping.resetTime()
 	TEXT_PINGS.append(ping)
+	pass
+
+func _on_new_background() -> void:
+	background_handler.new_background()
 	pass
 
 
