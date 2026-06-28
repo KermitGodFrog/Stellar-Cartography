@@ -47,7 +47,7 @@ func set_display_name(new_display_name: String):
 #enum VOLATILE {Rb, Cs, K, Ag, Na, B, Ga, Sn, Se, S}
 #enum VERY_VOLATILE {Zn, Pb, In, Bi, Tl}
 
-enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, CUSTOM, SHIP, MINE}
+enum BODY_TYPES {STAR, PLANET, ASTEROID_BELT, WORMHOLE, STATION, SPACE_ANOMALY, SPACE_ENTITY, RENDEZVOUS_POINT, SCREEN_JUNK, CUSTOM, SHIP, MINE}
 
 const star_types = {
 	"M": {"name": "M", "weight_eg": 0.7645629, "weight_lg": 0.0000003},
@@ -231,6 +231,7 @@ func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_plane
 	generateRandomWeightedPlanets(hook_star, _PA_chance_per_planet, _missing_AO_chance_per_planet, _missing_GL_chance_per_relevant_planet)
 	generateRandomAnomalies(_SA_chance_per_candidate)
 	generateFallbackAnomalies()
+	generateRandomScreenJunk()
 	pass
 
 func createAuxiliaryCivilized() -> void:
@@ -982,6 +983,30 @@ func generateRandomMines(player_speed: int = 5) -> void: #called by game.gd _on_
 		)
 	pass
 
+func generateRandomScreenJunk() -> void:
+	var junk_paths = global_data.get_all_files("graphics/system-map/junk", "png")
+	var max_distance = get_max_body_orbit_distance()
+	for i in global_data.get_randi(0, 5):
+		var dir: Vector2 = Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360)))
+		var pos: Vector2 = Vector2.ZERO + (dir * global_data.get_randf(0.0, max_distance))
+		var scale = global_data.get_randi(25, max_distance)
+		var modulate = Color.WHITE
+		if randf() > 0.75:
+			modulate = Color.WHITE.darkened(global_data.get_randf(0.0, 0.5))
+		
+		addBody(
+			screenJunkBodyAPI.new(),
+			BODY_TYPES.SCREEN_JUNK,
+			identifier_count,
+			"Screen Junk",
+			{"position": pos, "texture_path": junk_paths.pick_random(), "texture_scale": scale, "texture_modulate": modulate},
+			{}
+		)
+		
+		
+		
+	pass
+
 # generation related getters \/
 
 func get_orbit_angle_change(hook: bodyAPI, _orbit_distance: float) -> float: #(per unit of time) 
@@ -1065,7 +1090,7 @@ func updateBodyPosition(id: int, delta):
 		_ when body is unitBodyAPI:
 			body.updateActionBodyState()
 			body.updatePosition(delta)
-		_:
+		_ when body is orbitBodyAPI:
 			if body and body.hook_identifier != null:
 				var hook = get_body_from_identifier(body.hook_identifier)
 				if hook:
