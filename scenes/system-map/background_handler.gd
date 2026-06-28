@@ -33,7 +33,5 @@ func new_background() -> void:
 	background_texture.set_texture(new_bg)
 	background_texture.flip_h = bool(global_data.get_randi(0, 1))
 	background_texture.flip_v = bool(global_data.get_randi(0, 1))
-	print(background_texture.flip_h)
-	print(background_texture.flip_v)
 	background_texture.set_modulate(Color(Color.WHITE, global_data.get_randf(0.08, 0.25)))
 	pass
