@@ -984,7 +984,7 @@ func generateRandomMines(player_speed: int = 5) -> void: #called by game.gd _on_
 	pass
 
 func generateRandomScreenJunk() -> void:
-	var junk_paths = global_data.get_all_files("res://graphics/system-map/junk", "png")
+	var junk_paths = ["res://graphics/system-map/junk/junk1.png", "res://graphics/system-map/junk/junk2.png", "res://graphics/system-map/junk/junk3.png", "res://graphics/system-map/junk/junk4.png", "res://graphics/system-map/junk/junk5.png", "res://graphics/system-map/junk/junk6.png", "res://graphics/system-map/junk/junk7.png"]
 	var max_distance = get_max_body_orbit_distance()
 	for i in global_data.get_randi(0, 5):
 		var dir: Vector2 = Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360)))
@@ -1002,9 +1002,6 @@ func generateRandomScreenJunk() -> void:
 			{"position": pos, "texture_path": junk_paths.pick_random(), "texture_scale": scale, "texture_modulate": modulate},
 			{}
 		)
-		
-		
-		
 	pass
 
 # generation related getters \/

@@ -13,7 +13,7 @@ func _ready() -> void:
 	pass
 func load_backgrounds() -> void:
 	var _backgrounds: Array = []
-	var paths = global_data.get_all_files("res://graphics/system-map/background", "png")
+	var paths = ["res://graphics/system-map/background/bg1.png", "res://graphics/system-map/background/bg2.png", "res://graphics/system-map/background/bg3.png"]
 	for path in paths:
 		_backgrounds.append(load(path))
 	bg_load_mutex.lock()
