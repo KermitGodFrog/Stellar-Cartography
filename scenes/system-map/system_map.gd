@@ -164,7 +164,7 @@ func _ready():
 	status_control.connect("updateScannerDisplayTimes", _on_update_scanner_display_times)
 	contact_list.create_item(null)
 	
-	var junk_paths = global_data.get_all_files("graphics/system-map/junk", "png")
+	var junk_paths = global_data.get_all_files("res://graphics/system-map/junk", "png")
 	for path in junk_paths:
 		junk_textures[path] = load(path)
 	pass
