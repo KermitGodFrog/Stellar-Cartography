@@ -1,9 +1,10 @@
-[gd_scene load_steps=66 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=67 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
 [ext_resource type="Texture2D" uid="uid://bcjaew4hxmqfk" path="res://graphics/system-map/map_overlay.png" id="3_bft1b"]
 [ext_resource type="Theme" uid="uid://dm3fbhtw7qov2" path="res://theme-gen/system-map/system_map_HUD_theme.tres" id="3_djc4s"]
+[ext_resource type="Script" uid="uid://rdft8k1r58ay" path="res://scenes/system-map/background_handler.gd" id="3_gtym1"]
 [ext_resource type="Script" uid="uid://tpkr3y6kcw1f" path="res://scenes/system-map/map-overlay/map_overlay.gd" id="4_cfo3w"]
 [ext_resource type="Texture2D" uid="uid://dn8ug1anbuwpu" path="res://graphics/system-map/actions-panel/orbit_icon.png" id="5_hp0se"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="5_yv8xl"]
@@ -117,7 +118,22 @@ script = ExtResource("2_miyro")
 
 [node name="canvas" type="CanvasLayer" parent="system/camera"]
 
+[node name="background_handler" type="CanvasLayer" parent="system/camera/canvas"]
+layer = -100
+script = ExtResource("3_gtym1")
+
+[node name="background_texture" type="TextureRect" parent="system/camera/canvas/background_handler"]
+modulate = Color(1, 1, 1, 0.11764706)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 3
+stretch_mode = 1
+
 [node name="map_overlay" type="TextureRect" parent="system/camera/canvas"]
+visible = false
 self_modulate = Color(1, 1, 1, 0.0784314)
 texture_filter = 1
 anchors_preset = 15

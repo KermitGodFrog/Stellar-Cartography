@@ -87,6 +87,7 @@ var player_action_lock: bool = false
 @onready var tutorial_processor: Node
 @onready var alarm_sound = $alarm_sound
 @onready var proximity_blinker = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/proximity_blinker
+@onready var background_handler = $camera/canvas/background_handler
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -156,11 +157,16 @@ var player_supercharged: bool = false:
 		player_supercharged = value
 		status_modifier_organizer.check_modifier("supercharged", "Supercharged", "The state wherein a starship is travelling well above its usual safe speeed. This can be made possible by any number of reasons, including unsafe drive changes, or comprehensive navigation data mitigating the risk of travelling at such a high speed. A supercharged state can only be maintained for a number of wormhole traversals.", "* [color=green]2.0x speed[/color]", value)
 
+var junk_textures: Dictionary = {}
 
 func _ready():
 	status_control.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	status_control.connect("updateScannerDisplayTimes", _on_update_scanner_display_times)
 	contact_list.create_item(null)
+	
+	var junk_paths = global_data.get_all_files("graphics/system-map/junk", "png")
+	for path in junk_paths:
+		junk_textures[path] = load(path)
 	pass
 
 func _physics_process(delta):
@@ -747,6 +753,13 @@ func draw_map():
 		var pos = Vector2(player_position_matrix[0] + (dir * player_adj_scanner_matrix[1]))
 		scanner_power_points.append(pos)
 	
+	var screen_junk = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.SCREEN_JUNK)
+	if screen_junk:
+		for junk in screen_junk:
+			var matched_texture = junk_textures.get(junk.texture_path) as Texture2D
+			if matched_texture != null:
+				matched_texture.draw_rect(get_canvas_item(), global_data.get_offset_rect2(junk.position, junk.texture_scale, junk.texture_scale), false, Color(junk.texture_modulate, 0.025))
+	
 	var asteroid_belts = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.ASTEROID_BELT)
 	if asteroid_belts: 
 		for belt in asteroid_belts:
@@ -1098,6 +1111,10 @@ func _on_add_text_ping(ping_path: String, pos: Vector2, text: String) -> void:
 	ping.text = text
 	ping.resetTime()
 	TEXT_PINGS.append(ping)
+	pass
+
+func _on_new_background() -> void:
+	background_handler.new_background()
 	pass
 
 
