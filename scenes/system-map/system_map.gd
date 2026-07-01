@@ -854,6 +854,14 @@ func draw_map():
 	
 	for body in system.bodies:
 		
+		#batching theorised orbit body question mark textures:
+		
+		if body is orbitBodyAPI and body.is_theorised_not_known():
+			if not body.is_hidden():
+				question_mark_texture.draw_rect(get_canvas_item(), global_data.get_offset_rect2(body.position, standard_size * 1.25, standard_size * 1.25), false)
+	
+	for body in system.bodies:
+		
 		#batching anomaly map icons:
 		
 		if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_known(): 
