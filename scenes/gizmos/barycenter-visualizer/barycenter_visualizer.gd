@@ -13,8 +13,8 @@ var _ping_length: int = 0 #game.gd _on_sonar_values_changed
 var _ping_direction: Vector2 = Vector2.ZERO
 var _player_position: Vector2 = Vector2.ZERO #game.gd _physics_process
 
-var point_count: int = 20
-var radius: int = 50
+var point_count: int = 12
+var radius: int = 70
 
 var points: Dictionary = {}
 var pingable_points: Dictionary = {}
@@ -30,9 +30,10 @@ func _on_refresh_timeout() -> void:
 	pingable_glint_points.clear()
 	
 	for i in point_count:
-		var theta = (360 / point_count - 1) * i
-		var x = radius * cos(theta)
-		var y = radius * sin(theta)
+		var rad_theta = deg_to_rad((360 / point_count) * i)
+		#var theta = (360 / point_count) * (i + x) # this creates a 'dead zone' where theres no barycenter info, and it rotates around the barycenter as x increases! pretty cool
+		var x = radius * cos(rad_theta)
+		var y = radius * sin(rad_theta)
 		var new_point_pos = Vector2(x + get_screen_centre().x, y + get_screen_centre().y)
 		points[new_point_pos] = 1.0
 	
@@ -100,7 +101,10 @@ func get_closest_point_to_direction(dir: Vector2):
 
 func _draw():
 	for point in points:
-		draw_line(point, (point + get_screen_centre().direction_to(point) * (radius / 2)), Color.DARK_OLIVE_GREEN, 10.0)
+		draw_line(get_screen_centre() + (get_screen_centre().direction_to(point) * 40.0), point, Color("353535"), 5)
+		draw_line(point, point + Vector2(0, 10).rotated(get_screen_centre().angle_to_point(point) + deg_to_rad(45)), Color("353535"), 5)
+		draw_line(point, point + Vector2(0, -10).rotated(get_screen_centre().angle_to_point(point) - deg_to_rad(45)), Color("353535"), 5)
+		
 		if pingable_points.get(point, false) == true:
 			draw_circle(point, points.get(point), Color.RED)
 		else:
