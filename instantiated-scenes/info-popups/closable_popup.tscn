@@ -48,6 +48,7 @@ mouse_filter = 2
 theme = ExtResource("1_mlj3f")
 script = ExtResource("2_mlj3f")
 text_box_path = "./mid_panel_fluid/mid_panel/margin/text"
+background_path = "./mid_panel_fluid/mid_panel/background"
 close_button_path = "./mid_panel_fluid/close_button"
 
 [node name="mid_panel_fluid" parent="." instance=ExtResource("3_af5f3")]
@@ -62,7 +63,7 @@ mouse_filter = 2
 [node name="background" type="ColorRect" parent="mid_panel_fluid/mid_panel" index="0"]
 layout_mode = 2
 mouse_filter = 2
-color = Color(0.18039216, 0.18039216, 0.18039216, 0.41568628)
+color = Color(0.17923622, 0.17923622, 0.17923622, 1)
 
 [node name="margin" type="MarginContainer" parent="mid_panel_fluid/mid_panel" index="1"]
 layout_mode = 2

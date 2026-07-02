@@ -49,6 +49,7 @@ mouse_filter = 2
 theme = ExtResource("1_17aoj")
 script = ExtResource("2_eho3s")
 text_box_path = "./mid_panel_fluid/mid_panel/margin/text"
+background_path = "./mid_panel_fluid/mid_panel/background"
 
 [node name="mid_panel_fluid" parent="." instance=ExtResource("3_s08vq")]
 layout_mode = 2

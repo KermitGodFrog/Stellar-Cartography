@@ -142,6 +142,7 @@ target_objective_wID = "tutorialMarkIngress"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/barycenter_container")
 track_offset = Vector2(0, -355)
+background_alpha = 1.0
 info = "You did it!
 
 The SYSTEM LIST currently underlines a missing body named Ingress situated further than Prelude. [color=yellow]Our value is maximised by discovering all bodies within a star system[/color]. Let's mark Ingress!

@@ -8,6 +8,9 @@ var last_popup_state: int = -1 #below STATES constituting 0, 1, 2
 @export_node_path() var track
 @export var track_offset: Vector2
 
+@export var background_path: String
+@export_range(0.0, 1.0, 0.001) var background_alpha = 0.416
+
 @export_multiline var info: String
 
 ##if applicable
@@ -22,6 +25,10 @@ func _ready() -> void:
 		get_node(NodePath(text_box_path)).set_custom_minimum_size(text_box_size)
 	if close_button_path.length() > 0:
 		get_node(NodePath(close_button_path)).connect("pressed", _on_close_button_pressed)
+	
+	
+	if background_path.length() > 0:
+		get_node(NodePath(background_path)).set_color(Color("2e2e2e", background_alpha))
 	pass
 
 
