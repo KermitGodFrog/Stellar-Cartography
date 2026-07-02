@@ -90,6 +90,10 @@ func _ready():
 			if events_same_size:
 				InputMap.action_erase_events(action)
 				InputMap.action_add_event(action, helper.saved_events[i])
+		
+		#loading misc stuff
+		DisplayServer.window_set_mode(helper.window_mode)
+		Engine.set_max_fps(helper.fps_limit)
 	pass
 
 func _on_continue_button_pressed():

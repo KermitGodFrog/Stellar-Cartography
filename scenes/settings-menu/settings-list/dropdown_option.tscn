@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3rf4ecjcjqwr"]
+
+[ext_resource type="Script" uid="uid://crmqo7ul62wqx" path="res://scenes/settings-menu/settings-list/dropdown_option.gd" id="1_24d1m"]
+
+[node name="dropdown_option" type="PanelContainer"]
+size_flags_horizontal = 3
+script = ExtResource("1_24d1m")
+
+[node name="scroll" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="title" type="Label" parent="scroll"]
+layout_mode = 2
+vertical_alignment = 1
+
+[node name="dropdown" type="OptionButton" parent="scroll"]
+layout_mode = 2
+
+[connection signal="item_selected" from="scroll/dropdown" to="." method="_on_dropdown_item_selected"]
