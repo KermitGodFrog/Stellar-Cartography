@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://vckukatyjp27" path="res://instantiated-scenes/ui/mid/mid_panel_fluid.tscn" id="3_s08vq"]
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="4_qy2qi"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="5_fyx3d"]
-[ext_resource type="Texture2D" uid="uid://diwsd0k5wno8h" path="res://graphics/system-map/question_mark.png" id="6_sbbtb"]
+[ext_resource type="Texture2D" uid="uid://bkvwgdists7up" path="res://graphics/shared/mouse/mouse_left.png" id="6_eho3s"]
 [ext_resource type="PackedScene" uid="uid://dekj38tqs61np" path="res://data/misc/colorOscillate.tscn" id="7_eho3s"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rjt1"]
@@ -104,7 +104,7 @@ expand = true
 bus = &"SFX"
 
 [node name="switch_button" type="Button" parent="mid_panel_fluid"]
-custom_minimum_size = Vector2(32, 32)
+custom_minimum_size = Vector2(150, 32)
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_default_cursor_shape = 2
@@ -112,7 +112,8 @@ theme_type_variation = &"ButtonDull"
 theme_override_styles/normal = SubResource("StyleBoxFlat_1rjt1")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_58560")
 theme_override_styles/hover = SubResource("StyleBoxFlat_1skfv")
-icon = ExtResource("6_sbbtb")
+text = "VIEW VIDEO"
+icon = ExtResource("6_eho3s")
 expand_icon = true
 
 [node name="switch_button_flash" parent="." instance=ExtResource("7_eho3s")]

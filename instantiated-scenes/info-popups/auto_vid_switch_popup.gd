@@ -9,6 +9,8 @@ extends "res://instantiated-scenes/info-popups/info_popup.gd"
 @export_range(0.001, 10.0, 0.001) var video_aspect_ratio: float = 1.0
 @export var flash_switch_button_until_pressed: bool = false
 
+var current_color: Color = Color.WHITE
+
 func _ready() -> void:
 	switch_button.connect("pressed", _on_switch_button_pressed)
 	
@@ -19,9 +21,14 @@ func _ready() -> void:
 	video.set_stream(stream)
 	
 	if flash_switch_button_until_pressed:
-		switch_button_flash.oscillate_property(switch_button, "theme_override_colors/icon_normal_color", Color.WHITE, Color.YELLOW, 20, 10, true)
+		switch_button_flash.oscillate_property(self, "current_color", Color.WHITE, Color.YELLOW, 20, 10, true)
 	
 	super()
+	pass
+
+func _process(_delta: float) -> void:
+	switch_button.set("theme_override_colors/font_color", current_color)
+	switch_button.set("theme_override_colors/icon_normal_color", current_color)
 	pass
 
 func _on_switch_button_pressed() -> void:
@@ -31,8 +38,10 @@ func _on_switch_button_pressed() -> void:
 	video_container.visible = !video_container.visible
 	if video_container.visible:
 		video.play()
+		switch_button.set_text("VIEW TEXT")
 	else:
 		video.stop()
+		switch_button.set_text("VIEW VIDEO")
 	
 	video_container.set_custom_minimum_size(get_node(NodePath(text_box_path)).get_size())
 	video_container.set_size(get_node(NodePath(text_box_path)).get_size())
