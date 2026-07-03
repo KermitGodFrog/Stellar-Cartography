@@ -308,10 +308,11 @@ func get_body_icon_or_null(body: bodyAPI) -> Resource: #returns null if no defau
 			return null
 
 
-func loadWorld():
+
+func loadWorld() -> worldAPI:
 	print("GAME DATA: LOADING WORLD")
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
-		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_data.res", "", ResourceLoader.CACHE_MODE_IGNORE)
+		var resource : worldAPI = ResourceLoader.load("user://stellar_cartographer_data.res", String(), ResourceLoader.CACHE_MODE_IGNORE)
 		return resource
 	return null
 
@@ -349,15 +350,59 @@ func deleteWorld() -> void:
 
 
 
-func loadSettings():
+func storeDefaultSettings() -> void: #has to be done FIRST by gameMaster when the game is loaded, regardless of whether settingsHelper exists! defaults are handled by settings_menu, NOT game_data
+	#storing default inputs
+	var relevant_actions = global_data.get_relevant_input_actions()
+	for i in relevant_actions.size():
+		var action = relevant_actions[i]
+		var event = InputMap.action_get_events(action)
+		if not event.is_empty():
+			DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS.append(event.front())
+		else:
+			DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS.append(null)
+	pass
+
+func loadSettings() -> settingsHelper:
 	print("GAME DATA: LOADING SETTINGS")
 	if ResourceLoader.exists("user://stellar_cartographer_settings.res"):
-		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_settings.res")
+		var resource : settingsHelper = ResourceLoader.load("user://stellar_cartographer_settings.res", String(), ResourceLoader.CACHE_MODE_IGNORE_DEEP)
 		#print("LOADING SUCCESS") the resource being returned does not necessarily mean that the resource was loaded successfully!
 		return resource
 	#print("LOADING ERORR")
-	print("FILE DOES NOT EXIST")
+	print("GAME DATA: LOADING SETTINGS FAILED: FILE DOES NOT EXIST")
 	return null
+
+func loadThenApplySettings() -> void:
+	var helper = loadSettings()
+	if helper != null:
+		#loading audio
+		var relevant_audio_buses = SETTINGS_RELEVANT_AUDIO_BUSES
+		var volumes_same_size: bool = relevant_audio_buses.size() == helper.saved_bus_volumes.size()
+		for i in relevant_audio_buses.size():
+			var bus_name = SETTINGS_RELEVANT_AUDIO_BUSES[i]
+			var bus_idx = AudioServer.get_bus_index(bus_name)
+			
+			if volumes_same_size:
+				AudioServer.set_bus_volume_db(bus_idx, helper.saved_bus_volumes[i])
+		
+		print(helper.saved_events)
+		var relevant_actions = global_data.get_relevant_input_actions()
+		var events_same_size: bool = relevant_actions.size() == helper.saved_events.size() #if an update comes along and adds keybinds, everything is reset to defaults
+		for i in relevant_actions.size():
+			var action = relevant_actions[i]
+			
+			if events_same_size:
+				InputMap.action_erase_events(action)
+				InputMap.action_add_event(action, helper.saved_events[i])
+				#print(action)
+				#print(helper.saved_events[i])
+		
+		#loading misc stuff
+		DisplayServer.window_set_mode(helper.window_mode)
+		Engine.set_max_fps(helper.fps_limit)
+	else:
+		push_error("GAME DATA: CANNOT LOAD AND APPLY SETTINGS: HELPER DOES NOT EXIST")
+	pass
 
 func saveSettings(settings_helper: settingsHelper) -> void:
 	print("GAME DATA: SAVING SETTINGS")
@@ -367,18 +412,18 @@ func saveSettings(settings_helper: settingsHelper) -> void:
 
 
 
-func loadAchievements():
+func loadAchievements() -> achievementsHelper:
 	print("GAME DATA: LOADING ACHIEVEMENTS")
 	if ResourceLoader.exists("user://stellar_cartographer_achievements.res"):
-		var resource : Resource = ResourceLoader.load("user://stellar_cartographer_achievements.res")
+		var resource : achievementsHelper = ResourceLoader.load("user://stellar_cartographer_achievements.res")
 		#print("LOADING SUCCESS") the resource being returned does not necessarily mean that the resource was loaded successfully!
 		return resource
 	#print("LOADING ERROR")
-	print("FILE DOES NOT EXIST")
+	print("GAME DATA: LOADING ACHIEVEMENTS FAILED: FILE DOES NOT EXIST")
 	return null
 
 func saveAchievements(achievements_helper: achievementsHelper) -> void:
 	print("GAME DATA: SAVING ACHIEVEMENTS")
 	var error = ResourceSaver.save(achievements_helper, "user://stellar_cartographer_achievements.res")
-	print("ERROR CODE: ", error)
+	print("GAME DATA: SAVING ACHIEVEMENTS DONE: ERROR CODE: ", error)
 	pass

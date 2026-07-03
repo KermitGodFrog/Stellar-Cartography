@@ -26,3 +26,5 @@ step = 0.05
 layout_mode = 2
 size_flags_horizontal = 10
 text = "2.4db"
+
+[connection signal="value_changed" from="scroll/slider" to="." method="_on_slider_value_changed"]
