@@ -47,6 +47,7 @@ corner_radius_bottom_left = 4
 mouse_filter = 2
 theme = ExtResource("1_mlj3f")
 script = ExtResource("2_mlj3f")
+mid_panel = NodePath("mid_panel_fluid/mid_panel")
 text_box_path = "./mid_panel_fluid/mid_panel/margin/text"
 background_path = "./mid_panel_fluid/mid_panel/background"
 close_button_path = "./mid_panel_fluid/close_button"
