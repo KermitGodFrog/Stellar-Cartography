@@ -32,9 +32,7 @@ target_objective_wID = "tutorialOptionalUnderstandPremise"
 text_box_size = Vector2(400, 0)
 info = "Welcome, Captain!
 
-In [i]Stellar Cartographer[/i], you will gather exploration data (value) and sell it to space stations for nanites so that you can repair and upgrade your starship. A way to gain exploration data is by [color=yellow]discovering bodies (stuff within star systems)[/color].
-
-This tutorial will teach you how to move, discover, interact, traverse wormholes, use space stations and will establish the story continued in the campaign."
+In [i]Stellar Cartographer[/i], you will gather exploration data (value) and sell it to space stations for nanites so that you can repair and upgrade your starship. A way to gain exploration data is by [color=yellow]discovering bodies (stuff within star systems)[/color]."
 
 [node name="tutorialOptionalViewObjectives" parent="." instance=ExtResource("1_fpin1")]
 visible = false
@@ -87,6 +85,7 @@ offset_right = 240.0
 offset_bottom = 72.0
 video_file = "res://graphics/system-map/tutorial/tutorialMarkPrelude.ogv"
 video_title_text = "Mark Prelude by using LIDAR to ping it three times:"
+start_on_video = true
 flash_switch_button_until_pressed = true
 target_objective_wID = "tutorialMarkPrelude"
 text_box_size = Vector2(300, 100)
@@ -122,7 +121,7 @@ layout_mode = 0
 offset_right = 4.0
 offset_bottom = 4.0
 target_objective_wID = "tutorialDiscoverPrelude"
-track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll/orbit_button")
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll/orbit_button/orbit_texture")
 
 [node name="tutorialDiscoverPrelude" parent="." instance=ExtResource("2_7r03o")]
 visible = false
@@ -135,6 +134,14 @@ info = "Great job - the location of Prelude has been added to the SYSTEM LIST! H
 
 To discover Prelude, press on '???' on the SYSTEM LIST to lock, and then press the 'ORBIT' action in the ACTIONS PANEL.
 [img]res://graphics/system-map/actions-panel/orbit_icon.png[/img]"
+
+[node name="outline_tutorialFollowPrelude" parent="." instance=ExtResource("3_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialFollowPrelude"
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll/go_to_button/go_to_texture")
 
 [node name="tutorialFollowPrelude" parent="." instance=ExtResource("2_7r03o")]
 visible = false
@@ -149,13 +156,31 @@ The question mark next to Prelude on the SYSTEM LIST shows an undocumented anoma
 To investigate the anomaly on Prelude, press on 'Prelude' on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL.
 [img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
 
+[node name="outline1_tutorialMarkIngress" parent="." instance=ExtResource("3_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialMarkIngress"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/barycenter_container")
+
+[node name="outline2_tutorialMarkIngress" parent="." instance=ExtResource("3_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialMarkIngress"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/sonar_container")
+
 [node name="tutorialMarkIngress" parent="." instance=ExtResource("2_k3c6j")]
 visible = false
 layout_mode = 0
 offset_right = 240.0
 offset_bottom = 72.0
 video_file = "res://graphics/system-map/tutorial/tutorialMarkIngress.ogv"
+video_title_text = "Use BARYCENTER VISUALIZER to learn the direction to ping Ingress and mark it by using LIDAR to ping it three times:"
 video_aspect_ratio = 2.0
+flash_switch_button_until_pressed = true
 target_objective_wID = "tutorialMarkIngress"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/barycenter_container")

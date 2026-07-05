@@ -16,6 +16,7 @@ var current_color: Color = Color.WHITE
 
 func _ready() -> void:
 	vid_title.set_text(video_title_text)
+	reset_vid_container_and_title_sizes()
 	
 	switch_button.connect("pressed", _on_switch_button_pressed)
 	
@@ -25,36 +26,39 @@ func _ready() -> void:
 	stream.set_file(video_file)
 	video.set_stream(stream)
 	
+	super()
+	
+	await get_tree().create_timer(1.0, true).timeout
+	
 	if start_on_video:
 		_on_switch_button_pressed()
 	
 	if flash_switch_button_until_pressed:
 		switch_button_flash.oscillate_property(self, "current_color", Color.WHITE, Color.YELLOW, 20, 10, true)
-	
-	super()
 	pass
 
 func _process(delta: float) -> void:
 	switch_button.set("theme_override_colors/font_color", current_color)
 	switch_button.set("theme_override_colors/icon_normal_color", current_color)
+	
 	super(delta) #forgot this and spent AGES debugging it
 	pass
 
 func _on_switch_button_pressed() -> void:
 	switch_button_flash.clear_active()
 	
+	reset_vid_container_and_title_sizes()
+	
 	get_node(NodePath(text_box_path)).visible = !get_node(NodePath(text_box_path)).visible
 	video_container.visible = !video_container.visible
 	vid_title.visible = !vid_title.visible
+	
 	if video_container.visible:
 		video.play()
 		switch_button.set_text("VIEW TEXT")
 	else:
 		video.stop()
 		switch_button.set_text("VIEW VIDEO")
-	
-	video_container.set_custom_minimum_size(get_node(NodePath(text_box_path)).get_size())
-	video_container.set_size(get_node(NodePath(text_box_path)).get_size())
 	pass
 
 func set_popup_state(_state: objectiveAPI.STATES) -> void:
@@ -63,4 +67,11 @@ func set_popup_state(_state: objectiveAPI.STATES) -> void:
 			show()
 		_:
 			hide()
+	pass
+
+func reset_vid_container_and_title_sizes() -> void:
+	video_container.set_custom_minimum_size(get_node(NodePath(text_box_path)).get_size())
+	video_container.set_size(get_node(NodePath(text_box_path)).get_size())
+	vid_title.set_custom_minimum_size(Vector2(get_node(NodePath(text_box_path)).get_size().x, 0))
+	vid_title.set_size(get_node(NodePath(text_box_path)).get_size())
 	pass

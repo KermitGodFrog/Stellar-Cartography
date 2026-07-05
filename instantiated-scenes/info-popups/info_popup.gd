@@ -23,7 +23,7 @@ var dragging: bool = false
 #primary
 func _ready() -> void:
 	if track != null:
-		get_node(mid_panel).mouse_filter = Control.MOUSE_FILTER_PASS
+		get_node(mid_panel).mouse_filter = Control.MOUSE_FILTER_STOP
 		get_node(mid_panel).mouse_default_cursor_shape = Control.CURSOR_MOVE
 	get_node(mid_panel).connect("gui_input", _on_mid_panel_gui_input)
 	
