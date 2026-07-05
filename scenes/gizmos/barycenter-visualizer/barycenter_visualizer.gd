@@ -156,8 +156,8 @@ func _on_locked_body_identifier_changed(_new_identifier: int) -> void:
 	tween = get_tree().create_tween()
 	texture_alpha = 1.0
 	limited_map_alpha = 0.0
-	tween.tween_property(self, "texture_alpha", 0.0, 1.0).set_trans(Tween.TRANS_EXPO)
-	tween.tween_property(self, "limited_map_alpha", 1.0, 0.25)
+	tween.tween_property(self, "texture_alpha", 0.0, 0.6).set_trans(Tween.TRANS_EXPO)
+	tween.tween_property(self, "limited_map_alpha", 1.0, 0.2)
 	
 	if locked_body:
 		if locked_body.is_known():
