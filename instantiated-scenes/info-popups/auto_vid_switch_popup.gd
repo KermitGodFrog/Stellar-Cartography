@@ -26,9 +26,10 @@ func _ready() -> void:
 	super()
 	pass
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	switch_button.set("theme_override_colors/font_color", current_color)
 	switch_button.set("theme_override_colors/icon_normal_color", current_color)
+	super(delta) #forgot this and spent AGES debugging it
 	pass
 
 func _on_switch_button_pressed() -> void:

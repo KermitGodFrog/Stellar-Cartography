@@ -16,7 +16,7 @@ var last_popup_state: int = -1 #below STATES constituting 0, 1, 2
 ##if applicable
 @export var close_button_path: String
 
-
+var manual_offset: Vector2 = Vector2.ZERO 
 
 #primary
 func _ready() -> void:
@@ -25,8 +25,6 @@ func _ready() -> void:
 		get_node(NodePath(text_box_path)).set_custom_minimum_size(text_box_size)
 	if close_button_path.length() > 0:
 		get_node(NodePath(close_button_path)).connect("pressed", _on_close_button_pressed)
-	
-	
 	if background_path.length() > 0:
 		get_node(NodePath(background_path)).set_color(Color("2e2e2e", background_alpha))
 	pass
@@ -35,7 +33,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if track != null:
-		set_global_position((get_node(track).get_global_position() + (get_node(track).get_size() / 2) - (get_size() / 2)) + track_offset)
+		set_global_position(((get_node(track).get_global_position() + (get_node(track).get_size() / 2) - (get_size() / 2)) + track_offset) + manual_offset)
 	pass
 
 
