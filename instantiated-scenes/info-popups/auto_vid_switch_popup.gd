@@ -9,6 +9,7 @@ extends "res://instantiated-scenes/info-popups/info_popup.gd"
 @export var video_file: String
 @export_multiline var video_title_text: String
 @export_range(0.001, 10.0, 0.001) var video_aspect_ratio: float = 1.0
+@export var start_on_video: bool = false
 @export var flash_switch_button_until_pressed: bool = false
 
 var current_color: Color = Color.WHITE
@@ -23,6 +24,9 @@ func _ready() -> void:
 	var stream = VideoStreamTheora.new()
 	stream.set_file(video_file)
 	video.set_stream(stream)
+	
+	if start_on_video:
+		_on_switch_button_pressed()
 	
 	if flash_switch_button_until_pressed:
 		switch_button_flash.oscillate_property(self, "current_color", Color.WHITE, Color.YELLOW, 20, 10, true)
