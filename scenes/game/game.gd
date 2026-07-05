@@ -41,7 +41,7 @@ func _ready():
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
-		new_player.current_storyline = playerAPI.STORYLINES.keys().pick_random()
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.SCAN_PREDICTION)
 		
 		connect_all_player_signals(new_player)
 		
@@ -86,7 +86,7 @@ func _ready():
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
-		new_player.current_storyline = playerAPI.STORYLINES.keys().pick_random()
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.SCAN_PREDICTION)
 		
 		connect_all_player_signals(new_player)
 		
