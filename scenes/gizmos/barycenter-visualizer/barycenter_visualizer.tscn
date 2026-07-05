@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://oqkfuasvgtj6"]
+[gd_scene load_steps=3 format=3 uid="uid://oqkfuasvgtj6"]
 
 [ext_resource type="Script" uid="uid://6ocj6261a8ld" path="res://scenes/gizmos/barycenter-visualizer/barycenter_visualizer.gd" id="1_tynt4"]
+[ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="2_wow33"]
 
 [node name="barycenter_visualizer_window" type="SubViewport"]
 disable_3d = true
@@ -36,7 +37,6 @@ expand_mode = 5
 stretch_mode = 5
 
 [node name="locked_body_label" type="Label" parent="barycenter_control"]
-show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -45,7 +45,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0.145098, 0.145098, 0.145098, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_y = 5
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_wow33")
 theme_override_font_sizes/font_size = 10
 horizontal_alignment = 1
 vertical_alignment = 1
