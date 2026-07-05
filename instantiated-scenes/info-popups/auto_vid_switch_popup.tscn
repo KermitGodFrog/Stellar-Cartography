@@ -105,6 +105,13 @@ mouse_filter = 2
 expand = true
 bus = &"SFX"
 
+[node name="vid_title" type="Label" parent="mid_panel_fluid/mid_panel/margin"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.9058309, 0.9058309, 0.9058309, 0.6)
+theme_override_fonts/font = ExtResource("5_fyx3d")
+
 [node name="switch_button" type="Button" parent="mid_panel_fluid"]
 custom_minimum_size = Vector2(150, 32)
 layout_mode = 2
