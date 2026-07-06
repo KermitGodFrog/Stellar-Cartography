@@ -161,7 +161,7 @@ visible = false
 layout_mode = 0
 offset_right = 4.0
 offset_bottom = 4.0
-target_objective_wID = "tutorialMarkPrelude"
+target_objective_wID = "tutorialMarkIngress"
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/barycenter_container")
 
 [node name="outline2_tutorialMarkIngress" parent="." instance=ExtResource("3_k3c6j")]
@@ -169,7 +169,7 @@ visible = false
 layout_mode = 0
 offset_right = 4.0
 offset_bottom = 4.0
-target_objective_wID = "tutorialMarkPrelude"
+target_objective_wID = "tutorialMarkIngress"
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/sonar_container")
 
 [node name="tutorialMarkIngress" parent="." instance=ExtResource("2_k3c6j")]
