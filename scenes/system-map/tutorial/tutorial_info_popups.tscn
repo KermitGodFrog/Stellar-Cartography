@@ -255,18 +255,6 @@ Wormholes like Ingress are how you progress in [i]Stellar Cartographer[/i]. When
 To traverse Ingress, press on 'Ingress' on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. 
 [img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
 
-[node name="tutorialOptionalStunMarauder" parent="." instance=ExtResource("1_fpin1")]
-visible = false
-layout_mode = 0
-offset_right = 240.0
-offset_bottom = 66.0
-target_objective_wID = "tutorialOptionalStunMarauder"
-text_box_size = Vector2(250, 100)
-track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin")
-info = "Sometimes, a hostile unit is too fast to evade normally. A way to still evade such units is to [color=yellow]stun them[/color], stopping them from chasing you temporarily. Hostile units can be stunned by [color=yellow]pinging them[/color]. 
-
-To ping the marauder starship, adjust the LIDAR direction so it matches the direction of the ship on the SYSTEM MAP, and press the 'PING' button."
-
 [node name="tutorialOptionalUnderstandUnits" parent="." instance=ExtResource("1_fpin1")]
 visible = false
 layout_mode = 1
