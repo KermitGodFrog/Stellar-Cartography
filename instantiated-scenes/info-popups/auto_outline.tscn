@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dc7gw1fdgwjq2"]
+[gd_scene load_steps=4 format=3 uid="uid://dc7gw1fdgwjq2"]
 
 [ext_resource type="Script" uid="uid://cd8djcyxa8kwb" path="res://instantiated-scenes/info-popups/auto_outline.gd" id="1_qxaic"]
+[ext_resource type="Script" uid="uid://dt2vnew2smkuk" path="res://data/misc/colorOscillate.gd" id="2_6mr02"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qxaic"]
 bg_color = Color(0, 0, 0, 0)
@@ -20,3 +21,7 @@ expand_margin_bottom = 2.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qxaic")
 script = ExtResource("1_qxaic")
+
+[node name="colorOscillate" type="Node" parent="."]
+script = ExtResource("2_6mr02")
+metadata/_custom_type_script = "uid://dt2vnew2smkuk"

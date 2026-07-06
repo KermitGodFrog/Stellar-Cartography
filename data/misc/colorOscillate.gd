@@ -4,9 +4,9 @@ class_name colorOscillate
 var active: Dictionary = {}
 var current_time: float = 0.0
 
-func oscillate_property(object: Object, property: NodePath, modulate1: Color, modulate2: Color, stop_step: int, oscillation_count: int, repeat: bool = false) -> void:
+func oscillate_property(object: Object, property: NodePath, modulate1: Color, modulate2: Color, stop_step: int, oscillation_count: int, repeat: bool = false, over_step: bool = true) -> void:
 	var colors: PackedColorArray = []
-	for color in colorOscillateIterator.new(modulate1, modulate2, stop_step, oscillation_count, false):
+	for color in colorOscillateIterator.new(modulate1, modulate2, stop_step, oscillation_count, over_step):
 		colors.append(color)
 	var entry = Dictionary()
 	entry["property"] = property.get_as_property_path()

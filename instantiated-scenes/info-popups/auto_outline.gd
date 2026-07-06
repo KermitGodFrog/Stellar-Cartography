@@ -1,11 +1,21 @@
 extends Control
 
+@onready var oscillate = $colorOscillate
+
 @export var target_objective_wID: String
 var last_popup_state: int = -1 #below STATES constituting 0, 1, 2
 
 @export_node_path() var track
 
+var current_color: Color = Color.YELLOW
+
+func _ready() -> void:
+	oscillate.oscillate_property(self, "current_color", Color.YELLOW, Color.GOLDENROD, 30, 1, true, false)
+	pass
+
 func _process(_delta: float) -> void:
+	var panel = get("theme_override_styles/panel")
+	panel.set("border_color", current_color)
 	if track != null:
 		set_size(get_node(track).get_size())
 		set_global_position(((get_node(track).get_global_position() + (get_node(track).get_size() / 2) - (get_size() / 2))))
