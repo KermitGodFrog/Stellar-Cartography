@@ -64,6 +64,8 @@ func _on_switch_button_pressed() -> void:
 func set_popup_state(_state: objectiveAPI.STATES) -> void:
 	match _state:
 		objectiveAPI.STATES.NONE:
+			_on_switch_button_pressed()
+			_on_switch_button_pressed()
 			show()
 		_:
 			hide()

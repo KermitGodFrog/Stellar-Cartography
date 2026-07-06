@@ -123,9 +123,16 @@ offset_bottom = 4.0
 target_objective_wID = "tutorialDiscoverPrelude"
 track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll/orbit_button/orbit_texture")
 
-[node name="tutorialDiscoverPrelude" parent="." instance=ExtResource("2_7r03o")]
+[node name="tutorialDiscoverPrelude" parent="." instance=ExtResource("2_k3c6j")]
 visible = false
 layout_mode = 0
+offset_right = 240.0
+offset_bottom = 72.0
+video_file = "res://graphics/system-map/tutorial/tutorialDiscoverPrelude.ogv"
+video_title_text = "Discover Prelude by visually acquiring it. Use the ‘ORBIT’ action to get close enough."
+video_aspect_ratio = 0.519
+start_on_video = true
+flash_switch_button_until_pressed = true
 target_objective_wID = "tutorialDiscoverPrelude"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel")
@@ -143,9 +150,15 @@ offset_bottom = 4.0
 target_objective_wID = "tutorialFollowPrelude"
 track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll/go_to_button/go_to_texture")
 
-[node name="tutorialFollowPrelude" parent="." instance=ExtResource("2_7r03o")]
+[node name="tutorialFollowPrelude" parent="." instance=ExtResource("2_k3c6j")]
 visible = false
 layout_mode = 0
+offset_right = 240.0
+offset_bottom = 72.0
+video_file = "res://graphics/system-map/tutorial/tutorialFollowPrelude.ogv"
+video_title_text = "Investigate the anomaly on Prelude by pressing the ‘GO TO’ action."
+video_aspect_ratio = 0.519
+start_on_video = true
 target_objective_wID = "tutorialFollowPrelude"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW")
@@ -180,6 +193,7 @@ offset_bottom = 72.0
 video_file = "res://graphics/system-map/tutorial/tutorialMarkIngress.ogv"
 video_title_text = "Use BARYCENTER VISUALIZER to learn the direction to ping Ingress, and then mark it by using LIDAR to ping it three times."
 video_aspect_ratio = 2.0
+start_on_video = true
 flash_switch_button_until_pressed = true
 target_objective_wID = "tutorialMarkIngress"
 text_box_size = Vector2(300, 100)
