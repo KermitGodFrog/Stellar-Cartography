@@ -215,6 +215,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("TUTORIALEnterIngress", _on_tutorial_enter_ingress)
 	dialogue_manager.connect("TUTORIALSetWindowTutorials", _on_tutorial_set_window_tutorials)
 	dialogue_manager.connect("TUTORIALSetPlayerActionLock", _on_tutorial_set_player_action_lock)
+	dialogue_manager.connect("TUTORIALForceOrbitPrelude", _on_tutorial_force_orbit_prelude)
 	
 	pause_menu.connect("saveWorld", _on_save_world)
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
@@ -1096,6 +1097,13 @@ func _on_tutorial_set_window_tutorials(value: bool) -> void:
 
 func _on_tutorial_set_player_action_lock(value: bool) -> void:
 	world.player.action_lock = value
+	pass
+
+func _on_tutorial_force_orbit_prelude() -> void:
+	var system = world.player.current_star_system
+	var prelude = system.get_first_body_from_display_name("Prelude")
+	if prelude != null:
+		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, prelude)
 	pass
 
 func _on_tutorial_ingress_threshold_reached() -> void: #comes from system_map not dialogueManager! only _on_tutorial exception cos couldnt do it otherwise

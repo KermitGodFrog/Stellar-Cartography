@@ -902,10 +902,11 @@ func _on_orbit_button_pressed():
 	pass
 
 func _on_stop_button_pressed():
-	locked_body = null
-	action_body = null
-	emit_signal("updatePlayerTargetPosition", player_position_matrix[0])
-	emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
+	if not player_action_lock:
+		locked_body = null
+		action_body = null
+		emit_signal("updatePlayerTargetPosition", player_position_matrix[0])
+		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
 	pass
 
 
