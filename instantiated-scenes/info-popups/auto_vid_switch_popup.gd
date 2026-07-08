@@ -47,7 +47,7 @@ func _on_switch_button_pressed() -> void:
 	get_node(NodePath(text_box_path)).visible = !get_node(NodePath(text_box_path)).visible
 	vid_scroll.visible = !vid_scroll.visible
 	
-	if video_container.visible:
+	if vid_scroll.visible:
 		video.stop()
 		switch_button.set_text("VIEW TEXT")
 	else:
