@@ -7,6 +7,7 @@ extends Control
 @onready var prefix_edit = $new_game_popup/new_game/margin/scroll/prefix_edit
 @onready var ship_name_edit = $new_game_popup/new_game/margin/scroll/ship_name_scroll/ship_name_edit
 @onready var game_type_edit = $new_game_popup/new_game/margin/scroll/game_type_scroll/game_type_edit
+@onready var tutorial_option_checkbox = $new_game_popup/new_game/margin/scroll/tutorial_option_checkbox
 @onready var new_game_popup = $new_game_popup
 @onready var achievements_list_popup = $achievements_list_popup
 @onready var background = $background
@@ -66,10 +67,21 @@ func _on_continue_button_pressed():
 
 func _on_create_button_pressed():
 	NEW_GAME_INIT_TYPE = game_type_edit.get_selected_metadata()
+	var data: Dictionary = {}
 	if (not name_edit.text.is_empty()) and (not ship_name_edit.text.is_empty()):
+		data["name"] = name_edit.get_text()
+		data["ship_name"] = ship_name_edit.get_text()
+		data["prefix"] = prefix_edit.get_item_text(prefix_edit.selected)
+	if NEW_GAME_INIT_TYPE == global_data.GAME_INIT_TYPES.TUTORIAL:
+		if tutorial_option_checkbox.is_pressed():
+			data["tutorial_type"] = "LONG"
+		else:
+			data["tutorial_type"] = "SHORT"
+	
+	if data.size() > 0:
 		global_data.change_scene.emit("res://scenes/game/game.tscn", {
 			"init_type": NEW_GAME_INIT_TYPE, 
-			"init_data": {"name": name_edit.get_text(), "ship_name": ship_name_edit.get_text(), "prefix": prefix_edit.get_item_text(prefix_edit.selected)}
+			"init_data": data
 			})
 	else:
 		global_data.change_scene.emit("res://scenes/game/game.tscn", {

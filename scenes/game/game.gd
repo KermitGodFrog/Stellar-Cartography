@@ -512,6 +512,7 @@ func body_query_add_shared(query: responseQuery, body: bodyAPI) -> void:
 	query.add("type", starSystemAPI.BODY_TYPES.find_key(body.get_type()))
 	query.add_tree_access("name", body.get_display_name())
 	query.add("tutorial", init_type == global_data.GAME_INIT_TYPES.TUTORIAL)
+	query.add("tutorial_type", init_data.get("tutorial_type", null))
 	query.add("insa", world.player.current_star_system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA)
 	pass
 

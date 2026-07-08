@@ -1,10 +1,11 @@
-[gd_scene load_steps=28 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=29 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" uid="uid://dq4gkj1n823v0" path="res://scenes/main-menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_b84fj"]
 [ext_resource type="Texture2D" uid="uid://nav04ap3rdbe" path="res://graphics/main-menu/new_game_popup.png" id="2_1jdbj"]
 [ext_resource type="Theme" uid="uid://skdebllj6ft7" path="res://theme-gen/main-menu/main_menu_MAIN_theme.tres" id="2_2eiki"]
 [ext_resource type="FontFile" uid="uid://n0hwhfbdcomy" path="res://graphics/fonts/Tomorrow-Regular.ttf" id="3_hw4jk"]
+[ext_resource type="Script" uid="uid://6vqi2sc5hsap" path="res://scenes/main-menu/new_game_popup.gd" id="5_2jeaq"]
 [ext_resource type="PackedScene" uid="uid://njcr66sajfan" path="res://scenes/main-menu/achievements-list/achievements_list_popup.tscn" id="5_7l6aj"]
 [ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/shared/denied_monochrome.png" id="5_uqij0"]
 [ext_resource type="Script" uid="uid://dncoypj63awau" path="res://scenes/main-menu/line_edit_length_label.gd" id="6_lhle4"]
@@ -188,6 +189,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("5_2jeaq")
 
 [node name="background" type="ColorRect" parent="new_game_popup"]
 layout_mode = 1
@@ -366,6 +368,14 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_7m0km")
 bbcode_enabled = true
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="tutorial_option_checkbox" type="CheckBox" parent="new_game_popup/new_game/margin/scroll"]
+visible = false
+layout_mode = 2
+tooltip_text = "Include a longer narrative prelude to the events of the campaign.
+
+The tutorial will take longer to finish."
+text = "LONGER NARRATIVE"
 
 [node name="seperator1" type="HSeparator" parent="new_game_popup/new_game/margin/scroll"]
 layout_mode = 2
@@ -696,6 +706,7 @@ layout_mode = 1
 [connection signal="pressed" from="options_scroll/credits_button" to="." method="_on_credits_button_pressed"]
 [connection signal="pressed" from="options_scroll/history_button" to="." method="_on_history_button_pressed"]
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/actions_hbox/new_game_return_button" to="." method="_on_new_game_return_button_pressed"]
+[connection signal="item_selected" from="new_game_popup/new_game/margin/scroll/game_type_scroll/game_type_edit" to="new_game_popup" method="_on_game_type_edit_item_selected"]
 [connection signal="item_selected" from="new_game_popup/new_game/margin/scroll/game_type_scroll/game_type_edit" to="new_game_popup/new_game/margin/scroll/game_type_scroll" method="_on_game_type_edit_item_selected"]
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/create_button" to="." method="_on_create_button_pressed"]
 [connection signal="pressed" from="credits_popup/margin/panel/panel_margin/scroll/actions_hbox/credits_return_button" to="." method="_on_credits_return_button_pressed"]
