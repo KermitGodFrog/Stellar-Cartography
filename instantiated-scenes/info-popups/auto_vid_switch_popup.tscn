@@ -48,6 +48,7 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [node name="auto_vid_switch_popup" type="CenterContainer"]
+process_mode = 3
 mouse_filter = 2
 theme = ExtResource("1_17aoj")
 script = ExtResource("2_eho3s")

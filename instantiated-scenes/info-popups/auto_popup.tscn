@@ -7,6 +7,7 @@
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="5_bl6yd"]
 
 [node name="auto_popup" type="CenterContainer"]
+process_mode = 3
 offset_right = 240.0
 offset_bottom = 40.0
 mouse_filter = 2
