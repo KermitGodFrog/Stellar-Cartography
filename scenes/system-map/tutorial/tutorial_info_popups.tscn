@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cxd20qjvft4hb"]
+[gd_scene load_steps=6 format=3 uid="uid://cxd20qjvft4hb"]
 
 [ext_resource type="PackedScene" uid="uid://bfv6vpv00usg3" path="res://instantiated-scenes/info-popups/closable_popup.tscn" id="1_fpin1"]
 [ext_resource type="PackedScene" uid="uid://b8pahjiip8jiw" path="res://instantiated-scenes/info-popups/auto_popup.tscn" id="2_7r03o"]
 [ext_resource type="PackedScene" uid="uid://d02n0mwa2bmdf" path="res://instantiated-scenes/info-popups/auto_vid_switch_popup.tscn" id="2_k3c6j"]
 [ext_resource type="PackedScene" uid="uid://dc7gw1fdgwjq2" path="res://instantiated-scenes/info-popups/auto_outline.tscn" id="3_k3c6j"]
+[ext_resource type="PackedScene" uid="uid://c3dxdm2dqplev" path="res://instantiated-scenes/info-popups/closable_vid_switch_popup.tscn" id="5_ry3io"]
 
 [node name="tutorial" type="Control"]
 layout_mode = 3
@@ -132,7 +133,6 @@ video_file = "res://graphics/system-map/tutorial/tutorialDiscoverPrelude.ogv"
 video_title_text = "Discover Prelude by seeing it up close. Use the ‘ORBIT’ action to get close."
 video_aspect_ratio = 2.1
 start_on_video = true
-flash_switch_button_until_pressed = true
 target_objective_wID = "tutorialDiscoverPrelude"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel")
@@ -269,7 +269,7 @@ Wormholes like Ingress are how you progress in [i]Stellar Cartographer[/i]. When
 To traverse Ingress, press on 'Ingress' on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. 
 [img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
 
-[node name="tutorialOptionalUnderstandUnits" parent="." instance=ExtResource("1_fpin1")]
+[node name="tutorialOptionalUnderstandUnits" parent="." instance=ExtResource("5_ry3io")]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -280,9 +280,14 @@ anchor_bottom = 0.5
 offset_left = -120.0
 offset_top = -275.0
 offset_right = 120.0
-offset_bottom = -208.99968
+offset_bottom = -177.0
 grow_horizontal = 2
 grow_vertical = 2
+video_file = "res://graphics/system-map/tutorial/tutorialOptionalUnderstandUnits.ogv"
+video_title_text = "Avoid the marauder by making it exit your 'SCANNER PROFILE' (brown inner circle) and then discover Ingress while avoiding redetection. Right click to travel to your mouse pointer and hold $SC_BOOST to boost."
+video_aspect_ratio = 2.4
+start_on_video = true
+flash_switch_button_until_pressed = true
 target_objective_wID = "tutorialOptionalUnderstandUnits"
 text_box_size = Vector2(500, 0)
 info = "Oh no - a marauder ship has appeared within your 'SCANNER PROFILE'! It will steal your technology if it catches you on the SYSTEM MAP. You must evade it!
@@ -291,6 +296,14 @@ Units are [color=yellow]bodies that move on their own terms[/color] - like ships
 
 To evade the marauder, right click [[img=2em2em]graphics/shared/mouse/mouse_right.png[/img]] to travel to your mouse pointer and hold $SC_BOOST to boost - [color=yellow]lead your starship away from the marauder so that it exits your 'SCANNER PROFILE'[/color], and then discover Ingress while avoiding redetection."
 
+[node name="outline_tutorialOptionalCheckStress" parent="." instance=ExtResource("3_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialOptionalCheckStress"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/stress_deterioration_scroll/hull_stress_button")
+
 [node name="tutorialOptionalCheckStress" parent="." instance=ExtResource("2_7r03o")]
 visible = false
 layout_mode = 0
@@ -298,5 +311,6 @@ target_objective_wID = "tutorialOptionalCheckStress"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control")
 track_offset = Vector2(-300, 0)
+background_alpha = 1.0
 info = "Check your 'HULL STRESS' status in the STATUS PANEL. To do this, [color=yellow]view the tooltip for entries in the STATUS PANEL by hovering over them.[/color]
 [img]graphics/system-map/status-panel/hull_stress_icon.png[/img]"

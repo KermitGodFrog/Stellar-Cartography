@@ -17,7 +17,7 @@ extends "res://instantiated-scenes/info-popups/info_popup.gd"
 var current_color: Color = Color.WHITE
 
 func _ready() -> void:
-	vid_title.set_text(video_title_text)
+	vid_title.set_text(global_data.replace_keybind_references(video_title_text))
 	reset_vid_container_and_title_sizes()
 	
 	switch_button.connect("pressed", _on_switch_button_pressed)
@@ -60,7 +60,7 @@ func set_popup_state(_state: objectiveAPI.STATES) -> void:
 		objectiveAPI.STATES.NONE:
 			show()
 			
-			await get_tree().create_timer(1.0, true).timeout
+			await get_tree().create_timer(0.15, true).timeout
 			
 			if start_on_video:
 				_on_switch_button_pressed()
