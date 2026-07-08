@@ -374,6 +374,8 @@ visible = false
 layout_mode = 2
 tooltip_text = "Include a longer narrative prelude to the events of the campaign.
 
+This is how the tutorial is meant to be experienced, but should remain unchecked for new players.
+
 The tutorial will take longer to finish."
 text = "LONGER NARRATIVE"
 

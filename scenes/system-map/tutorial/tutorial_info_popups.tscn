@@ -315,3 +315,33 @@ track_offset = Vector2(-300, 0)
 background_alpha = 1.0
 info = "Check your 'HULL STRESS' status in the STATUS PANEL. To do this, [color=yellow]view the tooltip for entries in the STATUS PANEL by hovering over them.[/color]
 [img]graphics/system-map/status-panel/hull_stress_icon.png[/img]"
+
+[node name="tutorialFollowTomoSewi" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialFollowTomoSewi"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW")
+info = "'GO-TO' and dock at Tomo Sewi Locus to repair and upgrade your starship.
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]
+View more information in the OBJECTIVES LIST."
+
+[node name="tutorialFollowAnte" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialFollowAnte"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW")
+info = "'GO-TO' and land at Ante to be briefed on your next mission.
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]
+View more information in the OBJECTIVES LIST."
+
+[node name="tutorialFollowPeregrination" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialFollowPeregrination"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW")
+info = "'GO-TO' and traverse Peregrination to begin your journey to New Eden.
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]
+View more information in the OBJECTIVES LIST."
