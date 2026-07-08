@@ -106,7 +106,8 @@ target_objective_wID = "tutorialOptionalScopeMode"
 text_box_size = Vector2(250, 100)
 track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
 track_offset = Vector2(-307, 0)
-info = "Press the 'RAD' button on SCOPES or $SC_SCOPE_SWITCH to switch the scope mode. Depending on the scope mode, different kinds of bodies can be discovered."
+info = "Press the 'RAD' button on SCOPES or $SC_SCOPE_SWITCH to switch the scope mode. Depending on the scope mode, different kinds of bodies can be discovered.
+[img]res://graphics/system-3d/unchecked.svg[/img]"
 
 [node name="tutorialOptionalZoomScopes" parent="." instance=ExtResource("2_7r03o")]
 visible = false
