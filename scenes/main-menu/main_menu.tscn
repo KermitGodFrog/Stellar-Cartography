@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=31 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" uid="uid://dq4gkj1n823v0" path="res://scenes/main-menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_b84fj"]
@@ -13,6 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://dc7b0agnokter" path="res://scenes/main-menu/credits/credits_content_panel.tscn" id="7_f371p"]
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="8_0n1sh"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="9_hw4jk"]
+[ext_resource type="Texture2D" uid="uid://cx4ikfr2yvey0" path="res://graphics/main-menu/dice_up_icon.png" id="9_ptqsp"]
+[ext_resource type="Texture2D" uid="uid://bhvjolc2fupre" path="res://graphics/main-menu/dice_down_icon.png" id="10_5sbga"]
 [ext_resource type="PackedScene" uid="uid://cqveyx1gdyfvw" path="res://scenes/main-menu/history/history_popup.tscn" id="10_7m0km"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_srvhc"]
@@ -275,13 +277,17 @@ popup/item_1/id = 1
 popup/item_2/text = "Captain"
 popup/item_2/id = 2
 
-[node name="name_edit" type="LineEdit" parent="new_game_popup/new_game/margin/scroll"]
+[node name="name_scroll" type="HBoxContainer" parent="new_game_popup/new_game/margin/scroll"]
+layout_mode = 2
+
+[node name="name_edit" type="LineEdit" parent="new_game_popup/new_game/margin/scroll/name_scroll"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+size_flags_horizontal = 3
 placeholder_text = "Tanaka"
 max_length = 20
 
-[node name="length_label" type="Label" parent="new_game_popup/new_game/margin/scroll/name_edit"]
+[node name="length_label" type="Label" parent="new_game_popup/new_game/margin/scroll/name_scroll/name_edit"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -294,6 +300,13 @@ theme_override_font_sizes/font_size = 12
 horizontal_alignment = 2
 script = ExtResource("6_lhle4")
 line_edit_path = NodePath("..")
+
+[node name="name_randomizer" type="TextureButton" parent="new_game_popup/new_game/margin/scroll/name_scroll"]
+layout_mode = 2
+texture_normal = ExtResource("9_ptqsp")
+texture_pressed = ExtResource("9_ptqsp")
+texture_hover = ExtResource("10_5sbga")
+stretch_mode = 5
 
 [node name="ship_name_label" type="Label" parent="new_game_popup/new_game/margin/scroll"]
 layout_mode = 2
@@ -338,6 +351,13 @@ horizontal_alignment = 2
 script = ExtResource("6_lhle4")
 line_edit_path = NodePath("..")
 
+[node name="ship_name_randomizer" type="TextureButton" parent="new_game_popup/new_game/margin/scroll/ship_name_scroll"]
+layout_mode = 2
+texture_normal = ExtResource("9_ptqsp")
+texture_pressed = ExtResource("9_ptqsp")
+texture_hover = ExtResource("10_5sbga")
+stretch_mode = 5
+
 [node name="game_type_label" type="Label" parent="new_game_popup/new_game/margin/scroll"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_sg3tv")
@@ -377,7 +397,7 @@ tooltip_text = "Include a longer narrative prelude to the events of the campaign
 This is how the tutorial is meant to be experienced, but should remain unchecked for new players.
 
 The tutorial will take longer to finish."
-text = "LONGER NARRATIVE"
+text = "EXTENDED NARRATIVE"
 
 [node name="seperator1" type="HSeparator" parent="new_game_popup/new_game/margin/scroll"]
 layout_mode = 2
@@ -708,6 +728,8 @@ layout_mode = 1
 [connection signal="pressed" from="options_scroll/credits_button" to="." method="_on_credits_button_pressed"]
 [connection signal="pressed" from="options_scroll/history_button" to="." method="_on_history_button_pressed"]
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/actions_hbox/new_game_return_button" to="." method="_on_new_game_return_button_pressed"]
+[connection signal="pressed" from="new_game_popup/new_game/margin/scroll/name_scroll/name_randomizer" to="new_game_popup" method="_on_name_randomizer_pressed"]
+[connection signal="pressed" from="new_game_popup/new_game/margin/scroll/ship_name_scroll/ship_name_randomizer" to="new_game_popup" method="_on_ship_name_randomizer_pressed"]
 [connection signal="item_selected" from="new_game_popup/new_game/margin/scroll/game_type_scroll/game_type_edit" to="new_game_popup" method="_on_game_type_edit_item_selected"]
 [connection signal="item_selected" from="new_game_popup/new_game/margin/scroll/game_type_scroll/game_type_edit" to="new_game_popup/new_game/margin/scroll/game_type_scroll" method="_on_game_type_edit_item_selected"]
 [connection signal="pressed" from="new_game_popup/new_game/margin/scroll/create_button" to="." method="_on_create_button_pressed"]

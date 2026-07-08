@@ -3,7 +3,7 @@ extends Control
 @onready var continue_button = $options_scroll/continue_button
 @onready var new_button = $options_scroll/new_button
 @onready var create_button = $new_game_popup/new_game/margin/scroll/create_button
-@onready var name_edit = $new_game_popup/new_game/margin/scroll/name_edit
+@onready var name_edit = $new_game_popup/new_game/margin/scroll/name_scroll/name_edit
 @onready var prefix_edit = $new_game_popup/new_game/margin/scroll/prefix_edit
 @onready var ship_name_edit = $new_game_popup/new_game/margin/scroll/ship_name_scroll/ship_name_edit
 @onready var game_type_edit = $new_game_popup/new_game/margin/scroll/game_type_scroll/game_type_edit
