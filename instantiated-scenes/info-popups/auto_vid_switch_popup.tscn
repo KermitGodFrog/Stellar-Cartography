@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://d02n0mwa2bmdf"]
+[gd_scene load_steps=14 format=3 uid="uid://d02n0mwa2bmdf"]
 
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_17aoj"]
 [ext_resource type="Script" uid="uid://c76lyytvvk0wj" path="res://instantiated-scenes/info-popups/auto_vid_switch_popup.gd" id="2_eho3s"]
@@ -6,7 +6,10 @@
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="4_qy2qi"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="5_fyx3d"]
 [ext_resource type="Texture2D" uid="uid://bkvwgdists7up" path="res://graphics/shared/mouse/mouse_left.png" id="6_eho3s"]
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="6_s08vq"]
 [ext_resource type="PackedScene" uid="uid://dekj38tqs61np" path="res://data/misc/colorOscillate.tscn" id="7_eho3s"]
+[ext_resource type="Texture2D" uid="uid://g0ncf4msua5j" path="res://graphics/system-map/play_up_icon.png" id="7_fyx3d"]
+[ext_resource type="Texture2D" uid="uid://bjf0b8cf81d8q" path="res://graphics/system-map/play_down_icon.png" id="8_sbbtb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rjt1"]
 bg_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
@@ -92,29 +95,47 @@ shortcut_keys_enabled = false
 deselect_on_focus_loss_enabled = false
 drag_and_drop_selection_enabled = false
 
-[node name="vid_container" type="AspectRatioContainer" parent="mid_panel_fluid/mid_panel/margin"]
+[node name="vid_scroll" type="VBoxContainer" parent="mid_panel_fluid/mid_panel/margin"]
 visible = false
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="vid_title" type="Label" parent="mid_panel_fluid/mid_panel/margin/vid_scroll"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+theme_override_colors/font_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
+theme_override_fonts/font = ExtResource("6_s08vq")
+theme_override_font_sizes/font_size = 10
+autowrap_mode = 3
+
+[node name="vid_container" type="AspectRatioContainer" parent="mid_panel_fluid/mid_panel/margin/vid_scroll"]
 clip_contents = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.9
 mouse_filter = 2
 
-[node name="vid" type="VideoStreamPlayer" parent="mid_panel_fluid/mid_panel/margin/vid_container"]
+[node name="vid" type="VideoStreamPlayer" parent="mid_panel_fluid/mid_panel/margin/vid_scroll/vid_container"]
 layout_mode = 2
 mouse_filter = 2
 expand = true
-loop = true
 bus = &"SFX"
 
-[node name="vid_title" type="Label" parent="mid_panel_fluid/mid_panel/margin"]
-visible = false
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_colors/font_color = Color(0.9058309, 0.9058309, 0.9058309, 0.6)
-theme_override_fonts/font = ExtResource("5_fyx3d")
-theme_override_font_sizes/font_size = 10
-autowrap_mode = 3
+[node name="play_button" type="TextureButton" parent="mid_panel_fluid/mid_panel/margin/vid_scroll/vid_container/vid"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("7_fyx3d")
+texture_pressed = ExtResource("7_fyx3d")
+texture_hover = ExtResource("8_sbbtb")
+stretch_mode = 3
 
 [node name="switch_button" type="Button" parent="mid_panel_fluid"]
 custom_minimum_size = Vector2(150, 32)
@@ -130,5 +151,7 @@ icon = ExtResource("6_eho3s")
 expand_icon = true
 
 [node name="switch_button_flash" parent="." instance=ExtResource("7_eho3s")]
+
+[connection signal="pressed" from="mid_panel_fluid/mid_panel/margin/vid_scroll/vid_container/vid/play_button" to="." method="_on_play_button_pressed"]
 
 [editable path="mid_panel_fluid"]
