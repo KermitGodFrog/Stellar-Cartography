@@ -7,6 +7,7 @@ extends Control
 @onready var prefix_edit = $new_game_popup/new_game/margin/scroll/prefix_edit
 @onready var ship_name_edit = $new_game_popup/new_game/margin/scroll/ship_name_scroll/ship_name_edit
 @onready var game_type_edit = $new_game_popup/new_game/margin/scroll/game_type_scroll/game_type_edit
+@onready var tutorial_option_checkbox = $new_game_popup/new_game/margin/scroll/tutorial_option_checkbox
 @onready var new_game_popup = $new_game_popup
 @onready var achievements_list_popup = $achievements_list_popup
 @onready var background = $background
@@ -50,9 +51,6 @@ const background_images: Array = [
 ]
 
 func _ready():
-	#for i in colorOscillateIterator.new(Color.WHITE, Color.GREEN, 20, 3, true):
-	#	print_rich("[color=%s]current value[/color]" % Color(i).to_html())
-	
 	achievements_list_popup.connect("returnButtonPressed", _on_achievements_list_return_button_pressed)
 	history_popup.connect("returnButtonPressed", _on_history_return_button_pressed)
 	background.set_texture(ImageTexture.create_from_image(background_images.pick_random()))
@@ -60,36 +58,7 @@ func _ready():
 	if ResourceLoader.exists("user://stellar_cartographer_data.res"):
 		continue_button.disabled = false
 	
-	#setting defaults - has to be done  before because helper might not exist, and so defaults qwould not be set!
-	var relevant_actions = global_data.get_relevant_input_actions()
-	for i in relevant_actions.size():
-		var action = relevant_actions[i]
-		var event = InputMap.action_get_events(action)
-		if not event.is_empty():
-			game_data.DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS.append(event.front())
-		else:
-			game_data.DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS.append(null)
-	
-	var helper = game_data.loadSettings()
-	if helper != null:
-		#loading audio
-		var relevant_audio_buses = game_data.SETTINGS_RELEVANT_AUDIO_BUSES
-		var volumes_same_size: bool = relevant_audio_buses.size() == helper.saved_bus_volumes.size()
-		for i in relevant_audio_buses.size():
-			var bus_name = game_data.SETTINGS_RELEVANT_AUDIO_BUSES[i]
-			var bus_idx = AudioServer.get_bus_index(bus_name)
-			
-			if volumes_same_size:
-				AudioServer.set_bus_volume_db(bus_idx, helper.saved_bus_volumes[i])
-		
-		#loading inputs - relevant_actions moved upwards because helper might not exist teehee
-		var events_same_size: bool = relevant_actions.size() == helper.saved_events.size() #if an update comes along and adds keybinds, everything is reset to defaults
-		for i in relevant_actions.size():
-			var action = relevant_actions[i]
-			
-			if events_same_size:
-				InputMap.action_erase_events(action)
-				InputMap.action_add_event(action, helper.saved_events[i])
+	game_data.loadThenApplySettings()
 	pass
 
 func _on_continue_button_pressed():
@@ -98,10 +67,21 @@ func _on_continue_button_pressed():
 
 func _on_create_button_pressed():
 	NEW_GAME_INIT_TYPE = game_type_edit.get_selected_metadata()
+	var data: Dictionary = {}
 	if (not name_edit.text.is_empty()) and (not ship_name_edit.text.is_empty()):
+		data["name"] = name_edit.get_text()
+		data["ship_name"] = ship_name_edit.get_text()
+		data["prefix"] = prefix_edit.get_item_text(prefix_edit.selected)
+	if NEW_GAME_INIT_TYPE == global_data.GAME_INIT_TYPES.TUTORIAL:
+		if tutorial_option_checkbox.is_pressed():
+			data["tutorial_type"] = "LONG"
+		else:
+			data["tutorial_type"] = "SHORT"
+	
+	if data.size() > 0:
 		global_data.change_scene.emit("res://scenes/game/game.tscn", {
 			"init_type": NEW_GAME_INIT_TYPE, 
-			"init_data": {"name": name_edit.get_text(), "ship_name": ship_name_edit.get_text(), "prefix": prefix_edit.get_item_text(prefix_edit.selected)}
+			"init_data": data
 			})
 	else:
 		global_data.change_scene.emit("res://scenes/game/game.tscn", {

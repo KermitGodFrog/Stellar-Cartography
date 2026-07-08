@@ -7,12 +7,15 @@
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="5_bl6yd"]
 
 [node name="auto_popup" type="CenterContainer"]
+process_mode = 3
 offset_right = 240.0
 offset_bottom = 40.0
 mouse_filter = 2
 theme = ExtResource("3_sgtkb")
 script = ExtResource("1_kxgqv")
+mid_panel = NodePath("mid_panel_fluid/mid_panel")
 text_box_path = "./mid_panel_fluid/mid_panel/margin/text"
+background_path = "./mid_panel_fluid/mid_panel/background"
 
 [node name="mid_panel_fluid" parent="." instance=ExtResource("2_kxgqv")]
 layout_mode = 2

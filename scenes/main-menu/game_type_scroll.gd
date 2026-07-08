@@ -5,7 +5,7 @@ extends HBoxContainer
 
 const game_type_descriptions: Dictionary = {
 	global_data.GAME_INIT_TYPES.NEW: "--CAMPAIGN--\nPlay [i]Stellar Cartographer[/i].",
-	global_data.GAME_INIT_TYPES.TUTORIAL: "--TUTORIAL--\nLearn how to play [i]Stellar Cartographer[/i] in 20-30m. Do this before playing the campaign!"
+	global_data.GAME_INIT_TYPES.TUTORIAL: "--TUTORIAL--\nLearn how to play [i]Stellar Cartographer[/i]."
 }
 
 func _ready() -> void:

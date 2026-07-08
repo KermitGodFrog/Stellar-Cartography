@@ -854,6 +854,14 @@ func draw_map():
 	
 	for body in system.bodies:
 		
+		#batching theorised orbit body question mark textures:
+		
+		if body is orbitBodyAPI and body.is_theorised_not_known():
+			if not body.is_hidden():
+				question_mark_texture.draw_rect(get_canvas_item(), global_data.get_offset_rect2(body.position, standard_size * 1.25, standard_size * 1.25), false)
+	
+	for body in system.bodies:
+		
 		#batching anomaly map icons:
 		
 		if body.get_type() == starSystemAPI.BODY_TYPES.PLANET and body.is_known(): 
@@ -894,10 +902,11 @@ func _on_orbit_button_pressed():
 	pass
 
 func _on_stop_button_pressed():
-	locked_body = null
-	action_body = null
-	emit_signal("updatePlayerTargetPosition", player_position_matrix[0])
-	emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
+	if not player_action_lock:
+		locked_body = null
+		action_body = null
+		emit_signal("updatePlayerTargetPosition", player_position_matrix[0])
+		emit_signal("updatePlayerActionType", playerAPI.ACTION_TYPES.NONE, null)
 	pass
 
 

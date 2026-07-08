@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dc7gw1fdgwjq2"]
+
+[ext_resource type="Script" uid="uid://cd8djcyxa8kwb" path="res://instantiated-scenes/info-popups/auto_outline.gd" id="1_qxaic"]
+[ext_resource type="Script" uid="uid://dt2vnew2smkuk" path="res://data/misc/colorOscillate.gd" id="2_6mr02"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qxaic"]
+bg_color = Color(0, 0, 0, 0)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 0, 1)
+border_blend = true
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[node name="auto_outline" type="PanelContainer"]
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qxaic")
+script = ExtResource("1_qxaic")
+
+[node name="colorOscillate" type="Node" parent="."]
+script = ExtResource("2_6mr02")
+metadata/_custom_type_script = "uid://dt2vnew2smkuk"

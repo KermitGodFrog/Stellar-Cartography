@@ -43,7 +43,7 @@ func _notification(what):
 	match what:
 		NOTIFICATION_PARENTED:
 			#load achievements
-			var helper: achievementsHelper = await game_data.loadAchievements()
+			var helper: achievementsHelper = game_data.loadAchievements()
 			if helper != null:
 				print("HELPER EXISTS, LOADING")
 				achievements = helper.achievements.duplicate(true)

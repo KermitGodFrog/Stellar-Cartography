@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://cxd20qjvft4hb"]
+[gd_scene load_steps=6 format=3 uid="uid://cxd20qjvft4hb"]
 
 [ext_resource type="PackedScene" uid="uid://bfv6vpv00usg3" path="res://instantiated-scenes/info-popups/closable_popup.tscn" id="1_fpin1"]
 [ext_resource type="PackedScene" uid="uid://b8pahjiip8jiw" path="res://instantiated-scenes/info-popups/auto_popup.tscn" id="2_7r03o"]
 [ext_resource type="PackedScene" uid="uid://d02n0mwa2bmdf" path="res://instantiated-scenes/info-popups/auto_vid_switch_popup.tscn" id="2_k3c6j"]
+[ext_resource type="PackedScene" uid="uid://dc7gw1fdgwjq2" path="res://instantiated-scenes/info-popups/auto_outline.tscn" id="3_k3c6j"]
+[ext_resource type="PackedScene" uid="uid://c3dxdm2dqplev" path="res://instantiated-scenes/info-popups/closable_vid_switch_popup.tscn" id="5_ry3io"]
 
 [node name="tutorial" type="Control"]
 layout_mode = 3
@@ -31,9 +33,7 @@ target_objective_wID = "tutorialOptionalUnderstandPremise"
 text_box_size = Vector2(400, 0)
 info = "Welcome, Captain!
 
-In [i]Stellar Cartographer[/i], you will gather exploration data (value) and sell it to space stations for nanites so that you can repair and upgrade your starship. A way to gain exploration data is by [color=yellow]discovering bodies (stuff within star systems)[/color].
-
-This tutorial will teach you how to move, discover, interact, traverse wormholes, use space stations and will establish the story continued in the campaign."
+In [i]Stellar Cartographer[/i], you will gather exploration data (value) and sell it to space stations for nanites so that you can repair and upgrade your starship. A way to gain exploration data is by [color=yellow]discovering bodies (stuff within star systems)[/color]."
 
 [node name="tutorialOptionalViewObjectives" parent="." instance=ExtResource("1_fpin1")]
 visible = false
@@ -71,12 +71,22 @@ target_objective_wID = "tutorialOptionalHelpOverlay"
 text_box_size = Vector2(400, 0)
 info = "[color=yellow]Press and hold $SC_OPEN_HELP_OVERLAY to show the help overlay. The help overlay displays the name of each UI component referenced in this tutorial.[/color]"
 
+[node name="outline_tutorialMarkPrelude" parent="." instance=ExtResource("3_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialMarkPrelude"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/sonar_container")
+
 [node name="tutorialMarkPrelude" parent="." instance=ExtResource("2_k3c6j")]
 visible = false
 layout_mode = 0
 offset_right = 240.0
 offset_bottom = 72.0
 video_file = "res://graphics/system-map/tutorial/tutorialMarkPrelude.ogv"
+video_title_text = "Mark Prelude by using LIDAR to ping it three times."
+start_on_video = true
 flash_switch_button_until_pressed = true
 target_objective_wID = "tutorialMarkPrelude"
 text_box_size = Vector2(300, 100)
@@ -96,7 +106,8 @@ target_objective_wID = "tutorialOptionalScopeMode"
 text_box_size = Vector2(250, 100)
 track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
 track_offset = Vector2(-307, 0)
-info = "Press the 'RAD' button on SCOPES or $SC_SCOPE_SWITCH to switch the scope mode. Depending on the scope mode, different kinds of bodies can be discovered."
+info = "Press the 'RAD' button on SCOPES or $SC_SCOPE_SWITCH to switch the scope mode. Depending on the scope mode, different kinds of bodies can be discovered.
+[img]res://graphics/system-3d/unchecked.svg[/img]"
 
 [node name="tutorialOptionalZoomScopes" parent="." instance=ExtResource("2_7r03o")]
 visible = false
@@ -106,9 +117,23 @@ track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scope
 track_offset = Vector2(0, -225)
 info = "Left click [[img=2em2em]graphics/shared/mouse/mouse_left.png[/img]] and drag up or down (or scroll [[img=2em2em]graphics/shared/mouse/mouse_scroll.png[/img]]) on SCOPES to zoom in or out. [color=yellow]Zooming in allows bodies to be seen up close sooner[/color]."
 
-[node name="tutorialDiscoverPrelude" parent="." instance=ExtResource("2_7r03o")]
+[node name="outline_tutorialDiscoverPrelude" parent="." instance=ExtResource("3_k3c6j")]
 visible = false
 layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialDiscoverPrelude"
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll/orbit_button/orbit_texture")
+
+[node name="tutorialDiscoverPrelude" parent="." instance=ExtResource("2_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 72.0
+video_file = "res://graphics/system-map/tutorial/tutorialDiscoverPrelude.ogv"
+video_title_text = "Discover Prelude by seeing it up close. Use the ‘ORBIT’ action to get close."
+video_aspect_ratio = 2.1
+start_on_video = true
 target_objective_wID = "tutorialDiscoverPrelude"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel")
@@ -118,9 +143,23 @@ info = "Great job - the location of Prelude has been added to the SYSTEM LIST! H
 To discover Prelude, press on '???' on the SYSTEM LIST to lock, and then press the 'ORBIT' action in the ACTIONS PANEL.
 [img]res://graphics/system-map/actions-panel/orbit_icon.png[/img]"
 
-[node name="tutorialFollowPrelude" parent="." instance=ExtResource("2_7r03o")]
+[node name="outline_tutorialFollowPrelude" parent="." instance=ExtResource("3_k3c6j")]
 visible = false
 layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialFollowPrelude"
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll/go_to_button/go_to_texture")
+
+[node name="tutorialFollowPrelude" parent="." instance=ExtResource("2_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 72.0
+video_file = "res://graphics/system-map/tutorial/tutorialFollowPrelude.ogv"
+video_title_text = "Investigate the anomaly on Prelude by pressing the ‘GO-TO’ action."
+video_aspect_ratio = 2.1
+start_on_video = true
 target_objective_wID = "tutorialFollowPrelude"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW")
@@ -131,17 +170,37 @@ The question mark next to Prelude on the SYSTEM LIST shows an undocumented anoma
 To investigate the anomaly on Prelude, press on 'Prelude' on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL.
 [img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
 
+[node name="outline1_tutorialMarkIngress" parent="." instance=ExtResource("3_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialMarkIngress"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/barycenter_container")
+
+[node name="outline2_tutorialMarkIngress" parent="." instance=ExtResource("3_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialMarkIngress"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/sonar_container")
+
 [node name="tutorialMarkIngress" parent="." instance=ExtResource("2_k3c6j")]
 visible = false
 layout_mode = 0
 offset_right = 240.0
 offset_bottom = 72.0
 video_file = "res://graphics/system-map/tutorial/tutorialMarkIngress.ogv"
+video_title_text = "Use BARYCENTER VISUALIZER to learn the direction to ping Ingress, and then mark it by using LIDAR to ping it three times."
 video_aspect_ratio = 2.0
+start_on_video = true
+flash_switch_button_until_pressed = true
 target_objective_wID = "tutorialMarkIngress"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/barycenter_container")
 track_offset = Vector2(0, -355)
+background_alpha = 1.0
 info = "You did it!
 
 The SYSTEM LIST currently underlines a missing body named Ingress situated further than Prelude. [color=yellow]Our value is maximised by discovering all bodies within a star system[/color]. Let's mark Ingress!
@@ -211,19 +270,7 @@ Wormholes like Ingress are how you progress in [i]Stellar Cartographer[/i]. When
 To traverse Ingress, press on 'Ingress' on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. 
 [img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"
 
-[node name="tutorialOptionalStunMarauder" parent="." instance=ExtResource("1_fpin1")]
-visible = false
-layout_mode = 0
-offset_right = 240.0
-offset_bottom = 66.0
-target_objective_wID = "tutorialOptionalStunMarauder"
-text_box_size = Vector2(250, 100)
-track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin")
-info = "Sometimes, a hostile unit is too fast to evade normally. A way to still evade such units is to [color=yellow]stun them[/color], stopping them from chasing you temporarily. Hostile units can be stunned by [color=yellow]pinging them[/color]. 
-
-To ping the marauder starship, adjust the LIDAR direction so it matches the direction of the ship on the SYSTEM MAP, and press the 'PING' button."
-
-[node name="tutorialOptionalUnderstandUnits" parent="." instance=ExtResource("1_fpin1")]
+[node name="tutorialOptionalUnderstandUnits" parent="." instance=ExtResource("5_ry3io")]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -234,9 +281,14 @@ anchor_bottom = 0.5
 offset_left = -120.0
 offset_top = -275.0
 offset_right = 120.0
-offset_bottom = -208.99968
+offset_bottom = -177.0
 grow_horizontal = 2
 grow_vertical = 2
+video_file = "res://graphics/system-map/tutorial/tutorialOptionalUnderstandUnits.ogv"
+video_title_text = "Avoid the marauder by making it exit your 'SCANNER PROFILE' (brown inner circle) and then discover Ingress while avoiding redetection."
+video_aspect_ratio = 2.4
+start_on_video = true
+flash_switch_button_until_pressed = true
 target_objective_wID = "tutorialOptionalUnderstandUnits"
 text_box_size = Vector2(500, 0)
 info = "Oh no - a marauder ship has appeared within your 'SCANNER PROFILE'! It will steal your technology if it catches you on the SYSTEM MAP. You must evade it!
@@ -245,6 +297,14 @@ Units are [color=yellow]bodies that move on their own terms[/color] - like ships
 
 To evade the marauder, right click [[img=2em2em]graphics/shared/mouse/mouse_right.png[/img]] to travel to your mouse pointer and hold $SC_BOOST to boost - [color=yellow]lead your starship away from the marauder so that it exits your 'SCANNER PROFILE'[/color], and then discover Ingress while avoiding redetection."
 
+[node name="outline_tutorialOptionalCheckStress" parent="." instance=ExtResource("3_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialOptionalCheckStress"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel/primary_margin/unadjusted_values/stress_deterioration_scroll/hull_stress_button")
+
 [node name="tutorialOptionalCheckStress" parent="." instance=ExtResource("2_7r03o")]
 visible = false
 layout_mode = 0
@@ -252,5 +312,36 @@ target_objective_wID = "tutorialOptionalCheckStress"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control")
 track_offset = Vector2(-300, 0)
+background_alpha = 1.0
 info = "Check your 'HULL STRESS' status in the STATUS PANEL. To do this, [color=yellow]view the tooltip for entries in the STATUS PANEL by hovering over them.[/color]
 [img]graphics/system-map/status-panel/hull_stress_icon.png[/img]"
+
+[node name="tutorialFollowTomoSewi" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialFollowTomoSewi"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW")
+info = "'GO-TO' and dock at Tomo Sewi Locus to repair and upgrade your starship.
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]
+View more information in the OBJECTIVES LIST."
+
+[node name="tutorialFollowAnte" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialFollowAnte"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW")
+info = "'GO-TO' and land at Ante to be briefed on your next mission.
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]
+View more information in the OBJECTIVES LIST."
+
+[node name="tutorialFollowPeregrination" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialFollowPeregrination"
+text_box_size = Vector2(300, 100)
+track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW")
+info = "'GO-TO' and traverse Peregrination to begin your journey to New Eden.
+[img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]
+View more information in the OBJECTIVES LIST."

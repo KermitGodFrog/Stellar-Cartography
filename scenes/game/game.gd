@@ -4,6 +4,7 @@ extends Node
 var init_type: int = 0 #from global data GAME_INIT_TYPES
 var init_data: Dictionary = {}
 var world: worldAPI
+var allow_quick_pause: bool = false
 
 @onready var system_map = $system_window/system
 @onready var system_3d = $system_window/system/camera/canvas/control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container/system_3d_window/system_3d
@@ -40,7 +41,7 @@ func _ready():
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
-		new_player.current_storyline = playerAPI.STORYLINES.keys().pick_random()
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.SCAN_PREDICTION)
 		
 		connect_all_player_signals(new_player)
 		
@@ -71,6 +72,8 @@ func _ready():
 		var new_query = responseQuery.new()
 		new_query.add("concept", "tutorialPlayerStart")
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
+		
+		allow_quick_pause = true
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
 		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
@@ -83,7 +86,7 @@ func _ready():
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
-		new_player.current_storyline = playerAPI.STORYLINES.keys().pick_random()
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.SCAN_PREDICTION)
 		
 		connect_all_player_signals(new_player)
 		
@@ -112,6 +115,7 @@ func _ready():
 		
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
 		
+		allow_quick_pause = true
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
@@ -136,6 +140,10 @@ func _ready():
 			if body is AIUnitAPI:
 				body.set_system(world.player.current_star_system)
 				body.set_player(world.player)
+		
+		await get_tree().create_timer(1.0, true).timeout
+		allow_quick_pause = true
+	
 	pass
 
 func connect_all_signals() -> void:
@@ -207,6 +215,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("TUTORIALEnterIngress", _on_tutorial_enter_ingress)
 	dialogue_manager.connect("TUTORIALSetWindowTutorials", _on_tutorial_set_window_tutorials)
 	dialogue_manager.connect("TUTORIALSetPlayerActionLock", _on_tutorial_set_player_action_lock)
+	dialogue_manager.connect("TUTORIALForceOrbitPrelude", _on_tutorial_force_orbit_prelude)
 	
 	pause_menu.connect("saveWorld", _on_save_world)
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
@@ -312,7 +321,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("SC_PAUSE"):
 		_on_open_pause_menu(true) #since game.gd is unpaused only, the pause menu can only open when the game is unpaused
 		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "pause_menu_show")
-	elif Input.is_action_just_pressed("SC_QUICK_PAUSE"):
+	elif Input.is_action_just_pressed("SC_QUICK_PAUSE") and allow_quick_pause:
 		_on_open_pause_menu(false)
 	
 	#ultra miscellanious:
@@ -503,6 +512,7 @@ func body_query_add_shared(query: responseQuery, body: bodyAPI) -> void:
 	query.add("type", starSystemAPI.BODY_TYPES.find_key(body.get_type()))
 	query.add_tree_access("name", body.get_display_name())
 	query.add("tutorial", init_type == global_data.GAME_INIT_TYPES.TUTORIAL)
+	query.add("tutorial_type", init_data.get("tutorial_type", null))
 	query.add("insa", world.player.current_star_system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA)
 	pass
 
@@ -1088,6 +1098,13 @@ func _on_tutorial_set_window_tutorials(value: bool) -> void:
 
 func _on_tutorial_set_player_action_lock(value: bool) -> void:
 	world.player.action_lock = value
+	pass
+
+func _on_tutorial_force_orbit_prelude() -> void:
+	var system = world.player.current_star_system
+	var prelude = system.get_first_body_from_display_name("Prelude")
+	if prelude != null:
+		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, prelude)
 	pass
 
 func _on_tutorial_ingress_threshold_reached() -> void: #comes from system_map not dialogueManager! only _on_tutorial exception cos couldnt do it otherwise

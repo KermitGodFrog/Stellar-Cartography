@@ -12,8 +12,10 @@ var _current_load_confirmation: bool = false
 var progress: Array[float] = []
 
 func _ready():
+	print_debug("GAME MASTER: READY")
 	global_data.change_scene.connect(_change_scene)
 	global_data.change_scene.emit(main_menu_path)
+	game_data.storeDefaultSettings() #<- this needs to only be triggered ONCE.
 	pass
 
 func _change_scene(path_to_scene, init_args: Dictionary = {}): #init args: {"init_type": thing, "init_data": [thing, thing]}
