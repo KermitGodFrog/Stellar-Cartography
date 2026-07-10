@@ -11,7 +11,7 @@ var last_input_event : InputEvent:
 var group: ButtonGroup
 
 func _ready() -> void:
-	wID = "KEYBIND_LINKED_ACTION_%s" % linked_action
+	wID = "KEYBIND_%s" % linked_action
 	button.button_group = group
 	super()
 	pass

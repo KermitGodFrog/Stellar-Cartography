@@ -58,10 +58,44 @@ func _on_option_changed(_wID: String) -> void:
 	pass
 
 func _on_option_hovered(wID: String) -> void:
-	var text: String = String()
+	var text: String = "NO DESCRIPTION YET"
 	match wID:
-		_:
-			text = "NO DESCRIPTION YET"
+		"KEYBIND_SC_PAUSE":
+			text = "Pauses or unpauses the game and also exits certain pause menus."
+		"KEYBIND_SC_SYSTEM_MAP_ZOOM_IN":
+			text = "Zooms the SYSTEM MAP camera in."
+		"KEYBIND_SC_SYSTEM_MAP_ZOOM_OUT":
+			text = "Zooms the SYSTEM MAP camera out."
+		"KEYBIND_SC_PAN":
+			text = "While held, the SYSTEM MAP camera moves towards the mouse pointer."
+		"KEYBIND_SC_SYSTEM_MAP_UP":
+			text = "Moves the SYSTEM MAP camera up."
+		"KEYBIND_SC_SYSTEM_MAP_DOWN":
+			text = "Moves the SYSTEM MAP camera down."
+		"KEYBIND_SC_SYSTEM_MAP_LEFT":
+			text = "Moves the SYSTEM MAP camera left."
+		"KEYBIND_SC_SYSTEM_MAP_RIGHT":
+			text = "Moves the SYSTEM MAP camera right."
+		"KEYBIND_SC_BOOST":
+			text = "When pressed, the player switches between boosting and normal travel.\n\nBoosting greatly increases speed but also extends the 'SCANNER PROFILE'."
+		"KEYBIND_SC_INTERACT1_LEFT_MOUSE":
+			text = "Aims the player's scopes towards the mouse pointer when used on the SYSTEM MAP."
+		"KEYBIND_SC_INTERACT2_RIGHT_MOUSE":
+			text = "Sets the player's target position to the mouse pointer when used on the SYSTEM MAP."
+		"KEYBIND_SC_INTERACT3_TAKE_PHOTO":
+			text = "When pressed within the bounds of the Long Range Scopes module, a photo is taken."
+		"KEYBIND_SC_INTERACT4_USE_RANGEFINDER":
+			text = "When pressed within the bounds of the Long Range Scopes module, the rangefinder is shown."
+		"KEYBIND_SC_DEBUG_OPEN_DEBUG_MENU":
+			text = "Opens the debug menu which contains cheats used to develop the game.\n\nMany of the cheats will crash the game if used incorrectly - remember to save!"
+		"KEYBIND_SC_OPEN_HELP_OVERLAY":
+			text = "Shows the help overlay which displays the name of each UI element."
+		"KEYBIND_SC_LOAD_CONFIRMATION":
+			text = "When loading is done, exits the loading screen."
+		"KEYBIND_SC_SCOPE_SWITCH":
+			text = "Switches scopes between the 'RAD' and 'VIS' modes."
+		"KEYBIND_SC_QUICK_PAUSE":
+			text = "Quick pauses or unpauses the game.\n\nWhile quick paused, the SYSTEM MAP is visible and info popups can still be interacted with."
 	
 	description.clear()
 	description.append_text(text)

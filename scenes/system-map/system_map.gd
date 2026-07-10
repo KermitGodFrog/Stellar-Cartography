@@ -617,14 +617,13 @@ func _unhandled_input(event):
 		emit_signal("lockedBodyDepreciated")
 	
 	if event.is_action_pressed("SC_BOOST"):
-		player_is_boosting = true
+		player_is_boosting = !player_is_boosting
 		emit_signal("updatePlayerIsBoosting", player_is_boosting)
-		play_boost_sound(BOOST_SOUND_TYPES.START)
-		get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "player_boosting_start")
-	elif event.is_action_released("SC_BOOST"):
-		player_is_boosting = false
-		emit_signal("updatePlayerIsBoosting", player_is_boosting)
-		play_boost_sound(BOOST_SOUND_TYPES.END)
+		if player_is_boosting:
+			play_boost_sound(BOOST_SOUND_TYPES.START)
+			get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "player_boosting_start")
+		else:
+			play_boost_sound(BOOST_SOUND_TYPES.END)
 	
 	if event.is_action_pressed("SC_OPEN_HELP_OVERLAY"):
 		help_overlay.show()
@@ -637,7 +636,7 @@ func _unhandled_input(event):
 			emit_signal("toggleScopeModeSwitchButton")
 	pass
 
-func reset_player_boosting() -> void:
+func reset_player_boosting() -> void: #unused as of 10/7/26
 	player_is_boosting = false
 	emit_signal("updatePlayerIsBoosting", player_is_boosting)
 	pass

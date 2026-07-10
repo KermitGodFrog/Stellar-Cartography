@@ -1447,7 +1447,7 @@ func _on_pause_mode_changed(new_mode: game_data.PAUSE_MODES) -> void:
 	system_map._pause_mode = new_mode #for hiding when in dialogue
 	objectives_manager._pause_mode = new_mode
 	
-	system_map.reset_player_boosting() #to stop boosting from being stuck to true, this SHOULD cover ALL grounds!
+	#system_map.reset_player_boosting() #to stop boosting from being stuck to true, this SHOULD cover ALL grounds! #removed 10/7/26
 	system_map.reset_actions_buttons_pressed() #godot 4.3 migration quick fix
 	pass
 
