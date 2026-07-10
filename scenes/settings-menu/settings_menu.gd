@@ -60,6 +60,18 @@ func _on_option_changed(_wID: String) -> void:
 func _on_option_hovered(wID: String) -> void:
 	var text: String = "NO DESCRIPTION YET"
 	match wID:
+		"WINDOW_MODE":
+			text = "Whether the application is fullscreen or windowed."
+		"FPS_LIMIT":
+			text = "The maximum FPS (frames per second) that the game can run at.\n\n'OFF' means that there isn't a maximum FPS."
+		"AUDIO_SLIDER_MASTER":
+			text = "The volume of all game audio."
+		"AUDIO_SLIDER_PLANETARY_SFX":
+			text = "The volume of audio profiles played by the Audio Visualizer module."
+		"AUDIO_SLIDER_SFX":
+			text = "The volume of all sound effects within the SYSTEM MAP, dialogue, modules and elsewhere."
+		"AUDIO_SLIDER_MUSIC":
+			text = "The volume of all music within dialogue and the rest of the game."
 		"KEYBIND_SC_PAUSE":
 			text = "Pauses or unpauses the game and also exits certain pause menus."
 		"KEYBIND_SC_SYSTEM_MAP_ZOOM_IN":

@@ -11,7 +11,7 @@ var last_value: float:
 		emit_signal("changed", get_wID())
 
 func _ready():
-	wID = "AUDIO_SLIDER_LINKED_BUX_IDX_%d" % linked_bus_idx
+	wID = "AUDIO_SLIDER_%s" % AudioServer.get_bus_name(linked_bus_idx).to_snake_case().to_upper()
 	super()
 	pass
 
