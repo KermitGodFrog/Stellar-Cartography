@@ -117,6 +117,8 @@ func get_adjusted_scanner_power() -> float:
 		multiplier -= 0.75
 	if in_pulsar_beam:
 		multiplier -= 0.5
+	if in_nebula:
+		multiplier -= 0.5
 	
 	return maxf(10.0, scanner_power * maxf(0, multiplier))
 

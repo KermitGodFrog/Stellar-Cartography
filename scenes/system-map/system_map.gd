@@ -157,7 +157,7 @@ var player_in_nebula: bool = false:
 	set(value):
 		if player_in_nebula != value:
 			emit_signal("updatePlayerInNebula", value)
-			status_modifier_organizer.check_modifier("nebula", "Nebula", "NO DESCRIPTION YET", "NO EFFECT DESCRIPTION YET", value)
+			status_modifier_organizer.check_modifier("nebula", "Nebula", "NO DESCRIPTION YET", "* [color=red]-0.50 scanner power multiplier[/color]", value)
 		player_in_nebula = value
 var player_supercharged: bool = false:
 	set(value):
