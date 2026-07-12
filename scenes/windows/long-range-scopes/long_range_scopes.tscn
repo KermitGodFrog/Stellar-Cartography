@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://b0frxj5cysipi"]
+[gd_scene load_steps=39 format=3 uid="uid://b0frxj5cysipi"]
 
 [ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://theme-gen/window_theme.tres" id="1_j2a2b"]
 [ext_resource type="Theme" uid="uid://dvp6gmpuweabh" path="res://theme-gen/long-range-scopes/long_range_scopes_MAIN_theme.tres" id="1_njahj"]
@@ -11,6 +11,7 @@
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="4_mjqhh"]
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="8_b035l"]
 [ext_resource type="Texture2D" uid="uid://c0olyufuaaty7" path="res://graphics/long-range-scopes/captures_background.png" id="8_fv023"]
+[ext_resource type="Texture2D" uid="uid://crpj5eyl2ijxb" path="res://graphics/system-map/system-list/frames/long_range_scopes_frame.png" id="8_tdkpx"]
 [ext_resource type="Texture2D" uid="uid://bm4yhhssy7mww" path="res://graphics/long-range-scopes/camera_icon.png" id="9_txgyv"]
 [ext_resource type="Environment" uid="uid://d3xo6hd26rjnn" path="res://scenes/windows/long-range-scopes/long_range_scopes_environment.tres" id="9_uncnc"]
 [ext_resource type="Texture2D" uid="uid://ivehqojgwndc" path="res://graphics/long-range-scopes/rotation_icon.png" id="9_vlq3c"]
@@ -236,6 +237,39 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="frame" type="TextureRect" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/no_current_entity_bg"]
+modulate = Color(0.211765, 0.211765, 0.211765, 1)
+texture_filter = 1
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_tdkpx")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="directions_label" type="Label" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer/no_current_entity_bg"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_drepj")
+theme_override_font_sizes/font_size = 16
+text = "'GO-TO' A VALID SPACE ENTITY TO BEGIN"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="photo_elements" type="Control" parent="split/lrs_center/lrs_container/lrs_viewport/long_range_scopes/camera_offset/camera/canvas_layer"]
 visible = false

@@ -188,6 +188,7 @@ func connect_all_signals() -> void:
 	
 	dialogue_manager.connect("openLRS", _on_open_LRS)
 	dialogue_manager.connect("openGLS", _on_open_GLS)
+	dialogue_manager.connect("openAV", _on_open_AV)
 	dialogue_manager.connect("decreasePlayerBalance", _on_decrease_player_balance)
 	dialogue_manager.connect("addPlayerValue", _on_add_player_value)
 	dialogue_manager.connect("removePlayerValue", _on_remove_player_value)
@@ -839,7 +840,7 @@ func _on_locked_body_updated(body: bodyAPI):
 	system_3d.set("label_locked_body_identifier", body.get_identifier())
 	system_3d.set("target_position", Vector2.ZERO)
 	barycenter_visualizer.set("locked_body_identifier", body.get_identifier())
-	audio_visualizer._on_locked_body_updated(body)
+	audio_visualizer.set("locked_body", body)
 	pass
 
 func _on_locked_body_depreciated():
@@ -1401,7 +1402,7 @@ func _on_insa_make_military_ships_neutral() -> void:
 func _on_open_LRS():
 	await get_tree().physics_frame
 	var following_body = world.player.action_body #should be set as playerAPI setting action_body calls _on_player_following_body, which calls dialogue, which calls this.
-	if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) == true:
+	if world.player.get_upgrade_unlocked_state(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES) == true:
 		long_range_scopes._on_current_entity_changed(following_body)
 		
 		if world.player.discovered_entities.find(following_body.entity_classification) == -1:
@@ -1416,7 +1417,7 @@ func _on_open_LRS():
 func _on_open_GLS():
 	await get_tree().physics_frame
 	var following_body = world.player.action_body #should be set as playerAPI setting action_body calls _on_player_following_body, which calls dialogue, which calls this.
-	if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) == true:
+	if world.player.get_upgrade_unlocked_state(playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR) == true:
 		gas_layer_surveyor._on_current_planet_changed(following_body)
 		for tag in gas_layer_surveyor.current_layers:
 			var idx = gas_layer_surveyor.layer_data.keys().find(tag)
@@ -1425,6 +1426,16 @@ func _on_open_GLS():
 		if not $gas_layer_surveyor_window.is_visible():
 			_on_gas_layer_surveyor_popup()
 	pass
+
+func _on_open_AV():
+	await get_tree().physics_frame
+	var following_body = world.player.action_body
+	if world.player.get_upgrade_unlocked_state(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER) == true:
+		audio_visualizer.set("locked_body", following_body)
+		if not $audio_visualizer_window.is_visible():
+			_on_audio_visualizer_popup()
+	pass
+
 
 
 

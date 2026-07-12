@@ -8,7 +8,6 @@ const habitable_planet_types = [
 	"Earth-like"
 ]
 
-
 #Audio Visualizer
 enum VARIATIONS {LOW, MEDIUM, HIGH}
 @export var current_variation: int = -1:

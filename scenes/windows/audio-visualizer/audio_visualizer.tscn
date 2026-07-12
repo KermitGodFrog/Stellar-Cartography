@@ -1,16 +1,28 @@
-[gd_scene load_steps=19 format=3 uid="uid://bwlfi3x5r51fo"]
+[gd_scene load_steps=28 format=3 uid="uid://bwlfi3x5r51fo"]
 
 [ext_resource type="Script" uid="uid://vxx2x12co2y8" path="res://scenes/windows/audio-visualizer/audio_visualizer.gd" id="1_fs2yq"]
 [ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://theme-gen/window_theme.tres" id="1_hiiey"]
-[ext_resource type="Theme" uid="uid://dm3fbhtw7qov2" path="res://theme-gen/system-map/system_map_HUD_theme.tres" id="2_ecg40"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="3_37xey"]
+[ext_resource type="Texture2D" uid="uid://pbgoomdkkj6h" path="res://graphics/system-map/system-list/frames/audio_visualizer_frame.png" id="4_5khyv"]
+[ext_resource type="Texture2D" uid="uid://c5cha62gdgv0l" path="res://graphics/audio-visualizer/triangle.svg" id="4_7faek"]
 [ext_resource type="Script" uid="uid://4qjn2mwnpnia" path="res://scenes/windows/audio-visualizer/saved_audio_profiles_list.gd" id="4_c818x"]
 [ext_resource type="Texture2D" uid="uid://c5r5ok7jmth3o" path="res://graphics/shared/confirmed.png" id="4_n2ehy"]
 [ext_resource type="Texture2D" uid="uid://bqokr8l8kfuv2" path="res://graphics/audio-visualizer/play_icon.png" id="5_6qtkb"]
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="5_h6udw"]
 [ext_resource type="Texture2D" uid="uid://cudxvqxk513ea" path="res://graphics/shared/denied.png" id="6_5rdbj"]
 [ext_resource type="AudioStream" uid="uid://ttuaxhwhlx47" path="res://sound/audio-visualizer/chimes.ogg" id="8_37xey"]
 [ext_resource type="AudioStream" uid="uid://e414kheudg0d" path="res://sound/audio-visualizer/pops.ogg" id="9_7faek"]
 [ext_resource type="AudioStream" uid="uid://brc8rwhnw65k5" path="res://sound/audio-visualizer/pulses.ogg" id="10_ov7pi"]
 [ext_resource type="AudioStream" uid="uid://dfslaxf3v6f2s" path="res://sound/audio-visualizer/storm.ogg" id="11_5khyv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ov7pi"]
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_bottom = 50
+border_color = Color(0.2347951, 0.5766774, 0.44297108, 0.3)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5khyv"]
+bg_color = Color(0.2347951, 0.5766774, 0.44297108, 0.3)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r0g17"]
 
@@ -22,12 +34,24 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2lnqy"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6udw"]
+bg_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_37xey"]
+bg_color = Color(0.18039216, 0.18039216, 0.18039216, 0.41568628)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7faek"]
+bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ov7pi"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g5asp"]
 bg_color = Color(0.109804, 0.109804, 0.211765, 0.415686)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hnmpn"]
 
 [node name="audio_visualizer_window" type="Window"]
+oversampling_override = 1.0
 title = "Audio Visualizer"
 position = Vector2i(0, 36)
 size = Vector2i(600, 400)
@@ -42,22 +66,33 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("3_37xey")
 script = ExtResource("1_fs2yq")
 
-[node name="ui_container" type="VBoxContainer" parent="audio_control"]
+[node name="background" type="ColorRect" parent="audio_control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2_ecg40")
+color = Color(0, 0, 0, 1)
 
-[node name="visualizer_bg" type="Panel" parent="audio_control/ui_container"]
+[node name="scroll" type="VBoxContainer" parent="audio_control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="visualizer_bg" type="Panel" parent="audio_control/scroll"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ov7pi")
 
-[node name="body_name_label" type="Label" parent="audio_control/ui_container/visualizer_bg"]
+[node name="body_name_label" type="Label" parent="audio_control/scroll/visualizer_bg"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -66,10 +101,57 @@ offset_left = -40.0
 offset_bottom = 22.0
 grow_horizontal = 0
 
-[node name="visualizer_controls" type="HBoxContainer" parent="audio_control/ui_container"]
-layout_mode = 2
+[node name="no_current_planet_bg" type="ColorRect" parent="audio_control/scroll/visualizer_bg"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
 
-[node name="clear_button" type="Button" parent="audio_control/ui_container/visualizer_controls"]
+[node name="frame" type="TextureRect" parent="audio_control/scroll/visualizer_bg/no_current_planet_bg"]
+modulate = Color(0.211765, 0.211765, 0.211765, 1)
+texture_filter = 1
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -64.0
+offset_right = 32.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_5khyv")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="directions_label" type="Label" parent="audio_control/scroll/visualizer_bg/no_current_planet_bg"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_h6udw")
+theme_override_font_sizes/font_size = 16
+text = "LOCK A VALID PLANET TO BEGIN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="visualizer_controls" type="PanelContainer" parent="audio_control/scroll"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5khyv")
+
+[node name="scroll" type="HBoxContainer" parent="audio_control/scroll/visualizer_controls"]
+layout_mode = 2
+alignment = 2
+
+[node name="clear_button" type="Button" parent="audio_control/scroll/visualizer_controls/scroll"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_r0g17")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_ave51")
@@ -78,12 +160,85 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_gqlwt")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_2lnqy")
 text = "CLEAR"
 
-[node name="label_container" type="HBoxContainer" parent="audio_control/ui_container"]
+[node name="return_button" type="Button" parent="audio_control/scroll/visualizer_controls/scroll"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_r0g17")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ave51")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sjidh")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_gqlwt")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_2lnqy")
+text = "RETURN"
+
+[node name="scroll" type="HBoxContainer" parent="audio_control/scroll"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="picker_panel" type="PanelContainer" parent="audio_control/scroll/scroll"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+theme_override_styles/panel = SubResource("StyleBoxFlat_h6udw")
+
+[node name="picker_margin" type="MarginContainer" parent="audio_control/scroll/scroll/picker_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="picker_scroll" type="VBoxContainer" parent="audio_control/scroll/scroll/picker_panel/picker_margin"]
+layout_mode = 2
+
+[node name="arrow_texture" type="TextureRect" parent="audio_control/scroll/scroll/picker_panel/picker_margin/picker_scroll"]
+modulate = Color(0.80363095, 0.80363095, 0.80363095, 1)
+layout_mode = 2
+texture = ExtResource("4_7faek")
+stretch_mode = 5
+
+[node name="picker_label" type="Label" parent="audio_control/scroll/scroll/picker_panel/picker_margin/picker_scroll"]
+layout_mode = 2
+text = "CHOOSE VARIATION:"
+vertical_alignment = 1
+
+[node name="picker_button" type="OptionButton" parent="audio_control/scroll/scroll/picker_panel/picker_margin/picker_scroll"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+tooltip_text = "A value which can be reasonably estimated via the audio visualizer."
+theme_override_styles/normal = SubResource("StyleBoxFlat_37xey")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_37xey")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7faek")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ov7pi")
+fit_to_longest_item = false
+item_count = 3
+popup/item_0/text = "LOW"
+popup/item_0/id = 0
+popup/item_1/text = "MEDIUM"
+popup/item_1/id = 1
+popup/item_2/text = "HIGH"
+popup/item_2/id = 2
+
+[node name="profiles_panel" type="PanelContainer" parent="audio_control/scroll/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+
+[node name="profiles_margin" type="MarginContainer" parent="audio_control/scroll/scroll/profiles_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="profiles_scroll" type="VBoxContainer" parent="audio_control/scroll/scroll/profiles_panel/profiles_margin"]
+layout_mode = 2
+
+[node name="label_container" type="HBoxContainer" parent="audio_control/scroll/scroll/profiles_panel/profiles_margin/profiles_scroll"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 alignment = 1
 
-[node name="saved_audio_profiles_label" type="Label" parent="audio_control/ui_container/label_container"]
+[node name="saved_audio_profiles_label" type="Label" parent="audio_control/scroll/scroll/profiles_panel/profiles_margin/profiles_scroll/label_container"]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_g5asp")
@@ -91,14 +246,14 @@ text = "- SAVED AUDIO PROFILES -"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="storage_container" type="HBoxContainer" parent="audio_control/ui_container"]
+[node name="storage_container" type="HBoxContainer" parent="audio_control/scroll/scroll/profiles_panel/profiles_margin/profiles_scroll"]
 layout_mode = 2
 
-[node name="storage_ratio_label" type="Label" parent="audio_control/ui_container/storage_container"]
+[node name="storage_ratio_label" type="Label" parent="audio_control/scroll/scroll/profiles_panel/profiles_margin/profiles_scroll/storage_container"]
 layout_mode = 2
 text = "(13/15 PROFILES)"
 
-[node name="storage_progress_bar" type="ProgressBar" parent="audio_control/ui_container/storage_container"]
+[node name="storage_progress_bar" type="ProgressBar" parent="audio_control/scroll/scroll/profiles_panel/profiles_margin/profiles_scroll/storage_container"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -108,7 +263,7 @@ value = 13.0
 rounded = true
 fill_mode = 1
 
-[node name="saved_audio_profiles_list" type="ItemList" parent="audio_control/ui_container"]
+[node name="saved_audio_profiles_list" type="ItemList" parent="audio_control/scroll/scroll/profiles_panel/profiles_margin/profiles_scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_hnmpn")
@@ -143,5 +298,5 @@ bus = &"Planetary SFX"
 bus = &"Planetary SFX"
 
 [connection signal="close_requested" from="." to="audio_control" method="_on_audio_visualizer_window_close_requested"]
-[connection signal="pressed" from="audio_control/ui_container/visualizer_controls/clear_button" to="audio_control" method="_on_clear_button_pressed"]
-[connection signal="item_clicked" from="audio_control/ui_container/saved_audio_profiles_list" to="audio_control/ui_container/saved_audio_profiles_list" method="_on_item_clicked"]
+[connection signal="pressed" from="audio_control/scroll/visualizer_controls/scroll/clear_button" to="audio_control" method="_on_clear_button_pressed"]
+[connection signal="item_clicked" from="audio_control/scroll/scroll/profiles_panel/profiles_margin/profiles_scroll/saved_audio_profiles_list" to="audio_control/scroll/scroll/profiles_panel/profiles_margin/profiles_scroll/saved_audio_profiles_list" method="_on_item_clicked"]

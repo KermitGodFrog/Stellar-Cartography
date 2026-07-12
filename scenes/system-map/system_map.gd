@@ -69,8 +69,6 @@ var player_action_lock: bool = false
 @onready var orbit_button = $camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll/orbit_button
 @onready var go_to_button = $camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll/go_to_button
 @onready var stop_button = $camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll/stop_button
-@onready var picker_label = $camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_label
-@onready var picker_button = $camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
 @onready var console = $camera/canvas/control/console
 @onready var status_control = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control
 @onready var map_overlay = $camera/canvas/map_overlay
@@ -273,33 +271,6 @@ func _physics_process(delta):
 						"affiliation": parse = "%s" % game_data.UNIT_AFFILIATIONS.find_key(follow_body.metadata.get(entry))
 						_: parse = str(follow_body.metadata.get(entry))
 					body_attributes_list.add_item("%s : %s" % [entry, parse], null, false)
-	
-	#PICKER UTILITY \/\/\/\/\/
-	if follow_body and follow_body.is_known(): 
-		if follow_body.get_type() == starSystemAPI.BODY_TYPES.PLANET: 
-			if follow_body.get_current_variation() != -1:
-				var data_for_planet_type = system.planet_type_data.get(follow_body.metadata.get("planet_type"))
-				var variation_class = data_for_planet_type.get("variation_class")
-				if variation_class != null and (follow_body.metadata.get("missing_AO", false) == true):
-					picker_label.show()
-					picker_button.show()
-					picker_label.set_text(str(variation_class.capitalize(), " (AUDIO VISUALIZER): "))
-					if follow_body.get_guessed_variation() != -1:
-						picker_button.select(follow_body.get_guessed_variation())
-					else: picker_button.select(-1)
-				else:
-					picker_label.hide()
-					picker_button.hide()
-			else:
-				picker_label.hide()
-				picker_button.hide()
-		else:
-			picker_label.hide()
-			picker_button.hide()
-	else:
-		picker_label.hide()
-		picker_button.hide() #NEED TO FIX THIS ATROCITY AT SOME POINT!!!!
-	
 	queue_redraw()
 	pass
 
@@ -1045,12 +1016,6 @@ func _on_found_body(id: int):
 			if body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
 				if body.is_habitable():
 					get_tree().call_group("audioHandler", "plot_radio", load("uid://crkhwlwd0qqkh"))
-	pass
-
-func _on_picker_button_item_selected(index):
-	if follow_body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
-		follow_body.set_guessed_variation(index)
-	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "AV_picker_select")
 	pass
 
 func _on_add_console_entry(text: String, text_color: Color = Color.WHITE):

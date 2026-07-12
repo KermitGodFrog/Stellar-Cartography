@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=64 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
@@ -78,14 +78,6 @@ corner_radius_bottom_left = 15
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhsj4"]
 bg_color = Color(0.109804, 0.109804, 0.211765, 0.415686)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w1mgb"]
-bg_color = Color(0.211765, 0.211765, 0.211765, 0.415686)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5sqdb"]
-bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ufej3"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r4cqc"]
 
@@ -331,55 +323,16 @@ size_flags_vertical = 3
 theme = ExtResource("3_djc4s")
 allow_search = false
 
-[node name="picker_header" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO"]
+[node name="observations_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_hhsj4")
 text = "- ADDITIONAL OBSERVATIONS -"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="picker_panel" type="Panel" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO"]
+[node name="observations_panel" type="Panel" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO"]
 custom_minimum_size = Vector2(450, 200)
 layout_mode = 2
-
-[node name="picker_margin" type="MarginContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/picker_panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="picker_scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/picker_panel/picker_margin"]
-layout_mode = 2
-
-[node name="picker_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll"]
-visible = false
-layout_mode = 2
-text = "VARIATION:"
-vertical_alignment = 1
-
-[node name="picker_button" type="OptionButton" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll"]
-visible = false
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-tooltip_text = "A value which can be reasonably estimated via the audio visualizer."
-theme_override_styles/normal = SubResource("StyleBoxFlat_w1mgb")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_w1mgb")
-theme_override_styles/hover = SubResource("StyleBoxFlat_5sqdb")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_ufej3")
-fit_to_longest_item = false
-item_count = 3
-popup/item_0/text = "LOW"
-popup/item_0/id = 0
-popup/item_1/text = "MEDIUM"
-popup/item_1/id = 1
-popup/item_2/text = "HIGH"
-popup/item_2/id = 2
 
 [node name="actions_panel" type="Panel" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll"]
 custom_minimum_size = Vector2(450, 100)
@@ -1080,7 +1033,6 @@ bus = &"SFX"
 [connection signal="item_mouse_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW/syslist_contacts_split/system_list" to="system" method="_on_system_list_item_mouse_selected"]
 [connection signal="item_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW/syslist_contacts_split/system_list" to="system" method="_on_system_list_item_selected"]
 [connection signal="item_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW/syslist_contacts_split/contact_list" to="system" method="_on_contact_list_item_selected"]
-[connection signal="item_selected" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button" to="system" method="_on_picker_button_item_selected"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll/orbit_button" to="system" method="_on_orbit_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll/go_to_button" to="system" method="_on_go_to_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll/stop_button" to="system" method="_on_stop_button_pressed"]

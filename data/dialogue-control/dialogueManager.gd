@@ -23,6 +23,7 @@ signal addDialogueMemoryPair(key, value)
 
 signal openLRS()
 signal openGLS()
+signal openAV()
 
 signal decreasePlayerBalance(amount: int)
 signal addPlayerValue(amount: int)
@@ -528,6 +529,10 @@ func openLRSApplicable():
 
 func openGLSApplicable():
 	emit_signal("openGLS")
+	pass
+
+func openAVApplicable() -> void:
+	emit_signal("openAV")
 	pass
 
 func closeDialog(with_return_state = null):

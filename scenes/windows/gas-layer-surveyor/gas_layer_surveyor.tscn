@@ -187,7 +187,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="gas_layer_surveyor_frame" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/no_current_planet_bg"]
+[node name="frame" type="TextureRect" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/no_current_planet_bg"]
 modulate = Color(0.211765, 0.211765, 0.211765, 1)
 texture_filter = 1
 custom_minimum_size = Vector2(128, 0)
@@ -216,7 +216,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_kerqb")
 theme_override_font_sizes/font_size = 16
-text = "FOLLOW A VALID PLANET TO BEGIN"
+text = "'GO-TO' A VALID PLANET TO BEGIN"
 horizontal_alignment = 1
 vertical_alignment = 1
 

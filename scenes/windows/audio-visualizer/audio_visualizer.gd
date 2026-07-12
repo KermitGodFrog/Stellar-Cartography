@@ -7,11 +7,17 @@ signal removeSavedAudioProfile(helper: audioProfileHelper)
 @onready var pulses = $pulses
 @onready var storm = $storm
 @onready var custom = $custom
-@onready var visualizer_bg = $ui_container/visualizer_bg
-@onready var saved_audio_profiles_list = $ui_container/saved_audio_profiles_list
-@onready var body_name_label = $ui_container/visualizer_bg/body_name_label
-@onready var storage_ratio_label = $ui_container/storage_container/storage_ratio_label
-@onready var storage_progress_bar = $ui_container/storage_container/storage_progress_bar
+@onready var visualizer_bg = $scroll/visualizer_bg
+@onready var saved_audio_profiles_list = $scroll/scroll/profiles_panel/profiles_margin/profiles_scroll/saved_audio_profiles_list
+@onready var body_name_label = $scroll/visualizer_bg/body_name_label
+@onready var storage_ratio_label = $scroll/scroll/profiles_panel/profiles_margin/profiles_scroll/storage_container/storage_ratio_label
+@onready var storage_progress_bar = $scroll/scroll/profiles_panel/profiles_margin/profiles_scroll/storage_container/storage_progress_bar
+@onready var no_current_planet_bg = $scroll/visualizer_bg/no_current_planet_bg
+
+var locked_body: bodyAPI = null:
+	set(value):
+		locked_body = value
+		_on_locked_body_updated(locked_body)
 
 var current_audio_profile: audioProfileHelper #CONTINUOUSLY UPDATED!!!
 var saved_audio_profiles: Array[audioProfileHelper] = []
@@ -36,8 +42,15 @@ func _ready():
 	pass
 
 func _physics_process(_delta):
-	if owner.is_visible(): AudioServer.set_bus_mute(AudioServer.get_bus_index("Planetary SFX"), false)
-	else: AudioServer.set_bus_mute(AudioServer.get_bus_index("Planetary SFX"), true)
+	if owner.is_visible():
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Planetary SFX"), false)
+	else:
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Planetary SFX"), true)
+	
+	if locked_body:
+		no_current_planet_bg.hide()
+	else:
+		no_current_planet_bg.show()
 	
 	#visualizer stuff
 	WIDTH = owner.size.x
@@ -61,7 +74,7 @@ func _draw():
 		var magnitude: float = spectrum.get_magnitude_for_frequency_range(prev_hz, hz).length()
 		var energy = clamp((MIN_DB + linear_to_db(magnitude)) / MIN_DB, 0, 1)
 		var height = energy * HEIGHT
-		draw_rect(Rect2(w * i-w, HEIGHT - height, w, height), Color.WHITE)
+		draw_rect(Rect2(w * i-w, HEIGHT - height, w, height), Color("#3c9371"))
 		prev_hz = hz
 	pass
 
@@ -81,7 +94,6 @@ func deactivate():
 	for sfx in all_sfx:
 		sfx.stop()
 	pass
-
 
 func _on_play_audio_profile(helper: audioProfileHelper):
 	current_audio_profile = helper
@@ -109,7 +121,7 @@ func _on_locked_body_updated(body: bodyAPI):
 	else:
 		current_audio_profile = null
 		deactivate()
-		body_name_label.set_text("")
+		body_name_label.set_text(String())
 	pass
 
 func _on_clear_button_pressed():
@@ -127,3 +139,35 @@ func _on_popup():
 func _on_audio_visualizer_window_close_requested():
 	owner.hide()
 	pass
+
+#PICKER UTILITY \/\/\/\/\/
+#if follow_body and follow_body.is_known(): 
+#	if follow_body.get_type() == starSystemAPI.BODY_TYPES.PLANET: 
+#		if follow_body.get_current_variation() != -1:
+#			var data_for_planet_type = system.planet_type_data.get(follow_body.metadata.get("planet_type"))
+#			var variation_class = data_for_planet_type.get("variation_class")
+#			if variation_class != null and (follow_body.metadata.get("missing_AO", false) == true):
+#				picker_label.show()
+#				picker_button.show()
+#				picker_label.set_text(str(variation_class.capitalize(), " (AUDIO VISUALIZER): "))
+#				if follow_body.get_guessed_variation() != -1:
+#					picker_button.select(follow_body.get_guessed_variation())
+#				else: picker_button.select(-1)
+#			else:
+#				picker_label.hide()
+#				picker_button.hide()
+#		else:
+#			picker_label.hide()
+#			picker_button.hide()
+#	else:
+#		picker_label.hide()
+#		picker_button.hide()
+#else:
+#	picker_label.hide()
+#	picker_button.hide() #NEED TO FIX THIS ATROCITY AT SOME POINT!!!!
+
+#func _on_picker_button_item_selected(index):
+#	if follow_body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
+#		follow_body.set_guessed_variation(index)
+#	get_tree().call_group_flags(SceneTree.GROUP_CALL_DEFERRED | SceneTree.GROUP_CALL_UNIQUE, "eventsHandler", "speak", self, "AV_picker_select")
+#	pass
