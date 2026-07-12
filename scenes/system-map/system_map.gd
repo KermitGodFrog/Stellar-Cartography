@@ -131,6 +131,8 @@ const CME_MAX_RING_RADIUS: int = 1000
 var PULSAR_DAMAGE_COOLDOWN: float = 0.0
 const PULSAR_MAX_DAMAGE_COOLDOWN: float = 1.0
 
+var temp_nebula_texture: NoiseTexture2D #regenerated whenever it doesnt exist or is not up to date
+
 #drawing scanner stuff on system map
 var scanner_profile_time: float = 0.0
 var scanner_power_time: float = 0.0
@@ -359,15 +361,7 @@ func calculate_nebula_slowdown() -> void:
 	var metadata = system.system_hazard_metadata
 	if hazard == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA:
 		var noise: FastNoiseLite = metadata.get("nebula_noise", FastNoiseLite.new())
-		pos_value = noise.get_noise_2d(player_position_matrix[0].x, player_position_matrix[0].y)
-		print(pos_value)
-		
-		
-		
-		
-		
-		
-	
+		pos_value = noise.get_noise_2d(temp_nebula_texture.get_width() / 2.0, temp_nebula_texture.get_height() / 2.0) # its (0.0, 0.0) bc its already offset by the player pos!
 	
 	if pos_value > 0:
 		player_in_nebula = true
@@ -788,6 +782,31 @@ func draw_map():
 		var dir = Vector2.UP.rotated(deg_to_rad(theta))
 		var pos = Vector2(player_position_matrix[0] + (dir * player_adj_scanner_matrix[1]))
 		scanner_power_points.append(pos)
+	
+	var hazard = system.system_hazard_classification
+	var hazard_metadata = system.system_hazard_metadata
+	if hazard == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA:
+		var noise: FastNoiseLite = hazard_metadata.get("nebula_noise", FastNoiseLite.new())
+		var reset_nebula_texture = func() -> void:
+			temp_nebula_texture = NoiseTexture2D.new()
+			temp_nebula_texture.noise = noise
+			temp_nebula_texture.normalize = false
+			temp_nebula_texture.generate_mipmaps = false
+			temp_nebula_texture.color_ramp = Gradient.new()
+			temp_nebula_texture.color_ramp.set_interpolation_mode(Gradient.GRADIENT_INTERPOLATE_CONSTANT)
+			temp_nebula_texture.color_ramp.set_color(0, Color(Color.WHITE, 0.0))
+			temp_nebula_texture.color_ramp.set_color(1, Color(Color.PINK, 0.1))
+			temp_nebula_texture.color_ramp.set_offset(1, 0.51)
+			temp_nebula_texture.color_ramp.add_point(0.49, Color(Color.GRAY, 0.1))
+		
+		if temp_nebula_texture == null:
+			reset_nebula_texture.call()
+		else:
+			if not temp_nebula_texture.noise == noise:
+				reset_nebula_texture.call()
+		
+		noise.set_offset(Vector3(player_position_matrix[0].x, player_position_matrix[0].y, 0))
+		draw_texture_rect(temp_nebula_texture, global_data.get_offset_rect2(player_position_matrix[0], temp_nebula_texture.get_width(), temp_nebula_texture.get_height()), false)
 	
 	var screen_junk = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.SCREEN_JUNK)
 	if screen_junk:
