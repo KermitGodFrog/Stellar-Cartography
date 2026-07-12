@@ -32,6 +32,7 @@ signal playerBelowCMERingRadius
 signal playerInPulsarBeamCooldownExpired
 signal updatePlayerInAsteroidBelt(_player_in_asteroid_belt: bool)
 signal updatePlayerInPulsarBeam(_player_in_pulsar_beam: bool)
+signal updatePlayerInNebula(_player_in_nebula: bool)
 signal toggleScopeModeSwitchButton
 signal openPauseMenu
 signal tutorialIngressThresholdReached
@@ -152,10 +153,18 @@ var player_in_pulsar_beam: bool = false: #doesnt impact speed ATM
 			emit_signal("updatePlayerInPulsarBeam", value)
 			status_modifier_organizer.check_modifier("pulsar_beam", "Pulsar beam", "A beam of electromagnetic radiation originating from the poles of a Pulsar class star. Pulsar beams are extremely dangerous and create a huge amount of scanner interference. It is wise to stay as far away as possible from them.", "* [color=green]-0.80 scanner profile multiplier[/color]\n* [color=red]-0.50 scanner power multiplier[/color]", value)
 		player_in_pulsar_beam = value
+var player_in_nebula: bool = false:
+	set(value):
+		if player_in_nebula != value:
+			emit_signal("updatePlayerInNebula", value)
+			status_modifier_organizer.check_modifier("nebula", "Nebula", "NO DESCRIPTION YET", "NO EFFECT DESCRIPTION YET", value)
+		player_in_nebula = value
 var player_supercharged: bool = false:
 	set(value):
 		player_supercharged = value
 		status_modifier_organizer.check_modifier("supercharged", "Supercharged", "The state wherein a starship is travelling well above its usual safe speeed. This can be made possible by any number of reasons, including unsafe drive changes, or comprehensive navigation data mitigating the risk of travelling at such a high speed. A supercharged state can only be maintained for a number of wormhole traversals.", "* [color=green]2.0x speed[/color]", value)
+
+
 
 var junk_textures: Dictionary = {}
 
@@ -217,6 +226,7 @@ func _physics_process(delta):
 	
 	calculate_asteroid_belt_slowdown()
 	calculate_pulsar_beam_slowdown_and_damage(delta)
+	calculate_nebula_slowdown()
 	generate_system_list()
 	update_contact_list()
 	
@@ -341,6 +351,33 @@ func calculate_pulsar_beam_slowdown_and_damage(delta) -> void:
 		PULSAR_DAMAGE_COOLDOWN = PULSAR_MAX_DAMAGE_COOLDOWN
 		emit_signal("playerInPulsarBeamCooldownExpired")
 	pass
+
+func calculate_nebula_slowdown() -> void:
+	var pos_value: float = 0.0
+	
+	var hazard = system.system_hazard_classification
+	var metadata = system.system_hazard_metadata
+	if hazard == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA:
+		var noise: FastNoiseLite = metadata.get("nebula_noise", FastNoiseLite.new())
+		pos_value = noise.get_noise_2d(player_position_matrix[0].x, player_position_matrix[0].y)
+		print(pos_value)
+		
+		
+		
+		
+		
+		
+	
+	
+	if pos_value > 0:
+		player_in_nebula = true
+	else:
+		player_in_nebula = false
+	pass
+ 
+
+
+
 
 
 

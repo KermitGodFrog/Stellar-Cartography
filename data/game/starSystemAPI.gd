@@ -401,6 +401,11 @@ func createAuxiliaryUnexplored(_player_speed: int) -> void:
 	match system_hazard_classification:
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD:
 			generateRandomMines(_player_speed)
+		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA:
+			var noise: FastNoiseLite = FastNoiseLite.new()
+			noise.set_seed(randi())
+			noise.set_fractal_octaves(1)
+			system_hazard_metadata["nebula_noise"] = noise
 	pass
 
 # gen methods \/

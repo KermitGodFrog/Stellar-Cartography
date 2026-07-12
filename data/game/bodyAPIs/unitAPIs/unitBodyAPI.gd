@@ -27,6 +27,7 @@ var boosting: bool = false:
 		boosting = value
 var in_asteroid_belt: bool = false
 var in_pulsar_beam: bool = false
+var in_nebula: bool = false
 
 @export_storage var rotation_hint: float #used for orbiting mechanics
 @export_storage var target_position: Vector2

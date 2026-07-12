@@ -158,6 +158,7 @@ func connect_all_signals() -> void:
 	system_map.connect("playerBelowCMERingRadius", _on_player_below_CME_ring_radius)
 	system_map.connect("updatePlayerInAsteroidBelt", _on_update_player_in_asteroid_belt)
 	system_map.connect("updatePlayerInPulsarBeam", _on_update_player_in_pulsar_beam)
+	system_map.connect("updatePlayerInNebula", _on_update_player_in_nebula)
 	system_map.connect("playerInPulsarBeamCooldownExpired", _on_player_in_pulsar_beam_cooldown_expired)
 	system_map.connect("toggleScopeModeSwitchButton", _on_toggle_scope_mode_switch_button)
 	system_map.connect("openPauseMenu", _on_open_pause_menu)
@@ -1226,6 +1227,10 @@ func _on_update_player_in_asteroid_belt(player_in_asteroid_belt: bool):
 
 func _on_update_player_in_pulsar_beam(player_in_pulsar_beam: bool):
 	world.player.in_pulsar_beam = player_in_pulsar_beam
+	pass
+
+func _on_update_player_in_nebula(player_in_nebula: bool) -> void:
+	world.player.in_nebula = player_in_nebula
 	pass
 
 func _on_player_action_type_pending_or_completed(type: playerAPI.ACTION_TYPES, body: bodyAPI, pending: bool):
