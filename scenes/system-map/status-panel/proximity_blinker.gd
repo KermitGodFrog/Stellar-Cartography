@@ -1,6 +1,6 @@
 extends Control
 
-signal condition_changed(_active: bool)
+signal condition_changed(_active: bool, _last_condition_time: float)
 
 @onready var blinker = $texture_container/blinker
 @onready var light = $texture_container/light
@@ -9,18 +9,20 @@ signal condition_changed(_active: bool)
 @onready var blinker_warn_tex = preload("uid://3afy6kavs1kh")
 
 var time: float = 0.0
+var last_condition_time: float = 0.0 #time since condition change
 
 var active: bool = false:
 	set(value):
 		if value != active:
-			emit_signal("condition_changed", value)
+			emit_signal("condition_changed", value, last_condition_time)
+			last_condition_time = 0.0
 		active = value
 
 func _ready() -> void:
 	connect("condition_changed", _on_condition_changed)
 	pass
 
-func _on_condition_changed(_active: bool) -> void:
+func _on_condition_changed(_active: bool, _last_condition_time: float) -> void:
 	match _active:
 		true:
 			blinker.set_texture(blinker_warn_tex)
@@ -32,6 +34,7 @@ func _on_condition_changed(_active: bool) -> void:
 
 func _process(delta: float) -> void:
 	time += delta
+	last_condition_time += delta
 	var update_color = Color.DARK_RED
 	update_color.a = clampf(sin(time), 0.0, 0.3)
 	light.set_modulate(update_color)

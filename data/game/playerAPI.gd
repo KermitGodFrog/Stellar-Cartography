@@ -17,9 +17,9 @@ signal scannerContactLost(unit: unitBodyAPI)
 
 func get_adjusted_speed() -> int:
 	if boosting:
-		return speed * 5 * (1 + (-int(in_asteroid_belt) * 0.5)) * (1 + int(supercharged))
+		return speed * 5 * (1 + (-int(in_asteroid_belt) * 0.5)) * (1 + (-int(in_nebula) * 0.1)) * (1 + int(supercharged))
 	else:
-		return speed * (1 + (-int(in_asteroid_belt) * 0.5)) * (1 + int(supercharged))
+		return speed * (1 + (-int(in_asteroid_belt) * 0.5)) * (1 + (-int(in_nebula) * 0.1)) * (1 + int(supercharged))
 
 var supercharged: bool = false:
 	get():
@@ -116,6 +116,8 @@ func get_adjusted_scanner_power() -> float:
 	if in_asteroid_belt:
 		multiplier -= 0.75
 	if in_pulsar_beam:
+		multiplier -= 0.5
+	if in_nebula:
 		multiplier -= 0.5
 	
 	return maxf(10.0, scanner_power * maxf(0, multiplier))

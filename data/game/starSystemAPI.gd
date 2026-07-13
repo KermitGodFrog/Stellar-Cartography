@@ -401,6 +401,26 @@ func createAuxiliaryUnexplored(_player_speed: int) -> void:
 	match system_hazard_classification:
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD:
 			generateRandomMines(_player_speed)
+		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA:
+			const valid_nebula_colors := [
+				Color.CHARTREUSE,
+				Color.CORAL,
+				Color.CRIMSON,
+				Color.DARK_GREEN,
+				Color.DEEP_SKY_BLUE,
+				Color.DEEP_PINK,
+				Color.MIDNIGHT_BLUE,
+				Color.INDIGO
+			]
+			var noise: FastNoiseLite = FastNoiseLite.new()
+			noise.set_seed(randi())
+			noise.set_fractal_octaves(3)
+			noise.set_fractal_weighted_strength(1.0)
+			noise.set_noise_type(FastNoiseLite.TYPE_SIMPLEX)
+			noise.set_fractal_type([FastNoiseLite.FRACTAL_NONE, FastNoiseLite.FRACTAL_PING_PONG, FastNoiseLite.FRACTAL_RIDGED].pick_random())
+			noise.set_frequency(global_data.get_randf(0.001, 0.0075))
+			system_hazard_metadata["nebula_noise"] = noise
+			system_hazard_metadata["nebula_color"] = valid_nebula_colors.pick_random()
 	pass
 
 # gen methods \/

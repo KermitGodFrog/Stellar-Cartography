@@ -32,10 +32,12 @@ signal playerBelowCMERingRadius
 signal playerInPulsarBeamCooldownExpired
 signal updatePlayerInAsteroidBelt(_player_in_asteroid_belt: bool)
 signal updatePlayerInPulsarBeam(_player_in_pulsar_beam: bool)
+signal updatePlayerInNebula(_player_in_nebula: bool)
 signal toggleScopeModeSwitchButton
 signal openPauseMenu
 signal tutorialIngressThresholdReached
 signal documentPingHitStatus(hit: bool)
+signal proximityBlinkerConditionChanged(active: bool, last_condition_time: float)
 
 signal audioVisualizerPopup
 signal journeyMapPopup
@@ -88,6 +90,7 @@ var player_action_lock: bool = false
 @onready var alarm_sound = $alarm_sound
 @onready var proximity_blinker = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/proximity_blinker
 @onready var background_handler = $camera/canvas/background_handler
+@onready var nebula_sprite = $nebula_sprite
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -130,6 +133,8 @@ const CME_MAX_RING_RADIUS: int = 1000
 var PULSAR_DAMAGE_COOLDOWN: float = 0.0
 const PULSAR_MAX_DAMAGE_COOLDOWN: float = 1.0
 
+var temp_nebula_texture: NoiseTexture2D #regenerated whenever it doesnt exist or is not up to date
+
 #drawing scanner stuff on system map
 var scanner_profile_time: float = 0.0
 var scanner_power_time: float = 0.0
@@ -152,6 +157,12 @@ var player_in_pulsar_beam: bool = false: #doesnt impact speed ATM
 			emit_signal("updatePlayerInPulsarBeam", value)
 			status_modifier_organizer.check_modifier("pulsar_beam", "Pulsar beam", "A beam of electromagnetic radiation originating from the poles of a Pulsar class star. Pulsar beams are extremely dangerous and create a huge amount of scanner interference. It is wise to stay as far away as possible from them.", "* [color=green]-0.80 scanner profile multiplier[/color]\n* [color=red]-0.50 scanner power multiplier[/color]", value)
 		player_in_pulsar_beam = value
+var player_in_nebula: bool = false:
+	set(value):
+		if player_in_nebula != value:
+			emit_signal("updatePlayerInNebula", value)
+			status_modifier_organizer.check_modifier("nebula", "Nebula", "A region of the interstellar medium composed of gas, dust and other raw material. In this area, the gathering of matter can eventually form star systems. The localized gas pockets of nebulae interfere with scanners, and a wise starship captain will exercise caution when crossing the space within.", "* [color=red]-0.50 scanner power multiplier[/color]\n* [color=red]0.9x speed[/color]", value)
+		player_in_nebula = value
 var player_supercharged: bool = false:
 	set(value):
 		player_supercharged = value
@@ -162,6 +173,7 @@ var junk_textures: Dictionary = {}
 func _ready():
 	status_control.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	status_control.connect("updateScannerDisplayTimes", _on_update_scanner_display_times)
+	proximity_blinker.connect("condition_changed", _on_proximity_blinker_condition_changed)
 	contact_list.create_item(null)
 	
 	var junk_paths = ["res://graphics/system-map/junk/junk1.png", "res://graphics/system-map/junk/junk2.png", "res://graphics/system-map/junk/junk3.png", "res://graphics/system-map/junk/junk4.png", "res://graphics/system-map/junk/junk5.png", "res://graphics/system-map/junk/junk6.png", "res://graphics/system-map/junk/junk7.png"]
@@ -190,6 +202,10 @@ func _physics_process(delta):
 	#Follow body is replicated to camera.
 	#If camera moves, follow body is removed for camera.
 	
+	#nebual sprite stuff
+	nebula_sprite.visible = system.system_hazard_classification == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA
+	nebula_sprite.set_position(player_position_matrix[0])
+	
 	#camera_target_position is position for system3d to look at
 	#incredibly out of plcace!!!!!
 	if follow_body_modifier != null:
@@ -217,6 +233,7 @@ func _physics_process(delta):
 	
 	calculate_asteroid_belt_slowdown()
 	calculate_pulsar_beam_slowdown_and_damage(delta)
+	calculate_nebula_slowdown()
 	generate_system_list()
 	update_contact_list()
 	
@@ -341,6 +358,26 @@ func calculate_pulsar_beam_slowdown_and_damage(delta) -> void:
 		PULSAR_DAMAGE_COOLDOWN = PULSAR_MAX_DAMAGE_COOLDOWN
 		emit_signal("playerInPulsarBeamCooldownExpired")
 	pass
+
+func calculate_nebula_slowdown() -> void:
+	var pos_value: float = 0.0
+	
+	var hazard = system.system_hazard_classification
+	var metadata = system.system_hazard_metadata
+	if hazard == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA:
+		var noise: FastNoiseLite = metadata.get("nebula_noise", FastNoiseLite.new())
+		if temp_nebula_texture != null:
+			pos_value = noise.get_noise_2d(temp_nebula_texture.get_width() / 2.0, temp_nebula_texture.get_height() / 2.0) # its (0.0, 0.0) bc its already offset by the player pos!
+	
+	if pos_value > 0:
+		player_in_nebula = true
+	else:
+		player_in_nebula = false
+	pass
+ 
+
+
+
 
 
 
@@ -752,6 +789,30 @@ func draw_map():
 		var pos = Vector2(player_position_matrix[0] + (dir * player_adj_scanner_matrix[1]))
 		scanner_power_points.append(pos)
 	
+	var hazard = system.system_hazard_classification
+	var hazard_metadata = system.system_hazard_metadata
+	if hazard == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA:
+		var noise: FastNoiseLite = hazard_metadata.get("nebula_noise", FastNoiseLite.new())
+		var reset_nebula_texture = func() -> void:
+			temp_nebula_texture = NoiseTexture2D.new()
+			temp_nebula_texture.noise = noise
+			temp_nebula_texture.normalize = false
+			temp_nebula_texture.generate_mipmaps = false
+			temp_nebula_texture.color_ramp = Gradient.new()
+			temp_nebula_texture.color_ramp.set_color(0, Color(Color.BLACK, 0.0))
+			temp_nebula_texture.color_ramp.set_color(1, hazard_metadata.get("nebula_color", Color.WHITE))
+			temp_nebula_texture.color_ramp.add_point(0.49, Color(Color.BLACK, 0.0))
+			temp_nebula_texture.color_ramp.add_point(0.51, Color(hazard_metadata.get("nebula_color", Color.WHITE).darkened(0.5), 0.1))
+		
+		if temp_nebula_texture == null:
+			reset_nebula_texture.call()
+		else:
+			if not temp_nebula_texture.noise == noise:
+				reset_nebula_texture.call()
+		
+		noise.set_offset(Vector3(player_position_matrix[0].x, player_position_matrix[0].y, 0))
+		nebula_sprite.set_texture(temp_nebula_texture)
+	
 	var screen_junk = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.SCREEN_JUNK)
 	if screen_junk:
 		for junk in screen_junk:
@@ -1123,6 +1184,10 @@ func _on_add_text_ping(ping_path: String, pos: Vector2, text: String) -> void:
 
 func _on_new_background() -> void:
 	background_handler.new_background()
+	pass
+
+func _on_proximity_blinker_condition_changed(_active: bool, _last_condition_time) -> void:
+	emit_signal("proximityBlinkerConditionChanged", _active, _last_condition_time)
 	pass
 
 

@@ -158,11 +158,13 @@ func connect_all_signals() -> void:
 	system_map.connect("playerBelowCMERingRadius", _on_player_below_CME_ring_radius)
 	system_map.connect("updatePlayerInAsteroidBelt", _on_update_player_in_asteroid_belt)
 	system_map.connect("updatePlayerInPulsarBeam", _on_update_player_in_pulsar_beam)
+	system_map.connect("updatePlayerInNebula", _on_update_player_in_nebula)
 	system_map.connect("playerInPulsarBeamCooldownExpired", _on_player_in_pulsar_beam_cooldown_expired)
 	system_map.connect("toggleScopeModeSwitchButton", _on_toggle_scope_mode_switch_button)
 	system_map.connect("openPauseMenu", _on_open_pause_menu)
 	system_map.connect("tutorialIngressThresholdReached", _on_tutorial_ingress_threshold_reached)
 	system_map.connect("documentPingHitStatus", _on_document_ping_hit_status)
+	system_map.connect("proximityBlinkerConditionChanged", _on_proximity_blinker_condition_changed)
 	
 	system_3d.connect("foundBody", _on_found_body)
 	system_3d.connect("addConsoleEntry", _on_add_console_entry)
@@ -1228,6 +1230,10 @@ func _on_update_player_in_pulsar_beam(player_in_pulsar_beam: bool):
 	world.player.in_pulsar_beam = player_in_pulsar_beam
 	pass
 
+func _on_update_player_in_nebula(player_in_nebula: bool) -> void:
+	world.player.in_nebula = player_in_nebula
+	pass
+
 func _on_player_action_type_pending_or_completed(type: playerAPI.ACTION_TYPES, body: bodyAPI, pending: bool):
 	#funny how this is the ONLY use case so far...
 	system_map._on_update_current_action_display(type, body, pending)
@@ -1374,6 +1380,11 @@ func _on_add_character_xp(occupation: characterAPI.OCCUPATIONS, amount: int) -> 
 
 func _on_remove_character_initiative_xp(occupation: characterAPI.OCCUPATIONS) -> void:
 	world.player.removeCharacterInitiativeXP(occupation)
+	pass
+
+func _on_proximity_blinker_condition_changed(active: bool, last_condition_time: float) -> void:
+	if active and (last_condition_time > 60.0):
+		_on_add_console_entry("Proximity warning.", Color.RED)
 	pass
 
 func _on_insa_make_all_wormholes_revealable() -> void:
