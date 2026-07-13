@@ -160,7 +160,7 @@ var player_in_nebula: bool = false:
 	set(value):
 		if player_in_nebula != value:
 			emit_signal("updatePlayerInNebula", value)
-			status_modifier_organizer.check_modifier("nebula", "Nebula", "NO DESCRIPTION YET", "* [color=red]-0.50 scanner power multiplier[/color]\n* [color=red]0.9x speed[/color]", value)
+			status_modifier_organizer.check_modifier("nebula", "Nebula", "A region of the interstellar medium composed of gas, dust and other raw material. In this area, the gathering of matter can eventually form star systems. The localized gas pockets of nebulae interfere with scanners, and a wise starship captain will exercise caution while crossing the space within.", "* [color=red]-0.50 scanner power multiplier[/color]\n* [color=red]0.9x speed[/color]", value)
 		player_in_nebula = value
 var player_supercharged: bool = false:
 	set(value):
