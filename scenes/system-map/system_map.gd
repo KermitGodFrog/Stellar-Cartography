@@ -37,6 +37,7 @@ signal toggleScopeModeSwitchButton
 signal openPauseMenu
 signal tutorialIngressThresholdReached
 signal documentPingHitStatus(hit: bool)
+signal proximityBlinkerConditionChanged(active: bool, last_condition_time: float)
 
 signal audioVisualizerPopup
 signal journeyMapPopup
@@ -160,7 +161,7 @@ var player_in_nebula: bool = false:
 	set(value):
 		if player_in_nebula != value:
 			emit_signal("updatePlayerInNebula", value)
-			status_modifier_organizer.check_modifier("nebula", "Nebula", "A region of the interstellar medium composed of gas, dust and other raw material. In this area, the gathering of matter can eventually form star systems. The localized gas pockets of nebulae interfere with scanners, and a wise starship captain will exercise caution while crossing the space within.", "* [color=red]-0.50 scanner power multiplier[/color]\n* [color=red]0.9x speed[/color]", value)
+			status_modifier_organizer.check_modifier("nebula", "Nebula", "A region of the interstellar medium composed of gas, dust and other raw material. In this area, the gathering of matter can eventually form star systems. The localized gas pockets of nebulae interfere with scanners, and a wise starship captain will exercise caution when crossing the space within.", "* [color=red]-0.50 scanner power multiplier[/color]\n* [color=red]0.9x speed[/color]", value)
 		player_in_nebula = value
 var player_supercharged: bool = false:
 	set(value):
@@ -172,6 +173,7 @@ var junk_textures: Dictionary = {}
 func _ready():
 	status_control.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	status_control.connect("updateScannerDisplayTimes", _on_update_scanner_display_times)
+	proximity_blinker.connect("condition_changed", _on_proximity_blinker_condition_changed)
 	contact_list.create_item(null)
 	
 	var junk_paths = ["res://graphics/system-map/junk/junk1.png", "res://graphics/system-map/junk/junk2.png", "res://graphics/system-map/junk/junk3.png", "res://graphics/system-map/junk/junk4.png", "res://graphics/system-map/junk/junk5.png", "res://graphics/system-map/junk/junk6.png", "res://graphics/system-map/junk/junk7.png"]
@@ -1182,6 +1184,10 @@ func _on_add_text_ping(ping_path: String, pos: Vector2, text: String) -> void:
 
 func _on_new_background() -> void:
 	background_handler.new_background()
+	pass
+
+func _on_proximity_blinker_condition_changed(_active: bool, _last_condition_time) -> void:
+	emit_signal("proximityBlinkerConditionChanged", _active, _last_condition_time)
 	pass
 
 

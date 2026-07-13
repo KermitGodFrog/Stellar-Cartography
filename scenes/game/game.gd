@@ -164,6 +164,7 @@ func connect_all_signals() -> void:
 	system_map.connect("openPauseMenu", _on_open_pause_menu)
 	system_map.connect("tutorialIngressThresholdReached", _on_tutorial_ingress_threshold_reached)
 	system_map.connect("documentPingHitStatus", _on_document_ping_hit_status)
+	system_map.connect("proximityBlinkerConditionChanged", _on_proximity_blinker_condition_changed)
 	
 	system_3d.connect("foundBody", _on_found_body)
 	system_3d.connect("addConsoleEntry", _on_add_console_entry)
@@ -1379,6 +1380,11 @@ func _on_add_character_xp(occupation: characterAPI.OCCUPATIONS, amount: int) -> 
 
 func _on_remove_character_initiative_xp(occupation: characterAPI.OCCUPATIONS) -> void:
 	world.player.removeCharacterInitiativeXP(occupation)
+	pass
+
+func _on_proximity_blinker_condition_changed(active: bool, last_condition_time: float) -> void:
+	if active and (last_condition_time > 60.0):
+		_on_add_console_entry("Proximity warning.", Color.RED)
 	pass
 
 func _on_insa_make_all_wormholes_revealable() -> void:
