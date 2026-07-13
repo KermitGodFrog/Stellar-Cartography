@@ -412,7 +412,6 @@ func createAuxiliaryUnexplored(_player_speed: int) -> void:
 				Color.MIDNIGHT_BLUE,
 				Color.INDIGO
 			]
-			
 			var noise: FastNoiseLite = FastNoiseLite.new()
 			noise.set_seed(randi())
 			noise.set_fractal_octaves(3)
