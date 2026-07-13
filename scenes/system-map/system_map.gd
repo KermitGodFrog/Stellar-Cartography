@@ -89,6 +89,7 @@ var player_action_lock: bool = false
 @onready var alarm_sound = $alarm_sound
 @onready var proximity_blinker = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/proximity_blinker
 @onready var background_handler = $camera/canvas/background_handler
+@onready var nebula_sprite = $nebula_sprite
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -166,8 +167,6 @@ var player_supercharged: bool = false:
 		player_supercharged = value
 		status_modifier_organizer.check_modifier("supercharged", "Supercharged", "The state wherein a starship is travelling well above its usual safe speeed. This can be made possible by any number of reasons, including unsafe drive changes, or comprehensive navigation data mitigating the risk of travelling at such a high speed. A supercharged state can only be maintained for a number of wormhole traversals.", "* [color=green]2.0x speed[/color]", value)
 
-
-
 var junk_textures: Dictionary = {}
 
 func _ready():
@@ -200,6 +199,10 @@ func _physics_process(delta):
 	#If body selected in system list changes, keep the previous action body.
 	#Follow body is replicated to camera.
 	#If camera moves, follow body is removed for camera.
+	
+	#nebual sprite stuff
+	nebula_sprite.visible = system.system_hazard_classification == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA
+	nebula_sprite.set_position(player_position_matrix[0])
 	
 	#camera_target_position is position for system3d to look at
 	#incredibly out of plcace!!!!!
@@ -361,7 +364,8 @@ func calculate_nebula_slowdown() -> void:
 	var metadata = system.system_hazard_metadata
 	if hazard == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA:
 		var noise: FastNoiseLite = metadata.get("nebula_noise", FastNoiseLite.new())
-		pos_value = noise.get_noise_2d(temp_nebula_texture.get_width() / 2.0, temp_nebula_texture.get_height() / 2.0) # its (0.0, 0.0) bc its already offset by the player pos!
+		if temp_nebula_texture != null:
+			pos_value = noise.get_noise_2d(temp_nebula_texture.get_width() / 2.0, temp_nebula_texture.get_height() / 2.0) # its (0.0, 0.0) bc its already offset by the player pos!
 	
 	if pos_value > 0:
 		player_in_nebula = true
@@ -793,11 +797,10 @@ func draw_map():
 			temp_nebula_texture.normalize = false
 			temp_nebula_texture.generate_mipmaps = false
 			temp_nebula_texture.color_ramp = Gradient.new()
-			temp_nebula_texture.color_ramp.set_interpolation_mode(Gradient.GRADIENT_INTERPOLATE_CONSTANT)
-			temp_nebula_texture.color_ramp.set_color(0, Color(Color.WHITE, 0.0))
-			temp_nebula_texture.color_ramp.set_color(1, Color(Color.PINK, 0.1))
-			temp_nebula_texture.color_ramp.set_offset(1, 0.51)
-			temp_nebula_texture.color_ramp.add_point(0.49, Color(Color.GRAY, 0.1))
+			temp_nebula_texture.color_ramp.set_color(0, Color(Color.BLACK, 0.0))
+			temp_nebula_texture.color_ramp.set_color(1, hazard_metadata.get("nebula_color", Color.WHITE))
+			temp_nebula_texture.color_ramp.add_point(0.49, Color(Color.BLACK, 0.0))
+			temp_nebula_texture.color_ramp.add_point(0.51, Color(hazard_metadata.get("nebula_color", Color.WHITE).darkened(0.5), 0.1))
 		
 		if temp_nebula_texture == null:
 			reset_nebula_texture.call()
@@ -806,7 +809,7 @@ func draw_map():
 				reset_nebula_texture.call()
 		
 		noise.set_offset(Vector3(player_position_matrix[0].x, player_position_matrix[0].y, 0))
-		draw_texture_rect(temp_nebula_texture, global_data.get_offset_rect2(player_position_matrix[0], temp_nebula_texture.get_width(), temp_nebula_texture.get_height()), false)
+		nebula_sprite.set_texture(temp_nebula_texture)
 	
 	var screen_junk = system.get_bodies_of_body_type(starSystemAPI.BODY_TYPES.SCREEN_JUNK)
 	if screen_junk:

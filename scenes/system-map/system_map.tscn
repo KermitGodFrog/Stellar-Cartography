@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=69 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
@@ -53,6 +53,7 @@
 [ext_resource type="Texture2D" uid="uid://dxiksctsg7w41" path="res://graphics/system-map/cog_normal.svg" id="38_ji0h2"]
 [ext_resource type="BitMap" uid="uid://vsyxkeka6b8c" path="res://graphics/system-map/cog_click_mask.png" id="40_ji0h2"]
 [ext_resource type="AudioStream" uid="uid://oyrc4tfk4fl8" path="res://sound/system-map/alarm.wav" id="47_da46s"]
+[ext_resource type="Shader" uid="uid://bbiw6ixis7u4a" path="res://shader-gen/system-map/nebula.gdshader" id="52_gtym1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ciwjv"]
 atlas = ExtResource("3_bft1b")
@@ -106,6 +107,9 @@ color = Color(0.207843, 0.207843, 0.207843, 1)
 grow_begin = 11.0
 grow_end = 11.0
 vertical = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dsgv3"]
+shader = ExtResource("52_gtym1")
 
 [node name="system_window" type="Node"]
 
@@ -1058,6 +1062,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="nebula_sprite" type="Sprite2D" parent="system"]
+visible = false
+show_behind_parent = true
+material = SubResource("ShaderMaterial_dsgv3")
 
 [node name="scan_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
 show_behind_parent = true
