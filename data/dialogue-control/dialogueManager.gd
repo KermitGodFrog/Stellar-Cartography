@@ -52,6 +52,7 @@ signal TUTORIALEnterIngress()
 signal TUTORIALSetWindowTutorials(value: bool)
 signal TUTORIALSetPlayerActionLock(value: bool)
 signal TUTORIALForceOrbitPrelude()
+signal TUTORIALSetUIStage(_new_stage: String)
 
 var dialogue_memory: Dictionary = {} #memory that is added by any query, and is always accessible indefinitely. from worldAPI dialogue_memory which is sent via game.gd HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI HOW DOES IT UPDATE WORLDAPI
 var tree_access_memory: Dictionary #memory that is explicitely added by a query via add_tree_access() - is added to any query until the dialog is closed
@@ -929,4 +930,8 @@ func _TUTORIALSetPlayerActionLock(value: bool) -> void:
 
 func _TUTORIALForceOrbitPrelude() -> void:
 	emit_signal("TUTORIALForceOrbitPrelude")
+	pass
+
+func _TUTORIALSetUIStage(new_stage: String) -> void:
+	emit_signal("TUTORIALSetUIStage", new_stage)
 	pass

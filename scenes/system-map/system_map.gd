@@ -74,7 +74,6 @@ var player_action_lock: bool = false
 @onready var picker_label = $camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_label
 @onready var picker_button = $camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/picker_panel/picker_margin/picker_scroll/picker_button
 @onready var console = $camera/canvas/control/console
-@onready var status_control = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control
 @onready var map_overlay = $camera/canvas/map_overlay
 @onready var data_value_increase_label = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/data_value_increase_label
 @onready var scan_prediction_upgrade = $scan_prediction_upgrade
@@ -91,6 +90,11 @@ var player_action_lock: bool = false
 @onready var proximity_blinker = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2/secondary_margin/bisect/proximity_blinker
 @onready var background_handler = $camera/canvas/background_handler
 @onready var nebula_sprite = $nebula_sprite
+#used for game.gd _on_tutorial_set_ui_stage (and also other stuff maybe - status_control def is)
+@onready var barycenter_container = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin/core_scroll/barycenter_container
+@onready var tabs_and_ca_scroll = $camera/canvas/control/tabs_and_ca_scroll
+@onready var status_control = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control
+@onready var scopes_bg = $camera/canvas/control/scopes_snap_scroll/scopes_bg
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")

@@ -218,6 +218,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("TUTORIALSetWindowTutorials", _on_tutorial_set_window_tutorials)
 	dialogue_manager.connect("TUTORIALSetPlayerActionLock", _on_tutorial_set_player_action_lock)
 	dialogue_manager.connect("TUTORIALForceOrbitPrelude", _on_tutorial_force_orbit_prelude)
+	dialogue_manager.connect("TUTORIALSetUIStage", _on_tutorial_set_ui_stage)
 	
 	pause_menu.connect("saveWorld", _on_save_world)
 	pause_menu.connect("saveAndQuit", _on_save_and_quit)
@@ -1135,6 +1136,34 @@ func _on_tutorial_ingress_threshold_reached() -> void: #comes from system_map no
 	
 	await get_tree().physics_frame
 	_on_open_pause_menu(false)
+	pass
+
+func _on_tutorial_set_ui_stage(new_stage: String) -> void:
+	print_debug("NEW UI STAGE: ", new_stage)
+	match new_stage:
+		"pre_prelude_theorise":
+			system_map.barycenter_container.visible = false
+			system_map.tabs_and_ca_scroll.visible = false
+			system_map.status_control.visible = false
+			system_map.scopes_bg.visible = false
+		"pre_prelude_orbit":
+			system_map.tabs_and_ca_scroll.visible = true
+			system_map.scopes_bg.visible = true
+		"pre_prelude_follow":
+			pass
+		"pre_ingress_theorise":
+			system_map.status_control.visible = true
+			system_map.barycenter_container.visible = true
+		"pre_ingress_orbit":
+			pass
+		
+		
+		
+		
+		
+		
+	
+	
 	pass
 
 func _on_add_player_morale(amount : int) -> void:
