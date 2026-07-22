@@ -48,7 +48,12 @@ func is_not_known_or_is_hidden() -> bool:
 		return true
 	else:
 		return false
-
+func is_known_or_is_theorised_but_not_hidden() -> bool: #has to be in bodyAPI despite orbitBodyAPI having 'theorised' stuff so no checks for whether is orbitBodyAPI have to be performed
+	if hidden:
+		return false
+	elif known:
+		return true
+	return false
 
 
 func initialize() -> void:
