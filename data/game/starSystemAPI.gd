@@ -1019,7 +1019,7 @@ func generateRandomScreenJunk() -> void:
 			BODY_TYPES.SCREEN_JUNK,
 			identifier_count,
 			"Screen Junk",
-			{"position": pos, "texture_path": junk_paths.pick_random(), "texture_scale": scale, "texture_modulate": modulate},
+			{"position": pos, "texture_path": junk_paths.pick_random(), "texture_scale": scale, "texture_modulate": modulate, "hidden": true},
 			{}
 		)
 	pass
@@ -1256,7 +1256,10 @@ func is_survey_complete() -> bool:
 			continue
 		elif body is unitBodyAPI:
 			continue
-		elif not body.is_known():
+		elif body is screenJunkBodyAPI:
+			continue #not super necessary since screen junk is set to 'hidden' upon creation nowadays
+		
+		if not body.is_known():
 			return false
 	return true
 
