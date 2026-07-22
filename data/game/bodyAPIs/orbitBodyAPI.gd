@@ -20,6 +20,7 @@ func is_theorised_not_known() -> bool:
 	else:
 		return false
 
+
 @export var req_scope_mode: playerAPI.SCOPE_MODES = playerAPI.SCOPE_MODES.VIS
 ##The scope mode - 'VIS' or 'RAD' - required to discover the body (if applicable). Default is 'VIS'.
 func get_required_scope_mode() -> playerAPI.SCOPE_MODES:

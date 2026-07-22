@@ -33,6 +33,7 @@ offset_right = 16.0
 offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 expand_mode = 5
 stretch_mode = 5
 
@@ -56,4 +57,6 @@ vertical_alignment = 1
 [node name="refresh" type="Timer" parent="barycenter_control"]
 autostart = true
 
+[connection signal="mouse_entered" from="barycenter_control" to="barycenter_control" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="barycenter_control" to="barycenter_control" method="_on_mouse_exited"]
 [connection signal="timeout" from="barycenter_control/refresh" to="barycenter_control" method="_on_refresh_timeout"]

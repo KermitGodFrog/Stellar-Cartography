@@ -49,8 +49,6 @@ func is_not_known_or_is_hidden() -> bool:
 	else:
 		return false
 
-
-
 func initialize() -> void:
 	pass
 func advance(_delta) -> void:

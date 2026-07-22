@@ -1156,14 +1156,6 @@ func _on_tutorial_set_ui_stage(new_stage: String) -> void:
 			system_map.barycenter_container.visible = true
 		"pre_ingress_orbit":
 			pass
-		
-		
-		
-		
-		
-		
-	
-	
 	pass
 
 func _on_add_player_morale(amount : int) -> void:
