@@ -109,6 +109,14 @@ track_offset = Vector2(-307, 0)
 info = "Press the 'RAD' button on SCOPES or $SC_SCOPE_SWITCH to switch the scope mode. Depending on the scope mode, different kinds of bodies can be discovered.
 [img]res://graphics/system-3d/unchecked.svg[/img]"
 
+[node name="outline_tutorialOptionalZoomScopes" parent="." instance=ExtResource("3_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialOptionalZoomScopes"
+track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
+
 [node name="tutorialOptionalZoomScopes" parent="." instance=ExtResource("2_7r03o")]
 visible = false
 layout_mode = 0
