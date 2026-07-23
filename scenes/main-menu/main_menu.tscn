@@ -323,6 +323,7 @@ line_edit_path = NodePath("..")
 
 [node name="name_randomizer" type="TextureButton" parent="new_game_popup/new_game/margin/scroll/name_scroll"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("9_ptqsp")
 texture_pressed = ExtResource("9_ptqsp")
 texture_hover = ExtResource("10_5sbga")
@@ -373,6 +374,7 @@ line_edit_path = NodePath("..")
 
 [node name="ship_name_randomizer" type="TextureButton" parent="new_game_popup/new_game/margin/scroll/ship_name_scroll"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("9_ptqsp")
 texture_pressed = ExtResource("9_ptqsp")
 texture_hover = ExtResource("10_5sbga")
