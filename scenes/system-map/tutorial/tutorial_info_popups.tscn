@@ -51,7 +51,7 @@ grow_horizontal = 2
 grow_vertical = 2
 target_objective_wID = "tutorialOptionalViewObjectives"
 text_box_size = Vector2(400, 0)
-info = "[color=yellow]At any time, press $SC_PAUSE to pause the game and view the OBJECTIVES LIST in the top right-hand corner of the screen. The OBJECTIVES LIST will provide you with more detailed information regarding your current objective(s). Some objectives are [b]NOT[/b] shown with info popups (like one of these).[/color]"
+info = "[color=yellow]At any time, press $SC_PAUSE to pause the game and view the OBJECTIVES LIST in the top right-hand corner of the screen.[/color]"
 
 [node name="tutorialOptionalHelpOverlay" parent="." instance=ExtResource("1_fpin1")]
 visible = false
