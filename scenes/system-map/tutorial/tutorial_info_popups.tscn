@@ -97,11 +97,9 @@ info = "Firstly, let's mark a body named Prelude. Marking a body establishes its
 To ping Prelude, adjust the LIDAR direction with left click [[img=2em2em]graphics/shared/mouse/mouse_left.png[/img]] so it points towards the red circle, set the arc to max with the slider, and press the ‘PING!’ button.
 [img=75%x75%]res://graphics/objective/tutorial_LIDAR_example.png[/img]"
 
-[node name="tutorialOptionalScopeMode" parent="." instance=ExtResource("1_fpin1")]
+[node name="tutorialOptionalScopeMode" parent="." instance=ExtResource("2_7r03o")]
 visible = false
 layout_mode = 0
-offset_right = 240.0
-offset_bottom = 66.0
 target_objective_wID = "tutorialOptionalScopeMode"
 text_box_size = Vector2(250, 100)
 track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
