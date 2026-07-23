@@ -215,7 +215,7 @@ The SYSTEM LIST currently underlines a missing body named Ingress situated furth
 
 To learn the [i]direction[/i] to ping Ingress, the BARYCENTER VISUALIZER should be used. It displays the [color=yellow]direction[/color] to other bodies [color=yellow]from the locked body[/color] with a [color=yellow]dot[/color]. Dark red dots are beyond the current scan arc.
 
-To ping Ingress, press on 'Prelude' on the SYSTEM LIST to lock, adjust the LIDAR direction so it matches the direction of the dot which is oscillating, and press the 'PING!' button.
+To ping Ingress, press on 'Prelude' on the SYSTEM LIST to lock, adjust the LIDAR direction so it matches the direction of the orange/yellow dot, and press the 'PING!' button.
 [img=150%x75%]res://graphics/objective/tutorial_barycenter_example.png[/img]"
 
 [node name="tutorialOptionalBoost" parent="." instance=ExtResource("2_7r03o")]
