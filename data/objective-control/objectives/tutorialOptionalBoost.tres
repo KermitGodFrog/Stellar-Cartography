@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_qedng")
 title = "(Optional) Boost"
-description = "Hold $SC_BOOST to boost. This will significantly shorten travel at no cost to your starship."
+description = "Press $SC_BOOST to toggle boost. This will significantly shorten travel at no cost to your starship."

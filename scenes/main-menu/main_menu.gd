@@ -90,6 +90,14 @@ func _on_create_button_pressed():
 	pass
 
 func _on_new_button_pressed():
+	game_type_edit.select(0)
+	game_type_edit.item_selected.emit(0)
+	SHOW_NEW_GAME_POPUP = true
+	pass
+
+func _on_tutorial_button_pressed() -> void:
+	game_type_edit.select(1)
+	game_type_edit.item_selected.emit(1)
 	SHOW_NEW_GAME_POPUP = true
 	pass
 

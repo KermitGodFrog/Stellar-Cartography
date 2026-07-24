@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=32 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" uid="uid://dq4gkj1n823v0" path="res://scenes/main-menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_b84fj"]
@@ -16,6 +16,9 @@
 [ext_resource type="Texture2D" uid="uid://cx4ikfr2yvey0" path="res://graphics/main-menu/dice_up_icon.png" id="9_ptqsp"]
 [ext_resource type="Texture2D" uid="uid://bhvjolc2fupre" path="res://graphics/main-menu/dice_down_icon.png" id="10_5sbga"]
 [ext_resource type="PackedScene" uid="uid://cqveyx1gdyfvw" path="res://scenes/main-menu/history/history_popup.tscn" id="10_7m0km"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_5sbga"]
+color = Color(0.20784314, 0.20784314, 0.20784314, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_srvhc"]
 texture = ExtResource("2_1jdbj")
@@ -148,12 +151,29 @@ theme = ExtResource("2_2eiki")
 disabled = true
 text = "CONTINUE"
 
+[node name="separator1" type="HSeparator" parent="options_scroll"]
+layout_mode = 2
+theme_override_constants/separation = 20
+theme_override_styles/separator = SubResource("StyleBoxLine_5sbga")
+
 [node name="new_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "NEW"
+
+[node name="tutorial_button" type="Button" parent="options_scroll"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("2_2eiki")
+text = "TUTORIAL"
+
+[node name="separator2" type="HSeparator" parent="options_scroll"]
+layout_mode = 2
+theme_override_constants/separation = 20
+theme_override_styles/separator = SubResource("StyleBoxLine_5sbga")
 
 [node name="settings_button" type="Button" parent="options_scroll"]
 custom_minimum_size = Vector2(175, 0)
@@ -303,6 +323,7 @@ line_edit_path = NodePath("..")
 
 [node name="name_randomizer" type="TextureButton" parent="new_game_popup/new_game/margin/scroll/name_scroll"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("9_ptqsp")
 texture_pressed = ExtResource("9_ptqsp")
 texture_hover = ExtResource("10_5sbga")
@@ -353,6 +374,7 @@ line_edit_path = NodePath("..")
 
 [node name="ship_name_randomizer" type="TextureButton" parent="new_game_popup/new_game/margin/scroll/ship_name_scroll"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("9_ptqsp")
 texture_pressed = ExtResource("9_ptqsp")
 texture_hover = ExtResource("10_5sbga")
@@ -376,6 +398,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
 text_overrun_behavior = 5
 autowrap_mode = 3
+allow_reselect = true
 
 [node name="game_type_info" type="RichTextLabel" parent="new_game_popup/new_game/margin/scroll/game_type_scroll"]
 custom_minimum_size = Vector2(0, 72)
@@ -725,6 +748,7 @@ layout_mode = 1
 
 [connection signal="pressed" from="options_scroll/continue_button" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="options_scroll/new_button" to="." method="_on_new_button_pressed"]
+[connection signal="pressed" from="options_scroll/tutorial_button" to="." method="_on_tutorial_button_pressed"]
 [connection signal="pressed" from="options_scroll/settings_button" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="options_scroll/achievements_button" to="." method="_on_achievements_button_pressed"]
 [connection signal="pressed" from="options_scroll/credits_button" to="." method="_on_credits_button_pressed"]

@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_7r04q")
 title = "(Optional) View Objectives"
-description = "Press $SC_PAUSE to pause the game and view the OBJECTIVES LIST in the top right-hand corner of the screen. 
+description = "Press $SC_PAUSE to pause the game and view the OBJECTIVES LIST in the top right-hand corner of the screen.
+* [i]The OBJECTIVES LIST provides you with more detailed information regarding your current objective(s).[/i]
 * [i]Press the popout button at the top of the OBJECTIVES LIST to enter fullscreen mode.[/i]"
 metadata/_custom_type_script = "uid://cxmuiuh6uokvl"

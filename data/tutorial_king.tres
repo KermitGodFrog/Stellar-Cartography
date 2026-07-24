@@ -75,6 +75,7 @@ current_type = 3
 identifier = 4
 display_name = "Ingress"
 metadata = {
+"barycenter_priority": true,
 "destination_star_type": "M"
 }
 radius = 0.005

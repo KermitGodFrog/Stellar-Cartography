@@ -51,7 +51,7 @@ grow_horizontal = 2
 grow_vertical = 2
 target_objective_wID = "tutorialOptionalViewObjectives"
 text_box_size = Vector2(400, 0)
-info = "[color=yellow]At any time, press $SC_PAUSE to pause the game and view the OBJECTIVES LIST in the top right-hand corner of the screen. The OBJECTIVES LIST will provide you with more detailed information regarding your current objective(s). Some objectives are [b]NOT[/b] shown with info popups (like one of these).[/color]"
+info = "[color=yellow]At any time, press $SC_PAUSE to pause the game and view the OBJECTIVES LIST in the top right-hand corner of the screen.[/color]"
 
 [node name="tutorialOptionalHelpOverlay" parent="." instance=ExtResource("1_fpin1")]
 visible = false
@@ -97,17 +97,23 @@ info = "Firstly, let's mark a body named Prelude. Marking a body establishes its
 To ping Prelude, adjust the LIDAR direction with left click [[img=2em2em]graphics/shared/mouse/mouse_left.png[/img]] so it points towards the red circle, set the arc to max with the slider, and press the ‘PING!’ button.
 [img=75%x75%]res://graphics/objective/tutorial_LIDAR_example.png[/img]"
 
-[node name="tutorialOptionalScopeMode" parent="." instance=ExtResource("1_fpin1")]
+[node name="tutorialOptionalScopeMode" parent="." instance=ExtResource("2_7r03o")]
 visible = false
 layout_mode = 0
-offset_right = 240.0
-offset_bottom = 66.0
 target_objective_wID = "tutorialOptionalScopeMode"
 text_box_size = Vector2(250, 100)
 track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
 track_offset = Vector2(-307, 0)
 info = "Press the 'RAD' button on SCOPES or $SC_SCOPE_SWITCH to switch the scope mode. Depending on the scope mode, different kinds of bodies can be discovered.
 [img]res://graphics/system-3d/unchecked.svg[/img]"
+
+[node name="outline_tutorialOptionalZoomScopes" parent="." instance=ExtResource("3_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialOptionalZoomScopes"
+track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
 
 [node name="tutorialOptionalZoomScopes" parent="." instance=ExtResource("2_7r03o")]
 visible = false
@@ -205,9 +211,9 @@ info = "You did it!
 
 The SYSTEM LIST currently underlines a missing body named Ingress situated further than Prelude. [color=yellow]Our value is maximised by discovering all bodies within a star system[/color]. Let's mark Ingress!
 
-To learn the [i]direction[/i] to ping Ingress, the BARYCENTER VISUALIZER should be used. It displays the [color=yellow]direction[/color] to other bodies [color=yellow]from the locked body[/color] with a [color=yellow]dot[/color]. Dark red dots are beyond the current scan arc.
+To learn the [i]direction[/i] to ping Ingress, the BARYCENTER VISUALIZER should be used. It displays the [color=yellow]direction[/color] to other bodies [color=yellow]from the locked body[/color] with a [color=yellow]dot[/color]. The larger the dot, the more mass is present in that direction. Dark red dots are beyond the current scan arc.
 
-To ping Ingress, press on 'Prelude' on the SYSTEM LIST to lock, adjust the LIDAR direction so it matches the direction of the dot which is oscillating, and press the 'PING!' button.
+To ping Ingress, press on 'Prelude' on the SYSTEM LIST to lock, adjust the LIDAR direction so it matches the direction of the orange/yellow dot, and press the 'PING!' button.
 [img=150%x75%]res://graphics/objective/tutorial_barycenter_example.png[/img]"
 
 [node name="tutorialOptionalBoost" parent="." instance=ExtResource("2_7r03o")]
@@ -225,7 +231,7 @@ offset_bottom = 190.0
 grow_horizontal = 2
 grow_vertical = 2
 target_objective_wID = "tutorialOptionalBoost"
-info = "Hold $SC_BOOST to boost. "
+info = "Press $SC_BOOST to toggle boost."
 
 [node name="tutorialOptionalManualControl" parent="." instance=ExtResource("2_7r03o")]
 visible = false
@@ -295,7 +301,7 @@ info = "Oh no - a marauder ship has appeared within your 'SCANNER PROFILE'! It w
 [img]res://graphics/objective/tutorial_hostile_unit_example.png[/img]
 Units are [color=yellow]bodies that move on their own terms[/color] - like ships. Units within your ship's 'SCANNER POWER' (dotted grey outer circle) are appended to the CONTACT LIST. Units within your ship's 'SCANNER PROFILE' (brown inner circle) [color=yellow]can see your ship and respond to its presence[/color].
 
-To evade the marauder, right click [[img=2em2em]graphics/shared/mouse/mouse_right.png[/img]] to travel to your mouse pointer and hold $SC_BOOST to boost - [color=yellow]lead your starship away from the marauder so that it exits your 'SCANNER PROFILE'[/color], and then discover Ingress while avoiding redetection."
+To evade the marauder, right click [[img=2em2em]graphics/shared/mouse/mouse_right.png[/img]] to travel to your mouse pointer and press $SC_BOOST to toggle boost - [color=yellow]lead your starship away from the marauder so that it exits your 'SCANNER PROFILE'[/color], and then discover Ingress while avoiding redetection."
 
 [node name="outline_tutorialOptionalCheckStress" parent="." instance=ExtResource("3_k3c6j")]
 visible = false
@@ -342,6 +348,24 @@ layout_mode = 0
 target_objective_wID = "tutorialFollowPeregrination"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW")
-info = "'GO-TO' and traverse Peregrination to begin your journey to New Eden.
+info = "'GO-TO' and traverse Peregrination or Odyssey to begin your journey to New Eden.
 [img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]
 View more information in the OBJECTIVES LIST."
+
+[node name="outline_tutorialOptionalJourneyMap" parent="." instance=ExtResource("3_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialOptionalJourneyMap"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll/journey_map_button")
+
+[node name="tutorialOptionalJourneyMap" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialOptionalJourneyMap"
+text_box_size = Vector2(250, 50)
+track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
+background_alpha = 1.0
+info = "Press on 'JUR' in the APPS DOCK to open the Journey Map and view your progress towards New Eden.
+[img]res://graphics/system-map/apps-dock/journey_map_icon.png[/img]"

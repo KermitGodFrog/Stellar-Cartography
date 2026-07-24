@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_6iuab")
-title = "Go-to & Enter Peregrination"
-description = "You have been instructed to travel to New Eden. The first wormhole you must traverse on your journey is Peregrination. Traversing a wormhole requires interacting with it.
+title = "Go-to & Enter Peregrination or Odyssey"
+description = "You have been instructed to travel to New Eden. The first wormhole you must traverse on your journey is either Peregrination or Odyssey. Traversing a wormhole requires interacting with it.
 To traverse Peregrination, press on 'Peregrination' on the SYSTEM LIST to lock, and then press the 'GO-TO' action in the ACTIONS PANEL. 
+* [i]All star systems have three wormholes. You enter through one and have two options for traversal.[/i]
 [img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]"

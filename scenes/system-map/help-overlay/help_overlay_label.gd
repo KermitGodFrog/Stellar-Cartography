@@ -6,4 +6,5 @@ func _process(_delta: float) -> void:
 	if is_visible_in_tree() and track != null:
 		var node = get_node(track)
 		set_global_position(node.get_global_position() + (node.get_size() / 2) - (get_size() / 2))
+		modulate = Color(Color.WHITE, float(node.is_visible_in_tree()))
 	pass

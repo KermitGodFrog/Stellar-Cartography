@@ -9,12 +9,10 @@ var locked_body_identifier: int:
 	set(value):
 		var new_value: bool = locked_body_identifier != value
 		locked_body_identifier = value
-		
 		if system != null:
 			locked_body = system.get_body_from_identifier(locked_body_identifier)
 		else:
 			locked_body = null
-		
 		if new_value:
 			_on_locked_body_identifier_changed(value)
 var locked_body: bodyAPI
@@ -30,6 +28,8 @@ var points: Dictionary = {}
 var pingable_points: Dictionary = {}
 var glint_points: Dictionary = {}
 var pingable_glint_points: Dictionary = {}
+var priority_points: Dictionary = {}
+var text_points: Dictionary = {} #point: text
 
 @onready var glint_texture = preload("uid://7rpr8t50r5bs")
 @onready var vignette_texture = preload("uid://bx2vfswwp02np")
@@ -37,11 +37,15 @@ var pingable_glint_points: Dictionary = {}
 var texture_alpha: float = 0.0
 var limited_map_alpha: float = 0.0
 
+var show_text_points: bool = false
+
 func _on_refresh_timeout() -> void:
 	points.clear()
 	pingable_points.clear()
 	glint_points.clear()
 	pingable_glint_points.clear()
+	priority_points.clear()
+	text_points.clear()
 	
 	for i in point_count:
 		var rad_theta = deg_to_rad((360 / point_count) * i)
@@ -79,6 +83,13 @@ func generate_new_point_weights(for_locked_body : bodyAPI) -> void:
 			if _player_position.distance_to(body.position) < _ping_length:
 				if _ping_direction != Vector2.ZERO:
 					pingable_points[closest_point] = true
+			
+			if body.metadata.get("barycenter_priority", false) == true:
+				priority_points[closest_point] = true
+			
+			if body.get_type() == starSystemAPI.BODY_TYPES.STAR:
+				text_points[closest_point] = "%c STAR" % "↓"
+			
 		elif (body is glintBodyAPI or body is customBodyAPI) and body.get_identifier() != locked_body_identifier:
 			
 			if body.is_hidden():
@@ -91,16 +102,10 @@ func generate_new_point_weights(for_locked_body : bodyAPI) -> void:
 			if _player_position.distance_to(body.position) < _ping_length:
 				if _ping_direction != Vector2.ZERO:
 					pingable_glint_points[closest_point] = true
-	pass
-
-
-
-func _physics_process(_delta):
-	if locked_body: 
-		if locked_body.is_known(): locked_body_label.set_text(locked_body.get_display_name())
-		elif locked_body.is_theorised_not_known(): locked_body_label.set_text("Unknown") #does not need override for unitBodyAPIs as it should clear before this can run
-	else: locked_body_label.set_text(String())
-	queue_redraw()
+			
+			if body.metadata.get("barycenter_priority", false) == true:
+				priority_points[closest_point] = true
+			
 	pass
 
 func get_closest_point_to_direction(dir: Vector2):
@@ -111,6 +116,16 @@ func get_closest_point_to_direction(dir: Vector2):
 	sorted_values.sort()
 	var closest_point = distance_dict.find_key(sorted_values.front())
 	return closest_point
+
+
+
+func _physics_process(_delta):
+	if locked_body: 
+		if locked_body.is_known(): locked_body_label.set_text(locked_body.get_display_name())
+		elif locked_body.is_theorised_not_known(): locked_body_label.set_text("Unknown") #does not need override for unitBodyAPIs as it should clear before this can run
+	else: locked_body_label.set_text(String())
+	queue_redraw()
+	pass
 
 func _draw():
 	if locked_body:
@@ -127,23 +142,50 @@ func _draw():
 	for glint_point in glint_points:
 		var texture_size = glint_points.get(glint_point)
 		if pingable_glint_points.get(glint_point, false) == true:
-			draw_texture_rect(glint_texture, global_data.get_offset_rect2(glint_point, texture_size, texture_size), false, Color.RED.darkened(0.25))
+			
+			if priority_points.get(glint_point, false) == true:
+				draw_texture_rect(glint_texture, global_data.get_offset_rect2(glint_point, texture_size, texture_size), false, Color.YELLOW.darkened(0.25))
+			else:
+				draw_texture_rect(glint_texture, global_data.get_offset_rect2(glint_point, texture_size, texture_size), false, Color.RED.darkened(0.25))
+			
 		else:
-			draw_texture_rect(glint_texture, global_data.get_offset_rect2(glint_point, texture_size, texture_size), false, Color.DARK_RED.darkened(0.25))
+			
+			if priority_points.get(glint_point, false) == true:
+				draw_texture_rect(glint_texture, global_data.get_offset_rect2(glint_point, texture_size, texture_size), false, Color.ORANGE.darkened(0.25))
+			else:
+				draw_texture_rect(glint_texture, global_data.get_offset_rect2(glint_point, texture_size, texture_size), false, Color.DARK_RED.darkened(0.25))
+			
 	
 	for point in points:
 		var weight = points.get(point)
 		if weight == 1.0:
 			draw_circle(point, weight, Color("353535"))
 		elif pingable_points.get(point, false) == true:
-			draw_circle(point, weight, Color.RED)
+			
+			if priority_points.get(point, false) == true:
+				draw_circle(point, weight, Color.YELLOW)
+			else:
+				draw_circle(point, weight, Color.RED)
+			
 		else:
-			draw_circle(point, weight, Color.DARK_RED)
+			
+			if priority_points.get(point, false) == true:
+				draw_circle(point, weight, Color.ORANGE)
+			else:
+				draw_circle(point, weight, Color.DARK_RED)
 		
 		var end = point + (point.direction_to(get_screen_centre()) * 10.0)
 		draw_line(get_screen_centre() + (get_screen_centre().direction_to(end) * 40.0), end, Color("353535"), 5)
 		draw_line(end, end + Vector2(0, 10).rotated(get_screen_centre().angle_to_point(end) + deg_to_rad(45)), Color("353535"), 5)
 		draw_line(end, end + Vector2(0, -10).rotated(get_screen_centre().angle_to_point(end) - deg_to_rad(45)), Color("353535"), 5)
+		
+		if (text_points.get(point) != null) and show_text_points:
+			
+			if pingable_points.get(point, false) == true:
+				draw_string_outline(ThemeDB.fallback_font, point - Vector2(0, 10), text_points.get(point), HORIZONTAL_ALIGNMENT_LEFT, -1, 10, 4, Color.RED, TextServer.JUSTIFICATION_NONE, TextServer.DIRECTION_AUTO,TextServer.ORIENTATION_HORIZONTAL, 2.0)
+			else:
+				draw_string_outline(ThemeDB.fallback_font, point - Vector2(0, 10), text_points.get(point), HORIZONTAL_ALIGNMENT_LEFT, -1, 10, 4, Color.DARK_RED, TextServer.JUSTIFICATION_NONE, TextServer.DIRECTION_AUTO,TextServer.ORIENTATION_HORIZONTAL, 2.0)
+			draw_string(ThemeDB.fallback_font, point - Vector2(0, 10), text_points.get(point), HORIZONTAL_ALIGNMENT_LEFT, -1, 10, Color("D9D9D9"), TextServer.JUSTIFICATION_NONE, TextServer.DIRECTION_AUTO,TextServer.ORIENTATION_HORIZONTAL, 2.0)
 		
 	pass
 
@@ -176,4 +218,14 @@ func _on_locked_body_identifier_changed(_new_identifier: int) -> void:
 	glint_points.clear()
 	pingable_glint_points.clear()
 	_on_refresh_timeout()
+	pass
+
+
+
+func _on_mouse_entered() -> void:
+	show_text_points = true
+	pass
+
+func _on_mouse_exited() -> void:
+	show_text_points = false
 	pass
