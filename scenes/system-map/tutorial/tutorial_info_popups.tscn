@@ -348,9 +348,24 @@ layout_mode = 0
 target_objective_wID = "tutorialFollowPeregrination"
 text_box_size = Vector2(300, 100)
 track = NodePath("../../control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW")
-track_offset = Vector2(0, -300)
-info = "In [i]Stellar Cartographer[/i], all star systems have [color=yellow]three wormholes[/color]. You enter through one and have two options for traversal. Traversing a wormhole requires interacting with it.
-
-'GO-TO' and traverse Peregrination or Odyssey to begin your journey to New Eden.
+info = "'GO-TO' and traverse Peregrination or Odyssey to begin your journey to New Eden.
 [img]res://graphics/system-map/actions-panel/go_to_icon.png[/img]
 View more information in the OBJECTIVES LIST."
+
+[node name="outline_tutorialOptionalJourneyMap" parent="." instance=ExtResource("3_k3c6j")]
+visible = false
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+target_objective_wID = "tutorialOptionalJourneyMap"
+track = NodePath("../../control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll/journey_map_button")
+
+[node name="tutorialOptionalJourneyMap" parent="." instance=ExtResource("2_7r03o")]
+visible = false
+layout_mode = 0
+target_objective_wID = "tutorialOptionalJourneyMap"
+text_box_size = Vector2(250, 50)
+track = NodePath("../../control/scopes_snap_scroll/scopes_bg/scopes_margin/scopes_container")
+background_alpha = 1.0
+info = "Press on 'JUR' in the APPS DOCK to open the Journey Map and view your progress towards New Eden.
+[img]res://graphics/system-map/apps-dock/journey_map_icon.png[/img]"
