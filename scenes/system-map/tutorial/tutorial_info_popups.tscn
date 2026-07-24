@@ -231,7 +231,7 @@ offset_bottom = 190.0
 grow_horizontal = 2
 grow_vertical = 2
 target_objective_wID = "tutorialOptionalBoost"
-info = "Hold $SC_BOOST to boost. "
+info = "Press $SC_BOOST to toggle boost."
 
 [node name="tutorialOptionalManualControl" parent="." instance=ExtResource("2_7r03o")]
 visible = false
@@ -301,7 +301,7 @@ info = "Oh no - a marauder ship has appeared within your 'SCANNER PROFILE'! It w
 [img]res://graphics/objective/tutorial_hostile_unit_example.png[/img]
 Units are [color=yellow]bodies that move on their own terms[/color] - like ships. Units within your ship's 'SCANNER POWER' (dotted grey outer circle) are appended to the CONTACT LIST. Units within your ship's 'SCANNER PROFILE' (brown inner circle) [color=yellow]can see your ship and respond to its presence[/color].
 
-To evade the marauder, right click [[img=2em2em]graphics/shared/mouse/mouse_right.png[/img]] to travel to your mouse pointer and hold $SC_BOOST to boost - [color=yellow]lead your starship away from the marauder so that it exits your 'SCANNER PROFILE'[/color], and then discover Ingress while avoiding redetection."
+To evade the marauder, right click [[img=2em2em]graphics/shared/mouse/mouse_right.png[/img]] to travel to your mouse pointer and press $SC_BOOST to toggle boost - [color=yellow]lead your starship away from the marauder so that it exits your 'SCANNER PROFILE'[/color], and then discover Ingress while avoiding redetection."
 
 [node name="outline_tutorialOptionalCheckStress" parent="." instance=ExtResource("3_k3c6j")]
 visible = false
