@@ -708,6 +708,10 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
 	if not skip_minigame:
 		_on_wormhole_minigame_popup()
+	
+	world.player.reset_all_sys_survey_data() #for sys survey efficiency bonus
+	world.player.sys_survey_time_start = world.play_time
+	
 	_on_player_entering_system(destination) #this dialogue is overwritten if the player dies during traversal!
 	pass
 
@@ -782,8 +786,6 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	journey_map.add_new_system(world.player.systems_traversed)
 	journey_map.jumps_remaining = world.player.get_jumps_remaining() #required as it needs to update when the players system on game startup is loaded, not just wormhole traversal!
 	system_map.player_supercharged = world.player.supercharged #also updated when player supercharge_jumps_remaining is updated
-	world.player.reset_all_sys_survey_data() #for sys survey efficiency bonus
-	world.player.sys_survey_time_start = world.play_time
 	_on_process_system_hazard(to_system)
 	return to_system
 
@@ -850,7 +852,7 @@ func _on_locked_body_depreciated():
 	pass
 
 func _on_found_body(id: int):
-	var system: starSystemAPI = world.get_system_from_identifier(world.player.current_star_system.get_identifier()) #are we deadass. what is this.
+	var system: starSystemAPI = world.get_system_from_identifier(world.player.current_star_system.get_identifier()) #are we deadass. what is this.       <--- dumbest line of code i have ever seen (22/7/26)
 	if system:
 		var body = system.get_body_from_identifier(id)
 		if body:

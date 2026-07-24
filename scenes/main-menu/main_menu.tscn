@@ -527,7 +527,9 @@ title = "playtesters"
 text = "* Phoenix1509
 * Lizardinasuit
 * coolcatcoder
-* teddy74893"
+* teddy74893
+* Kooky_Reply8771
+* Kaboom_Juice"
 
 [node name="separator" type="HSeparator" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox"]
 layout_mode = 2

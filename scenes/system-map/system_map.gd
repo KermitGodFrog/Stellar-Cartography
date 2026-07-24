@@ -622,7 +622,7 @@ func _unhandled_input(event):
 		if not player_action_lock:
 			var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
 			if get_global_mouse_position().distance_to(closest_body.position) < (1 + standard_size) \
-			and (not closest_body.is_not_known_or_is_hidden()) \
+			and (closest_body.is_known_or_is_theorised_but_not_hidden()) \
 			and (not closest_body is unitBodyAPI):
 				emit_signal("updatedLockedBody", closest_body)
 				locked_body = closest_body
@@ -644,7 +644,7 @@ func _unhandled_input(event):
 	if event.is_action_pressed("SC_INTERACT1_LEFT_MOUSE"):
 		var closest_body = global_data.get_closest_body(system.bodies, get_global_mouse_position())
 		if get_global_mouse_position().distance_to(closest_body.position) < (1 + standard_size) \
-		and (not closest_body.is_not_known_or_is_hidden()):
+		and (closest_body.is_known_or_is_theorised_but_not_hidden()):
 			emit_signal("updatedLockedBody", closest_body)
 			locked_body = closest_body
 			follow_body = closest_body
