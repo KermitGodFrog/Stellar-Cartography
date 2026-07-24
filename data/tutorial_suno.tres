@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="starSystemAPI" load_steps=15 format=3 uid="uid://bhqtlq0blu17n"]
+[gd_resource type="Resource" script_class="starSystemAPI" load_steps=17 format=3 uid="uid://bhqtlq0blu17n"]
 
 [ext_resource type="Script" uid="uid://cbd8771ytigfk" path="res://data/game/bodyAPIs/bodyAPI.gd" id="1_wqt4h"]
 [ext_resource type="Script" uid="uid://b6paa488wsman" path="res://data/game/bodyAPIs/circularBodyAPI.gd" id="2_ayvjj"]
@@ -118,9 +118,31 @@ display_name = "Tomo Sewi Locus"
 radius = 0.004
 known = true
 
+[sub_resource type="Resource" id="Resource_1lfwv"]
+script = ExtResource("2_svsgr")
+metadata/_custom_type_script = "uid://whlsn7syw5s7"
+
+[sub_resource type="Resource" id="Resource_wnms2"]
+script = ExtResource("5_h2sx4")
+destination_system = SubResource("Resource_1lfwv")
+surface_color = Color(0.502, 0, 0.502, 1)
+hook_identifier = 1
+orbit_distance = 135.893
+orbit_angle_change = 0.009
+rotation = 1.285
+current_type = 3
+identifier = 7
+display_name = "Odyssey"
+metadata = {
+"destination_star_type": "M"
+}
+radius = 0.004
+known = true
+metadata/_custom_type_script = "uid://cucnh63c8ohpe"
+
 [resource]
 script = ExtResource("2_svsgr")
 identifier = 1
 display_name = "tutorial_suno"
-bodies = Array[ExtResource("1_wqt4h")]([SubResource("Resource_2k4rg"), SubResource("Resource_uenxk"), SubResource("Resource_h7vb3"), SubResource("Resource_kf63k"), SubResource("Resource_bk4fa"), SubResource("Resource_g738h")])
-identifier_count = 7
+bodies = Array[ExtResource("1_wqt4h")]([SubResource("Resource_2k4rg"), SubResource("Resource_uenxk"), SubResource("Resource_h7vb3"), SubResource("Resource_kf63k"), SubResource("Resource_bk4fa"), SubResource("Resource_g738h"), SubResource("Resource_wnms2")])
+identifier_count = 8
