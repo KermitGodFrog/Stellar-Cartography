@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://crpf63vje17xt"
+path="res://.godot/imported/satellite_dish.jpg-32140e99e0c2afaf520dee46956b72d1.image"
+
+[deps]
+
+source_file="res://graphics/dialogue/satellite_dish.jpg"
+dest_files=["res://.godot/imported/satellite_dish.jpg-32140e99e0c2afaf520dee46956b72d1.image"]
+
+[params]
+
