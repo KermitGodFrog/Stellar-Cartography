@@ -242,6 +242,24 @@ func createAuxiliaryCivilized() -> void:
 			generateRandomWeightedStations()
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
+			
+			if randf() <= game_data.NETSPACE_TRANSMITTER_CHANCE_CURVE.sample(game_data.player_weirdness_index):
+				var dict := get_quick_post_gen_dict()
+				var new_body = addOrbitBody(
+					customBodyAPI.new(),
+					BODY_TYPES.CUSTOM,
+					identifier_count,
+					"Netspace Transmitter",
+					dict.get("hook_identifier"),
+					dict.get("orbit_distance"),
+					dict.get("orbit_angle_change"),
+					get_default_radius_solar_radii(),
+					{"dialogue_tag": "netspaceTransmitter", "icon_path": "res://graphics/system-map/system-list/icons/default.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD}, #update "icon_path" with actual one!
+					{}
+				)
+				get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
+				post_gen_location_candidates.remove_at(post_gen_location_candidates.find(dict.get("location")))
+			
 			for body in bodies:
 				body.known = true
 			generateRandomWeightedShips()
@@ -864,6 +882,21 @@ func generateRandomWeightedSpecialAnomaly():
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
 			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
+		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.NETSPACE_RETRIEVAL_POINT:
+			var new_body = addOrbitBody(
+				customBodyAPI.new(),
+				BODY_TYPES.CUSTOM,
+				identifier_count,
+				"Netspace Retrieval Point",
+				hook.get_identifier(),
+				orbit_distance,
+				orbit_angle_change,
+				radius,
+				{"dialogue_tag": "netspaceRetrievalPoint", "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
+				{}
+			)
+			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
+			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.NONE:
 			pass
 	pass
@@ -1262,6 +1295,24 @@ func is_survey_complete() -> bool:
 		if not body.is_known():
 			return false
 	return true
+
+func get_quick_post_gen_dict() -> Dictionary:
+	var dict: Dictionary = {}
+	
+	var location = post_gen_location_candidates.pick_random()
+	var hook = get_body_from_identifier(location.front())
+	var i = location.back()
+	var orbit_distance = get_orbit_distance(hook, i)
+	var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
+	
+	dict["location"] = location
+	dict["hook"] = hook
+	dict["hook_identifier"] = hook.get_identifier()
+	dict["i"] = i
+	dict["orbit_distance"] = orbit_distance
+	dict["orbit_angle_change"] = orbit_angle_change
+	
+	return dict
 
 # unit stuff \/
 

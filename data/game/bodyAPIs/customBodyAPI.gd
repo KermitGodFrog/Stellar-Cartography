@@ -16,11 +16,11 @@ func set_dialogue_tag(value) -> void:
 		texture_path = value
 		post_texture_path = value
 @export var post_texture_path: String = "res://graphics/system-map/entity_32x.png"
-@export var icon_path: String: #assumes that icon path will always be set before post_icon_path, otherwise will override
+@export var icon_path: String = "res://graphics/system-map/system-list/icons/default.png": #assumes that icon path will always be set before post_icon_path, otherwise will override
 	set(value):
 		icon_path = value
 		post_icon_path = value
-@export var post_icon_path: String
+@export var post_icon_path: String = "res://graphics/system-map/system-list/icons/default.png"
 @export var mesh_path: String
 
 func is_available() -> bool: #this is depreciated i think????? no 'is_available' metadata is used elsewhere!!!
