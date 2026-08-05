@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cc253avedtu3c"]
+
+[resource]
+albedo_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
+metallic = 0.8
+roughness = 0.6
+emission_enabled = true
+emission = Color(0.1764706, 0.11764706, 0.11764706, 1)
+emission_energy_multiplier = 0.25
+rim_enabled = true
+rim = 0.2
+subsurf_scatter_enabled = true
+backlight_enabled = true

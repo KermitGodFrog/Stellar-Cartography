@@ -415,6 +415,29 @@ func createAuxiliaryUnexplored(_player_speed: int) -> void:
 			for i in star.metadata.get("iterations", 0):
 				post_gen_location_candidates.append([star.get_identifier(), i])
 			generateWormholes()
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.DYSON_SPHERE:
+			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
+			var star: circularBodyAPI = get_first_star()
+			remove_recursive_bodies_with_hook_identifier(star.get_identifier())
+			post_gen_location_candidates.clear()
+			star.metadata["luminosity"] = star.metadata.get("luminosity") * 0.4 #assumption: the dyson sphere would reduce star light output by 60% !
+			generateRandomWeightedPlanets(star.get_identifier())
+			generateWormholes()
+			generateRandomWeightedEntities()
+			generateRendezvousPoint()
+			generateRandomWeightedSpecialAnomaly()
+			addOrbitBody(
+				customBodyAPI.new(),
+				starSystemAPI.BODY_TYPES.CUSTOM,
+				identifier_count,
+				"Dyson Sphere",
+				star.get_identifier(),
+				0.0,
+				0.0,
+				star.radius + 0.1,
+				{"dialogue_tag": "SpA_DysonSphere", "icon_path": "res://graphics/system-map/system-list/icons/SpA_DysonSphere.png", "mesh_path": "res://meshes/system-3d/dyson_sphere.obj"},
+				{}
+			)
 	
 	match system_hazard_classification:
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD:

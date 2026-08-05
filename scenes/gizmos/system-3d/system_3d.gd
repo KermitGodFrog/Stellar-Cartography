@@ -226,18 +226,26 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 				)
 				
 			_ when body is customBodyAPI:
-				
-				if body.mesh_path.is_empty():
-					add_actor(
-						body.get_identifier(), 
-						[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.GLINT_BODY]
-					)
-				else:
-					add_actor(
-						body.get_identifier(),
-						[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.GLINT_BODY],
-						{"mesh": load(body.mesh_path)}
-					)
+				match body.get_dialogue_tag():
+					"SpA_DysonSphere":
+						var adj_star_radius = system.get_first_star().radius * system_scalar
+						add_actor(
+							body.get_identifier(),
+							[actor3D.COHORTS.ORBIT_BODY],
+							{"mesh": load(body.mesh_path), "material_override": load("uid://cc253avedtu3c"), "scale": Vector3(adj_star_radius, adj_star_radius, adj_star_radius)}
+						)
+					_:
+						if body.mesh_path.is_empty():
+							add_actor(
+								body.get_identifier(), 
+								[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.GLINT_BODY]
+							)
+						else:
+							add_actor(
+								body.get_identifier(),
+								[actor3D.COHORTS.ORBIT_BODY],
+								{"mesh": load(body.mesh_path)}
+							)
 				
 			_ when body is AIUnitAPI:
 				
