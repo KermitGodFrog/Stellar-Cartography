@@ -208,6 +208,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("addCharacterXP", _on_add_character_xp)
 	dialogue_manager.connect("removeCharacterInitiativeXP", _on_remove_character_initiative_xp)
 	dialogue_manager.connect("playerWin", _on_player_win)
+	dialogue_manager.connect("playStrangeDiscoveryThemeOrMotif", _on_play_strange_discovery_theme_or_motif)
 	dialogue_manager.connect("insaMakeAllWormholesRevealable", _on_insa_make_all_wormholes_revealable)
 	dialogue_manager.connect("insaMakeRiftDriverUnavailable", _on_insa_make_rift_driver_unavailable)
 	dialogue_manager.connect("insaMakeMilitaryShipsNeutral", _on_insa_make_military_ships_neutral)
@@ -1300,6 +1301,14 @@ func _on_play_civilized_system_leitmotif() -> void:
 	
 	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/motif.tres")
 	return
+
+func _on_play_strange_discovery_theme_or_motif() -> void:
+	if not world.played_strange_discovery_theme:
+		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/strange_discovery.ogg")
+		world.played_strange_discovery_theme = true
+	else:
+		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/strange_discovery_motif.ogg")
+	pass
 
 func _on_toggle_scope_mode_switch_button() -> void:
 	system_3d._on_toggle_scope_mode_switch_button()

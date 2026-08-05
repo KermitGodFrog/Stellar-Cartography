@@ -42,6 +42,7 @@ signal lockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
 signal addCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int)
 signal removeCharacterInitiativeXP(occupation: characterAPI.OCCUPATIONS)
 signal playerWin()
+signal playStrangeDiscoveryThemeOrMotif()
 signal insaMakeAllWormholesRevealable()
 signal insaMakeRiftDriverUnavailable()
 signal insaMakeMilitaryShipsNeutral()
@@ -844,6 +845,10 @@ func transferDataValue_UA01G(sent_value: int) -> void:
 			
 			discoverRandomBodyWithFlair(str(anomaly_seed))
 			discoverRandomBodyWithFlair(str(anomaly_seed))
+	pass
+
+func playDiscoveryThemeOrMotif() -> void:
+	emit_signal("playStrangeDiscoveryThemeOrMotif")
 	pass
 
 
