@@ -591,6 +591,10 @@ func _on_player_entering_system(system: starSystemAPI):
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/insa.ogg")
 	elif system.is_civilized():
 		_on_play_civilized_system_leitmotif()
+	elif system.get_first_star().metadata.get("star_type") == "Pulsar":
+		if not world.played_pulsar_theme:
+			get_tree().call_group("audioHandler", "queue_music", "res://sound/music/pulsar.ogg")
+			world.played_pulsar_theme = true
 	pass
 
 func _on_player_mutiny() -> void:

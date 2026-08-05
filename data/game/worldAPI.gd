@@ -33,7 +33,7 @@ class_name worldAPI
 @export_storage var played_abyss_leitmotif: bool = false #used exclusively in game.gd _on_player_entering_system()
 # ^^^ neither of these are necessarily a player issue, thus are here instead
 @export_storage var played_strange_discovery_theme: bool = false #used exclusively in game.gd _on_play_strange_discovery_theme_or_motif()
-
+@export_storage var played_pulsar_theme: bool = false #used exclusively in game.gd _on_player_entering_system()
 
 
 func createStarSystem(d_name: String) -> starSystemAPI:
