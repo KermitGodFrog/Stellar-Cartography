@@ -867,35 +867,6 @@ func draw_map():
 	
 	for body in system.bodies:
 		
-		#batch customBodyAPI texture drawing
-		
-		if body is customBodyAPI and body.is_known():
-			var regen_cached_texture = func() -> void:
-				var new_texture: Texture2D
-				if body.is_available(): new_texture = load(body.texture_path)
-				else: new_texture = load(body.post_texture_path)
-				custom_textures_cache[body] = {"texture": new_texture, "available": body.is_available()}
-			
-			var draw_cached_texture = func() -> void:
-				var internal_body_dict: Dictionary = custom_textures_cache.get(body)
-				var texture: Texture2D = internal_body_dict.get("texture")
-				texture.draw_rect(get_canvas_item(), global_data.get_offset_rect2(body.position, standard_size, standard_size), false)
-			
-			var body_dict = custom_textures_cache.get(body)
-			
-			if body_dict == null:
-				regen_cached_texture.call()
-				draw_cached_texture.call()
-			else:
-				var cache_available_status = body_dict.get("available", true)
-				if body.is_available() == cache_available_status:
-					draw_cached_texture.call()
-				else:
-					regen_cached_texture.call()
-					draw_cached_texture.call()
-	
-	for body in system.bodies:
-		
 		#batch orbit line drawing:
 		
 		if body is circularBodyAPI and body.is_known():
@@ -915,13 +886,42 @@ func draw_map():
 				draw_circle(body.position, standard_size, body.surface_color)
 			else:
 				draw_circle(body.position, standard_size, body.surface_color)
-		
+	
 	for body in system.bodies:
 		
 		#batching entity icons:
 		
 		if body is glintBodyAPI and body.is_known():
 			entity_texture.draw_rect(get_canvas_item(), global_data.get_offset_rect2(body.position, standard_size * 1.5, standard_size * 1.5), false, Color.LIGHT_GRAY)
+	
+	for body in system.bodies:
+		
+		#batch customBodyAPI texture drawing
+		
+		if body is customBodyAPI and body.is_known():
+			var regen_cached_texture = func() -> void:
+				var new_texture: Texture2D
+				if body.is_available(): new_texture = load(body.texture_path)
+				else: new_texture = load(body.post_texture_path)
+				custom_textures_cache[body] = {"texture": new_texture, "available": body.is_available()}
+			
+			var draw_cached_texture = func() -> void:
+				var internal_body_dict: Dictionary = custom_textures_cache.get(body)
+				var texture: Texture2D = internal_body_dict.get("texture")
+				texture.draw_rect(get_canvas_item(), global_data.get_offset_rect2(body.position, standard_size * 1.5, standard_size * 1.5), false)
+			
+			var body_dict = custom_textures_cache.get(body)
+			
+			if body_dict == null:
+				regen_cached_texture.call()
+				draw_cached_texture.call()
+			else:
+				var cache_available_status = body_dict.get("available", true)
+				if body.is_available() == cache_available_status:
+					draw_cached_texture.call()
+				else:
+					regen_cached_texture.call()
+					draw_cached_texture.call()
 	
 	for body in system.bodies:
 		

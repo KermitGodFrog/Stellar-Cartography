@@ -428,7 +428,7 @@ func createAuxiliaryUnexplored(_player_speed: int) -> void:
 				0.0,
 				0.0,
 				star.radius + 0.1,
-				{"dialogue_tag": "SpA_DysonSphere", "icon_path": "res://graphics/system-map/system-list/icons/SpA_DysonSphere.png", "texture_path": "res://graphics/system-map/dyson_sphere_icon.png", "mesh_path": "res://meshes/system-3d/dyson_sphere.obj"},
+				{"dialogue_tag": "SpA_DysonSphere", "icon_path": "res://graphics/system-map/system-list/icons/SpA_DysonSphere.png", "texture_path": "res://graphics/system-map/dyson_sphere_texture.png", "mesh_path": "res://meshes/system-3d/dyson_sphere.obj"},
 				{}
 			)
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE, _:
