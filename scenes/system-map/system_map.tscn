@@ -972,6 +972,7 @@ anchor_right = 1.0
 offset_left = -40.0
 offset_bottom = 40.0
 grow_horizontal = 0
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("38_ji0h2")
 texture_pressed = ExtResource("38_ji0h2")
 texture_hover = ExtResource("38_4c7jy")
