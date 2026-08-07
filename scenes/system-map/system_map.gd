@@ -139,6 +139,8 @@ const PULSAR_MAX_DAMAGE_COOLDOWN: float = 1.0
 
 var temp_nebula_texture: NoiseTexture2D #regenerated whenever it doesnt exist or is not up to date
 
+var custom_textures_cache: Dictionary = {} #custom body draw_map() textures. added when dont exist. cleared on wormhole traversal.
+
 #drawing scanner stuff on system map
 var scanner_profile_time: float = 0.0
 var scanner_power_time: float = 0.0
@@ -868,10 +870,29 @@ func draw_map():
 		#batch customBodyAPI texture drawing
 		
 		if body is customBodyAPI and body.is_known():
-			var texture: Object
-			if body.is_available(): texture = load(body.texture_path)
-			else: texture = load(body.post_texture_path)
-			texture.draw_rect(get_canvas_item(), global_data.get_offset_rect2(body.position, standard_size, standard_size), false)
+			var regen_cached_texture = func() -> void:
+				var new_texture: Texture2D
+				if body.is_available(): new_texture = load(body.texture_path)
+				else: new_texture = load(body.post_texture_path)
+				custom_textures_cache[body] = {"texture": new_texture, "available": body.is_available()}
+			
+			var draw_cached_texture = func() -> void:
+				var internal_body_dict: Dictionary = custom_textures_cache.get(body)
+				var texture: Texture2D = internal_body_dict.get("texture")
+				texture.draw_rect(get_canvas_item(), global_data.get_offset_rect2(body.position, standard_size, standard_size), false)
+			
+			var body_dict = custom_textures_cache.get(body)
+			
+			if body_dict == null:
+				regen_cached_texture.call()
+				draw_cached_texture.call()
+			else:
+				var cache_available_status = body_dict.get("available", true)
+				if body.is_available() == cache_available_status:
+					draw_cached_texture.call()
+				else:
+					regen_cached_texture.call()
+					draw_cached_texture.call()
 	
 	for body in system.bodies:
 		

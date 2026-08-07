@@ -236,33 +236,6 @@ func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_plane
 
 func createAuxiliaryCivilized() -> void:
 	match special_system_classification:
-		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
-			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
-			generateWormholes()
-			generateRandomWeightedStations()
-			generateRandomWeightedEntities()
-			generateRendezvousPoint()
-			
-			if randf() <= game_data.NETSPACE_TRANSMITTER_CHANCE_CURVE.sample(game_data.player_weirdness_index):
-				var dict := get_quick_post_gen_dict()
-				var new_body = addOrbitBody(
-					customBodyAPI.new(),
-					BODY_TYPES.CUSTOM,
-					identifier_count,
-					"Netspace Transmitter",
-					dict.get("hook_identifier"),
-					dict.get("orbit_distance"),
-					dict.get("orbit_angle_change"),
-					get_default_radius_solar_radii(),
-					{"dialogue_tag": "netspaceTransmitter", "icon_path": "res://graphics/system-map/system-list/icons/netspaceTransmitter.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD}, #update "icon_path" with actual one!
-					{}
-				)
-				get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
-				post_gen_location_candidates.remove_at(post_gen_location_candidates.find(dict.get("location")))
-			
-			for body in bodies:
-				body.known = true
-			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
 			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
 			system_scenario_classification = game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.NONE
@@ -383,7 +356,6 @@ func createAuxiliaryCivilized() -> void:
 				)
 				get_body_from_identifier(new_ship).position = Vector2.ZERO + (Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360))) * global_data.get_randf(73.60, get_max_body_orbit_distance()))
 			
-			
 			#load a preset system from fs w/o the randgen planets and copy + paste the bodies and post_gen_location_candidates into here. then set the wormhole destination_systems and generate the planets. easy!
 			#insa star info:
 			#iteration: orbit distance | orbit angle change -->
@@ -396,16 +368,37 @@ func createAuxiliaryCivilized() -> void:
 			#iteration 18: 1534.776805 | 0.000535 (belt #3)
 			#iteration 23: 1958.472055 | 0.000371
 			#iteration 24: 2043.211105 | 0.000348 (wormhole #3)
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE, _:
+			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
+			generateWormholes()
+			generateRandomWeightedStations()
+			generateRandomWeightedEntities()
+			generateRendezvousPoint()
+			
+			if randf() <= game_data.NETSPACE_TRANSMITTER_CHANCE_CURVE.sample(game_data.player_weirdness_index):
+				var dict := get_quick_post_gen_dict()
+				var new_body = addOrbitBody(
+					customBodyAPI.new(),
+					BODY_TYPES.CUSTOM,
+					identifier_count,
+					"Netspace Transmitter",
+					dict.get("hook_identifier"),
+					dict.get("orbit_distance"),
+					dict.get("orbit_angle_change"),
+					get_default_radius_solar_radii(),
+					{"dialogue_tag": "netspaceTransmitter", "icon_path": "res://graphics/system-map/system-list/icons/netspaceTransmitter.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD}, #update "icon_path" with actual one!
+					{}
+				)
+				get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
+				post_gen_location_candidates.remove_at(post_gen_location_candidates.find(dict.get("location")))
+			
+			for body in bodies:
+				body.known = true
+			generateRandomWeightedShips()
 	pass
 
 func createAuxiliaryUnexplored(_player_speed: int) -> void:
 	match special_system_classification:
-		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
-			generateWormholes()
-			generateRandomWeightedEntities()
-			generateRendezvousPoint()
-			generateRandomWeightedSpecialAnomaly()
-			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
 			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
 			system_scenario_classification = game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.NONE
@@ -435,9 +428,15 @@ func createAuxiliaryUnexplored(_player_speed: int) -> void:
 				0.0,
 				0.0,
 				star.radius + 0.1,
-				{"dialogue_tag": "SpA_DysonSphere", "icon_path": "res://graphics/system-map/system-list/icons/SpA_DysonSphere.png", "mesh_path": "res://meshes/system-3d/dyson_sphere.obj"},
+				{"dialogue_tag": "SpA_DysonSphere", "icon_path": "res://graphics/system-map/system-list/icons/SpA_DysonSphere.png", "texture_path": "res://graphics/system-map/dyson_sphere_icon.png", "mesh_path": "res://meshes/system-3d/dyson_sphere.obj"},
 				{}
 			)
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE, _:
+			generateWormholes()
+			generateRandomWeightedEntities()
+			generateRendezvousPoint()
+			generateRandomWeightedSpecialAnomaly()
+			generateRandomWeightedShips()
 	
 	match system_hazard_classification:
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD:

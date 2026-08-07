@@ -791,6 +791,7 @@ func _on_switch_star_system(to_system: starSystemAPI):
 	journey_map.add_new_system(world.player.systems_traversed)
 	journey_map.jumps_remaining = world.player.get_jumps_remaining() #required as it needs to update when the players system on game startup is loaded, not just wormhole traversal!
 	system_map.player_supercharged = world.player.supercharged #also updated when player supercharge_jumps_remaining is updated
+	system_map.custom_textures_cache.clear()
 	_on_process_system_hazard(to_system)
 	return to_system
 
