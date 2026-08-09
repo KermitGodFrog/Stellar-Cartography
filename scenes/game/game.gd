@@ -31,7 +31,7 @@ func _ready():
 	
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -76,7 +76,7 @@ func _ready():
 		allow_quick_pause = true
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.01, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.25, 0.10)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -1526,8 +1526,37 @@ func _on_DEBUG_force_unexplored_system() -> void:
 	new.createAuxiliaryUnexplored(world.player.speed)
 	_on_switch_star_system(new)
 	_on_player_entering_system(new)
-	
 	_on_DEBUG_reveal_all_bodies()
+	
+	# test 100 star systems for factor(s) \/
+	#var star_hook_counts: Array[int] = []
+	#var sa_counts: Array[int] = []
+	#for i in 100:
+	#	var star_hook_count: int = 0
+	#	var sa_count: int = 0
+	#	
+	#	var new = _on_create_new_star_system()
+	#	new.createAuxiliaryUnexplored(world.player.speed)
+	#	for b in new.bodies:
+	#		if b.get_type() == starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
+	#			sa_count += 1
+	#		if b is orbitBodyAPI:
+	#			if b.hook_identifier == new.get_first_star().get_identifier():
+	#				star_hook_count += 1
+	#	star_hook_counts.append(star_hook_count)
+	#	sa_counts.append(sa_count)
+	#
+	#var sum_func = func(accum, number):
+	#	return accum + number
+	#
+	#print(star_hook_counts)
+	#print(sa_counts)
+	#
+	#var analytics_avg_star_hook_count: float = float(star_hook_counts.reduce(sum_func, 0)) / star_hook_counts.size()
+	#var analytics_avg_sa_count: float = float(sa_counts.reduce(sum_func, 0)) / sa_counts.size()
+	#
+	#print(analytics_avg_star_hook_count)
+	#print(analytics_avg_sa_count)
 	pass
 
 func _on_DEBUG_max_character_standing() -> void:
