@@ -63,7 +63,7 @@ enum STORYLINES {THE_DETECTIVE, THE_CONGLOMERATE}
 		else: return morale
 #@export_storage var mutiny_backing: int = 0
 
-enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES, SCAN_PREDICTION, GAS_LAYER_SURVEYOR}
+enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES, SCAN_PREDICTION, GAS_LAYER_SURVEYOR, DRAG_DRIVES, ENVOY_PROGRAM, IMPROVED_MAGNIFICATION, ENHANCED_PASSIVE_SCANNERS, STEALTH_COMPOSITES, BACKGROUND_PROCESSING, REFINED_FUEL_FLOW, FASTER_PROCESSING, PRECISION_PROCESSING}
 @export var unlocked_upgrades: Array[UPGRADE_ID] = []
 const SPL_upgrade_IDs: PackedInt32Array = [UPGRADE_ID.AUDIO_VISUALIZER, UPGRADE_ID.LONG_RANGE_SCOPES, UPGRADE_ID.GAS_LAYER_SURVEYOR]
 var current_SPL_upgrades: int = 0:
@@ -74,6 +74,15 @@ var current_SPL_upgrades: int = 0:
 				current_SPL_upgrades += 1
 		return current_SPL_upgrades
 @export var max_SPL_upgrades: int = 2
+const upgrade_incompatibilities: Dictionary = {
+	UPGRADE_ID.REFINED_FUEL_FLOW: [UPGRADE_ID.DRAG_DRIVES],
+	UPGRADE_ID.FASTER_PROCESSING: [UPGRADE_ID.PRECISION_PROCESSING],
+	UPGRADE_ID.PRECISION_PROCESSING: [UPGRADE_ID.FASTER_PROCESSING]
+}
+const upgrade_requirements: Dictionary = {
+	UPGRADE_ID.FASTER_PROCESSING: [UPGRADE_ID.BACKGROUND_PROCESSING],
+	UPGRADE_ID.PRECISION_PROCESSING: [UPGRADE_ID.BACKGROUND_PROCESSING]
+}
 
 @export var saved_audio_profiles: Array[audioProfileHelper] = []
 @export var max_saved_audio_profiles: int = 10
@@ -203,11 +212,24 @@ func get_upgrade_unlocked_state(upgrade_idx: UPGRADE_ID) -> bool:
 func is_upgrade_unlock_valid(upgrade_idx: UPGRADE_ID) -> bool:
 	var unlocked: bool = get_upgrade_unlocked_state(upgrade_idx) #must be false
 	var SPL_above_max: bool = false #must be false
+	var incompatible: bool = false
+	var requirements_unmet: bool = false
+	
 	if SPL_upgrade_IDs.has(upgrade_idx):
 		if current_SPL_upgrades >= max_SPL_upgrades:
 			SPL_above_max = true
 	
-	if (unlocked == false) and (SPL_above_max == false):
+	var incompatibilities: Array = upgrade_incompatibilities.get(upgrade_idx)
+	if incompatibilities != null:
+		for u in incompatibilities:
+			if get_upgrade_unlocked_state(u) == true:
+				incompatible = true
+	
+	var requirements: Array = upgrade_requirements.get(upgrade_idx)
+	if requirements != null:
+		requirements_unmet = !requirements.all(get_upgrade_unlocked_state)
+	
+	if (unlocked == false) and (SPL_above_max == false) and (incompatible == false) and (requirements_unmet == false):
 		return true
 	else:
 		return false

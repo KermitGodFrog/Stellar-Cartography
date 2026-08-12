@@ -941,11 +941,20 @@ func _on_refund_upgrade(upgrade_idx: playerAPI.UPGRADE_ID, refund: int) -> void:
 func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 	var unlock = world.player.unlockUpgrade(upgrade_idx)
 	_on_upgrade_state_change(unlock, true)
+	#value change upgrade changes:
+	match upgrade_idx:
+		playerAPI.UPGRADE_ID.DRAG_DRIVES:
+			world.player.speed += 1
 	pass
 
 func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 	var lock = world.player.lockUpgrade(upgrade_idx)
 	_on_upgrade_state_change(lock, false)
+	#value change upgrade changes:
+	
+	match upgrade_idx:
+		playerAPI.UPGRADE_ID.DRAG_DRIVES:
+			world.player.speed -= 1
 	pass
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
