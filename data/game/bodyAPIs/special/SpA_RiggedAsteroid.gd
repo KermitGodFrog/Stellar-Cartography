@@ -23,7 +23,7 @@ func advance(delta):
 		randomize_target_distance()
 	
 	if metadata.get("custom_available", true) == false:
-		set_display_name("'Sentient Asteroid'")
+		set_display_name("Rigged Asteroid")
 	pass
 
 func randomize_target_distance() -> void:

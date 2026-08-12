@@ -877,18 +877,18 @@ func generateRandomWeightedSpecialAnomaly():
 	
 	var special_anomaly_classification = global_data.weighted_pick(game_data.get_weighted_special_anomaly_classifications(), "weight")
 	match special_anomaly_classification:
-		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.SENTIENT_ASTEROID:
+		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.RIGGED_ASTEROID:
 			var hook_orbit_velocity = tan(hook.orbit_angle_change) * hook.orbit_distance #would have to recalculate every frame if not calculating now, which would be unnecessary
 			var new_body = addOrbitBody(
 				load("uid://lxeqs6ypk0ju").new(),
 				BODY_TYPES.CUSTOM,
 				identifier_count,
-				"Unidentified Contact",
+				"Asteroid?",
 				hook.get_identifier(),
 				orbit_distance,
 				orbit_angle_change,
 				radius,
-				{"dialogue_tag": "SpA_SentientAsteroid", "_hook_mass": hook.mass, "_hook_orbit_velocity": hook_orbit_velocity, "_system_time": time, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "icon_path": "res://graphics/system-map/question_mark.png", "post_icon_path": "res://graphics/system-map/system-list/icons/SpA_SentientAsteroid.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
+				{"dialogue_tag": "SpA_RiggedAsteroid", "_hook_mass": hook.mass, "_hook_orbit_velocity": hook_orbit_velocity, "_system_time": time, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "icon_path": "res://graphics/system-map/system-list/icons/SpA_RiggedAsteroid.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
 				{}
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))

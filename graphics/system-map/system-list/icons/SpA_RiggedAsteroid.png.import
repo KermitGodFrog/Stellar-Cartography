@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ettl5j46rwn2"
-path="res://.godot/imported/SpA_SentientAsteroid.png-73effef9f9e7692025ee2f6ba1cc197a.ctex"
+path="res://.godot/imported/SpA_RiggedAsteroid.png-8c18571a292ab7cb9adbce506d5bdba1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/system-map/system-list/icons/SpA_SentientAsteroid.png"
-dest_files=["res://.godot/imported/SpA_SentientAsteroid.png-73effef9f9e7692025ee2f6ba1cc197a.ctex"]
+source_file="res://graphics/system-map/system-list/icons/SpA_RiggedAsteroid.png"
+dest_files=["res://.godot/imported/SpA_RiggedAsteroid.png-8c18571a292ab7cb9adbce506d5bdba1.ctex"]
 
 [params]
 
