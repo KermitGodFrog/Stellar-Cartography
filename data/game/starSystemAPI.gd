@@ -752,8 +752,9 @@ func generateRandomWeightedStations():
 		
 		var repair_price_multiplier = 1.0
 		
+		var num_upgrades: int = clampi(roundi(randfn(3, 1)), 1, 6)
 		var _excluded_upgrades: Array[playerAPI.UPGRADE_ID] = []
-		for iu in global_data.get_randi(0, 3):
+		for iu in playerAPI.UPGRADE_ID.size() - num_upgrades:
 			var upgrade = playerAPI.UPGRADE_ID.values().pick_random()
 			if not _excluded_upgrades.has(upgrade):
 				_excluded_upgrades.append(upgrade)

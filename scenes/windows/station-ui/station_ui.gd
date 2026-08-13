@@ -27,7 +27,16 @@ const upgrade_data = {
 	playerAPI.UPGRADE_ID.NANITE_CONTROLLER: {"cost": 25000, "description": "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost."},
 	playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES: {"cost": 35000, "description": "(SPECIAL) Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."},
 	playerAPI.UPGRADE_ID.SCAN_PREDICTION: {"cost": 7500, "description": "Scan prediction algorithms. Allow LIDAR scan arcs to be visible on the SYSTEM MAP before the 'PING' button is pressed."},
-	playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR: {"cost": 35000, "description": "(SPECIAL) Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."}
+	playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR: {"cost": 35000, "description": "(SPECIAL) Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."},
+	playerAPI.UPGRADE_ID.DRAG_DRIVES: {"cost": 25000, "description": "+1 speed"},
+	playerAPI.UPGRADE_ID.ENVOY_PROGRAM: {"cost": 9000, "description": ""},
+	playerAPI.UPGRADE_ID.IMPROVED_MAGNIFICATION: {"cost": 15000, "description": ""},
+	playerAPI.UPGRADE_ID.ENHANCED_SCANNERS: {"cost": 15000, "description": "+12.5 scanner power"},
+	playerAPI.UPGRADE_ID.STEALTH_COMPOSITES: {"cost": 15000, "description": "-6.25 scanner profile"},
+	playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING: {"cost": 7500, "description": ""},
+	playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW: {"cost": 15000, "description": "+2 speed, +25 scanner profile"},
+	playerAPI.UPGRADE_ID.FASTER_PROCESSING: {"cost": 25000, "description": ""},
+	playerAPI.UPGRADE_ID.PRECISION_PROCESSING: {"cost": 25000, "description": ""}
 }
 
 var station: stationBodyAPI
@@ -61,11 +70,13 @@ signal addPlayerValue(amount: int)
 @onready var save_audio_profiles_info_label = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/info_label
 @onready var storage_progress_bar = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/storage_progress_bar
 #upgrade shtuff
-@onready var description_label = $upgrade_container/description_label
+@onready var description_label = $upgrade_container/description_scroll/description_label
 @onready var disclaimer_label = $upgrade_container/disclaimer_label
 @onready var SPL_disclaimer_label = $upgrade_container/SPL_disclaimer_label
 @onready var AVAILABLE_UPGRADES = $upgrade_container/available_upgrades_container/title_available_upgrades_scroll/margin/AVAILABLE_UPGRADES
 @onready var UNLOCKED_UPGRADES = $upgrade_container/unlocked_upgrades_container/title_unlocked_upgrades_scroll/margin/UNLOCKED_UPGRADES
+@onready var incompatibilities_label = $upgrade_container/notes_flow/incompatibilities_container/incompatibilities_label
+@onready var requirements_label = $upgrade_container/notes_flow/requirements_container/requirements_label
 
 @onready var hull_stress_label = $repair_container/hull_stress_label
 @onready var repair_single_button = $repair_container/repair_single
@@ -198,7 +209,7 @@ func add_upgrade_button(upgrade: playerAPI.UPGRADE_ID, unlocked: bool) -> void:
 	instance.cost = data.get("cost")
 	instance.description = data.get("description")
 	instance.connect("pressed", _on_upgrade_pressed.bind(instance.upgrade, instance.cost, instance.unlocked))
-	instance.connect("mouse_entered", _on_upgrade_mouse_entered.bind(instance.description))
+	instance.connect("mouse_entered", _on_upgrade_mouse_entered.bind(instance.upgrade, instance.description))
 	
 	match instance.unlocked:
 		true:
@@ -221,8 +232,18 @@ func update_upgrade_buttons() -> void:
 	pass
 
 
-func _on_upgrade_mouse_entered(description: String) -> void:
+func _on_upgrade_mouse_entered(upgrade: playerAPI.UPGRADE_ID, description: String) -> void:
 	description_label.set_text(description)
+	var incomp_text: String = String()
+	var req_text: String = String()
+	
+	for u in playerAPI.upgrade_incompatibilities.get(upgrade, []):
+		incomp_text += "* %s\n" % get_readable_upgrade_name(u)
+	for u in playerAPI.upgrade_requirements.get(upgrade, []):
+		req_text += "* %s\n" % get_readable_upgrade_name(u)
+	
+	incompatibilities_label.set_text(incomp_text)
+	requirements_label.set_text(req_text)
 	pass
 
 func _on_upgrade_pressed(upgrade_idx: playerAPI.UPGRADE_ID, cost: int, already_unlocked: bool):
@@ -249,3 +270,6 @@ func _on_disable_module_store() -> void:
 func _on_set_tutorial_visible(value: bool) -> void:
 	tutorial.set_visible(value)
 	pass
+
+func get_readable_upgrade_name(upgrade: playerAPI.UPGRADE_ID) -> String:
+	return playerAPI.UPGRADE_ID.find_key(upgrade).to_upper().replace("_", " ")
