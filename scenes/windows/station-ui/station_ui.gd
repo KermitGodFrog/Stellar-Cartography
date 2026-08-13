@@ -34,7 +34,7 @@ const upgrade_data = {
 	playerAPI.UPGRADE_ID.ENHANCED_SCANNERS: {"cost": 15000, "description": "Addition of several high gain antennas to the passive scanner array.\n[color=lightblue][ +12.5 scanner power ][/color]"},
 	playerAPI.UPGRADE_ID.STEALTH_COMPOSITES: {"cost": 15000, "description": "An outer hull coating designed to absorb electromagnetic radiation.\n[color=lightblue][ -6.25 scanner profile ][/color]"},
 	playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING: {"cost": 7500, "description": ""},
-#	playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW: {"cost": 15000, "description": "+2 speed, +25 scanner profile"},
+	playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW: {"cost": 15000, "description": "Forcing extra fuel through the injector for a higher thrust output. The side effect is a far brighter exhaust.\n[color=lightblue][ +1 speed ][/color]\n[color=tomato][ +25 scanner profile ][/color]"},
 #	playerAPI.UPGRADE_ID.FASTER_PROCESSING: {"cost": 25000, "description": ""},
 #	playerAPI.UPGRADE_ID.PRECISION_PROCESSING: {"cost": 25000, "description": ""}
 }
@@ -183,7 +183,7 @@ func _on_popup():
 		c.queue_free()
 	
 	if station:
-		print("EXCLUDED UPGRADE IDs ", station.excluded_upgrades)
+		print("AVAILABLE UPGRADE IDs ", station.available_upgrades)
 		print("REPAIR PRICE MULTIPLIER ", station.repair_price_multiplier)
 		save_audio_profiles_info_label.set_text("The wider astronomical community on %s has analyzed the legitimacy of additional observations you have inferred on unknown bodies during your travels." % station.get_display_name())
 		add_relevant_upgrade_buttons()
@@ -194,7 +194,7 @@ func add_relevant_upgrade_buttons() -> void:
 	for upgrade in playerAPI.UPGRADE_ID.values():
 		if player_unlocked_upgrades.has(upgrade):
 			add_upgrade_button(upgrade, true)
-		elif not station.excluded_upgrades.has(upgrade):
+		elif station.available_upgrades.has(upgrade):
 			add_upgrade_button(upgrade, false)
 	pass
 
@@ -222,7 +222,7 @@ func update_upgrade_buttons() -> void:
 	if station:
 		for c in UNLOCKED_UPGRADES.get_children():
 			if not player_unlocked_upgrades.has(c.upgrade):
-				if not station.excluded_upgrades.has(c.upgrade):
+				if station.available_upgrades.has(c.upgrade):
 					add_upgrade_button(c.upgrade, false)
 				c.queue_free()
 		for c in AVAILABLE_UPGRADES.get_children():

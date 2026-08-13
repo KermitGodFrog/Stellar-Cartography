@@ -754,16 +754,27 @@ func generateRandomWeightedStations(unlocked_upgrades: Array[playerAPI.UPGRADE_I
 		
 		var num_upgrades: int = clampi(roundi(randfn(3, 1)), 1, 6)
 		var available_upgrades: Array[playerAPI.UPGRADE_ID] = []
-		#firstly, 
-		
-		
-		
-		
-		#var _excluded_upgrades: Array[playerAPI.UPGRADE_ID] = []
-		#for iu in playerAPI.UPGRADE_ID.size() - num_upgrades:
-		#	var upgrade = playerAPI.UPGRADE_ID.values().pick_random()
-		#	if not _excluded_upgrades.has(upgrade):
-		#		_excluded_upgrades.append(upgrade)
+		#firstly, force up to 2 upgrades that are already required for other upgrades to be in the list (to promote specialization throughout a run):
+		if num_upgrades >= 2:
+			var upgrades_req_existing: Array[playerAPI.UPGRADE_ID] = []
+			for u in unlocked_upgrades:
+				for uu in playerAPI.get_upgrades_with_requirement(u):
+					if not upgrades_req_existing.has(uu):
+						upgrades_req_existing.append(uu)
+			if upgrades_req_existing.size() > 0:
+				var reduce: int = global_data.get_randi(0, mini(upgrades_req_existing.size(), 2))
+				for iu in reduce:
+					var chosen_upgrade: playerAPI.UPGRADE_ID = upgrades_req_existing.pick_random()
+					available_upgrades.append(chosen_upgrade)
+					upgrades_req_existing.erase(chosen_upgrade)
+					num_upgrades -= 1
+		#then populate the rest of the upgrades with general no-requirement ones!
+		var no_req_upgrades: Array[playerAPI.UPGRADE_ID] = playerAPI.get_all_upgrades_with_no_requirements()
+		for n in num_upgrades:
+			var chosen_upgrade: playerAPI.UPGRADE_ID = no_req_upgrades.pick_random()
+			if not available_upgrades.has(chosen_upgrade):
+				available_upgrades.append(chosen_upgrade)
+				no_req_upgrades.erase(chosen_upgrade)
 		
 		var new_station = addOrbitBody(
 			stationBodyAPI.new(),

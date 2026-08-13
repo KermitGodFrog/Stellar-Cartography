@@ -179,6 +179,7 @@ vertical_alignment = 1
 script = ExtResource("6_ubeaq")
 
 [node name="description_scroll" type="ScrollContainer" parent="station_control/upgrade_container"]
+visible = false
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -194,6 +195,7 @@ bbcode_enabled = true
 text = "(HOVER UPGRADE TO VIEW DESCRIPTION)"
 
 [node name="notes_flow" type="HFlowContainer" parent="station_control/upgrade_container"]
+visible = false
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
 size_flags_vertical = 3

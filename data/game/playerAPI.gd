@@ -63,7 +63,7 @@ enum STORYLINES {THE_DETECTIVE, THE_CONGLOMERATE}
 		else: return morale
 #@export_storage var mutiny_backing: int = 0
 
-enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES, SCAN_PREDICTION, GAS_LAYER_SURVEYOR, DRAG_DRIVES, ENVOY_PROGRAM, IMPROVED_MAGNIFICATION, ENHANCED_SCANNERS, STEALTH_COMPOSITES, BACKGROUND_PROCESSING} # REFINED_FUEL_FLOW, FASTER_PROCESSING, PRECISION_PROCESSING
+enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES, SCAN_PREDICTION, GAS_LAYER_SURVEYOR, DRAG_DRIVES, ENVOY_PROGRAM, IMPROVED_MAGNIFICATION, ENHANCED_SCANNERS, STEALTH_COMPOSITES, BACKGROUND_PROCESSING, REFINED_FUEL_FLOW} # FASTER_PROCESSING, PRECISION_PROCESSING
 @export var unlocked_upgrades: Array[UPGRADE_ID] = []
 const SPL_upgrade_IDs: PackedInt32Array = [UPGRADE_ID.AUDIO_VISUALIZER, UPGRADE_ID.LONG_RANGE_SCOPES, UPGRADE_ID.GAS_LAYER_SURVEYOR]
 var current_SPL_upgrades: int = 0:
@@ -78,12 +78,11 @@ const upgrade_incompatibilities: Dictionary = {
 #	UPGRADE_ID.REFINED_FUEL_FLOW: [UPGRADE_ID.DRAG_DRIVES],
 #	UPGRADE_ID.FASTER_PROCESSING: [UPGRADE_ID.PRECISION_PROCESSING],
 #	UPGRADE_ID.PRECISION_PROCESSING: [UPGRADE_ID.FASTER_PROCESSING]
-	UPGRADE_ID.DRAG_DRIVES: [UPGRADE_ID.LONG_RANGE_SCOPES]
 }
 const upgrade_requirements: Dictionary = {
 #	UPGRADE_ID.FASTER_PROCESSING: [UPGRADE_ID.BACKGROUND_PROCESSING],
 #	UPGRADE_ID.PRECISION_PROCESSING: [UPGRADE_ID.BACKGROUND_PROCESSING]
-	UPGRADE_ID.DRAG_DRIVES: [UPGRADE_ID.ADVANCED_SCANNING, UPGRADE_ID.GAS_LAYER_SURVEYOR]
+	UPGRADE_ID.REFINED_FUEL_FLOW: [UPGRADE_ID.DRAG_DRIVES]
 }
 
 @export var saved_audio_profiles: Array[audioProfileHelper] = []
@@ -190,29 +189,53 @@ func addJumpsRemaining(amount: int):
 
 
 
-func unlockUpgrade(upgrade_idx: UPGRADE_ID) -> int:
+##Returns false if the upgrade was already unlocked.
+func unlockUpgrade(upgrade_idx: UPGRADE_ID) -> bool:
 	if not unlocked_upgrades.has(upgrade_idx):
 		unlocked_upgrades.append(upgrade_idx)
-		return upgrade_idx
-	return -1
+		return true
+	return false
 
-func lockUpgrade(upgrade_idx: UPGRADE_ID) -> int:
+##Returns false if the upgrade was already locked.
+func lockUpgrade(upgrade_idx: UPGRADE_ID) -> bool:
 	if unlocked_upgrades.has(upgrade_idx):
 		unlocked_upgrades.erase(upgrade_idx)
-		return upgrade_idx
-	return -1
+		return true
+	return false
 
 func get_unlocked_upgrades() -> Array[UPGRADE_ID]:
 	return unlocked_upgrades
 
-func get_upgrade_unlocked_state(upgrade_idx: UPGRADE_ID) -> bool:
+static func get_upgrade_requirements(upgrade_idx: UPGRADE_ID) -> Array:
+	var requirements: Array = upgrade_requirements.get(upgrade_idx, [])
+	return requirements
+
+static func get_upgrade_incompatibilities(upgrade_idx: UPGRADE_ID) -> Array:
+	var incompatibilities: Array = upgrade_incompatibilities.get(upgrade_idx, [])
+	return incompatibilities
+
+static func get_upgrades_with_requirement(requirement: UPGRADE_ID) -> Array[UPGRADE_ID]:
+	var upgrades_w_requirement: Array[UPGRADE_ID] = []
+	for u in upgrade_requirements:
+		if upgrade_requirements.get(u).has(requirement):
+			upgrades_w_requirement.append(u)
+	return upgrades_w_requirement
+
+static func get_upgrades_with_incompatibility(incompatible_upgrade: UPGRADE_ID) -> Array[UPGRADE_ID]:
+	var upgrades_w_incompatibility: Array[UPGRADE_ID] = []
+	for u in upgrade_incompatibilities:
+		if upgrade_incompatibilities.get(u).has(incompatible_upgrade):
+			upgrades_w_incompatibility.append(u)
+	return upgrades_w_incompatibility
+
+func is_upgrade_unlocked(upgrade_idx: UPGRADE_ID) -> bool:
 	if unlocked_upgrades.has(upgrade_idx):
 		return true
 	else:
 		return false
 
 func is_upgrade_unlock_valid(upgrade_idx: UPGRADE_ID) -> bool:
-	var unlocked: bool = get_upgrade_unlocked_state(upgrade_idx) #must be false
+	var unlocked: bool = is_upgrade_unlocked(upgrade_idx) #must be false
 	var SPL_above_max: bool = false #must be false
 	var incompatible: bool = false
 	var requirements_unmet: bool = false
@@ -221,20 +244,24 @@ func is_upgrade_unlock_valid(upgrade_idx: UPGRADE_ID) -> bool:
 		if current_SPL_upgrades >= max_SPL_upgrades:
 			SPL_above_max = true
 	
-	var incompatibilities = upgrade_incompatibilities.get(upgrade_idx)
-	if incompatibilities != null:
-		for u in incompatibilities:
-			if get_upgrade_unlocked_state(u) == true:
-				incompatible = true
+	for u in get_upgrade_incompatibilities(upgrade_idx):
+		if is_upgrade_unlocked(u) == true:
+			incompatible = true
+			break
 	
-	var requirements = upgrade_requirements.get(upgrade_idx)
-	if requirements != null:
-		requirements_unmet = !requirements.all(get_upgrade_unlocked_state)
+	requirements_unmet = !get_upgrade_requirements(upgrade_idx).all(is_upgrade_unlocked)
 	
 	if (unlocked == false) and (SPL_above_max == false) and (incompatible == false) and (requirements_unmet == false):
 		return true
 	else:
 		return false
+
+static func get_all_upgrades_with_no_requirements() -> Array[UPGRADE_ID]:
+	var no_req_upgrades: Array[UPGRADE_ID] = []
+	for u in UPGRADE_ID.values():
+		if get_upgrade_requirements(u).size() == 0:
+			no_req_upgrades.append(u)
+	return no_req_upgrades
 
 
 

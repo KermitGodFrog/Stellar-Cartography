@@ -759,7 +759,7 @@ func _on_create_new_star_system(for_system: starSystemAPI = null, for_weirdness_
 	else:
 		system = world.createStarSystem("campaign_insa")
 		system.special_system_classification = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA
-	var _advanced_scanning_unlocked = world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.ADVANCED_SCANNING)
+	var _advanced_scanning_unlocked = world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
 	system.non_gen_seed = randi() #for ESDs
 	system.createBase(world.get_adjusted_PA_chance(_advanced_scanning_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_scanning_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index)
 	if for_system != null:
@@ -928,7 +928,7 @@ func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 
 func _on_refund_upgrade(upgrade_idx: playerAPI.UPGRADE_ID, refund: int) -> void:
 	print("GAME: REFUNDING UPGRADE")
-	if world.player.get_upgrade_unlocked_state(upgrade_idx) == true:
+	if world.player.is_upgrade_unlocked(upgrade_idx):
 		world.player.increaseBalance(refund)
 		_on_lock_upgrade(upgrade_idx)
 	
@@ -939,31 +939,39 @@ func _on_refund_upgrade(upgrade_idx: playerAPI.UPGRADE_ID, refund: int) -> void:
 	pass
 
 func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
-	var unlock = world.player.unlockUpgrade(upgrade_idx)
-	_on_upgrade_state_change(unlock, true)
-	#value change upgrade changes:
-	match upgrade_idx:
-		playerAPI.UPGRADE_ID.DRAG_DRIVES:
-			world.player.speed += 1
-			world.player.scanner_profile += 8.75
-		playerAPI.UPGRADE_ID.ENHANCED_SCANNERS:
-			world.player.scanner_power += 12.5
-		playerAPI.UPGRADE_ID.STEALTH_COMPOSITES:
-			world.player.scanner_profile -= 6.25
+	var changed: bool = world.player.unlockUpgrade(upgrade_idx)
+	if changed:
+		_on_upgrade_state_change(upgrade_idx, true)
+		#value change upgrade changes:
+		match upgrade_idx:
+			playerAPI.UPGRADE_ID.DRAG_DRIVES:
+				world.player.speed += 1
+				world.player.scanner_profile += 8.75
+			playerAPI.UPGRADE_ID.ENHANCED_SCANNERS:
+				world.player.scanner_power += 12.5
+			playerAPI.UPGRADE_ID.STEALTH_COMPOSITES:
+				world.player.scanner_profile -= 6.25
+			playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW:
+				world.player.speed += 1
+				world.player.scanner_profile += 25.0
 	pass
 
 func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
-	var lock = world.player.lockUpgrade(upgrade_idx)
-	_on_upgrade_state_change(lock, false)
-	#value change upgrade changes:
-	match upgrade_idx:
-		playerAPI.UPGRADE_ID.DRAG_DRIVES:
-			world.player.speed -= 1
-			world.player.scanner_profile -= 8.75
-		playerAPI.UPGRADE_ID.ENHANCED_SCANNERS:
-			world.player.scanner_power -= 12.5
-		playerAPI.UPGRADE_ID.STEALTH_COMPOSITES:
-			world.player.scanner_profile += 6.25
+	var changed: bool = world.player.lockUpgrade(upgrade_idx)
+	if changed:
+		_on_upgrade_state_change(upgrade_idx, false)
+		#value change upgrade changes:
+		match upgrade_idx:
+			playerAPI.UPGRADE_ID.DRAG_DRIVES:
+				world.player.speed -= 1
+				world.player.scanner_profile -= 8.75
+			playerAPI.UPGRADE_ID.ENHANCED_SCANNERS:
+				world.player.scanner_power -= 12.5
+			playerAPI.UPGRADE_ID.STEALTH_COMPOSITES:
+				world.player.scanner_profile += 6.25
+			playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW:
+				world.player.speed -= 1
+				world.player.scanner_profile -= 25.0
 	pass
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
@@ -1467,7 +1475,7 @@ func _on_insa_make_military_ships_neutral() -> void:
 func _on_open_LRS():
 	await get_tree().physics_frame
 	var following_body = world.player.action_body #should be set as playerAPI setting action_body calls _on_player_following_body, which calls dialogue, which calls this.
-	if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) == true:
+	if world.player.is_upgrade_unlocked(world.player.UPGRADE_ID.LONG_RANGE_SCOPES):
 		long_range_scopes._on_current_entity_changed(following_body)
 		
 		if world.player.discovered_entities.find(following_body.entity_classification) == -1:
@@ -1482,7 +1490,7 @@ func _on_open_LRS():
 func _on_open_GLS():
 	await get_tree().physics_frame
 	var following_body = world.player.action_body #should be set as playerAPI setting action_body calls _on_player_following_body, which calls dialogue, which calls this.
-	if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) == true:
+	if world.player.is_upgrade_unlocked(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR):
 		gas_layer_surveyor._on_current_planet_changed(following_body)
 		for tag in gas_layer_surveyor.current_layers:
 			var idx = gas_layer_surveyor.layer_data.keys().find(tag)
