@@ -888,7 +888,7 @@ func generateRandomWeightedSpecialAnomaly():
 				orbit_distance,
 				orbit_angle_change,
 				radius,
-				{"dialogue_tag": "SpA_RiggedAsteroid", "_hook_mass": hook.mass, "_hook_orbit_velocity": hook_orbit_velocity, "_system_time": time, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "icon_path": "res://graphics/system-map/system-list/icons/SpA_RiggedAsteroid.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
+				{"dialogue_tag": "SpA_RiggedAsteroid", "_hook_mass": hook.mass, "_hook_orbit_velocity": hook_orbit_velocity, "_system_time": time, "min_distance": hook.radius * 71, "max_distance": hook.radius * 645, "icon_path": "res://graphics/system-map/system-list/icons/SpA_RiggedAsteroid.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD, "seed": randi()},
 				{}
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
@@ -903,7 +903,7 @@ func generateRandomWeightedSpecialAnomaly():
 				orbit_distance,
 				orbit_angle_change,
 				radius,
-				{"dialogue_tag": "SpA_RiftDriver", "icon_path": "res://graphics/system-map/system-list/icons/rift_driver.png", "post_icon_path": "res://graphics/system-map/system-list/icons/rift_driver.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
+				{"dialogue_tag": "SpA_RiftDriver", "icon_path": "res://graphics/system-map/system-list/icons/rift_driver.png", "post_icon_path": "res://graphics/system-map/system-list/icons/rift_driver.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD, "seed": randi()},
 				{}
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
@@ -918,7 +918,7 @@ func generateRandomWeightedSpecialAnomaly():
 				orbit_distance,
 				orbit_angle_change,
 				radius,
-				{"dialogue_tag": "netspaceRetrievalPoint", "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
+				{"dialogue_tag": "netspaceRetrievalPoint", "req_scope_mode": playerAPI.SCOPE_MODES.RAD, "seed": randi()},
 				{}
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
