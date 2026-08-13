@@ -22,21 +22,21 @@ func _on_pause_mode_changed(value):
 
 
 const upgrade_data = {
-	playerAPI.UPGRADE_ID.ADVANCED_SCANNING: {"cost": 7500, "description": "Advanced scanning capability. Increases the chance to detect planetary and space anomalies by 10%."},
+	playerAPI.UPGRADE_ID.ADVANCED_SCANNING: {"cost": 7500, "description": "Advanced scanning capability.\n[ Chance to detect planetary and space anomalies +10% ]"},
 	playerAPI.UPGRADE_ID.AUDIO_VISUALIZER: {"cost": 35000, "description": "(SPECIAL) Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."},
 	playerAPI.UPGRADE_ID.NANITE_CONTROLLER: {"cost": 25000, "description": "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost."},
 	playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES: {"cost": 35000, "description": "(SPECIAL) Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."},
 	playerAPI.UPGRADE_ID.SCAN_PREDICTION: {"cost": 7500, "description": "Scan prediction algorithms. Allow LIDAR scan arcs to be visible on the SYSTEM MAP before the 'PING' button is pressed."},
 	playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR: {"cost": 35000, "description": "(SPECIAL) Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."},
-	playerAPI.UPGRADE_ID.DRAG_DRIVES: {"cost": 25000, "description": "+1 speed"},
+	playerAPI.UPGRADE_ID.DRAG_DRIVES: {"cost": 15000, "description": "Experimental changes to the design of the engine nozzle and fuel injection system.\n[ Speed +1 ]\n[ Scanner Profile +8.75 ]"},
 	playerAPI.UPGRADE_ID.ENVOY_PROGRAM: {"cost": 9000, "description": ""},
 	playerAPI.UPGRADE_ID.IMPROVED_MAGNIFICATION: {"cost": 15000, "description": ""},
-	playerAPI.UPGRADE_ID.ENHANCED_SCANNERS: {"cost": 15000, "description": "+12.5 scanner power"},
-	playerAPI.UPGRADE_ID.STEALTH_COMPOSITES: {"cost": 15000, "description": "-6.25 scanner profile"},
+	playerAPI.UPGRADE_ID.ENHANCED_SCANNERS: {"cost": 15000, "description": "goob \n[ +12.5 Scanner Power ]"},
+	playerAPI.UPGRADE_ID.STEALTH_COMPOSITES: {"cost": 15000, "description": "gllooob \n[ -6.25 Scanner Profile ]"},
 	playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING: {"cost": 7500, "description": ""},
-	playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW: {"cost": 15000, "description": "+2 speed, +25 scanner profile"},
-	playerAPI.UPGRADE_ID.FASTER_PROCESSING: {"cost": 25000, "description": ""},
-	playerAPI.UPGRADE_ID.PRECISION_PROCESSING: {"cost": 25000, "description": ""}
+#	playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW: {"cost": 15000, "description": "+2 speed, +25 scanner profile"},
+#	playerAPI.UPGRADE_ID.FASTER_PROCESSING: {"cost": 25000, "description": ""},
+#	playerAPI.UPGRADE_ID.PRECISION_PROCESSING: {"cost": 25000, "description": ""}
 }
 
 var station: stationBodyAPI

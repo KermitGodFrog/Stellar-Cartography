@@ -945,16 +945,25 @@ func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 	match upgrade_idx:
 		playerAPI.UPGRADE_ID.DRAG_DRIVES:
 			world.player.speed += 1
+			world.player.scanner_profile += 8.75
+		playerAPI.UPGRADE_ID.ENHANCED_SCANNERS:
+			world.player.scanner_power += 12.5
+		playerAPI.UPGRADE_ID.STEALTH_COMPOSITES:
+			world.player.scanner_profile -= 6.25
 	pass
 
 func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 	var lock = world.player.lockUpgrade(upgrade_idx)
 	_on_upgrade_state_change(lock, false)
 	#value change upgrade changes:
-	
 	match upgrade_idx:
 		playerAPI.UPGRADE_ID.DRAG_DRIVES:
 			world.player.speed -= 1
+			world.player.scanner_profile -= 8.75
+		playerAPI.UPGRADE_ID.ENHANCED_SCANNERS:
+			world.player.scanner_power -= 12.5
+		playerAPI.UPGRADE_ID.STEALTH_COMPOSITES:
+			world.player.scanner_profile += 6.25
 	pass
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
