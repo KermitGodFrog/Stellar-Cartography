@@ -234,7 +234,7 @@ func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_plane
 	generateRandomScreenJunk()
 	pass
 
-func createAuxiliaryCivilized() -> void:
+func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = []) -> void:
 	match special_system_classification:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
 			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
@@ -371,7 +371,7 @@ func createAuxiliaryCivilized() -> void:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE, _:
 			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
 			generateWormholes()
-			generateRandomWeightedStations()
+			generateRandomWeightedStations(_unlocked_upgrades)
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
 			
@@ -736,7 +736,7 @@ func generateWormholes(): #uses variables post_gen_location_candidates, destinat
 				w.disabled = true
 	pass
 
-func generateRandomWeightedStations():
+func generateRandomWeightedStations(unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = []):
 	randomize()
 	for station in global_data.get_randi(1, 3):
 		var location = post_gen_location_candidates.pick_random()
@@ -750,14 +750,20 @@ func generateRandomWeightedStations():
 		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
 		var percentage_markup = clampi(roundi(randfn(100.0, 15.0)), 25, 200)
 		
-		var repair_price_multiplier = 1.0
+		var repair_price_multiplier: float = 1.0
 		
 		var num_upgrades: int = clampi(roundi(randfn(3, 1)), 1, 6)
-		var _excluded_upgrades: Array[playerAPI.UPGRADE_ID] = []
-		for iu in playerAPI.UPGRADE_ID.size() - num_upgrades:
-			var upgrade = playerAPI.UPGRADE_ID.values().pick_random()
-			if not _excluded_upgrades.has(upgrade):
-				_excluded_upgrades.append(upgrade)
+		var available_upgrades: Array[playerAPI.UPGRADE_ID] = []
+		#firstly, 
+		
+		
+		
+		
+		#var _excluded_upgrades: Array[playerAPI.UPGRADE_ID] = []
+		#for iu in playerAPI.UPGRADE_ID.size() - num_upgrades:
+		#	var upgrade = playerAPI.UPGRADE_ID.values().pick_random()
+		#	if not _excluded_upgrades.has(upgrade):
+		#		_excluded_upgrades.append(upgrade)
 		
 		var new_station = addOrbitBody(
 			stationBodyAPI.new(),
@@ -768,7 +774,7 @@ func generateRandomWeightedStations():
 			orbit_distance,
 			orbit_angle_change,
 			radius,
-			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup, "repair_price_multiplier": repair_price_multiplier, "excluded_upgrades": _excluded_upgrades, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
+			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup, "repair_price_multiplier": repair_price_multiplier, "available_upgrades": available_upgrades, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
 			{}
 		)
 		

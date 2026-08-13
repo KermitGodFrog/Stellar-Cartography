@@ -661,7 +661,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
 	if world.player.get_jumps_remaining() == 0:
 		world.player.resetJumpsRemaining()
-		destination.createAuxiliaryCivilized()
+		destination.createAuxiliaryCivilized(world.player.get_unlocked_upgrades())
 	else:
 		destination.createAuxiliaryUnexplored(world.player.speed)
 	

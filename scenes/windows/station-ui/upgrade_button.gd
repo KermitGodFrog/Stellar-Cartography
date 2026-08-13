@@ -1,27 +1,44 @@
-extends Button
+extends "res://scenes/system-map/custom_tooltip_button.gd"
 #needs to be in group 'FOLLOW_UPGRADE_STATE'
 
 var _refund_upgrade_price_multiplier: float = 0.0
 
-@export var upgrade: playerAPI.UPGRADE_ID
-@export var cost: int
-@export_multiline var description: String
-@export var unlocked: bool = false
+var upgrade: playerAPI.UPGRADE_ID
+var cost: int
+var description: String
+var unlocked: bool = false
 
 func _ready():
-	set_text("%s: %.fn" % [get_upgrade_name(), cost])
+	set_text("%s: %.fn" % [get_upgrade_name(upgrade), cost])
+	tooltip_title = get_upgrade_name(upgrade)
+	
+	var incomp_text: String = String()
+	var req_text: String = String()
+	
+	for u in playerAPI.upgrade_incompatibilities.get(upgrade, []):
+		incomp_text += "* %s\n" % get_upgrade_name(u)
+	for u in playerAPI.upgrade_requirements.get(upgrade, []):
+		req_text += "* %s\n" % get_upgrade_name(u)
+	
+	if incomp_text.length() > 0 or req_text.length() > 0:
+		tooltip_text = description + "\n\n[color=yellow][table=2] \
+		[cell]Incompatible w/:[/cell][cell]Requires:[/cell] \
+		[cell]%s[/cell][cell]%s[/cell][/table][/color]" % [incomp_text, req_text]
+	else:
+		tooltip_text = description
+	
 	connect("mouse_entered", _on_mouse_entered)
 	connect("mouse_exited", _on_mouse_exited)
 	pass
 
 func _on_mouse_entered() -> void:
 	if unlocked:
-		set_text("%s: SELL %.fn" % [get_upgrade_name(), cost * _refund_upgrade_price_multiplier]) #assumes sell_module_price_multiplier is 0.25 - replicate real value from station_ui please
+		set_text("%s: SELL %.fn" % [get_upgrade_name(upgrade), cost * _refund_upgrade_price_multiplier]) #assumes sell_module_price_multiplier is 0.25 - replicate real value from station_ui please
 	pass
 
 func _on_mouse_exited() -> void:
 	if unlocked:
-		set_text("%s: UNLOCKED" % get_upgrade_name())
+		set_text("%s: UNLOCKED" % get_upgrade_name(upgrade))
 	pass
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
@@ -29,10 +46,10 @@ func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
 		unlocked = state
 		match state:
 			true:
-				set_text("%s: UNLOCKED" % get_upgrade_name())
+				set_text("%s: UNLOCKED" % get_upgrade_name(upgrade))
 			false:
-				set_text("%s: %.fn" % [get_upgrade_name(), cost])
+				set_text("%s: %.fn" % [get_upgrade_name(upgrade), cost])
 	pass
 
-func get_upgrade_name() -> String:
-	return playerAPI.UPGRADE_ID.find_key(upgrade).to_upper().replace("_", " ")
+func get_upgrade_name(u: playerAPI.UPGRADE_ID) -> String:
+	return playerAPI.UPGRADE_ID.find_key(u).to_upper().replace("_", " ")

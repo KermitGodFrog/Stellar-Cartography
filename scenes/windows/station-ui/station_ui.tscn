@@ -39,7 +39,6 @@ title = "Station Access"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 500)
 visible = false
-always_on_top = true
 theme = ExtResource("1_hdpq4")
 
 [node name="station_control" type="Control" parent="."]
@@ -185,15 +184,14 @@ layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="description_label" type="Label" parent="station_control/upgrade_container/description_scroll"]
+[node name="description_label" type="RichTextLabel" parent="station_control/upgrade_container/description_scroll"]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_du8uj")
+bbcode_enabled = true
 text = "(HOVER UPGRADE TO VIEW DESCRIPTION)"
-autowrap_mode = 3
 
 [node name="notes_flow" type="HFlowContainer" parent="station_control/upgrade_container"]
 custom_minimum_size = Vector2(100, 40)
