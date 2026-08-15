@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dtbagvxj5to3"]
+[gd_scene load_steps=21 format=3 uid="uid://dtbagvxj5to3"]
 
 [ext_resource type="Script" uid="uid://dyslold788w2p" path="res://scenes/windows/station-ui/station_ui.gd" id="1_8gqs2"]
 [ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://theme-gen/window_theme.tres" id="1_hdpq4"]
@@ -23,6 +23,17 @@ bg_color = Color(0.23529412, 0.5764706, 0.44313726, 0.54901963)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qstg3"]
 bg_color = Color(0.23529412, 0.43137255, 0.44313726, 0.54901963)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kw6tn"]
+bg_color = Color(0.11774104, 0.11774104, 0.11774104, 0.5)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4y0sb"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_du8uj"]
 bg_color = Color(0.6, 0.6, 0.6, 0.54902)
 
@@ -38,7 +49,6 @@ oversampling_override = 1.0
 title = "Station Access"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 500)
-visible = false
 theme = ExtResource("1_hdpq4")
 
 [node name="station_control" type="Control" parent="."]
@@ -73,7 +83,7 @@ own_world_3d = true
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(1600, 900)
-render_target_update_mode = 0
+render_target_update_mode = 4
 
 [node name="station_ui_background" parent="station_control/background_center/background_container/background_viewport" instance=ExtResource("9_c1dhy")]
 
@@ -105,7 +115,7 @@ text = "BALANCE"
 
 [node name="upgrade_container" type="VBoxContainer" parent="station_control"]
 clip_contents = true
-custom_minimum_size = Vector2(330, 200)
+custom_minimum_size = Vector2(340, 200)
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -162,6 +172,17 @@ theme_override_constants/margin_bottom = 4
 [node name="AVAILABLE_UPGRADES" type="VBoxContainer" parent="station_control/upgrade_container/available_upgrades_container/title_available_upgrades_scroll/margin"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="how_to_label" type="Label" parent="station_control/upgrade_container"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.80363095, 0.80363095, 0.80363095, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_kw6tn")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_4y0sb")
+text = "Hover over upgrades to view info"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="SPL_disclaimer_label" type="Label" parent="station_control/upgrade_container"]
 layout_mode = 2
