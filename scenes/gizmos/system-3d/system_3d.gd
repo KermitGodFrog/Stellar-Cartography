@@ -38,6 +38,20 @@ var label_locked_body_identifier: int
 var system_scalar: float = 10.0
 var body_detection_range: int = 1000
 var target_fov: float = 75
+var min_FOV: int = 10: #playerAPI scopes_min_FOV
+	set(value):
+		min_FOV = value
+		control.min_FOV = min_FOV
+		if target_fov < min_FOV:
+			target_fov = min_FOV
+var max_FOV: int = 75: #playerAPI scopes_max_FOV
+	set(value):
+		max_FOV = value
+		control.max_FOV = max_FOV
+		if target_fov > max_FOV:
+			target_fov = max_FOV
+
+
 var scope_mode: playerAPI.SCOPE_MODES = playerAPI.SCOPE_MODES.VIS:
 	set(value):
 		scope_mode = value
@@ -533,6 +547,7 @@ func _exit_tree() -> void: #thread stuff
 		if tex_gen_thread.is_started():
 			tex_gen_thread.wait_to_finish()
 	pass
+
 
 
 

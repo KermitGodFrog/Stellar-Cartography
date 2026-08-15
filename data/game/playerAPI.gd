@@ -63,7 +63,7 @@ enum STORYLINES {THE_DETECTIVE, THE_CONGLOMERATE}
 		else: return morale
 #@export_storage var mutiny_backing: int = 0
 
-enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES, SCAN_PREDICTION, GAS_LAYER_SURVEYOR, DRAG_DRIVES, ENVOY_PROGRAM, IMPROVED_MAGNIFICATION, ENHANCED_SCANNERS, STEALTH_COMPOSITES, BACKGROUND_PROCESSING, REFINED_FUEL_FLOW} # FASTER_PROCESSING, PRECISION_PROCESSING
+enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES, SCAN_PREDICTION, GAS_LAYER_SURVEYOR, DRAG_DRIVES, ENVOY_PROGRAM, IMPROVED_MAGNIFICATION, ENHANCED_SCANNERS, STEALTH_COMPOSITES, BACKGROUND_PROCESSING, REFINED_FUEL_FLOW, HEAT_SINK, OPTIMIZED_LIDAR} # FASTER_PROCESSING, PRECISION_PROCESSING
 @export var unlocked_upgrades: Array[UPGRADE_ID] = []
 const SPL_upgrade_IDs: PackedInt32Array = [UPGRADE_ID.AUDIO_VISUALIZER, UPGRADE_ID.LONG_RANGE_SCOPES, UPGRADE_ID.GAS_LAYER_SURVEYOR]
 var current_SPL_upgrades: int = 0:
@@ -78,11 +78,13 @@ const upgrade_incompatibilities: Dictionary = {
 #	UPGRADE_ID.REFINED_FUEL_FLOW: [UPGRADE_ID.DRAG_DRIVES],
 #	UPGRADE_ID.FASTER_PROCESSING: [UPGRADE_ID.PRECISION_PROCESSING],
 #	UPGRADE_ID.PRECISION_PROCESSING: [UPGRADE_ID.FASTER_PROCESSING]
+	UPGRADE_ID.HEAT_SINK: [UPGRADE_ID.ENHANCED_SCANNERS]
 }
 const upgrade_requirements: Dictionary = {
 #	UPGRADE_ID.FASTER_PROCESSING: [UPGRADE_ID.BACKGROUND_PROCESSING],
 #	UPGRADE_ID.PRECISION_PROCESSING: [UPGRADE_ID.BACKGROUND_PROCESSING]
-	UPGRADE_ID.REFINED_FUEL_FLOW: [UPGRADE_ID.DRAG_DRIVES]
+	UPGRADE_ID.REFINED_FUEL_FLOW: [UPGRADE_ID.DRAG_DRIVES],
+	UPGRADE_ID.HEAT_SINK: [UPGRADE_ID.STEALTH_COMPOSITES]
 }
 
 @export var saved_audio_profiles: Array[audioProfileHelper] = []
@@ -96,6 +98,9 @@ const upgrade_requirements: Dictionary = {
 @export_storage var survived_mutiny: bool = false #misc
 @export_storage var invulnerability_time: float = 0.0
 @export_storage var action_lock: bool = false #doesnt directly do anything in this class but used by system_map to stop any actions if true
+@export_storage var LIDAR_cooldown: float = 3.0
+@export_storage var scopes_min_FOV: int = 10
+@export_storage var scopes_max_FOV: int = 75
 
 @export var characters: Array[characterAPI] = []
 func get_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> characterAPI:

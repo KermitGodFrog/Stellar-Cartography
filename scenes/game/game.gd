@@ -62,6 +62,9 @@ func _ready():
 		
 		pause_menu.disableSaving() # so savefile cannto be overwriten
 		
+		#system_3d.update_FOV_constraints(world.player.scopes_min_FOV, world.player.scopes_max_FOV)
+		#sonar.update_cooldown(world.player.LIDAR_cooldown)
+		
 		objectives_manager.start_receive_init_type(init_type)
 		
 		await get_tree().create_timer(1.0, true).timeout
@@ -101,6 +104,9 @@ func _ready():
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 		
+		#system_3d.update_FOV_constraints(world.player.scopes_min_FOV, world.player.scopes_max_FOV)
+		#sonar.update_cooldown(world.player.LIDAR_cooldown)
+		
 		objectives_manager.start_receive_init_type(init_type)
 		
 		await get_tree().create_timer(1.0, true).timeout
@@ -128,6 +134,9 @@ func _ready():
 		
 		for upgrade in world.player.unlocked_upgrades:
 			_on_upgrade_state_change(upgrade, true)
+		
+		#system_3d.update_FOV_constraints(world.player.scopes_min_FOV, world.player.scopes_max_FOV)
+		#sonar.update_cooldown(world.player.LIDAR_cooldown)
 		
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
@@ -310,12 +319,17 @@ func _physics_process(delta):
 	system_map.set("player_long_range_scopes_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) != -1))
 	system_map.set("player_action_lock", world.player.action_lock)
 	system_3d.set("player_position", world.player.position)
+	system_3d.set("min_FOV", world.player.scopes_min_FOV)
+	system_3d.set("max_FOV", world.player.scopes_max_FOV)
 	long_range_scopes.set("player_position", world.player.position)
 	barycenter_visualizer.set("_player_position", world.player.position)
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
 	gas_layer_surveyor.set("_discovered_gas_layers_matrix", world.player.discovered_gas_layers)
+	sonar.set("cooldown", world.player.LIDAR_cooldown)
+	
+	
 	
 	audio_handler.enable_music_criteria["audio_visualizer_not_visible"] = !$audio_visualizer_window.is_visible()
 	audio_handler.enable_music_criteria["countdown_processor_not_active"] = !countdown_processor != null
@@ -947,6 +961,8 @@ func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 			playerAPI.UPGRADE_ID.DRAG_DRIVES:
 				world.player.speed += 1
 				world.player.scanner_profile += 8.75
+			playerAPI.UPGRADE_ID.IMPROVED_MAGNIFICATION:
+				world.player.scopes_min_FOV -= 5
 			playerAPI.UPGRADE_ID.ENHANCED_SCANNERS:
 				world.player.scanner_power += 12.5
 			playerAPI.UPGRADE_ID.STEALTH_COMPOSITES:
@@ -954,6 +970,11 @@ func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 			playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW:
 				world.player.speed += 1
 				world.player.scanner_profile += 25.0
+			playerAPI.UPGRADE_ID.HEAT_SINK:
+				world.player.scanner_profile -= 6.25
+				world.player.speed -= 1
+			playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR:
+				world.player.LIDAR_cooldown -= 1
 	pass
 
 func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
@@ -965,6 +986,8 @@ func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 			playerAPI.UPGRADE_ID.DRAG_DRIVES:
 				world.player.speed -= 1
 				world.player.scanner_profile -= 8.75
+			playerAPI.UPGRADE_ID.IMPROVED_MAGNIFICATION:
+				world.player.scopes_min_FOV += 5
 			playerAPI.UPGRADE_ID.ENHANCED_SCANNERS:
 				world.player.scanner_power -= 12.5
 			playerAPI.UPGRADE_ID.STEALTH_COMPOSITES:
@@ -972,6 +995,11 @@ func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 			playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW:
 				world.player.speed -= 1
 				world.player.scanner_profile -= 25.0
+			playerAPI.UPGRADE_ID.HEAT_SINK:
+				world.player.scanner_profile += 6.25
+				world.player.speed += 1
+			playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR:
+				world.player.LIDAR_cooldown += 1
 	pass
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
