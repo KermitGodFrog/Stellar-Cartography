@@ -77,6 +77,7 @@ var player_action_lock: bool = false
 @onready var map_overlay = $camera/canvas/map_overlay
 @onready var data_value_increase_label = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/data_value_increase_label
 @onready var scan_prediction_upgrade = $scan_prediction_upgrade
+@onready var bg_processing_upgrade = $bg_processing_upgrade
 @onready var countdown_overlay = $camera/canvas/countdown_overlay
 @onready var current_action_label = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/current_action_label
 @onready var status_modifier_organizer = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel1/secondary_margin/status_modifier_organizer
@@ -194,6 +195,8 @@ func _physics_process(delta):
 	
 	scan_prediction_upgrade._player_position_matrix = player_position_matrix
 	scan_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME
+	
+	bg_processing_upgrade._system = system
 	
 	current_action_label._player_position_matrix = player_position_matrix
 	

@@ -42,6 +42,7 @@ func _ready():
 		new_player.resetJumpsRemaining()
 		
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.SCAN_PREDICTION)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING)
 		
 		connect_all_player_signals(new_player)
 		
@@ -90,6 +91,7 @@ func _ready():
 		new_player.resetJumpsRemaining()
 		
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.SCAN_PREDICTION)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING)
 		
 		connect_all_player_signals(new_player)
 		
@@ -328,8 +330,6 @@ func _physics_process(delta):
 	dialogue_manager.set("player", world.player)
 	gas_layer_surveyor.set("_discovered_gas_layers_matrix", world.player.discovered_gas_layers)
 	sonar.set("cooldown", world.player.LIDAR_cooldown)
-	
-	
 	
 	audio_handler.enable_music_criteria["audio_visualizer_not_visible"] = !$audio_visualizer_window.is_visible()
 	audio_handler.enable_music_criteria["countdown_processor_not_active"] = !countdown_processor != null
