@@ -268,6 +268,9 @@ func createAuxiliaryCivilized() -> void:
 				var w = wormholes[wi]
 				w.destination_system = systems[wi]
 				w.metadata["destination_star_type"] = w.destination_system.get_first_star().metadata.get("star_type")
+				w.destination_system.special_system_classification = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE
+				w.destination_system.system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
+				w.destination_system.system_scenario_classification = game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.NONE
 			
 			for belt in get_bodies_of_body_type(BODY_TYPES.ASTEROID_BELT):
 				belt.metadata["belt_width"] = global_data.get_randf(20.0, 175.0)
