@@ -436,6 +436,8 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add("space_anomaly_available", following_body.metadata.get("space_anomaly_available", true))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 		starSystemAPI.BODY_TYPES.SPACE_ENTITY:
+			new_query.add("migration_analysis_available", following_body.metadata.get("migration_analysis_available", true))
+			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 			new_query.add_tree_access("space_entity_type", str(game_data.ENTITY_CLASSIFICATIONS.find_key(following_body.entity_classification)))
 		starSystemAPI.BODY_TYPES.STAR:
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
@@ -506,6 +508,13 @@ func _on_player_following_body(following_body: bodyAPI):
 					following_body.metadata["space_anomaly_available"] = false
 					var temp_station := starSystemAPI.get_temporary_station(following_body)
 					dock_with_station(temp_station)
+				_:
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+		starSystemAPI.BODY_TYPES.SPACE_ENTITY:
+			match RETURN_STATE:
+				"HARD_LEAVE":
+					following_body.metadata["migration_analysis_available"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 		starSystemAPI.BODY_TYPES.SHIP:

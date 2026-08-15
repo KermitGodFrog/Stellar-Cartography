@@ -849,7 +849,7 @@ func generateRandomWeightedEntities():
 			orbit_distance,
 			orbit_angle_change,
 			radius,
-			{"entity_classification": entity_classification, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
+			{"entity_classification": entity_classification, "migration_analysis_available": true, "seed": randi(), "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
 			{}
 		)
 		
