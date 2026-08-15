@@ -19,8 +19,8 @@ custom_minimum_size = Vector2(100, 48)
 offset_right = 100.0
 offset_bottom = 45.0
 size_flags_horizontal = 4
-tooltip_text = "[img]res://graphics/misc/mouse/mouse_left.png[/img] Switch Column
-[img]res://graphics/misc/mouse/mouse_right.png[/img] View in Encyclopedia"
+tooltip_text = "[img]res://graphics/shared/mouse/mouse_left.png[/img] Switch Column
+[img]res://graphics/shared/mouse/mouse_right.png[/img] View in Encyclopedia"
 mouse_default_cursor_shape = 2
 theme = ExtResource("1_80jb3")
 texture_normal = SubResource("GradientTexture2D_hp5ml")

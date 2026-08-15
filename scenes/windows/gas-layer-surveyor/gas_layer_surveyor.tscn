@@ -411,6 +411,7 @@ modulate = Color(0.9063318, 0.9063318, 0.9063318, 1)
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 10
+mouse_default_cursor_shape = 2
 theme = ExtResource("3_lxufc")
 theme_type_variation = &"ButtonDull"
 theme_override_styles/focus = SubResource("StyleBoxEmpty_3ntqu")
