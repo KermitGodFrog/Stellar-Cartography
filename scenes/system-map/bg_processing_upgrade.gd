@@ -31,14 +31,14 @@ func _physics_process(delta: float) -> void:
 		if ping.is_expired():
 			PINGS.erase(ping)
 	
-	queue_redraw()
+	if draw_pings:
+		queue_redraw()
 	pass
 
 func _draw() -> void:
-	if draw_pings:
-		for ping in PINGS:
-			ping.updateDisplay()
-			draw_circle(ping.position, ping_radius * ping.current_radius, ping.current_color, false, ping_outline_size)
+	for ping in PINGS:
+		ping.updateDisplay()
+		draw_circle(ping.position, ping_radius * ping.current_radius, ping.current_color, false, ping_outline_size)
 	pass
 
 func _on_cooldown_timeout() -> void:
