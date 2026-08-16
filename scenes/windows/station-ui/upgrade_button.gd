@@ -6,12 +6,14 @@ var _refund_upgrade_price_multiplier: float = 0.0
 var upgrade: playerAPI.UPGRADE_ID
 var cost: int
 var description: String
+var effect: String
 var unlocked: bool = false
 
 func _ready():
 	set_text("%s: %.fn" % [get_upgrade_name(upgrade), cost])
 	tooltip_title = get_upgrade_name(upgrade)
 	
+	var combined_tooltip: String = String()
 	var incomp_text: String = String()
 	var req_text: String = String()
 	
@@ -20,12 +22,14 @@ func _ready():
 	for u in playerAPI.upgrade_requirements.get(upgrade, []):
 		req_text += "* %s\n" % get_upgrade_name(u)
 	
+	combined_tooltip += "[i]%s[/i]" % description
+	combined_tooltip += "\n\n[color=lightyellow]Effect:[/color]\n%s" % effect
 	if incomp_text.length() > 0 or req_text.length() > 0:
-		tooltip_text = description + "\n\n[color=yellow][table=2] \
+		combined_tooltip += "\n\n[color=yellow][table=2] \
 		[cell]Incompatible w/:[/cell][cell]Requires:[/cell] \
 		[cell]%s[/cell][cell]%s[/cell][/table][/color]" % [incomp_text, req_text]
-	else:
-		tooltip_text = description
+	
+	tooltip_text = combined_tooltip
 	
 	connect("mouse_entered", _on_mouse_entered)
 	connect("mouse_exited", _on_mouse_exited)
