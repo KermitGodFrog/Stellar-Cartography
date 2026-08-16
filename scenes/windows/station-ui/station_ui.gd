@@ -29,7 +29,7 @@ const upgrade_data = {
 	playerAPI.UPGRADE_ID.PING_PREDICTION: {"cost": 7500, "description": "Ping prediction algorithms. Allow LIDAR ping arcs to be visible on the SYSTEM MAP before the 'PING' button is pressed."},
 	playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR: {"cost": 35000, "description": "[color=THISTLE](SPECIAL)[/color] Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."},
 	playerAPI.UPGRADE_ID.DRAG_DRIVES: {"cost": 15000, "description": "Experimental changes to the engine nozzle and fuel injection system.\n[color=lightblue][ +1 speed ][/color]\n[color=tomato][ +8.75 scanner profile ][/color]"},
-	playerAPI.UPGRADE_ID.ENVOY_PROGRAM: {"cost": 9000, "description": "(UNFINISHED)"},
+	#playerAPI.UPGRADE_ID.ENVOY_PROGRAM: {"cost": 9000, "description": "(UNFINISHED)"},
 	playerAPI.UPGRADE_ID.IMPROVED_MAGNIFICATION: {"cost": 15000, "description": "Improvements to the optical tube to allow more light to enter scopes. Increases the range wherein bodies can be discovered by roughly 2x (when fully zoomed in).\n[color=lightblue][ -5 minimum scopes FOV ][/color]"},
 	playerAPI.UPGRADE_ID.ENHANCED_SCANNERS: {"cost": 15000, "description": "Addition of several high gain antennas to the passive scanner array.\n[color=lightblue][ +12.5 scanner power ][/color]"},
 	playerAPI.UPGRADE_ID.STEALTH_COMPOSITES: {"cost": 15000, "description": "An outer hull coating designed to absorb electromagnetic radiation.\n[color=lightblue][ -6.25 scanner profile ][/color]"},
