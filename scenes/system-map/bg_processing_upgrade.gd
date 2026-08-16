@@ -2,11 +2,11 @@ extends Node2D
 
 @onready var cooldown = $cooldown
 
-var ping_cooldown: float = 60.0:
+var ping_cooldown: float = 60.0: #playerAPI bg_processing_cooldown
 	set(value):
 		ping_cooldown = value
 		cooldown.set_wait_time(ping_cooldown)
-var ping_radius: float = 125.0
+var ping_radius: float = 125.0 #playerAPI bg_processing_radius
 var draw_pings: bool = false
 const ping_outline_size: float = 10.0
 

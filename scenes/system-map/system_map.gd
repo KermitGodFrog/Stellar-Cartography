@@ -62,6 +62,10 @@ var player_gas_layer_surveyor_unlocked: bool = false
 var player_long_range_scopes_unlocked: bool = false
 var player_action_lock: bool = false
 
+#sent by game.gd _on_upgrade_state_change
+var bg_processing_cooldown: float
+var bg_processing_radius: float
+
 @onready var camera = $camera
 @onready var canvas = $camera/canvas
 @onready var system_list = $camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/OVERVIEW/syslist_contacts_split/system_list
@@ -148,7 +152,7 @@ var scanner_power_time: float = 0.0
 
 #system list
 var collapsed_cache: Dictionary = {}
-var selected_cache: Dictionary = {} #CURRENTLY DOES NOTHING BECAUSE I CANT FIGURE OUT HOW TO MAKE IT WORK!
+var selected_cache: Dictionary = {}
 var closest_body_id: int
 
 #asteroid belt slowdown
@@ -197,6 +201,8 @@ func _physics_process(delta):
 	ping_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME
 	
 	bg_processing_upgrade._system = system
+	bg_processing_upgrade.ping_cooldown = bg_processing_cooldown
+	bg_processing_upgrade.ping_radius = bg_processing_radius
 	
 	current_action_label._player_position_matrix = player_position_matrix
 	

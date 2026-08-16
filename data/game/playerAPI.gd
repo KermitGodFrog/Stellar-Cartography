@@ -103,6 +103,8 @@ const upgrade_requirements: Dictionary = {
 @export_storage var LIDAR_cooldown: float = 3.0
 @export_storage var scopes_min_FOV: int = 10
 @export_storage var scopes_max_FOV: int = 75
+@export_storage var bg_processing_cooldown: float = 60.0
+@export_storage var bg_processing_radius: float = 125.0
 
 @export var characters: Array[characterAPI] = []
 func get_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> characterAPI:

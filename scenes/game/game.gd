@@ -63,8 +63,7 @@ func _ready():
 		
 		pause_menu.disableSaving() # so savefile cannto be overwriten
 		
-		#system_3d.update_FOV_constraints(world.player.scopes_min_FOV, world.player.scopes_max_FOV)
-		#sonar.update_cooldown(world.player.LIDAR_cooldown)
+		_on_update_player_v_change_upgrade_variables()
 		
 		objectives_manager.start_receive_init_type(init_type)
 		
@@ -106,8 +105,7 @@ func _ready():
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 		
-		#system_3d.update_FOV_constraints(world.player.scopes_min_FOV, world.player.scopes_max_FOV)
-		#sonar.update_cooldown(world.player.LIDAR_cooldown)
+		_on_update_player_v_change_upgrade_variables()
 		
 		objectives_manager.start_receive_init_type(init_type)
 		
@@ -137,8 +135,7 @@ func _ready():
 		for upgrade in world.player.unlocked_upgrades:
 			_on_upgrade_state_change(upgrade, true)
 		
-		#system_3d.update_FOV_constraints(world.player.scopes_min_FOV, world.player.scopes_max_FOV)
-		#sonar.update_cooldown(world.player.LIDAR_cooldown)
+		_on_update_player_v_change_upgrade_variables()
 		
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
@@ -321,15 +318,12 @@ func _physics_process(delta):
 	system_map.set("player_long_range_scopes_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) != -1))
 	system_map.set("player_action_lock", world.player.action_lock)
 	system_3d.set("player_position", world.player.position)
-	system_3d.set("min_FOV", world.player.scopes_min_FOV)
-	system_3d.set("max_FOV", world.player.scopes_max_FOV)
 	long_range_scopes.set("player_position", world.player.position)
 	barycenter_visualizer.set("_player_position", world.player.position)
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
 	gas_layer_surveyor.set("_discovered_gas_layers_matrix", world.player.discovered_gas_layers)
-	sonar.set("cooldown", world.player.LIDAR_cooldown)
 	
 	audio_handler.enable_music_criteria["audio_visualizer_not_visible"] = !$audio_visualizer_window.is_visible()
 	audio_handler.enable_music_criteria["countdown_processor_not_active"] = !countdown_processor != null
@@ -964,7 +958,6 @@ func _on_refund_upgrade(upgrade_idx: playerAPI.UPGRADE_ID, refund: int) -> void:
 func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 	var changed: bool = world.player.unlockUpgrade(upgrade_idx)
 	if changed:
-		_on_upgrade_state_change(upgrade_idx, true)
 		#value change upgrade changes:
 		match upgrade_idx:
 			playerAPI.UPGRADE_ID.DRAG_DRIVES:
@@ -984,12 +977,13 @@ func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 				world.player.speed -= 1
 			playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR:
 				world.player.LIDAR_cooldown -= 1
+		
+		_on_upgrade_state_change(upgrade_idx, true)
 	pass
 
 func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 	var changed: bool = world.player.lockUpgrade(upgrade_idx)
 	if changed:
-		_on_upgrade_state_change(upgrade_idx, false)
 		#value change upgrade changes:
 		match upgrade_idx:
 			playerAPI.UPGRADE_ID.DRAG_DRIVES:
@@ -1009,13 +1003,26 @@ func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 				world.player.speed += 1
 			playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR:
 				world.player.LIDAR_cooldown += 1
+		
+		_on_upgrade_state_change(upgrade_idx, false)
 	pass
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
-	print("GAME: UPGRADE STATE CHANGED: ", upgrade_idx, " ", state)
+	print_debug("GAME: UPGRADE STATE CHANGED: ", upgrade_idx, " ", state)
 	get_tree().call_group("FOLLOW_UPGRADE_STATE", "_on_upgrade_state_change", upgrade_idx, state)
 	if state == true and pause_mode_handler.pause_mode == game_data.PAUSE_MODES.STATION_UI:
 		_on_async_upgrade_tutorial(upgrade_idx)
+	
+	_on_update_player_v_change_upgrade_variables()
+	pass
+
+func _on_update_player_v_change_upgrade_variables() -> void:
+	#updating playerAPI variables (THAT ARE ONLY USED FOR VALUE CHANGE UPGRADES) throughout the game 
+	system_3d.set("min_FOV", world.player.scopes_min_FOV)
+	system_3d.set("max_FOV", world.player.scopes_max_FOV)
+	sonar.set("cooldown", world.player.LIDAR_cooldown)
+	system_map.set("bg_processing_cooldown", world.player.bg_processing_cooldown)
+	system_map.set("bg_processing_radius", world.player.bg_processing_radius)
 	pass
 
 func _on_remove_saved_audio_profile(helper: audioProfileHelper):
