@@ -8,8 +8,3 @@ class_name stationBodyAPI
 @export var module_store_disabled: bool = false # <- shouldnt have 'is' in variable name
 
 @export var available_upgrades: Array[playerAPI.UPGRADE_ID] = []
-
-func exclude_upgrade(upgrade_idx: playerAPI.UPGRADE_ID) -> void: #safe way to quick remove upgrades if they exist ... starSystemAPI cant use it because it has to do all calculations before the body is made and thus this method is accessible :(
-	if available_upgrades.has(upgrade_idx):
-		available_upgrades.erase(upgrade_idx)
-	pass

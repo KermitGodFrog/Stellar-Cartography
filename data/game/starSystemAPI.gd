@@ -1322,11 +1322,17 @@ static func get_temporary_station(hook: bodyAPI) -> stationBodyAPI: # for anomal
 	var random = RandomNumberGenerator.new()
 	random.set_seed(hook.metadata.get("seed", randi()))
 	temp_station.sell_percentage_of_market_price = clampi(roundi(random.randfn(50.0, 10.0)), 15, 100)
-	for iu in random.randi_range(0, 4):
+	var num_upgrades: int = clampi(roundi(random.randfn(2, 1)), 1, 6)
+	var _available_upgrades: Array[playerAPI.UPGRADE_ID] = []
+	var no_req_upgrades: Array[playerAPI.UPGRADE_ID] = playerAPI.get_all_upgrades_with_no_requirements()
+	for n in num_upgrades:
 		var internal_random = RandomNumberGenerator.new()
-		internal_random.set_seed(hash(random.get_seed() - iu))
-		var upgrade = playerAPI.UPGRADE_ID.values()[internal_random.randi_range(0, playerAPI.UPGRADE_ID.values().size() - 1)]
-		temp_station.exclude_upgrade(upgrade)
+		internal_random.set_seed(hash(random.get_seed() - n))
+		var chosen_upgrade: playerAPI.UPGRADE_ID = no_req_upgrades[internal_random.randi_range(0, no_req_upgrades.size() - 1)]
+		if not _available_upgrades.has(chosen_upgrade):
+			_available_upgrades.append(chosen_upgrade)
+			no_req_upgrades.erase(chosen_upgrade)
+	temp_station.available_upgrades = _available_upgrades
 	return temp_station
 
 func remove_recursive_bodies_with_hook_identifier(id: int) -> void:
