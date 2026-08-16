@@ -849,8 +849,8 @@ func generateRandomWeightedEntities():
 			orbit_distance,
 			orbit_angle_change,
 			radius,
-			{"entity_classification": entity_classification, "migration_analysis_available": true, "seed": randi(), "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
-			{}
+			{"entity_classification": entity_classification, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
+			{"migration_analysis_available": true, "seed": randi(),}
 		)
 		
 		get_body_from_identifier(new_entity).rotation = deg_to_rad(global_data.get_randf(0,360))
@@ -1138,6 +1138,12 @@ func addBody(body: bodyAPI, body_type: BODY_TYPES, id: int, d_name: String, vari
 	identifier_count += 1
 	body.set_display_name(d_name)
 	for variable in variables:
+		if not variable in body:
+			push_error("ERROR: variable '%s' does not exist within %s (DISPLAY NAME: '%s', TYPE: '%s')" % [variable, body, d_name, BODY_TYPES.find_key(body_type)])
+			continue
+		elif typeof(variables.get(variable)) != typeof(body.get(variable)) and (typeof(body.get(variable)) != TYPE_NIL): #may my beautiful simple function rest in peace because this line of code killed it
+			push_warning("WARNING: typeof variable '%s' [%.f] does not match the typeof the corresponding variable within %s [%.f] (DISPLAY NAME: '%s', TYPE: '%s')" % [variable, typeof(variables.get(variable)), body, typeof(body.get(variable)), d_name, BODY_TYPES.find_key(body_type)])
+			continue
 		body.set(variable, variables.get(variable))
 	body.set("metadata", metadata)
 	body.initialize()

@@ -41,9 +41,11 @@ func set_stunned(value) -> void:
 func get_system() -> starSystemAPI:
 	if system != null:
 		return system
-	else:
-		print_debug("UNIT (%s): USING PLAYER CURRENT STAR SYSTEM AS SYSTEM IS NOT SET" % self)
+	elif player != null:
+		push_warning("WARNING: UNIT %s USING PLAYER CURRENT STAR SYSTEM AS SYSTEM IS NOT SET" % self)
 		return player.current_star_system
+	else:
+		return null
 func set_system(value) -> void:
 	system = value
 	pass
