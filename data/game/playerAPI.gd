@@ -63,7 +63,7 @@ enum STORYLINES {THE_DETECTIVE, THE_CONGLOMERATE}
 		else: return morale
 #@export_storage var mutiny_backing: int = 0
 
-enum UPGRADE_ID {ADVANCED_SCANNING, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES, SCAN_PREDICTION, GAS_LAYER_SURVEYOR}
+enum UPGRADE_ID {ADVANCED_ANALYSIS, AUDIO_VISUALIZER, NANITE_CONTROLLER, LONG_RANGE_SCOPES, PING_PREDICTION, GAS_LAYER_SURVEYOR, DRAG_DRIVES, IMPROVED_MAGNIFICATION, ENHANCED_SCANNERS, STEALTH_COMPOSITES, BACKGROUND_PROCESSING, REFINED_FUEL_FLOW, HEAT_SINK, OPTIMIZED_LIDAR, MIGRATION_ANALYSIS, FASTER_PROCESSING, PRECISION_PROCESSING, CRAM_CELL_SYNTHESIS} #ENVOY_PROGRAM
 @export var unlocked_upgrades: Array[UPGRADE_ID] = []
 const SPL_upgrade_IDs: PackedInt32Array = [UPGRADE_ID.AUDIO_VISUALIZER, UPGRADE_ID.LONG_RANGE_SCOPES, UPGRADE_ID.GAS_LAYER_SURVEYOR]
 var current_SPL_upgrades: int = 0:
@@ -74,6 +74,20 @@ var current_SPL_upgrades: int = 0:
 				current_SPL_upgrades += 1
 		return current_SPL_upgrades
 @export var max_SPL_upgrades: int = 2
+const upgrade_incompatibilities: Dictionary = {
+	UPGRADE_ID.HEAT_SINK: [UPGRADE_ID.ENHANCED_SCANNERS],
+	UPGRADE_ID.OPTIMIZED_LIDAR: [UPGRADE_ID.MIGRATION_ANALYSIS],
+	UPGRADE_ID.MIGRATION_ANALYSIS: [UPGRADE_ID.LONG_RANGE_SCOPES],
+	UPGRADE_ID.FASTER_PROCESSING: [UPGRADE_ID.PRECISION_PROCESSING],
+	UPGRADE_ID.PRECISION_PROCESSING: [UPGRADE_ID.FASTER_PROCESSING],
+	UPGRADE_ID.CRAM_CELL_SYNTHESIS: [UPGRADE_ID.REFINED_FUEL_FLOW]
+}
+const upgrade_requirements: Dictionary = {
+	UPGRADE_ID.REFINED_FUEL_FLOW: [UPGRADE_ID.DRAG_DRIVES],
+	UPGRADE_ID.HEAT_SINK: [UPGRADE_ID.STEALTH_COMPOSITES],
+	UPGRADE_ID.FASTER_PROCESSING: [UPGRADE_ID.BACKGROUND_PROCESSING],
+	UPGRADE_ID.PRECISION_PROCESSING: [UPGRADE_ID.BACKGROUND_PROCESSING]
+}
 
 @export var saved_audio_profiles: Array[audioProfileHelper] = []
 @export var max_saved_audio_profiles: int = 10
@@ -86,6 +100,11 @@ var current_SPL_upgrades: int = 0:
 @export_storage var survived_mutiny: bool = false #misc
 @export_storage var invulnerability_time: float = 0.0
 @export_storage var action_lock: bool = false #doesnt directly do anything in this class but used by system_map to stop any actions if true
+@export_storage var LIDAR_cooldown: float = 3.0
+@export_storage var scopes_min_FOV: int = 10
+@export_storage var scopes_max_FOV: int = 75
+@export_storage var bg_processing_cooldown: float = 60.0
+@export_storage var bg_processing_radius: float = 125.0
 
 @export var characters: Array[characterAPI] = []
 func get_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> characterAPI:
@@ -179,38 +198,82 @@ func addJumpsRemaining(amount: int):
 
 
 
-func unlockUpgrade(upgrade_idx: UPGRADE_ID) -> int:
+##Returns false if the upgrade was already unlocked.
+func unlockUpgrade(upgrade_idx: UPGRADE_ID) -> bool:
 	if not unlocked_upgrades.has(upgrade_idx):
 		unlocked_upgrades.append(upgrade_idx)
-		return upgrade_idx
-	return -1
+		return true
+	return false
 
-func lockUpgrade(upgrade_idx: UPGRADE_ID) -> int:
+##Returns false if the upgrade was already locked.
+func lockUpgrade(upgrade_idx: UPGRADE_ID) -> bool:
 	if unlocked_upgrades.has(upgrade_idx):
 		unlocked_upgrades.erase(upgrade_idx)
-		return upgrade_idx
-	return -1
+		return true
+	return false
 
 func get_unlocked_upgrades() -> Array[UPGRADE_ID]:
 	return unlocked_upgrades
 
-func get_upgrade_unlocked_state(upgrade_idx: UPGRADE_ID) -> bool:
+static func get_upgrade_requirements(upgrade_idx: UPGRADE_ID) -> Array:
+	var requirements: Array = upgrade_requirements.get(upgrade_idx, [])
+	return requirements
+
+static func get_upgrade_incompatibilities(upgrade_idx: UPGRADE_ID) -> Array:
+	var incompatibilities: Array = upgrade_incompatibilities.get(upgrade_idx, [])
+	return incompatibilities
+
+static func get_upgrades_with_requirement(requirement: UPGRADE_ID) -> Array[UPGRADE_ID]:
+	var upgrades_w_requirement: Array[UPGRADE_ID] = []
+	for u in upgrade_requirements:
+		if upgrade_requirements.get(u).has(requirement):
+			upgrades_w_requirement.append(u)
+	return upgrades_w_requirement
+
+static func get_upgrades_with_incompatibility(incompatible_upgrade: UPGRADE_ID) -> Array[UPGRADE_ID]:
+	var upgrades_w_incompatibility: Array[UPGRADE_ID] = []
+	for u in upgrade_incompatibilities:
+		if upgrade_incompatibilities.get(u).has(incompatible_upgrade):
+			upgrades_w_incompatibility.append(u)
+	return upgrades_w_incompatibility
+
+func is_upgrade_unlocked(upgrade_idx: UPGRADE_ID) -> bool:
 	if unlocked_upgrades.has(upgrade_idx):
 		return true
 	else:
 		return false
 
 func is_upgrade_unlock_valid(upgrade_idx: UPGRADE_ID) -> bool:
-	var unlocked: bool = get_upgrade_unlocked_state(upgrade_idx) #must be false
+	var unlocked: bool = is_upgrade_unlocked(upgrade_idx) #must be false
 	var SPL_above_max: bool = false #must be false
+	var incompatible: bool = false
+	var requirements_unmet: bool = false
+	
 	if SPL_upgrade_IDs.has(upgrade_idx):
 		if current_SPL_upgrades >= max_SPL_upgrades:
 			SPL_above_max = true
 	
-	if (unlocked == false) and (SPL_above_max == false):
+	for u in get_upgrade_incompatibilities(upgrade_idx):
+		if is_upgrade_unlocked(u) == true:
+			incompatible = true
+			break
+	
+	requirements_unmet = !get_upgrade_requirements(upgrade_idx).all(is_upgrade_unlocked)
+	
+	if (unlocked == false) and (SPL_above_max == false) and (incompatible == false) and (requirements_unmet == false):
 		return true
 	else:
 		return false
+
+static func get_all_upgrades_with_no_requirements() -> Array[UPGRADE_ID]:
+	var no_req_upgrades: Array[UPGRADE_ID] = []
+	for u in UPGRADE_ID.values():
+		if get_upgrade_requirements(u).size() == 0:
+			no_req_upgrades.append(u)
+	return no_req_upgrades
+
+static func is_upgrade_SPL(upgrade_idx: UPGRADE_ID) -> bool:
+	return SPL_upgrade_IDs.has(upgrade_idx)
 
 
 

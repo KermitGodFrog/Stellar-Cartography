@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=70 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
@@ -40,7 +40,7 @@
 [ext_resource type="Texture2D" uid="uid://ckex2ufxqcw22" path="res://graphics/system-map/status-panel/scanner_power_icon.png" id="29_gyk4x"]
 [ext_resource type="Texture2D" uid="uid://mnev4hvv0mub" path="res://graphics/system-map/status-panel/scanner_profile_icon.png" id="30_5qywx"]
 [ext_resource type="Texture2D" uid="uid://cqr6y83p5bh5a" path="res://graphics/system-map/similarity_symbol.png" id="31_da46s"]
-[ext_resource type="Script" uid="uid://xtwaxv24g3hj" path="res://scenes/system-map/scan_prediction_upgrade.gd" id="31_k5t5q"]
+[ext_resource type="Script" uid="uid://xtwaxv24g3hj" path="res://scenes/system-map/ping_prediction_upgrade.gd" id="31_k5t5q"]
 [ext_resource type="Script" uid="uid://bkq2b05nxx8pu" path="res://scenes/system-map/status-panel/proximity_blinker.gd" id="32_wbki1"]
 [ext_resource type="Texture2D" uid="uid://cxco07ala0607" path="res://graphics/system-map/status-panel/blinker_light.png" id="33_dx6jv"]
 [ext_resource type="Texture2D" uid="uid://bdjtfvb35byds" path="res://graphics/system-map/status-panel/blinker_standby.png" id="33_ned7s"]
@@ -54,6 +54,7 @@
 [ext_resource type="BitMap" uid="uid://vsyxkeka6b8c" path="res://graphics/system-map/cog_click_mask.png" id="40_ji0h2"]
 [ext_resource type="AudioStream" uid="uid://oyrc4tfk4fl8" path="res://sound/system-map/alarm.wav" id="47_da46s"]
 [ext_resource type="Shader" uid="uid://bbiw6ixis7u4a" path="res://shader-gen/system-map/nebula.gdshader" id="52_gtym1"]
+[ext_resource type="Script" uid="uid://cpgaxjiulbawr" path="res://scenes/system-map/bg_processing_upgrade.gd" id="54_dsgv3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ciwjv"]
 atlas = ExtResource("3_bft1b")
@@ -1069,7 +1070,14 @@ visible = false
 show_behind_parent = true
 material = SubResource("ShaderMaterial_dsgv3")
 
-[node name="scan_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
+[node name="bg_processing_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
+show_behind_parent = true
+script = ExtResource("54_dsgv3")
+
+[node name="cooldown" type="Timer" parent="system/bg_processing_upgrade"]
+wait_time = 60.0
+
+[node name="ping_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
 show_behind_parent = true
 script = ExtResource("31_k5t5q")
 
@@ -1103,3 +1111,4 @@ bus = &"SFX"
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll/long_range_scopes_button" to="system" method="_on_long_range_scopes_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll/gas_layer_surveyor_button" to="system" method="_on_gas_layer_surveyor_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/settings_button" to="system" method="_on_settings_button_pressed"]
+[connection signal="timeout" from="system/bg_processing_upgrade/cooldown" to="system/bg_processing_upgrade" method="_on_cooldown_timeout"]

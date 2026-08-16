@@ -234,7 +234,7 @@ func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_plane
 	generateRandomScreenJunk()
 	pass
 
-func createAuxiliaryCivilized() -> void:
+func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = []) -> void:
 	match special_system_classification:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
 			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
@@ -374,7 +374,7 @@ func createAuxiliaryCivilized() -> void:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE, _:
 			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
 			generateWormholes()
-			generateRandomWeightedStations()
+			generateRandomWeightedStations(_unlocked_upgrades)
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
 			
@@ -499,7 +499,7 @@ func generateRandomWeightedHookStar():
 				0.0,
 				radius,
 				{"mass": mass, "surface_color": color, "beam_angle_change": beam_angle_change, "beam_width": beam_width},
-				{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25}
+				{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25, "seed": randi()}
 			)
 		_:
 			new_body = addOrbitBody(
@@ -512,7 +512,7 @@ func generateRandomWeightedHookStar():
 				0.0,
 				radius,
 				{"mass": mass, "surface_color": color},
-				{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25}
+				{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25, "seed": randi()}
 			)
 	
 	get_body_from_identifier(new_body).known = true #so you can see stars on system map before exploring
@@ -739,7 +739,7 @@ func generateWormholes(): #uses variables post_gen_location_candidates, destinat
 				w.disabled = true
 	pass
 
-func generateRandomWeightedStations():
+func generateRandomWeightedStations(unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = []):
 	randomize()
 	for station in global_data.get_randi(1, 3):
 		var location = post_gen_location_candidates.pick_random()
@@ -753,13 +753,31 @@ func generateRandomWeightedStations():
 		var station_classification = global_data.weighted_pick(game_data.get_weighted_station_classifications(), "weight")
 		var percentage_markup = clampi(roundi(randfn(100.0, 15.0)), 25, 200)
 		
-		var repair_price_multiplier = 1.0
+		var repair_price_multiplier: float = 1.0
 		
-		var _excluded_upgrades: Array[playerAPI.UPGRADE_ID] = []
-		for iu in global_data.get_randi(0, 3):
-			var upgrade = playerAPI.UPGRADE_ID.values().pick_random()
-			if not _excluded_upgrades.has(upgrade):
-				_excluded_upgrades.append(upgrade)
+		var num_upgrades: int = clampi(roundi(randfn(3, 1)), 1, 6)
+		var available_upgrades: Array[playerAPI.UPGRADE_ID] = []
+		#firstly, force up to 2 upgrades that are already required for other upgrades to be in the list (to promote specialization throughout a run):
+		if num_upgrades >= 2:
+			var upgrades_req_existing: Array[playerAPI.UPGRADE_ID] = []
+			for u in unlocked_upgrades:
+				for uu in playerAPI.get_upgrades_with_requirement(u):
+					if not upgrades_req_existing.has(uu):
+						upgrades_req_existing.append(uu)
+			if upgrades_req_existing.size() > 0:
+				var reduce: int = global_data.get_randi(0, mini(upgrades_req_existing.size(), 2))
+				for iu in reduce:
+					var chosen_upgrade: playerAPI.UPGRADE_ID = upgrades_req_existing.pick_random()
+					available_upgrades.append(chosen_upgrade)
+					upgrades_req_existing.erase(chosen_upgrade)
+					num_upgrades -= 1
+		#then populate the rest of the upgrades with general no-requirement ones!
+		var no_req_upgrades: Array[playerAPI.UPGRADE_ID] = playerAPI.get_all_upgrades_with_no_requirements()
+		for n in num_upgrades:
+			var chosen_upgrade: playerAPI.UPGRADE_ID = no_req_upgrades.pick_random()
+			if not available_upgrades.has(chosen_upgrade):
+				available_upgrades.append(chosen_upgrade)
+				no_req_upgrades.erase(chosen_upgrade)
 		
 		var new_station = addOrbitBody(
 			stationBodyAPI.new(),
@@ -770,7 +788,7 @@ func generateRandomWeightedStations():
 			orbit_distance,
 			orbit_angle_change,
 			radius,
-			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup, "repair_price_multiplier": repair_price_multiplier, "excluded_upgrades": _excluded_upgrades, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
+			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup, "repair_price_multiplier": repair_price_multiplier, "available_upgrades": available_upgrades, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
 			{}
 		)
 		
@@ -835,7 +853,7 @@ func generateRandomWeightedEntities():
 			orbit_angle_change,
 			radius,
 			{"entity_classification": entity_classification, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
-			{}
+			{"seed": randi()}
 		)
 		
 		get_body_from_identifier(new_entity).rotation = deg_to_rad(global_data.get_randf(0,360))
@@ -1123,6 +1141,12 @@ func addBody(body: bodyAPI, body_type: BODY_TYPES, id: int, d_name: String, vari
 	identifier_count += 1
 	body.set_display_name(d_name)
 	for variable in variables:
+		if not variable in body:
+			push_error("ERROR: variable '%s' does not exist within %s (DISPLAY NAME: '%s', TYPE: '%s')" % [variable, body, d_name, BODY_TYPES.find_key(body_type)])
+			continue
+		elif typeof(variables.get(variable)) != typeof(body.get(variable)) and (typeof(body.get(variable)) != TYPE_NIL): #may my beautiful simple function rest in peace because this line of code killed it
+			push_warning("WARNING: typeof variable '%s' [%.f] does not match the typeof the corresponding variable within %s [%.f] (DISPLAY NAME: '%s', TYPE: '%s')" % [variable, typeof(variables.get(variable)), body, typeof(body.get(variable)), d_name, BODY_TYPES.find_key(body_type)])
+			continue
 		body.set(variable, variables.get(variable))
 	body.set("metadata", metadata)
 	body.initialize()
@@ -1197,7 +1221,7 @@ func get_first_star_discovery_multiplier() -> float:
 			return body.metadata.get("discovery_multiplier")
 	return 1.0
 
-func get_discovery_multiplier_from_star_type(star_type: String) -> float:
+static func get_discovery_multiplier_from_star_type(star_type: String) -> float:
 	match star_type:
 		"M": return 1.0
 		"K": return 1.1
@@ -1208,6 +1232,18 @@ func get_discovery_multiplier_from_star_type(star_type: String) -> float:
 		"O": return 5.0
 		"Pulsar": return 2.0
 		_: return 1.0
+
+static func get_CCS_success_chance_from_star_type(star_type: String) -> float:
+	match star_type:
+		"M": return 0.05
+		"K": return 0.1
+		"G": return 0.2
+		"F": return 0.3
+		"A": return 0.7
+		"B": return 0.75
+		"O": return 0.8
+		"Pulsar": return 0.2
+		_: return 0.0
 
 func get_body_from_identifier(id: int):
 	var get_body: bodyAPI
@@ -1289,11 +1325,17 @@ static func get_temporary_station(hook: bodyAPI) -> stationBodyAPI: # for anomal
 	var random = RandomNumberGenerator.new()
 	random.set_seed(hook.metadata.get("seed", randi()))
 	temp_station.sell_percentage_of_market_price = clampi(roundi(random.randfn(50.0, 10.0)), 15, 100)
-	for iu in random.randi_range(0, 4):
+	var num_upgrades: int = clampi(roundi(random.randfn(2, 1)), 1, 6)
+	var _available_upgrades: Array[playerAPI.UPGRADE_ID] = []
+	var no_req_upgrades: Array[playerAPI.UPGRADE_ID] = playerAPI.get_all_upgrades_with_no_requirements()
+	for n in num_upgrades:
 		var internal_random = RandomNumberGenerator.new()
-		internal_random.set_seed(hash(random.get_seed() - iu))
-		var upgrade = playerAPI.UPGRADE_ID.values()[internal_random.randi_range(0, playerAPI.UPGRADE_ID.values().size() - 1)]
-		temp_station.exclude_upgrade(upgrade)
+		internal_random.set_seed(hash(random.get_seed() - n))
+		var chosen_upgrade: playerAPI.UPGRADE_ID = no_req_upgrades[internal_random.randi_range(0, no_req_upgrades.size() - 1)]
+		if not _available_upgrades.has(chosen_upgrade):
+			_available_upgrades.append(chosen_upgrade)
+			no_req_upgrades.erase(chosen_upgrade)
+	temp_station.available_upgrades = _available_upgrades
 	return temp_station
 
 func remove_recursive_bodies_with_hook_identifier(id: int) -> void:

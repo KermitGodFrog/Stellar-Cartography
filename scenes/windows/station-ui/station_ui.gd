@@ -22,12 +22,25 @@ func _on_pause_mode_changed(value):
 
 
 const upgrade_data = {
-	playerAPI.UPGRADE_ID.ADVANCED_SCANNING: {"cost": 7500, "description": "Advanced scanning capability. Increases the chance to detect planetary and space anomalies by 10%."},
-	playerAPI.UPGRADE_ID.AUDIO_VISUALIZER: {"cost": 35000, "description": "(SPECIAL) Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."},
-	playerAPI.UPGRADE_ID.NANITE_CONTROLLER: {"cost": 25000, "description": "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost."},
-	playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES: {"cost": 35000, "description": "(SPECIAL) Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."},
-	playerAPI.UPGRADE_ID.SCAN_PREDICTION: {"cost": 7500, "description": "Scan prediction algorithms. Allow LIDAR scan arcs to be visible on the SYSTEM MAP before the 'PING' button is pressed."},
-	playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR: {"cost": 35000, "description": "(SPECIAL) Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."}
+	playerAPI.UPGRADE_ID.ADVANCED_ANALYSIS: {"cost": 7500, "description": "Advanced analysis capability.", "effect": "[color=lightblue][ +10% chance to detect planetary and space anomalies ][/color]"},
+	playerAPI.UPGRADE_ID.AUDIO_VISUALIZER: {"cost": 35000, "description": "[color=THISTLE](SPECIAL)[/color] Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition.", "effect": "Adds the Audio Visualizer app ('AUD') to the APPS DOCK."},
+	playerAPI.UPGRADE_ID.NANITE_CONTROLLER: {"cost": 25000, "description": "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost.", "effect": "Grants the ability to press the 'HULL STRESS' entry on the STATUS PANEL to repair 1% hull stress (when the cost in nanites is available)."},
+	playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES: {"cost": 35000, "description": "[color=THISTLE](SPECIAL)[/color] Longer range scopes. Allows Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account.", "effect": "Adds the Long Range Scopes app ('LON') to the APPS DOCK."},
+	playerAPI.UPGRADE_ID.PING_PREDICTION: {"cost": 7500, "description": "Ping prediction algorithms.", "effect": "Makes LIDAR ping arcs on the SYSTEM MAP visible before the 'PING' button is pressed."},
+	playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR: {"cost": 35000, "description": "[color=THISTLE](SPECIAL)[/color] Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse.", "effect": "Adds the Gas Layer Surveyor app ('GAS') to the APPS DOCK."},
+	playerAPI.UPGRADE_ID.DRAG_DRIVES: {"cost": 15000, "description": "Experimental changes to the engine nozzle and fuel injection system.", "effect": "[color=lightblue][ +1 speed ][/color]\n[color=tomato][ +8.75 scanner profile ][/color]"},
+	playerAPI.UPGRADE_ID.IMPROVED_MAGNIFICATION: {"cost": 15000, "description": "Improvements to the optical tube which allow more light to enter scopes. Increases how far scopes can zoom in, and thus the range where bodies can be discovered while fully zoomed in.", "effect": "[color=lightblue][ -5 minimum scopes FOV ][/color]"},
+	playerAPI.UPGRADE_ID.ENHANCED_SCANNERS: {"cost": 15000, "description": "Addition of several high gain antennas to the passive scanner array.", "effect": "[color=lightblue][ +12.5 scanner power ][/color]"},
+	playerAPI.UPGRADE_ID.STEALTH_COMPOSITES: {"cost": 15000, "description": "An outer hull coating designed to absorb electromagnetic radiation.", "effect": "[color=lightblue][ -6.25 scanner profile ][/color]"},
+	playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING: {"cost": 7500, "description": "An alteration to the computer that forces a long list of procedures for locating bodies to run in the background.", "effect": "In star systems with a star type of F or larger, a 'pointer circle' will occasionally appear on the SYSTEM MAP. One undiscovered/unmarked body will always be within the area of the 'pointer circle'."},
+	playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW: {"cost": 15000, "description": "Forcing extra fuel through the injector for a higher thrust output. The side effect is a far brighter exhaust.", "effect": "[color=lightblue][ +1 speed ][/color]\n[color=tomato][ +25 scanner profile ][/color]"},
+	playerAPI.UPGRADE_ID.HEAT_SINK: {"cost": 15000, "description": "A device that stores the heat produced by a starship rather than radiating it away. When full, the heat sink is ejected into space and replaced. This reduces the thermal signature of the ship, but it can't move as much heat as external radiators.", "effect": "[color=lightblue][ -6.25 scanner profile ][/color][color=tomato][ -1 speed ][/color]"},
+	playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR: {"cost": 25000, "description": "Optimization of the LIDAR system internals.", "effect": "[color=lightblue][ -1.0s LIDAR cooldown ][/color]"},
+	playerAPI.UPGRADE_ID.MIGRATION_ANALYSIS: {"cost": 25000, "description": "Observing the life found within Stellar Phenomena can determine the location of bodies in a star system. The composition of life, the direction of migration, apparent life cycle, trails of gasses or space-time distortions, and many other factors, can be used to determine where lifeforms are coming from or going to. For a team of analysts, these observations would take months, but the processing suite of this computer extension can do it in a fraction of the time.", "effect": "Upon interacting with any Stellar Phenomena for the first time, a body will likely be discovered elsewhere in the star system."},
+	playerAPI.UPGRADE_ID.FASTER_PROCESSING: {"cost": 25000, "description": "A further alteration to the computer that improves the time between pointer circle appearances.", "effect": "[color=lightblue][ -30.0s BACKGROUND PROCESSING pointer cooldown ][/color]"},
+	playerAPI.UPGRADE_ID.PRECISION_PROCESSING: {"cost": 25000, "description": "A further alteration to the computer that improves the accuracy of pointer circles. The side effect is a longer cooldown time.", "effect": "[color=lightblue][ -40.0 BACKGROUND PROCESSING pointer radius ][/color]\n[color=tomato][ +10.0s BACKGROUND PROCESSING pointer cooldown ][/color]"},
+	playerAPI.UPGRADE_ID.CRAM_CELL_SYNTHESIS: {"cost": 25000, "description": "The gasses required to synthesize compressed fuel cells ('cram cells') are not found in standard MMA or proteins. Stars have these gasses in high quantities - especially the larger ones. This collection unit can enable the synthesis of cram cells by collecting various gasses from stars.", "effect": "Upon interacting with any star for the first time, your starship might be supercharged for 1 wormhole traversal - the chance of success is greatly increased for larger star types."}
+	#playerAPI.UPGRADE_ID.ENVOY_PROGRAM: {"cost": 9000, "description": "(UNFINISHED)"},
 }
 
 var station: stationBodyAPI
@@ -61,11 +74,13 @@ signal addPlayerValue(amount: int)
 @onready var save_audio_profiles_info_label = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/info_label
 @onready var storage_progress_bar = $save_audio_profiles_control/margin/panel/panel_margin/save_audio_profiles_scroll/storage_progress_bar
 #upgrade shtuff
-@onready var description_label = $upgrade_container/description_label
+@onready var description_label = $upgrade_container/description_scroll/description_label
 @onready var disclaimer_label = $upgrade_container/disclaimer_label
 @onready var SPL_disclaimer_label = $upgrade_container/SPL_disclaimer_label
 @onready var AVAILABLE_UPGRADES = $upgrade_container/available_upgrades_container/title_available_upgrades_scroll/margin/AVAILABLE_UPGRADES
 @onready var UNLOCKED_UPGRADES = $upgrade_container/unlocked_upgrades_container/title_unlocked_upgrades_scroll/margin/UNLOCKED_UPGRADES
+@onready var incompatibilities_label = $upgrade_container/notes_flow/incompatibilities_container/incompatibilities_label
+@onready var requirements_label = $upgrade_container/notes_flow/requirements_container/requirements_label
 
 @onready var hull_stress_label = $repair_container/hull_stress_label
 @onready var repair_single_button = $repair_container/repair_single
@@ -172,7 +187,7 @@ func _on_popup():
 		c.queue_free()
 	
 	if station:
-		print("EXCLUDED UPGRADE IDs ", station.excluded_upgrades)
+		print("AVAILABLE UPGRADE IDs ", station.available_upgrades)
 		print("REPAIR PRICE MULTIPLIER ", station.repair_price_multiplier)
 		save_audio_profiles_info_label.set_text("The wider astronomical community on %s has analyzed the legitimacy of additional observations you have inferred on unknown bodies during your travels." % station.get_display_name())
 		add_relevant_upgrade_buttons()
@@ -183,7 +198,7 @@ func add_relevant_upgrade_buttons() -> void:
 	for upgrade in playerAPI.UPGRADE_ID.values():
 		if player_unlocked_upgrades.has(upgrade):
 			add_upgrade_button(upgrade, true)
-		elif not station.excluded_upgrades.has(upgrade):
+		elif station.available_upgrades.has(upgrade):
 			add_upgrade_button(upgrade, false)
 	pass
 
@@ -197,8 +212,14 @@ func add_upgrade_button(upgrade: playerAPI.UPGRADE_ID, unlocked: bool) -> void:
 	
 	instance.cost = data.get("cost")
 	instance.description = data.get("description")
+	instance.effect = data.get("effect")
 	instance.connect("pressed", _on_upgrade_pressed.bind(instance.upgrade, instance.cost, instance.unlocked))
-	instance.connect("mouse_entered", _on_upgrade_mouse_entered.bind(instance.description))
+	instance.connect("mouse_entered", _on_upgrade_mouse_entered.bind(instance.upgrade, instance.description))
+	
+	if playerAPI.is_upgrade_SPL(upgrade):
+		instance.set("theme_override_colors/font_color", Color.THISTLE)
+		instance.set("theme_override_colors/font_hover_color", Color.THISTLE)
+		instance.set("theme_override_colors/font_focus_color", Color.THISTLE)
 	
 	match instance.unlocked:
 		true:
@@ -211,7 +232,7 @@ func update_upgrade_buttons() -> void:
 	if station:
 		for c in UNLOCKED_UPGRADES.get_children():
 			if not player_unlocked_upgrades.has(c.upgrade):
-				if not station.excluded_upgrades.has(c.upgrade):
+				if station.available_upgrades.has(c.upgrade):
 					add_upgrade_button(c.upgrade, false)
 				c.queue_free()
 		for c in AVAILABLE_UPGRADES.get_children():
@@ -221,8 +242,18 @@ func update_upgrade_buttons() -> void:
 	pass
 
 
-func _on_upgrade_mouse_entered(description: String) -> void:
+func _on_upgrade_mouse_entered(upgrade: playerAPI.UPGRADE_ID, description: String) -> void:
 	description_label.set_text(description)
+	var incomp_text: String = String()
+	var req_text: String = String()
+	
+	for u in playerAPI.upgrade_incompatibilities.get(upgrade, []):
+		incomp_text += "* %s\n" % get_readable_upgrade_name(u)
+	for u in playerAPI.upgrade_requirements.get(upgrade, []):
+		req_text += "* %s\n" % get_readable_upgrade_name(u)
+	
+	incompatibilities_label.set_text(incomp_text)
+	requirements_label.set_text(req_text)
 	pass
 
 func _on_upgrade_pressed(upgrade_idx: playerAPI.UPGRADE_ID, cost: int, already_unlocked: bool):
@@ -249,3 +280,6 @@ func _on_disable_module_store() -> void:
 func _on_set_tutorial_visible(value: bool) -> void:
 	tutorial.set_visible(value)
 	pass
+
+func get_readable_upgrade_name(upgrade: playerAPI.UPGRADE_ID) -> String:
+	return playerAPI.UPGRADE_ID.find_key(upgrade).to_upper().replace("_", " ")

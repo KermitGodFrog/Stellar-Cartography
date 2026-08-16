@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="pingDisplayHelper" load_steps=4 format=3 uid="uid://dtbys0v13sstc"]
+
+[ext_resource type="Script" uid="uid://d1aliwh3uy1j8" path="res://data/system-map/pingDisplayHelper.gd" id="1_c2aw2"]
+
+[sub_resource type="Gradient" id="Gradient_c2aw2"]
+offsets = PackedFloat32Array(0.0055555557, 0.25, 0.5, 0.75, 0.95, 1)
+colors = PackedColorArray(1, 1, 1, 0.3137255, 1, 1, 1, 0.3529412, 1, 1, 1, 0.3137255, 1, 1, 1, 0.3529412, 1, 1, 1, 0.3137255, 1, 1, 1, 0)
+
+[sub_resource type="Curve" id="Curve_c2aw2"]
+_data = [Vector2(0, 0.95), 0.0, 0.0, 0, 0, Vector2(0.025, 1), 0.0, 0.0, 0, 0, Vector2(0.975, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.95), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[resource]
+script = ExtResource("1_c2aw2")
+radius_curve = SubResource("Curve_c2aw2")
+color_curve = SubResource("Gradient_c2aw2")
+max_time = 1000.0
+metadata/_custom_type_script = "uid://d1aliwh3uy1j8"

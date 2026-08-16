@@ -6,6 +6,10 @@ signal sonarValuesChanged(ping_width: int, ping_length: int, ping_direction: Vec
 var ping_width: int
 var ping_length: int
 var ping_direction: Vector2 = Vector2.ZERO
+var cooldown: float = 3.0: #playerAPI LIDAR_cooldown
+	set(value):
+		cooldown = value
+		ping_cooldown_timer.set_wait_time(cooldown)
 
 @onready var ping_width_slider = $info_panel/scroll_vertical/ping_width_slider
 @onready var ping_cooldown_timer = $ping_cooldown_timer
@@ -76,7 +80,6 @@ func _on_reset_button_pressed():
 	ping_direction = Vector2.ZERO
 	emit_signal("sonarValuesChanged", ping_width, ping_length, ping_direction)
 	pass
-
 
 func _on_ping_width_slider_drag_ended(value_changed: bool) -> void:
 	if value_changed: get_tree().call_group("audioHandler", "play_once", LIDAR_arc_change, 0.0, "SFX")

@@ -67,11 +67,11 @@ func populateWithPlayerData(player: playerAPI):
 	add("player_in_FRONTIER_or_ABYSS_region", in_FRONTIER_or_ABYSS_region)
 	add("player_in_ANY_region", in_ANY_region)
 	
-	for id in player.UPGRADE_ID:
-		if player.unlocked_upgrades.has(player.UPGRADE_ID.get(id)):
+	for id in playerAPI.UPGRADE_ID:
+		if player.unlocked_upgrades.has(playerAPI.UPGRADE_ID.get(id)):
 			add(str("player_", id, "_unlocked"), true)
-		else:
-			add(str("player_", id, "_unlocked"), false)
+	#	else:
+	#		add(str("player_", id, "_unlocked"), false)
 	
 	for character in player.characters:
 		add("player_%s_alive" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.is_alive())

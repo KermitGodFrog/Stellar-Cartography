@@ -60,7 +60,13 @@ var player_is_boosting: bool = false:
 var player_audio_visualizer_unlocked: bool = false
 var player_gas_layer_surveyor_unlocked: bool = false
 var player_long_range_scopes_unlocked: bool = false
+var player_migration_analysis_unlocked: bool = false
+var player_cram_cell_synthesis_unlocked: bool = false
 var player_action_lock: bool = false
+
+#sent by game.gd _on_upgrade_state_change
+var bg_processing_cooldown: float
+var bg_processing_radius: float
 
 @onready var camera = $camera
 @onready var canvas = $camera/canvas
@@ -76,7 +82,8 @@ var player_action_lock: bool = false
 @onready var console = $camera/canvas/control/console
 @onready var map_overlay = $camera/canvas/map_overlay
 @onready var data_value_increase_label = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/data_value_increase_label
-@onready var scan_prediction_upgrade = $scan_prediction_upgrade
+@onready var ping_prediction_upgrade = $ping_prediction_upgrade
+@onready var bg_processing_upgrade = $bg_processing_upgrade
 @onready var countdown_overlay = $camera/canvas/countdown_overlay
 @onready var current_action_label = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/current_action_label
 @onready var status_modifier_organizer = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel1/secondary_margin/status_modifier_organizer
@@ -147,7 +154,7 @@ var scanner_power_time: float = 0.0
 
 #system list
 var collapsed_cache: Dictionary = {}
-var selected_cache: Dictionary = {} #CURRENTLY DOES NOTHING BECAUSE I CANT FIGURE OUT HOW TO MAKE IT WORK!
+var selected_cache: Dictionary = {}
 var closest_body_id: int
 
 #asteroid belt slowdown
@@ -192,8 +199,12 @@ func _physics_process(delta):
 	status_control.player_adj_scanner_matrix = player_adj_scanner_matrix
 	status_control.player_adj_speed = player_adj_speed
 	
-	scan_prediction_upgrade._player_position_matrix = player_position_matrix
-	scan_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME
+	ping_prediction_upgrade._player_position_matrix = player_position_matrix
+	ping_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME
+	
+	bg_processing_upgrade._system = system
+	bg_processing_upgrade.pointer_cooldown = bg_processing_cooldown
+	bg_processing_upgrade.pointer_radius = bg_processing_radius
 	
 	current_action_label._player_position_matrix = player_position_matrix
 	
@@ -449,6 +460,12 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					else:
 						item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416))
 					
+					
+					if (body.metadata.get("cram_cell_synthesis_available", true) == true) and (player_cram_cell_synthesis_unlocked == true):
+						item.set_icon(0, get_darker_icon.call(item))
+						item.set_icon_overlay(0, load("uid://0mqwjttqbm1i"))
+						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
+					
 				starSystemAPI.BODY_TYPES.PLANET:
 					#item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
 					item.set_tooltip_text(0, "%s - %s Planet" % [item.get_text(0), body.metadata.get("planet_type")])
@@ -501,6 +518,10 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					if (body.captures_remaining > 0) and (player_long_range_scopes_unlocked == true):
 						item.set_icon(0, get_darker_icon.call(item))
 						item.set_icon_overlay(0, load("uid://crpj5eyl2ijxb"))
+						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
+					elif (body.metadata.get("migration_analysis_available", true) == true) and (player_migration_analysis_unlocked == true):
+						item.set_icon(0, get_darker_icon.call(item))
+						item.set_icon_overlay(0, load("uid://0mqwjttqbm1i"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					
 		
@@ -1095,8 +1116,8 @@ func reset_camera_follow_body() -> void:
 	camera.follow_body = null
 	pass
 
-func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2): #for SCAN_PREDICTION upgrade!
-	scan_prediction_upgrade._on_sonar_values_changed(ping_width, ping_length, ping_direction)
+func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2): #for PING_PREDICTION upgrade!
+	ping_prediction_upgrade._on_sonar_values_changed(ping_width, ping_length, ping_direction)
 	pass
 
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:

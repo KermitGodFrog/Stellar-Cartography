@@ -41,7 +41,8 @@ func _ready():
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.SCAN_PREDICTION)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.PING_PREDICTION)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING)
 		
 		connect_all_player_signals(new_player)
 		
@@ -61,6 +62,8 @@ func _ready():
 		world.player.updatePosition(get_physics_process_delta_time())
 		
 		pause_menu.disableSaving() # so savefile cannto be overwriten
+		
+		_on_update_player_v_change_upgrade_variables()
 		
 		objectives_manager.start_receive_init_type(init_type)
 		
@@ -86,7 +89,8 @@ func _ready():
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.SCAN_PREDICTION)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.PING_PREDICTION)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING)
 		
 		connect_all_player_signals(new_player)
 		
@@ -100,6 +104,8 @@ func _ready():
 		_on_switch_star_system(new)
 		
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
+		
+		_on_update_player_v_change_upgrade_variables()
 		
 		objectives_manager.start_receive_init_type(init_type)
 		
@@ -128,6 +134,8 @@ func _ready():
 		
 		for upgrade in world.player.unlocked_upgrades:
 			_on_upgrade_state_change(upgrade, true)
+		
+		_on_update_player_v_change_upgrade_variables()
 		
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
@@ -305,9 +313,11 @@ func _physics_process(delta):
 	system_map.set("_player_status_matrix", [world.player.balance, world.player.hull_stress, world.player.hull_deterioration, world.player.morale])
 	system_map.set("player_adj_scanner_matrix", [world.player.get_adjusted_scanner_profile(), world.player.get_adjusted_scanner_power()])
 	system_map.set("player_adj_speed", world.player.get_adjusted_speed())
-	system_map.set("player_audio_visualizer_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.AUDIO_VISUALIZER) != -1))
-	system_map.set("player_gas_layer_surveyor_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) != -1))
-	system_map.set("player_long_range_scopes_unlocked", (world.player.unlocked_upgrades.find(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) != -1))
+	system_map.set("player_audio_visualizer_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER))
+	system_map.set("player_gas_layer_surveyor_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR))
+	system_map.set("player_long_range_scopes_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES))
+	system_map.set("player_migration_analysis_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.MIGRATION_ANALYSIS))
+	system_map.set("player_cram_cell_synthesis_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.CRAM_CELL_SYNTHESIS))
 	system_map.set("player_action_lock", world.player.action_lock)
 	system_3d.set("player_position", world.player.position)
 	long_range_scopes.set("player_position", world.player.position)
@@ -422,8 +432,12 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add("space_anomaly_available", following_body.metadata.get("space_anomaly_available", true))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 		starSystemAPI.BODY_TYPES.SPACE_ENTITY:
+			new_query.add("migration_analysis_available", following_body.metadata.get("migration_analysis_available", true))
+			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 			new_query.add_tree_access("space_entity_type", str(game_data.ENTITY_CLASSIFICATIONS.find_key(following_body.entity_classification)))
 		starSystemAPI.BODY_TYPES.STAR:
+			new_query.add("cram_cell_synthesis_available", following_body.metadata.get("cram_cell_synthesis_available", true))
+			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
 		starSystemAPI.BODY_TYPES.SHIP:
 			body_query_add_unit_type_shared(new_query, following_body)
@@ -492,6 +506,20 @@ func _on_player_following_body(following_body: bodyAPI):
 					following_body.metadata["space_anomaly_available"] = false
 					var temp_station := starSystemAPI.get_temporary_station(following_body)
 					dock_with_station(temp_station)
+				_:
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+		starSystemAPI.BODY_TYPES.SPACE_ENTITY:
+			match RETURN_STATE:
+				"HARD_LEAVE":
+					following_body.metadata["migration_analysis_available"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+				_:
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+		starSystemAPI.BODY_TYPES.STAR:
+			match RETURN_STATE:
+				"HARD_LEAVE":
+					following_body.metadata["cram_cell_synthesis_available"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 		starSystemAPI.BODY_TYPES.SHIP:
@@ -661,7 +689,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	world.player.removeJumpsRemaining(1) #removing jumps remaining until reaching a civilized system
 	if world.player.get_jumps_remaining() == 0:
 		world.player.resetJumpsRemaining()
-		destination.createAuxiliaryCivilized()
+		destination.createAuxiliaryCivilized(world.player.get_unlocked_upgrades())
 	else:
 		destination.createAuxiliaryUnexplored(world.player.speed)
 	
@@ -759,9 +787,9 @@ func _on_create_new_star_system(for_system: starSystemAPI = null, for_weirdness_
 	else:
 		system = world.createStarSystem("campaign_insa")
 		system.special_system_classification = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA
-	var _advanced_scanning_unlocked = world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.ADVANCED_SCANNING)
+	var _advanced_analysis_unlocked = world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.ADVANCED_ANALYSIS)
 	system.non_gen_seed = randi() #for ESDs
-	system.createBase(world.get_adjusted_PA_chance(_advanced_scanning_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_scanning_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index)
+	system.createBase(world.get_adjusted_PA_chance(_advanced_analysis_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_analysis_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index)
 	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
@@ -914,7 +942,7 @@ func _on_sell_exploration_data(sell_percentage_of_market_price: int):
 	pass
 
 func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
-	print("GAME: UPGRADING SHIP")
+	print_debug("GAME: UPGRADING SHIP")
 	if world.player.balance >= cost and (world.player.is_upgrade_unlock_valid(upgrade_idx)):
 		world.player.decreaseBalance(cost)
 		_on_unlock_upgrade(upgrade_idx)
@@ -927,8 +955,8 @@ func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	pass
 
 func _on_refund_upgrade(upgrade_idx: playerAPI.UPGRADE_ID, refund: int) -> void:
-	print("GAME: REFUNDING UPGRADE")
-	if world.player.get_upgrade_unlocked_state(upgrade_idx) == true:
+	print_debug("GAME: REFUNDING UPGRADE")
+	if world.player.is_upgrade_unlocked(upgrade_idx):
 		world.player.increaseBalance(refund)
 		_on_lock_upgrade(upgrade_idx)
 	
@@ -939,20 +967,83 @@ func _on_refund_upgrade(upgrade_idx: playerAPI.UPGRADE_ID, refund: int) -> void:
 	pass
 
 func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
-	var unlock = world.player.unlockUpgrade(upgrade_idx)
-	_on_upgrade_state_change(unlock, true)
+	var changed: bool = world.player.unlockUpgrade(upgrade_idx)
+	if changed:
+		#value change upgrade changes:
+		match upgrade_idx:
+			playerAPI.UPGRADE_ID.DRAG_DRIVES:
+				world.player.speed += 1
+				world.player.scanner_profile += 8.75
+			playerAPI.UPGRADE_ID.IMPROVED_MAGNIFICATION:
+				world.player.scopes_min_FOV -= 5
+			playerAPI.UPGRADE_ID.ENHANCED_SCANNERS:
+				world.player.scanner_power += 12.5
+			playerAPI.UPGRADE_ID.STEALTH_COMPOSITES:
+				world.player.scanner_profile -= 6.25
+			playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW:
+				world.player.speed += 1
+				world.player.scanner_profile += 25.0
+			playerAPI.UPGRADE_ID.HEAT_SINK:
+				world.player.scanner_profile -= 6.25
+				world.player.speed -= 1
+			playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR:
+				world.player.LIDAR_cooldown -= 1
+			playerAPI.UPGRADE_ID.FASTER_PROCESSING:
+				world.player.bg_processing_cooldown -= 30
+			playerAPI.UPGRADE_ID.PRECISION_PROCESSING:
+				world.player.bg_processing_radius -= 40
+				world.player.bg_processing_cooldown += 10
+		
+		_on_upgrade_state_change(upgrade_idx, true)
 	pass
 
 func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
-	var lock = world.player.lockUpgrade(upgrade_idx)
-	_on_upgrade_state_change(lock, false)
+	var changed: bool = world.player.lockUpgrade(upgrade_idx)
+	if changed:
+		#value change upgrade changes:
+		match upgrade_idx:
+			playerAPI.UPGRADE_ID.DRAG_DRIVES:
+				world.player.speed -= 1
+				world.player.scanner_profile -= 8.75
+			playerAPI.UPGRADE_ID.IMPROVED_MAGNIFICATION:
+				world.player.scopes_min_FOV += 5
+			playerAPI.UPGRADE_ID.ENHANCED_SCANNERS:
+				world.player.scanner_power -= 12.5
+			playerAPI.UPGRADE_ID.STEALTH_COMPOSITES:
+				world.player.scanner_profile += 6.25
+			playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW:
+				world.player.speed -= 1
+				world.player.scanner_profile -= 25.0
+			playerAPI.UPGRADE_ID.HEAT_SINK:
+				world.player.scanner_profile += 6.25
+				world.player.speed += 1
+			playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR:
+				world.player.LIDAR_cooldown += 1
+			playerAPI.UPGRADE_ID.FASTER_PROCESSING:
+				world.player.bg_processing_cooldown += 30
+			playerAPI.UPGRADE_ID.PRECISION_PROCESSING:
+				world.player.bg_processing_radius += 40
+				world.player.bg_processing_cooldown -= 10
+		
+		_on_upgrade_state_change(upgrade_idx, false)
 	pass
 
 func _on_upgrade_state_change(upgrade_idx: playerAPI.UPGRADE_ID, state: bool):
-	print("GAME: UPGRADE STATE CHANGED: ", upgrade_idx, " ", state)
+	print_debug("GAME: UPGRADE STATE CHANGED: ", upgrade_idx, " ", state)
 	get_tree().call_group("FOLLOW_UPGRADE_STATE", "_on_upgrade_state_change", upgrade_idx, state)
 	if state == true and pause_mode_handler.pause_mode == game_data.PAUSE_MODES.STATION_UI:
 		_on_async_upgrade_tutorial(upgrade_idx)
+	
+	_on_update_player_v_change_upgrade_variables()
+	pass
+
+func _on_update_player_v_change_upgrade_variables() -> void:
+	#updating playerAPI variables (THAT ARE ONLY USED FOR VALUE CHANGE UPGRADES) throughout the game 
+	system_3d.set("min_FOV", world.player.scopes_min_FOV)
+	system_3d.set("max_FOV", world.player.scopes_max_FOV)
+	sonar.set("cooldown", world.player.LIDAR_cooldown)
+	system_map.set("bg_processing_cooldown", world.player.bg_processing_cooldown)
+	system_map.set("bg_processing_radius", world.player.bg_processing_radius)
 	pass
 
 func _on_remove_saved_audio_profile(helper: audioProfileHelper):
@@ -1449,7 +1540,7 @@ func _on_insa_make_military_ships_neutral() -> void:
 func _on_open_LRS():
 	await get_tree().physics_frame
 	var following_body = world.player.action_body #should be set as playerAPI setting action_body calls _on_player_following_body, which calls dialogue, which calls this.
-	if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.LONG_RANGE_SCOPES) == true:
+	if world.player.is_upgrade_unlocked(world.player.UPGRADE_ID.LONG_RANGE_SCOPES):
 		long_range_scopes._on_current_entity_changed(following_body)
 		
 		if world.player.discovered_entities.find(following_body.entity_classification) == -1:
@@ -1464,7 +1555,7 @@ func _on_open_LRS():
 func _on_open_GLS():
 	await get_tree().physics_frame
 	var following_body = world.player.action_body #should be set as playerAPI setting action_body calls _on_player_following_body, which calls dialogue, which calls this.
-	if world.player.get_upgrade_unlocked_state(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR) == true:
+	if world.player.is_upgrade_unlocked(world.player.UPGRADE_ID.GAS_LAYER_SURVEYOR):
 		gas_layer_surveyor._on_current_planet_changed(following_body)
 		for tag in gas_layer_surveyor.current_layers:
 			var idx = gas_layer_surveyor.layer_data.keys().find(tag)

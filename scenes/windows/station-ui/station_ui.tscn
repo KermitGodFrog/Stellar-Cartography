@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dtbagvxj5to3"]
+[gd_scene load_steps=21 format=3 uid="uid://dtbagvxj5to3"]
 
 [ext_resource type="Script" uid="uid://dyslold788w2p" path="res://scenes/windows/station-ui/station_ui.gd" id="1_8gqs2"]
 [ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://theme-gen/window_theme.tres" id="1_hdpq4"]
@@ -23,6 +23,17 @@ bg_color = Color(0.23529412, 0.5764706, 0.44313726, 0.54901963)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qstg3"]
 bg_color = Color(0.23529412, 0.43137255, 0.44313726, 0.54901963)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kw6tn"]
+bg_color = Color(0.11774104, 0.11774104, 0.11774104, 0.5)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4y0sb"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_du8uj"]
 bg_color = Color(0.6, 0.6, 0.6, 0.54902)
 
@@ -39,7 +50,6 @@ title = "Station Access"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 500)
 visible = false
-always_on_top = true
 theme = ExtResource("1_hdpq4")
 
 [node name="station_control" type="Control" parent="."]
@@ -105,14 +115,16 @@ offset_bottom = 23.0
 text = "BALANCE"
 
 [node name="upgrade_container" type="VBoxContainer" parent="station_control"]
-custom_minimum_size = Vector2(330, 200)
+clip_contents = true
+custom_minimum_size = Vector2(340, 200)
 layout_mode = 1
-anchors_preset = 1
+anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -321.0
-offset_bottom = 40.0
+anchor_bottom = 1.0
+offset_left = -260.0
 grow_horizontal = 0
+grow_vertical = 2
 theme = ExtResource("4_0fv2y")
 
 [node name="unlocked_upgrades_container" type="PanelContainer" parent="station_control/upgrade_container"]
@@ -162,8 +174,20 @@ theme_override_constants/margin_bottom = 4
 layout_mode = 2
 size_flags_vertical = 3
 
+[node name="how_to_label" type="Label" parent="station_control/upgrade_container"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.80363095, 0.80363095, 0.80363095, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_kw6tn")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_4y0sb")
+text = "Hover over upgrades to view info"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="SPL_disclaimer_label" type="Label" parent="station_control/upgrade_container"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.84705883, 0.7490196, 0.84705883, 1)
 theme_override_font_sizes/font_size = 12
 text = "(0/0 SPECIAL UPGRADES)"
 horizontal_alignment = 1
@@ -177,12 +201,60 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("6_ubeaq")
 
-[node name="description_label" type="Label" parent="station_control/upgrade_container"]
+[node name="description_scroll" type="ScrollContainer" parent="station_control/upgrade_container"]
+visible = false
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="description_label" type="RichTextLabel" parent="station_control/upgrade_container/description_scroll"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_du8uj")
+bbcode_enabled = true
 text = "(HOVER UPGRADE TO VIEW DESCRIPTION)"
+
+[node name="notes_flow" type="HFlowContainer" parent="station_control/upgrade_container"]
+visible = false
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.4
+theme_override_constants/v_separation = 0
+
+[node name="incompatibilities_container" type="VBoxContainer" parent="station_control/upgrade_container/notes_flow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="title_label" type="Label" parent="station_control/upgrade_container/notes_flow/incompatibilities_container"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 10
+text = "INCOMPATIBILITIES:"
+
+[node name="incompatibilities_label" type="Label" parent="station_control/upgrade_container/notes_flow/incompatibilities_container"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+
+[node name="requirements_container" type="VBoxContainer" parent="station_control/upgrade_container/notes_flow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="title_label" type="Label" parent="station_control/upgrade_container/notes_flow/requirements_container"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 10
+text = "REQUIREMENTS:"
+
+[node name="requirements_label" type="Label" parent="station_control/upgrade_container/notes_flow/requirements_container"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
 autowrap_mode = 3
 
 [node name="repair_container" type="VBoxContainer" parent="station_control"]
