@@ -40,7 +40,7 @@
 [ext_resource type="Texture2D" uid="uid://ckex2ufxqcw22" path="res://graphics/system-map/status-panel/scanner_power_icon.png" id="29_gyk4x"]
 [ext_resource type="Texture2D" uid="uid://mnev4hvv0mub" path="res://graphics/system-map/status-panel/scanner_profile_icon.png" id="30_5qywx"]
 [ext_resource type="Texture2D" uid="uid://cqr6y83p5bh5a" path="res://graphics/system-map/similarity_symbol.png" id="31_da46s"]
-[ext_resource type="Script" uid="uid://xtwaxv24g3hj" path="res://scenes/system-map/scan_prediction_upgrade.gd" id="31_k5t5q"]
+[ext_resource type="Script" uid="uid://xtwaxv24g3hj" path="res://scenes/system-map/ping_prediction_upgrade.gd" id="31_k5t5q"]
 [ext_resource type="Script" uid="uid://bkq2b05nxx8pu" path="res://scenes/system-map/status-panel/proximity_blinker.gd" id="32_wbki1"]
 [ext_resource type="Texture2D" uid="uid://cxco07ala0607" path="res://graphics/system-map/status-panel/blinker_light.png" id="33_dx6jv"]
 [ext_resource type="Texture2D" uid="uid://bdjtfvb35byds" path="res://graphics/system-map/status-panel/blinker_standby.png" id="33_ned7s"]
@@ -1077,7 +1077,7 @@ script = ExtResource("54_dsgv3")
 [node name="cooldown" type="Timer" parent="system/bg_processing_upgrade"]
 wait_time = 60.0
 
-[node name="scan_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
+[node name="ping_prediction_upgrade" type="Node2D" parent="system" groups=["FOLLOW_UPGRADE_STATE"]]
 show_behind_parent = true
 script = ExtResource("31_k5t5q")
 

@@ -41,7 +41,7 @@ func _ready():
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.SCAN_PREDICTION)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.PING_PREDICTION)
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING)
 		
 		connect_all_player_signals(new_player)
@@ -90,7 +90,7 @@ func _ready():
 			init_data.get("prefix", "Captain"))
 		new_player.resetJumpsRemaining()
 		
-		_on_unlock_upgrade(playerAPI.UPGRADE_ID.SCAN_PREDICTION)
+		_on_unlock_upgrade(playerAPI.UPGRADE_ID.PING_PREDICTION)
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING)
 		
 		connect_all_player_signals(new_player)

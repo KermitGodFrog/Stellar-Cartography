@@ -76,7 +76,7 @@ var player_action_lock: bool = false
 @onready var console = $camera/canvas/control/console
 @onready var map_overlay = $camera/canvas/map_overlay
 @onready var data_value_increase_label = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/data_value_increase_label
-@onready var scan_prediction_upgrade = $scan_prediction_upgrade
+@onready var ping_prediction_upgrade = $ping_prediction_upgrade
 @onready var bg_processing_upgrade = $bg_processing_upgrade
 @onready var countdown_overlay = $camera/canvas/countdown_overlay
 @onready var current_action_label = $camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel/margin/current_action_label
@@ -193,8 +193,8 @@ func _physics_process(delta):
 	status_control.player_adj_scanner_matrix = player_adj_scanner_matrix
 	status_control.player_adj_speed = player_adj_speed
 	
-	scan_prediction_upgrade._player_position_matrix = player_position_matrix
-	scan_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME
+	ping_prediction_upgrade._player_position_matrix = player_position_matrix
+	ping_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME
 	
 	bg_processing_upgrade._system = system
 	
@@ -1098,8 +1098,8 @@ func reset_camera_follow_body() -> void:
 	camera.follow_body = null
 	pass
 
-func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2): #for SCAN_PREDICTION upgrade!
-	scan_prediction_upgrade._on_sonar_values_changed(ping_width, ping_length, ping_direction)
+func _on_sonar_values_changed(ping_width: int, ping_length: int, ping_direction: Vector2): #for PING_PREDICTION upgrade!
+	ping_prediction_upgrade._on_sonar_values_changed(ping_width, ping_length, ping_direction)
 	pass
 
 func _on_remove_hull_stress_for_nanites(amount: int, nanites_per_percentage: int) -> void:

@@ -6,8 +6,8 @@
 script = ExtResource("1_m5vyk")
 title = "Mark Ingress"
 description = "The SYSTEM LIST currently underlines a missing body named Ingress situated further than Prelude. 
-To learn the [i]direction[/i] to ping Ingress, the BARYCENTER VISUALIZER should be used. It displays the direction to other bodies from the locked body with a dot. The larger the dot, the more mass is present in that direction. Dark red dots are beyond the current scan arc.
+To learn the [i]direction[/i] to ping Ingress, the BARYCENTER VISUALIZER should be used. It displays the direction to other bodies from the locked body with a dot. The larger the dot, the more mass is present in that direction. Dark red dots are beyond the current ping arc.
 To ping Ingress, press on 'Prelude' on the SYSTEM LIST to lock, adjust the LIDAR direction so it matches the direction of the orange/yellow dot, and press the 'PING!' button.
 * [i]Wormhole dots slightly oscillate in size on the BARYCENTER VISUALIZER.[/i]
-* [i]If a dot is beyond the current scan arc, set the arc to a lower length with the slider.[/i]
+* [i]If a dot is beyond the current ping arc, set the arc to a lower length with the slider.[/i]
 [img=150%x75%]res://graphics/objective/tutorial_barycenter_example.png[/img]"
