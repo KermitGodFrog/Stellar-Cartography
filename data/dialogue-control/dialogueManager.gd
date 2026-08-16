@@ -698,25 +698,23 @@ func unlockRandomUpgradeWithFlair(anomaly_seed: String = String()) -> void:
 	random.set_seed(hash(int(anomaly_seed) - rules_triggered))
 	
 	var IDs: Array[playerAPI.UPGRADE_ID] = []
-	for ID in player.UPGRADE_ID:
-		IDs.append(player.UPGRADE_ID.get(ID))
+	for ID in playerAPI.UPGRADE_ID:
+		IDs.append(playerAPI.UPGRADE_ID.get(ID))
 	
-	var available_IDs = IDs.filter(is_available.bind(player.unlocked_upgrades))
+	var available_IDs = IDs.filter(is_available.bind(player.get_unlocked_upgrades()))
 	
 	if available_IDs.size() > 0:
 		var random_index: int = random.randi_range(0, available_IDs.size() - 1)
 		var random_ID = available_IDs[random_index]
-		if player.is_upgrade_unlock_valid(random_ID):
-			emit_signal("upgradeShip", random_ID, int())
+		if player.is_upgrade_unlock_valid(random_ID): #just triple checking teehee !!!
+			emit_signal("upgradeShip", random_ID, 0)
 			dialogue.add_text("[color=green](Unlocked %s) [/color]" % player.UPGRADE_ID.find_key(random_ID).capitalize())
 			playSoundEffect("success.wav")
 			return
-	dialogue.add_text("[color=green](Unlocked no new module) [/color]")
+	dialogue.add_text("[color=green](Unlocked no new upgrade) [/color]")
 	pass
 func is_available(ID: int, _unlocked_upgrades: Array[playerAPI.UPGRADE_ID]) -> bool:
-	if _unlocked_upgrades.find(ID) == -1:
-		return true
-	return false
+	return player.is_upgrade_unlock_valid(ID)
 
 func getNavBuoyOutcomeWithFlair(anomaly_seed: String = String()) -> void: # for nav buoy space anomaly, have to input String anomaly_seed as fact reference substitution obviously doesnt convert to int, and thats fine
 	emit_signal("rollNavBuoy", hash(int(anomaly_seed) - rules_triggered)) #continued in _on_receive_nav_buoy_roll
