@@ -57,5 +57,5 @@ func _on_cooldown_timeout() -> void:
 			ping.position = target.position + Vector2(0.0, global_data.get_randf(0.0, ping_radius - (ping_outline_size / 2.0) - (ping_radius * 0.1))).rotated(deg_to_rad(global_data.get_randf(0,360)))
 			ping.resetTime()
 			PINGS.append(ping)
-			get_tree().call_group("audioHandler", "play_once", load("uid://ddcqj11jyfxnl"), 0.0, "SFX")
+			get_tree().call_group("audioHandler", "play_once", load("uid://ddcqj11jyfxnl"), -6.0, "SFX")
 	pass 
