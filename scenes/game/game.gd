@@ -782,9 +782,9 @@ func _on_create_new_star_system(for_system: starSystemAPI = null, for_weirdness_
 	else:
 		system = world.createStarSystem("campaign_insa")
 		system.special_system_classification = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA
-	var _advanced_scanning_unlocked = world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.ADVANCED_SCANNING)
+	var _advanced_analysis_unlocked = world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.ADVANCED_ANALYSIS)
 	system.non_gen_seed = randi() #for ESDs
-	system.createBase(world.get_adjusted_PA_chance(_advanced_scanning_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_scanning_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index)
+	system.createBase(world.get_adjusted_PA_chance(_advanced_analysis_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_analysis_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index)
 	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system

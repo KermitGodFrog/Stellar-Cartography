@@ -22,7 +22,7 @@ func _on_pause_mode_changed(value):
 
 
 const upgrade_data = {
-	playerAPI.UPGRADE_ID.ADVANCED_SCANNING: {"cost": 7500, "description": "Advanced scanning capability.\n[color=lightblue][ +10% chance to detect planetary and space anomalies ][/color]"},
+	playerAPI.UPGRADE_ID.ADVANCED_ANALYSIS: {"cost": 7500, "description": "Advanced analysis capability.\n[color=lightblue][ +10% chance to detect planetary and space anomalies ][/color]"},
 	playerAPI.UPGRADE_ID.AUDIO_VISUALIZER: {"cost": 35000, "description": "(SPECIAL) Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."},
 	playerAPI.UPGRADE_ID.NANITE_CONTROLLER: {"cost": 25000, "description": "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost."},
 	playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES: {"cost": 35000, "description": "(SPECIAL) Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."},
