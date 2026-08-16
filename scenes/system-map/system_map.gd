@@ -60,6 +60,8 @@ var player_is_boosting: bool = false:
 var player_audio_visualizer_unlocked: bool = false
 var player_gas_layer_surveyor_unlocked: bool = false
 var player_long_range_scopes_unlocked: bool = false
+var player_migration_analysis_unlocked: bool = false
+var player_cram_cell_synthesis_unlocked: bool = false
 var player_action_lock: bool = false
 
 #sent by game.gd _on_upgrade_state_change
@@ -458,6 +460,12 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					else:
 						item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416))
 					
+					
+					if (body.metadata.get("cram_cell_synthesis_available", true) == true) and (player_cram_cell_synthesis_unlocked == true):
+						item.set_icon(0, get_darker_icon.call(item))
+						item.set_icon_overlay(0, load("uid://0mqwjttqbm1i"))
+						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
+					
 				starSystemAPI.BODY_TYPES.PLANET:
 					#item.set_text(0, "%s - %s Planet" % [body.get_display_name(), body.metadata.get("planet_type")])
 					item.set_tooltip_text(0, "%s - %s Planet" % [item.get_text(0), body.metadata.get("planet_type")])
@@ -510,6 +518,10 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					if (body.captures_remaining > 0) and (player_long_range_scopes_unlocked == true):
 						item.set_icon(0, get_darker_icon.call(item))
 						item.set_icon_overlay(0, load("uid://crpj5eyl2ijxb"))
+						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
+					elif (body.metadata.get("migration_analysis_available", true) == true) and (player_migration_analysis_unlocked == true):
+						item.set_icon(0, get_darker_icon.call(item))
+						item.set_icon_overlay(0, load("uid://0mqwjttqbm1i"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
 					
 		
