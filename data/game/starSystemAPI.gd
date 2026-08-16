@@ -496,7 +496,7 @@ func generateRandomWeightedHookStar():
 				0.0,
 				radius,
 				{"mass": mass, "surface_color": color, "beam_angle_change": beam_angle_change, "beam_width": beam_width},
-				{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25}
+				{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25, "seed": randi()}
 			)
 		_:
 			new_body = addOrbitBody(
@@ -509,7 +509,7 @@ func generateRandomWeightedHookStar():
 				0.0,
 				radius,
 				{"mass": mass, "surface_color": color},
-				{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25}
+				{"star_type": star_type, "luminosity": luminosity, "discovery_multiplier": multiplier, "iterations": 25, "seed": randi()}
 			)
 	
 	get_body_from_identifier(new_body).known = true #so you can see stars on system map before exploring
@@ -850,7 +850,7 @@ func generateRandomWeightedEntities():
 			orbit_angle_change,
 			radius,
 			{"entity_classification": entity_classification, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
-			{"migration_analysis_available": true, "seed": randi(),}
+			{"seed": randi()}
 		)
 		
 		get_body_from_identifier(new_entity).rotation = deg_to_rad(global_data.get_randf(0,360))
@@ -1218,7 +1218,7 @@ func get_first_star_discovery_multiplier() -> float:
 			return body.metadata.get("discovery_multiplier")
 	return 1.0
 
-func get_discovery_multiplier_from_star_type(star_type: String) -> float:
+static func get_discovery_multiplier_from_star_type(star_type: String) -> float:
 	match star_type:
 		"M": return 1.0
 		"K": return 1.1
@@ -1229,6 +1229,18 @@ func get_discovery_multiplier_from_star_type(star_type: String) -> float:
 		"O": return 5.0
 		"Pulsar": return 2.0
 		_: return 1.0
+
+static func get_CCS_success_chance_from_star_type(star_type: String) -> float:
+	match star_type:
+		"M": return 0.05
+		"K": return 0.1
+		"G": return 0.2
+		"F": return 0.3
+		"A": return 0.7
+		"B": return 0.75
+		"O": return 0.8
+		"Pulsar": return 0.2
+		_: return 0.0
 
 func get_body_from_identifier(id: int):
 	var get_body: bodyAPI

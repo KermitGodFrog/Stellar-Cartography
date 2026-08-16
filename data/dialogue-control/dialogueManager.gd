@@ -851,6 +851,23 @@ func playDiscoveryThemeOrMotif() -> void:
 	emit_signal("playStrangeDiscoveryThemeOrMotif")
 	pass
 
+func getCSSOutcomeWithFlair(star_type: String) -> void:
+	var anomaly_seed = tree_access_memory.get("seed", randi()) #this goes against all of the rules for this class... DO NOT DO THIS ANYWHERE ELSE!!! I AM CUTTING CORNERS BY DOING THIS AND ITS *BAD* - ONLY DOING BC CAN ONLY HAVE ONE ARGUMENT FOR DIALOGUE METHODS
+	var random = RandomNumberGenerator.new()
+	random.set_seed(hash(int(anomaly_seed) - rules_triggered))
+	var rand_value: float = random.randf()
+	var chance = starSystemAPI.get_CCS_success_chance_from_star_type(star_type) + random.randf_range(-0.03, 0.03)
+	
+	if rand_value < chance:
+		superchargeForJumpsWithFlair(1)
+		dialogue.add_text("Cram cells are successfuly synthesized.")
+	else:
+		dialogue.add_text("Cram cells fail to synthesize.")
+	
+	dialogue.add_text("According to the module, the probability of successful synthesis from this star was [color=yellow]%.2f%%[/color]." % (chance * 100.0))
+	pass
+
+
 
 
 func categoryActive(wID: String) -> void:

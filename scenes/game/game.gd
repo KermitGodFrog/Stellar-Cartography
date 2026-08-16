@@ -434,6 +434,8 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 			new_query.add_tree_access("space_entity_type", str(game_data.ENTITY_CLASSIFICATIONS.find_key(following_body.entity_classification)))
 		starSystemAPI.BODY_TYPES.STAR:
+			new_query.add("cram_cell_synthesis_available", following_body.metadata.get("cram_cell_synthesis_available", true))
+			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
 		starSystemAPI.BODY_TYPES.SHIP:
 			body_query_add_unit_type_shared(new_query, following_body)
@@ -508,6 +510,13 @@ func _on_player_following_body(following_body: bodyAPI):
 			match RETURN_STATE:
 				"HARD_LEAVE":
 					following_body.metadata["migration_analysis_available"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+				_:
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+		starSystemAPI.BODY_TYPES.STAR:
+			match RETURN_STATE:
+				"HARD_LEAVE":
+					following_body.metadata["cram_cell_synthesis_available"] = false
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)

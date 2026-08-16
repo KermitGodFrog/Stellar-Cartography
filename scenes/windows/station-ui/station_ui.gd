@@ -39,7 +39,8 @@ const upgrade_data = {
 	playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR: {"cost": 25000, "description": "Optimization of the LIDAR system internals.\n[color=lightblue][ -1.0s LIDAR cooldown ][/color]"},
 	playerAPI.UPGRADE_ID.MIGRATION_ANALYSIS: {"cost": 25000, "description": "(UNFINISHED)"},
 	playerAPI.UPGRADE_ID.FASTER_PROCESSING: {"cost": 25000, "description": "(UNFINISHED)\n[color=lightblue][ -30.0s BACKGROUND PROCESSING pointer cooldown ][/color]"},
-	playerAPI.UPGRADE_ID.PRECISION_PROCESSING: {"cost": 25000, "description": "(UNFINISHED)\n[color=lightblue][ -40.0 BACKGROUND PROCESSING pointer radius ][/color]\n[color=tomato][ +10.0s BACKGROUND PROCESSING pointer cooldown ][/color]"}
+	playerAPI.UPGRADE_ID.PRECISION_PROCESSING: {"cost": 25000, "description": "(UNFINISHED)\n[color=lightblue][ -40.0 BACKGROUND PROCESSING pointer radius ][/color]\n[color=tomato][ +10.0s BACKGROUND PROCESSING pointer cooldown ][/color]"},
+	playerAPI.UPGRADE_ID.CRAM_CELL_SYNTHESIS: {"cost": 25000, "description": "(UNFINISHED)"}
 }
 
 var station: stationBodyAPI
