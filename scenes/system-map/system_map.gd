@@ -201,8 +201,8 @@ func _physics_process(delta):
 	ping_prediction_upgrade._SONAR_POLYGON_DISPLAY_TIME = SONAR_POLYGON_DISPLAY_TIME
 	
 	bg_processing_upgrade._system = system
-	bg_processing_upgrade.ping_cooldown = bg_processing_cooldown
-	bg_processing_upgrade.ping_radius = bg_processing_radius
+	bg_processing_upgrade.pointer_cooldown = bg_processing_cooldown
+	bg_processing_upgrade.pointer_radius = bg_processing_radius
 	
 	current_action_label._player_position_matrix = player_position_matrix
 	

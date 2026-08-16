@@ -2,13 +2,13 @@ extends Node2D
 
 @onready var cooldown = $cooldown
 
-var ping_cooldown: float = 60.0: #playerAPI bg_processing_cooldown
+var pointer_cooldown: float = 60.0: #playerAPI bg_processing_cooldown
 	set(value):
-		ping_cooldown = value
-		cooldown.set_wait_time(ping_cooldown)
-var ping_radius: float = 125.0 #playerAPI bg_processing_radius
+		pointer_cooldown = value
+		cooldown.set_wait_time(pointer_cooldown)
+var pointer_radius: float = 125.0 #playerAPI bg_processing_radius
 var draw_pings: bool = false
-const ping_outline_size: float = 10.0
+const pointer_outline_size: float = 10.0
 
 var PINGS: Array[pingDisplayHelper]
 
@@ -38,7 +38,7 @@ func _physics_process(delta: float) -> void:
 func _draw() -> void:
 	for ping in PINGS:
 		ping.updateDisplay()
-		draw_circle(ping.position, ping_radius * ping.current_radius, ping.current_color, false, ping_outline_size)
+		draw_circle(ping.position, pointer_radius * ping.current_radius, ping.current_color, false, pointer_outline_size)
 	pass
 
 func _on_cooldown_timeout() -> void:
@@ -54,7 +54,7 @@ func _on_cooldown_timeout() -> void:
 		
 		if potential_targets.size() > 0:
 			var target: orbitBodyAPI = potential_targets.pick_random()
-			ping.position = target.position + Vector2(0.0, global_data.get_randf(0.0, ping_radius - (ping_outline_size / 2.0) - (ping_radius * 0.1))).rotated(deg_to_rad(global_data.get_randf(0,360)))
+			ping.position = target.position + Vector2(0.0, global_data.get_randf(0.0, pointer_radius - (pointer_outline_size / 2.0) - (pointer_radius * 0.1))).rotated(deg_to_rad(global_data.get_randf(0,360)))
 			ping.resetTime()
 			PINGS.append(ping)
 			get_tree().call_group("audioHandler", "play_once", load("uid://ddcqj11jyfxnl"), -6.0, "SFX")

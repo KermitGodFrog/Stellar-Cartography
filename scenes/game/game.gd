@@ -977,6 +977,11 @@ func _on_unlock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 				world.player.speed -= 1
 			playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR:
 				world.player.LIDAR_cooldown -= 1
+			playerAPI.UPGRADE_ID.FASTER_PROCESSING:
+				world.player.bg_processing_cooldown -= 30
+			playerAPI.UPGRADE_ID.PRECISION_PROCESSING:
+				world.player.bg_processing_radius -= 40
+				world.player.bg_processing_cooldown += 10
 		
 		_on_upgrade_state_change(upgrade_idx, true)
 	pass
@@ -1003,6 +1008,11 @@ func _on_lock_upgrade(upgrade_idx: playerAPI.UPGRADE_ID):
 				world.player.speed += 1
 			playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR:
 				world.player.LIDAR_cooldown += 1
+			playerAPI.UPGRADE_ID.FASTER_PROCESSING:
+				world.player.bg_processing_cooldown += 30
+			playerAPI.UPGRADE_ID.PRECISION_PROCESSING:
+				world.player.bg_processing_radius += 40
+				world.player.bg_processing_cooldown -= 10
 		
 		_on_upgrade_state_change(upgrade_idx, false)
 	pass

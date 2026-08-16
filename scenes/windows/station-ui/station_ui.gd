@@ -26,7 +26,7 @@ const upgrade_data = {
 	playerAPI.UPGRADE_ID.AUDIO_VISUALIZER: {"cost": 35000, "description": "(SPECIAL) Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."},
 	playerAPI.UPGRADE_ID.NANITE_CONTROLLER: {"cost": 25000, "description": "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost."},
 	playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES: {"cost": 35000, "description": "(SPECIAL) Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."},
-	playerAPI.UPGRADE_ID.PING_PREDICTION: {"cost": 7500, "description": "Ping prediction algorithms. Allow LIDAR scan arcs to be visible on the SYSTEM MAP before the 'PING' button is pressed."},
+	playerAPI.UPGRADE_ID.PING_PREDICTION: {"cost": 7500, "description": "Ping prediction algorithms. Allow LIDAR ping arcs to be visible on the SYSTEM MAP before the 'PING' button is pressed."},
 	playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR: {"cost": 35000, "description": "(SPECIAL) Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."},
 	playerAPI.UPGRADE_ID.DRAG_DRIVES: {"cost": 15000, "description": "Experimental changes to the engine nozzle and fuel injection system.\n[color=lightblue][ +1 speed ][/color]\n[color=tomato][ +8.75 scanner profile ][/color]"},
 	playerAPI.UPGRADE_ID.ENVOY_PROGRAM: {"cost": 9000, "description": "(UNFINISHED)"},
@@ -35,11 +35,11 @@ const upgrade_data = {
 	playerAPI.UPGRADE_ID.STEALTH_COMPOSITES: {"cost": 15000, "description": "An outer hull coating designed to absorb electromagnetic radiation.\n[color=lightblue][ -6.25 scanner profile ][/color]"},
 	playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING: {"cost": 7500, "description": "(UNFINISHED)"},
 	playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW: {"cost": 15000, "description": "Forcing extra fuel through the injector for a higher thrust output. The side effect is a far brighter exhaust.\n[color=lightblue][ +1 speed ][/color]\n[color=tomato][ +25 scanner profile ][/color]"},
-	playerAPI.UPGRADE_ID.HEAT_SINK: {"cost": 15000, "description": "A device that stores the heat produced by a starship, rather than radiating it away. When full, the heat sink is ejected into space and replaced. This reduces the thermal signature of the ship, but it can't move as much heat as external radiators.\n[color=lightblue][ -6.25 scanner profile ][/color][color=tomato][ -1 speed ][/color]"},
-	playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR: {"cost": 25000, "description": "Optimization of the LIDAR system internals.\n[color=lightblue][ -1s LIDAR cooldown ][/color]"},
-	playerAPI.UPGRADE_ID.MIGRATION_ANALYSIS: {"cost": 25000, "description": "(UNFINISHED)"}
-#	playerAPI.UPGRADE_ID.FASTER_PROCESSING: {"cost": 25000, "description": ""},
-#	playerAPI.UPGRADE_ID.PRECISION_PROCESSING: {"cost": 25000, "description": ""}
+	playerAPI.UPGRADE_ID.HEAT_SINK: {"cost": 15000, "description": "A device that stores the heat produced by a starship rather than radiating it away. When full, the heat sink is ejected into space and replaced. This reduces the thermal signature of the ship, but it can't move as much heat as external radiators.\n[color=lightblue][ -6.25 scanner profile ][/color][color=tomato][ -1 speed ][/color]"},
+	playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR: {"cost": 25000, "description": "Optimization of the LIDAR system internals.\n[color=lightblue][ -1.0s LIDAR cooldown ][/color]"},
+	playerAPI.UPGRADE_ID.MIGRATION_ANALYSIS: {"cost": 25000, "description": "(UNFINISHED)"},
+	playerAPI.UPGRADE_ID.FASTER_PROCESSING: {"cost": 25000, "description": "(UNFINISHED)\n[color=lightblue][ -30.0s BACKGROUND PROCESSING pointer cooldown ][/color]"},
+	playerAPI.UPGRADE_ID.PRECISION_PROCESSING: {"cost": 25000, "description": "(UNFINISHED)\n[color=lightblue][ -40.0 BACKGROUND PROCESSING pointer radius ][/color]\n[color=tomato][ +10.0s BACKGROUND PROCESSING pointer cooldown ][/color]"}
 }
 
 var station: stationBodyAPI
