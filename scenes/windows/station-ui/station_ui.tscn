@@ -187,6 +187,7 @@ vertical_alignment = 1
 
 [node name="SPL_disclaimer_label" type="Label" parent="station_control/upgrade_container"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.84705883, 0.7490196, 0.84705883, 1)
 theme_override_font_sizes/font_size = 12
 text = "(0/0 SPECIAL UPGRADES)"
 horizontal_alignment = 1

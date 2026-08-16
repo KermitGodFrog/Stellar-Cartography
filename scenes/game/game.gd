@@ -931,7 +931,7 @@ func _on_sell_exploration_data(sell_percentage_of_market_price: int):
 	pass
 
 func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
-	print("GAME: UPGRADING SHIP")
+	print_debug("GAME: UPGRADING SHIP")
 	if world.player.balance >= cost and (world.player.is_upgrade_unlock_valid(upgrade_idx)):
 		world.player.decreaseBalance(cost)
 		_on_unlock_upgrade(upgrade_idx)
@@ -944,7 +944,7 @@ func _on_upgrade_ship(upgrade_idx: playerAPI.UPGRADE_ID, cost: int):
 	pass
 
 func _on_refund_upgrade(upgrade_idx: playerAPI.UPGRADE_ID, refund: int) -> void:
-	print("GAME: REFUNDING UPGRADE")
+	print_debug("GAME: REFUNDING UPGRADE")
 	if world.player.is_upgrade_unlocked(upgrade_idx):
 		world.player.increaseBalance(refund)
 		_on_lock_upgrade(upgrade_idx)

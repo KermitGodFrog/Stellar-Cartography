@@ -271,6 +271,9 @@ static func get_all_upgrades_with_no_requirements() -> Array[UPGRADE_ID]:
 			no_req_upgrades.append(u)
 	return no_req_upgrades
 
+static func is_upgrade_SPL(upgrade_idx: UPGRADE_ID) -> bool:
+	return SPL_upgrade_IDs.has(upgrade_idx)
+
 
 
 

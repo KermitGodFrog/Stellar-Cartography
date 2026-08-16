@@ -23,11 +23,11 @@ func _on_pause_mode_changed(value):
 
 const upgrade_data = {
 	playerAPI.UPGRADE_ID.ADVANCED_ANALYSIS: {"cost": 7500, "description": "Advanced analysis capability.\n[color=lightblue][ +10% chance to detect planetary and space anomalies ][/color]"},
-	playerAPI.UPGRADE_ID.AUDIO_VISUALIZER: {"cost": 35000, "description": "(SPECIAL) Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."},
+	playerAPI.UPGRADE_ID.AUDIO_VISUALIZER: {"cost": 35000, "description": "[color=THISTLE](SPECIAL)[/color] Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition."},
 	playerAPI.UPGRADE_ID.NANITE_CONTROLLER: {"cost": 25000, "description": "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost."},
-	playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES: {"cost": 35000, "description": "(SPECIAL) Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."},
+	playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES: {"cost": 35000, "description": "[color=THISTLE](SPECIAL)[/color] Longer range scopes. Allow Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account."},
 	playerAPI.UPGRADE_ID.PING_PREDICTION: {"cost": 7500, "description": "Ping prediction algorithms. Allow LIDAR ping arcs to be visible on the SYSTEM MAP before the 'PING' button is pressed."},
-	playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR: {"cost": 35000, "description": "(SPECIAL) Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."},
+	playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR: {"cost": 35000, "description": "[color=THISTLE](SPECIAL)[/color] Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse."},
 	playerAPI.UPGRADE_ID.DRAG_DRIVES: {"cost": 15000, "description": "Experimental changes to the engine nozzle and fuel injection system.\n[color=lightblue][ +1 speed ][/color]\n[color=tomato][ +8.75 scanner profile ][/color]"},
 	playerAPI.UPGRADE_ID.ENVOY_PROGRAM: {"cost": 9000, "description": "(UNFINISHED)"},
 	playerAPI.UPGRADE_ID.IMPROVED_MAGNIFICATION: {"cost": 15000, "description": "Improvements to the optical tube to allow more light to enter scopes. Increases the range wherein bodies can be discovered by roughly 2x (when fully zoomed in).\n[color=lightblue][ -5 minimum scopes FOV ][/color]"},
@@ -213,6 +213,11 @@ func add_upgrade_button(upgrade: playerAPI.UPGRADE_ID, unlocked: bool) -> void:
 	instance.description = data.get("description")
 	instance.connect("pressed", _on_upgrade_pressed.bind(instance.upgrade, instance.cost, instance.unlocked))
 	instance.connect("mouse_entered", _on_upgrade_mouse_entered.bind(instance.upgrade, instance.description))
+	
+	if playerAPI.is_upgrade_SPL(upgrade):
+		instance.set("theme_override_colors/font_color", Color.THISTLE)
+		instance.set("theme_override_colors/font_hover_color", Color.THISTLE)
+		instance.set("theme_override_colors/font_focus_color", Color.THISTLE)
 	
 	match instance.unlocked:
 		true:
