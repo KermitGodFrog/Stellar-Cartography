@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=71 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://4r5ju0dq0137" path="res://graphics/system-map/status-panel/nanites_icon.png" id="10_e6b7x"]
 [ext_resource type="Texture2D" uid="uid://7klr1mcpbsc4" path="res://graphics/system-map/actions-panel/go_to_icon.png" id="10_xhqpl"]
 [ext_resource type="Script" uid="uid://oifivdox788" path="res://scenes/system-map/status-panel/status_control.gd" id="10_ydc85"]
+[ext_resource type="Texture2D" uid="uid://4tpe2ilrlle6" path="res://graphics/system-map/star_infographic_panel.png" id="11_0fvur"]
 [ext_resource type="Script" uid="uid://dskivfpkly04v" path="res://scenes/system-map/status-panel/primary_status_button.gd" id="11_1rwmm"]
 [ext_resource type="Texture2D" uid="uid://dq25m1n2y5upl" path="res://graphics/system-map/status-panel/hull_stress_icon.png" id="11_1tiv0"]
 [ext_resource type="PackedScene" uid="uid://co52u63cyk220" path="res://scenes/gizmos/system-3d/system_3d.tscn" id="11_domud"]
@@ -275,9 +276,10 @@ size_flags_vertical = 3
 mouse_filter = 0
 theme = ExtResource("3_djc4s")
 tab_alignment = 2
-current_tab = 0
+current_tab = 1
 
 [node name="OVERVIEW" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs"]
+visible = false
 layout_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 1
@@ -312,7 +314,6 @@ hide_root = true
 scroll_horizontal_enabled = false
 
 [node name="INFO" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs"]
-visible = false
 layout_mode = 2
 mouse_filter = 0
 theme = ExtResource("3_djc4s")
@@ -325,7 +326,6 @@ theme = ExtResource("3_djc4s")
 theme_override_colors/font_color = Color(0.87451, 1, 0.862745, 1)
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_ee55b")
-text = "CBCBCBCBCB"
 vertical_alignment = 1
 clip_text = true
 
@@ -335,6 +335,169 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("3_djc4s")
 allow_search = false
+
+[node name="star_infographic_panel" type="PanelContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+
+[node name="v_scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel"]
+layout_mode = 2
+
+[node name="h_scroll" type="HBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll"]
+layout_mode = 2
+alignment = 1
+
+[node name="tex" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll"]
+modulate = Color(0, 1, 0, 1)
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("11_0fvur")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll/tex"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "M"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="tex2" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll"]
+modulate = Color(0.47058824, 1, 0, 1)
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("11_0fvur")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll/tex2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "K"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="tex3" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll"]
+modulate = Color(0.7058824, 1, 0, 1)
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("11_0fvur")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll/tex3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "G"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="tex4" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll"]
+modulate = Color(0.7058824, 1, 0, 1)
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("11_0fvur")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll/tex4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "P"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="tex5" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll"]
+modulate = Color(1, 1, 0, 1)
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("11_0fvur")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll/tex5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "F"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="tex6" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll"]
+modulate = Color(1, 0.7058824, 0, 1)
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("11_0fvur")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll/tex6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="tex7" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll"]
+modulate = Color(1, 0.3137255, 0, 1)
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("11_0fvur")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll/tex7"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "B"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="tex8" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll"]
+modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("11_0fvur")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/h_scroll/tex8"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "O"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="picker_header" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO"]
 layout_mode = 2
