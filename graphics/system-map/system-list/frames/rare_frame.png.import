@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://6b8g2de5g7qo"
-path="res://.godot/imported/high_value_frame.png-e7bd2a2192d5e02847e2bf739d0ff7cf.ctex"
+path="res://.godot/imported/rare_frame.png-437e0a8c8ffb376cd10665bbdc20c6a3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/system-map/system-list/frames/high_value_frame.png"
-dest_files=["res://.godot/imported/high_value_frame.png-e7bd2a2192d5e02847e2bf739d0ff7cf.ctex"]
+source_file="res://graphics/system-map/system-list/frames/rare_frame.png"
+dest_files=["res://.godot/imported/rare_frame.png-437e0a8c8ffb376cd10665bbdc20c6a3.ctex"]
 
 [params]
 

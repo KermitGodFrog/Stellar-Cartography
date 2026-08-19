@@ -1,13 +1,6 @@
 extends circularBodyAPI
 class_name planetBodyAPI
 
-const habitable_planet_types = [
-	"Hycean",
-	"Desert",
-	"Ocean",
-	"Earth-like"
-]
-
 
 #Audio Visualizer
 enum VARIATIONS {LOW, MEDIUM, HIGH}
@@ -42,6 +35,17 @@ func set_gas_layers_sum(value) -> void:
 	pass
 
 func is_habitable() -> bool:
-	if metadata.get("planet_type", String()) in habitable_planet_types:
-		return true
+	var type_data = starSystemAPI.planet_type_data.get(metadata.get("planet_type"))
+	if type_data != null:
+		var conditions: Array = type_data.get("conditions")
+		if conditions.has("habitable"):
+			return true
+	return false
+
+func is_rare() -> bool:
+	var type_data = starSystemAPI.planet_type_data.get(metadata.get("planet_type"))
+	if type_data != null:
+		var conditions: Array = type_data.get("conditions")
+		if conditions.has("rare"):
+			return true
 	return false

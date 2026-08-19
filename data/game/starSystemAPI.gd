@@ -100,15 +100,17 @@ const planet_types = {
 		"Sulfur": {"name": "Sulfur", "weight": 0.3},
 		"Coreless": {"name": "Coreless", "weight": 0.3},
 		"Carbon": {"name": "Carbon", "weight": 0.1},
+		"Massive Solid": {"name": "Massive Solid", "weight": 0.00625} 
 	}],
 	"Neptunian": [{ # pre hab
 		"Fire Dwarf": {"name": "Fire Dwarf", "weight": 0.5}
 	}, { # hab
-		"Gas Dwarf": {"name": "Gas Dwarf", "weight": 0.5}
+		"Gas Dwarf": {"name": "Gas Dwarf", "weight": 0.5},
+		"Breathable Dwarf": {"name": "Breathable Dwarf", "weight": 0.00625} 
 	}, { # post hab
 		"Ice Dwarf": {"name": "Ice Dwarf", "weight": 0.5}
 	}, { # shared
-		"Helium Dwarf": {"name": "Helium Dwarf", "weight": 0.1}
+		"Helium Dwarf": {"name": "Helium Dwarf", "weight": 0.1},
 	}],
 	"Jovian": [{ # pre hab
 		"Fire Giant": {"name": "Fire Giant", "weight": 0.5}
@@ -118,30 +120,35 @@ const planet_types = {
 		"Ice Giant": {"name": "Ice Giant", "weight": 0.5}
 	}, { # shared
 		"Helium Giant": {"name": "Helium Giant", "weight": 0.1},
+		"Borderline Giant": {"name": "Borderline Giant", "weight": 0.00625} 
 	}]
 }
 
 const planet_type_data = {
-	"Chthonian": {"color": Color.DARK_RED, "avg_value": 4000, "variation_class": "density"},
-	"Lava": {"color": Color.RED, "avg_value": 3000, "variation_class": "geological_activity"},
-	"Hycean": {"color": Color.BLUE_VIOLET, "avg_value": 10000, "variation_class": "hydrogen_content"},
-	"Desert": {"color": Color.DARK_KHAKI, "avg_value": 10000, "variation_class": "humidity"},
-	"Ocean": {"color": Color.BLUE, "avg_value": 15000, "variation_class": "average_water_depth"},
-	"Earth-like": {"color": Color.GREEN, "avg_value": 15000, "variation_class": "cloud_cover"},
-	"Ice": {"color": Color.WHITE, "avg_value": 2500, "variation_class": "surface_reflectivity"},
-	"Iron": {"color": Color.DARK_GRAY, "avg_value": 1000, "variation_class": "iron_core_size"},
-	"Nickel": {"color": Color.LIGHT_SLATE_GRAY, "avg_value": 1000, "variation_class": "nickel_core_size"},
-	"Sulfur": {"color": Color.WEB_GRAY, "avg_value": 1000, "variation_class": "sulfur_core_size"},
-	"Coreless": {"color": Color.SLATE_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude"},
-	"Carbon": {"color": Color.BLACK, "avg_value": 2500, "variation_class": "carbon_oxygen_difference"},
-	"Fire Dwarf": {"color": Color.LIGHT_CORAL, "avg_value": 1000, "variation_class": "wind_speed"},
-	"Gas Dwarf": {"color": Color.ORANGE, "avg_value": 2000, "variation_class": "water_content"},
-	"Ice Dwarf": {"color": Color.DARK_BLUE, "avg_value": 3000, "variation_class": "volatile_content"},
-	"Helium Dwarf": {"color": Color.DARK_ORANGE, "avg_value": 4500, "variation_class": "noble_gas_content"},
-	"Fire Giant": {"color": Color.DARK_SALMON, "avg_value": 1000, "variation_class": "wind_speed"},
-	"Gas Giant": {"color": Color.CORAL, "avg_value": 2000, "variation_class": "water_content"},
-	"Ice Giant": {"color": Color.DARK_SLATE_BLUE, "avg_value": 3000, "variation_class": "volatile_content"},
-	"Helium Giant": {"color": Color.ORANGE_RED, "avg_value": 4500, "variation_class": "noble_gas_content"} 
+	"Chthonian": {"color": Color.DARK_RED, "avg_value": 4000, "variation_class": "density", "conditions": []},
+	"Lava": {"color": Color.RED, "avg_value": 3000, "variation_class": "geological_activity", "conditions": []},
+	"Hycean": {"color": Color.BLUE_VIOLET, "avg_value": 10000, "variation_class": "hydrogen_content", "conditions": ["rare", "habitable"]},
+	"Desert": {"color": Color.DARK_KHAKI, "avg_value": 10000, "variation_class": "humidity", "conditions": ["rare", "habitable"]},
+	"Ocean": {"color": Color.BLUE, "avg_value": 15000, "variation_class": "average_water_depth", "conditions": ["rare", "habitable"]},
+	"Earth-like": {"color": Color.GREEN, "avg_value": 15000, "variation_class": "cloud_cover", "conditions": ["rare", "habitable"]},
+	"Ice": {"color": Color.WHITE, "avg_value": 2500, "variation_class": "surface_reflectivity", "conditions": []},
+	"Iron": {"color": Color.DARK_GRAY, "avg_value": 1000, "variation_class": "iron_core_size", "conditions": []},
+	"Nickel": {"color": Color.LIGHT_SLATE_GRAY, "avg_value": 1000, "variation_class": "nickel_core_size", "conditions": []},
+	"Sulfur": {"color": Color.WEB_GRAY, "avg_value": 1000, "variation_class": "sulfur_core_size", "conditions": []},
+	"Coreless": {"color": Color.SLATE_GRAY, "avg_value": 1000, "variation_class": "terrain_amplitude", "conditions": []},
+	"Carbon": {"color": Color.BLACK, "avg_value": 2500, "variation_class": "carbon_oxygen_difference", "conditions": []},
+	"Fire Dwarf": {"color": Color.LIGHT_CORAL, "avg_value": 1000, "variation_class": "wind_speed", "conditions": []},
+	"Gas Dwarf": {"color": Color.ORANGE, "avg_value": 2000, "variation_class": "water_content", "conditions": []},
+	"Ice Dwarf": {"color": Color.DARK_BLUE, "avg_value": 3000, "variation_class": "volatile_content", "conditions": []},
+	"Helium Dwarf": {"color": Color.DARK_ORANGE, "avg_value": 4500, "variation_class": "noble_gas_content", "conditions": []},
+	"Fire Giant": {"color": Color.DARK_SALMON, "avg_value": 1000, "variation_class": "wind_speed", "conditions": []},
+	"Gas Giant": {"color": Color.CORAL, "avg_value": 2000, "variation_class": "water_content", "conditions": []},
+	"Ice Giant": {"color": Color.DARK_SLATE_BLUE, "avg_value": 3000, "variation_class": "volatile_content", "conditions": []},
+	"Helium Giant": {"color": Color.ORANGE_RED, "avg_value": 4500, "variation_class": "noble_gas_content", "conditions": []},
+	# rare
+	"Breathable Dwarf": {"color": Color.LIGHT_SKY_BLUE, "avg_value": 15000, "variation_class": "water_content", "conditions": ["rare"]},
+	"Massive Solid": {"color": Color.SLATE_GRAY, "avg_value": 15000, "variation_class": "terrain_amplitude", "conditions": ["rare", "planet_only"]},
+	"Borderline Giant": {"color": Color.WEB_MAROON, "avg_value": 15000, "variation_class": "helium_content", "conditions": ["rare", "planet_only"]}
 	#dwarfs and giants have the same audio data and thus can have the same variation class!
 }
 
@@ -166,20 +173,23 @@ const planet_descriptions = { #currently accessed by: go-to interactions
 	"Fire Giant": "A gaseous planet with a high surface-atmosphere temperature and subsequent low atmospheric density.",
 	"Gas Giant": "A gaseous planet composed mainly of hydrogen and helium.",
 	"Ice Giant": "A cold gaseous planet composed of oxygen, carbon, nitrogen, sulfur and other heavier elements.",
-	"Helium Giant": "A gaseous planet composed of helium in quantity, with high levels of hydrogen monoxide and dioxide, while being entirely devoid of methane."
+	"Helium Giant": "A gaseous planet composed of helium in quantity, with high levels of hydrogen monoxide and dioxide, while being entirely devoid of methane.",
+	# rare
+	"Breathable Dwarf": "A gaseous planet with enough oxygen, nitrogen and warmth at certain altitudes to be human breathable. Realistically, a human would be crushed by the gravity before they could take a breath.", #otherwise comparable to a Gas Dwarf
+	"Massive Solid": "A solid planet composed of silicate, water, carbon and trace rare elements, which is notable for being far more massive and dense than normal solid planets.",
+	"Borderline Giant": "A gaseous planet composed mainly of hydrogen and helium that is large enough to sustain deuterium fusion, but too small to sustain nuclear fusion and become a star.",
 }
 
 const star_descriptions = { #currently accessed by: go-to interactions
-	"M": "NO DESCRIPTION YET",
-	"K": "NO DESCRIPTION YET",
-	"G": "NO DESCRIPTION YET",
-	"F": "NO DESCRIPTION YET",
-	"A": "NO DESCRIPTION YET",
-	"B": "NO DESCRIPTION YET",
-	"O": "NO DESCRIPTION YET",
-	"Pulsar": "NO DESCRIPTION YET"
+	"M": "A main sequence star with a surface temperature between 2,600–3,850 K.", #2,600–3,850 K
+	"K": "A main sequence star with a surface temperature between 4,000–5,250 K.", #4,000–5,250 K
+	"G": "A main sequence star with a surface temperature between 5,500–6,000 K.", #5,500–6,000 K
+	"F": "A main sequence star with a surface temperature between 6,000–7,200 K.", #6,000–7,200 K
+	"A": "A main sequence star with a surface temperature between 7,500–10,000 K.", #7,500–10,000 K
+	"B": "A main sequence star with a surface temperature between 10,500–30,000 K.", #10,500–30,000 K
+	"O": "A main sequence star with a surface temperature of 33,000 K or higher.", #33,000 K or more
+	"Pulsar": "A rotating neutron star that emits beams of electromagnetic radiation out of its poles." #42,000 K or more
 }
-
 
 var LOW_VAR = planetBodyAPI.VARIATIONS.LOW #var LOW_VAR = bodyAPI.VARIATIONS.LOW
 var MED_VAR = planetBodyAPI.VARIATIONS.MEDIUM #var MED_VAR = bodyAPI.VARIATIONS.MEDIUM
@@ -206,6 +216,10 @@ var planet_type_audio_data = {
 	"Gas Giant": {LOW_VAR: [-80,-80,-12,-12], MED_VAR: [-80,-80,-6,-12], HIGH_VAR: [-80,-80,0,-12]},
 	"Ice Giant": {LOW_VAR: [-80,0,-80,-12], MED_VAR: [-80,-6,-80,-6], HIGH_VAR: [-80,-12,-80,0]},
 	"Helium Giant": {LOW_VAR: [-12,-12,-80,-80], MED_VAR: [-6,-6,-80,-80], HIGH_VAR: [0,0,-80,-80]},
+	# rare
+	"Breathable Dwarf": {LOW_VAR: [-80,-80,-12,-12], MED_VAR: [-80,-80,-6,-12], HIGH_VAR: [-80,-80,0,-12]}, #same as Gas Dwarf, Gas Giant
+	"Massive Solid": {LOW_VAR: [-80,-70,-80,-80], MED_VAR: [-80,-24,-80,-80], HIGH_VAR: [-80,-6,-80,-80]},
+	"Borderline Giant": {LOW_VAR: [-70,-80,-80,-70], MED_VAR: [-12,-80,-80,-12], HIGH_VAR: [0,-80,-70,0]}
 }
 
 const asteroid_belt_classifications = {
@@ -565,7 +579,7 @@ func addRandomWeightedPlanetAtIteration(hook_identifier: int, i: int, remaining:
 		planet_classification = global_data.weighted_pick(planet_classifications, "weight")
 	
 	#PICKING PLANET TYPE
-	var planet_type
+	var planet_type: String
 	var categories = planet_types.get(planet_classification)
 	var candidates: Dictionary
 	if hook.get_type() == BODY_TYPES.STAR:
@@ -579,7 +593,20 @@ func addRandomWeightedPlanetAtIteration(hook_identifier: int, i: int, remaining:
 			candidates = categories[2].duplicate()
 			candidates.merge(categories[3])
 	else: candidates = categories[3]
-	planet_type = global_data.weighted_pick(candidates, "weight")
+	
+	var conditions_adj_candidates: Dictionary = {}
+	for c in candidates:
+		var type_data: Dictionary = planet_type_data.get(c)
+		var conditions: Array = type_data.get("conditions", [])
+		if conditions.has("planet_only"):
+			if not hook.get_type() == BODY_TYPES.STAR:
+				continue
+		elif conditions.has("moon_only"):
+			if hook.get_type() == BODY_TYPES.STAR:
+				continue
+		conditions_adj_candidates[c] = candidates.get(c)
+	
+	planet_type = global_data.weighted_pick(conditions_adj_candidates, "weight")
 	
 	#PICKING PLANET MASS
 	var mass: float
@@ -609,6 +636,17 @@ func addRandomWeightedPlanetAtIteration(hook_identifier: int, i: int, remaining:
 	#print("HOST RADIUS (EARTH RADII): ", hook.radius * 109.1)
 	#print("MAXIMUM RADIUS CONSOLIDATED: ", minf(data.get("earth_radius_max"), hook.radius * 109.1 * 0.75))
 	#print("------------")
+	
+	#setting radius and mass for certain 'rare' planet types:
+	match planet_type:
+		"Massive Solid":
+			radius = global_data.get_randf(2.1, 5.0) #guesstimation by looking at the wikipedia page for 'Mega Earths'
+			mass = global_data.get_randf(16.0, 300.0) #guesstimation by looking at the wikipedia page for 'Mega Earths'
+		"Borderline Giant":
+			var max_radius: float = minf(data.get("earth_radius_max"), hook.radius * 109.1 * 0.75)
+			radius = global_data.get_randf(max_radius * 0.8, max_radius)
+			var max_mass: float = minf(data.get("earth_mass_max"), hook.mass * 333000 * 0.75)
+			mass = global_data.get_randf(max_mass * 0.8, max_mass)
 	
 	#PICKING SPEED
 	var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)

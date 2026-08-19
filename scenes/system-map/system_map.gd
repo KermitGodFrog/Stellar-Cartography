@@ -460,7 +460,6 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 					else:
 						item.set_custom_bg_color(0, Color(0.18, 0.18, 0.18, 0.416))
 					
-					
 					if (body.metadata.get("cram_cell_synthesis_available", true) == true) and (player_cram_cell_synthesis_unlocked == true):
 						item.set_icon(0, get_darker_icon.call(item))
 						item.set_icon_overlay(0, load("uid://0mqwjttqbm1i"))
@@ -482,7 +481,7 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 						item.set_icon(0, get_darker_icon.call(item))
 						item.set_icon_overlay(0, load("uid://pbgoomdkkj6h"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
-					elif body.is_habitable():
+					elif body.is_rare():
 						item.set_icon_overlay(0, load("uid://6b8g2de5g7qo"))
 					
 					#if body.is_habitable():
@@ -1152,7 +1151,7 @@ func _on_found_body(id: int):
 				get_tree().call_group("audioHandler", "play_once", LIDAR_discovery, 0.0, "SFX")
 			
 			if body.get_type() == starSystemAPI.BODY_TYPES.PLANET:
-				if body.is_habitable():
+				if body.is_rare():
 					get_tree().call_group("audioHandler", "plot_radio", load("uid://crkhwlwd0qqkh"))
 	pass
 
