@@ -22,24 +22,96 @@ func _on_pause_mode_changed(value):
 
 
 const upgrade_data = {
-	playerAPI.UPGRADE_ID.ADVANCED_ANALYSIS: {"cost": 7500, "description": "Advanced analysis capability.", "effect": "[color=lightblue][ +10% chance to detect planetary and space anomalies ][/color]"},
-	playerAPI.UPGRADE_ID.AUDIO_VISUALIZER: {"cost": 35000, "description": "[color=THISTLE](SPECIAL)[/color] Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition.", "effect": "Adds the Audio Visualizer app ('AUD') to the APPS DOCK."},
-	playerAPI.UPGRADE_ID.NANITE_CONTROLLER: {"cost": 25000, "description": "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost.", "effect": "Grants the ability to press the 'HULL STRESS' entry on the STATUS PANEL to repair 1% hull stress (when the cost in nanites is available)."},
-	playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES: {"cost": 35000, "description": "[color=THISTLE](SPECIAL)[/color] Longer range scopes. Allows Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account.", "effect": "Adds the Long Range Scopes app ('LON') to the APPS DOCK."},
-	playerAPI.UPGRADE_ID.PING_PREDICTION: {"cost": 7500, "description": "Ping prediction algorithms.", "effect": "Makes LIDAR ping arcs on the SYSTEM MAP visible before the 'PING' button is pressed."},
-	playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR: {"cost": 35000, "description": "[color=THISTLE](SPECIAL)[/color] Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse.", "effect": "Adds the Gas Layer Surveyor app ('GAS') to the APPS DOCK."},
-	playerAPI.UPGRADE_ID.DRAG_DRIVES: {"cost": 15000, "description": "Experimental changes to the engine nozzle and fuel injection system.", "effect": "[color=lightblue][ +1 speed ][/color]\n[color=tomato][ +8.75 scanner profile ][/color]"},
-	playerAPI.UPGRADE_ID.IMPROVED_MAGNIFICATION: {"cost": 15000, "description": "Improvements to the optical tube which allow more light to enter scopes. Increases how far scopes can zoom in, and thus the range where bodies can be discovered while fully zoomed in.", "effect": "[color=lightblue][ -5 minimum scopes FOV ][/color]"},
-	playerAPI.UPGRADE_ID.ENHANCED_SCANNERS: {"cost": 15000, "description": "Addition of several high gain antennas to the passive scanner array.", "effect": "[color=lightblue][ +12.5 scanner power ][/color]"},
-	playerAPI.UPGRADE_ID.STEALTH_COMPOSITES: {"cost": 15000, "description": "An outer hull coating designed to absorb electromagnetic radiation.", "effect": "[color=lightblue][ -6.25 scanner profile ][/color]"},
-	playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING: {"cost": 7500, "description": "An alteration to the computer that forces a long list of procedures for locating bodies to run in the background.", "effect": "In star systems with a star type of F or larger, a 'pointer circle' will occasionally appear on the SYSTEM MAP. One undiscovered/unmarked body will always be within the area of the 'pointer circle'."},
-	playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW: {"cost": 15000, "description": "Forcing extra fuel through the injector for a higher thrust output. The side effect is a far brighter exhaust.", "effect": "[color=lightblue][ +1 speed ][/color]\n[color=tomato][ +25 scanner profile ][/color]"},
-	playerAPI.UPGRADE_ID.HEAT_SINK: {"cost": 15000, "description": "A device that stores the heat produced by a starship rather than radiating it away. When full, the heat sink is ejected into space and replaced. This reduces the thermal signature of the ship, but it can't move as much heat as external radiators.", "effect": "[color=lightblue][ -6.25 scanner profile ][/color][color=tomato][ -1 speed ][/color]"},
-	playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR: {"cost": 25000, "description": "Optimization of the LIDAR system internals.", "effect": "[color=lightblue][ -1.0s LIDAR cooldown ][/color]"},
-	playerAPI.UPGRADE_ID.MIGRATION_ANALYSIS: {"cost": 25000, "description": "Observing the life found within Stellar Phenomena can determine the location of bodies in a star system. The composition of life, the direction of migration, apparent life cycle, trails of gasses or space-time distortions, and many other factors, can be used to determine where lifeforms are coming from or going to. For a team of analysts, these observations would take months, but the processing suite of this computer extension can do it in a fraction of the time.", "effect": "Upon interacting with any Stellar Phenomena for the first time, a body will likely be discovered elsewhere in the star system."},
-	playerAPI.UPGRADE_ID.FASTER_PROCESSING: {"cost": 25000, "description": "A further alteration to the computer that improves the time between pointer circle appearances.", "effect": "[color=lightblue][ -30.0s BACKGROUND PROCESSING pointer cooldown ][/color]"},
-	playerAPI.UPGRADE_ID.PRECISION_PROCESSING: {"cost": 25000, "description": "A further alteration to the computer that improves the accuracy of pointer circles. The side effect is a longer cooldown time.", "effect": "[color=lightblue][ -40.0 BACKGROUND PROCESSING pointer radius ][/color]\n[color=tomato][ +10.0s BACKGROUND PROCESSING pointer cooldown ][/color]"},
-	playerAPI.UPGRADE_ID.CRAM_CELL_SYNTHESIS: {"cost": 25000, "description": "The gasses required to synthesize compressed fuel cells ('cram cells') are not found in standard MMA or proteins. Stars have these gasses in high quantities - especially the larger ones. This collection unit can enable the synthesis of cram cells by collecting various gasses from stars.", "effect": "Upon interacting with any star for the first time, your starship might be supercharged for 1 wormhole traversal - the chance of success is greatly increased for larger star types."}
+	playerAPI.UPGRADE_ID.ADVANCED_ANALYSIS: {
+		"cost": 7500, 
+		"description": "Advanced analysis capability.", 
+		"effect": "[color=lightblue][ +10% chance to detect planetary and space anomalies ][/color]"
+	},
+	playerAPI.UPGRADE_ID.AUDIO_VISUALIZER: {
+		"cost": 35000, 
+		"description": "[color=THISTLE](SPECIAL)[/color] Audio visualisation software. Allows analysis of planetary composition by accounting for the noise a planet produces. Nanite rewards are paid to correct estimation of planetary composition.", 
+		"effect": "Adds the Audio Visualizer app ('AUD') to the APPS DOCK."
+	},
+	playerAPI.UPGRADE_ID.NANITE_CONTROLLER: {
+		"cost": 25000, 
+		"description": "Nanite control capability - made possible by specialised infrastructure and software. Allows repairs to be conducted outside of a port, at a greatly increased nanite cost.", 
+		"effect": "Grants the ability to press the 'HULL STRESS' entry on the STATUS PANEL to repair 1% hull stress (when the cost in nanites is available)."
+	},
+	playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES: {
+		"cost": 35000, 
+		"description": "[color=THISTLE](SPECIAL)[/color] Longer range scopes. Allows Stellar Phenomena to be photographed. Nanite rewards are paid for photos of quality, which take the photography style for different phenomena into account.", 
+		"effect": "Adds the Long Range Scopes app ('LON') to the APPS DOCK."
+	},
+	playerAPI.UPGRADE_ID.PING_PREDICTION: {
+		"cost": 7500, 
+		"description": "Ping prediction algorithms.", 
+		"effect": "Makes LIDAR ping arcs on the SYSTEM MAP visible before the 'PING' button is pressed."
+	},
+	playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR: {
+		"cost": 35000, 
+		"description": "[color=THISTLE](SPECIAL)[/color] Gas layer surveying capability - made possible by improved antennae and specialised probe manufactories. Probes are built to survive the crushing pressure of Neptunian and Jovian worlds. Nanite rewards are paid for correctly identifying the gas layers that probes traverse.", 
+		"effect": "Adds the Gas Layer Surveyor app ('GAS') to the APPS DOCK."
+	},
+	playerAPI.UPGRADE_ID.DRAG_DRIVES: {
+		"cost": 15000, 
+		"description": "Experimental changes to the engine nozzle and fuel injection system.", 
+		"effect": "[color=lightblue][ +1 speed ][/color]\n[color=tomato][ +8.75 scanner profile ][/color]"
+	},
+	playerAPI.UPGRADE_ID.IMPROVED_MAGNIFICATION: {
+		"cost": 15000, 
+		"description": "Improvements to the optical tube which allow more light to enter scopes. Increases how far scopes can zoom in, and thus the range where bodies can be discovered while fully zoomed in.", 
+		"effect": "[color=lightblue][ -5 minimum scopes FOV ][/color]"
+	},
+	playerAPI.UPGRADE_ID.ENHANCED_SCANNERS: {
+		"cost": 15000, 
+		"description": "Addition of several high gain antennas to the passive scanner array.", 
+		"effect": "[color=lightblue][ +12.5 scanner power ][/color]"
+	},
+	playerAPI.UPGRADE_ID.STEALTH_COMPOSITES: {
+		"cost": 15000, 
+		"description": "An outer hull coating designed to absorb electromagnetic radiation.", 
+		"effect": "[color=lightblue][ -6.25 scanner profile ][/color]"
+	},
+	playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING: {
+		"cost": 5000, 
+		"description": "An alteration to the computer that forces a long list of procedures for locating bodies to run in the background.", 
+		"effect": "In star systems with a star type of F or larger, a 'pointer circle' will occasionally appear on the SYSTEM MAP. One undiscovered/unmarked body will always be within the area of the 'pointer circle'."
+	},
+	playerAPI.UPGRADE_ID.REFINED_FUEL_FLOW: {
+		"cost": 15000, 
+		"description": "Forcing extra fuel through the injector for a higher thrust output. The side effect is a far brighter exhaust.", 
+		"effect": "[color=lightblue][ +1 speed ][/color]\n[color=tomato][ +25 scanner profile ][/color]"
+	},
+	playerAPI.UPGRADE_ID.HEAT_SINK: {
+		"cost": 15000, 
+		"description": "A device that stores the heat produced by a starship rather than radiating it away. When full, the heat sink is ejected into space and replaced. This reduces the thermal signature of the ship, but it can't move as much heat as external radiators.", 
+		"effect": "[color=lightblue][ -6.25 scanner profile ][/color][color=tomato][ -1 speed ][/color]"
+	},
+	playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR: {
+		"cost": 25000, 
+		"description": "Optimization of the LIDAR system internals.", 
+		"effect": "[color=lightblue][ -1.0s LIDAR cooldown ][/color]"
+	},
+	playerAPI.UPGRADE_ID.MIGRATION_ANALYSIS: {
+		"cost": 25000, 
+		"description": "Observing the life found within Stellar Phenomena can determine the location of bodies in a star system. The composition of life, the direction of migration, apparent life cycle, trails of gasses or space-time distortions, and many other factors, can be used to determine where lifeforms are coming from or going to. For a team of analysts, these observations would take months, but the processing suite of this computer extension can do it in a fraction of the time.", 
+		"effect": "Upon interacting with any Stellar Phenomena for the first time, a body is likely discovered elsewhere in the star system."
+	},
+	playerAPI.UPGRADE_ID.FASTER_PROCESSING: {
+		"cost": 12500, 
+		"description": "A further alteration to the computer that improves the time between pointer circle appearances.", 
+		"effect": "[color=lightblue][ -30.0s BACKGROUND PROCESSING pointer cooldown ][/color]"
+	},
+	playerAPI.UPGRADE_ID.PRECISION_PROCESSING: {
+		"cost": 12500, 
+		"description": "A further alteration to the computer that improves the accuracy of pointer circles. The side effect is a longer cooldown time.", 
+		"effect": "[color=lightblue][ -40.0 BACKGROUND PROCESSING pointer radius ][/color]\n[color=tomato][ +10.0s BACKGROUND PROCESSING pointer cooldown ][/color]"
+	},
+	playerAPI.UPGRADE_ID.CRAM_CELL_SYNTHESIS: {
+		"cost": 25000, 
+		"description": "The gasses required to synthesize compressed fuel cells ('cram cells') are not found in standard MMA or proteins. Stars have these gasses in high quantities - especially the larger ones. This collection unit can enable the synthesis of cram cells by collecting various gasses from stars.", 
+		"effect": "Upon interacting with any star for the first time, your starship might be supercharged for +1 wormhole traversal - the chance of success is greatly increased for larger star types."
+	}
 	#playerAPI.UPGRADE_ID.ENVOY_PROGRAM: {"cost": 9000, "description": "(UNFINISHED)"},
 }
 

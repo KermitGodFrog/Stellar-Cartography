@@ -482,6 +482,8 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 						item.set_icon(0, get_darker_icon.call(item))
 						item.set_icon_overlay(0, load("uid://pbgoomdkkj6h"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
+					elif body.is_habitable():
+						item.set_icon_overlay(0, load("uid://6b8g2de5g7qo"))
 					
 					#if body.is_habitable():
 					#	item.set_custom_color(0, Color.GREEN)
