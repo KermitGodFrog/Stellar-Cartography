@@ -127,7 +127,7 @@ const planet_types = {
 const planet_type_data = {
 	"Chthonian": {"color": Color.DARK_RED, "avg_value": 4000, "variation_class": "density", "conditions": []},
 	"Lava": {"color": Color.RED, "avg_value": 3000, "variation_class": "geological_activity", "conditions": []},
-	"Hycean": {"color": Color.BLUE_VIOLET, "avg_value": 10000, "variation_class": "hydrogen_content", "conditions": ["rare", "habitable"]},
+	"Hycean": {"color": Color.BLUE_VIOLET, "avg_value": 10000, "variation_class": "hydrogen_content", "conditions": ["rare"]},
 	"Desert": {"color": Color.DARK_KHAKI, "avg_value": 10000, "variation_class": "humidity", "conditions": ["rare", "habitable"]},
 	"Ocean": {"color": Color.BLUE, "avg_value": 15000, "variation_class": "average_water_depth", "conditions": ["rare", "habitable"]},
 	"Earth-like": {"color": Color.GREEN, "avg_value": 15000, "variation_class": "cloud_cover", "conditions": ["rare", "habitable"]},
@@ -158,7 +158,7 @@ const planet_descriptions = { #currently accessed by: go-to interactions
 	"Lava": "A solid planet composed of silicate, carbon and trace rare elements, with extensive sulfur concentrated near the surface due to constant active volcanism. Metallic core.",
 	"Hycean": "A solid planet with a hydrogen-rich atmosphere which is suitable for non-human forms of life, while having a largely ocean surface.",
 	"Desert": "A solid planet with a human suitable nitrogen-oxygen atmosphere which has a dry surface that lacks any oceans.",
-	"Ocean": "A solid planet with a human suitable nitrogen-oxygen atmosphere which has an entirely ocean surface.",
+	"Ocean": "A solid planet with a human suitable nitrogen-oxygen atmosphere which has an entirely ocean surface, aside from a few small islands.",
 	"Earth-like": "A solid planet with a human suitable nitrogen-oxygen atmosphere which has a surface consisting of both continents and oceans.",
 	"Ice": "A solid planet composed of silicate, water and carbon, with huge reservoirs of water, methane, ammonia and nitrogen at the surface. Metallic core.",
 	"Iron": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by an iron core.",
@@ -662,6 +662,9 @@ func addRandomWeightedPlanetAtIteration(hook_identifier: int, i: int, remaining:
 	var has_planetary_anomaly: bool = false
 	var is_planetary_anomaly_available: bool = false
 	if randf() >= (1 - PA_chance_per_planet):
+		has_planetary_anomaly = true
+		is_planetary_anomaly_available = true
+	elif planet_type_data.get(planet_type).get("conditions").has("habitable"):
 		has_planetary_anomaly = true
 		is_planetary_anomaly_available = true
 	
