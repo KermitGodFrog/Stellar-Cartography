@@ -88,10 +88,12 @@ const planet_types = {
 		"Chthonian": {"name": "Chthonian", "weight": 0.1},
 		"Lava": {"name": "Lava", "weight": 0.2}
 	}, { # hab
-		"Hycean": {"name": "Hycean", "weight": 0.2},
+		"Hycean": {"name": "Hycean", "weight": 0.025},
 		"Desert": {"name": "Desert", "weight": 0.2},
 		"Ocean": {"name": "Ocean", "weight": 0.2},
-		"Earth-like": {"name": "Earth-like", "weight": 0.2}
+		"Earth-like": {"name": "Earth-like", "weight": 0.2},
+		"Ammonia": {"name": "Ammonia", "weight": 0.025}, 
+		"Tundra": {"name": "Tundra", "weight": 0.2}
 	}, { # post hab
 		"Ice": {"name": "Ice", "weight": 0.3}
 	}, { # shared
@@ -100,27 +102,29 @@ const planet_types = {
 		"Sulfur": {"name": "Sulfur", "weight": 0.3},
 		"Coreless": {"name": "Coreless", "weight": 0.3},
 		"Carbon": {"name": "Carbon", "weight": 0.1},
-		"Massive Solid": {"name": "Massive Solid", "weight": 0.00625} 
+		"Massive Solid": {"name": "Massive Solid", "weight": 0.0125}
 	}],
 	"Neptunian": [{ # pre hab
-		"Fire Dwarf": {"name": "Fire Dwarf", "weight": 0.5}
+		"Fire Dwarf": {"name": "Fire Dwarf", "weight": 0.5},
+		"Puffy Dwarf": {"name": "Puffy Dwarf", "weight": 0.00625} 
 	}, { # hab
 		"Gas Dwarf": {"name": "Gas Dwarf", "weight": 0.5},
-		"Breathable Dwarf": {"name": "Breathable Dwarf", "weight": 0.00625} 
+		"Breathable Dwarf": {"name": "Breathable Dwarf", "weight": 0.0125} 
 	}, { # post hab
 		"Ice Dwarf": {"name": "Ice Dwarf", "weight": 0.5}
 	}, { # shared
-		"Helium Dwarf": {"name": "Helium Dwarf", "weight": 0.1},
+		"Helium Dwarf": {"name": "Helium Dwarf", "weight": 0.1}
 	}],
 	"Jovian": [{ # pre hab
-		"Fire Giant": {"name": "Fire Giant", "weight": 0.5}
+		"Fire Giant": {"name": "Fire Giant", "weight": 0.5},
+		"Puffy Giant": {"name": "Puffy Dwarf", "weight": 0.00625} 
 	}, { # hab
 		"Gas Giant": {"name": "Gas Giant", "weight": 0.5}
 	}, { # post hab
 		"Ice Giant": {"name": "Ice Giant", "weight": 0.5}
 	}, { # shared
 		"Helium Giant": {"name": "Helium Giant", "weight": 0.1},
-		"Borderline Giant": {"name": "Borderline Giant", "weight": 0.00625} 
+		"Borderline Giant": {"name": "Borderline Giant", "weight": 0.00625}
 	}]
 }
 
@@ -148,7 +152,11 @@ const planet_type_data = {
 	# rare
 	"Breathable Dwarf": {"color": Color.LIGHT_SKY_BLUE, "avg_value": 15000, "variation_class": "water_content", "conditions": ["rare"]},
 	"Massive Solid": {"color": Color.SLATE_GRAY, "avg_value": 15000, "variation_class": "terrain_amplitude", "conditions": ["rare", "planet_only"]},
-	"Borderline Giant": {"color": Color.WEB_MAROON, "avg_value": 15000, "variation_class": "helium_content", "conditions": ["rare", "planet_only"]}
+	"Borderline Giant": {"color": Color.WEB_MAROON, "avg_value": 15000, "variation_class": "helium_content", "conditions": ["rare", "planet_only"]},
+	"Ammonia": {"color": Color(0.29, 0.2, 0.125, 1.0), "avg_value": 15000, "variation_class": "cloud_cover", "conditions": ["rare"]},
+	"Tundra": {"color": Color.LIGHT_STEEL_BLUE, "avg_value": 15000, "variation_class": "cloud_cover", "conditions": ["rare", "habitable"]},
+	"Puffy Dwarf": {"color": Color.LIGHT_SALMON, "avg_value": 15000, "variation_class": "electric_current", "conditions": ["rare", "planet_only"]},
+	"Puffy Giant": {"color": Color.DARK_ORANGE, "avg_value": 15000, "variation_class": "electric_current", "conditions": ["rare", "planet_only"]}
 	#dwarfs and giants have the same audio data and thus can have the same variation class!
 }
 
@@ -159,7 +167,7 @@ const planet_descriptions = { #currently accessed by: go-to interactions
 	"Hycean": "A solid planet with a hydrogen-rich atmosphere which is suitable for non-human forms of life, while having a largely ocean surface.",
 	"Desert": "A solid planet with a human suitable nitrogen-oxygen atmosphere which has a dry surface that lacks any oceans.",
 	"Ocean": "A solid planet with a human suitable nitrogen-oxygen atmosphere which has an entirely ocean surface, aside from a few small islands.",
-	"Earth-like": "A solid planet with a human suitable nitrogen-oxygen atmosphere which has a surface consisting of both continents and oceans.",
+	"Earth-like": "A solid planet with a human suitable nitrogen-oxygen atmosphere which has a surface consisting of both continents and water oceans.",
 	"Ice": "A solid planet composed of silicate, water and carbon, with huge reservoirs of water, methane, ammonia and nitrogen at the surface. Metallic core.",
 	"Iron": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by an iron core.",
 	"Nickel": "A solid planet composed of silicate, water, carbon and trace rare elements accompanied by a nickel or iron-nickel core.",
@@ -178,6 +186,10 @@ const planet_descriptions = { #currently accessed by: go-to interactions
 	"Breathable Dwarf": "A gaseous planet with enough oxygen, nitrogen and warmth at certain altitudes to be human breathable. Realistically, a human would be crushed by the gravity before they could take a breath.", #otherwise comparable to a Gas Dwarf
 	"Massive Solid": "A solid planet composed of silicate, water, carbon and trace rare elements, which is notable for being far more massive and dense than normal solid planets.",
 	"Borderline Giant": "A gaseous planet composed mainly of hydrogen and helium that is large enough to sustain deuterium fusion, but too small to sustain nuclear fusion and become a star.",
+	"Ammonia": "A solid planet with an ammonia-nitrogen-oxygen atmosphere which is suitable for non-human forms of life. Similar to an Earth-like planet, except ammonia is present instead of water vapour.",
+	"Tundra": "A solid planet with a human suitable nitrogen-oxygen atmosphere, with continents and water oceans, that is undergoing a prolonged period of intense cooling.",
+	"Puffy Dwarf": "A semi-gaseous planet equivalent to a Fire Dwarf, except it has an extremely low density and a highly inflated atmosphere.",
+	"Puffy Giant": "A gaseous planet equivalent to a Fire Giant, except it has an extremely low density and a highly inflated atmosphere."
 }
 
 const star_descriptions = { #currently accessed by: go-to interactions
@@ -219,7 +231,11 @@ var planet_type_audio_data = {
 	# rare
 	"Breathable Dwarf": {LOW_VAR: [-80,-80,-12,-12], MED_VAR: [-80,-80,-6,-12], HIGH_VAR: [-80,-80,0,-12]}, #same as Gas Dwarf, Gas Giant
 	"Massive Solid": {LOW_VAR: [-80,-70,-80,-80], MED_VAR: [-80,-24,-80,-80], HIGH_VAR: [-80,-6,-80,-80]},
-	"Borderline Giant": {LOW_VAR: [-70,-80,-80,-70], MED_VAR: [-12,-80,-80,-12], HIGH_VAR: [0,-80,-70,0]}
+	"Borderline Giant": {LOW_VAR: [-70,-80,-80,-70], MED_VAR: [-12,-80,-80,-12], HIGH_VAR: [0,-80,-70,0]},
+	"Ammonia": {LOW_VAR: [0,0,-12,-12], MED_VAR: [-6,0,-12,-6], HIGH_VAR: [-12,0,-12,0]}, #same as Earth-like
+	"Tundra": {LOW_VAR: [0,0,-12,-12], MED_VAR: [-6,0,-12,-6], HIGH_VAR: [-12,0,-12,0]}, #same as Earth-like
+	"Puffy Dwarf": {LOW_VAR: [-80,-80,-12,-80], MED_VAR: [-80,-80,-6,-80], HIGH_VAR: [-80,-80,0,-80]}, #same as Puffy Giant
+	"Puffy Giant": {LOW_VAR: [-80,-80,-12,-80], MED_VAR: [-80,-80,-6,-80], HIGH_VAR: [-80,-80,0,-80]} #same as Puffy Dwarf
 }
 
 const asteroid_belt_classifications = {

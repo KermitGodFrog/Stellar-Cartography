@@ -41,7 +41,6 @@ func is_habitable() -> bool:
 		if conditions.has("habitable"):
 			return true
 	return false
-
 func is_rare() -> bool:
 	var type_data = starSystemAPI.planet_type_data.get(metadata.get("planet_type"))
 	if type_data != null:

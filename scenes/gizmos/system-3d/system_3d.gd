@@ -513,28 +513,46 @@ func get_surface_texture_for_circular_body(body: circularBodyAPI) -> NoiseTextur
 						texture.color_ramp.colors[1] = Color.SKY_BLUE
 						noise.fractal_gain = 0.0
 						noise.fractal_weighted_strength = 1.0
+					"Ammonia":
+						texture.color_ramp.colors[0] = Color.BLACK
+						texture.color_ramp.colors[1] = Color(0.033, 0.161, 0.22, 1.0)
+						noise.fractal_gain = 0.0
+						noise.fractal_weighted_strength = 1.0
+					"Tundra":
+						texture.color_ramp.colors[0] = Color.GREEN
+						noise.fractal_type = 2 #RIDGED
+						noise.fractal_gain = 0.0
+						noise.fractal_weighted_strength = 1.0
 					_:
 						noise.fractal_type = [FastNoiseLite.FractalType.FRACTAL_FBM, FastNoiseLite.FractalType.FRACTAL_NONE, FastNoiseLite.FractalType.FRACTAL_PING_PONG, FastNoiseLite.FractalType.FRACTAL_RIDGED].pick_random()
 						if randf() > 0.75:
 							texture.color_ramp.colors[0] = [Color.DARK_GRAY, Color.DIM_GRAY, Color.DARK_SLATE_GRAY, Color.LIGHT_SLATE_GRAY, Color.WEB_GRAY].pick_random()
 							texture.color_ramp.colors[0] = texture.color_ramp.colors[0].darkened(randfn(0.25, 0.01))
 			"Neptunian":
-				texture.width = texture.width / 4
-				noise.domain_warp_enabled = true
-				noise.domain_warp_fractal_type = 2 #DOMAIN_WARP_FRACTAL_INDEPENDENT
-				noise.domain_warp_amplitude = global_data.get_randf(20.0, 45.0)
-				texture.seamless_blend_skirt = 0.5
-				if randf() >= 0.99:
-					texture.width = 1
+				match body.metadata.get("planet_type"):
+					"Puffy Dwarf":
+						noise.set_frequency(randfn(0.0005, 0.0002))
+					_:
+						texture.width = texture.width / 4
+						noise.domain_warp_enabled = true
+						noise.domain_warp_fractal_type = 2 #DOMAIN_WARP_FRACTAL_INDEPENDENT
+						noise.domain_warp_amplitude = global_data.get_randf(20.0, 45.0)
+						texture.seamless_blend_skirt = 0.5
+						if randf() >= 0.99:
+							texture.width = 1
 			"Jovian":
-				texture.width = (texture.width / 4) / 2
-				noise.domain_warp_enabled = true
-				noise.domain_warp_fractal_type = 2 #DOMAIN_WARP_FRACTAL_INDEPENDENT
-				noise.domain_warp_amplitude = global_data.get_randf(15.0, 120.0)
-				texture.seamless_blend_skirt = 0.5
-				if randf() >= 0.975:
-					texture.color_ramp.colors[0] = [Color.CHARTREUSE, Color.DARK_MAGENTA, Color.DARK_SLATE_GRAY, Color.MISTY_ROSE, Color.HOT_PINK, Color.MEDIUM_AQUAMARINE].pick_random()
-					texture.color_ramp.colors[0] = texture.color_ramp.colors[0].darkened(randfn(0.1, 0.01))
+				match body.metadata.get("planet_type"):
+					"Puffy Giant":
+						noise.set_frequency(randfn(0.0005, 0.0002))
+					_:
+						texture.width = (texture.width / 4) / 2
+						noise.domain_warp_enabled = true
+						noise.domain_warp_fractal_type = 2 #DOMAIN_WARP_FRACTAL_INDEPENDENT
+						noise.domain_warp_amplitude = global_data.get_randf(15.0, 120.0)
+						texture.seamless_blend_skirt = 0.5
+						if randf() >= 0.975:
+							texture.color_ramp.colors[0] = [Color.CHARTREUSE, Color.DARK_MAGENTA, Color.DARK_SLATE_GRAY, Color.MISTY_ROSE, Color.HOT_PINK, Color.MEDIUM_AQUAMARINE].pick_random()
+							texture.color_ramp.colors[0] = texture.color_ramp.colors[0].darkened(randfn(0.1, 0.01))
 	
 	return texture
 

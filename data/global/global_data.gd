@@ -266,3 +266,8 @@ func replace_keybind_references(text: String) -> String: #shameless copy of repl
 		text = new_text
 	
 	return text
+
+func get_density(solar_radius: float, solar_mass: float) -> float: #units are solar mass/solar radii^3. couldnt go any smaller bc it would be too many numbers to compute!
+	var volume: float = (4/3) * PI * pow(solar_radius, 3) #solar radii cubed
+	var density: float = solar_mass / volume 
+	return density
