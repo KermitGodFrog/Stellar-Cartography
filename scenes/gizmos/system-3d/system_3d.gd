@@ -222,7 +222,8 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 						star_omni_light.light_size = body.radius
 						if body is pulsarBodyAPI:
 							add_pulsar_beams(body)
-						add_glow = true
+						if not system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.DYSON_SPHERE:
+							add_glow = true
 					starSystemAPI.BODY_TYPES.WORMHOLE:
 						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
 				
