@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=33 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" uid="uid://dq4gkj1n823v0" path="res://scenes/main-menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_b84fj"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://cx4ikfr2yvey0" path="res://graphics/main-menu/dice_up_icon.png" id="9_ptqsp"]
 [ext_resource type="Texture2D" uid="uid://bhvjolc2fupre" path="res://graphics/main-menu/dice_down_icon.png" id="10_5sbga"]
 [ext_resource type="PackedScene" uid="uid://cqveyx1gdyfvw" path="res://scenes/main-menu/history/history_popup.tscn" id="10_7m0km"]
+[ext_resource type="Script" uid="uid://moq137qi84py" path="res://instantiated-scenes/custom-tooltip/custom_tooltip_button.gd" id="14_6f8a5"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_5sbga"]
 color = Color(0.20784314, 0.20784314, 0.20784314, 1)
@@ -421,6 +422,8 @@ This is how the tutorial is meant to be experienced, but should remain unchecked
 
 The tutorial will take longer to finish."
 text = "EXTENDED NARRATIVE"
+script = ExtResource("14_6f8a5")
+tooltip_title = "Extended Narrative"
 
 [node name="seperator1" type="HSeparator" parent="new_game_popup/new_game/margin/scroll"]
 layout_mode = 2
