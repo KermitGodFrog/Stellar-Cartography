@@ -29,6 +29,8 @@ var glint_small_texture = preload("uid://kxo1pkvmhml4")
 
 var circular_body_texture = preload("uid://dmcaf8av01hwx")
 
+var glow_texture = preload("uid://ca75qrccehwx3")
+
 var system: starSystemAPI
 var player_position: Vector2
 var target_position: Vector2
@@ -207,27 +209,48 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 		match body:
 			_ when body is circularBodyAPI:
 				
+				var add_glow: bool = false
 				var mesh: SphereMesh
 				match body.get_type():
 					starSystemAPI.BODY_TYPES.PLANET:
 						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.25, null)
+						if body.metadata.get("planet_type") == "Borderline Giant":
+							add_glow = true
 					starSystemAPI.BODY_TYPES.STAR:
 						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, body.surface_color, body.surface_color, 1.0, null)
 						star_omni_light.light_color = body.surface_color
 						star_omni_light.light_size = body.radius
 						if body is pulsarBodyAPI:
 							add_pulsar_beams(body)
+						add_glow = true
 					starSystemAPI.BODY_TYPES.WORMHOLE:
 						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
 				
-				var new_actor = await add_actor(
-					body.get_identifier(),
-					[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.CIRCULAR_BODY], 
-					{"mesh": mesh},
-					{},
-					{},
-					{"playing": true}
-				)
+				var new_actor: actor3D
+				if add_glow:
+					var placeholder: PlaceholderTexture2D = PlaceholderTexture2D.new()
+					placeholder.set_size(Vector2(512.0,512.0))
+					var local_glow_tex: StandardMaterial3D = glow_texture.duplicate(true)
+					local_glow_tex.set_albedo(body.surface_color)
+					local_glow_tex.set_emission(body.surface_color.darkened(0.25))
+					
+					new_actor = await add_actor(
+						body.get_identifier(),
+						[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.CIRCULAR_BODY], 
+						{"mesh": mesh},
+						{"texture": placeholder, "material_override": local_glow_tex, "scale": Vector3.ONE * body.radius * system_scalar * 1.9},
+						{},
+						{"playing": true}
+					)
+				else:
+					new_actor = await add_actor(
+						body.get_identifier(),
+						[actor3D.COHORTS.ORBIT_BODY, actor3D.COHORTS.CIRCULAR_BODY], 
+						{"mesh": mesh},
+						{},
+						{},
+						{"playing": true}
+					)
 				
 				if body.get_type() in [starSystemAPI.BODY_TYPES.PLANET, starSystemAPI.BODY_TYPES.STAR]:
 					tex_gen_pairs[new_actor] = body
@@ -418,8 +441,10 @@ func _on_scope_mode_changed(new_mode: playerAPI.SCOPE_MODES) -> void:
 			match new_mode:
 				playerAPI.SCOPE_MODES.VIS:
 					actor.mesh_instance.set_transparency(0.0)
+					actor.sprite.set_transparency(0.0)
 				playerAPI.SCOPE_MODES.RAD:
 					actor.mesh_instance.set_transparency(0.9)
+					actor.sprite.set_transparency(1.0)
 		if actor.is_in_cohort(actor3D.COHORTS.GLINT_BODY):
 			match new_mode:
 				playerAPI.SCOPE_MODES.VIS:

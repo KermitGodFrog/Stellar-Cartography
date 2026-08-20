@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cycxitd1pn136"]
+[gd_scene load_steps=10 format=3 uid="uid://cycxitd1pn136"]
 
 [ext_resource type="PackedScene" uid="uid://cd845qsl0v3dk" path="res://meshes/station-ui/starship/starship.glb" id="1_lfu3u"]
 [ext_resource type="Shader" uid="uid://c12h7sunmdlyh" path="res://shader-gen/3d_speed_lines.gdshader" id="2_kj6i3"]
+[ext_resource type="Material" uid="uid://ca75qrccehwx3" path="res://shader-gen/system-3d/glow_texture.tres" id="3_uxr5t"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_yw3st"]
 
@@ -11,11 +12,11 @@ noise = SubResource("FastNoiseLite_yw3st")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ish6s"]
 render_priority = 0
 shader = ExtResource("2_kj6i3")
-shader_parameter/color1 = null
-shader_parameter/color2 = null
+shader_parameter/color1 = Color(0, 0, 0, 1)
+shader_parameter/color2 = Color(0, 0, 0, 1)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_n1r6e")
 shader_parameter/direction = Vector2(-2, 10)
 shader_parameter/speed = 10.0
-shader_parameter/noise_texture = SubResource("NoiseTexture2D_n1r6e")
 shader_parameter/refraction_strength = 0.05
 shader_parameter/model_height = 2.0
 shader_parameter/dissolve_start = 0.0
@@ -25,6 +26,11 @@ shader_parameter/gradient_bias = 1.0
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ajvqh"]
 material = SubResource("ShaderMaterial_ish6s")
 
+[sub_resource type="SphereMesh" id="SphereMesh_51wsq"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_51wsq"]
+size = Vector2(512, 512)
+
 [node name="test2" type="Node3D"]
 
 [node name="spaceship" parent="." instance=ExtResource("1_lfu3u")]
@@ -32,3 +38,13 @@ material = SubResource("ShaderMaterial_ish6s")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 10)
 mesh = SubResource("CapsuleMesh_ajvqh")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16.990923)
+mesh = SubResource("SphereMesh_51wsq")
+
+[node name="Sprite3D" type="Sprite3D" parent="MeshInstance3D2"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+material_override = ExtResource("3_uxr5t")
+cast_shadow = 0
+texture = SubResource("PlaceholderTexture2D_51wsq")
