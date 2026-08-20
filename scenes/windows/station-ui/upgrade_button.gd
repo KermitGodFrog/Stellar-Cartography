@@ -1,4 +1,4 @@
-extends "res://scenes/system-map/custom_tooltip_button.gd"
+extends "res://instantiated-scenes/custom-tooltip/custom_tooltip_button.gd"
 #needs to be in group 'FOLLOW_UPGRADE_STATE'
 
 var _refund_upgrade_price_multiplier: float = 0.0

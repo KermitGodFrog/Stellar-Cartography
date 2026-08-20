@@ -1,4 +1,4 @@
-extends "res://scenes/system-map/custom_tooltip_button.gd"
+extends "res://instantiated-scenes/custom-tooltip/custom_tooltip_button.gd"
 
 enum DANGER_RULES {HIGH, LOW, NONE}
 @export var current_danger_rule: DANGER_RULES

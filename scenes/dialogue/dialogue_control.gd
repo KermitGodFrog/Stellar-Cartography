@@ -45,7 +45,11 @@ func add_options(new_options: Dictionary):
 		#		option_instance.set_disabled(true)
 		#	"!":
 		#		#danger - does not do anything yet
-		#		adjusted_option_text = option_text.trim_prefix("!")
+		#		adjusted_option_text = "[color=yellow]%s[/color]" % option_text.trim_prefix("!")
+		#		option_instance.tooltip_text = "This option is DANGEROUS."
+		#	"%":
+		#		#exchange - does not do anything yet
+		#		adjusted_option_text = option_text.trim_prefix("%")
 		#	_:
 		#		adjusted_option_text = option_text
 		
@@ -121,11 +125,11 @@ func _on_option_selected(option_rule: String, option_text: String):
 	stop_music() #music is USUALLY stopped after selecting an option anyway! :)
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
-	get_tree().call_group("audioHandler", "play_once", dialogue_click_heavy, 0.0, "SFX")
+	get_tree().call_group("audioHandler", "play_once", dialogue_click_heavy, -6.0, "SFX")
 	pass
 
 func _on_option_mouse_entered() -> void:
-	get_tree().call_group("audioHandler", "play_once", dialogue_click_light, 0.0, "SFX")
+	get_tree().call_group("audioHandler", "play_once", dialogue_click_light, -6.0, "SFX")
 	pass
 
 func _input(event: InputEvent) -> void:
@@ -140,5 +144,5 @@ func _input(event: InputEvent) -> void:
 							_on_option_selected(option_instance.rule, option_instance._text)
 							return
 					
-					get_tree().call_group("audioHandler", "play_once", dialogue_click_cancel, 0.0, "SFX")
+					get_tree().call_group("audioHandler", "play_once", dialogue_click_cancel, -6.0, "SFX")
 	pass

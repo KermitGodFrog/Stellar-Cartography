@@ -865,6 +865,9 @@ func getCSSOutcomeWithFlair(star_type: String) -> void:
 	dialogue.add_text("According to the module, the probability of successful synthesis from this star was [color=yellow]%.2f%%[/color]." % (chance * 100.0))
 	pass
 
+func treeAccessMemoryPlus1(memory: String) -> void: #this is stupid and should instead be implemented by making the 'Apply Facts' column have support for operations >:(
+	tree_access_memory[memory] = tree_access_memory.get(memory, 0) + 1
+	pass
 
 
 
