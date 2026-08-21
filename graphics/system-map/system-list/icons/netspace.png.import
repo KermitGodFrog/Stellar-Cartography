@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ctuhwy8xmjp0y"
-path="res://.godot/imported/netspaceTransmitter.png-1825c5713b8f5bd968a405dc9fb2b6da.ctex"
+path="res://.godot/imported/netspace.png-a3666de1191c85dcdd5d29ed90a2cbde.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/system-map/system-list/icons/netspaceTransmitter.png"
-dest_files=["res://.godot/imported/netspaceTransmitter.png-1825c5713b8f5bd968a405dc9fb2b6da.ctex"]
+source_file="res://graphics/system-map/system-list/icons/netspace.png"
+dest_files=["res://.godot/imported/netspace.png-a3666de1191c85dcdd5d29ed90a2cbde.ctex"]
 
 [params]
 

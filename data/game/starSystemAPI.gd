@@ -419,7 +419,7 @@ func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = 
 					dict.get("orbit_distance"),
 					dict.get("orbit_angle_change"),
 					get_default_radius_solar_radii(),
-					{"dialogue_tag": "netspaceTransmitter", "icon_path": "res://graphics/system-map/system-list/icons/netspaceTransmitter.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD}, #update "icon_path" with actual one!
+					{"dialogue_tag": "netspaceTransmitter", "icon_path": "res://graphics/system-map/system-list/icons/netspace.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD}, #update "icon_path" with actual one!
 					{}
 				)
 				get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
@@ -996,7 +996,7 @@ func generateRandomWeightedSpecialAnomaly():
 				orbit_distance,
 				orbit_angle_change,
 				radius,
-				{"dialogue_tag": "SpA_NetspaceRetrievalPoint", "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
+				{"dialogue_tag": "SpA_NetspaceRetrievalPoint", "icon_path": "res://graphics/system-map/system-list/icons/netspace.png", "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
 				{"seed": randi()}
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
