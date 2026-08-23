@@ -540,7 +540,10 @@ layout_mode = 2
 [node name="images" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2
 title = "images"
-text = "ISS074-E-393 by NASA -- https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?mission=ISS074&roll=E&frame=393 -- License: none -- Changes: composited with other images, cropped
+text = "white satellite by Galen Crout -- https://commons.wikimedia.org/wiki/File:Satellite_Antenna_Skyward_(Unsplash).jpg -- License: CC0 1.0 Universal -- Changes: background removed, composited with other images
+(Retrieved 23rd August 2026)
+
+ISS074-E-393 by NASA -- https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?mission=ISS074&roll=E&frame=393 -- License: none -- Changes: composited with other images, cropped
 (Retrieved 23rd August 2026)
 	Image courtesy of the Earth Science and Remote Sensing Unit, NASA Johnson Space Center
 	https://eol.jsc.nasa.gov"
