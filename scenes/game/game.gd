@@ -423,6 +423,8 @@ func _on_player_following_body(following_body: bodyAPI):
 		starSystemAPI.BODY_TYPES.PLANET:
 			new_query.add("planetary_anomaly", following_body.metadata.get("planetary_anomaly", false))
 			new_query.add("planetary_anomaly_available", following_body.metadata.get("planetary_anomaly_available", false))
+			new_query.add_tree_access("planet_habitable", following_body.is_habitable())
+			new_query.add_tree_access("planet_rare", following_body.is_rare())
 			new_query.add_tree_access("planet_classification", following_body.metadata.get("planet_classification"))
 			new_query.add_tree_access("planet_type", following_body.metadata.get("planet_type"))
 			new_query.add_tree_access("missing_AO", following_body.metadata.get("missing_AO", false))
