@@ -214,7 +214,7 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 				match body.get_type():
 					starSystemAPI.BODY_TYPES.PLANET:
 						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.25, null)
-						if body.metadata.get("planet_type") == "Borderline Giant":
+						if body.metadata.get("planet_type") in ["Borderline Giant", "Puffy Dwarf", "Puffy Giant"]:
 							add_glow = true
 					starSystemAPI.BODY_TYPES.STAR:
 						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, body.surface_color, body.surface_color, 1.0, null)
