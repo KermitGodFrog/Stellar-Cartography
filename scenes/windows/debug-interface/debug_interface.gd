@@ -7,7 +7,7 @@ extends Control
 @onready var upgrade_options = $scroll/upgrades_scroll/upgrade_options
 @onready var query_scroll = $scroll/query_scroll
 @onready var xp_character_options = $scroll/xp_scroll/xp_character_options
-
+@onready var rule_name_edit = $scroll/trigger_rule_scroll/rule_name_edit
 
 signal increasePlayerBalance(amount: int)
 signal addPlayerDataValue(amount: int)
@@ -95,6 +95,10 @@ func _on_query_button_pressed() -> void:
 			new_query.add_tree_access(fact.front(), fact.back())
 		
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
+	pass
+
+func _on_trigger_rule_button_pressed() -> void:
+	get_tree().call_group("dialogueManager", "force_trigger_rule_by_name", self, rule_name_edit.get_text())
 	pass
 
 func _on_force_quit_dialogue_button_pressed():

@@ -143,6 +143,20 @@ size_flags_horizontal = 3
 layout_mode = 2
 text = "+50 XP"
 
+[node name="trigger_rule_scroll" type="HBoxContainer" parent="debug_interface/scroll"]
+layout_mode = 2
+
+[node name="rule_name_edit" type="LineEdit" parent="debug_interface/scroll/trigger_rule_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+
+[node name="trigger_rule_button" type="Button" parent="debug_interface/scroll/trigger_rule_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
+text = "TRIGGER RULE"
+
 [node name="query_scroll" type="VBoxContainer" parent="debug_interface/scroll"]
 layout_mode = 2
 script = ExtResource("2_pvsfw")
@@ -189,6 +203,7 @@ text = "+"
 [connection signal="pressed" from="debug_interface/scroll/regen_system_3d_button" to="debug_interface" method="_on_regen_system_3d_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/upgrades_scroll/unlock_button" to="debug_interface" method="_on_unlock_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/xp_scroll/add_xp_button" to="debug_interface" method="_on_add_xp_button_pressed"]
+[connection signal="pressed" from="debug_interface/scroll/trigger_rule_scroll/trigger_rule_button" to="debug_interface" method="_on_trigger_rule_button_pressed"]
 [connection signal="text_changed" from="debug_interface/scroll/query_scroll/concept_scroll/concept_edit" to="debug_interface/scroll/query_scroll" method="_on_concept_edit_text_changed"]
 [connection signal="pressed" from="debug_interface/scroll/query_scroll/concept_scroll/query_button" to="debug_interface" method="_on_query_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll/query_scroll/add_fact_button" to="debug_interface/scroll/query_scroll" method="_on_add_fact_button_pressed"]

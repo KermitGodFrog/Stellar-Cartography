@@ -958,3 +958,21 @@ func _TUTORIALForceOrbitPrelude() -> void:
 func _TUTORIALSetUIStage(new_stage: String) -> void:
 	emit_signal("TUTORIALSetUIStage", new_stage)
 	pass
+
+
+
+# misc
+
+func force_trigger_rule_by_name(calling: Node, rule_name: String) -> void: #used by debug_interface.gd to quick trigger rules. this is an unsafe thing to do - may lead to unexpected behaviour and query data will probably not be present!
+	var quick_query: responseQuery = responseQuery.new()
+	quick_query.populateWithPlayerData(player)
+	quick_query.populateWithSystemData(system)
+	quick_query.populateWithDialogueMemoryData(dialogue_memory)
+	quick_query.populateWithTreeAccessMemoryData(tree_access_memory)
+	quick_query.populateWithWorldData()
+	for r in rules:
+		if r.get_name() == rule_name:
+			openDialog()
+			trigger_rule(calling, r, quick_query)
+			return
+	pass
