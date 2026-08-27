@@ -414,9 +414,9 @@ func _on_player_following_body(following_body: bodyAPI):
 				new_query.add_tree_access("dest_system_hazard_classification", null)
 				new_query.add_tree_access("dest_system_scenario_classification", null)
 		starSystemAPI.BODY_TYPES.STATION:
-			var station_abandoned: bool = following_body.station_classification in [game_data.STATION_CLASSIFICATIONS.ABANDONED, game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS, game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL, game_data.STATION_CLASSIFICATIONS.COVERUP, game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED]
+			var station_abandoned: bool = following_body.station_classification in [game_data.STATION_CLASSIFICATIONS.ABANDONED, game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS, game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL, game_data.STATION_CLASSIFICATIONS.COVERUP, game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED, game_data.STATION_CLASSIFICATIONS.DEBRIS]
 			var station_inhabited: bool = following_body.station_classification in [game_data.STATION_CLASSIFICATIONS.STANDARD, game_data.STATION_CLASSIFICATIONS.PIRATE]
-			new_query.add("station_available", following_body.metadata.get("station_available", true))
+			new_query.add_tree_access("station_available", following_body.metadata.get("station_available", true))
 			new_query.add_tree_access("station_classification", str(game_data.STATION_CLASSIFICATIONS.find_key(following_body.station_classification)))
 			new_query.add_tree_access("station_abandoned", station_abandoned)
 			new_query.add_tree_access("station_inhabited", station_inhabited)

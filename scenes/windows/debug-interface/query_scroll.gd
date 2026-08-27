@@ -43,7 +43,22 @@ func _on_add_fact_button_pressed() -> void:
 
 
 func _on_fact_key_value_pair_valid_update(index: int, key: String, value: String):
-	facts_consolidated[index] = [key, value]
+	var adjusted_value: Variant
+	
+	if value.is_valid_int():
+		adjusted_value = value.to_int()
+	elif value.is_valid_float():
+		adjusted_value = value.to_float()
+	elif value == "null":
+		adjusted_value = null
+	elif value == "true":
+		adjusted_value = true
+	elif value == "false":
+		adjusted_value = false
+	else:
+		adjusted_value = value
+	
+	facts_consolidated[index] = [key, adjusted_value]
 	pass
 
 func _on_concept_edit_text_changed(new_text: String) -> void:

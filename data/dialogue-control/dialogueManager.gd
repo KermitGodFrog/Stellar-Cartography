@@ -176,13 +176,13 @@ func convert_to_dictionary(cell : String, embedded_values: bool = false) -> Dict
 				
 				if value.is_valid_int():
 					type_corrected_value = value.to_int()
-				if value.is_valid_float():
+				elif value.is_valid_float():
 					type_corrected_value = value.to_float()
-				if value == "null":
+				elif value == "null":
 					type_corrected_value = null
-				if value == "true":
+				elif value == "true":
 					type_corrected_value = true
-				if value == "false":
+				elif value == "false":
 					type_corrected_value = false
 				
 				#>int or <float et al cannot go here, must be calculated at runtime
@@ -748,14 +748,6 @@ func increaseCharacterStandingBy25(written_occupation: String) -> void:
 func decreaseCharacterStandingBy25(written_occupation: String) -> void:
 	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
 	emit_signal("modifyCharacterStanding", occupation, 25, false)
-	pass
-
-func increaseSecurityOfficerStanding(amount: int) -> void: #keeping this so i dont have to refactor rules.txt to not use it lmao
-	emit_signal("modifyCharacterStanding", characterAPI.OCCUPATIONS.SECURITY_OFFICER, amount, true)
-	pass
-
-func decreaseSecurityOfficerStanding(amount: int) -> void: #keeping this so i dont have to refactor rules.txt to not use it lmao
-	emit_signal("modifyCharacterStanding", characterAPI.OCCUPATIONS.SECURITY_OFFICER, amount, false)
 	pass
 
 func plotRadio(radio_helper_path: String) -> void:
