@@ -570,7 +570,7 @@ func addValueWithFlair(amount: int):
 	playSoundEffect("success.wav") #easier than putting it in every single rule?
 	pass
 
-func removeValueWithFlair(amount: int): #not commonly used !!!!!!! only used in (currently): UA01G
+func removeValueWithFlair(amount: int): #not commonly used !!!!!!! only used in (currently): UA01G, ABANDONEDOPTransfer
 	emit_signal("removePlayerValue", amount)
 	dialogue.add_text(str("[color=red](Lost ", amount, " nanites in data value) [/color]"))
 	playSoundEffect("failure.wav")
