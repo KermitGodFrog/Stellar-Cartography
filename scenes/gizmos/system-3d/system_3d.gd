@@ -144,6 +144,7 @@ func update_miscellaneous() -> void:
 	post_process.material.set("shader_parameter/pixel_size", round(fov_to_pixel_size))
 	
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
+	control.current_fov = camera.fov
 	
 	#setting locked_body_label text
 	var body: bodyAPI = system.get_body_from_identifier(label_locked_body_identifier)
