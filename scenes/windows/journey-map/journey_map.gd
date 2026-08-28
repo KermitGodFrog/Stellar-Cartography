@@ -6,9 +6,11 @@ var jumps_remaining: int = 0
 var systems_traversed: int = 0
 var systems: Array = []
 const label_font = preload("uid://xrcqj2080elm")
-var draw_landmarks: Dictionary = {"The Core": -(0 * 100), "The Frontier": -(5 * 100), "The Abyss": -(15 * 100), "New Eden": -(25 * 100)}
+var draw_landmarks: Dictionary = {"The Core": systems_to_distance(0), "The Frontier": systems_to_distance(5), "The Abyss": systems_to_distance(15), "New Eden": systems_to_distance(25)}
 
 @onready var station_icon = preload("uid://bh57lngfca4xf")
+
+@onready var camera = $camera
 
 func _ready():
 	connect("map_updated", _on_map_updated)
@@ -42,25 +44,28 @@ func _on_map_updated():
 	pass
 
 
-
-
 func add_new_system(_systems_traversed: int):
 	systems_traversed = _systems_traversed
-	systems.append(Vector2(global_data.get_randi(-100,100), -(systems_traversed * 100)))
+	systems.append(Vector2(global_data.get_randi(-100,100), systems_to_distance(systems_traversed)))
 	emit_signal("map_updated")
 	pass
 
 func generate_up_to_system(_systems_traversed: int):
 	systems_traversed = _systems_traversed
 	for system in _systems_traversed:
-		systems.append(Vector2(global_data.get_randi(-100,100), -(system * 100)))
+		systems.append(Vector2(global_data.get_randi(-100,100), systems_to_distance(system)))
 	pass
 
 
-
-
+static func systems_to_distance(_systems: int) -> float:
+	return -(_systems * 100)
 
 
 func _on_journey_map_window_close_requested():
 	owner.hide()
+	pass
+
+
+func _on_journey_map_window_about_to_popup() -> void:
+	camera.position = Vector2(0,systems_to_distance(systems_traversed))
 	pass
