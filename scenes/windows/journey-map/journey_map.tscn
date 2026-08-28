@@ -1,8 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://dt0crabynqgvv"]
+[gd_scene load_steps=10 format=3 uid="uid://dt0crabynqgvv"]
 
 [ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://theme-gen/window_theme.tres" id="1_erjbd"]
 [ext_resource type="Script" uid="uid://da6v5c2m4s40y" path="res://scenes/windows/journey-map/journey_map.gd" id="2_tyl8k"]
 [ext_resource type="Script" uid="uid://bfdngvekqjtdf" path="res://scenes/windows/journey-map/camera.gd" id="3_bcqlh"]
+[ext_resource type="Texture2D" uid="uid://bm2qbgxstwq3" path="res://graphics/system-map/background/bg1.png" id="4_08c35"]
+[ext_resource type="Texture2D" uid="uid://b3vt8mwoavm66" path="res://graphics/system-map/background/bg2.png" id="5_iia6u"]
+[ext_resource type="Texture2D" uid="uid://ccmuactgm3c0h" path="res://graphics/system-map/background/bg3.png" id="6_hthjt"]
 
 [sub_resource type="Gradient" id="Gradient_dwhis"]
 colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
@@ -25,7 +28,7 @@ position = Vector2i(0, 36)
 size = Vector2i(300, 600)
 visible = false
 min_size = Vector2i(300, 600)
-max_size = Vector2i(16384, 600)
+max_size = Vector2i(1920, 600)
 theme = ExtResource("1_erjbd")
 
 [node name="journey_map" type="Node2D" parent="."]
@@ -62,6 +65,34 @@ texture_under = SubResource("GradientTexture2D_08c35")
 texture_progress = SubResource("GradientTexture2D_iia6u")
 tint_under = Color(0.90588236, 0.90588236, 0.90588236, 0.14901961)
 tint_progress = Color(1, 1, 1, 0.14901961)
+
+[node name="parallax_node" type="Node2D" parent="journey_map"]
+
+[node name="parallax1" type="Parallax2D" parent="journey_map/parallax_node"]
+scroll_scale = Vector2(1, 0.1)
+repeat_size = Vector2(1920, 1080)
+autoscroll = Vector2(1, 0)
+
+[node name="bg1" type="Sprite2D" parent="journey_map/parallax_node/parallax1"]
+modulate = Color(1, 1, 1, 0.33)
+texture = ExtResource("4_08c35")
+
+[node name="parallax2" type="Parallax2D" parent="journey_map/parallax_node"]
+scroll_scale = Vector2(1, 0.2)
+repeat_size = Vector2(1920, 1080)
+autoscroll = Vector2(2, 0)
+
+[node name="bg2" type="Sprite2D" parent="journey_map/parallax_node/parallax2"]
+modulate = Color(1, 1, 1, 0.66)
+texture = ExtResource("5_iia6u")
+
+[node name="parallax3" type="Parallax2D" parent="journey_map/parallax_node"]
+scroll_scale = Vector2(1, 0.3)
+repeat_size = Vector2(1920, 1080)
+autoscroll = Vector2(2, 0)
+
+[node name="bg2" type="Sprite2D" parent="journey_map/parallax_node/parallax3"]
+texture = ExtResource("6_hthjt")
 
 [connection signal="about_to_popup" from="." to="journey_map" method="_on_journey_map_window_about_to_popup"]
 [connection signal="close_requested" from="." to="journey_map" method="_on_journey_map_window_close_requested"]
