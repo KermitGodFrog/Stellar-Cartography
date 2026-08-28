@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://cp4yo48s8qlxh"]
+
+[ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://theme-gen/custom-tooltip/custom_tooltip_host.tres" id="1_gbijl"]
+[ext_resource type="Script" uid="uid://u0hargu3xlng" path="res://scenes/system-map/info-tab/star_type_depiction.gd" id="1_pxsb6"]
+[ext_resource type="Texture2D" uid="uid://4tpe2ilrlle6" path="res://graphics/system-map/star_type_depiction.png" id="2_nopn0"]
+[ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="4_tc4j5"]
+
+[node name="star_type_depiction" type="PanelContainer"]
+custom_minimum_size = Vector2(50, 100)
+offset_right = 50.0
+offset_bottom = 100.0
+theme = ExtResource("1_gbijl")
+script = ExtResource("1_pxsb6")
+
+[node name="panel" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_nopn0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="label" type="Label" parent="."]
+layout_mode = 2
+theme = ExtResource("4_tc4j5")
+horizontal_alignment = 1
+vertical_alignment = 1

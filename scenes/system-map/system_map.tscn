@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=72 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
@@ -18,10 +18,12 @@
 [ext_resource type="Texture2D" uid="uid://4r5ju0dq0137" path="res://graphics/system-map/status-panel/nanites_icon.png" id="10_e6b7x"]
 [ext_resource type="Texture2D" uid="uid://7klr1mcpbsc4" path="res://graphics/system-map/actions-panel/go_to_icon.png" id="10_xhqpl"]
 [ext_resource type="Script" uid="uid://oifivdox788" path="res://scenes/system-map/status-panel/status_control.gd" id="10_ydc85"]
+[ext_resource type="PackedScene" uid="uid://cp4yo48s8qlxh" path="res://scenes/system-map/info-tab/star_type_depiction.tscn" id="11_0fvur"]
 [ext_resource type="Script" uid="uid://dskivfpkly04v" path="res://scenes/system-map/status-panel/primary_status_button.gd" id="11_1rwmm"]
 [ext_resource type="Texture2D" uid="uid://dq25m1n2y5upl" path="res://graphics/system-map/status-panel/hull_stress_icon.png" id="11_1tiv0"]
 [ext_resource type="PackedScene" uid="uid://co52u63cyk220" path="res://scenes/gizmos/system-3d/system_3d.tscn" id="11_domud"]
 [ext_resource type="Texture2D" uid="uid://csvtv1sy2k3ns" path="res://graphics/system-map/apps-dock/audio_visualizer_icon.png" id="11_lvg8y"]
+[ext_resource type="Script" uid="uid://y3vnl07ny8y3" path="res://scenes/system-map/info-tab/star_infographic_panel.gd" id="11_ujtkq"]
 [ext_resource type="Texture2D" uid="uid://dsyfc4m1nq34w" path="res://graphics/system-map/actions-panel/stop_icon.png" id="11_vquxl"]
 [ext_resource type="Texture2D" uid="uid://cghgcu7ghw8mf" path="res://graphics/system-map/status-panel/hull_deterioration_icon.png" id="12_3bh3s"]
 [ext_resource type="Texture2D" uid="uid://vdjsk4r01pst" path="res://graphics/system-map/ui_arrow.png" id="12_6oeqo"]
@@ -325,7 +327,6 @@ theme = ExtResource("3_djc4s")
 theme_override_colors/font_color = Color(0.87451, 1, 0.862745, 1)
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_ee55b")
-text = "CBCBCBCBCB"
 vertical_alignment = 1
 clip_text = true
 
@@ -335,6 +336,74 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("3_djc4s")
 allow_search = false
+
+[node name="star_infographic_panel" type="PanelContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO"]
+visible = false
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+script = ExtResource("11_ujtkq")
+
+[node name="v_scroll" type="VBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel"]
+layout_mode = 2
+
+[node name="header" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_hhsj4")
+text = "- STAR TYPES REFERENCE -"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="depictions_scroll" type="HBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll"]
+layout_mode = 2
+alignment = 1
+
+[node name="M" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/depictions_scroll" instance=ExtResource("11_0fvur")]
+layout_mode = 2
+star_type = "M"
+
+[node name="K" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/depictions_scroll" instance=ExtResource("11_0fvur")]
+layout_mode = 2
+star_type = "K"
+
+[node name="G" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/depictions_scroll" instance=ExtResource("11_0fvur")]
+layout_mode = 2
+star_type = "G"
+
+[node name="P" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/depictions_scroll" instance=ExtResource("11_0fvur")]
+layout_mode = 2
+star_type = "Pulsar"
+
+[node name="F" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/depictions_scroll" instance=ExtResource("11_0fvur")]
+layout_mode = 2
+star_type = "F"
+
+[node name="A" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/depictions_scroll" instance=ExtResource("11_0fvur")]
+layout_mode = 2
+star_type = "A"
+
+[node name="B" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/depictions_scroll" instance=ExtResource("11_0fvur")]
+layout_mode = 2
+star_type = "B"
+
+[node name="O" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll/depictions_scroll" instance=ExtResource("11_0fvur")]
+layout_mode = 2
+star_type = "O"
+
+[node name="size_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 12
+text = ">>> SIZE >>>"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="difficulty_label" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel/v_scroll"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 12
+text = ">>> DIFFICULTY >>>"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="picker_header" type="Label" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO"]
 layout_mode = 2

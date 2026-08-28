@@ -102,6 +102,7 @@ var bg_processing_radius: float
 @onready var tabs_and_ca_scroll = $camera/canvas/control/tabs_and_ca_scroll
 @onready var status_control = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control
 @onready var scopes_bg = $camera/canvas/control/scopes_snap_scroll/scopes_bg
+@onready var star_infographic_panel = $camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -307,6 +308,20 @@ func _physics_process(delta):
 						"affiliation": parse = "%s" % game_data.UNIT_AFFILIATIONS.find_key(follow_body.metadata.get(entry))
 						_: parse = str(follow_body.metadata.get(entry))
 					body_attributes_list.add_item("%s : %s" % [entry, parse], null, false)
+	
+	#star infographic panel
+	star_infographic_panel.hide()
+	if follow_body and follow_body.is_known():
+		if follow_body.get_type() in [starSystemAPI.BODY_TYPES.WORMHOLE, starSystemAPI.BODY_TYPES.STAR]:
+			star_infographic_panel.show()
+		else:
+			star_infographic_panel.hide()
+		
+		match follow_body.get_type():
+			starSystemAPI.BODY_TYPES.WORMHOLE:
+				star_infographic_panel.current_star_type = follow_body.metadata.get("destination_star_type")
+			starSystemAPI.BODY_TYPES.STAR:
+				star_infographic_panel.current_star_type = follow_body.metadata.get("star_type")
 	
 	#PICKER UTILITY \/\/\/\/\/
 	if follow_body and follow_body.is_known(): 
