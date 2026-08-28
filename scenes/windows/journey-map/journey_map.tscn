@@ -1,15 +1,31 @@
-[gd_scene load_steps=4 format=3 uid="uid://dt0crabynqgvv"]
+[gd_scene load_steps=7 format=3 uid="uid://dt0crabynqgvv"]
 
 [ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://theme-gen/window_theme.tres" id="1_erjbd"]
 [ext_resource type="Script" uid="uid://da6v5c2m4s40y" path="res://scenes/windows/journey-map/journey_map.gd" id="2_tyl8k"]
 [ext_resource type="Script" uid="uid://bfdngvekqjtdf" path="res://scenes/windows/journey-map/camera.gd" id="3_bcqlh"]
 
+[sub_resource type="Gradient" id="Gradient_dwhis"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_08c35"]
+gradient = SubResource("Gradient_dwhis")
+width = 20
+height = 600
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_iia6u"]
+gradient = SubResource("Gradient_dwhis")
+width = 20
+height = 600
+
 [node name="journey_map_window" type="Window"]
 disable_3d = true
+oversampling_override = 1.0
 title = "Journey Map"
 position = Vector2i(0, 36)
 size = Vector2i(300, 600)
 visible = false
+min_size = Vector2i(300, 600)
+max_size = Vector2i(16384, 600)
 theme = ExtResource("1_erjbd")
 
 [node name="journey_map" type="Node2D" parent="."]
@@ -19,4 +35,34 @@ script = ExtResource("2_tyl8k")
 position_smoothing_enabled = true
 script = ExtResource("3_bcqlh")
 
+[node name="canvas" type="CanvasLayer" parent="journey_map/camera"]
+
+[node name="control" type="Control" parent="journey_map/camera/canvas"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="distance_bar" type="TextureProgressBar" parent="journey_map/camera/canvas/control"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -20.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+max_value = 2500.0
+fill_mode = 3
+texture_under = SubResource("GradientTexture2D_08c35")
+texture_progress = SubResource("GradientTexture2D_iia6u")
+tint_under = Color(0.90588236, 0.90588236, 0.90588236, 0.14901961)
+tint_progress = Color(1, 1, 1, 0.14901961)
+
+[connection signal="about_to_popup" from="." to="journey_map" method="_on_journey_map_window_about_to_popup"]
 [connection signal="close_requested" from="." to="journey_map" method="_on_journey_map_window_close_requested"]
+[connection signal="gui_input" from="journey_map/camera/canvas/control" to="journey_map/camera" method="_on_control_gui_input"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://co52u63cyk220"]
+[gd_scene load_steps=17 format=3 uid="uid://co52u63cyk220"]
 
 [ext_resource type="Script" uid="uid://ofbjt6pmvy3y" path="res://scenes/gizmos/system-3d/system_3d.gd" id="1_a351o"]
 [ext_resource type="Shader" uid="uid://c8yxk67y2u80y" path="res://shader-gen/pixelate_shader.gdshader" id="2_ra6gs"]
@@ -9,6 +9,7 @@
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="5_u5io5"]
 [ext_resource type="Texture2D" uid="uid://bm556o6bplwe1" path="res://graphics/system-3d/checked.svg" id="6_a5f52"]
 [ext_resource type="Texture2D" uid="uid://d02k71150k6kn" path="res://graphics/system-3d/unchecked.svg" id="6_tx8l4"]
+[ext_resource type="Texture2D" uid="uid://oypq0umnahdk" path="res://graphics/shared/slide_indicator_texture.tres" id="8_588xm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e7fqt"]
 shader = ExtResource("2_ra6gs")
@@ -24,14 +25,6 @@ shadow_color = Color(0.207843, 0.207843, 0.207843, 0.6)
 shadow_size = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tx8l4"]
-
-[sub_resource type="Gradient" id="Gradient_a5f52"]
-colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_588xm"]
-gradient = SubResource("Gradient_a5f52")
-width = 20
-height = 300
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ch2h2"]
 shader = ExtResource("3_buwkt")
@@ -131,9 +124,12 @@ anchor_bottom = 1.0
 offset_left = -10.0
 grow_horizontal = 0
 grow_vertical = 2
+max_value = 2500.0
 fill_mode = 7
-texture_progress = SubResource("GradientTexture2D_588xm")
-tint_progress = Color(0.90588236, 0.90588236, 0.90588236, 0.14901961)
+texture_under = ExtResource("8_588xm")
+texture_progress = ExtResource("8_588xm")
+tint_under = Color(0.90588236, 0.90588236, 0.90588236, 0.14901961)
+tint_progress = Color(1, 1, 1, 0.14901961)
 
 [node name="world_environment" type="WorldEnvironment" parent="system_3d"]
 environment = SubResource("Environment_wo5s4")
