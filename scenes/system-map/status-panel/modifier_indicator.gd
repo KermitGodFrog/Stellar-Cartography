@@ -1,4 +1,4 @@
-extends "res://scenes/system-map/custom_tooltip_control.gd"
+extends "res://instantiated-scenes/custom-tooltip/custom_tooltip_control.gd"
 #for all modifier descriptions: speed changes in the 'effects' section should be appended LAST !
 
 @onready var title_label = $title_label

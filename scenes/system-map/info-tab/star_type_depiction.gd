@@ -1,4 +1,4 @@
-extends "res://scenes/system-map/custom_tooltip_control.gd"
+extends "res://instantiated-scenes/custom-tooltip/custom_tooltip_control.gd"
 
 @onready var selected_stylebox = preload("uid://bb2dqri2dtnyy")
 @onready var unselected_stylebox = preload("uid://bkbumqb0aeek1")
@@ -29,16 +29,15 @@ const star_display_data := {
 func update_display() -> void:
 	if is_node_ready():
 		var type_data: Dictionary = star_display_data.get(star_type)
+		panel.set_self_modulate(type_data.get("panel_color"))
 		if selected:
-			panel.set_self_modulate(type_data.get("panel_color").lightened(0.25))
 			set("theme_override_styles/panel", selected_stylebox)
 		else:
-			panel.set_self_modulate(type_data.get("panel_color"))
 			set("theme_override_styles/panel", unselected_stylebox)
 		label.set_text(type_data.get("label_alias", star_type))
 		if star_type == "Pulsar":
 			tooltip_title = "%s Star" % star_type
 		else:
-			tooltip_title = "Type '%s' Star" % star_type
+			tooltip_title = "Type %s Star" % star_type
 		tooltip_text = starSystemAPI.star_descriptions.get(star_type)
 	pass

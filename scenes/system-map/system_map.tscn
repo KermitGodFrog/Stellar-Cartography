@@ -37,7 +37,7 @@
 [ext_resource type="Script" uid="uid://cfkdo3f7q5aks" path="res://scenes/system-map/status-panel/modifier_organizer.gd" id="17_ow1c8"]
 [ext_resource type="Texture2D" uid="uid://v8qbsjlyp4t3" path="res://graphics/system-map/apps-dock/journey_map_icon.png" id="19_36y85"]
 [ext_resource type="Texture2D" uid="uid://dka6vwu04ir6e" path="res://graphics/system-map/apps-dock/long_range_scopes_icon.png" id="22_sph0q"]
-[ext_resource type="Script" uid="uid://dvoejg0bu6h77" path="res://scenes/system-map/custom_tooltip_control.gd" id="24_pnmav"]
+[ext_resource type="Script" uid="uid://dvoejg0bu6h77" path="res://instantiated-scenes/custom-tooltip/custom_tooltip_control.gd" id="24_pnmav"]
 [ext_resource type="Texture2D" uid="uid://bniwls30eph6s" path="res://graphics/system-map/relationship_symbol.png" id="25_5qywx"]
 [ext_resource type="Texture2D" uid="uid://ckex2ufxqcw22" path="res://graphics/system-map/status-panel/scanner_power_icon.png" id="29_gyk4x"]
 [ext_resource type="Texture2D" uid="uid://mnev4hvv0mub" path="res://graphics/system-map/status-panel/scanner_profile_icon.png" id="30_5qywx"]

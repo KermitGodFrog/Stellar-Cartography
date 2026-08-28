@@ -2,13 +2,14 @@
 
 [ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://theme-gen/custom-tooltip/custom_tooltip_host.tres" id="1_gbijl"]
 [ext_resource type="Script" uid="uid://u0hargu3xlng" path="res://scenes/system-map/info-tab/star_type_depiction.gd" id="1_pxsb6"]
-[ext_resource type="Texture2D" uid="uid://4tpe2ilrlle6" path="res://graphics/system-map/star_type_depiction.png" id="2_nopn0"]
+[ext_resource type="Texture2D" uid="uid://4tpe2ilrlle6" path="res://graphics/system-map/info-tab/star_type_depiction.png" id="2_nopn0"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="4_tc4j5"]
 
 [node name="star_type_depiction" type="PanelContainer"]
 custom_minimum_size = Vector2(50, 100)
 offset_right = 50.0
 offset_bottom = 100.0
+tooltip_text = "YEAH"
 theme = ExtResource("1_gbijl")
 script = ExtResource("1_pxsb6")
 
