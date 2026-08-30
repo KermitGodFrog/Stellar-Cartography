@@ -1,9 +1,20 @@
 extends Camera2D
 
+@onready var distance_bar = $canvas/control/distance_bar
+@onready var control = $canvas/control
+
 var tracking: bool = false
 var aggregrate_vertical_change: int = 0
 
-func _unhandled_input(event):
+func _process(_delta: float) -> void:
+	distance_bar.set_value(abs(position.y))
+	if tracking:
+		control.mouse_default_cursor_shape = Control.CURSOR_DRAG
+	else:
+		control.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	pass
+
+func _on_control_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.pressed:
 			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
@@ -23,7 +34,8 @@ func _unhandled_input(event):
 	pass
 
 func stop_tracking():
-	position += Vector2(0,aggregrate_vertical_change)
+	var raw: Vector2 = position + Vector2(0,aggregrate_vertical_change)
+	position = Vector2(0, clampf(raw.y, -2500.0, 0.0))
 	
 	tracking = false
 	aggregrate_vertical_change = 0
