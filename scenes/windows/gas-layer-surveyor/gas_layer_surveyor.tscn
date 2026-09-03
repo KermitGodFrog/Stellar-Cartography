@@ -26,7 +26,7 @@
 bg_color = Color(0.0588235, 0.0784314, 0.14902, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6om7d"]
-bg_color = Color(0.117647, 0.117647, 0.117647, 1)
+bg_color = Color(0.20784314, 0.20784314, 0.20784314, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w817a"]
 bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
@@ -84,7 +84,7 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.20784314, 0.20784314, 0.20784314, 1)
+bg_color = Color(0.15686275, 0.15686275, 0.15686275, 1)
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
@@ -324,9 +324,8 @@ custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonDull"
+theme_type_variation = &"ButtonPalette"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_fy5f7")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_c8gbv")
 text = "CONFIRM"
 script = ExtResource("8_3jywn")
@@ -334,9 +333,7 @@ script = ExtResource("8_3jywn")
 [node name="view_buttonB" type="Button" parent="gas_layer_surveyor/camera_offset/camera/canvas_layer/draw_handler/selection_screen/margin/tabs/REPORT/confirm_view_scroll"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonDull"
-theme_override_styles/normal = SubResource("StyleBoxFlat_fy5f7")
-theme_override_styles/focus = ExtResource("10_fwdhx")
+theme_type_variation = &"ButtonPalette"
 text = "VIEW"
 icon = ExtResource("11_2upog")
 icon_alignment = 2

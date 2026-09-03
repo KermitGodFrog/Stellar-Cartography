@@ -91,34 +91,39 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="resume_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonDull"
+theme_type_variation = &"ButtonPalette"
 text = "RESUME"
 
 [node name="settings_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonDull"
+theme_type_variation = &"ButtonPalette"
 text = "SETTINGS
 "
 
 [node name="save_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonDull"
+theme_type_variation = &"ButtonPalette"
 text = "SAVE"
 
 [node name="save_and_quit_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonDull"
+theme_type_variation = &"ButtonPalette"
 text = "SAVE AND QUIT TO MAIN MENU"
 
 [node name="exit_button" type="Button" parent="pause_canvas/pause_control/pause_scroll" groups=["playUIClickSFX"]]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonDull"
+theme_type_variation = &"ButtonPalette"
 text = "EXIT TO MAIN MENU"
 
 [node name="console_cover_panel" type="PanelContainer" parent="pause_canvas/pause_control"]

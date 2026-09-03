@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=71 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
@@ -96,14 +96,11 @@ bg_color = Color(0.0941176, 0.0941176, 0.0941176, 0.415686)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vdy1a"]
 texture = ExtResource("12_6oeqo")
 region_rect = Rect2(0, 0, 67, 32)
-modulate_color = Color(0.101960786, 0.101960786, 0.101960786, 0.6)
+modulate_color = Color(0.09411765, 0.09411765, 0.09411765, 0.6)
 
 [sub_resource type="Curve" id="Curve_j23tm"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.35, 1), 0.0, 0.0, 0, 0, Vector2(0.9, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_da46s"]
-bg_color = Color(0.18039216, 0.18039216, 0.18039216, 0.41568628)
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_5218o"]
 color = Color(0.207843, 0.207843, 0.207843, 1)
@@ -455,16 +452,15 @@ popup/item_1/id = 1
 popup/item_2/text = "HIGH"
 popup/item_2/id = 2
 
-[node name="actions_panel" type="Panel" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll"]
+[node name="actions_panel" type="PanelContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll"]
 custom_minimum_size = Vector2(450, 100)
 layout_mode = 2
 theme = ExtResource("3_djc4s")
+theme_type_variation = &"PanelTertiaryDullTransparent"
 
 [node name="actions_scroll" type="HBoxContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel"]
 custom_minimum_size = Vector2(450, 0)
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 2
 alignment = 1
 
 [node name="orbit_button" type="Button" parent="system/camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/actions_panel/actions_scroll"]
@@ -544,7 +540,7 @@ layout_mode = 2
 size_flags_vertical = 8
 
 [node name="arrow_texture" type="TextureRect" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll"]
-modulate = Color(0.101960786, 0.101960786, 0.101960786, 0.6)
+modulate = Color(0.09411765, 0.09411765, 0.09411765, 0.6)
 custom_minimum_size = Vector2(13, 32)
 layout_mode = 2
 size_flags_vertical = 4
@@ -676,7 +672,7 @@ grow_vertical = 2
 [node name="primary_panel" type="PanelContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_type_variation = &"PanelContainerTransparentA"
+theme_type_variation = &"PanelTertiaryDullTransparent"
 
 [node name="primary_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/primary_panel"]
 layout_mode = 2
@@ -709,6 +705,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Universally recognised currency. Can be obtained by trading in exploration data at a space station. "
 theme = ExtResource("15_534fl")
+theme_type_variation = &"ButtonDull"
 theme_override_font_sizes/font_size = 14
 icon = ExtResource("10_e6b7x")
 script = ExtResource("11_1rwmm")
@@ -727,6 +724,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "The willingness of a starships crew to follow their superiors. Depending on circumstance, an uprising may occur at 0%."
 theme = ExtResource("15_534fl")
+theme_type_variation = &"ButtonDull"
 theme_override_font_sizes/font_size = 14
 icon = ExtResource("13_vaatn")
 script = ExtResource("11_1rwmm")
@@ -748,6 +746,7 @@ stretch_mode = 5
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("15_534fl")
+theme_type_variation = &"ButtonDull"
 theme_override_font_sizes/font_size = 14
 icon = ExtResource("11_1tiv0")
 script = ExtResource("14_u08qu")
@@ -770,6 +769,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Permanent damage to a starship. Catastrophic, and often explosive, ship breakdown occurs at 100%."
 theme = ExtResource("15_534fl")
+theme_type_variation = &"ButtonDull"
 theme_override_font_sizes/font_size = 14
 icon = ExtResource("12_3bh3s")
 script = ExtResource("11_1rwmm")
@@ -784,7 +784,7 @@ alignment = 2
 [node name="secondary_panel1" type="PanelContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"PanelContainerTransparentA"
+theme_type_variation = &"PanelTertiaryDullTransparent"
 
 [node name="secondary_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel1"]
 layout_mode = 2
@@ -803,7 +803,7 @@ reverse_fill = true
 script = ExtResource("17_ow1c8")
 
 [node name="arrow_texture" type="TextureRect" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll"]
-modulate = Color(0.101960786, 0.101960786, 0.101960786, 0.6)
+modulate = Color(0.09411765, 0.09411765, 0.09411765, 0.6)
 custom_minimum_size = Vector2(13, 32)
 layout_mode = 2
 size_flags_vertical = 4
@@ -812,7 +812,7 @@ texture = ExtResource("15_4xoy6")
 [node name="secondary_panel2" type="PanelContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll"]
 layout_mode = 2
 size_flags_horizontal = 8
-theme_type_variation = &"PanelContainerTransparentA"
+theme_type_variation = &"PanelTertiaryDullTransparent"
 
 [node name="secondary_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control/status_scroll/secondary_scroll/secondary_panel2"]
 layout_mode = 2
@@ -909,21 +909,17 @@ expand_icon = true
 script = ExtResource("24_pnmav")
 tooltip_title = "Speed"
 
-[node name="core_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll"]
+[node name="core_panel" type="PanelContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll"]
 custom_minimum_size = Vector2(460, 235)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_da46s")
+theme_type_variation = &"PanelDullTransparentB"
 
 [node name="core_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel"]
-layout_mode = 0
-offset_right = 468.0
-offset_bottom = 240.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="core_scroll" type="HBoxContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/core_panel/core_margin"]
 layout_mode = 2
@@ -955,18 +951,14 @@ stretch = true
 handle_input_locally = false
 render_target_update_mode = 4
 
-[node name="apps_panel" type="Panel" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll"]
+[node name="apps_panel" type="PanelContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll"]
 custom_minimum_size = Vector2(100, 235)
 layout_mode = 2
 theme = ExtResource("8_a7cgy")
+theme_type_variation = &"PanelQuaternaryDull"
 
 [node name="apps_margin" type="MarginContainer" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -979,7 +971,7 @@ script = ExtResource("9_pw1kh")
 [node name="journey_map_button" type="Button" parent="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme = ExtResource("8_a7cgy")
+theme_type_variation = &"ButtonPaletteRight"
 text = "JUR"
 icon = ExtResource("19_36y85")
 clip_text = true
@@ -989,7 +981,7 @@ icon_alignment = 2
 visible = false
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme = ExtResource("8_a7cgy")
+theme_type_variation = &"ButtonPaletteRight"
 text = "AUD"
 icon = ExtResource("11_lvg8y")
 clip_text = true
@@ -999,7 +991,7 @@ icon_alignment = 2
 visible = false
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme = ExtResource("8_a7cgy")
+theme_type_variation = &"ButtonPaletteRight"
 text = "LON"
 icon = ExtResource("22_sph0q")
 clip_text = true
@@ -1009,7 +1001,7 @@ icon_alignment = 2
 visible = false
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme = ExtResource("8_a7cgy")
+theme_type_variation = &"ButtonPaletteRight"
 text = "GAS"
 icon = ExtResource("35_digdi")
 clip_text = true
