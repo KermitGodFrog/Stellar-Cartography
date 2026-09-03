@@ -2,7 +2,7 @@ extends Control
 
 var init_type: global_data.GAME_INIT_TYPES = global_data.GAME_INIT_TYPES.NEW
 
-@onready var new_game_popup = $ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup
+@onready var new_game_popup = $ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup
 @onready var background_animation = $background_center/background_container/background_viewport/station_ui_background/animation_player
 
 func _ready() -> void:

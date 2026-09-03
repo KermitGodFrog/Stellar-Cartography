@@ -52,13 +52,13 @@ func _on_continue_button_pressed():
 	pass
 
 func _on_new_button_pressed():
-	global_data.change_scene.emit("res://scenes/run-creation-menu/run_creation_menu.tscn", {
+	global_data.change_scene.emit("res://scenes/create-menu/create_menu.tscn", {
 		"init_type": global_data.GAME_INIT_TYPES.NEW
 	})
 	pass
 
 func _on_tutorial_button_pressed() -> void:
-	global_data.change_scene.emit("res://scenes/run-creation-menu/run_creation_menu.tscn", {
+	global_data.change_scene.emit("res://scenes/create-menu/create_menu.tscn", {
 		"init_type": global_data.GAME_INIT_TYPES.TUTORIAL
 	})
 	pass

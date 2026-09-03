@@ -1,25 +1,17 @@
-[gd_scene load_steps=13 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=11 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" uid="uid://dq4gkj1n823v0" path="res://scenes/main-menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_b84fj"]
 [ext_resource type="Theme" uid="uid://skdebllj6ft7" path="res://theme-gen/main-menu/main_menu_MAIN_theme.tres" id="2_2eiki"]
 [ext_resource type="FontFile" uid="uid://n0hwhfbdcomy" path="res://graphics/fonts/Tomorrow-Regular.ttf" id="3_hw4jk"]
 [ext_resource type="PackedScene" uid="uid://njcr66sajfan" path="res://scenes/main-menu/achievements-list/achievements_list_popup.tscn" id="5_7l6aj"]
-[ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/shared/denied_monochrome.png" id="5_uqij0"]
+[ext_resource type="Texture2D" uid="uid://b7qc6axxoskxm" path="res://graphics/shared/denied_DPI_normal.svg" id="5_kgvlk"]
+[ext_resource type="Texture2D" uid="uid://cdhk5yk48l8rg" path="res://graphics/shared/denied_DPI_hover.svg" id="6_7m0km"]
 [ext_resource type="PackedScene" uid="uid://dc7b0agnokter" path="res://scenes/main-menu/credits/credits_content_panel.tscn" id="7_f371p"]
 [ext_resource type="PackedScene" uid="uid://cqveyx1gdyfvw" path="res://scenes/main-menu/history/history_popup.tscn" id="10_7m0km"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_5sbga"]
 color = Color(0.20784314, 0.20784314, 0.20784314, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xbeg8"]
-bg_color = Color(0.235294, 0.431373, 0.443137, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2i1us"]
-bg_color = Color(0.235294, 0.431373, 0.443137, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qyn1f"]
-bg_color = Color(0.501961, 0.501961, 0.501961, 1)
 
 [node name="main_menu" type="Control"]
 layout_mode = 3
@@ -174,30 +166,31 @@ theme_override_constants/margin_bottom = 20
 [node name="scroll" type="VBoxContainer" parent="credits_popup/margin/panel/panel_margin"]
 layout_mode = 2
 
-[node name="actions_hbox" type="HBoxContainer" parent="credits_popup/margin/panel/panel_margin/scroll"]
+[node name="actions_panel" type="PanelContainer" parent="credits_popup/margin/panel/panel_margin/scroll"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
+theme_type_variation = &"PanelPaletteB"
 
-[node name="title" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/actions_hbox"]
+[node name="actions_hbox" type="HBoxContainer" parent="credits_popup/margin/panel/panel_margin/scroll/actions_panel"]
+layout_mode = 2
+
+[node name="title" type="Label" parent="credits_popup/margin/panel/panel_margin/scroll/actions_panel/actions_hbox"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme_override_colors/font_outline_color = Color(0.0588235, 0.0784314, 0.14902, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_xbeg8")
 text = "CREDITS AND ATTRIBUTIONS"
 vertical_alignment = 1
 
-[node name="credits_return_button" type="Button" parent="credits_popup/margin/panel/panel_margin/scroll/actions_hbox"]
+[node name="credits_return_button" type="TextureButton" parent="credits_popup/margin/panel/panel_margin/scroll/actions_panel/actions_hbox"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonDull"
-theme_override_styles/normal = SubResource("StyleBoxFlat_2i1us")
-theme_override_styles/hover = SubResource("StyleBoxFlat_qyn1f")
-icon = ExtResource("5_uqij0")
-icon_alignment = 1
-expand_icon = true
+texture_normal = ExtResource("5_kgvlk")
+texture_pressed = ExtResource("5_kgvlk")
+texture_hover = ExtResource("6_7m0km")
+stretch_mode = 5
 
 [node name="content_scroll" type="ScrollContainer" parent="credits_popup/margin/panel/panel_margin/scroll"]
 layout_mode = 2
@@ -450,7 +443,7 @@ layout_mode = 1
 [connection signal="pressed" from="options_scroll/achievements_button" to="." method="_on_achievements_button_pressed"]
 [connection signal="pressed" from="options_scroll/credits_button" to="." method="_on_credits_button_pressed"]
 [connection signal="pressed" from="options_scroll/history_button" to="." method="_on_history_button_pressed"]
-[connection signal="pressed" from="credits_popup/margin/panel/panel_margin/scroll/actions_hbox/credits_return_button" to="." method="_on_credits_return_button_pressed"]
+[connection signal="pressed" from="credits_popup/margin/panel/panel_margin/scroll/actions_panel/actions_hbox/credits_return_button" to="." method="_on_credits_return_button_pressed"]
 
 [editable path="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/packs"]
 [editable path="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/fonts"]
