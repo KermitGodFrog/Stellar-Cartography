@@ -2,6 +2,11 @@ extends Resource
 class_name worldAPI
 #any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
+enum MUTATION_ID {} #not related to the player but needs to be saved, thus worldAPI territory!
+
+
+
+
 @export_storage var play_time: float = 0.0 #probably the LEAST EFFICIENT WAY OF DOING THIS
 
 @export var star_systems: Array[starSystemAPI]

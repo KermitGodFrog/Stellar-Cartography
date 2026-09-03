@@ -36,6 +36,7 @@ offset_left = -191.0
 offset_bottom = 30.0
 grow_horizontal = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"ButtonDull"
 text = "OPEN USER:// FOLDER"
 script = ExtResource("2_a1nfr")
 
