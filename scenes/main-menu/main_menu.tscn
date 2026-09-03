@@ -1,99 +1,25 @@
-[gd_scene load_steps=33 format=3 uid="uid://dwq6tsuoepkw0"]
+[gd_scene load_steps=13 format=3 uid="uid://dwq6tsuoepkw0"]
 
 [ext_resource type="Script" uid="uid://dq4gkj1n823v0" path="res://scenes/main-menu/main_menu.gd" id="1_0jam3"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_b84fj"]
-[ext_resource type="Texture2D" uid="uid://nav04ap3rdbe" path="res://graphics/main-menu/new_game_popup.png" id="2_1jdbj"]
 [ext_resource type="Theme" uid="uid://skdebllj6ft7" path="res://theme-gen/main-menu/main_menu_MAIN_theme.tres" id="2_2eiki"]
 [ext_resource type="FontFile" uid="uid://n0hwhfbdcomy" path="res://graphics/fonts/Tomorrow-Regular.ttf" id="3_hw4jk"]
-[ext_resource type="Script" uid="uid://6vqi2sc5hsap" path="res://scenes/main-menu/new_game_popup.gd" id="5_2jeaq"]
 [ext_resource type="PackedScene" uid="uid://njcr66sajfan" path="res://scenes/main-menu/achievements-list/achievements_list_popup.tscn" id="5_7l6aj"]
 [ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/shared/denied_monochrome.png" id="5_uqij0"]
-[ext_resource type="Script" uid="uid://dncoypj63awau" path="res://scenes/main-menu/line_edit_length_label.gd" id="6_lhle4"]
-[ext_resource type="Script" uid="uid://do3nwyhoqumx0" path="res://scenes/main-menu/game_type_scroll.gd" id="7_0n1sh"]
 [ext_resource type="PackedScene" uid="uid://dc7b0agnokter" path="res://scenes/main-menu/credits/credits_content_panel.tscn" id="7_f371p"]
-[ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="8_0n1sh"]
-[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="9_hw4jk"]
-[ext_resource type="Texture2D" uid="uid://cx4ikfr2yvey0" path="res://graphics/main-menu/dice_up_icon.png" id="9_ptqsp"]
-[ext_resource type="Texture2D" uid="uid://bhvjolc2fupre" path="res://graphics/main-menu/dice_down_icon.png" id="10_5sbga"]
 [ext_resource type="PackedScene" uid="uid://cqveyx1gdyfvw" path="res://scenes/main-menu/history/history_popup.tscn" id="10_7m0km"]
-[ext_resource type="Script" uid="uid://moq137qi84py" path="res://instantiated-scenes/custom-tooltip/custom_tooltip_button.gd" id="14_6f8a5"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_5sbga"]
 color = Color(0.20784314, 0.20784314, 0.20784314, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_srvhc"]
-texture = ExtResource("2_1jdbj")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xbeg8"]
+bg_color = Color(0.235294, 0.431373, 0.443137, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2i1us"]
 bg_color = Color(0.235294, 0.431373, 0.443137, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qyn1f"]
 bg_color = Color(0.501961, 0.501961, 0.501961, 1)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8pdab"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sg3tv"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_bottom = 1
-border_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lhle4"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eel2y"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eel2y"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
-border_color = Color(0, 0, 0, 0.6)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7m0km"]
-bg_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_de2wi"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cskqv"]
-bg_color = Color(0.207843, 0.207843, 0.207843, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xbeg8"]
-bg_color = Color(0.235294, 0.431373, 0.443137, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0n1sh"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.15686275, 0.29411766, 0.3882353, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hw4jk"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.15686275, 0.29411766, 0.3882353, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
 
 [node name="main_menu" type="Control"]
 layout_mode = 3
@@ -204,238 +130,6 @@ mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "HISTORY"
 
-[node name="new_game_popup" type="Control" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("5_2jeaq")
-
-[node name="background" type="ColorRect" parent="new_game_popup"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.235294, 0.235294, 0.235294, 0.313726)
-
-[node name="new_game" type="Panel" parent="new_game_popup"]
-custom_minimum_size = Vector2(400, 500)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -250.0
-offset_right = 200.0
-offset_bottom = 250.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_srvhc")
-
-[node name="margin" type="MarginContainer" parent="new_game_popup/new_game"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="scroll" type="VBoxContainer" parent="new_game_popup/new_game/margin"]
-layout_mode = 2
-
-[node name="actions_hbox" type="HBoxContainer" parent="new_game_popup/new_game/margin/scroll"]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-
-[node name="new_game_label" type="Label" parent="new_game_popup/new_game/margin/scroll/actions_hbox"]
-layout_mode = 2
-text = "creating new game"
-uppercase = true
-
-[node name="new_game_return_button" type="Button" parent="new_game_popup/new_game/margin/scroll/actions_hbox"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-size_flags_horizontal = 10
-mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonDull"
-theme_override_styles/normal = SubResource("StyleBoxFlat_2i1us")
-theme_override_styles/hover = SubResource("StyleBoxFlat_qyn1f")
-icon = ExtResource("5_uqij0")
-icon_alignment = 1
-expand_icon = true
-
-[node name="seperator" type="HSeparator" parent="new_game_popup/new_game/margin/scroll"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/separator = SubResource("StyleBoxEmpty_8pdab")
-
-[node name="name_label" type="Label" parent="new_game_popup/new_game/margin/scroll"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_sg3tv")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_lhle4")
-text = "NAME"
-
-[node name="prefix_edit" type="OptionButton" parent="new_game_popup/new_game/margin/scroll"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-selected = 2
-item_count = 3
-popup/item_0/text = "Sir"
-popup/item_0/id = 0
-popup/item_1/text = "Madam"
-popup/item_1/id = 1
-popup/item_2/text = "Captain"
-popup/item_2/id = 2
-
-[node name="name_scroll" type="HBoxContainer" parent="new_game_popup/new_game/margin/scroll"]
-layout_mode = 2
-
-[node name="name_edit" type="LineEdit" parent="new_game_popup/new_game/margin/scroll/name_scroll"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Tanaka"
-max_length = 20
-
-[node name="length_label" type="Label" parent="new_game_popup/new_game/margin/scroll/name_scroll/name_edit"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 22.0
-grow_horizontal = 0
-theme_override_colors/font_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
-theme_override_font_sizes/font_size = 12
-horizontal_alignment = 2
-script = ExtResource("6_lhle4")
-line_edit_path = NodePath("..")
-
-[node name="name_randomizer" type="TextureButton" parent="new_game_popup/new_game/margin/scroll/name_scroll"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-texture_normal = ExtResource("9_ptqsp")
-texture_pressed = ExtResource("9_ptqsp")
-texture_hover = ExtResource("10_5sbga")
-stretch_mode = 5
-
-[node name="ship_name_label" type="Label" parent="new_game_popup/new_game/margin/scroll"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_sg3tv")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_eel2y")
-text = "SHIP NAME"
-
-[node name="ship_name_scroll" type="HBoxContainer" parent="new_game_popup/new_game/margin/scroll"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-
-[node name="ship_prefix_label" type="Label" parent="new_game_popup/new_game/margin/scroll/ship_name_scroll"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-size_flags_vertical = 1
-tooltip_text = "'Executive Ship'"
-mouse_filter = 1
-theme_override_colors/font_color = Color(0.8745098, 0.8745098, 0.8745098, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_eel2y")
-text = "ES"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ship_name_edit" type="LineEdit" parent="new_game_popup/new_game/margin/scroll/ship_name_scroll"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Valiant"
-max_length = 20
-
-[node name="length_label" type="Label" parent="new_game_popup/new_game/margin/scroll/ship_name_scroll/ship_name_edit"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 22.0
-grow_horizontal = 0
-theme_override_colors/font_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
-theme_override_font_sizes/font_size = 12
-horizontal_alignment = 2
-script = ExtResource("6_lhle4")
-line_edit_path = NodePath("..")
-
-[node name="ship_name_randomizer" type="TextureButton" parent="new_game_popup/new_game/margin/scroll/ship_name_scroll"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-texture_normal = ExtResource("9_ptqsp")
-texture_pressed = ExtResource("9_ptqsp")
-texture_hover = ExtResource("10_5sbga")
-stretch_mode = 5
-
-[node name="game_type_label" type="Label" parent="new_game_popup/new_game/margin/scroll"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_sg3tv")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_eel2y")
-text = "GAME TYPE"
-
-[node name="game_type_scroll" type="HBoxContainer" parent="new_game_popup/new_game/margin/scroll"]
-custom_minimum_size = Vector2(0, 72)
-layout_mode = 2
-script = ExtResource("7_0n1sh")
-
-[node name="game_type_edit" type="OptionButton" parent="new_game_popup/new_game/margin/scroll/game_type_scroll"]
-custom_minimum_size = Vector2(0, 72)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.3
-text_overrun_behavior = 5
-autowrap_mode = 3
-allow_reselect = true
-
-[node name="game_type_info" type="RichTextLabel" parent="new_game_popup/new_game/margin/scroll/game_type_scroll"]
-custom_minimum_size = Vector2(0, 72)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7
-theme_override_fonts/bold_font = ExtResource("8_0n1sh")
-theme_override_fonts/italics_font = ExtResource("9_hw4jk")
-theme_override_styles/normal = SubResource("StyleBoxFlat_7m0km")
-bbcode_enabled = true
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="tutorial_option_checkbox" type="CheckBox" parent="new_game_popup/new_game/margin/scroll"]
-visible = false
-layout_mode = 2
-tooltip_text = "Include a longer narrative prelude to the events of the campaign.
-
-This is how the tutorial is meant to be experienced, but should remain unchecked for new players.
-
-The tutorial will take longer to finish."
-text = "EXTENDED NARRATIVE"
-script = ExtResource("14_6f8a5")
-tooltip_title = "Extended Narrative"
-
-[node name="seperator1" type="HSeparator" parent="new_game_popup/new_game/margin/scroll"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/separator = SubResource("StyleBoxEmpty_de2wi")
-
-[node name="create_button" type="Button" parent="new_game_popup/new_game/margin/scroll"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-mouse_default_cursor_shape = 2
-text = "CREATE"
-
 [node name="credits_popup" type="Control" parent="."]
 visible = false
 layout_mode = 1
@@ -468,7 +162,7 @@ theme_override_constants/margin_bottom = 100
 
 [node name="panel" type="PanelContainer" parent="credits_popup/margin"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_cskqv")
+theme_type_variation = &"PanelDull"
 
 [node name="panel_margin" type="MarginContainer" parent="credits_popup/margin/panel"]
 layout_mode = 2
@@ -518,14 +212,14 @@ size_flags_vertical = 3
 
 [node name="development" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_0n1sh")
+theme_type_variation = &"PanelPaletteA"
 title = "development"
 text = "* KermitTheGodFrog - Developer (https://kermitthegodfrog.itch.io)
 * Phoenix1509 - Some dialogue/main menu backgrounds (https://itch.io/profile/phoenix1509)"
 
 [node name="playtesters" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_hw4jk")
+theme_type_variation = &"PanelPaletteA"
 title = "playtesters"
 text = "* Phoenix1509
 * Lizardinasuit
@@ -756,12 +450,6 @@ layout_mode = 1
 [connection signal="pressed" from="options_scroll/achievements_button" to="." method="_on_achievements_button_pressed"]
 [connection signal="pressed" from="options_scroll/credits_button" to="." method="_on_credits_button_pressed"]
 [connection signal="pressed" from="options_scroll/history_button" to="." method="_on_history_button_pressed"]
-[connection signal="pressed" from="new_game_popup/new_game/margin/scroll/actions_hbox/new_game_return_button" to="." method="_on_new_game_return_button_pressed"]
-[connection signal="pressed" from="new_game_popup/new_game/margin/scroll/name_scroll/name_randomizer" to="new_game_popup" method="_on_name_randomizer_pressed"]
-[connection signal="pressed" from="new_game_popup/new_game/margin/scroll/ship_name_scroll/ship_name_randomizer" to="new_game_popup" method="_on_ship_name_randomizer_pressed"]
-[connection signal="item_selected" from="new_game_popup/new_game/margin/scroll/game_type_scroll/game_type_edit" to="new_game_popup" method="_on_game_type_edit_item_selected"]
-[connection signal="item_selected" from="new_game_popup/new_game/margin/scroll/game_type_scroll/game_type_edit" to="new_game_popup/new_game/margin/scroll/game_type_scroll" method="_on_game_type_edit_item_selected"]
-[connection signal="pressed" from="new_game_popup/new_game/margin/scroll/create_button" to="." method="_on_create_button_pressed"]
 [connection signal="pressed" from="credits_popup/margin/panel/panel_margin/scroll/actions_hbox/credits_return_button" to="." method="_on_credits_return_button_pressed"]
 
 [editable path="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/packs"]

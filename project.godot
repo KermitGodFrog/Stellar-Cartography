@@ -41,6 +41,11 @@ window/stretch/aspect="expand"
 
 export/convert_text_resources_to_binary=false
 
+[gui]
+
+theme/custom="uid://isea3lf5tnwr"
+theme/custom_font="uid://bdes37a2nuug8"
+
 [input]
 
 SC_PAUSE={

@@ -555,7 +555,7 @@ custom_minimum_size = Vector2(187, 100)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
-theme_type_variation = &"PanelContainerTransparentA"
+theme_type_variation = &"PanelTertiaryDullTransparent"
 
 [node name="margin" type="MarginContainer" parent="system/camera/canvas/control/tabs_and_ca_scroll/arrow_and_ca_scroll/ca_panel"]
 layout_mode = 2

@@ -1,14 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://6rp5mwt3o17w"]
+[gd_scene load_steps=5 format=3 uid="uid://6rp5mwt3o17w"]
 
 [ext_resource type="Script" uid="uid://b76jodpdq5cwx" path="res://scenes/main-menu/history/history_item.gd" id="1_5k0c4"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_06w5u"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yyk7f"]
-bg_color = Color(0.15686275, 0.15686275, 0.15686275, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_06w5u"]
 content_margin_left = 3.0
@@ -24,7 +17,7 @@ bg_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
 [node name="history_item" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 100)
 theme = ExtResource("1_06w5u")
-theme_override_styles/panel = SubResource("StyleBoxFlat_yyk7f")
+theme_type_variation = &"PanelSecondaryDull"
 script = ExtResource("1_5k0c4")
 
 [node name="margin" type="MarginContainer" parent="."]
@@ -94,6 +87,7 @@ vertical_alignment = 1
 [node name="modifiers_panel" type="PanelContainer" parent="margin/history_scroll/key_info_scroll"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_type_variation = &"PanelTertiaryDull"
 
 [node name="separator" type="VSeparator" parent="margin/history_scroll"]
 layout_mode = 2

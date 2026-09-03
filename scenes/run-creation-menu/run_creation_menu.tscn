@@ -1,0 +1,359 @@
+[gd_scene load_steps=26 format=3 uid="uid://dvwgqh38tsp76"]
+
+[ext_resource type="Script" uid="uid://eca10lgiyg" path="res://scenes/run-creation-menu/run_creation_menu.gd" id="1_btckg"]
+[ext_resource type="Shader" uid="uid://c8yxk67y2u80y" path="res://shader-gen/pixelate_shader.gdshader" id="2_p71xq"]
+[ext_resource type="PackedScene" uid="uid://c3o837337jhqc" path="res://scenes/windows/station-ui/station_ui_background.tscn" id="3_vkj7e"]
+[ext_resource type="Script" uid="uid://6vqi2sc5hsap" path="res://scenes/main-menu/new_game_popup.gd" id="4_ii5s7"]
+[ext_resource type="Texture2D" uid="uid://nav04ap3rdbe" path="res://graphics/main-menu/new_game_popup.png" id="5_y58gn"]
+[ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/shared/denied_monochrome.png" id="6_47myn"]
+[ext_resource type="Script" uid="uid://dncoypj63awau" path="res://scenes/main-menu/line_edit_length_label.gd" id="7_hl8l4"]
+[ext_resource type="Texture2D" uid="uid://cx4ikfr2yvey0" path="res://graphics/main-menu/dice_up_icon.png" id="8_abrkh"]
+[ext_resource type="Texture2D" uid="uid://bhvjolc2fupre" path="res://graphics/main-menu/dice_down_icon.png" id="9_15dbv"]
+[ext_resource type="Script" uid="uid://do3nwyhoqumx0" path="res://scenes/main-menu/game_type_scroll.gd" id="10_7bvwj"]
+[ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="11_5jku7"]
+[ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="12_f0ypb"]
+[ext_resource type="Script" uid="uid://moq137qi84py" path="res://instantiated-scenes/custom-tooltip/custom_tooltip_button.gd" id="13_tgec5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1jr11"]
+shader = ExtResource("2_p71xq")
+shader_parameter/pixel_size = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ii5s7"]
+draw_center = false
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.7647059, 0.5686275, 0.5568628, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ki0pg"]
+bg_color = Color(0.235294, 0.431373, 0.443137, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2re6r"]
+bg_color = Color(0.501961, 0.501961, 0.501961, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xjqqj"]
+texture = ExtResource("5_y58gn")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5yt26"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pv8u8"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 1
+border_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xhoao"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d1vd4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ouptf"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ixb0n"]
+bg_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c445r"]
+
+[node name="run_creation_menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_btckg")
+
+[node name="background_center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="background_container" type="SubViewportContainer" parent="background_center"]
+layout_mode = 2
+
+[node name="post_process" type="ColorRect" parent="background_center/background_container"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_1jr11")
+custom_minimum_size = Vector2(1600, 900)
+layout_mode = 2
+
+[node name="background_viewport" type="SubViewport" parent="background_center/background_container"]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1600, 900)
+render_target_update_mode = 4
+
+[node name="station_ui_background" parent="background_center/background_container/background_viewport" instance=ExtResource("3_vkj7e")]
+
+[node name="ui_panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ii5s7")
+
+[node name="ui_margin" type="MarginContainer" parent="ui_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ui_scroll" type="VBoxContainer" parent="ui_panel/ui_margin"]
+layout_mode = 2
+
+[node name="actions" type="HBoxContainer" parent="ui_panel/ui_margin/ui_scroll"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="new_game_label" type="Label" parent="ui_panel/ui_margin/ui_scroll/actions"]
+visible = false
+layout_mode = 2
+text = "creating new game"
+uppercase = true
+
+[node name="return_button" type="Button" parent="ui_panel/ui_margin/ui_scroll/actions"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ButtonDull"
+theme_override_styles/normal = SubResource("StyleBoxFlat_ki0pg")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2re6r")
+icon = ExtResource("6_47myn")
+icon_alignment = 1
+expand_icon = true
+
+[node name="primary_secondary_split" type="HBoxContainer" parent="ui_panel/ui_margin/ui_scroll"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="primary" type="VBoxContainer" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+
+[node name="new_game_popup" type="Panel" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary"]
+custom_minimum_size = Vector2(400, 500)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_xjqqj")
+script = ExtResource("4_ii5s7")
+
+[node name="margin" type="MarginContainer" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="scroll" type="VBoxContainer" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin"]
+layout_mode = 2
+
+[node name="actions_hbox" type="HBoxContainer" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="seperator" type="HSeparator" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_5yt26")
+
+[node name="name_label" type="Label" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_pv8u8")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_xhoao")
+text = "NAME"
+
+[node name="prefix_edit" type="OptionButton" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+selected = 2
+item_count = 3
+popup/item_0/text = "Sir"
+popup/item_0/id = 0
+popup/item_1/text = "Madam"
+popup/item_1/id = 1
+popup/item_2/text = "Captain"
+popup/item_2/id = 2
+
+[node name="name_scroll" type="HBoxContainer" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+layout_mode = 2
+
+[node name="name_edit" type="LineEdit" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/name_scroll"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Tanaka"
+max_length = 20
+
+[node name="length_label" type="Label" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/name_scroll/name_edit"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 22.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 2
+script = ExtResource("7_hl8l4")
+line_edit_path = NodePath("..")
+
+[node name="name_randomizer" type="TextureButton" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/name_scroll"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_abrkh")
+texture_pressed = ExtResource("8_abrkh")
+texture_hover = ExtResource("9_15dbv")
+stretch_mode = 5
+
+[node name="ship_name_label" type="Label" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_pv8u8")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_d1vd4")
+text = "SHIP NAME"
+
+[node name="ship_name_scroll" type="HBoxContainer" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="ship_prefix_label" type="Label" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/ship_name_scroll"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_vertical = 1
+tooltip_text = "'Executive Ship'"
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.8745098, 0.8745098, 0.8745098, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_ouptf")
+text = "ES"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ship_name_edit" type="LineEdit" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/ship_name_scroll"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Valiant"
+max_length = 20
+
+[node name="length_label" type="Label" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/ship_name_scroll/ship_name_edit"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 22.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 2
+script = ExtResource("7_hl8l4")
+line_edit_path = NodePath("..")
+
+[node name="ship_name_randomizer" type="TextureButton" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/ship_name_scroll"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_abrkh")
+texture_pressed = ExtResource("8_abrkh")
+texture_hover = ExtResource("9_15dbv")
+stretch_mode = 5
+
+[node name="game_type_label" type="Label" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_pv8u8")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_d1vd4")
+text = "GAME TYPE"
+
+[node name="game_type_scroll" type="HBoxContainer" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+script = ExtResource("10_7bvwj")
+
+[node name="game_type_edit" type="OptionButton" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/game_type_scroll"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+text_overrun_behavior = 5
+autowrap_mode = 3
+allow_reselect = true
+
+[node name="game_type_info" type="RichTextLabel" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/game_type_scroll"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.7
+theme_override_fonts/bold_font = ExtResource("11_5jku7")
+theme_override_fonts/italics_font = ExtResource("12_f0ypb")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ixb0n")
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="tutorial_option_checkbox" type="CheckBox" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+visible = false
+layout_mode = 2
+tooltip_text = "Include a longer narrative prelude to the events of the campaign.
+
+This is how the tutorial is meant to be experienced, but should remain unchecked for new players.
+
+The tutorial will take longer to finish."
+text = "EXTENDED NARRATIVE"
+script = ExtResource("13_tgec5")
+tooltip_title = "Extended Narrative"
+
+[node name="seperator1" type="HSeparator" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_c445r")
+
+[node name="secondary" type="VBoxContainer" parent="ui_panel/ui_margin/ui_scroll/primary_secondary_split"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+
+[node name="launch_button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -39.5
+offset_top = -150.0
+offset_right = 39.5
+offset_bottom = -119.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "LAUNCH!"
+
+[connection signal="pressed" from="ui_panel/ui_margin/ui_scroll/actions/return_button" to="." method="_on_return_button_pressed"]
+[connection signal="item_selected" from="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/game_type_scroll/game_type_edit" to="ui_panel/ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/game_type_scroll" method="_on_game_type_edit_item_selected"]
+[connection signal="pressed" from="launch_button" to="." method="_on_launch_button_pressed"]

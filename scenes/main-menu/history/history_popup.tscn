@@ -1,11 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://cqveyx1gdyfvw"]
+[gd_scene load_steps=8 format=3 uid="uid://cqveyx1gdyfvw"]
 
 [ext_resource type="Script" uid="uid://5ggnqnnre8ff" path="res://scenes/main-menu/history/history_popup.gd" id="1_fo85c"]
 [ext_resource type="Script" uid="uid://b3enlmexh3m01" path="res://scenes/main-menu/open_user_button.gd" id="2_a1nfr"]
 [ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/shared/denied_monochrome.png" id="3_51k5o"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kgvlk"]
-bg_color = Color(0.207843, 0.207843, 0.207843, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7m0km"]
 bg_color = Color(0.235294, 0.431373, 0.443137, 1)
@@ -64,7 +61,7 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_kgvlk")
+theme_type_variation = &"PanelDull"
 
 [node name="margin" type="MarginContainer" parent="panel"]
 layout_mode = 2

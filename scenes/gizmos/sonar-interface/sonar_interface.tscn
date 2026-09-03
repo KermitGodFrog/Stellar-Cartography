@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://j6p3dv2arp7u" path="res://scenes/gizmos/sonar-interface/sonar_interface.gd" id="1_bmylm"]
 [ext_resource type="Texture2D" uid="uid://bu4clhu1rmiwq" path="res://graphics/sonar-interface/sonar_64x.png" id="1_t5fig"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="2_1p42e"]
-[ext_resource type="StyleBox" uid="uid://t53tmp88dts0" path="res://theme-gen/general_focus.tres" id="4_1f73o"]
+[ext_resource type="StyleBox" uid="uid://t53tmp88dts0" path="res://theme-gen/default_focus.tres" id="4_1f73o"]
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="4_jmhbk"]
 [ext_resource type="Script" uid="uid://cj6mnrnbrx2yd" path="res://scenes/gizmos/sonar-interface/cooldown_label.gd" id="6_ovydm"]
 
