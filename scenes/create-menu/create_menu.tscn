@@ -4,13 +4,14 @@
 [ext_resource type="Shader" uid="uid://c8yxk67y2u80y" path="res://shader-gen/pixelate_shader.gdshader" id="2_yfn5a"]
 [ext_resource type="PackedScene" uid="uid://c3o837337jhqc" path="res://scenes/windows/station-ui/station_ui_background.tscn" id="3_ftqt2"]
 [ext_resource type="Texture2D" uid="uid://b7qc6axxoskxm" path="res://graphics/shared/denied_DPI_normal.svg" id="4_yfn5a"]
-[ext_resource type="Texture2D" uid="uid://nav04ap3rdbe" path="res://graphics/main-menu/new_game_popup.png" id="5_2mho6"]
 [ext_resource type="Texture2D" uid="uid://cdhk5yk48l8rg" path="res://graphics/shared/denied_DPI_hover.svg" id="5_ftqt2"]
-[ext_resource type="Script" uid="uid://6vqi2sc5hsap" path="res://scenes/main-menu/new_game_popup.gd" id="6_vur3g"]
-[ext_resource type="Script" uid="uid://dncoypj63awau" path="res://scenes/main-menu/line_edit_length_label.gd" id="7_a7cgh"]
+[ext_resource type="Script" uid="uid://6vqi2sc5hsap" path="res://scenes/create-menu/inquiry_panel.gd" id="6_vur3g"]
+[ext_resource type="Script" uid="uid://dncoypj63awau" path="res://scenes/create-menu/line_edit_length_label.gd" id="7_a7cgh"]
 [ext_resource type="Texture2D" uid="uid://cx4ikfr2yvey0" path="res://graphics/main-menu/dice_up_icon.png" id="8_4od06"]
 [ext_resource type="Texture2D" uid="uid://bhvjolc2fupre" path="res://graphics/main-menu/dice_down_icon.png" id="9_1e7w4"]
-[ext_resource type="Script" uid="uid://do3nwyhoqumx0" path="res://scenes/main-menu/game_type_scroll.gd" id="10_r6obm"]
+[ext_resource type="Script" uid="uid://do3nwyhoqumx0" path="res://scenes/create-menu/game_type_scroll.gd" id="10_r6obm"]
+[ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://theme-gen/custom-tooltip/custom_tooltip_host.tres" id="10_yfn5a"]
+[ext_resource type="Script" uid="uid://dvoejg0bu6h77" path="res://instantiated-scenes/custom-tooltip/custom_tooltip_control.gd" id="11_ftqt2"]
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="11_hqib2"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="12_o515n"]
 [ext_resource type="Script" uid="uid://moq137qi84py" path="res://instantiated-scenes/custom-tooltip/custom_tooltip_button.gd" id="13_dbh4k"]
@@ -18,9 +19,6 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1jr11"]
 shader = ExtResource("2_yfn5a")
 shader_parameter/pixel_size = 2.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xjqqj"]
-texture = ExtResource("5_2mho6")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5yt26"]
 
@@ -114,7 +112,6 @@ theme_type_variation = &"PanelTopPaletteB"
 layout_mode = 2
 
 [node name="new_game_label" type="Label" parent="ui_margin/ui_scroll/actions_panel/actions"]
-modulate = Color(0.8, 0.8, 0.8, 1)
 layout_mode = 2
 text = "creating new game"
 uppercase = true
@@ -139,43 +136,38 @@ layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 4
 
-[node name="new_game_popup" type="Panel" parent="ui_margin/ui_scroll/primary_secondary_split/primary"]
+[node name="inquiry_panel" type="PanelContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary"]
 custom_minimum_size = Vector2(400, 500)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_xjqqj")
+theme_type_variation = &"PanelDull"
 script = ExtResource("6_vur3g")
 
-[node name="margin" type="MarginContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="margin" type="MarginContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel"]
+layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="scroll" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin"]
+[node name="scroll" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin"]
 layout_mode = 2
 
-[node name="actions_hbox" type="HBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+[node name="actions_hbox" type="HBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
-[node name="seperator" type="HSeparator" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+[node name="seperator" type="HSeparator" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_5yt26")
 
-[node name="name_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+[node name="name_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_pv8u8")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_xhoao")
 text = "NAME"
 
-[node name="prefix_edit" type="OptionButton" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+[node name="prefix_edit" type="OptionButton" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 selected = 2
@@ -187,17 +179,17 @@ popup/item_1/id = 1
 popup/item_2/text = "Captain"
 popup/item_2/id = 2
 
-[node name="name_scroll" type="HBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+[node name="name_scroll" type="HBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 layout_mode = 2
 
-[node name="name_edit" type="LineEdit" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/name_scroll"]
+[node name="name_edit" type="LineEdit" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/name_scroll"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Tanaka"
 max_length = 20
 
-[node name="length_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/name_scroll/name_edit"]
+[node name="length_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/name_scroll/name_edit"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -211,7 +203,7 @@ horizontal_alignment = 2
 script = ExtResource("7_a7cgh")
 line_edit_path = NodePath("..")
 
-[node name="name_randomizer" type="TextureButton" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/name_scroll"]
+[node name="name_randomizer" type="TextureButton" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/name_scroll"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("8_4od06")
@@ -219,36 +211,39 @@ texture_pressed = ExtResource("8_4od06")
 texture_hover = ExtResource("9_1e7w4")
 stretch_mode = 5
 
-[node name="ship_name_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+[node name="ship_name_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_pv8u8")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_d1vd4")
 text = "SHIP NAME"
 
-[node name="ship_name_scroll" type="HBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+[node name="ship_name_scroll" type="HBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="ship_prefix_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/ship_name_scroll"]
+[node name="ship_prefix_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/ship_name_scroll"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_vertical = 1
-tooltip_text = "'Executive Ship'"
+tooltip_text = "A starship under the authority of the Exploration Council or another Provisional Executive department."
 mouse_filter = 1
+theme = ExtResource("10_yfn5a")
 theme_override_colors/font_color = Color(0.8745098, 0.8745098, 0.8745098, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_ouptf")
 text = "ES"
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("11_ftqt2")
+tooltip_title = "'Executive Ship'"
 
-[node name="ship_name_edit" type="LineEdit" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/ship_name_scroll"]
+[node name="ship_name_edit" type="LineEdit" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/ship_name_scroll"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Valiant"
 max_length = 20
 
-[node name="length_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/ship_name_scroll/ship_name_edit"]
+[node name="length_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/ship_name_scroll/ship_name_edit"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -262,7 +257,7 @@ horizontal_alignment = 2
 script = ExtResource("7_a7cgh")
 line_edit_path = NodePath("..")
 
-[node name="ship_name_randomizer" type="TextureButton" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/ship_name_scroll"]
+[node name="ship_name_randomizer" type="TextureButton" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/ship_name_scroll"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("8_4od06")
@@ -270,18 +265,18 @@ texture_pressed = ExtResource("8_4od06")
 texture_hover = ExtResource("9_1e7w4")
 stretch_mode = 5
 
-[node name="game_type_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+[node name="game_type_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_pv8u8")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_d1vd4")
 text = "GAME TYPE"
 
-[node name="game_type_scroll" type="HBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+[node name="game_type_scroll" type="HBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 script = ExtResource("10_r6obm")
 
-[node name="game_type_edit" type="OptionButton" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/game_type_scroll"]
+[node name="game_type_edit" type="OptionButton" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/game_type_scroll"]
 custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -290,7 +285,7 @@ text_overrun_behavior = 5
 autowrap_mode = 3
 allow_reselect = true
 
-[node name="game_type_info" type="RichTextLabel" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/game_type_scroll"]
+[node name="game_type_info" type="RichTextLabel" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/game_type_scroll"]
 custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -302,7 +297,7 @@ bbcode_enabled = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="tutorial_option_checkbox" type="CheckBox" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+[node name="tutorial_option_checkbox" type="CheckBox" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 visible = false
 layout_mode = 2
 tooltip_text = "Include a longer narrative prelude to the events of the campaign.
@@ -314,7 +309,7 @@ text = "EXTENDED NARRATIVE"
 script = ExtResource("13_dbh4k")
 tooltip_title = "Extended Narrative"
 
-[node name="seperator1" type="HSeparator" parent="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll"]
+[node name="seperator1" type="HSeparator" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_c445r")
@@ -324,7 +319,13 @@ layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 4
 
+[node name="mutations_panel" type="PanelContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary"]
+custom_minimum_size = Vector2(400, 500)
+layout_mode = 2
+theme_type_variation = &"PanelDull"
+
 [node name="launch_button" type="Button" parent="."]
+custom_minimum_size = Vector2(125, 75)
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -337,8 +338,12 @@ offset_right = 39.5
 offset_bottom = -119.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ButtonDull"
 text = "LAUNCH!"
 
 [connection signal="pressed" from="ui_margin/ui_scroll/actions_panel/actions/return_button" to="." method="_on_return_button_pressed"]
-[connection signal="item_selected" from="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/game_type_scroll/game_type_edit" to="ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup/margin/scroll/game_type_scroll" method="_on_game_type_edit_item_selected"]
+[connection signal="pressed" from="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/name_scroll/name_randomizer" to="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel" method="_on_name_randomizer_pressed"]
+[connection signal="pressed" from="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/ship_name_scroll/ship_name_randomizer" to="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel" method="_on_ship_name_randomizer_pressed"]
+[connection signal="item_selected" from="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/game_type_scroll/game_type_edit" to="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel" method="_on_game_type_edit_item_selected"]
 [connection signal="pressed" from="launch_button" to="." method="_on_launch_button_pressed"]

@@ -2,11 +2,11 @@ extends Control
 
 var init_type: global_data.GAME_INIT_TYPES = global_data.GAME_INIT_TYPES.NEW
 
-@onready var new_game_popup = $ui_margin/ui_scroll/primary_secondary_split/primary/new_game_popup
+@onready var inquiry_panel = $ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel
 @onready var background_animation = $background_center/background_container/background_viewport/station_ui_background/animation_player
 
 func _ready() -> void:
-	new_game_popup.initialize(init_type)
+	inquiry_panel.initialize(init_type)
 	
 	#background
 	var animations = ["starship_in_alt", "starship_in2", "starship_in3"]
@@ -17,8 +17,8 @@ func _ready() -> void:
 
 
 func _on_launch_button_pressed() -> void:
-	var type: global_data.GAME_INIT_TYPES = new_game_popup.get_init_type()
-	var data: Dictionary = new_game_popup.get_init_data()
+	var type: global_data.GAME_INIT_TYPES = inquiry_panel.get_init_type()
+	var data: Dictionary = inquiry_panel.get_init_data()
 	if data.size() > 0:
 		global_data.change_scene.emit("res://scenes/game/game.tscn", {
 			"init_type": type, 
