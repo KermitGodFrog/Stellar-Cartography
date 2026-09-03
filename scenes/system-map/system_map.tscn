@@ -872,6 +872,7 @@ tooltip_text = "The range at which other units can detect a starship.
 
 [i]Represented on the system map as the brown inner circle.[/i]"
 theme = ExtResource("15_534fl")
+theme_type_variation = &"ButtonDull"
 theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
 theme_override_font_sizes/font_size = 8
 text = "100"
@@ -887,6 +888,7 @@ tooltip_text = "The range at which a starship can detect other units.
 
 [i]Represented on the system map as the dotted grey outer circle.[/i]"
 theme = ExtResource("15_534fl")
+theme_type_variation = &"ButtonDull"
 theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
 theme_override_font_sizes/font_size = 8
 text = "100"
@@ -901,6 +903,7 @@ layout_mode = 2
 size_flags_vertical = 0
 tooltip_text = "The measure of how fast a starship is moving. It is displayed as the quantity of solar radii (☉R) that a starship is travelling across each second."
 theme = ExtResource("15_534fl")
+theme_type_variation = &"ButtonDull"
 theme_override_colors/font_color = Color(0.49803922, 0.49803922, 0.49803922, 1)
 theme_override_font_sizes/font_size = 8
 text = "10"
