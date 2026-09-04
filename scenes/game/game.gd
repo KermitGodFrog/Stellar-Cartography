@@ -1121,7 +1121,11 @@ func _on_open_pause_menu(full_pause: bool = true):
 
 func _on_open_stats_menu(_init_type: int): #init type is from statsMenu INIT_TYPES
 	stats_menu.init_type = _init_type
-	stats_menu._player_score = world.player.total_score
+	stats_menu.player_stats = {
+		"Total Score": world.player.total_score,
+		"Net Worth": world.player.net_worth,
+		"Systems Traversed": world.player.systems_traversed
+	}
 	pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.STATS_MENU)
 	pass
 
