@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dvwgqh38tsp76"]
+[gd_scene load_steps=25 format=3 uid="uid://dvwgqh38tsp76"]
 
 [ext_resource type="Script" uid="uid://eca10lgiyg" path="res://scenes/create-menu/create_menu.gd" id="1_ahqsb"]
 [ext_resource type="Shader" uid="uid://c8yxk67y2u80y" path="res://shader-gen/pixelate_shader.gdshader" id="2_yfn5a"]
@@ -15,6 +15,7 @@
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="11_hqib2"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="12_o515n"]
 [ext_resource type="Script" uid="uid://moq137qi84py" path="res://instantiated-scenes/custom-tooltip/custom_tooltip_button.gd" id="13_dbh4k"]
+[ext_resource type="Script" uid="uid://bteyw3p5n4c6g" path="res://scenes/create-menu/mutations_panel.gd" id="16_0xgd1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1jr11"]
 shader = ExtResource("2_yfn5a")
@@ -323,6 +324,48 @@ size_flags_vertical = 4
 custom_minimum_size = Vector2(400, 500)
 layout_mode = 2
 theme_type_variation = &"PanelDull"
+script = ExtResource("16_0xgd1")
+
+[node name="margin" type="MarginContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="scroll" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin"]
+layout_mode = 2
+
+[node name="main" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UNINSTALLED" type="ScrollContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/main"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 4
+
+[node name="uninstalled_list" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/main/UNINSTALLED"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="INSTALLED" type="ScrollContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/main"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 4
+
+[node name="installed_list" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/main/INSTALLED"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="points_counter" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
+layout_mode = 2
 
 [node name="launch_button" type="Button" parent="."]
 custom_minimum_size = Vector2(125, 75)
@@ -339,8 +382,11 @@ offset_bottom = -119.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_default_cursor_shape = 2
+theme = ExtResource("10_yfn5a")
 theme_type_variation = &"ButtonDull"
 text = "LAUNCH!"
+script = ExtResource("13_dbh4k")
+tooltip_title = "Launch Button"
 
 [connection signal="pressed" from="ui_margin/ui_scroll/actions_panel/actions/return_button" to="." method="_on_return_button_pressed"]
 [connection signal="pressed" from="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/name_scroll/name_randomizer" to="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel" method="_on_name_randomizer_pressed"]

@@ -1,0 +1,78 @@
+[gd_scene load_steps=5 format=3 uid="uid://dte1ssronei0"]
+
+[ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://theme-gen/custom-tooltip/custom_tooltip_host.tres" id="1_i2v13"]
+[ext_resource type="Script" uid="uid://cjb6h0c12nada" path="res://instantiated-scenes/shared/mutation_item.gd" id="1_rovnf"]
+
+[sub_resource type="Gradient" id="Gradient_i2v13"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_resy4"]
+gradient = SubResource("Gradient_i2v13")
+width = 20
+height = 22
+fill_from = Vector2(0.5206612, 0.5083897)
+
+[node name="mutation_item" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 50)
+size_flags_horizontal = 3
+theme = ExtResource("1_i2v13")
+theme_type_variation = &"PanelSecondaryDull"
+script = ExtResource("1_rovnf")
+
+[node name="mutation_margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="mutation_scroll" type="HBoxContainer" parent="mutation_margin"]
+layout_mode = 2
+
+[node name="offset_panel" type="PanelContainer" parent="mutation_margin/mutation_scroll"]
+visible = false
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"PanelTertiaryDull"
+
+[node name="offset_label" type="Label" parent="mutation_margin/mutation_scroll/offset_panel"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="info_scroll" type="VBoxContainer" parent="mutation_margin/mutation_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="title_label" type="Label" parent="mutation_margin/mutation_scroll/info_scroll"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+text_overrun_behavior = 1
+
+[node name="headline_label" type="Label" parent="mutation_margin/mutation_scroll/info_scroll"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 10
+vertical_alignment = 1
+autowrap_mode = 3
+text_overrun_behavior = 6
+
+[node name="mark_texture" type="TextureRect" parent="mutation_margin"]
+clip_contents = true
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+texture = SubResource("GradientTexture2D_resy4")
+stretch_mode = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
