@@ -2,11 +2,6 @@ extends Resource
 class_name worldAPI
 #any value that is @export is saveable for future play sessions. constants shouldny be saved.
 
-enum MUTATION_ID {} #not related to the player but needs to be saved, thus worldAPI territory!
-
-
-
-
 @export_storage var play_time: float = 0.0 #probably the LEAST EFFICIENT WAY OF DOING THIS
 
 @export var star_systems: Array[starSystemAPI]
@@ -39,6 +34,36 @@ enum MUTATION_ID {} #not related to the player but needs to be saved, thus world
 # ^^^ neither of these are necessarily a player issue, thus are here instead
 @export_storage var played_strange_discovery_theme: bool = false #used exclusively in game.gd _on_play_strange_discovery_theme_or_motif()
 @export_storage var played_pulsar_theme: bool = false #used exclusively in game.gd _on_player_entering_system()
+
+#mutations exclusion zone
+enum MUTATION_ID {BASE, CONTENT_SKALIQ, OLD_NANITES, BETTER_ENGINES, BETTER_DATABANKS} #not related to the player but needs to be saved, thus worldAPI territory!
+@export var installed_mutations: Array[MUTATION_ID] = []
+##Returns false if the mutation was already installed.
+func installMutation(mutation_idx: MUTATION_ID) -> bool:
+	if not installed_mutations.has(mutation_idx):
+		installed_mutations.append(mutation_idx)
+		return true
+	return false
+##Returns false if the mutation was already uninstalled.
+func uninstallMutation(mutation_idx: MUTATION_ID) -> bool: #you should never be uninstalling a mutation mid run but this is here regardless
+	if installed_mutations.has(mutation_idx):
+		installed_mutations.erase(mutation_idx)
+		return true
+	return false
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 func createStarSystem(d_name: String) -> starSystemAPI:

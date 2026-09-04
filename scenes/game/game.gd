@@ -43,6 +43,9 @@ func _ready():
 		
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.PING_PREDICTION)
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING)
+		_on_install_mutation(worldAPI.MUTATION_ID.BASE)
+		for mutation in init_data.get("mutations", []):
+			_on_install_mutation(mutation)
 		
 		connect_all_player_signals(new_player)
 		
@@ -91,6 +94,9 @@ func _ready():
 		
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.PING_PREDICTION)
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING)
+		_on_install_mutation(worldAPI.MUTATION_ID.BASE)
+		for mutation in init_data.get("mutations", []):
+			_on_install_mutation(mutation)
 		
 		connect_all_player_signals(new_player)
 		
@@ -134,6 +140,9 @@ func _ready():
 		
 		for upgrade in world.player.unlocked_upgrades:
 			_on_upgrade_state_change(upgrade, true)
+		
+		for mutation in world.installed_mutations:
+			_on_mutation_state_change(mutation, true)
 		
 		_on_update_player_v_change_upgrade_variables()
 		
@@ -1517,6 +1526,18 @@ func _on_remove_character_initiative_xp(occupation: characterAPI.OCCUPATIONS) ->
 func _on_proximity_blinker_condition_changed(active: bool, last_condition_time: float) -> void:
 	if active and (last_condition_time > 60.0):
 		_on_add_console_entry("Proximity warning.", Color.RED)
+	pass
+
+func _on_install_mutation(mutation_idx: worldAPI.MUTATION_ID) -> void:
+	var changed := world.installMutation(mutation_idx)
+	if changed:
+		print_debug("GAME: MUTATION INSTALLED: ID ", mutation_idx)
+		_on_mutation_state_change(mutation_idx, true)
+	pass
+
+func _on_mutation_state_change(mutation_idx: worldAPI.MUTATION_ID, state: bool) -> void:
+	get_tree().call_group("FOLLOW_MUTATION_STATE", "_on_mutation_state_change", mutation_idx, state)
+	print_debug("GAME: MUTATION STATE CHANGED: ", mutation_idx, " ", state)
 	pass
 
 func _on_insa_make_all_wormholes_revealable() -> void:
