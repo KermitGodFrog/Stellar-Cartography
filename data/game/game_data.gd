@@ -115,6 +115,15 @@ const CHARACTER_NAMES_FILE_PATH: String = "res://data/game/gen/names/character_n
 const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]
 var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
 
+const MUTATION_UNLOCK_WIN_SCHEDULE: Dictionary = { #focus on negative and neutral mutations
+	1: [worldAPI.MUTATION_ID.CONTENT_SKALIQ]
+}
+
+const MUTATION_UNLOCK_LOSE_SCHEDULE: Dictionary = { #focus on positive mutations
+	1: [worldAPI.MUTATION_ID.BETTER_DATABANKS, worldAPI.MUTATION_ID.OLD_NANITES],
+	2: [worldAPI.MUTATION_ID.BETTER_ENGINES]
+}
+
 func get_random_character_name() -> String:
 	return get_lines_from_file(CHARACTER_NAMES_FILE_PATH).pick_random()
 

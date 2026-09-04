@@ -52,6 +52,41 @@ func uninstallMutation(mutation_idx: MUTATION_ID) -> bool: #you should never be 
 		installed_mutations.erase(mutation_idx)
 		return true
 	return false
+
+const mutation_data: Dictionary = {
+	MUTATION_ID.CONTENT_SKALIQ: {
+		"title": "Content: The Skaliq",
+		"headline": "A species of alien worms that are often encountered in deep space.",
+		"description": "These sapient aliens, originating from the rings of a gas giant, are as devoted to exploration and pioneering as humans are. A skaliq colony is known to have coexisted with human residents of the Mashdari system since they arrived during the Late Proliferation. Once Mashdari was reconciled in 27AAT, those same residents shared Arata's theorem with their skaliq counterparts. Besides the few similarities, humans are very different to these aliens - beware of miscommunications.",
+		"effect": "Adds 6 planetary anomalies, 6 space anomalies, 3 ship encounters, and other content.",
+		"type": "NEUTRAL",
+		"points_offset": 0
+	},
+	MUTATION_ID.OLD_NANITES: {
+		"title": "Old Nanites",
+		"headline": "An alternate universe where an outdated nanite design is universal.",
+		"description": "In this alternate universe, the Provisional Executive never developed the Modern Era nanite in 14AAT. Reliance on the outdated 'universal nanite' carried by seeder ships during the latter half of the Late Proliferation Period continued instead.",
+		"effect": "Repairing at space stations and settlements costs +50% more.",
+		"type": "NEGATIVE",
+		"points_offset": +1
+	},
+	MUTATION_ID.BETTER_ENGINES: {
+		"title": "Better Engines",
+		"headline": "",
+		"description": "",
+		"effect": "",
+		"type": "POSITIVE",
+		"points_offset": -1
+	},
+	MUTATION_ID.BETTER_DATABANKS: {
+		"title": "Better Databanks",
+		"headline": "",
+		"description": "",
+		"effect": "Discovering bodies yields 1.25x exploration data value.",
+		"type": "POSITIVE",
+		"points_offset": -1
+	}
+}
 #mutations exclusion zone /\
 
 
