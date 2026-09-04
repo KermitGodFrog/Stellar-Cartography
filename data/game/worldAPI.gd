@@ -35,7 +35,9 @@ class_name worldAPI
 @export_storage var played_strange_discovery_theme: bool = false #used exclusively in game.gd _on_play_strange_discovery_theme_or_motif()
 @export_storage var played_pulsar_theme: bool = false #used exclusively in game.gd _on_player_entering_system()
 
-#mutations exclusion zone
+
+
+#mutations exclusion zone \/
 enum MUTATION_ID {BASE, CONTENT_SKALIQ, OLD_NANITES, BETTER_ENGINES, BETTER_DATABANKS} #not related to the player but needs to be saved, thus worldAPI territory!
 @export var installed_mutations: Array[MUTATION_ID] = []
 ##Returns false if the mutation was already installed.
@@ -45,24 +47,12 @@ func installMutation(mutation_idx: MUTATION_ID) -> bool:
 		return true
 	return false
 ##Returns false if the mutation was already uninstalled.
-func uninstallMutation(mutation_idx: MUTATION_ID) -> bool: #you should never be uninstalling a mutation mid run but this is here regardless
+func uninstallMutation(mutation_idx: MUTATION_ID) -> bool: #you should never be uninstalling a mutation mid run but this exists regardless
 	if installed_mutations.has(mutation_idx):
 		installed_mutations.erase(mutation_idx)
 		return true
 	return false
-
-
-
-
-
-
-
-
-
-
-
-
-
+#mutations exclusion zone /\
 
 
 

@@ -334,6 +334,7 @@ func _physics_process(delta):
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
+	dialogue_manager.set("world", world)
 	gas_layer_surveyor.set("_discovered_gas_layers_matrix", world.player.discovered_gas_layers)
 	
 	audio_handler.enable_music_criteria["audio_visualizer_not_visible"] = !$audio_visualizer_window.is_visible()
