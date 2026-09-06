@@ -26,13 +26,13 @@ func initialize(_mutation: worldAPI.MUTATION_ID) -> void:
 	var points_offset = data.get("points_offset")
 	if points_offset > 0:
 		offset_label.set_text("+%d" % points_offset)
-		offset_label.set("theme_override_colors/font_color", Color.GREEN)
+		#offset_label.set("theme_override_colors/font_color", Color.GREEN)
 	elif points_offset < 0:
 		offset_label.set_text("%d" % points_offset)
-		offset_label.set("theme_override_colors/font_color", Color.RED)
+		#offset_label.set("theme_override_colors/font_color", Color.RED)
 	else:
-		offset_label.set_text("%d" % points_offset)
-		offset_label.set("theme_override_colors/font_color", Color.YELLOW)
+		offset_label.set_text("=%d" % points_offset)
+		#offset_label.set("theme_override_colors/font_color", Color.YELLOW)
 	
 	
 	tooltip_title = data.get("title")

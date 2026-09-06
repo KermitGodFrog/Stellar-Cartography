@@ -5,8 +5,8 @@ signal mutation_items_changed()
 enum INIT_TYPES {DISPLAY, EDIT, DISPLAY_WITH_OFFSET} # copied from mutation_item.gd
 enum LISTS {UNINSTALLED, INSTALLED} # copied from mutation_item.gd
 
-@onready var uninstalled_list = $margin/scroll/main/UNINSTALLED/uninstalled_list
-@onready var installed_list = $margin/scroll/main/INSTALLED/installed_list
+@onready var uninstalled_list = $margin/scroll/UNINSTALLED/uninstalled_list
+@onready var installed_list = $margin/scroll/INSTALLED/installed_list
 @onready var points_counter = $margin/scroll/points_counter
 
 @onready var mutation_item_scene = preload("uid://dte1ssronei0")

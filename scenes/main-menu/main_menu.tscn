@@ -57,13 +57,13 @@ layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_top = -20.0
-offset_right = 40.0
-offset_bottom = 20.0
+offset_top = -141.0
+offset_right = 175.0
+offset_bottom = 141.0
 grow_vertical = 2
 
 [node name="continue_button" type="Button" parent="options_scroll"]
-custom_minimum_size = Vector2(175, 0)
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
@@ -76,14 +76,14 @@ theme_override_constants/separation = 20
 theme_override_styles/separator = SubResource("StyleBoxLine_5sbga")
 
 [node name="new_button" type="Button" parent="options_scroll"]
-custom_minimum_size = Vector2(175, 0)
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "NEW"
 
 [node name="tutorial_button" type="Button" parent="options_scroll"]
-custom_minimum_size = Vector2(175, 0)
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
@@ -95,28 +95,28 @@ theme_override_constants/separation = 20
 theme_override_styles/separator = SubResource("StyleBoxLine_5sbga")
 
 [node name="settings_button" type="Button" parent="options_scroll"]
-custom_minimum_size = Vector2(175, 0)
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "SETTINGS"
 
 [node name="achievements_button" type="Button" parent="options_scroll"]
-custom_minimum_size = Vector2(175, 0)
+custom_minimum_size = Vector2(175, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "ACHIEVEMENTS"
 
 [node name="credits_button" type="Button" parent="options_scroll"]
-custom_minimum_size = Vector2(175, 0)
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")
 text = "CREDITS"
 
 [node name="history_button" type="Button" parent="options_scroll"]
-custom_minimum_size = Vector2(175, 0)
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("2_2eiki")

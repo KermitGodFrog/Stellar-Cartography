@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dvwgqh38tsp76"]
+[gd_scene load_steps=28 format=3 uid="uid://dvwgqh38tsp76"]
 
 [ext_resource type="Script" uid="uid://eca10lgiyg" path="res://scenes/create-menu/create_menu.gd" id="1_ahqsb"]
 [ext_resource type="Shader" uid="uid://c8yxk67y2u80y" path="res://shader-gen/pixelate_shader.gdshader" id="2_yfn5a"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b7qc6axxoskxm" path="res://graphics/shared/denied_DPI_normal.svg" id="4_yfn5a"]
 [ext_resource type="Texture2D" uid="uid://cdhk5yk48l8rg" path="res://graphics/shared/denied_DPI_hover.svg" id="5_ftqt2"]
 [ext_resource type="Script" uid="uid://6vqi2sc5hsap" path="res://scenes/create-menu/inquiry_panel.gd" id="6_vur3g"]
+[ext_resource type="StyleBox" uid="uid://t53tmp88dts0" path="res://theme-gen/default_focus.tres" id="7_2mho6"]
 [ext_resource type="Script" uid="uid://dncoypj63awau" path="res://scenes/create-menu/line_edit_length_label.gd" id="7_a7cgh"]
 [ext_resource type="Texture2D" uid="uid://cx4ikfr2yvey0" path="res://graphics/main-menu/dice_up_icon.png" id="8_4od06"]
 [ext_resource type="Texture2D" uid="uid://bhvjolc2fupre" path="res://graphics/main-menu/dice_down_icon.png" id="9_1e7w4"]
@@ -20,6 +21,17 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1jr11"]
 shader = ExtResource("2_yfn5a")
 shader_parameter/pixel_size = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7j16i"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.15686275, 0.29411766, 0.3882353, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5yt26"]
 
@@ -45,6 +57,8 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c445r"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ixb0n"]
 bg_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
 corner_radius_top_left = 4
@@ -52,7 +66,16 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c445r"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2mho6"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [node name="create_menu" type="Control"]
 layout_mode = 3
@@ -153,13 +176,16 @@ theme_override_constants/margin_bottom = 10
 [node name="scroll" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin"]
 layout_mode = 2
 
-[node name="actions_hbox" type="HBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
-custom_minimum_size = Vector2(0, 30)
+[node name="title_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_7j16i")
+theme_override_styles/focus = ExtResource("7_2mho6")
+text = "INFO"
 
 [node name="seperator" type="HSeparator" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
+custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
-size_flags_vertical = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_5yt26")
 
 [node name="name_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
@@ -266,6 +292,11 @@ texture_pressed = ExtResource("8_4od06")
 texture_hover = ExtResource("9_1e7w4")
 stretch_mode = 5
 
+[node name="seperator1" type="HSeparator" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_c445r")
+
 [node name="game_type_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_pv8u8")
@@ -310,11 +341,6 @@ text = "EXTENDED NARRATIVE"
 script = ExtResource("13_dbh4k")
 tooltip_title = "Extended Narrative"
 
-[node name="seperator1" type="HSeparator" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/separator = SubResource("StyleBoxEmpty_c445r")
-
 [node name="secondary" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split"]
 layout_mode = 2
 size_flags_horizontal = 10
@@ -328,43 +354,63 @@ script = ExtResource("16_0xgd1")
 
 [node name="margin" type="MarginContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel"]
 layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="scroll" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin"]
 layout_mode = 2
 
-[node name="main" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
+[node name="title_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
 layout_mode = 2
-size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_7j16i")
+theme_override_styles/focus = ExtResource("7_2mho6")
+text = "MUTATIONS"
 
-[node name="UNINSTALLED" type="ScrollContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/main"]
+[node name="uninstalled_title_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_2mho6")
+theme_override_styles/focus = ExtResource("7_2mho6")
+text = "UNINSTALLED"
+
+[node name="UNINSTALLED" type="ScrollContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 4
 
-[node name="uninstalled_list" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/main/UNINSTALLED"]
+[node name="uninstalled_list" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/UNINSTALLED"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="INSTALLED" type="ScrollContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/main"]
+[node name="installed_title_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_2mho6")
+theme_override_styles/focus = ExtResource("7_2mho6")
+text = "INSTALLED"
+
+[node name="INSTALLED" type="ScrollContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 4
 
-[node name="installed_list" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/main/INSTALLED"]
+[node name="installed_list" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/INSTALLED"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="points_counter" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
 layout_mode = 2
 
 [node name="launch_button" type="Button" parent="."]
