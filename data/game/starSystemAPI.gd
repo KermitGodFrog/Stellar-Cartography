@@ -846,7 +846,7 @@ func generateRandomWeightedStations(unlocked_upgrades: Array[playerAPI.UPGRADE_I
 			orbit_angle_change,
 			radius,
 			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup, "repair_price_multiplier": repair_price_multiplier, "available_upgrades": available_upgrades, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
-			{}
+			{"seed": randi()}
 		)
 		
 		get_body_from_identifier(new_station).rotation = deg_to_rad(global_data.get_randf(0,360))

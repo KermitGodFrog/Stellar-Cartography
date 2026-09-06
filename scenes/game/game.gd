@@ -420,6 +420,12 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add_tree_access("station_classification", str(game_data.STATION_CLASSIFICATIONS.find_key(following_body.station_classification)))
 			new_query.add_tree_access("station_abandoned", station_abandoned)
 			new_query.add_tree_access("station_inhabited", station_inhabited)
+			var unlocked_upgrades = world.player.get_unlocked_upgrades()
+			if unlocked_upgrades.size() > 0:
+				new_query.add_tree_access("target_upgrade", playerAPI.UPGRADE_ID.find_key(unlocked_upgrades[global_data.get_randi(0, unlocked_upgrades.size() - 1, following_body.metadata.get("seed", 0))]))
+			else:
+				new_query.add_tree_access("target_upgrade", null)
+			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 		starSystemAPI.BODY_TYPES.PLANET:
 			new_query.add("planetary_anomaly", following_body.metadata.get("planetary_anomaly", false))
 			new_query.add("planetary_anomaly_available", following_body.metadata.get("planetary_anomaly_available", false))
@@ -476,6 +482,9 @@ func _on_player_following_body(following_body: bodyAPI):
 		starSystemAPI.BODY_TYPES.STATION:
 			match RETURN_STATE:
 				"DOCK_WITH_STATION":
+					dock_with_station(following_body)
+				"DOCK_WITH_STATION_HARD":
+					following_body.metadata["station_available"] = false
 					dock_with_station(following_body)
 				"POST_SALVAGE_LEAVE": #this is for abandoned stations which yield salvage, which should not be repeatable
 					following_body.metadata["station_available"] = false
