@@ -27,6 +27,7 @@ var player_stats: Dictionary = {}
 
 @onready var statistic_scene = preload("uid://brnijoy5m2487")
 @onready var mutation_item_scene = preload("uid://dte1ssronei0")
+@onready var rnu_item_scene = preload("uid://b568o8s45lksu")
 @onready var station_upgrade = preload("uid://crt73kp6x2bbe")
 
 func _on_exit_to_main_menu_button_pressed():
@@ -112,9 +113,16 @@ func try_unlock_mutations_add_items(_details_helper: userDetailsHelper) -> void:
 	var current_time: float = 0.0
 	for idx in pending_idx_unlocks:
 		var item := add_mutation_item(idx)
-		var added_time: float = global_data.get_randf(0.5, 1.75)
+		var added_time: float = 0.15
+		if pending_idx_unlocks.front() != idx:
+			added_time = global_data.get_randf(0.5, 1.75)
 		get_tree().create_timer(current_time + added_time).timeout.connect(_on_mutation_item_popup.bind(item))
 		current_time += added_time
+	if runs_until_next_unlock > 0:
+		var rnu_item = rnu_item_scene.instantiate()
+		rnu_item.connect("ready", _on_rnu_item_ready.bind(rnu_item, runs_until_next_unlock))
+		rewards_body_scroll.add_child(rnu_item)
+		get_tree().create_timer(current_time + 2.0).timeout.connect(_on_rnu_item_popup.bind(rnu_item))
 	pass
 
 func add_mutation_item(for_idx: worldAPI.MUTATION_ID) -> Node:
@@ -130,14 +138,14 @@ func _on_mutation_item_popup(item: Node) -> void:
 	item.popup()
 	get_tree().call_group("audioHandler", "play_once", station_upgrade, 0.0, "SFX")
 	pass
-
-
-
-
-
-
-
-
+func _on_rnu_item_ready(item: Node, _runs_until_next_unlock: int) -> void:
+	item.hide()
+	item.rnu_label.set_text("%d more %s run(s) until next unlock!" % [_runs_until_next_unlock, INIT_TYPES.find_key(init_type)])
+	pass
+func _on_rnu_item_popup(item: Node) -> void:
+	item.show()
+	get_tree().call_group("audioHandler", "play_once", load("uid://dt1d2ijrj4emm"), -12, "SFX")
+	pass
 
 
 

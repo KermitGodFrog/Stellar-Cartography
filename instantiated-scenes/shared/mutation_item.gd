@@ -74,6 +74,7 @@ func popup() -> void:
 	var data: Dictionary = worldAPI.mutation_data.get(mutation)
 	title_label.set_modulate(Color(Color.WHITE, 0.0))
 	headline_label.set_modulate(Color(Color.WHITE, 0.0))
+	mark_texture.set_modulate(Color(mark_texture.get_modulate(), 0.0))
 	match data.get("type"):
 		"POSITIVE":
 			unlock_progress_bar.set_modulate(Color.GREEN)
@@ -88,7 +89,9 @@ func popup() -> void:
 	tween.tween_property(unlock_progress_bar, "value", 0, 0.6)
 	tween.tween_property(title_label, "modulate", Color.WHITE, 0.5)
 	tween.parallel()
-	tween.tween_property(headline_label, "modulate", Color.WHITE, 0.6)
+	tween.tween_property(headline_label, "modulate", Color.WHITE, 0.85)
+	tween.parallel()
+	tween.tween_property(mark_texture, "modulate", Color(mark_texture.get_modulate(), 1.0), 0.85)
 	pass
 
 func _on_gui_input(event: InputEvent) -> void:

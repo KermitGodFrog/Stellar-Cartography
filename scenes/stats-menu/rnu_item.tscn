@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://b568o8s45lksu"]
+
+[ext_resource type="Script" uid="uid://bfobjvfhkvpfg" path="res://scenes/stats-menu/rnu_item.gd" id="1_0ws3r"]
+[ext_resource type="Texture2D" uid="uid://brdaor3822avc" path="res://graphics/stats-menu/rnu_icon.png" id="2_nnw32"]
+
+[node name="rnu_item" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 50)
+size_flags_horizontal = 3
+theme_type_variation = &"PanelSecondaryDull"
+script = ExtResource("1_0ws3r")
+
+[node name="margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="scroll" type="HBoxContainer" parent="margin"]
+layout_mode = 2
+
+[node name="icon" type="TextureRect" parent="margin/scroll"]
+modulate = Color(0.23529412, 0.5764706, 0.44313726, 1)
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+texture = ExtResource("2_nnw32")
+stretch_mode = 5
+
+[node name="rnu_label" type="Label" parent="margin/scroll"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+vertical_alignment = 1
