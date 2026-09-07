@@ -20,11 +20,14 @@ signal statsMenuQuit(_init_type: INIT_TYPES)
 @onready var stats_control = $stats_canvas/stats_control
 @onready var init_type_label = $stats_canvas/stats_control/main_scroll/init_type_label
 @onready var stats_body_scroll = $stats_canvas/stats_control/main_scroll/stats_rewards_scroll/stats_panel/stats_scroll/body_margin/body_scroll
+@onready var rewards_body_scroll = $stats_canvas/stats_control/main_scroll/stats_rewards_scroll/rewards_panel/rewards_scroll/body_margin/body_scroll
 enum INIT_TYPES {DEATH, WIN, TUTORIAL}
 var init_type: INIT_TYPES = INIT_TYPES.DEATH
 var player_stats: Dictionary = {}
 
 @onready var statistic_scene = preload("uid://brnijoy5m2487")
+@onready var mutation_item_scene = preload("uid://dte1ssronei0")
+@onready var station_upgrade = preload("uid://crt73kp6x2bbe")
 
 func _on_exit_to_main_menu_button_pressed():
 	emit_signal("statsMenuQuit", init_type)
@@ -102,31 +105,31 @@ func try_unlock_mutations_add_items(_details_helper: userDetailsHelper) -> void:
 	
 	_details_helper.unlocked_mutations.append_array(pending_idx_unlocks)
 	
-	print_debug("DETAILS HELPER UNLOCKED MUTATIONS: ", _details_helper.unlocked_mutations)
+	#print_debug("DETAILS HELPER UNLOCKED MUTATIONS: ", _details_helper.unlocked_mutations)
 	print_debug("RUNS UNTIL NEXT UNLOCK: ", runs_until_next_unlock)
 	#now add items, including an item at the bottom showing the runs until next unlock \/
 	
+	var current_time: float = 0.0
 	for idx in pending_idx_unlocks:
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		pass
-	
-	
+		var item := add_mutation_item(idx)
+		var added_time: float = global_data.get_randf(0.5, 1.75)
+		get_tree().create_timer(current_time + added_time).timeout.connect(_on_mutation_item_popup.bind(item))
+		current_time += added_time
 	pass
 
-
-
-
+func add_mutation_item(for_idx: worldAPI.MUTATION_ID) -> Node:
+	var instance = mutation_item_scene.instantiate()
+	instance.connect("ready", _on_mutation_item_ready.bind(instance, for_idx))
+	rewards_body_scroll.add_child(instance)
+	return instance
+func _on_mutation_item_ready(item: Node, idx: worldAPI.MUTATION_ID) -> void:
+	item.init_type = item.INIT_TYPES.DISPLAY
+	item.initialize(idx)
+	pass
+func _on_mutation_item_popup(item: Node) -> void:
+	item.popup()
+	get_tree().call_group("audioHandler", "play_once", station_upgrade, 0.0, "SFX")
+	pass
 
 
 

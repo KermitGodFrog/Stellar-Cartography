@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dte1ssronei0"]
+[gd_scene load_steps=7 format=3 uid="uid://dte1ssronei0"]
 
 [ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://theme-gen/custom-tooltip/custom_tooltip_host.tres" id="1_i2v13"]
 [ext_resource type="Script" uid="uid://cjb6h0c12nada" path="res://instantiated-scenes/shared/mutation_item.gd" id="1_rovnf"]
@@ -11,6 +11,15 @@ gradient = SubResource("Gradient_i2v13")
 width = 20
 height = 22
 fill_from = Vector2(0.5206612, 0.5083897)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i2v13"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_resy4"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [node name="mutation_item" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 50)
@@ -74,5 +83,16 @@ layout_mode = 2
 size_flags_horizontal = 8
 texture = SubResource("GradientTexture2D_resy4")
 stretch_mode = 2
+
+[node name="unlock_progress_bar" type="ProgressBar" parent="mutation_margin"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxEmpty_i2v13")
+theme_override_styles/fill = SubResource("StyleBoxFlat_resy4")
+step = 0.001
+value = 100.0
+fill_mode = 1
+show_percentage = false
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

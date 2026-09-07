@@ -41,7 +41,7 @@ func _on_return_button_pressed() -> void:
 	pass
 
 func _on_mutation_items_changed() -> void:
-	if mutations_panel != null: if launch_button != null:
+	if mutations_panel != null and launch_button != null:
 		if not mutations_panel.is_launch_valid():
 			launch_button.set_tooltip_text("[color=red]Mutation points MUST be above or equal to zero (0) for launch. Try installing more 'NEGATIVE' mutations, or uninstall some 'POSITIVE' mutations, to increase the points count.[/color]")
 			#make the button red

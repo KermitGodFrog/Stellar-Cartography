@@ -112,6 +112,17 @@ theme_type_variation = &"PanelPaletteA"
 layout_mode = 2
 text = "REWARDS"
 
+[node name="body_margin" type="MarginContainer" parent="stats_canvas/stats_control/main_scroll/stats_rewards_scroll/rewards_panel/rewards_scroll"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="body_scroll" type="VBoxContainer" parent="stats_canvas/stats_control/main_scroll/stats_rewards_scroll/rewards_panel/rewards_scroll/body_margin"]
+layout_mode = 2
+
 [node name="exit_to_main_menu_button" type="Button" parent="stats_canvas/stats_control/main_scroll"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2

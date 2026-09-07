@@ -14,6 +14,7 @@ var mutation: worldAPI.MUTATION_ID
 @onready var headline_label = $mutation_margin/mutation_scroll/info_scroll/headline_label
 @onready var offset_panel = $mutation_margin/mutation_scroll/offset_panel
 @onready var mark_texture = $mutation_margin/mark_texture
+@onready var unlock_progress_bar = $mutation_margin/unlock_progress_bar
 
 func initialize(_mutation: worldAPI.MUTATION_ID) -> void:
 	mutation = _mutation
@@ -33,7 +34,6 @@ func initialize(_mutation: worldAPI.MUTATION_ID) -> void:
 	else:
 		offset_label.set_text("=%d" % points_offset)
 		#offset_label.set("theme_override_colors/font_color", Color.YELLOW)
-	
 	
 	tooltip_title = data.get("title")
 	var combined_tooltip: String = String()
@@ -65,6 +65,30 @@ func initialize(_mutation: worldAPI.MUTATION_ID) -> void:
 			set("mouse_default_cursor_shape", CursorShape.CURSOR_POINTING_HAND)
 		_:
 			set("mouse_default_cursor_shape", CursorShape.CURSOR_ARROW)
+	
+	if init_type in [INIT_TYPES.DISPLAY, INIT_TYPES.DISPLAY_WITH_OFFSET]:
+		hide()
+	pass
+
+func popup() -> void:
+	var data: Dictionary = worldAPI.mutation_data.get(mutation)
+	title_label.set_modulate(Color(Color.WHITE, 0.0))
+	headline_label.set_modulate(Color(Color.WHITE, 0.0))
+	match data.get("type"):
+		"POSITIVE":
+			unlock_progress_bar.set_modulate(Color.GREEN)
+		"NEGATIVE":
+			unlock_progress_bar.set_modulate(Color.RED)
+		"NEUTRAL":
+			unlock_progress_bar.set_modulate(Color.YELLOW)
+	unlock_progress_bar.show()
+	show()
+	var tween: Tween = create_tween()
+	tween.set_trans(Tween.TRANS_EXPO)
+	tween.tween_property(unlock_progress_bar, "value", 0, 0.6)
+	tween.tween_property(title_label, "modulate", Color.WHITE, 0.5)
+	tween.parallel()
+	tween.tween_property(headline_label, "modulate", Color.WHITE, 0.6)
 	pass
 
 func _on_gui_input(event: InputEvent) -> void:
