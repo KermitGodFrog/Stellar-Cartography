@@ -80,6 +80,7 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
 		allow_quick_pause = true
+		pause_menu.set("_installed_mutations", world.installed_mutations)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
 		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.25, 0.10)
@@ -128,6 +129,7 @@ func _ready():
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
 		
 		allow_quick_pause = true
+		pause_menu.set("_installed_mutations", world.installed_mutations)
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
@@ -160,6 +162,7 @@ func _ready():
 		
 		await get_tree().create_timer(1.0, true).timeout
 		allow_quick_pause = true
+		pause_menu.set("_installed_mutations", world.installed_mutations)
 	
 	pass
 

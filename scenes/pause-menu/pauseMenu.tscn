@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://cu8n2e53bgc37"]
+[gd_scene load_steps=15 format=3 uid="uid://cu8n2e53bgc37"]
 
 [ext_resource type="Script" uid="uid://bo10h285vqmij" path="res://scenes/pause-menu/pauseMenu.gd" id="1_u73yd"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="2_r6vbf"]
 [ext_resource type="Texture2D" uid="uid://wj8xwuug1m0o" path="res://graphics/misc/tree_arrow.png" id="3_0rvr6"]
 [ext_resource type="Script" uid="uid://dm5vhmppi3dol" path="res://scenes/pause-menu/objectives-panel/objectives_panel.gd" id="3_77jva"]
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="5_0rvr6"]
+[ext_resource type="Script" uid="uid://c5ylqn4lojmuq" path="res://scenes/pause-menu/installed_mutations_panel.gd" id="5_xraqk"]
 [ext_resource type="Script" uid="uid://ekr38cekwwve" path="res://scenes/pause-menu/quick_pause_label.gd" id="6_3odcv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yykag"]
@@ -57,7 +58,6 @@ process_mode = 2
 script = ExtResource("1_u73yd")
 
 [node name="pause_canvas" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="background" type="ColorRect" parent="pause_canvas"]
 anchors_preset = 15
@@ -173,6 +173,50 @@ vertical_scroll_mode = 2
 
 [node name="item_anchor" type="VBoxContainer" parent="pause_canvas/pause_control/console_cover_panel/scroll/objectives_panel/margin/scroll_container"]
 custom_minimum_size = Vector2(422, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="installed_mutations_panel" type="PanelContainer" parent="pause_canvas/pause_control"]
+custom_minimum_size = Vector2(400, 300)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_type_variation = &"PanelTertiaryDull"
+script = ExtResource("5_xraqk")
+
+[node name="margin" type="MarginContainer" parent="pause_canvas/pause_control/installed_mutations_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="scroll" type="VBoxContainer" parent="pause_canvas/pause_control/installed_mutations_panel/margin"]
+layout_mode = 2
+
+[node name="title_panel" type="PanelContainer" parent="pause_canvas/pause_control/installed_mutations_panel/margin/scroll"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_type_variation = &"PanelPaletteA"
+
+[node name="title_label" type="Label" parent="pause_canvas/pause_control/installed_mutations_panel/margin/scroll/title_panel"]
+layout_mode = 2
+text = "INSTALLED MUTATIONS"
+
+[node name="mutations" type="ScrollContainer" parent="pause_canvas/pause_control/installed_mutations_panel/margin/scroll"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="mutations_scroll" type="VBoxContainer" parent="pause_canvas/pause_control/installed_mutations_panel/margin/scroll/mutations"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

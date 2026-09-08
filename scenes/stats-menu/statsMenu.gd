@@ -112,7 +112,8 @@ func try_unlock_mutations_add_items(_details_helper: userDetailsHelper) -> void:
 	
 	var current_time: float = 0.0
 	for idx in pending_idx_unlocks:
-		var item := add_mutation_item(idx)
+		var item := global_data.get_mutation_item(idx, _on_mutation_item_ready)
+		rewards_body_scroll.add_child(item)
 		var added_time: float = 0.15
 		if pending_idx_unlocks.front() != idx:
 			added_time = global_data.get_randf(0.5, 1.75)
@@ -122,14 +123,12 @@ func try_unlock_mutations_add_items(_details_helper: userDetailsHelper) -> void:
 		var rnu_item = rnu_item_scene.instantiate()
 		rnu_item.connect("ready", _on_rnu_item_ready.bind(rnu_item, runs_until_next_unlock))
 		rewards_body_scroll.add_child(rnu_item)
-		get_tree().create_timer(current_time + 2.0).timeout.connect(_on_rnu_item_popup.bind(rnu_item))
+		var added_time: float = 0.15
+		if pending_idx_unlocks.size() > 0:
+			added_time = 2.0
+		get_tree().create_timer(current_time + added_time).timeout.connect(_on_rnu_item_popup.bind(rnu_item))
 	pass
 
-func add_mutation_item(for_idx: worldAPI.MUTATION_ID) -> Node:
-	var instance = mutation_item_scene.instantiate()
-	instance.connect("ready", _on_mutation_item_ready.bind(instance, for_idx))
-	rewards_body_scroll.add_child(instance)
-	return instance
 func _on_mutation_item_ready(item: Node, idx: worldAPI.MUTATION_ID) -> void:
 	item.init_type = item.INIT_TYPES.DISPLAY
 	item.initialize(idx)

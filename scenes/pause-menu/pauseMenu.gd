@@ -12,6 +12,7 @@ func _on_pause_mode_changed(value):
 			can_unpause = false
 			unpause_possible_timer.start()
 			pause_canvas.show()
+			installed_mutations_panel.regenerate()
 		game_data.PAUSE_MODES.QUICK_PAUSE:
 			can_unpause = false
 			unpause_possible_timer.start()
@@ -35,9 +36,15 @@ var is_open = false
 @onready var pause_canvas = $pause_canvas
 @onready var quick_pause_canvas = $quick_pause_canvas
 @onready var objectives_panel = $pause_canvas/pause_control/console_cover_panel/scroll/objectives_panel
+@onready var installed_mutations_panel = $pause_canvas/pause_control/installed_mutations_panel
 
 @onready var fullscreen_objectives = preload("uid://d7m4h6j7mma7")
 @onready var settings_menu = preload("uid://df1xq5fo2rlje")
+
+var _installed_mutations: Array[worldAPI.MUTATION_ID] = []:
+	set(value):
+		_installed_mutations = value
+		installed_mutations_panel.installed_mutations = _installed_mutations
 
 func _physics_process(_delta):
 	if Input.is_action_just_pressed("SC_PAUSE"):

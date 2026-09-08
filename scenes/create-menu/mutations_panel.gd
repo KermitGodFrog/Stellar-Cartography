@@ -32,7 +32,7 @@ func update_points_counter() -> void:
 
 
 
-func add_mutation_item(for_idx: worldAPI.MUTATION_ID, for_list: LISTS) -> Node:
+func add_mutation_item(for_idx: worldAPI.MUTATION_ID, for_list: LISTS) -> void: # CANT use global_data.gd get_mutation_item bc it does special stuff !!!
 	var instance = mutation_item_scene.instantiate()
 	instance.connect("ready", _on_mutation_item_ready.bind(instance, for_idx, for_list))
 	instance.connect("activated", _on_mutation_item_activated)
@@ -41,7 +41,7 @@ func add_mutation_item(for_idx: worldAPI.MUTATION_ID, for_list: LISTS) -> Node:
 			uninstalled_list.add_child(instance)
 		LISTS.INSTALLED:
 			installed_list.add_child(instance)
-	return instance
+	pass
 func _on_mutation_item_ready(item: Node, idx: worldAPI.MUTATION_ID, list: LISTS) -> void:
 	item.init_type = item.INIT_TYPES.EDIT
 	item.current_list = list

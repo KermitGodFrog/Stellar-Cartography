@@ -271,3 +271,9 @@ func get_density(solar_radius: float, solar_mass: float) -> float: #units are so
 	var volume: float = (4/3) * PI * pow(solar_radius, 3) #solar radii cubed
 	var density: float = solar_mass / volume 
 	return density
+
+@onready var mutation_item_scene = preload("uid://dte1ssronei0")
+func get_mutation_item(for_idx: worldAPI.MUTATION_ID, ready_callable: Callable) -> Node:
+	var instance = mutation_item_scene.instantiate()
+	instance.connect("ready", ready_callable.bind(instance, for_idx))
+	return instance
