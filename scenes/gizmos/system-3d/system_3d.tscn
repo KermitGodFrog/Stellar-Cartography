@@ -50,7 +50,7 @@ canvas_item_default_texture_filter = 0
 audio_listener_enable_3d = true
 size = Vector2i(300, 300)
 
-[node name="system_3d" type="Node3D" parent="."]
+[node name="system_3d" type="Node3D" parent="." groups=["FOLLOW_MUTATION_STATE"]]
 script = ExtResource("1_a351o")
 
 [node name="camera_offset" type="Node3D" parent="system_3d"]

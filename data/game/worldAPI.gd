@@ -53,6 +53,12 @@ func uninstallMutation(mutation_idx: MUTATION_ID) -> bool: #you should never be 
 		return true
 	return false
 
+func is_mutation_installed(mutation_idx: MUTATION_ID) -> bool:
+	if installed_mutations.has(mutation_idx):
+		return true
+	else:
+		return false
+
 const mutation_data: Dictionary = {
 	MUTATION_ID.BASE: {
 		"title": "Base",

@@ -905,7 +905,7 @@ func _on_found_body(id: int):
 		if body:
 			body.known = true
 			if body.metadata.has("value"): 
-				var adjusted_value: int = (body.metadata.get("value") * system.get_first_star_discovery_multiplier())
+				var adjusted_value: int = body.metadata.get("value") * system.get_first_star_discovery_multiplier() * (1 + (int(world.is_mutation_installed(worldAPI.MUTATION_ID.BETTER_DATABANKS)) * 0.25))
 				world.player.current_value += adjusted_value
 				world.player.sys_survey_value += adjusted_value
 			system_map._on_found_body(id)
@@ -1540,6 +1540,11 @@ func _on_install_mutation(mutation_idx: worldAPI.MUTATION_ID) -> void:
 	var changed := world.installMutation(mutation_idx)
 	if changed:
 		print_debug("GAME: MUTATION INSTALLED: ID ", mutation_idx)
+		
+		match mutation_idx:
+			worldAPI.MUTATION_ID.BETTER_ENGINES:
+				world.player.speed += 1
+		
 		_on_mutation_state_change(mutation_idx, true)
 	pass
 
