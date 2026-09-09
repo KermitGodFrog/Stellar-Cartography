@@ -456,7 +456,7 @@ func createAuxiliaryUnexplored(_player_speed: int) -> void:
 				customBodyAPI.new(),
 				starSystemAPI.BODY_TYPES.CUSTOM,
 				identifier_count,
-				"Dyson Sphere",
+				"Abandoned Dyson Sphere",
 				star.get_identifier(),
 				0.0,
 				0.0,
