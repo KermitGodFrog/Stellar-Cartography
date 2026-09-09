@@ -60,6 +60,7 @@ var tree_access_memory: Dictionary #memory that is explicitely added by a query 
 enum QUERY_TYPES {BEST, ALL, RAND_BEST, OLD_BEST}
 
 #for populating query data
+var world: worldAPI
 var system: starSystemAPI
 var player: playerAPI
 
@@ -226,9 +227,10 @@ func speak(calling: Node, incoming_query: responseQuery, populate_data: bool = t
 	if populate_data:
 		incoming_query.populateWithPlayerData(player)
 		incoming_query.populateWithSystemData(system)
+		incoming_query.populateWithWorldData(world)
 		incoming_query.populateWithDialogueMemoryData(dialogue_memory)
 		incoming_query.populateWithTreeAccessMemoryData(tree_access_memory)
-		incoming_query.populateWithWorldData()
+		incoming_query.populateWithGeneralData()
 	
 	get_send_ranked_achievements(incoming_query)
 	

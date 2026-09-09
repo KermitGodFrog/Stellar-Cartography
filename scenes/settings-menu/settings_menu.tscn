@@ -113,22 +113,25 @@ size_flags_vertical = 8
 theme_override_constants/separation = 200
 
 [node name="save_button" type="Button" parent="panel/margin/panel_scroll/options_scroll"]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonDull"
+theme_type_variation = &"ButtonTopPalette"
 text = "SAVE"
 
 [node name="reset_to_defaults_button" type="Button" parent="panel/margin/panel_scroll/options_scroll"]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("1_ksgtm")
-theme_type_variation = &"ButtonDull"
+theme_type_variation = &"ButtonTopPalette"
 text = "RESET TO DEFAULTS"
 
 [node name="back_button" type="Button" parent="panel/margin/panel_scroll/options_scroll"]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonDull"
+theme_type_variation = &"ButtonTopPalette"
 text = "BACK"
 
 [node name="confirmation_dialog" type="ConfirmationDialog" parent="."]

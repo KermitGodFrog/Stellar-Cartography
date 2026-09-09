@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dc7b0agnokter"]
+[gd_scene load_steps=6 format=3 uid="uid://dc7b0agnokter"]
 
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_1exg8"]
 [ext_resource type="Script" uid="uid://be3y4wl1fhk22" path="res://scenes/main-menu/credits/credits_content_panel.gd" id="1_xxcg1"]
@@ -6,23 +6,11 @@
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="4_ymvg5"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="5_38jc6"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1exg8"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.09411765, 0.09411765, 0.09411765, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
 [node name="credits_content_panel" type="PanelContainer"]
 size_flags_horizontal = 3
 theme = ExtResource("1_1exg8")
-theme_override_styles/panel = SubResource("StyleBoxFlat_1exg8")
+theme_type_variation = &"PanelSecondaryDull"
 script = ExtResource("1_xxcg1")
-panel_color = Color(0.09411765, 0.09411765, 0.09411765, 1)
 
 [node name="scroll" type="VBoxContainer" parent="."]
 layout_mode = 2

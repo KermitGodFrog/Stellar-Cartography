@@ -43,6 +43,9 @@ func _ready():
 		
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.PING_PREDICTION)
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING)
+		_on_install_mutation(worldAPI.MUTATION_ID.BASE)
+		for mutation in init_data.get("mutations", []):
+			_on_install_mutation(mutation)
 		
 		connect_all_player_signals(new_player)
 		
@@ -77,6 +80,7 @@ func _ready():
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 		
 		allow_quick_pause = true
+		pause_menu.set("_installed_mutations", world.installed_mutations)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
 		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.25, 0.10)
@@ -91,6 +95,9 @@ func _ready():
 		
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.PING_PREDICTION)
 		_on_unlock_upgrade(playerAPI.UPGRADE_ID.BACKGROUND_PROCESSING)
+		_on_install_mutation(worldAPI.MUTATION_ID.BASE)
+		for mutation in init_data.get("mutations", []):
+			_on_install_mutation(mutation)
 		
 		connect_all_player_signals(new_player)
 		
@@ -122,6 +129,7 @@ func _ready():
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
 		
 		allow_quick_pause = true
+		pause_menu.set("_installed_mutations", world.installed_mutations)
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
@@ -134,6 +142,9 @@ func _ready():
 		
 		for upgrade in world.player.unlocked_upgrades:
 			_on_upgrade_state_change(upgrade, true)
+		
+		for mutation in world.installed_mutations:
+			_on_mutation_state_change(mutation, true)
 		
 		_on_update_player_v_change_upgrade_variables()
 		
@@ -151,6 +162,7 @@ func _ready():
 		
 		await get_tree().create_timer(1.0, true).timeout
 		allow_quick_pause = true
+		pause_menu.set("_installed_mutations", world.installed_mutations)
 	
 	pass
 
@@ -325,6 +337,7 @@ func _physics_process(delta):
 	audio_visualizer.set("saved_audio_profiles_size_matrix", [world.player.saved_audio_profiles.size(), world.player.max_saved_audio_profiles])
 	audio_visualizer.set("saved_audio_profiles", world.player.saved_audio_profiles)
 	dialogue_manager.set("player", world.player)
+	dialogue_manager.set("world", world)
 	gas_layer_surveyor.set("_discovered_gas_layers_matrix", world.player.discovered_gas_layers)
 	
 	audio_handler.enable_music_criteria["audio_visualizer_not_visible"] = !$audio_visualizer_window.is_visible()
@@ -892,7 +905,7 @@ func _on_found_body(id: int):
 		if body:
 			body.known = true
 			if body.metadata.has("value"): 
-				var adjusted_value: int = (body.metadata.get("value") * system.get_first_star_discovery_multiplier())
+				var adjusted_value: int = body.metadata.get("value") * system.get_first_star_discovery_multiplier() * (1 + (int(world.is_mutation_installed(worldAPI.MUTATION_ID.BETTER_DATABANKS)) * 0.25))
 				world.player.current_value += adjusted_value
 				world.player.sys_survey_value += adjusted_value
 			system_map._on_found_body(id)
@@ -1121,7 +1134,11 @@ func _on_open_pause_menu(full_pause: bool = true):
 
 func _on_open_stats_menu(_init_type: int): #init type is from statsMenu INIT_TYPES
 	stats_menu.init_type = _init_type
-	stats_menu._player_score = world.player.total_score
+	stats_menu.player_stats = {
+		"Total Score": world.player.total_score,
+		"Net Worth": world.player.net_worth,
+		"Systems Traversed": world.player.systems_traversed
+	}
 	pause_mode_handler._on_queue_pause_mode(game_data.PAUSE_MODES.STATS_MENU)
 	pass
 
@@ -1279,6 +1296,9 @@ func _on_stats_menu_quit(_init_type: int) -> void:
 			game_data.deleteWorld()
 	pass
 func write_history(_init_type: int, mode: FileAccess.ModeFlags) -> void:
+	var adj_installed_mutations := world.installed_mutations.duplicate()
+	adj_installed_mutations.erase(worldAPI.MUTATION_ID.BASE) #no point writing this to a file!!!
+	
 	var history = FileAccess.open("user://stellar_cartographer_history.csv", mode)
 	history.seek_end()
 	history.store_csv_line(PackedStringArray([
@@ -1289,6 +1309,7 @@ func write_history(_init_type: int, mode: FileAccess.ModeFlags) -> void:
 		world.player.systems_traversed, 
 		stats_menu.INIT_TYPES.find_key(_init_type),
 		roundi(world.play_time),
+		adj_installed_mutations,
 		world.player.analytics_exploration_data_payouts
 	]))
 	history.close()
@@ -1513,6 +1534,23 @@ func _on_remove_character_initiative_xp(occupation: characterAPI.OCCUPATIONS) ->
 func _on_proximity_blinker_condition_changed(active: bool, last_condition_time: float) -> void:
 	if active and (last_condition_time > 60.0):
 		_on_add_console_entry("Proximity warning.", Color.RED)
+	pass
+
+func _on_install_mutation(mutation_idx: worldAPI.MUTATION_ID) -> void:
+	var changed := world.installMutation(mutation_idx)
+	if changed:
+		print_debug("GAME: MUTATION INSTALLED: ID ", mutation_idx)
+		
+		match mutation_idx:
+			worldAPI.MUTATION_ID.BETTER_ENGINES:
+				world.player.speed += 1
+		
+		_on_mutation_state_change(mutation_idx, true)
+	pass
+
+func _on_mutation_state_change(mutation_idx: worldAPI.MUTATION_ID, state: bool) -> void:
+	get_tree().call_group("FOLLOW_MUTATION_STATE", "_on_mutation_state_change", mutation_idx, state)
+	print_debug("GAME: MUTATION STATE CHANGED: ", mutation_idx, " ", state)
 	pass
 
 func _on_insa_make_all_wormholes_revealable() -> void:

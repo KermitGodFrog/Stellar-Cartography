@@ -4,6 +4,7 @@
 
 [node name="dropdown_option" type="PanelContainer"]
 size_flags_horizontal = 3
+theme_type_variation = &"PanelTopDullTransparent"
 script = ExtResource("1_24d1m")
 
 [node name="scroll" type="HBoxContainer" parent="."]
