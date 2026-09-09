@@ -6,14 +6,17 @@ enum LISTS {UNINSTALLED, INSTALLED} # copied from mutation_item.gd
 
 @onready var uninstalled_list = $margin/scroll/UNINSTALLED/uninstalled_list
 @onready var installed_list = $margin/scroll/INSTALLED/installed_list
-@onready var points_counter = $margin/scroll/points_counter
+@onready var points_counter = $margin/scroll/points_scroll/points_counter
+
+@onready var issue_symbol_points = $margin/scroll/points_scroll/issue_symbol
+@onready var issue_symbol_quantity = $margin/scroll/title_label/issue_symbol
 
 @onready var mutation_item_scene = preload("uid://dte1ssronei0")
 
 func _ready() -> void:
 	uninstalled_list.connect("child_order_changed", _on_list_child_order_changed)
 	installed_list.connect("child_order_changed", _on_list_child_order_changed)
-	connect("mutation_items_changed", update_points_counter)
+	connect("mutation_items_changed", _on_mutation_items_changed) # this genius contraption ensures that the 
 	var details_helper := game_data.loadUserDetails()
 	for idx in details_helper.unlocked_mutations:
 		add_mutation_item(idx, LISTS.UNINSTALLED)
@@ -23,12 +26,14 @@ func _on_list_child_order_changed() -> void:
 	emit_signal("mutation_items_changed")
 	pass
 
-func update_points_counter() -> void:
+func _on_mutation_items_changed() -> void:
 	if points_counter != null:
 		points_counter.set_text("CURRENT MUTATION POINTS: %d" % get_current_points())
+	if issue_symbol_points != null and installed_list != null:
+		issue_symbol_points.visible = get_current_points() < 0
+	if issue_symbol_quantity != null and installed_list != null:
+		issue_symbol_quantity.visible = get_installed_mutation_items().size() > 5
 	pass
-
-
 
 
 
@@ -102,7 +107,7 @@ func get_current_points() -> int:
 	return points
 
 func is_launch_valid() -> bool:
-	if get_current_points() >= 0:
+	if get_current_points() >= 0 and get_installed_mutation_items().size() <= 5:
 		return true
 	else:
 		return false

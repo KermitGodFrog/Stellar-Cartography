@@ -1,7 +1,8 @@
-[gd_scene load_steps=28 format=3 uid="uid://dvwgqh38tsp76"]
+[gd_scene load_steps=34 format=3 uid="uid://dvwgqh38tsp76"]
 
 [ext_resource type="Script" uid="uid://eca10lgiyg" path="res://scenes/create-menu/create_menu.gd" id="1_ahqsb"]
 [ext_resource type="Shader" uid="uid://c8yxk67y2u80y" path="res://shader-gen/pixelate_shader.gdshader" id="2_yfn5a"]
+[ext_resource type="Script" uid="uid://bhw533c1y02l8" path="res://scenes/create-menu/noise_bg.gd" id="3_a7cgh"]
 [ext_resource type="PackedScene" uid="uid://c3o837337jhqc" path="res://scenes/windows/station-ui/station_ui_background.tscn" id="3_ftqt2"]
 [ext_resource type="Texture2D" uid="uid://b7qc6axxoskxm" path="res://graphics/shared/denied_DPI_normal.svg" id="4_yfn5a"]
 [ext_resource type="Texture2D" uid="uid://cdhk5yk48l8rg" path="res://graphics/shared/denied_DPI_hover.svg" id="5_ftqt2"]
@@ -17,6 +18,25 @@
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="12_o515n"]
 [ext_resource type="Script" uid="uid://moq137qi84py" path="res://instantiated-scenes/custom-tooltip/custom_tooltip_button.gd" id="13_dbh4k"]
 [ext_resource type="Script" uid="uid://bteyw3p5n4c6g" path="res://scenes/create-menu/mutations_panel.gd" id="16_0xgd1"]
+[ext_resource type="Texture2D" uid="uid://c81t88q8femj2" path="res://graphics/create-menu/issue.svg" id="19_a7cgh"]
+
+[sub_resource type="Gradient" id="Gradient_2mho6"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.65)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2mho6"]
+noise_type = 2
+frequency = 0.1
+fractal_type = 3
+fractal_octaves = 1
+cellular_distance_function = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vur3g"]
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_2mho6")
+color_ramp = SubResource("Gradient_2mho6")
+seamless = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1jr11"]
 shader = ExtResource("2_yfn5a")
@@ -77,6 +97,9 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7cgh"]
+bg_color = Color(0.49803922, 0.09019608, 0.05490196, 1)
+
 [node name="create_menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -85,6 +108,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ahqsb")
+
+[node name="noise_bg" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.039215688)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("NoiseTexture2D_vur3g")
+stretch_mode = 6
+script = ExtResource("3_a7cgh")
 
 [node name="background_center" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -130,7 +165,7 @@ layout_mode = 2
 [node name="actions_panel" type="PanelContainer" parent="ui_margin/ui_scroll"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-theme_type_variation = &"PanelTopPaletteB"
+theme_type_variation = &"PanelPaletteB"
 
 [node name="actions" type="HBoxContainer" parent="ui_margin/ui_scroll/actions_panel"]
 layout_mode = 2
@@ -369,6 +404,23 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_7j16i")
 theme_override_styles/focus = ExtResource("7_2mho6")
 text = "MUTATIONS"
 
+[node name="issue_symbol" type="TextureRect" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/title_label"]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -32.0
+grow_horizontal = 0
+grow_vertical = 2
+tooltip_text = "[color=red]Only five ([b]5[/b]) mutations can be installed at the same time.[/color]"
+texture = ExtResource("19_a7cgh")
+expand_mode = 2
+stretch_mode = 3
+script = ExtResource("11_ftqt2")
+tooltip_title = "Launch Issue"
+
 [node name="uninstalled_title_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
@@ -407,11 +459,25 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="points_counter" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
+[node name="points_scroll" type="HBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll"]
+[node name="points_counter" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/points_scroll"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+vertical_alignment = 1
+
+[node name="issue_symbol" type="TextureRect" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/points_scroll"]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+tooltip_text = "[color=red]Mutation points can't be below zero ([b]0[/b]).[/color]"
+texture = ExtResource("19_a7cgh")
+expand_mode = 2
+stretch_mode = 3
+script = ExtResource("11_ftqt2")
+tooltip_title = "Launch Issue"
 
 [node name="launch_button" type="Button" parent="."]
 custom_minimum_size = Vector2(125, 75)
@@ -430,9 +496,8 @@ grow_vertical = 0
 mouse_default_cursor_shape = 2
 theme = ExtResource("10_yfn5a")
 theme_type_variation = &"ButtonDull"
+theme_override_styles/disabled = SubResource("StyleBoxFlat_a7cgh")
 text = "LAUNCH!"
-script = ExtResource("13_dbh4k")
-tooltip_title = "Launch Button"
 
 [connection signal="pressed" from="ui_margin/ui_scroll/actions_panel/actions/return_button" to="." method="_on_return_button_pressed"]
 [connection signal="pressed" from="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/name_scroll/name_randomizer" to="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel" method="_on_name_randomizer_pressed"]
