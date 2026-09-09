@@ -1,16 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://c4inc2m5l36fl"]
+[gd_scene load_steps=6 format=3 uid="uid://c4inc2m5l36fl"]
 
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_2h8s7"]
 [ext_resource type="Script" uid="uid://c15x8bdwjl7ie" path="res://scenes/pause-menu/objectives-panel/objective_item.gd" id="2_k760f"]
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="3_lcy7s"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="4_icrye"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0qwd7"]
-bg_color = Color(0.117647, 0.117647, 0.117647, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7gmd"]
 bg_color = Color(0.0862745, 0.109804, 0.2, 1)
@@ -26,7 +19,7 @@ corner_radius_bottom_left = 5
 
 [node name="objective_item" type="PanelContainer"]
 theme = ExtResource("1_2h8s7")
-theme_override_styles/panel = SubResource("StyleBoxFlat_0qwd7")
+theme_type_variation = &"PanelSecondaryDull"
 script = ExtResource("2_k760f")
 
 [node name="margin" type="MarginContainer" parent="."]

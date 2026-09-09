@@ -115,6 +115,15 @@ const CHARACTER_NAMES_FILE_PATH: String = "res://data/game/gen/names/character_n
 const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]
 var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
 
+const MUTATION_UNLOCK_WIN_SCHEDULE: Dictionary = { #focus on negative and neutral mutations
+	1: [worldAPI.MUTATION_ID.CONTENT_SKALIQ]
+}
+
+const MUTATION_UNLOCK_LOSE_SCHEDULE: Dictionary = { #focus on positive mutations
+	1: [worldAPI.MUTATION_ID.BETTER_DATABANKS, worldAPI.MUTATION_ID.OLD_NANITES],
+	2: [worldAPI.MUTATION_ID.BETTER_ENGINES]
+}
+
 func get_random_character_name() -> String:
 	return get_lines_from_file(CHARACTER_NAMES_FILE_PATH).pick_random()
 
@@ -415,17 +424,33 @@ func saveSettings(settings_helper: settingsHelper) -> void:
 
 
 func loadAchievements() -> achievementsHelper:
-	print("GAME DATA: LOADING ACHIEVEMENTS")
+	print_debug("GAME DATA: LOADING ACHIEVEMENTS")
 	if ResourceLoader.exists("user://stellar_cartographer_achievements.res"):
 		var resource : achievementsHelper = ResourceLoader.load("user://stellar_cartographer_achievements.res")
 		#print("LOADING SUCCESS") the resource being returned does not necessarily mean that the resource was loaded successfully!
 		return resource
 	#print("LOADING ERROR")
-	print("GAME DATA: LOADING ACHIEVEMENTS FAILED: FILE DOES NOT EXIST")
+	print_debug("GAME DATA: LOADING ACHIEVEMENTS FAILED: FILE DOES NOT EXIST")
 	return null
 
 func saveAchievements(achievements_helper: achievementsHelper) -> void:
 	print("GAME DATA: SAVING ACHIEVEMENTS")
 	var error = ResourceSaver.save(achievements_helper, "user://stellar_cartographer_achievements.res")
 	print("GAME DATA: SAVING ACHIEVEMENTS DONE: ERROR CODE: ", error)
+	pass
+
+
+
+func loadUserDetails() -> userDetailsHelper:
+	print_debug("GAME DATA: LOADING USER DETAILS")
+	if ResourceLoader.exists("user://stellar_cartographer_user_details.res"):
+		var resource : userDetailsHelper = ResourceLoader.load("user://stellar_cartographer_user_details.res")
+		return resource
+	var fallback_resource : userDetailsHelper = userDetailsHelper.new()
+	return fallback_resource
+
+func saveUserDetails(user_details_helper: userDetailsHelper) -> void:
+	print("GAME DATA: SAVING USER DETAILS")
+	var error = ResourceSaver.save(user_details_helper, "user://stellar_cartographer_user_details.res")
+	print("GAME DATA: SAVING USER DETAILS DONE: ERROR CODE: ", error)
 	pass

@@ -121,7 +121,7 @@ var player_balance: int = 0
 var player_hull_stress: int = 0
 var player_SPL_upgrades_matrix: Array = [] #current, max
 var player_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = []
-var nanites_per_percentage: int = 0 #updated in _physics_process
+var nanites_per_percentage: int = 0 
 
 #FOR AUDIO VISUALIZER \/\/\/\/\/
 var pending_audio_profiles: Array = []:
@@ -129,6 +129,8 @@ var pending_audio_profiles: Array = []:
 		pending_audio_profiles = value
 		print("PENDING AUDIO PROFILES ", pending_audio_profiles)
 var player_saved_audio_profiles_size_matrix: Array = [] #current, max
+
+var mutations_old_nanites_installed: bool = false
 
 signal sellExplorationData(sell_percentage_of_market_price: int)
 signal upgradeShip(upgrade_idx: playerAPI.UPGRADE_ID, cost: int)
@@ -179,7 +181,7 @@ func _ready():
 
 func _physics_process(_delta):
 	if station:
-		nanites_per_percentage = game_data.REPAIR_CURVE.sample(game_data.player_weirdness_index) #we are using too many global vars here its not very cool and stuff dont like it feel like im a rookie yknow 
+		nanites_per_percentage = game_data.REPAIR_CURVE.sample(game_data.player_weirdness_index) * (1 + (int(mutations_old_nanites_installed) * 0.5))
 		
 		balance_label.set_text(str("BALANCE: ", player_balance, "n"))
 		hull_stress_label.set_text(str("HULL STRESS: ", player_hull_stress, "%"))
@@ -355,3 +357,13 @@ func _on_set_tutorial_visible(value: bool) -> void:
 
 func get_readable_upgrade_name(upgrade: playerAPI.UPGRADE_ID) -> String:
 	return playerAPI.UPGRADE_ID.find_key(upgrade).to_upper().replace("_", " ")
+
+
+
+
+
+
+func _on_mutation_state_change(mutation_idx: worldAPI.MUTATION_ID, state: bool) -> void:
+	if mutation_idx == worldAPI.MUTATION_ID.OLD_NANITES:
+		mutations_old_nanites_installed = state
+	pass

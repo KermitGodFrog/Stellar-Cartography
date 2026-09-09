@@ -13,10 +13,12 @@ func add_tree_access(key, value):
 	tree_access_facts[key] = value
 	pass
 
-func populateWithLocalData():
+
+
+func populateWithLocalData() -> void:
 	pass
 
-func populateWithPlayerData(player: playerAPI):
+func populateWithPlayerData(player: playerAPI) -> void:
 	add("player_name", player.name)
 	add("player_ship_name", player.ship_name)
 	add("player_prefix", player.prefix)
@@ -80,25 +82,29 @@ func populateWithPlayerData(player: playerAPI):
 		add("player_%s_initiative_xp" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.initiative_xp)
 	pass
 
-func populateWithSystemData(system: starSystemAPI):
+func populateWithSystemData(system: starSystemAPI) -> void:
 	add("system_civilized", system.is_civilized())
 	pass
 
-func populateWithWorldData():
-	add("random_name", game_data.get_random_character_name())
-	add("randi", randi())
-	add("randf", randf())
-	add("RAND_50%", randf() > 0.5)
-	add("RAND_10%", randf() > 0.9)
-	add("RAND_90%", randf() > 0.1)
+func populateWithWorldData(world: worldAPI) -> void:
+	for id in worldAPI.MUTATION_ID:
+		if world.installed_mutations.has(worldAPI.MUTATION_ID.get(id)):
+			add("mutations_%s_installed" % id, true)
 	pass
 
-func populateWithDialogueMemoryData(dialogue_memory: Dictionary):
+func populateWithDialogueMemoryData(dialogue_memory: Dictionary) -> void:
 	for fact in dialogue_memory:
 		add(fact, dialogue_memory.get(fact))
 	pass
 
-func populateWithTreeAccessMemoryData(tree_access_memory: Dictionary):
+func populateWithTreeAccessMemoryData(tree_access_memory: Dictionary) -> void:
 	for fact in tree_access_memory:
 		add(fact, tree_access_memory.get(fact))
+	pass
+
+func populateWithGeneralData() -> void:
+	add("random_name", game_data.get_random_character_name())
+	add("randi", randi())
+	add("randf", randf())
+	add("any", true)
 	pass

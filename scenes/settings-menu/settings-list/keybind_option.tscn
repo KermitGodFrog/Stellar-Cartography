@@ -6,10 +6,14 @@
 offset_right = 142.0
 offset_bottom = 31.0
 size_flags_horizontal = 3
+theme_type_variation = &"PanelTopDullTransparent"
 script = ExtResource("2_yykas")
 
 [node name="button" type="Button" parent="."]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ButtonTopPalette"
 toggle_mode = true
 alignment = 0
 
