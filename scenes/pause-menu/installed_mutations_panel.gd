@@ -11,6 +11,8 @@ func regenerate() -> void:
 	var adj_installed_mutations := installed_mutations.duplicate()
 	adj_installed_mutations.erase(worldAPI.MUTATION_ID.BASE)
 	
+	visible = adj_installed_mutations.size() > 0
+	
 	for item in mutations_scroll.get_children():
 		item.queue_free()
 	

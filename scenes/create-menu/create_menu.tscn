@@ -414,7 +414,7 @@ anchor_bottom = 1.0
 offset_left = -32.0
 grow_horizontal = 0
 grow_vertical = 2
-tooltip_text = "[color=red]Only five ([b]5[/b]) mutations can be installed at the same time.[/color]"
+tooltip_text = "[color=red]Only five (5) mutations can be installed at the same time.[/color]"
 texture = ExtResource("19_a7cgh")
 expand_mode = 2
 stretch_mode = 3
@@ -472,7 +472,7 @@ vertical_alignment = 1
 [node name="issue_symbol" type="TextureRect" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/margin/scroll/points_scroll"]
 custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
-tooltip_text = "[color=red]Mutation points can't be below zero ([b]0[/b]).[/color]"
+tooltip_text = "[color=red]Mutation points can't be below zero (0).[/color]"
 texture = ExtResource("19_a7cgh")
 expand_mode = 2
 stretch_mode = 3
