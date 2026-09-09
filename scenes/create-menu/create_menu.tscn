@@ -479,6 +479,20 @@ stretch_mode = 3
 script = ExtResource("11_ftqt2")
 tooltip_title = "Launch Issue"
 
+[node name="mutations_lock_panel" type="PanelContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel"]
+layout_mode = 2
+theme_type_variation = &"PanelDull"
+
+[node name="unavailable_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/mutations_lock_panel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.49803922, 0.09019608, 0.05490196, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 24
+text = "UNAVAILABLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="launch_button" type="Button" parent="."]
 custom_minimum_size = Vector2(125, 75)
 layout_mode = 1

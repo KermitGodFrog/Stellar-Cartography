@@ -1,10 +1,17 @@
 extends Control
 
+signal game_type_edit_changed(metadata: global_data.GAME_INIT_TYPES)
+
 @onready var tutorial_option_checkbox = $margin/scroll/tutorial_option_checkbox
 @onready var game_type_edit = $margin/scroll/game_type_scroll/game_type_edit
 @onready var name_edit = $margin/scroll/name_scroll/name_edit
 @onready var ship_name_edit = $margin/scroll/ship_name_scroll/ship_name_edit
 @onready var prefix_edit = $margin/scroll/prefix_edit
+
+func _ready() -> void:
+	connect("game_type_edit_changed", _on_game_type_edit_changed)
+	pass
+
 
 func initialize(_init_type: global_data.GAME_INIT_TYPES) -> void:
 	match _init_type:
@@ -17,13 +24,19 @@ func initialize(_init_type: global_data.GAME_INIT_TYPES) -> void:
 	pass
 
 func _on_game_type_edit_item_selected(index: int) -> void:
-	var meta = game_type_edit.get_item_metadata(index)
-	match meta:
+	emit_signal("game_type_edit_changed", game_type_edit.get_item_metadata(index))
+	pass 
+
+func _on_game_type_edit_changed(metadata: global_data.GAME_INIT_TYPES) -> void:
+	match metadata:
 		global_data.GAME_INIT_TYPES.TUTORIAL:
 			tutorial_option_checkbox.show()
 		_:
 			tutorial_option_checkbox.hide()
-	pass 
+	pass
+
+
+
 
 func _on_name_randomizer_pressed() -> void:
 	name_edit.set_text(game_data.get_random_character_name())

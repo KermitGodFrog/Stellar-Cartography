@@ -6,9 +6,11 @@ var init_type: global_data.GAME_INIT_TYPES = global_data.GAME_INIT_TYPES.NEW
 @onready var mutations_panel = $ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel
 @onready var launch_button = $launch_button
 @onready var background_animation = $background_center/background_container/background_viewport/station_ui_background/animation_player
+@onready var mutations_lock_panel = $ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/mutations_lock_panel
 
 func _ready() -> void:
 	mutations_panel.connect("mutation_items_changed", _on_mutation_items_changed)
+	inquiry_panel.connect("game_type_edit_changed", _on_game_type_edit_changed)
 	inquiry_panel.initialize(init_type)
 	
 	#background
@@ -43,4 +45,13 @@ func _on_return_button_pressed() -> void:
 func _on_mutation_items_changed() -> void:
 	if mutations_panel != null and launch_button != null:
 		launch_button.disabled = not mutations_panel.is_launch_valid()
+	pass
+
+func _on_game_type_edit_changed(metadata: global_data.GAME_INIT_TYPES) -> void:
+	match metadata:
+		global_data.GAME_INIT_TYPES.TUTORIAL:
+			mutations_lock_panel.visible = true
+		_:
+			mutations_lock_panel.visible = mutations_panel.get_installed_mutations().size() == 0 \
+			and mutations_panel.get_uninstalled_mutation_items().size() == 0
 	pass
