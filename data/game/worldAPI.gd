@@ -54,6 +54,14 @@ func uninstallMutation(mutation_idx: MUTATION_ID) -> bool: #you should never be 
 	return false
 
 const mutation_data: Dictionary = {
+	MUTATION_ID.BASE: {
+		"title": "Base",
+		"headline": "The foundation of Stellar Cartographer.",
+		"description": "This is the vanilla Stellar Cartographer experience that all other mutations modify the game away from. It shouldn't be shown visually anywhere in the game, so if you're reading this, something has gone very wrong!",
+		"effect": "None.",
+		"type": "NEUTRAL",
+		"points_offset": 0
+	},
 	MUTATION_ID.CONTENT_SKALIQ: {
 		"title": "Content: The Skaliq",
 		"headline": "A species of alien worms that are often encountered in deep space.",
@@ -72,20 +80,21 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.BETTER_ENGINES: {
 		"title": "Better Engines",
-		"headline": "",
-		"description": "",
-		"effect": "",
+		"headline": "Extra speed at the beginning of a run.",
+		"description": "Before leaving Suno, Tristan from Resolution 289 decided to have your starship's main drive retrofitted with an experimental turbine and nozzle.",
+		"effect": "[color=lightblue][ +1 speed ][/color]",
 		"type": "POSITIVE",
 		"points_offset": -1
 	},
 	MUTATION_ID.BETTER_DATABANKS: {
 		"title": "Better Databanks",
-		"headline": "",
-		"description": "",
+		"headline": "More exploration data per discovery.",
+		"description": "Before leaving Suno, Tristan from Resolution 289 decided to have your starship's server room retrofitted with the latest in data storage technology.",
 		"effect": "Discovering bodies yields 1.25x exploration data value.",
 		"type": "POSITIVE",
 		"points_offset": -1
-	}
+	},
+	
 }
 #mutations exclusion zone /\
 

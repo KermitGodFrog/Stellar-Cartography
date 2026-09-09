@@ -92,7 +92,6 @@ func apply_to_target(target: Node, _cell: String) -> void:
 			total_play_time_label.set_text("TIME: %s" % row)
 		mutations_flow:
 			var pending_idx_array: Array = str_to_var(_cell)
-			pending_idx_array.erase(0)
 			for idx in pending_idx_array:
 				var _on_mutation_item_ready := func(_item: Node, _idx: worldAPI.MUTATION_ID) -> void:
 					_item.init_type = _item.INIT_TYPES.DISPLAY_TINY

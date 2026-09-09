@@ -1296,6 +1296,9 @@ func _on_stats_menu_quit(_init_type: int) -> void:
 			game_data.deleteWorld()
 	pass
 func write_history(_init_type: int, mode: FileAccess.ModeFlags) -> void:
+	var adj_installed_mutations := world.installed_mutations.duplicate()
+	adj_installed_mutations.erase(worldAPI.MUTATION_ID.BASE) #no point writing this to a file!!!
+	
 	var history = FileAccess.open("user://stellar_cartographer_history.csv", mode)
 	history.seek_end()
 	history.store_csv_line(PackedStringArray([
@@ -1306,7 +1309,7 @@ func write_history(_init_type: int, mode: FileAccess.ModeFlags) -> void:
 		world.player.systems_traversed, 
 		stats_menu.INIT_TYPES.find_key(_init_type),
 		roundi(world.play_time),
-		world.installed_mutations,
+		adj_installed_mutations,
 		world.player.analytics_exploration_data_payouts
 	]))
 	history.close()
