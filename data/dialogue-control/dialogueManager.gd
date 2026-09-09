@@ -961,9 +961,10 @@ func force_trigger_rule_by_name(calling: Node, rule_name: String) -> void: #used
 	var quick_query: responseQuery = responseQuery.new()
 	quick_query.populateWithPlayerData(player)
 	quick_query.populateWithSystemData(system)
+	quick_query.populateWithWorldData(world)
 	quick_query.populateWithDialogueMemoryData(dialogue_memory)
 	quick_query.populateWithTreeAccessMemoryData(tree_access_memory)
-	quick_query.populateWithWorldData()
+	quick_query.populateWithGeneralData()
 	for r in rules:
 		if r.get_name() == rule_name:
 			openDialog()
