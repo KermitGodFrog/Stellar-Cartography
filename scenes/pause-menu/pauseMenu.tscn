@@ -58,6 +58,7 @@ process_mode = 2
 script = ExtResource("1_u73yd")
 
 [node name="pause_canvas" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="background" type="ColorRect" parent="pause_canvas"]
 anchors_preset = 15
@@ -212,11 +213,14 @@ theme_type_variation = &"PanelPaletteA"
 layout_mode = 2
 text = "INSTALLED MUTATIONS"
 
-[node name="mutations" type="ScrollContainer" parent="pause_canvas/pause_control/installed_mutations_panel/margin/scroll"]
+[node name="mutations_boundary" type="ScrollContainer" parent="pause_canvas/pause_control/installed_mutations_panel/margin/scroll"]
 layout_mode = 2
 size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 4
 
-[node name="mutations_scroll" type="VBoxContainer" parent="pause_canvas/pause_control/installed_mutations_panel/margin/scroll/mutations"]
+[node name="mutations_scroll" type="VBoxContainer" parent="pause_canvas/pause_control/installed_mutations_panel/margin/scroll/mutations_boundary"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

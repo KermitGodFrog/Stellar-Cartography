@@ -85,10 +85,20 @@ vertical_alignment = 1
 layout_mode = 2
 vertical_alignment = 1
 
-[node name="modifiers_panel" type="PanelContainer" parent="margin/history_scroll/key_info_scroll"]
+[node name="mutations_panel" type="PanelContainer" parent="margin/history_scroll/key_info_scroll"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"PanelTertiaryDull"
+
+[node name="mutations_margin" type="MarginContainer" parent="margin/history_scroll/key_info_scroll/mutations_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="mutations_flow" type="HFlowContainer" parent="margin/history_scroll/key_info_scroll/mutations_panel/mutations_margin"]
+layout_mode = 2
 
 [node name="separator" type="VSeparator" parent="margin/history_scroll"]
 layout_mode = 2

@@ -1306,6 +1306,7 @@ func write_history(_init_type: int, mode: FileAccess.ModeFlags) -> void:
 		world.player.systems_traversed, 
 		stats_menu.INIT_TYPES.find_key(_init_type),
 		roundi(world.play_time),
+		world.installed_mutations,
 		world.player.analytics_exploration_data_payouts
 	]))
 	history.close()

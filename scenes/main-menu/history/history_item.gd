@@ -8,6 +8,7 @@ extends PanelContainer
 @onready var stats_menu_init_type_label = $margin/history_scroll/stats_menu_init_type
 @onready var total_play_time_label = $margin/history_scroll/key_info_scroll/data_container/total_play_time
 @onready var version_label = $margin/version
+@onready var mutations_flow = $margin/history_scroll/key_info_scroll/mutations_panel/mutations_margin/mutations_flow
 
 @onready var v0_8_0_0_conversions: Dictionary = {
 	1: player_name_label,
@@ -19,6 +20,17 @@ extends PanelContainer
 	7: null
 }
 
+@onready var v0_9_0_0_conversions: Dictionary = {
+	1: player_name_label,
+	2: player_ship_name_label,
+	3: total_score_label,
+	4: systems_traversed_label,
+	5: stats_menu_init_type_label,
+	6: total_play_time_label,
+	7: mutations_flow,
+	8: null
+}
+
 func create_from_csv(csv_line: PackedStringArray, _item_count: int) -> void:
 	var version: String = csv_line[0]
 	for cell_i in csv_line.size():
@@ -28,6 +40,9 @@ func create_from_csv(csv_line: PackedStringArray, _item_count: int) -> void:
 		match version:
 			"0.8.0.0":
 				var _target = v0_8_0_0_conversions.get(cell_i)
+				apply_to_target(_target, cell)
+			"0.9.0.0":
+				var _target = v0_9_0_0_conversions.get(cell_i)
 				apply_to_target(_target, cell)
 	
 	current_line_label.set_text("%.f)" % _item_count)
@@ -75,6 +90,17 @@ func apply_to_target(target: Node, _cell: String) -> void:
 			if hours > 0:
 				row = "%.fh %s" % [hours, row]
 			total_play_time_label.set_text("TIME: %s" % row)
+		mutations_flow:
+			var pending_idx_array: Array = str_to_var(_cell)
+			pending_idx_array.erase(0)
+			for idx in pending_idx_array:
+				var _on_mutation_item_ready := func(_item: Node, _idx: worldAPI.MUTATION_ID) -> void:
+					_item.init_type = _item.INIT_TYPES.DISPLAY_TINY
+					_item.initialize(_idx)
+					_item.show()
+					pass
+				var item := global_data.get_mutation_item(idx, _on_mutation_item_ready)
+				mutations_flow.add_child(item)
 		_:
 			target.set_text(_cell)
 	pass

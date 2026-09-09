@@ -1,6 +1,7 @@
 extends PanelContainer
 
-@onready var mutations_scroll = $margin/scroll/mutations/mutations_scroll
+@onready var mutations_boundary = $margin/scroll/mutations_boundary
+@onready var mutations_scroll = $margin/scroll/mutations_boundary/mutations_scroll
 
 var installed_mutations: Array[worldAPI.MUTATION_ID] = []
 
@@ -27,4 +28,5 @@ func _on_mutation_item_ready(item: Node, idx: worldAPI.MUTATION_ID) -> void:
 	pass
 func _on_mutation_item_popup(item: Node) -> void:
 	item.popup()
+	item.grab_focus()
 	pass

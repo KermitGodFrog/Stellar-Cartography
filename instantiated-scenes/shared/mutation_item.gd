@@ -2,7 +2,7 @@ extends "res://instantiated-scenes/custom-tooltip/custom_tooltip_control.gd"
 
 signal activated(_mutation: worldAPI.MUTATION_ID, _current_list: LISTS)
 
-enum INIT_TYPES {DISPLAY, EDIT, DISPLAY_WITH_OFFSET}
+enum INIT_TYPES {DISPLAY, EDIT, DISPLAY_WITH_OFFSET, DISPLAY_TINY}
 enum LISTS {UNINSTALLED, INSTALLED}
 var init_type: INIT_TYPES = INIT_TYPES.DISPLAY
 var current_list: LISTS = LISTS.UNINSTALLED
@@ -66,7 +66,12 @@ func initialize(_mutation: worldAPI.MUTATION_ID) -> void:
 		_:
 			set("mouse_default_cursor_shape", CursorShape.CURSOR_ARROW)
 	
-	if init_type in [INIT_TYPES.DISPLAY, INIT_TYPES.DISPLAY_WITH_OFFSET]:
+	if init_type == INIT_TYPES.DISPLAY_TINY:
+		set_custom_minimum_size(Vector2(0.0, 26.0))
+		headline_label.hide()
+		title_label.set("theme_override_font_sizes/font_size", 10)
+	
+	if init_type in [INIT_TYPES.DISPLAY, INIT_TYPES.DISPLAY_WITH_OFFSET, INIT_TYPES.DISPLAY_TINY]:
 		hide()
 	pass
 

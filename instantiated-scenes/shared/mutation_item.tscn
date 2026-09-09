@@ -24,6 +24,7 @@ corner_radius_bottom_left = 4
 [node name="mutation_item" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 50)
 size_flags_horizontal = 3
+focus_mode = 2
 theme = ExtResource("1_i2v13")
 theme_type_variation = &"PanelSecondaryDull"
 script = ExtResource("1_rovnf")
@@ -61,9 +62,10 @@ theme_override_constants/separation = 0
 [node name="title_label" type="Label" parent="mutation_margin/mutation_scroll/info_scroll"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
-size_flags_vertical = 2
+size_flags_vertical = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 16
+vertical_alignment = 1
 text_overrun_behavior = 1
 
 [node name="headline_label" type="Label" parent="mutation_margin/mutation_scroll/info_scroll"]
