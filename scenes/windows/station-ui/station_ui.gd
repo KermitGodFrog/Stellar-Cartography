@@ -84,7 +84,7 @@ const upgrade_data = {
 	},
 	playerAPI.UPGRADE_ID.HEAT_SINK: {
 		"cost": 15000, 
-		"description": "A device that stores the heat produced by a starship rather than radiating it away. When full, the heat sink is ejected into space and replaced. This reduces the thermal signature of the ship, but it can't move as much heat as external radiators.", 
+		"description": "A device that stores the heat produced by a starship rather than radiating it away. When full, the heat sink is ejected into space and replaced. This reduces the thermal signature of the ship, but it can't move as much heat as external radiators for long.", 
 		"effect": "[color=lightblue][ -6.25 scanner profile ][/color][color=tomato][ -1 speed ][/color]"
 	},
 	playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR: {

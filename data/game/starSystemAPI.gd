@@ -444,9 +444,9 @@ func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curv
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.DYSON_SPHERE:
 			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
 			var star: circularBodyAPI = get_first_star()
+			star.metadata["luminosity"] = star.metadata.get("luminosity") * 0.4 #assumption: the dyson sphere would reduce star light output by 60% !
 			remove_recursive_bodies_with_hook_identifier(star.get_identifier())
 			post_gen_location_candidates.clear()
-			star.metadata["luminosity"] = star.metadata.get("luminosity") * 0.4 #assumption: the dyson sphere would reduce star light output by 60% !
 			generateRandomWeightedPlanets(star.get_identifier())
 			generateWormholes()
 			generateRandomWeightedEntities()
@@ -483,6 +483,25 @@ func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curv
 					{"affiliation": game_data.UNIT_AFFILIATIONS.MARAUDER, "hostile": true, "seed": randi()}
 				)
 				get_body_from_identifier(new_ship).position = Vector2.ZERO + (Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360))) * global_data.get_randf(0.0, get_max_body_orbit_distance()))
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.GREEN_STAR:
+			var star: circularBodyAPI = get_first_star()
+			star.surface_color = Color.GREEN
+			generateWormholes()
+			generateRandomWeightedEntities()
+			generateRendezvousPoint()
+			generateRandomWeightedShips()
+			#addOrbitBody(
+			#	customBodyAPI.new(),
+			#	starSystemAPI.BODY_TYPES.CUSTOM,
+			#	identifier_count,
+			#	"Green Hue?",
+			#	star.get_identifier(),
+			#	0.0,
+			#	0.0,
+			#	star.radius,
+			#	{"dialogue_tag": "SpA_GreenHue", "known": true},
+			#	{}
+			#)
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE, _:
 			generateWormholes()
 			generateRandomWeightedEntities()
