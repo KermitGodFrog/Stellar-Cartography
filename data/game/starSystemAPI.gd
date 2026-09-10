@@ -464,6 +464,25 @@ func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curv
 				{"dialogue_tag": "SpA_DysonSphere", "icon_path": "res://graphics/system-map/system-list/icons/SpA_DysonSphere.png", "texture_path": "res://graphics/system-map/dyson_sphere_texture.png", "mesh_path": "res://meshes/system-3d/dyson_sphere.obj"},
 				{"seed": randi()}
 			)
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.MARAUDER_FLEET:
+			generateWormholes()
+			generateRandomWeightedEntities()
+			generateRendezvousPoint()
+			generateRandomWeightedSpecialAnomaly(_special_anomaly_req_adj_curves)
+			var base_name := game_data.get_random_character_name()
+			var suffixes: Array[String] = ["Dagger", "Knife", "Blade", "Axe", "Spear", "Bayonet", "Sabre", "Bow", "Ram", "Lead", "Reserve"]
+			for i in 3:
+				var new_ship = addUnitBody(
+					interceptingUnitAPI.new(),
+					starSystemAPI.BODY_TYPES.SHIP,
+					identifier_count,
+					"%s's %s" % [base_name, suffixes.pick_random()],
+					global_data.get_randi(3, int(game_data.SHIP_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index))),
+					get_default_radius_solar_radii(),
+					{"system": self},
+					{"affiliation": game_data.UNIT_AFFILIATIONS.MARAUDER, "hostile": true, "seed": randi()}
+				)
+				get_body_from_identifier(new_ship).position = Vector2.ZERO + (Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360))) * global_data.get_randf(0.0, get_max_body_orbit_distance()))
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE, _:
 			generateWormholes()
 			generateRandomWeightedEntities()
