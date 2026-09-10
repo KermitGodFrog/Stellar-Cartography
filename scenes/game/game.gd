@@ -704,6 +704,10 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	world.player.grant_invulnerability(0.3)
 	world.player.systems_traversed += 1
 	
+	var special_anomaly_req_dict: Dictionary = {
+		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.DYSON_SPHERE: [false]
+	}
+	
 	#spawning new wormholes in destination system if nonexistent
 	if not destination.destination_systems:
 		var next_weirdness_index: float = remap(world.player.systems_traversed + 1, 0, world.player.total_systems, 0.0, 1.0)
@@ -715,8 +719,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 		world.player.resetJumpsRemaining()
 		destination.createAuxiliaryCivilized(world.player.get_unlocked_upgrades())
 	else:
-		destination.createAuxiliaryUnexplored(world.player.speed)
-	
+		destination.createAuxiliaryUnexplored(world.player.speed, game_data.get_req_adj_classification_curves(game_data.SPECIAL_ANOMALY_CLASSIFICATION_CURVES, special_anomaly_req_dict))
 	
 	var destination_wormhole: wormholeBodyAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
 	destination_wormhole.known = true
@@ -813,7 +816,15 @@ func _on_create_new_star_system(for_system: starSystemAPI = null, for_weirdness_
 		system.special_system_classification = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA
 	var _advanced_analysis_unlocked = world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.ADVANCED_ANALYSIS)
 	system.non_gen_seed = randi() #for ESDs
-	system.createBase(world.get_adjusted_PA_chance(_advanced_analysis_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_analysis_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index)
+	
+	var special_system_req_dict: Dictionary = {
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA: [false],
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.DYSON_SPHERE: [dialogue_manager.dialogue_memory.get("SpA_DysonSphereInvestigated_PREV", false) == false],
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.SKALIQ_PRESENCE: [world.is_mutation_installed(worldAPI.MUTATION_ID.CONTENT_SKALIQ)],
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.SKALIQ_CIVILIZED: [world.is_mutation_installed(worldAPI.MUTATION_ID.CONTENT_SKALIQ)]
+	}
+	
+	system.createBase(world.get_adjusted_PA_chance(_advanced_analysis_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_analysis_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index, game_data.get_req_adj_classification_curves(game_data.SPECIAL_SYSTEM_CLASSIFICATION_CURVES, special_system_req_dict))
 	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
@@ -1663,7 +1674,7 @@ func _on_DEBUG_force_quit_dialogue() -> void:
 
 func _on_DEBUG_force_unexplored_system() -> void:
 	var new = _on_create_new_star_system()
-	new.createAuxiliaryUnexplored(world.player.speed)
+	new.createAuxiliaryUnexplored(world.player.speed, game_data.get_req_adj_classification_curves(game_data.SPECIAL_ANOMALY_CLASSIFICATION_CURVES, {}))
 	_on_switch_star_system(new)
 	_on_player_entering_system(new)
 	_on_DEBUG_reveal_all_bodies()

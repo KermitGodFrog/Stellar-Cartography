@@ -246,9 +246,9 @@ const asteroid_belt_classifications = {
 
 # core gen methods \/
 
-func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0, _missing_GL_chance_per_relevant_planet: float = 0.0, weirdness_index: float = 0.0) -> void:
+func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0, _missing_GL_chance_per_relevant_planet: float = 0.0, weirdness_index: float = 0.0, special_system_req_adj_curves: Dictionary = {}) -> void:
 	if special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
-		special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(weirdness_index), "weight")
+		special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(special_system_req_adj_curves, weirdness_index), "weight")
 	
 	if system_hazard_classification == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
 		system_hazard_classification = global_data.weighted_pick(game_data.get_weighted_system_hazard_classifications(weirdness_index), "weight")
@@ -430,7 +430,7 @@ func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = 
 			generateRandomWeightedShips()
 	pass
 
-func createAuxiliaryUnexplored(_player_speed: int) -> void:
+func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curves: Dictionary) -> void:
 	match special_system_classification:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
 			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
@@ -451,7 +451,7 @@ func createAuxiliaryUnexplored(_player_speed: int) -> void:
 			generateWormholes()
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
-			generateRandomWeightedSpecialAnomaly()
+			generateRandomWeightedSpecialAnomaly(_special_anomaly_req_adj_curves)
 			addOrbitBody(
 				customBodyAPI.new(),
 				starSystemAPI.BODY_TYPES.CUSTOM,
@@ -468,7 +468,7 @@ func createAuxiliaryUnexplored(_player_speed: int) -> void:
 			generateWormholes()
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
-			generateRandomWeightedSpecialAnomaly()
+			generateRandomWeightedSpecialAnomaly(_special_anomaly_req_adj_curves)
 			generateRandomWeightedShips()
 	
 	match system_hazard_classification:
@@ -944,7 +944,7 @@ func generateRendezvousPoint():
 	post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
-func generateRandomWeightedSpecialAnomaly():
+func generateRandomWeightedSpecialAnomaly(special_anomaly_req_adj_curves: Dictionary):
 	var location = post_gen_location_candidates.pick_random()
 	var hook = get_body_from_identifier(location.front())
 	var i = location.back()
@@ -953,7 +953,7 @@ func generateRandomWeightedSpecialAnomaly():
 	var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 	var radius = get_default_radius_solar_radii()
 	
-	var special_anomaly_classification = global_data.weighted_pick(game_data.get_weighted_special_anomaly_classifications(), "weight")
+	var special_anomaly_classification = global_data.weighted_pick(game_data.get_weighted_special_anomaly_classifications(special_anomaly_req_adj_curves), "weight")
 	match special_anomaly_classification:
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.RIGGED_ASTEROID:
 			var hook_orbit_velocity = tan(hook.orbit_angle_change) * hook.orbit_distance #would have to recalculate every frame if not calculating now, which would be unnecessary

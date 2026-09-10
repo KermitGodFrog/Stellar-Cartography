@@ -34,12 +34,14 @@ const SPECIAL_ANOMALY_CLASSIFICATION_CURVES = {
 	SPECIAL_ANOMALY_CLASSIFICATIONS.DYSON_SPHERE: preload("uid://q6l0xqns76db")
 }
 
-enum SPECIAL_SYSTEM_CLASSIFICATIONS {NONE, VOID, INSA, DYSON_SPHERE}
+enum SPECIAL_SYSTEM_CLASSIFICATIONS {NONE, VOID, INSA, DYSON_SPHERE, SKALIQ_PRESENCE, SKALIQ_CIVILIZED}
 const SPECIAL_SYSTEM_CLASSIFICATION_CURVES = {
 	SPECIAL_SYSTEM_CLASSIFICATIONS.NONE: preload("uid://bcbxt0ka5hvk6"),
 	SPECIAL_SYSTEM_CLASSIFICATIONS.VOID: preload("uid://c185056t7jlry"),
 	SPECIAL_SYSTEM_CLASSIFICATIONS.INSA: preload("uid://d3pgn3q3k3a3n"),
-	SPECIAL_SYSTEM_CLASSIFICATIONS.DYSON_SPHERE: preload("uid://c3xpld6owv5pp")
+	SPECIAL_SYSTEM_CLASSIFICATIONS.DYSON_SPHERE: preload("uid://c3xpld6owv5pp"),
+	SPECIAL_SYSTEM_CLASSIFICATIONS.SKALIQ_PRESENCE: preload("uid://cw51srjsna814"),
+	SPECIAL_SYSTEM_CLASSIFICATIONS.SKALIQ_CIVILIZED: preload("uid://dsa60anwsqhs")
 }
 
 enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE, CORONAL_MASS_EJECTION, MINE_FIELD, NEBULA}
@@ -265,11 +267,11 @@ func get_weighted_station_classifications() -> Dictionary:
 func get_weighted_entity_classifications() -> Dictionary: 
 	return get_weighted_classifications(ENTITY_CLASSIFICATION_CURVES)
 
-func get_weighted_special_anomaly_classifications() -> Dictionary:
-	return get_weighted_classifications(SPECIAL_ANOMALY_CLASSIFICATION_CURVES)
+func get_weighted_special_anomaly_classifications(classification_curves: Dictionary = SPECIAL_ANOMALY_CLASSIFICATION_CURVES) -> Dictionary:
+	return get_weighted_classifications(classification_curves)
 
-func get_weighted_special_system_classifications(weirdness_index: float = player_weirdness_index) -> Dictionary:
-	return get_weighted_classifications(SPECIAL_SYSTEM_CLASSIFICATION_CURVES, weirdness_index)
+func get_weighted_special_system_classifications(classification_curves: Dictionary = SPECIAL_SYSTEM_CLASSIFICATION_CURVES, weirdness_index: float = player_weirdness_index) -> Dictionary:
+	return get_weighted_classifications(classification_curves, weirdness_index)
 
 func get_weighted_system_hazard_classifications(weirdness_index: float = player_weirdness_index) -> Dictionary:
 	return get_weighted_classifications(SYSTEM_HAZARD_CLASSIFICATION_CURVES, weirdness_index)
@@ -320,6 +322,17 @@ func get_body_icon_or_null(body: bodyAPI) -> Resource: #returns null if no defau
 			else: return load(body.post_icon_path)
 		_:
 			return null
+
+func get_req_adj_classification_curves(base_dict: Dictionary, req_dict: Dictionary) -> Dictionary:
+	var approved_dict: Dictionary = {}
+	for classification in base_dict:
+		var requirements: Array = req_dict.get(classification, [])
+		if requirements.size() > 0:
+			if requirements.all(func(element): return element == true) == true:
+				approved_dict[classification] = base_dict.get(classification)
+		else:
+			approved_dict[classification] = base_dict.get(classification)
+	return approved_dict
 
 
 
