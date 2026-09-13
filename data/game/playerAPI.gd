@@ -112,6 +112,26 @@ func get_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> char
 		if c.get_occupation() == occupation:
 			return c
 	return null
+func get_occupation_department_name(occupation: characterAPI.OCCUPATIONS, add_department_suffix: bool = true) -> String:
+	var department_name: String = String()
+	var department_prefix: String = String()
+	match occupation:
+		characterAPI.OCCUPATIONS.FIRST_OFFICER:
+			department_prefix = "Command"
+		characterAPI.OCCUPATIONS.CHIEF_ENGINEER:
+			department_prefix = "Engineering"
+		characterAPI.OCCUPATIONS.SECURITY_OFFICER:
+			department_prefix = "Security"
+		characterAPI.OCCUPATIONS.MEDICAL_OFFICER:
+			department_prefix = "Science"
+		_:
+			return String()
+	if add_department_suffix:
+		department_name = "%s %s" % [department_prefix, "department"]
+	else:
+		department_name = department_prefix
+	return department_name
+
 
 enum SCOPE_MODES {VIS, RAD}
 
@@ -381,6 +401,12 @@ func addCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int) -> void:
 	var c = get_character_with_occupation(occupation)
 	if c:
 		c.add_xp(amount)
+	pass
+
+func removeCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int) -> void:
+	var c = get_character_with_occupation(occupation)
+	if c:
+		c.remove_xp(amount)
 	pass
 
 func removeCharacterInitiativeXP(occupation: characterAPI.OCCUPATIONS) -> void:

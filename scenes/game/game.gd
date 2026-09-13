@@ -226,6 +226,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("changePlayerScopeMode", _on_change_scope_mode)
 	dialogue_manager.connect("lockUpgrade", _on_lock_upgrade)
 	dialogue_manager.connect("addCharacterXP", _on_add_character_xp)
+	dialogue_manager.connect("removeCharacterXP", _on_remove_character_xp)
 	dialogue_manager.connect("removeCharacterInitiativeXP", _on_remove_character_initiative_xp)
 	dialogue_manager.connect("playerWin", _on_player_win)
 	dialogue_manager.connect("playStrangeDiscoveryThemeOrMotif", _on_play_strange_discovery_theme_or_motif)
@@ -1549,6 +1550,10 @@ func _on_sys_survey_efficiency_bonus() -> void:
 
 func _on_add_character_xp(occupation: characterAPI.OCCUPATIONS, amount: int) -> void:
 	world.player.addCharacterXP(occupation, amount)
+	pass
+
+func _on_remove_character_xp(occupation: characterAPI.OCCUPATIONS, amount: int) -> void:
+	world.player.removeCharacterXP(occupation, amount)
 	pass
 
 func _on_remove_character_initiative_xp(occupation: characterAPI.OCCUPATIONS) -> void:

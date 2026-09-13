@@ -491,18 +491,6 @@ func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curv
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
 			generateRandomWeightedShips()
-			#addOrbitBody(
-			#	customBodyAPI.new(),
-			#	starSystemAPI.BODY_TYPES.CUSTOM,
-			#	identifier_count,
-			#	"Green Hue?",
-			#	star.get_identifier(),
-			#	0.0,
-			#	0.0,
-			#	star.radius,
-			#	{"dialogue_tag": "SpA_GreenHue", "known": true},
-			#	{}
-			#)
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE, _:
 			generateWormholes()
 			generateRandomWeightedEntities()
@@ -976,7 +964,7 @@ func generateRendezvousPoint():
 		orbit_angle_change,
 		radius,
 		{"req_scope_mode": playerAPI.SCOPE_MODES.RAD}, #dialogue content overrides, perhaps?
-		{}
+		{"seed": randi()}
 	)
 	
 	get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))

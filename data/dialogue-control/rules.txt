@@ -82,7 +82,7 @@ playerDeathOpenDialog,concept: playerDeath,"openDialog: null, objectiveFailure: 
 wormholeOpenDialog,"concept: followingBody, type: WORMHOLE","openDialog: null, setImage: wormhole.png",defaultApproachMessage,,"Enter the wormhole:enterWormhole, Leave:defaultLeave",,"tryWormholeAVFlair, tryWormholeESDFlair",,,
 wormholeTryAVFlairResponse,"concept: tryWormholeAVFlair, system_civilized: true, player_AUDIO_VISUALIZER_unlocked: true, pending_audio_profiles: true",,,"You are informed that select planetary audio data - notorious for being a plague to on-board databanks - has strayed too far from its source, and subsequent bastions of civilization will likely refuse its delivery. Unless the data is sold within the current star system, the databanks will be purged following the traversal of [i]$name[/i].",,,,,,
 wormholeTryESDFlairResponse,"concept: tryWormholeESDFlair, dest_system_scenario_classification: UNKNOWN_DANGER",playSoundEffect: warning.wav,,Patterns of atypical returns from the wormhole suggest that an [color=yellow]unknown danger[/color] is probably within or just on the other side.,,,,,,
-enterWormhole,"concept: optionSelected, option: enterWormhole",closeDialog: ENTER_WORMHOLE,,,,,,,,
+enterWormhole,"concept: optionSelected, option: enterWormhole","closeDialog: ENTER_WORMHOLE, clearFact: RP_TradeXP_PREVTS",,,,,,,,
 wormholeDisabledOpenDialog,"concept: followingBody, type: WORMHOLE, wormhole_disabled: true","openDialog: null, setImage: wormhole.png",defaultApproachMessage,"""This wormhole leads to a star system that is not on our route,"" the navigator on-deck informs you. ""We cannot risk traversal - the cost of recalculating passage is far too computationally expensive.""",Leave:defaultLeave,,,,,
 ,,,,,,,,,,
 spaceEntityLRSOverride,"concept: followingBody, type: SPACE_ENTITY, player_LONG_RANGE_SCOPES_unlocked: true",openLRSApplicable: null,,,,,,,,
@@ -224,13 +224,14 @@ RP_OpenDialog,"concept: followingBody, type: RENDEZVOUS_POINT",openDialog: null,
 RP_Fallback,"concept: optionSelected, option: RP_Fallback",,,You consider what to do next.,"Summon senior staff [...]: RP_Summon, Exchange XP [...]: RP_TradeXP, Leave:defaultLeave",,,,,
 RP_Summon,"concept: optionSelected, option: RP_Summon",,,"If you wish to, you can summon senior staff to your ready room for conversation or to enact special initatives.",Go back: RP_Fallback,populateRP_SummonOptions,,,,
 RP_SummonFallback,"concept: optionSelected, option: RP_SummonFallback",,,There is still time to summon additional senior staff to your ready room.,Go back: RP_Fallback,populateRP_SummonOptions,,,,
-RP_TradeXP,"concept: optionSelected, option: RP_TradeXP",,,"If you wish to, you can exchange XP between the different departments of your starship.",Go back: RP_Fallback,,,,,
+RP_TradeXPMessage,concept: RP_TradeXPMessage,,,[color=darkgray]You may only exchange 50 XP between two randomized departments that have non-acting senior officers [b]per star system[/b].[/color],,,,,,
+RP_TradeXPValid,"concept: optionSelected, option: RP_TradeXP, RP_TradeXP_PREVTS: false",addTradeXPOptions_RP: $seed,RP_TradeXPMessage,"If you wish to, you can exchange XP between the different departments of your starship.",Go back: RP_Fallback,,,,,
+RP_TradeXPInvalid,"concept: optionSelected, option: RP_TradeXP, RP_TradeXP_PREVTS: true",,RP_TradeXPMessage,[color=yellow]You have already exchanged XP in this star system.[/color],Go back: RP_Fallback,,,,,
 # RP_Summon,,,,,,,,,,
 RP_SummonRuiOption,"concept: populateRP_SummonOptions, player_FIRST_OFFICER_alive: true",,,,Summon First Officer Rui: RP_RuiSummon,,,,,
 RP_SummonJiyaOption,"concept: populateRP_SummonOptions, player_CHIEF_ENGINEER_alive: true",,,,Summon Chief Engineer Jiya: RP_JiyaSummon,,,,,
 RP_SummonWalkerOption,"concept: populateRP_SummonOptions, player_SECURITY_OFFICER_alive: true",,,,Summon Security Officer Walker: RP_WalkerSummon,,,,,
 RP_SummonFebrisOption,"concept: populateRP_SummonOptions, player_MEDICAL_OFFICER_alive: true",,,,Summon Medical Officer Febris: RP_FebrisSummon,,,,,
-,,,,,,,,,,
 ,,,,,,,,,,
 RP_RuiInitiativeMessage,concept: RP_RuiInitiativeMessage,,,[color=yellow]Command department XP for next special initiative: $player_FIRST_OFFICER_xp / $player_FIRST_OFFICER_initiative_xp[/color],,,,,,
 RP_RuiSummon,"concept: optionSelected, option: RP_RuiSummon",,RP_RuiInitiativeMessage,Rui enters your ready room and warily takes a seat.,Dismiss Rui: RP_SummonFallback,populateRP_RuiOptions,tryRP_RuiInitiatives,,,
@@ -278,6 +279,13 @@ RP_WalkerOriginG,"concept: optionSelected, option: RP_WalkerOriginG",playMusic: 
 RP_WalkerOriginH,"concept: optionSelected, option: RP_WalkerOriginH",,,"Walker looks completely out of his depth and speaks louder to hide it. ""Don't you understand, $player_prefix_lower? We are always a minute away from death. It only takes one marauder evading our sensors to tear the ship in half. And if our people are as careless as I was when it came to heat detection,"" he twitches, ""it... it will only make it easier for one marauder to score a lucky hit. We can't let that happen."" He looks sour, probably realising that he has talked improperly towards a superior.","Praise his diligence: RP_WalkerOriginAgree, Order him to only assess irregularly: RP_WalkerOriginDisagree",,,,,
 RP_WalkerOriginAgree,"concept: optionSelected, option: RP_WalkerOriginAgree","superchargeForJumpsWithFlair: 3, removeMoraleWithFlair: 10, decreaseCharacterStandingBy25: SECURITY_OFFICER",,"Walker appears confused, but eventually accepts that the frequency of his paranoia-induced security assessments is now ship policy. You have the complaints scrapped.",Consider other matters: RP_WalkerFallback,,,,,
 RP_WalkerOriginDisagree,"concept: optionSelected, option: RP_WalkerOriginDisagree","addMoraleWithFlair: 10, increaseCharacterStandingBy25: SECURITY_OFFICER",,Walker appears almost relieved as you begin belting out threats of disciplinary action against him if he doesn't stop torturing his subordinates with paperwork. He readily apologies and agrees to only order security assessments biweekly.,Consider other matters: RP_WalkerFallback,,,,,
+# RP_TradeXP,,,,,,,,,,
+RP_CommandEngineeringTradeXP,"concept: optionSelected, option: RP_CommandEngineeringTradeXP","removeXP_LOW: FIRST_OFFICER, addXP_LOW: CHIEF_ENGINEER",,,Continue: RP_TradeXP,,,,,RP_TradeXP_PREVTS: true
+RP_CommandScienceTradeXP,"concept: optionSelected, option: RP_CommandScienceTradeXP","removeXP_LOW: FIRST_OFFICER, addXP_LOW: MEDICAL_OFFICER",,,Continue: RP_TradeXP,,,,,RP_TradeXP_PREVTS: true
+RP_EngineeringCommandTradeXP,"concept: optionSelected, option: RP_EngineeringCommandTradeXP","removeXP_LOW: CHIEF_ENGINEER, addXP_LOW: FIRST_OFFICER",,,Continue: RP_TradeXP,,,,,RP_TradeXP_PREVTS: true
+RP_EngineeringScienceTradeXP,"concept: optionSelected, option: RP_EngineeringScienceTradeXP","removeXP_LOW: CHIEF_ENGINEER, addXP_LOW: MEDICAL_OFFICER",,,Continue: RP_TradeXP,,,,,RP_TradeXP_PREVTS: true
+RP_ScienceCommandTradeXP,"concept: optionSelected, option: RP_ScienceCommandTradeXP","removeXP_LOW: MEDICAL_OFFICER, addXP_LOW: FIRST_OFFICER",,,Continue: RP_TradeXP,,,,,RP_TradeXP_PREVTS: true
+RP_ScienceEngineeringTradeXP,"concept: optionSelected, option: RP_ScienceEngineeringTradeXP","removeXP_LOW: MEDICAL_OFFICER, addXP_LOW: CHIEF_ENGINEER",,,Continue: RP_TradeXP,,,,,RP_TradeXP_PREVTS: true
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,

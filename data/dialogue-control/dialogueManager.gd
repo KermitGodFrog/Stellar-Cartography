@@ -40,6 +40,7 @@ signal modifyCharacterStanding(occupation: characterAPI.OCCUPATIONS, amount: int
 signal changePlayerScopeMode(_new_mode: playerAPI.SCOPE_MODES)
 signal lockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
 signal addCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int)
+signal removeCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int)
 signal removeCharacterInitiativeXP(occupation: characterAPI.OCCUPATIONS)
 signal playerWin()
 signal playStrangeDiscoveryThemeOrMotif()
@@ -789,17 +790,7 @@ func addXP_HIGH(written_occupation: String) -> void:
 func addXPWithFlair(written_occupation: String, amount: int) -> void:
 	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
 	emit_signal("addCharacterXP", occupation, amount)
-	var department_name: String
-	match occupation:
-		characterAPI.OCCUPATIONS.FIRST_OFFICER:
-			department_name = "Command department"
-		characterAPI.OCCUPATIONS.CHIEF_ENGINEER:
-			department_name = "Engineering department"
-		characterAPI.OCCUPATIONS.SECURITY_OFFICER:
-			department_name = "Security department"
-		characterAPI.OCCUPATIONS.MEDICAL_OFFICER:
-			department_name = "Science department"
-	
+	var department_name: String = player.get_occupation_department_name(occupation)
 	dialogue.add_text("[color=darkgreen][font_size=8]{ %s gained %d XP }[/font_size][/color]" % [department_name, amount])
 	pass
 
@@ -809,6 +800,17 @@ func addRandomXP_LOW(anomaly_seed: String = String()) -> void:
 	const occupation_strings: Array = ["FIRST_OFFICER", "CHIEF_ENGINEER", "MEDICAL_OFFICER"]
 	var written_occupation = occupation_strings[random.randi_range(0, occupation_strings.size() - 1)]
 	addXPWithFlair(written_occupation, 50)
+	pass
+
+func removeXPWithFlair(written_occupation: String, amount: int) -> void:
+	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
+	emit_signal("removeCharacterXP", occupation, amount)
+	var department_name: String = player.get_occupation_department_name(occupation)
+	dialogue.add_text("[color=red][font_size=8]{ %s lost %d XP }[/font_size][/color]" % [department_name, amount])
+	pass
+
+func removeXP_LOW(written_occupation: String) -> void:
+	removeXPWithFlair(written_occupation, 50)
 	pass
 
 func removeSpecialInitiativeXP(written_occupation: String) -> void:
@@ -861,6 +863,30 @@ func getCSSOutcomeWithFlair(star_type: String) -> void:
 
 func treeAccessMemoryPlus1(memory: String) -> void: #this is stupid and should instead be implemented by making the 'Apply Facts' column have support for operations >:(
 	tree_access_memory[memory] = tree_access_memory.get(memory, 0) + 1
+	pass
+
+func addTradeXPOptions_RP(rp_seed: String) -> void:
+	var pairs: Dictionary = {}
+	var candidates: Array[characterAPI.OCCUPATIONS] = [characterAPI.OCCUPATIONS.FIRST_OFFICER, characterAPI.OCCUPATIONS.CHIEF_ENGINEER, characterAPI.OCCUPATIONS.MEDICAL_OFFICER]
+	for occupation in characterAPI.OCCUPATIONS.values():
+		var character: characterAPI = player.get_character_with_occupation(occupation)
+		if character.is_alive() and character.xp >= 50 and candidates.has(occupation):
+			for _occupation in characterAPI.OCCUPATIONS.values():
+				var _character: characterAPI = player.get_character_with_occupation(_occupation)
+				if _character.is_alive() and _character.xp >= 50 and candidates.has(_occupation) and occupation != _occupation:
+					pairs[character] = _character
+	
+	if pairs.size() > 0:
+		var random := RandomNumberGenerator.new()
+		random.set_seed(hash(int(rp_seed)))
+		var r_key_index: int = random.randi_range(0, pairs.keys().size() - 1)
+		
+		var c_host: characterAPI = pairs.keys()[r_key_index]
+		var c_target: characterAPI = pairs.get(c_host)
+		var c_host_department_name: String = player.get_occupation_department_name(c_host.get_occupation(), false)
+		var c_target_department_name: String = player.get_occupation_department_name(c_target.get_occupation(), false)
+		
+		dialogue.add_options({"Exchange 50 %s XP -> 50 %s XP" % [c_host_department_name, c_target_department_name]: "RP_%s%sTradeXP" % [c_host_department_name, c_target_department_name]})
 	pass
 
 
