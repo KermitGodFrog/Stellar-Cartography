@@ -84,6 +84,9 @@ func populateWithPlayerData(player: playerAPI) -> void:
 
 func populateWithSystemData(system: starSystemAPI) -> void:
 	add("system_civilized", system.is_civilized())
+	add("special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(system.special_system_classification)))
+	add("system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(system.system_hazard_classification)))
+	add("system_scenario_classification", str(game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.find_key(system.system_scenario_classification)))
 	pass
 
 func populateWithWorldData(world: worldAPI) -> void:

@@ -477,7 +477,7 @@ func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curv
 					starSystemAPI.BODY_TYPES.SHIP,
 					identifier_count,
 					"%s's %s" % [base_name, suffixes.pick_random()],
-					global_data.get_randi(3, int(game_data.SHIP_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index))),
+					global_data.get_randi(3, int(game_data.SHIP_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index))) + 1,
 					get_default_radius_solar_radii(),
 					{"system": self},
 					{"affiliation": game_data.UNIT_AFFILIATIONS.MARAUDER, "hostile": true, "seed": randi()}
@@ -486,6 +486,7 @@ func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curv
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.GREEN_STAR:
 			var star: circularBodyAPI = get_first_star()
 			star.surface_color = Color.GREEN
+			star.metadata["cram_cell_synthesis_available"] = false
 			generateWormholes()
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()

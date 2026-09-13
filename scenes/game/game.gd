@@ -458,6 +458,7 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add_tree_access("space_entity_type", str(game_data.ENTITY_CLASSIFICATIONS.find_key(following_body.entity_classification)))
 		starSystemAPI.BODY_TYPES.STAR:
 			new_query.add("cram_cell_synthesis_available", following_body.metadata.get("cram_cell_synthesis_available", true))
+			new_query.add("star_available", following_body.metadata.get("star_available", true))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
 		starSystemAPI.BODY_TYPES.SHIP:
@@ -543,6 +544,10 @@ func _on_player_following_body(following_body: bodyAPI):
 			match RETURN_STATE:
 				"HARD_LEAVE":
 					following_body.metadata["cram_cell_synthesis_available"] = false
+					following_body.metadata["star_available"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+				"SOFT_LEAVE":
+					following_body.metadata["star_available"] = true
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
@@ -629,9 +634,6 @@ func _on_player_entering_system(system: starSystemAPI):
 	var new_query = responseQuery.new()
 	new_query.add("concept", "enteringSystem")
 	#new_query.add_tree_access("name", system.get_display_name()) # no point to do this as the system display name will always be 'random' or 'tutorial' or whatever!
-	new_query.add_tree_access("special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(system.special_system_classification)))
-	new_query.add_tree_access("system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(system.system_hazard_classification)))
-	new_query.add_tree_access("system_scenario_classification", str(game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.find_key(system.system_scenario_classification)))
 	new_query.add_tree_access("system_star_type", system.get_first_star().metadata.get("star_type"))
 	new_query.add_tree_access("system_civilized", system.is_civilized())
 	new_query.add_tree_access("seed", system.non_gen_seed)
