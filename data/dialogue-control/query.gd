@@ -80,6 +80,8 @@ func populateWithPlayerData(player: playerAPI) -> void:
 		add("player_%s_standing" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.get_standing())
 		add("player_%s_xp" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.xp)
 		add("player_%s_initiative_xp" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.initiative_xp)
+	
+	add("player_any_characters_alive", player.characters.all(func(c): return c.is_alive()) == true)
 	pass
 
 func populateWithSystemData(system: starSystemAPI) -> void:
