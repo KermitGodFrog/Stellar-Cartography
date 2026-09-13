@@ -6,3 +6,4 @@ class_name settingsHelper
 
 @export var window_mode: DisplayServer.WindowMode = DisplayServer.WindowMode.WINDOW_MODE_WINDOWED
 @export var fps_limit: int = 0
+@export var default_resolution: String = "1600x900"

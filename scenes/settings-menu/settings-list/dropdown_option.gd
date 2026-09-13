@@ -18,6 +18,14 @@ func reset_display_to_applied() -> void: #reset to current applied settings
 						if text.is_valid_int():
 							if text.to_int() == max_fps:
 								dropdown.select(idx)
+		"DEFAULT_RESOLUTION":
+			var content_scale_width: int = get_window().content_scale_size.x
+			var content_scale_height: int = get_window().content_scale_size.y
+			for idx in dropdown.item_count:
+				if dropdown.get_item_text(idx) == "%dx%d" % [content_scale_width, content_scale_height]:
+					dropdown.select(idx)
+					return
+			dropdown.select(-1)
 	pass
 
 func reset_display_to_default() -> void: #reset to default settings
@@ -25,6 +33,8 @@ func reset_display_to_default() -> void: #reset to default settings
 		"WINDOW_MODE":
 			dropdown.select(0)
 		"FPS_LIMIT":
+			dropdown.select(0)
+		"DEFAULT_RESOLUTION":
 			dropdown.select(0)
 	pass
 
