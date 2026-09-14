@@ -6,7 +6,7 @@ var jumps_remaining: int = 0
 var systems_traversed: int = 0
 var systems: Array = []
 const label_font = preload("uid://xrcqj2080elm")
-var draw_landmarks: Dictionary = {"The Core": systems_to_distance(0), "The Frontier": systems_to_distance(5), "The Abyss": systems_to_distance(15), "New Eden": systems_to_distance(25)}
+var draw_landmarks: Dictionary = {"The Core": systems_to_distance(0), "The Frontier": systems_to_distance(5), "The Abyss": systems_to_distance(15), "Norma Arm": systems_to_distance(25)}
 
 @onready var station_icon = preload("uid://bh57lngfca4xf")
 
