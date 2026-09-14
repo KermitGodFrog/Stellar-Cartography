@@ -7,6 +7,6 @@ script = ExtResource("1_2asna")
 title = "(Optional) Check the Journey Map"
 description = "The Journey Map shows your exploration progress.
 To check the Journey Map, press on 'JUR' in the APPS DOCK. Left click and drag up or down (or scroll) to offset the map.
-* [i]Every fifth system on the path to New Eden is populated with space stations.[/i]
+* [i]Every fifth system on the path to the Norma Outskirts is populated with space stations.[/i]
 * [i]Some bought modules also appear in the APPS DOCK.[/i]
 [img]graphics/system-map/apps-dock/journey_map_icon.png[/img]"
