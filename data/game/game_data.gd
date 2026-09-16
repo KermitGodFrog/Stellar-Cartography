@@ -1,5 +1,7 @@
 extends Node
 
+enum DIFFICULTY {EASY, NORMAL, EXTREME}
+
 enum PAUSE_MODES {NONE, PAUSE_MENU, STATS_MENU, STATION_UI, DIALOGUE, WORMHOLE_MINIGAME, QUICK_PAUSE}
 
 var player_weirdness_index: float = 0.0

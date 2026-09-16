@@ -9,6 +9,7 @@ extends PanelContainer
 @onready var total_play_time_label = $margin/history_scroll/key_info_scroll/data_container/total_play_time
 @onready var version_label = $margin/version
 @onready var mutations_flow = $margin/history_scroll/key_info_scroll/mutations_panel/mutations_margin/mutations_flow
+@onready var difficulty_label = $margin/history_scroll/key_info_scroll/player_container/difficulty
 
 @onready var v0_8_0_0_conversions: Dictionary = {
 	1: player_name_label,
@@ -23,12 +24,13 @@ extends PanelContainer
 @onready var v0_9_0_0_conversions: Dictionary = {
 	1: player_name_label,
 	2: player_ship_name_label,
-	3: total_score_label,
-	4: systems_traversed_label,
-	5: stats_menu_init_type_label,
-	6: total_play_time_label,
-	7: mutations_flow,
-	8: null
+	3: difficulty_label,
+	4: total_score_label,
+	5: systems_traversed_label,
+	6: stats_menu_init_type_label,
+	7: total_play_time_label,
+	8: mutations_flow,
+	9: null
 }
 
 func create_from_csv(csv_line: PackedStringArray, _item_count: int) -> void:
@@ -57,6 +59,8 @@ func apply_to_target(target: Node, _cell: String) -> void:
 			target.set_text("Captain %s" % _cell)
 		player_ship_name_label:
 			target.set_text("ES %s" % _cell)
+		difficulty_label:
+			target.set_text(game_data.DIFFICULTY.find_key(int(_cell)))
 		total_score_label:
 			target.set_text("SCORE: %s" % _cell)
 		systems_traversed_label:

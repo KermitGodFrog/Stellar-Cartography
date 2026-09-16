@@ -34,7 +34,7 @@ class_name worldAPI
 # ^^^ neither of these are necessarily a player issue, thus are here instead
 @export_storage var played_strange_discovery_theme: bool = false #used exclusively in game.gd _on_play_strange_discovery_theme_or_motif()
 @export_storage var played_pulsar_theme: bool = false #used exclusively in game.gd _on_player_entering_system()
-
+@export var difficulty: game_data.DIFFICULTY = game_data.DIFFICULTY.NORMAL
 
 
 #mutations exclusion zone \/
@@ -100,7 +100,6 @@ const mutation_data: Dictionary = {
 		"type": "POSITIVE",
 		"points_offset": -1
 	},
-	
 }
 #mutations exclusion zone /\
 
