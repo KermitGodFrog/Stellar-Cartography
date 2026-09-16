@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://dvwgqh38tsp76"]
+[gd_scene load_steps=35 format=3 uid="uid://dvwgqh38tsp76"]
 
 [ext_resource type="Script" uid="uid://eca10lgiyg" path="res://scenes/create-menu/create_menu.gd" id="1_ahqsb"]
 [ext_resource type="Shader" uid="uid://c8yxk67y2u80y" path="res://shader-gen/pixelate_shader.gdshader" id="2_yfn5a"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://moq137qi84py" path="res://instantiated-scenes/custom-tooltip/custom_tooltip_button.gd" id="13_dbh4k"]
 [ext_resource type="Script" uid="uid://bteyw3p5n4c6g" path="res://scenes/create-menu/mutations_panel.gd" id="16_0xgd1"]
 [ext_resource type="Texture2D" uid="uid://c81t88q8femj2" path="res://graphics/create-menu/issue.svg" id="19_a7cgh"]
+[ext_resource type="PackedScene" uid="uid://p275r5sfhnj5" path="res://data/audio-control/audioHandler.tscn" id="20_4od06"]
 
 [sub_resource type="Gradient" id="Gradient_2mho6"]
 interpolation_mode = 1
@@ -219,6 +220,7 @@ theme_override_styles/focus = ExtResource("7_2mho6")
 text = "INFO"
 
 [node name="seperator" type="HSeparator" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
+visible = false
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxEmpty_5yt26")
@@ -338,17 +340,20 @@ layout_mode = 2
 
 [node name="EASY" type="Button" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/difficulty_scroll"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 toggle_mode = true
 text = "EASY (+2)"
 
 [node name="NORMAL" type="Button" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/difficulty_scroll"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 toggle_mode = true
 button_pressed = true
 text = "NORMAL (0)"
 
 [node name="EXTREME" type="Button" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/difficulty_scroll"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 toggle_mode = true
 text = "EXTREME (-3)"
 
@@ -538,6 +543,8 @@ theme = ExtResource("10_yfn5a")
 theme_type_variation = &"ButtonDull"
 theme_override_styles/disabled = SubResource("StyleBoxFlat_a7cgh")
 text = "LAUNCH!"
+
+[node name="audioHandler" parent="." instance=ExtResource("20_4od06")]
 
 [connection signal="pressed" from="ui_margin/ui_scroll/actions_panel/actions/return_button" to="." method="_on_return_button_pressed"]
 [connection signal="pressed" from="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/name_scroll/name_randomizer" to="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel" method="_on_name_randomizer_pressed"]

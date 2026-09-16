@@ -10,11 +10,16 @@ var init_type: global_data.GAME_INIT_TYPES = global_data.GAME_INIT_TYPES.NEW
 @onready var difficulty_scroll = $ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/difficulty_scroll
 @onready var difficulty_label = $ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/difficulty_label
 
+@onready var audio_handler = $audioHandler
+
 func _ready() -> void:
 	mutations_panel.connect("mutation_items_changed", _on_mutation_items_changed)
 	inquiry_panel.connect("game_type_edit_changed", _on_game_type_edit_changed)
 	inquiry_panel.connect("difficulty_updated", _on_difficulty_updated)
 	inquiry_panel.initialize(init_type)
+	
+	#this tricks it into not playing any music! \/
+	audio_handler._pause_mode = game_data.PAUSE_MODES.PAUSE_MENU
 	
 	#background
 	var animations = ["starship_in_alt", "starship_in2", "starship_in3"]

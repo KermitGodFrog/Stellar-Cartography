@@ -17,6 +17,7 @@ var current_difficulty: game_data.DIFFICULTY = game_data.DIFFICULTY.NORMAL: #upd
 @onready var issue_symbol_quantity = $margin/scroll/title_label/issue_symbol
 
 @onready var mutation_item_scene = preload("uid://dte1ssronei0")
+@onready var station_repair = preload("uid://dha2d3lx22sd1")
 
 func _ready() -> void:
 	uninstalled_list.connect("child_order_changed", _on_list_child_order_changed)
@@ -78,6 +79,7 @@ func _on_mutation_item_activated(idx: worldAPI.MUTATION_ID, list: LISTS) -> void
 		LISTS.INSTALLED:
 			remove_mutation_item(idx, list)
 			add_mutation_item(idx, LISTS.UNINSTALLED)
+	get_tree().call_group("audioHandler", "play_once", station_repair, -12.0, "SFX")
 	pass
 
 
