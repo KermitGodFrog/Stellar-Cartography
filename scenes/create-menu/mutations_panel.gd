@@ -4,6 +4,11 @@ signal mutation_items_changed()
 
 enum LISTS {UNINSTALLED, INSTALLED} # copied from mutation_item.gd
 
+var current_difficulty: game_data.DIFFICULTY = game_data.DIFFICULTY.NORMAL: #updated by create_menu!
+	set(value):
+		current_difficulty = value
+		emit_signal("mutation_items_changed")
+
 @onready var uninstalled_list = $margin/scroll/UNINSTALLED/uninstalled_list
 @onready var installed_list = $margin/scroll/INSTALLED/installed_list
 @onready var points_counter = $margin/scroll/points_scroll/points_counter
@@ -102,6 +107,11 @@ func get_installed_mutations() -> Array[worldAPI.MUTATION_ID]:
 
 func get_current_points() -> int:
 	var points: int = 0
+	match current_difficulty:
+		game_data.DIFFICULTY.EASY:
+			points += 2
+		game_data.DIFFICULTY.EXTREME:
+			points -= 3
 	for item in get_installed_mutation_items():
 		points += worldAPI.mutation_data.get(item.mutation).get("points_offset", 0)
 	return points

@@ -58,6 +58,16 @@ vertical_alignment = 1
 [node name="player_ship_name" type="Label" parent="margin/history_scroll/key_info_scroll/player_container"]
 layout_mode = 2
 
+[node name="separator2" type="Label" parent="margin/history_scroll/key_info_scroll/player_container"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+text = "|"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="difficulty" type="Label" parent="margin/history_scroll/key_info_scroll/player_container"]
+layout_mode = 2
+
 [node name="data_container" type="HBoxContainer" parent="margin/history_scroll/key_info_scroll"]
 layout_mode = 2
 

@@ -7,10 +7,13 @@ var init_type: global_data.GAME_INIT_TYPES = global_data.GAME_INIT_TYPES.NEW
 @onready var launch_button = $launch_button
 @onready var background_animation = $background_center/background_container/background_viewport/station_ui_background/animation_player
 @onready var mutations_lock_panel = $ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel/mutations_lock_panel
+@onready var difficulty_scroll = $ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/difficulty_scroll
+@onready var difficulty_label = $ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/difficulty_label
 
 func _ready() -> void:
 	mutations_panel.connect("mutation_items_changed", _on_mutation_items_changed)
 	inquiry_panel.connect("game_type_edit_changed", _on_game_type_edit_changed)
+	inquiry_panel.connect("difficulty_updated", _on_difficulty_updated)
 	inquiry_panel.initialize(init_type)
 	
 	#background
@@ -51,7 +54,16 @@ func _on_game_type_edit_changed(metadata: global_data.GAME_INIT_TYPES) -> void:
 	match metadata:
 		global_data.GAME_INIT_TYPES.TUTORIAL:
 			mutations_lock_panel.visible = true
+			difficulty_label.visible = false
+			difficulty_scroll.visible = false
 		_:
-			mutations_lock_panel.visible = mutations_panel.get_installed_mutations().size() == 0 \
+			var no_mutations_unlocked: bool = mutations_panel.get_installed_mutations().size() == 0 \
 			and mutations_panel.get_uninstalled_mutation_items().size() == 0
+			mutations_lock_panel.visible = no_mutations_unlocked
+			difficulty_label.visible = !no_mutations_unlocked
+			difficulty_scroll.visible = !no_mutations_unlocked
+	pass
+
+func _on_difficulty_updated(new_difficulty: game_data.DIFFICULTY) -> void:
+	mutations_panel.current_difficulty = new_difficulty
 	pass

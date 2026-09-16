@@ -32,6 +32,7 @@ func _ready():
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
 		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.25, 0.10)
+		world.difficulty = init_data.get("difficulty", game_data.DIFFICULTY.NORMAL)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -84,6 +85,7 @@ func _ready():
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
 		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.25, 0.10)
+		world.difficulty = init_data.get("difficulty", game_data.DIFFICULTY.NORMAL)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -1305,6 +1307,7 @@ func write_history(_init_type: int, mode: FileAccess.ModeFlags) -> void:
 		ProjectSettings.get_setting("application/config/version"),
 		world.player.name, 
 		world.player.ship_name, 
+		world.difficulty,
 		world.player.total_score, 
 		world.player.systems_traversed, 
 		stats_menu.INIT_TYPES.find_key(_init_type),

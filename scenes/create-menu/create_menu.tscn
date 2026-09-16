@@ -327,6 +327,31 @@ texture_pressed = ExtResource("8_4od06")
 texture_hover = ExtResource("9_1e7w4")
 stretch_mode = 5
 
+[node name="difficulty_label" type="Label" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_pv8u8")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_d1vd4")
+text = "DIFFICULTY"
+
+[node name="difficulty_scroll" type="VBoxContainer" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
+layout_mode = 2
+
+[node name="EASY" type="Button" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/difficulty_scroll"]
+layout_mode = 2
+toggle_mode = true
+text = "EASY (+2)"
+
+[node name="NORMAL" type="Button" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/difficulty_scroll"]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+text = "NORMAL (0)"
+
+[node name="EXTREME" type="Button" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll/difficulty_scroll"]
+layout_mode = 2
+toggle_mode = true
+text = "EXTREME (-3)"
+
 [node name="seperator1" type="HSeparator" parent="ui_margin/ui_scroll/primary_secondary_split/primary/inquiry_panel/margin/scroll"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -480,6 +505,7 @@ script = ExtResource("11_ftqt2")
 tooltip_title = "Launch Issue"
 
 [node name="mutations_lock_panel" type="PanelContainer" parent="ui_margin/ui_scroll/primary_secondary_split/secondary/mutations_panel"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"PanelDull"
 
