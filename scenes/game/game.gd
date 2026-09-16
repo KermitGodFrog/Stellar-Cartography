@@ -271,6 +271,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("unlockUpgrade", _on_unlock_upgrade)
 	debug_interface.connect("regenerateSystem3D", _on_DEBUG_regenerate_system_3d)
 	debug_interface.connect("addCharacterXP", _on_add_character_xp)
+	debug_interface.connect("updateCameraZoom", _on_DEBUG_update_camera_zoom)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -1713,6 +1714,10 @@ func _on_DEBUG_quick_traverse() -> void:
 
 func _on_DEBUG_regenerate_system_3d() -> void:
 	system_3d.regenerate_system()
+	pass
+
+func _on_DEBUG_update_camera_zoom(zoom: float) -> void:
+	system_map.camera.set_zoom(Vector2(zoom, zoom))
 	pass
 
 

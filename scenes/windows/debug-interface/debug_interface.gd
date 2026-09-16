@@ -1,13 +1,13 @@
 extends Control
 
-@onready var nanites_label = $scroll/nanites_scroll/nanites_label
-@onready var nanites_slider = $scroll/nanites_scroll/nanites_slider
-@onready var data_value_label = $scroll/data_value_scroll/data_value_label
-@onready var data_value_slider = $scroll/data_value_scroll/data_value_slider
-@onready var upgrade_options = $scroll/upgrades_scroll/upgrade_options
-@onready var query_scroll = $scroll/query_scroll
-@onready var xp_character_options = $scroll/xp_scroll/xp_character_options
-
+@onready var nanites_label = $scroll_container/scroll/nanites_scroll/nanites_label
+@onready var nanites_slider = $scroll_container/scroll/nanites_scroll/nanites_slider
+@onready var data_value_label = $scroll_container/scroll/data_value_scroll/data_value_label
+@onready var data_value_slider = $scroll_container/scroll/data_value_scroll/data_value_slider
+@onready var upgrade_options = $scroll_container/scroll/upgrades_scroll/upgrade_options
+@onready var query_scroll = $scroll_container/scroll/query_scroll
+@onready var xp_character_options = $scroll_container/scroll/xp_scroll/xp_character_options
+@onready var zoom_edit = $scroll_container/scroll/zoom_scroll/zoom_edit
 
 signal increasePlayerBalance(amount: int)
 signal addPlayerDataValue(amount: int)
@@ -24,6 +24,7 @@ signal quickTraverse()
 signal unlockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
 signal regenerateSystem3D()
 signal addCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int)
+signal updateCameraZoom(zoom: float)
 
 
 func _ready() -> void:
@@ -133,7 +134,9 @@ func _on_regen_system_3d_button_pressed() -> void:
 	emit_signal("regenerateSystem3D")
 	pass
 
-
+func _on_zoom_button_pressed() -> void:
+	emit_signal("updateCameraZoom", float(zoom_edit.get_text()))
+	pass
 
 func _on_debug_interface_window_close_requested() -> void:
 	owner.hide()
