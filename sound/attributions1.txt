@@ -35,3 +35,9 @@ Eating by Caroline Ford -- https://soundbible.com/976-Eating.html -- License: At
 
 Chimpanzee by Mike Koenig -- https://soundbible.com/1188-Chimpanzee.html -- License: Attribution 3.0 -- Changes: volume
 (Retrieved 23rd August 2026)
+
+Foley_Object_Metal_Oven_Creaks_Mono.wav by Nox_Sound -- https://freesound.org/s/585734/ -- License: Creative Commons 0 -- Changes: combined, looped, processed, volume
+(Retrieved 18th September 2026)
+
+Submarine Creaking by stephan -- https://soundbible.com/1625-Submarine-Creaking.html -- License: Public Domain -- Changes: volume
+(Retrieved 18th September 2026)
