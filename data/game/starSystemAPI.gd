@@ -246,9 +246,9 @@ const asteroid_belt_classifications = {
 
 # core gen methods \/
 
-func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0, _missing_GL_chance_per_relevant_planet: float = 0.0, weirdness_index: float = 0.0) -> void:
+func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0, _missing_GL_chance_per_relevant_planet: float = 0.0, weirdness_index: float = 0.0, special_system_req_adj_curves: Dictionary = {}) -> void:
 	if special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
-		special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(weirdness_index), "weight")
+		special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(special_system_req_adj_curves, weirdness_index), "weight")
 	
 	if system_hazard_classification == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
 		system_hazard_classification = global_data.weighted_pick(game_data.get_weighted_system_hazard_classifications(weirdness_index), "weight")
@@ -430,7 +430,7 @@ func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = 
 			generateRandomWeightedShips()
 	pass
 
-func createAuxiliaryUnexplored(_player_speed: int) -> void:
+func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curves: Dictionary) -> void:
 	match special_system_classification:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
 			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
@@ -444,31 +444,58 @@ func createAuxiliaryUnexplored(_player_speed: int) -> void:
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.DYSON_SPHERE:
 			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
 			var star: circularBodyAPI = get_first_star()
+			star.metadata["luminosity"] = star.metadata.get("luminosity") * 0.4 #assumption: the dyson sphere would reduce star light output by 60% !
 			remove_recursive_bodies_with_hook_identifier(star.get_identifier())
 			post_gen_location_candidates.clear()
-			star.metadata["luminosity"] = star.metadata.get("luminosity") * 0.4 #assumption: the dyson sphere would reduce star light output by 60% !
 			generateRandomWeightedPlanets(star.get_identifier())
 			generateWormholes()
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
-			generateRandomWeightedSpecialAnomaly()
+			generateRandomWeightedSpecialAnomaly(_special_anomaly_req_adj_curves)
 			addOrbitBody(
 				customBodyAPI.new(),
 				starSystemAPI.BODY_TYPES.CUSTOM,
 				identifier_count,
-				"Dyson Sphere",
+				"Abandoned Dyson Sphere",
 				star.get_identifier(),
 				0.0,
 				0.0,
 				star.radius + 0.1,
 				{"dialogue_tag": "SpA_DysonSphere", "icon_path": "res://graphics/system-map/system-list/icons/SpA_DysonSphere.png", "texture_path": "res://graphics/system-map/dyson_sphere_texture.png", "mesh_path": "res://meshes/system-3d/dyson_sphere.obj"},
-				{}
+				{"seed": randi()}
 			)
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.MARAUDER_FLEET:
+			generateWormholes()
+			generateRandomWeightedEntities()
+			generateRendezvousPoint()
+			generateRandomWeightedSpecialAnomaly(_special_anomaly_req_adj_curves)
+			var base_name := game_data.get_random_character_name()
+			var suffixes: Array[String] = ["Dagger", "Knife", "Blade", "Axe", "Spear", "Bayonet", "Sabre", "Bow", "Ram", "Lead", "Reserve"]
+			for i in 3:
+				var new_ship = addUnitBody(
+					interceptingUnitAPI.new(),
+					starSystemAPI.BODY_TYPES.SHIP,
+					identifier_count,
+					"%s's %s" % [base_name, suffixes.pick_random()],
+					global_data.get_randi(3, int(game_data.SHIP_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index))) + 1,
+					get_default_radius_solar_radii(),
+					{"system": self},
+					{"affiliation": game_data.UNIT_AFFILIATIONS.MARAUDER, "hostile": true, "seed": randi()}
+				)
+				get_body_from_identifier(new_ship).position = Vector2.ZERO + (Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360))) * global_data.get_randf(0.0, get_max_body_orbit_distance()))
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.GREEN_STAR:
+			var star: circularBodyAPI = get_first_star()
+			star.surface_color = Color.GREEN
+			star.metadata["cram_cell_synthesis_available"] = false
+			generateWormholes()
+			generateRandomWeightedEntities()
+			generateRendezvousPoint()
+			generateRandomWeightedShips()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE, _:
 			generateWormholes()
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
-			generateRandomWeightedSpecialAnomaly()
+			generateRandomWeightedSpecialAnomaly(_special_anomaly_req_adj_curves)
 			generateRandomWeightedShips()
 	
 	match system_hazard_classification:
@@ -846,7 +873,7 @@ func generateRandomWeightedStations(unlocked_upgrades: Array[playerAPI.UPGRADE_I
 			orbit_angle_change,
 			radius,
 			{"station_classification": station_classification, "sell_percentage_of_market_price": percentage_markup, "repair_price_multiplier": repair_price_multiplier, "available_upgrades": available_upgrades, "req_scope_mode": playerAPI.SCOPE_MODES.RAD},
-			{}
+			{"seed": randi()}
 		)
 		
 		get_body_from_identifier(new_station).rotation = deg_to_rad(global_data.get_randf(0,360))
@@ -937,14 +964,14 @@ func generateRendezvousPoint():
 		orbit_angle_change,
 		radius,
 		{"req_scope_mode": playerAPI.SCOPE_MODES.RAD}, #dialogue content overrides, perhaps?
-		{}
+		{"seed": randi()}
 	)
 	
 	get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
 	post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 	pass
 
-func generateRandomWeightedSpecialAnomaly():
+func generateRandomWeightedSpecialAnomaly(special_anomaly_req_adj_curves: Dictionary):
 	var location = post_gen_location_candidates.pick_random()
 	var hook = get_body_from_identifier(location.front())
 	var i = location.back()
@@ -953,7 +980,7 @@ func generateRandomWeightedSpecialAnomaly():
 	var orbit_angle_change = get_orbit_angle_change(hook, orbit_distance)
 	var radius = get_default_radius_solar_radii()
 	
-	var special_anomaly_classification = global_data.weighted_pick(game_data.get_weighted_special_anomaly_classifications(), "weight")
+	var special_anomaly_classification = global_data.weighted_pick(game_data.get_weighted_special_anomaly_classifications(special_anomaly_req_adj_curves), "weight")
 	match special_anomaly_classification:
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.RIGGED_ASTEROID:
 			var hook_orbit_velocity = tan(hook.orbit_angle_change) * hook.orbit_distance #would have to recalculate every frame if not calculating now, which would be unnecessary

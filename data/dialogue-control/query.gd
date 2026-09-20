@@ -80,10 +80,15 @@ func populateWithPlayerData(player: playerAPI) -> void:
 		add("player_%s_standing" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.get_standing())
 		add("player_%s_xp" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.xp)
 		add("player_%s_initiative_xp" % characterAPI.OCCUPATIONS.find_key(character.get_occupation()), character.initiative_xp)
+	
+	add("player_any_characters_alive", player.characters.any(func(c): return c.is_alive()) == true)
 	pass
 
 func populateWithSystemData(system: starSystemAPI) -> void:
 	add("system_civilized", system.is_civilized())
+	add("special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(system.special_system_classification)))
+	add("system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(system.system_hazard_classification)))
+	add("system_scenario_classification", str(game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.find_key(system.system_scenario_classification)))
 	pass
 
 func populateWithWorldData(world: worldAPI) -> void:

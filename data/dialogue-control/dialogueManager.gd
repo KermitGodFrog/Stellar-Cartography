@@ -40,6 +40,7 @@ signal modifyCharacterStanding(occupation: characterAPI.OCCUPATIONS, amount: int
 signal changePlayerScopeMode(_new_mode: playerAPI.SCOPE_MODES)
 signal lockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
 signal addCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int)
+signal removeCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int)
 signal removeCharacterInitiativeXP(occupation: characterAPI.OCCUPATIONS)
 signal playerWin()
 signal playStrangeDiscoveryThemeOrMotif()
@@ -177,13 +178,13 @@ func convert_to_dictionary(cell : String, embedded_values: bool = false) -> Dict
 				
 				if value.is_valid_int():
 					type_corrected_value = value.to_int()
-				if value.is_valid_float():
+				elif value.is_valid_float():
 					type_corrected_value = value.to_float()
-				if value == "null":
+				elif value == "null":
 					type_corrected_value = null
-				if value == "true":
+				elif value == "true":
 					type_corrected_value = true
-				if value == "false":
+				elif value == "false":
 					type_corrected_value = false
 				
 				#>int or <float et al cannot go here, must be calculated at runtime
@@ -572,7 +573,7 @@ func addValueWithFlair(amount: int):
 	playSoundEffect("success.wav") #easier than putting it in every single rule?
 	pass
 
-func removeValueWithFlair(amount: int): #not commonly used !!!!!!! only used in (currently): UA01G
+func removeValueWithFlair(amount: int): #not commonly used !!!!!!! only used in (currently): UA01G, ABANDONEDOPTransfer, PIRATETransferData
 	emit_signal("removePlayerValue", amount)
 	dialogue.add_text(str("[color=red](Lost ", amount, " nanites in data value) [/color]"))
 	playSoundEffect("failure.wav")
@@ -752,14 +753,6 @@ func decreaseCharacterStandingBy25(written_occupation: String) -> void:
 	emit_signal("modifyCharacterStanding", occupation, 25, false)
 	pass
 
-func increaseSecurityOfficerStanding(amount: int) -> void: #keeping this so i dont have to refactor rules.txt to not use it lmao
-	emit_signal("modifyCharacterStanding", characterAPI.OCCUPATIONS.SECURITY_OFFICER, amount, true)
-	pass
-
-func decreaseSecurityOfficerStanding(amount: int) -> void: #keeping this so i dont have to refactor rules.txt to not use it lmao
-	emit_signal("modifyCharacterStanding", characterAPI.OCCUPATIONS.SECURITY_OFFICER, amount, false)
-	pass
-
 func plotRadio(radio_helper_path: String) -> void:
 	get_tree().call_group("audioHandler", "plot_radio", load("res://data/audio-control/radio-control/radio-helpers/%s" % radio_helper_path))
 	pass
@@ -797,17 +790,7 @@ func addXP_HIGH(written_occupation: String) -> void:
 func addXPWithFlair(written_occupation: String, amount: int) -> void:
 	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
 	emit_signal("addCharacterXP", occupation, amount)
-	var department_name: String
-	match occupation:
-		characterAPI.OCCUPATIONS.FIRST_OFFICER:
-			department_name = "Command department"
-		characterAPI.OCCUPATIONS.CHIEF_ENGINEER:
-			department_name = "Engineering department"
-		characterAPI.OCCUPATIONS.SECURITY_OFFICER:
-			department_name = "Security department"
-		characterAPI.OCCUPATIONS.MEDICAL_OFFICER:
-			department_name = "Science department"
-	
+	var department_name: String = player.get_occupation_department_name(occupation)
 	dialogue.add_text("[color=darkgreen][font_size=8]{ %s gained %d XP }[/font_size][/color]" % [department_name, amount])
 	pass
 
@@ -817,6 +800,17 @@ func addRandomXP_LOW(anomaly_seed: String = String()) -> void:
 	const occupation_strings: Array = ["FIRST_OFFICER", "CHIEF_ENGINEER", "MEDICAL_OFFICER"]
 	var written_occupation = occupation_strings[random.randi_range(0, occupation_strings.size() - 1)]
 	addXPWithFlair(written_occupation, 50)
+	pass
+
+func removeXPWithFlair(written_occupation: String, amount: int) -> void:
+	var occupation = characterAPI.OCCUPATIONS.get(written_occupation)
+	emit_signal("removeCharacterXP", occupation, amount)
+	var department_name: String = player.get_occupation_department_name(occupation)
+	dialogue.add_text("[color=red][font_size=8]{ %s lost %d XP }[/font_size][/color]" % [department_name, amount])
+	pass
+
+func removeXP_LOW(written_occupation: String) -> void:
+	removeXPWithFlair(written_occupation, 50)
 	pass
 
 func removeSpecialInitiativeXP(written_occupation: String) -> void:
@@ -869,6 +863,30 @@ func getCSSOutcomeWithFlair(star_type: String) -> void:
 
 func treeAccessMemoryPlus1(memory: String) -> void: #this is stupid and should instead be implemented by making the 'Apply Facts' column have support for operations >:(
 	tree_access_memory[memory] = tree_access_memory.get(memory, 0) + 1
+	pass
+
+func addTradeXPOptions_RP(rp_seed: String) -> void:
+	var pairs: Dictionary = {}
+	var candidates: Array[characterAPI.OCCUPATIONS] = [characterAPI.OCCUPATIONS.FIRST_OFFICER, characterAPI.OCCUPATIONS.CHIEF_ENGINEER, characterAPI.OCCUPATIONS.MEDICAL_OFFICER]
+	for occupation in characterAPI.OCCUPATIONS.values():
+		var character: characterAPI = player.get_character_with_occupation(occupation)
+		if character.is_alive() and character.xp >= 50 and candidates.has(occupation):
+			for _occupation in characterAPI.OCCUPATIONS.values():
+				var _character: characterAPI = player.get_character_with_occupation(_occupation)
+				if _character.is_alive() and _character.xp >= 50 and candidates.has(_occupation) and occupation != _occupation:
+					pairs[character] = _character
+	
+	if pairs.size() > 0:
+		var random := RandomNumberGenerator.new()
+		random.set_seed(hash(int(rp_seed)))
+		var r_key_index: int = random.randi_range(0, pairs.keys().size() - 1)
+		
+		var c_host: characterAPI = pairs.keys()[r_key_index]
+		var c_target: characterAPI = pairs.get(c_host)
+		var c_host_department_name: String = player.get_occupation_department_name(c_host.get_occupation(), false)
+		var c_target_department_name: String = player.get_occupation_department_name(c_target.get_occupation(), false)
+		
+		dialogue.add_options({"Exchange 50 %s XP -> 50 %s XP" % [c_host_department_name, c_target_department_name]: "RP_%s%sTradeXP" % [c_host_department_name, c_target_department_name]})
 	pass
 
 
@@ -959,4 +977,23 @@ func _TUTORIALForceOrbitPrelude() -> void:
 
 func _TUTORIALSetUIStage(new_stage: String) -> void:
 	emit_signal("TUTORIALSetUIStage", new_stage)
+	pass
+
+
+
+# misc
+
+func force_trigger_rule_by_name(calling: Node, rule_name: String) -> void: #used by debug_interface.gd to quick trigger rules. this is an unsafe thing to do - may lead to unexpected behaviour and query data will probably not be present!
+	var quick_query: responseQuery = responseQuery.new()
+	quick_query.populateWithPlayerData(player)
+	quick_query.populateWithSystemData(system)
+	quick_query.populateWithWorldData(world)
+	quick_query.populateWithDialogueMemoryData(dialogue_memory)
+	quick_query.populateWithTreeAccessMemoryData(tree_access_memory)
+	quick_query.populateWithGeneralData()
+	for r in rules:
+		if r.get_name() == rule_name:
+			openDialog()
+			trigger_rule(calling, r, quick_query)
+			return
 	pass

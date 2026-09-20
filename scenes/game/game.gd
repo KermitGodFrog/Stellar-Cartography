@@ -228,6 +228,7 @@ func connect_all_signals() -> void:
 	dialogue_manager.connect("changePlayerScopeMode", _on_change_scope_mode)
 	dialogue_manager.connect("lockUpgrade", _on_lock_upgrade)
 	dialogue_manager.connect("addCharacterXP", _on_add_character_xp)
+	dialogue_manager.connect("removeCharacterXP", _on_remove_character_xp)
 	dialogue_manager.connect("removeCharacterInitiativeXP", _on_remove_character_initiative_xp)
 	dialogue_manager.connect("playerWin", _on_player_win)
 	dialogue_manager.connect("playStrangeDiscoveryThemeOrMotif", _on_play_strange_discovery_theme_or_motif)
@@ -430,15 +431,23 @@ func _on_player_following_body(following_body: bodyAPI):
 				new_query.add_tree_access("dest_system_hazard_classification", null)
 				new_query.add_tree_access("dest_system_scenario_classification", null)
 		starSystemAPI.BODY_TYPES.STATION:
-			var station_abandoned: bool = following_body.station_classification in [game_data.STATION_CLASSIFICATIONS.ABANDONED, game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS, game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL, game_data.STATION_CLASSIFICATIONS.COVERUP, game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED]
+			var station_abandoned: bool = following_body.station_classification in [game_data.STATION_CLASSIFICATIONS.ABANDONED, game_data.STATION_CLASSIFICATIONS.ABANDONED_BACKROOMS, game_data.STATION_CLASSIFICATIONS.ABANDONED_OPERATIONAL, game_data.STATION_CLASSIFICATIONS.COVERUP, game_data.STATION_CLASSIFICATIONS.PARTIALLY_SALVAGED, game_data.STATION_CLASSIFICATIONS.DEBRIS]
 			var station_inhabited: bool = following_body.station_classification in [game_data.STATION_CLASSIFICATIONS.STANDARD, game_data.STATION_CLASSIFICATIONS.PIRATE]
-			new_query.add("station_available", following_body.metadata.get("station_available", true))
+			new_query.add_tree_access("station_available", following_body.metadata.get("station_available", true))
 			new_query.add_tree_access("station_classification", str(game_data.STATION_CLASSIFICATIONS.find_key(following_body.station_classification)))
 			new_query.add_tree_access("station_abandoned", station_abandoned)
 			new_query.add_tree_access("station_inhabited", station_inhabited)
+			var unlocked_upgrades = world.player.get_unlocked_upgrades()
+			if unlocked_upgrades.size() > 0:
+				new_query.add_tree_access("target_upgrade", playerAPI.UPGRADE_ID.find_key(unlocked_upgrades[global_data.get_randi(0, unlocked_upgrades.size() - 1, following_body.metadata.get("seed", 0))]))
+			else:
+				new_query.add_tree_access("target_upgrade", null)
+			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 		starSystemAPI.BODY_TYPES.PLANET:
 			new_query.add("planetary_anomaly", following_body.metadata.get("planetary_anomaly", false))
 			new_query.add("planetary_anomaly_available", following_body.metadata.get("planetary_anomaly_available", false))
+			new_query.add_tree_access("planet_habitable", following_body.is_habitable())
+			new_query.add_tree_access("planet_rare", following_body.is_rare())
 			new_query.add_tree_access("planet_classification", following_body.metadata.get("planet_classification"))
 			new_query.add_tree_access("planet_type", following_body.metadata.get("planet_type"))
 			new_query.add_tree_access("missing_AO", following_body.metadata.get("missing_AO", false))
@@ -453,6 +462,7 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add_tree_access("space_entity_type", str(game_data.ENTITY_CLASSIFICATIONS.find_key(following_body.entity_classification)))
 		starSystemAPI.BODY_TYPES.STAR:
 			new_query.add("cram_cell_synthesis_available", following_body.metadata.get("cram_cell_synthesis_available", true))
+			new_query.add("star_available", following_body.metadata.get("star_available", true))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 			new_query.add_tree_access("star_type", following_body.metadata.get("star_type"))
 		starSystemAPI.BODY_TYPES.SHIP:
@@ -490,6 +500,9 @@ func _on_player_following_body(following_body: bodyAPI):
 		starSystemAPI.BODY_TYPES.STATION:
 			match RETURN_STATE:
 				"DOCK_WITH_STATION":
+					dock_with_station(following_body)
+				"DOCK_WITH_STATION_HARD":
+					following_body.metadata["station_available"] = false
 					dock_with_station(following_body)
 				"POST_SALVAGE_LEAVE": #this is for abandoned stations which yield salvage, which should not be repeatable
 					following_body.metadata["station_available"] = false
@@ -535,6 +548,10 @@ func _on_player_following_body(following_body: bodyAPI):
 			match RETURN_STATE:
 				"HARD_LEAVE":
 					following_body.metadata["cram_cell_synthesis_available"] = false
+					following_body.metadata["star_available"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
+				"SOFT_LEAVE":
+					following_body.metadata["star_available"] = true
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
@@ -621,9 +638,6 @@ func _on_player_entering_system(system: starSystemAPI):
 	var new_query = responseQuery.new()
 	new_query.add("concept", "enteringSystem")
 	#new_query.add_tree_access("name", system.get_display_name()) # no point to do this as the system display name will always be 'random' or 'tutorial' or whatever!
-	new_query.add_tree_access("special_system_classification", str(game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.find_key(system.special_system_classification)))
-	new_query.add_tree_access("system_hazard_classification", str(game_data.SYSTEM_HAZARD_CLASSIFICATIONS.find_key(system.system_hazard_classification)))
-	new_query.add_tree_access("system_scenario_classification", str(game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.find_key(system.system_scenario_classification)))
 	new_query.add_tree_access("system_star_type", system.get_first_star().metadata.get("star_type"))
 	new_query.add_tree_access("system_civilized", system.is_civilized())
 	new_query.add_tree_access("seed", system.non_gen_seed)
@@ -696,6 +710,10 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	world.player.grant_invulnerability(0.3)
 	world.player.systems_traversed += 1
 	
+	var special_anomaly_requirements: Dictionary = {
+		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.DYSON_SPHERE: [false]
+	}
+	
 	#spawning new wormholes in destination system if nonexistent
 	if not destination.destination_systems:
 		var next_weirdness_index: float = remap(world.player.systems_traversed + 1, 0, world.player.total_systems, 0.0, 1.0)
@@ -707,8 +725,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 		world.player.resetJumpsRemaining()
 		destination.createAuxiliaryCivilized(world.player.get_unlocked_upgrades())
 	else:
-		destination.createAuxiliaryUnexplored(world.player.speed)
-	
+		destination.createAuxiliaryUnexplored(world.player.speed, game_data.get_req_adj_classification_curves(game_data.SPECIAL_ANOMALY_CLASSIFICATION_CURVES, special_anomaly_requirements))
 	
 	var destination_wormhole: wormholeBodyAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
 	destination_wormhole.known = true
@@ -805,7 +822,15 @@ func _on_create_new_star_system(for_system: starSystemAPI = null, for_weirdness_
 		system.special_system_classification = game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA
 	var _advanced_analysis_unlocked = world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.ADVANCED_ANALYSIS)
 	system.non_gen_seed = randi() #for ESDs
-	system.createBase(world.get_adjusted_PA_chance(_advanced_analysis_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_analysis_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index)
+	
+	var special_system_requirements: Dictionary = {
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA: [false],
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.DYSON_SPHERE: [dialogue_manager.dialogue_memory.get("SpA_DysonSphereInvestigated_PREV", false) == false],
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.SKALIQ_PRESENCE: [world.is_mutation_installed(worldAPI.MUTATION_ID.CONTENT_SKALIQ)],
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.SKALIQ_CIVILIZED: [world.is_mutation_installed(worldAPI.MUTATION_ID.CONTENT_SKALIQ)]
+	}
+	
+	system.createBase(world.get_adjusted_PA_chance(_advanced_analysis_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_analysis_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index, game_data.get_req_adj_classification_curves(game_data.SPECIAL_SYSTEM_CLASSIFICATION_CURVES, special_system_requirements))
 	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
@@ -1531,6 +1556,10 @@ func _on_add_character_xp(occupation: characterAPI.OCCUPATIONS, amount: int) -> 
 	world.player.addCharacterXP(occupation, amount)
 	pass
 
+func _on_remove_character_xp(occupation: characterAPI.OCCUPATIONS, amount: int) -> void:
+	world.player.removeCharacterXP(occupation, amount)
+	pass
+
 func _on_remove_character_initiative_xp(occupation: characterAPI.OCCUPATIONS) -> void:
 	world.player.removeCharacterInitiativeXP(occupation)
 	pass
@@ -1656,7 +1685,7 @@ func _on_DEBUG_force_quit_dialogue() -> void:
 
 func _on_DEBUG_force_unexplored_system() -> void:
 	var new = _on_create_new_star_system()
-	new.createAuxiliaryUnexplored(world.player.speed)
+	new.createAuxiliaryUnexplored(world.player.speed, game_data.get_req_adj_classification_curves(game_data.SPECIAL_ANOMALY_CLASSIFICATION_CURVES, {}))
 	_on_switch_star_system(new)
 	_on_player_entering_system(new)
 	_on_DEBUG_reveal_all_bodies()

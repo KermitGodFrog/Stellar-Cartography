@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://cblwmxbgn3gcm"
+path="res://.godot/imported/station_abandoned.jpg-4c0599a32a04c0e5f127b90117229522.image"
+
+[deps]
+
+source_file="res://graphics/dialogue/station_abandoned.jpg"
+dest_files=["res://.godot/imported/station_abandoned.jpg-4c0599a32a04c0e5f127b90117229522.image"]
+
+[params]
+

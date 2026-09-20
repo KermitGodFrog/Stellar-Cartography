@@ -50,11 +50,11 @@ func set_occupation(value: OCCUPATIONS) -> void:
 @export_storage var xp: int = 0
 func add_xp(amount: int) -> void:
 	xp += amount
-	print_debug("CHARACTER API ADD XP")
+	print_debug("CHARACTER API ADD XP ", amount)
 	pass
 func remove_xp(amount: int) -> void:
 	xp = maxi(0, xp - amount)
-	print_debug("CHARACTER API REMOVE XP")
+	print_debug("CHARACTER API REMOVE XP ", amount)
 	pass
 func remove_initiative_xp() -> void:
 	print_debug("CHARACTER API REMOVE INITIATIVE XP")

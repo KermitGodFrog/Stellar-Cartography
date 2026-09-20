@@ -98,6 +98,10 @@ func _on_query_button_pressed() -> void:
 		get_tree().call_group("dialogueManager", "speak", self, new_query)
 	pass
 
+func _on_trigger_rule_button_pressed() -> void:
+	get_tree().call_group("dialogueManager", "force_trigger_rule_by_name", self, rule_name_edit.get_text())
+	pass
+
 func _on_force_quit_dialogue_button_pressed():
 	emit_signal("forceQuitDialogue")
 	pass
