@@ -4,14 +4,21 @@ signal mutation_items_changed()
 
 enum LISTS {UNINSTALLED, INSTALLED} # copied from mutation_item.gd
 
+var current_difficulty: game_data.DIFFICULTY = game_data.DIFFICULTY.NORMAL: #updated by create_menu!
+	set(value):
+		current_difficulty = value
+		emit_signal("mutation_items_changed")
 @onready var uninstalled_list = $margin/scroll/UNINSTALLED/uninstalled_list
 @onready var installed_list = $margin/scroll/INSTALLED/installed_list
 @onready var points_counter = $margin/scroll/points_scroll/points_counter
 
-@onready var issue_symbol_points = $margin/scroll/points_scroll/issue_symbol
-@onready var issue_symbol_quantity = $margin/scroll/title_label/issue_symbol
+@onready var issue_symbol = $margin/scroll/points_scroll/issue_symbol
 
 @onready var mutation_item_scene = preload("uid://dte1ssronei0")
+@onready var station_repair = preload("uid://dha2d3lx22sd1")
+
+@onready var issue_dpi = preload("uid://c81t88q8femj2")
+@onready var warning_dpi = preload("uid://dobhjjypnoqxr")
 
 func _ready() -> void:
 	uninstalled_list.connect("child_order_changed", _on_list_child_order_changed)
@@ -29,10 +36,19 @@ func _on_list_child_order_changed() -> void:
 func _on_mutation_items_changed() -> void:
 	if points_counter != null:
 		points_counter.set_text("CURRENT MUTATION POINTS: %d" % get_current_points())
-	if issue_symbol_points != null and installed_list != null:
-		issue_symbol_points.visible = get_current_points() < 0
-	if issue_symbol_quantity != null and installed_list != null:
-		issue_symbol_quantity.visible = get_installed_mutation_items().size() > 5
+	if issue_symbol != null and installed_list != null:
+		var new_tooltip: String = String()
+		if get_current_points() > 0:
+			new_tooltip += "* [color=yellow]Unspent mutation points.[/color]\n\n"
+			issue_symbol.set_texture(warning_dpi)
+		else:
+			issue_symbol.set_texture(issue_dpi)
+		if get_current_points() < 0:
+			new_tooltip += "* [color=red]Mutation points can't be below zero (0).[/color]\n\n"
+		if get_installed_mutation_items().size() > 5:
+			new_tooltip += "* [color=red]Only five (5) mutations can be installed at the same time.[/color]\n\n"
+		issue_symbol.set_tooltip_text(new_tooltip)
+		issue_symbol.visible = get_current_points() < 0 or get_current_points() > 0 or get_installed_mutation_items().size() > 5
 	pass
 
 
@@ -73,6 +89,7 @@ func _on_mutation_item_activated(idx: worldAPI.MUTATION_ID, list: LISTS) -> void
 		LISTS.INSTALLED:
 			remove_mutation_item(idx, list)
 			add_mutation_item(idx, LISTS.UNINSTALLED)
+	get_tree().call_group("audioHandler", "play_once", station_repair, -12.0, "SFX")
 	pass
 
 
@@ -102,6 +119,11 @@ func get_installed_mutations() -> Array[worldAPI.MUTATION_ID]:
 
 func get_current_points() -> int:
 	var points: int = 0
+	match current_difficulty:
+		game_data.DIFFICULTY.EASY:
+			points += 2
+		game_data.DIFFICULTY.EXTREME:
+			points -= 3
 	for item in get_installed_mutation_items():
 		points += worldAPI.mutation_data.get(item.mutation).get("points_offset", 0)
 	return points

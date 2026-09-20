@@ -1,5 +1,7 @@
 extends Node
 
+enum DIFFICULTY {EASY, NORMAL, EXTREME}
+
 enum PAUSE_MODES {NONE, PAUSE_MENU, STATS_MENU, STATION_UI, DIALOGUE, WORMHOLE_MINIGAME, QUICK_PAUSE}
 
 var player_weirdness_index: float = 0.0
@@ -426,6 +428,9 @@ func loadThenApplySettings() -> void:
 		#loading misc stuff
 		DisplayServer.window_set_mode(helper.window_mode)
 		Engine.set_max_fps(helper.fps_limit)
+		var size_vector: Vector2i = Vector2i(helper.default_resolution.get_slice("x", 0).to_int(), helper.default_resolution.get_slice("x", 1).to_int())
+		get_window().content_scale_size = size_vector
+		get_window().size = size_vector
 	else:
 		push_error("GAME DATA: CANNOT LOAD AND APPLY SETTINGS: HELPER DOES NOT EXIST")
 	pass

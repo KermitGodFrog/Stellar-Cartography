@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://d7m4h6j7mma7"]
+[gd_scene load_steps=9 format=3 uid="uid://d7m4h6j7mma7"]
 
 [ext_resource type="Script" uid="uid://b1a4prkbpyi07" path="res://scenes/pause-menu/fullscreen-objectives/fullscreen_objectives.gd" id="1_3q3w0"]
 [ext_resource type="Script" uid="uid://cu1j5esb68cav" path="res://scenes/pause-menu/fullscreen-objectives/objectives_panel.gd" id="1_52fge"]
-[ext_resource type="Texture2D" uid="uid://3gha56exlusq" path="res://graphics/shared/denied_monochrome.png" id="2_02o3k"]
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="4_d4cr1"]
+[ext_resource type="Texture2D" uid="uid://b7qc6axxoskxm" path="res://graphics/shared/denied_DPI_normal.svg" id="4_vr45s"]
+[ext_resource type="Texture2D" uid="uid://cdhk5yk48l8rg" path="res://graphics/shared/denied_DPI_hover.svg" id="5_lfqif"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fyjij"]
 bg_color = Color(0.09411765, 0.09411765, 0.09411765, 1)
@@ -14,12 +15,6 @@ corner_radius_bottom_left = 50
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lfqif"]
 bg_color = Color(0.23529412, 0.43137255, 0.44313726, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d4cr1"]
-bg_color = Color(0.235294, 0.431373, 0.443137, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vr45s"]
-bg_color = Color(0.501961, 0.501961, 0.501961, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fx24x"]
 bg_color = Color(0.15686275, 0.29411766, 0.3882353, 1)
@@ -78,18 +73,16 @@ text = "OBJECTIVES"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="return_button" type="Button" parent="margin/objectives_panel/scroll/title_background/title_margin"]
-custom_minimum_size = Vector2(30, 30)
+[node name="return_button" type="TextureButton" parent="margin/objectives_panel/scroll/title_background/title_margin"]
+custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
+size_flags_horizontal = 10
+size_flags_vertical = 4
 mouse_default_cursor_shape = 2
-theme_type_variation = &"ButtonDull"
-theme_override_styles/normal = SubResource("StyleBoxFlat_d4cr1")
-theme_override_styles/hover = SubResource("StyleBoxFlat_vr45s")
-icon = ExtResource("2_02o3k")
-icon_alignment = 1
-expand_icon = true
+texture_normal = ExtResource("4_vr45s")
+texture_pressed = ExtResource("4_vr45s")
+texture_hover = ExtResource("5_lfqif")
+stretch_mode = 5
 
 [node name="margin" type="MarginContainer" parent="margin/objectives_panel/scroll"]
 custom_minimum_size = Vector2(0, 775)

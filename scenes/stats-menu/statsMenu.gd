@@ -42,7 +42,7 @@ func _on_open() -> void:
 			init_type_label.set("theme_override_colors/font_shadow_color", Color.WEB_MAROON)
 			init_type_label.set("theme_override_colors/font_outline_color", Color.BLACK)
 		INIT_TYPES.WIN:
-			init_type_label.set_text("YOU HAVE REACHED NEW EDEN")
+			init_type_label.set_text("YOU HAVE REACHED THE NORMA OUTSKIRTS")
 			init_type_label.set("theme_override_colors/font_shadow_color", Color.WEB_GREEN)
 			init_type_label.set("theme_override_colors/font_outline_color", Color.BLACK)
 		INIT_TYPES.TUTORIAL:

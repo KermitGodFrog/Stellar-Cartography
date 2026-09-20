@@ -65,6 +65,44 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="default_resolution" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list" instance=ExtResource("3_peeu5")]
+layout_mode = 2
+wID = "DEFAULT_RESOLUTION"
+
+[node name="title" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list/default_resolution/scroll" index="0"]
+text = "DEFAULT RESOLUTION"
+
+[node name="dropdown" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list/default_resolution/scroll" index="1"]
+item_count = 14
+popup/item_0/text = "1600x900"
+popup/item_0/id = 0
+popup/item_1/text = "1920x1080"
+popup/item_1/id = 1
+popup/item_2/text = "2560x1440"
+popup/item_2/id = 2
+popup/item_3/text = "3840x2160"
+popup/item_3/id = 3
+popup/item_4/text = "1920x1920"
+popup/item_4/id = 4
+popup/item_5/text = "2560x1080"
+popup/item_5/id = 5
+popup/item_6/text = "3440x1440"
+popup/item_6/id = 6
+popup/item_7/text = "1920x1200"
+popup/item_7/id = 7
+popup/item_8/text = "2560x1600"
+popup/item_8/id = 8
+popup/item_9/text = "3840x2400"
+popup/item_9/id = 9
+popup/item_10/text = "2160x1440"
+popup/item_10/id = 10
+popup/item_11/text = "2560x1700"
+popup/item_11/id = 11
+popup/item_12/text = "3000x2000"
+popup/item_12/id = 12
+popup/item_13/text = "1500x1000"
+popup/item_13/id = 13
+
 [node name="window_mode" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list" instance=ExtResource("3_peeu5")]
 layout_mode = 2
 wID = "WINDOW_MODE"
@@ -151,5 +189,6 @@ cancel_button_text = "Keep editing"
 [connection signal="pressed" from="panel/margin/panel_scroll/options_scroll/back_button" to="." method="_on_back_button_pressed"]
 [connection signal="confirmed" from="confirmation_dialog" to="." method="_on_confirmation_dialog_confirmed"]
 
+[editable path="panel/margin/panel_scroll/list_description_split/list_container/settings_list/default_resolution"]
 [editable path="panel/margin/panel_scroll/list_description_split/list_container/settings_list/window_mode"]
 [editable path="panel/margin/panel_scroll/list_description_split/list_container/settings_list/fps_limit"]

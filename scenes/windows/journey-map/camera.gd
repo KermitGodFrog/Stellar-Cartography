@@ -18,9 +18,11 @@ func _on_control_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.pressed:
 			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-				position += Vector2(0, (-event.factor * 13))
+				var raw: Vector2 = position + Vector2(0, (-event.factor * 13))
+				position = Vector2(0, clampf(raw.y, -2500.0, 0.0))
 			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-				position += Vector2(0, (event.factor * 13))
+				var raw: Vector2 = position + Vector2(0, (event.factor * 13))
+				position = Vector2(0, clampf(raw.y, -2500.0, 0.0))
 	
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:

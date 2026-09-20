@@ -32,6 +32,7 @@ func _ready():
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
 		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.25, 0.10)
+		world.difficulty = init_data.get("difficulty", game_data.DIFFICULTY.NORMAL)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -84,6 +85,7 @@ func _ready():
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
 		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.25, 0.10)
+		world.difficulty = init_data.get("difficulty", game_data.DIFFICULTY.NORMAL)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
 		
@@ -270,6 +272,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("unlockUpgrade", _on_unlock_upgrade)
 	debug_interface.connect("regenerateSystem3D", _on_DEBUG_regenerate_system_3d)
 	debug_interface.connect("addCharacterXP", _on_add_character_xp)
+	debug_interface.connect("updateCameraZoom", _on_DEBUG_update_camera_zoom)
 	
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -1330,6 +1333,7 @@ func write_history(_init_type: int, mode: FileAccess.ModeFlags) -> void:
 		ProjectSettings.get_setting("application/config/version"),
 		world.player.name, 
 		world.player.ship_name, 
+		world.difficulty,
 		world.player.total_score, 
 		world.player.systems_traversed, 
 		stats_menu.INIT_TYPES.find_key(_init_type),
@@ -1739,6 +1743,10 @@ func _on_DEBUG_quick_traverse() -> void:
 
 func _on_DEBUG_regenerate_system_3d() -> void:
 	system_3d.regenerate_system()
+	pass
+
+func _on_DEBUG_update_camera_zoom(zoom: float) -> void:
+	system_map.camera.set_zoom(Vector2(zoom, zoom))
 	pass
 
 
