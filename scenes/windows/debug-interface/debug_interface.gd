@@ -8,6 +8,7 @@ extends Control
 @onready var query_scroll = $scroll_container/scroll/query_scroll
 @onready var xp_character_options = $scroll_container/scroll/xp_scroll/xp_character_options
 @onready var zoom_edit = $scroll_container/scroll/zoom_scroll/zoom_edit
+@onready var rule_name_edit = $scroll_container/scroll/trigger_rule_scroll/rule_name_edit
 
 signal increasePlayerBalance(amount: int)
 signal addPlayerDataValue(amount: int)

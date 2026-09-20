@@ -11,7 +11,6 @@ oversampling_override = 1.0
 title = "Debug Interface"
 position = Vector2i(0, 36)
 size = Vector2i(400, 600)
-visible = false
 theme = ExtResource("1_f2rjx")
 
 [node name="debug_interface" type="Control" parent="."]
@@ -167,6 +166,20 @@ layout_mode = 2
 size_flags_horizontal = 10
 text = "SET"
 
+[node name="trigger_rule_scroll" type="HBoxContainer" parent="debug_interface/scroll_container/scroll"]
+layout_mode = 2
+
+[node name="rule_name_edit" type="LineEdit" parent="debug_interface/scroll_container/scroll/trigger_rule_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+
+[node name="trigger_rule_button" type="Button" parent="debug_interface/scroll_container/scroll/trigger_rule_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
+text = "TRIGGER RULE"
+
 [node name="query_scroll" type="VBoxContainer" parent="debug_interface/scroll_container/scroll"]
 layout_mode = 2
 script = ExtResource("2_pvsfw")
@@ -214,6 +227,7 @@ text = "+"
 [connection signal="pressed" from="debug_interface/scroll_container/scroll/upgrades_scroll/unlock_button" to="debug_interface" method="_on_unlock_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll_container/scroll/xp_scroll/add_xp_button" to="debug_interface" method="_on_add_xp_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll_container/scroll/zoom_scroll/zoom_button" to="debug_interface" method="_on_zoom_button_pressed"]
+[connection signal="pressed" from="debug_interface/scroll_container/scroll/trigger_rule_scroll/trigger_rule_button" to="debug_interface" method="_on_trigger_rule_button_pressed"]
 [connection signal="text_changed" from="debug_interface/scroll_container/scroll/query_scroll/concept_scroll/concept_edit" to="debug_interface/scroll_container/scroll/query_scroll" method="_on_concept_edit_text_changed"]
 [connection signal="pressed" from="debug_interface/scroll_container/scroll/query_scroll/concept_scroll/query_button" to="debug_interface" method="_on_query_button_pressed"]
 [connection signal="pressed" from="debug_interface/scroll_container/scroll/query_scroll/add_fact_button" to="debug_interface/scroll_container/scroll/query_scroll" method="_on_add_fact_button_pressed"]
