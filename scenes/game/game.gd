@@ -141,7 +141,7 @@ func _ready():
 			50,
 			starSystemAPI.get_default_radius_solar_radii(),
 			{"current_action_type": unitBodyAPI.ACTION_TYPES.NONE, "system": world.player.current_star_system},
-			{"hostile": true}
+			{"hostile": true, "affiliation": game_data.UNIT_AFFILIATIONS.LEVIATHAN}
 		)
 		
 		

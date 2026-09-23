@@ -18,6 +18,8 @@ const task_schedule: Dictionary = {
 					_on_entered_player_scanner_profile()
 		within_player_profile = value
 
+@export var electrical_disruption_radius: float = 10.0
+
 func advance(delta) -> void:
 	super(delta)
 	
@@ -27,7 +29,7 @@ func advance(delta) -> void:
 		TASKS.HUNT_FOR_PLAYER when player != null:
 			if hunt_position != Vector2.ZERO:
 				target_position = hunt_position
-			elif position.distance_to(player.position) > (player.get_adjusted_scanner_power() + 25.0):
+			elif position.distance_to(player.position) > 75:
 				target_position = player.position
 			else:
 				var dir = position.direction_to(player.position)
@@ -47,8 +49,15 @@ func get_connection_pairs() -> Dictionary:
 
 func check_task_status() -> TASK_STATUSES:
 	match current_task:
-		TASKS.MOVE_TO_WAIT, TASKS.HUNT_FOR_PLAYER:
+		TASKS.MOVE_TO_WAIT:
 			if get_current_action_type() == ACTION_TYPES.NONE:
+				if position.distance_to(target_position) < starSystemAPI.get_default_radius_solar_radii():
+					return TASK_STATUSES.COMPLETE
+				else:
+					return TASK_STATUSES.ONGOING
+			return TASK_STATUSES.FAILED
+		TASKS.HUNT_FOR_PLAYER:
+			if get_current_action_type() == ACTION_TYPES.NONE_SLOWDOWN_OVERRIDE:
 				if position.distance_to(target_position) < starSystemAPI.get_default_radius_solar_radii():
 					return TASK_STATUSES.COMPLETE
 				else:
@@ -122,11 +131,11 @@ func regenerate_mine() -> void:
 		mineUnitAPI.new(),
 		starSystemAPI.BODY_TYPES.MINE,
 		system.identifier_count,
-		"Leviathan Exclusion Zone",
+		"Leviathan Electrical Disruption Zone",
 		0,
 		starSystemAPI.get_default_radius_solar_radii(),
 		{"position": position, "max_detonation_time": 0.05, "hidden": true},
-		{"hostile": true, "exclusion_zone_radius": 10.0}
+		{"hostile": true, "exclusion_zone_radius": electrical_disruption_radius}
 	)
 	target = system.get_body_from_identifier(id)
 	pass
@@ -134,7 +143,9 @@ func regenerate_mine() -> void:
 func _on_entered_player_scanner_profile() -> void:
 	if not cooldown_clock.is_stopped():
 		await cooldown_clock.time_expired
-		switch_task(TASKS.HUNT_FOR_PLAYER)
+		if current_task != TASKS.HUNT_FOR_PLAYER:
+			switch_task(TASKS.HUNT_FOR_PLAYER)
 	else:
-		switch_task(TASKS.HUNT_FOR_PLAYER)
+		if current_task != TASKS.HUNT_FOR_PLAYER:
+			switch_task(TASKS.HUNT_FOR_PLAYER)
 	pass

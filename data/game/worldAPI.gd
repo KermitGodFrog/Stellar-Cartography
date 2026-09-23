@@ -233,6 +233,9 @@ func is_player_in_interception_danger() -> Array:
 			elif c is theatreMilitaryUnitAPI:
 				if c.current_task == c.TASKS.MOVE_TO_INTERCEPT and c.goal == player:
 					distances.append(c.position.distance_to(player.position))
+			elif c is leviathanUnitAPI:
+				if c.current_task == c.TASKS.HUNT_FOR_PLAYER:
+					distances.append(c.position.distance_to(player.position + (player.position.direction_to(c.position) * c.electrical_disruption_radius)))
 	distances.sort()
 	if distances.size() > 0:
 		return [true, distances[0]]

@@ -63,7 +63,7 @@ const SYSTEM_SCENARIO_CLASSIFICATION_CURVES = {
 }
 
 #units \/
-enum UNIT_AFFILIATIONS {PROVISIONAL_EXECUTIVE, LOCAL_CIVILIZATION, MARAUDER, INSA_CIVILIAN, INSA_MILITARY_A, INSA_MILITARY_B}
+enum UNIT_AFFILIATIONS {PROVISIONAL_EXECUTIVE, LOCAL_CIVILIZATION, MARAUDER, INSA_CIVILIAN, INSA_MILITARY_A, INSA_MILITARY_B, LEVIATHAN, LIGHT_GREMLIN} #you can make the case that leviathans and light gremlins are 'ships' in some sense, so this isn't completely silly.
 const SHIP_AI_DISTRIBUTION_CURVE = preload("uid://rve257hen6dp") #below the line = wanderingUnitAPI, above the line = interceptingUnitAPI
 const SHIP_QUANTITY_CURVE = preload("uid://dbuj65poalh6t") #the MAX quantity of units spawnable, rounded to the nearest int
 const SHIP_TOTAL_CHANCE_CURVE = preload("uid://lxj6ttsru1wy") #the chance that any units will be spawned in the system at all (so they arent a constant nussiance). zero can still be spawned if the individual chances dont come through!
