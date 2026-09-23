@@ -8,7 +8,6 @@ const task_schedule: Dictionary = {
 	TASKS.MOVE_TO_DOCK: [TASKS.DOCK],
 	TASKS.DOCK: [TASKS.MOVE_TO_WAIT]
 }
-@export_storage var current_task: TASKS
 
 @export_storage var propensity_to_boost: float = 0.0 #has to be above 1.0 to boost
 
@@ -86,7 +85,7 @@ func check_task_status() -> TASK_STATUSES:
 	
 	return TASK_STATUSES.FAILED
 
-func switch_task() -> void:
+func switch_task(_override_task = null) -> int:
 	var options: Array = task_schedule.get(current_task)
 	var new_task = options.pick_random()
 	
@@ -116,7 +115,7 @@ func switch_task() -> void:
 	current_task = new_task
 	propensity_to_boost = 0.0
 	#metadata["_current_task"] = TASKS.find_key(current_task)
-	pass
+	return new_task
 
 #MISC FUNCTIONS
 func generate_valid_targets() -> void:
@@ -156,7 +155,11 @@ func generate_valid_targets() -> void:
 		valid_dock_target_ids.append(station.get_identifier()) #DOCK
 	pass
 
+func get_tasks() -> Dictionary:
+	return TASKS
 
+func get_task_schedule() -> Dictionary:
+	return task_schedule
 
 #region cooldown stuff
 func start_cooldown() -> void:

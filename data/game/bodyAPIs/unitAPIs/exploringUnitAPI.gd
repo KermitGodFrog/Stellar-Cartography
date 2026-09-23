@@ -10,8 +10,6 @@ const task_schedule: Dictionary = {
 	TASKS.WAIT: [TASKS.MOVE_TO_SURVEY, TASKS.MOVE_TO_WAIT, TASKS.USE_LIDAR]
 }
 
-@export_storage var current_task: TASKS
-
 @export_storage var propensity_to_boost: float = 0.0 #has to be above 1.0 to boost
 
 @export var valid_wait_target_ids: Array[int] = []
@@ -94,7 +92,7 @@ func check_task_status() -> TASK_STATUSES:
 	
 	return TASK_STATUSES.FAILED
 
-func switch_task(override_task = null) -> void:
+func switch_task(override_task = null) -> int:
 	var new_task: TASKS = TASKS.values()[0]
 	if override_task != null:
 		new_task = override_task
@@ -132,7 +130,7 @@ func switch_task(override_task = null) -> void:
 	current_task = new_task
 	propensity_to_boost = 0.0
 	#metadata["_current_task"] = TASKS.find_key(current_task)
-	pass
+	return new_task
 
 #MISC FUNCTIONS
 func generate_valid_targets() -> void:
@@ -158,6 +156,12 @@ func generate_valid_targets() -> void:
 	
 	valid_wait_target_ids.append(system.get_first_star().get_identifier())
 	pass
+
+func get_tasks() -> Dictionary:
+	return TASKS
+
+func get_task_schedule() -> Dictionary:
+	return task_schedule
 
 
 

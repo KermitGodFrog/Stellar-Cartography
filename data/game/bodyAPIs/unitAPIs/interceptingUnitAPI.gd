@@ -13,7 +13,6 @@ const task_schedule: Dictionary = {
 	TASKS.LOOK_FOR_PLAYER: [TASKS.LOOK_FOR_PLAYER_ALT, TASKS.USE_LIDAR], #overrides if EXITING the players scanner profile. follows the players dir vector for 1 minute and then ceases
 	TASKS.LOOK_FOR_PLAYER_ALT: [TASKS.LOOK_FOR_PLAYER_ALT, TASKS.MOVE_TO_WAIT, TASKS.USE_LIDAR]
 }
-@export_storage var current_task: TASKS
 
 @export_storage var last_player_position: Vector2 = Vector2.ZERO
 @export_storage var within_player_profile: bool:
@@ -157,7 +156,7 @@ func check_task_status() -> TASK_STATUSES:
 	
 	return TASK_STATUSES.FAILED
 
-func switch_task(override_task = null) -> void:
+func switch_task(override_task = null) -> int:
 	var new_task: TASKS = TASKS.values()[0]
 	if override_task != null:
 		new_task = override_task
@@ -210,7 +209,7 @@ func switch_task(override_task = null) -> void:
 	current_task = new_task
 	propensity_to_boost = 0.0
 	#metadata["_current_task"] = TASKS.find_key(current_task)
-	pass
+	return new_task
 
 #MISC FUNCTIONS
 func generate_valid_targets() -> void:
@@ -261,6 +260,12 @@ func stun(duration: float = 1.0) -> void:
 			stun_clock.start(duration)
 			emit_signal("play_sound", "res://sound/game/bodyAPIs/unitAPIs/stun.wav", -12.0, "SFX")
 	pass
+
+func get_tasks() -> Dictionary:
+	return TASKS
+
+func get_task_schedule() -> Dictionary:
+	return task_schedule
 
 
 

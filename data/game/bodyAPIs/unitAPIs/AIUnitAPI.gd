@@ -8,8 +8,10 @@ var task_switching_enabled: bool = true
 @export_storage var cooldown_clock: clock
 @export_storage var stun_clock: clock
 
+@export_storage var current_task: int #TASKS
+
 @export_storage var target_id: int
-var target: orbitBodyAPI:
+var target: bodyAPI:
 	set(value):
 		if value != null:
 			target_id = value.get_identifier()
@@ -55,13 +57,6 @@ func get_player() -> playerAPI:
 func set_player(value) -> void:
 	player = value
 
-func check_task_status() -> TASK_STATUSES:
-	return TASK_STATUSES.FAILED
-func switch_task() -> void: #func switch_task(override: TASKS = null) -> void:
-	pass
-
-
-
 #misc functions!
 
 func stun(_duration: float = 1.0) -> void: #this is called by system_map async_add_unit_ping directly
@@ -91,3 +86,65 @@ func get_adjusted_speed() -> int:
 		return speed * 5 * (1 + (-int(in_asteroid_belt) * 0.5))
 	else:
 		return speed * (1 + (-int(in_asteroid_belt) * 0.5))
+
+
+
+# other misc stuff (23/9/26)
+
+func get_tasks() -> Dictionary:
+	return Dictionary()
+
+func get_task_schedule() -> Dictionary:
+	return Dictionary()
+
+
+
+func _init() -> void:
+	task_clock = clock.new()
+	cooldown_clock = clock.new()
+	stun_clock = clock.new()
+	pass
+
+func advance(delta) -> void:
+	task_clock.tick(delta)
+	cooldown_clock.tick(delta)
+	stun_clock.tick(delta)
+	
+	var status := check_task_status()
+	if cooldown_clock.is_stopped():
+		if status in [TASK_STATUSES.COMPLETE, TASK_STATUSES.FAILED]:
+			print("UNIT (%s): TASK %s -> %s" % [self, get_tasks().find_key(current_task), TASK_STATUSES.find_key(status)])
+			switch_task()
+	pass
+
+func check_task_status() -> TASK_STATUSES:
+	return TASK_STATUSES.FAILED
+
+func switch_task(override_task = null) -> int:
+	var new_task: int = get_tasks().values()[0]
+	if override_task != null:
+		new_task = override_task
+	else:
+		var options: Array = get_task_schedule().get(current_task)
+		new_task = options.pick_random()
+	
+	print("UNIT (%s): NEW TASK -> %s" % [self, get_tasks().find_key(new_task)])
+	
+	start_cooldown()
+	current_task = new_task
+	return new_task
+
+func start_cooldown() -> void:
+	task_switching_enabled = false
+	cooldown_clock.start(2.5)
+	pass
+
+func _on_cooldown_clock_time_expired() -> void:
+	task_switching_enabled = true
+	pass
+
+func get_connection_pairs() -> Dictionary:
+	var connections: Dictionary = {
+		cooldown_clock.time_expired: _on_cooldown_clock_time_expired,
+	}
+	return connections
