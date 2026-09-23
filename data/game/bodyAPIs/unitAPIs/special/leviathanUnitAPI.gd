@@ -93,7 +93,7 @@ func switch_task(override_task = null) -> int:
 			course_to_position(position)
 			task_clock.start(5.0)
 	
-	metadata["_current_task"] = TASKS.find_key(current_task)
+	#metadata["_current_task"] = TASKS.find_key(current_task)
 	return new_task
 
 func update_scanner_status() -> void:
@@ -134,7 +134,7 @@ func regenerate_mine() -> void:
 		"Leviathan Electrical Disruption Zone",
 		0,
 		starSystemAPI.get_default_radius_solar_radii(),
-		{"position": position, "max_detonation_time": 0.05, "hidden": true},
+		{"position": position, "max_detonation_time": 0.1, "hidden": true},
 		{"hostile": true, "exclusion_zone_radius": electrical_disruption_radius}
 	)
 	target = system.get_body_from_identifier(id)

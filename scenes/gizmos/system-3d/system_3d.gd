@@ -148,17 +148,6 @@ func update_miscellaneous() -> void:
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
 	control.current_fov = camera.fov
 	
-	#for actor in actors:
-	#	if actor.is_in_cohort(actor3D.COHORTS.AI_UNIT):
-	#		var b = system.get_body_from_identifier(actor.get_identifier())
-	#		if b.metadata.get("affiliation") == game_data.UNIT_AFFILIATIONS.LEVIATHAN:
-	#			if b.current_task == b.TASKS.HUNT_FOR_PLAYER:
-	#				if not actor.audio.is_playing():
-	#					actor.audio.play()
-	#			else:
-	#				if actor.audio.is_playing():
-	#					actor.audio.stop()
-	
 	#setting locked_body_label text
 	var body: bodyAPI = system.get_body_from_identifier(label_locked_body_identifier)
 	if body:
@@ -307,7 +296,7 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 							[actor3D.COHORTS.UNIT_BODY, actor3D.COHORTS.AI_UNIT],
 							{},
 							{"texture": load("uid://dmi1b3su1mdfw"), "hframes": 4, "pixel_size": starSystemAPI.get_default_radius_solar_radii() * 16.0}, #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)
-							{"stream": load("uid://btevlxcpv8x0p"), "unit_size": 100.0, "playing": true},
+							{"stream": load("uid://btevlxcpv8x0p"), "max_db": 6.0, "unit_size": 100.0, "playing": true},
 							{},
 							load("uid://bp4kotll44otn")
 						)
