@@ -132,22 +132,6 @@ func _ready():
 		
 		allow_quick_pause = true
 		pause_menu.set("_installed_mutations", world.installed_mutations)
-		
-		world.player.current_star_system.addUnitBody(
-			leviathanUnitAPI.new(),
-			starSystemAPI.BODY_TYPES.SHIP,
-			world.player.current_star_system.identifier_count,
-			"Leviathan",
-			50,
-			starSystemAPI.get_default_radius_solar_radii(),
-			{"current_action_type": unitBodyAPI.ACTION_TYPES.NONE, "system": world.player.current_star_system},
-			{"hostile": true, "affiliation": game_data.UNIT_AFFILIATIONS.LEVIATHAN}
-		)
-		
-		
-		
-		
-		
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		

@@ -82,9 +82,9 @@ func switch_task(override_task = null) -> int:
 	
 	match new_task:
 		TASKS.MOVE_TO_WAIT:
-			course_to_position(position + (Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0.0, 360.0))) * global_data.get_randf(10.0, 100.0)))
+			course_to_position(position + (Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0.0, 360.0))) * global_data.get_randf(5.0, 30.0)))
 		TASKS.WAIT:
-			task_clock.start(10.0)
+			task_clock.start(7.5)
 		TASKS.HUNT_FOR_PLAYER:
 			set_action_type(ACTION_TYPES.NONE_SLOWDOWN_OVERRIDE, null)
 			regenerate_mine()

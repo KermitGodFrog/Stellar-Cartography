@@ -1028,6 +1028,20 @@ func generateRandomWeightedSpecialAnomaly(special_anomaly_req_adj_curves: Dictio
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
 			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
+		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.LEVIATHAN:
+			var new_unit := addUnitBody(
+				leviathanUnitAPI.new(),
+				starSystemAPI.BODY_TYPES.SHIP,
+				identifier_count,
+				"Leviathan",
+				50,
+				starSystemAPI.get_default_radius_solar_radii(),
+				{"system": self},
+				{"affiliation": game_data.UNIT_AFFILIATIONS.LEVIATHAN, "hostile": true}
+			)
+			var unit: AIUnitAPI = get_body_from_identifier(new_unit)
+			unit.set_action_type(unitBodyAPI.ACTION_TYPES.NONE, null)
+			unit.position = Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360))) * global_data.get_randf(0.0, get_max_body_orbit_distance())
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.NONE:
 			pass
 	pass
