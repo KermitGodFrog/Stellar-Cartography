@@ -278,7 +278,10 @@ Foley_Object_Metal_Oven_Creaks_Mono.wav by Nox_Sound -- https://freesound.org/s/
 (Retrieved 18th September 2026)
 
 Submarine Creaking by stephan -- https://soundbible.com/1625-Submarine-Creaking.html -- License: Public Domain -- Changes: volume
-(Retrieved 18th September 2026)"
+(Retrieved 18th September 2026)
+
+People Screaming by Mike Koenig -- https://soundbible.com/1082-People-Screaming.html -- License: Attribution 3.0 -- Changes: looped, volume, heavy processing
+(Retrieved 23rd September 2026)"
 
 [node name="packs" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2

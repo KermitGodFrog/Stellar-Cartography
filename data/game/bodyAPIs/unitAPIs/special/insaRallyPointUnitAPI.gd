@@ -6,8 +6,6 @@ const task_schedule: Dictionary = {
 	TASKS.WAIT: [TASKS.RELOCATE]
 }
 
-@export_storage var current_task: TASKS
-
 @export_storage var last_player_position: Vector2
 @export_storage var relocation_offset: Vector2
 
@@ -60,7 +58,7 @@ func check_task_status() -> TASK_STATUSES:
 	
 	return TASK_STATUSES.FAILED
 
-func switch_task(override_task = null) -> void:
+func switch_task(override_task = null) -> int:
 	var new_task: TASKS = TASKS.values()[0]
 	if override_task != null:
 		new_task = override_task
@@ -82,7 +80,7 @@ func switch_task(override_task = null) -> void:
 	start_cooldown()
 	current_task = new_task
 	#metadata["_current_task"] = TASKS.find_key(current_task)
-	pass
+	return new_task
 
 
 

@@ -289,16 +289,27 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 							)
 				
 			_ when body is AIUnitAPI:
-				
-				add_actor(
-					body.get_identifier(),
-					[actor3D.COHORTS.UNIT_BODY, actor3D.COHORTS.AI_UNIT],
-					{},
-					{"texture": load("uid://dmi1b3su1mdfw"), "hframes": 4, "pixel_size": starSystemAPI.get_default_radius_solar_radii() * 16.0}, #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)
-					{},
-					{},
-					load("uid://bp4kotll44otn")
-				)
+				match body.metadata.get("affiliation"):
+					game_data.UNIT_AFFILIATIONS.LEVIATHAN:
+						add_actor(
+							body.get_identifier(),
+							[actor3D.COHORTS.UNIT_BODY, actor3D.COHORTS.AI_UNIT],
+							{},
+							{"texture": load("uid://dmi1b3su1mdfw"), "hframes": 4, "pixel_size": starSystemAPI.get_default_radius_solar_radii() * 16.0}, #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)
+							{"stream": load("uid://btevlxcpv8x0p"), "max_db": 6.0, "unit_size": 100.0, "playing": true},
+							{},
+							load("uid://bp4kotll44otn")
+						)
+					_:
+						add_actor(
+							body.get_identifier(),
+							[actor3D.COHORTS.UNIT_BODY, actor3D.COHORTS.AI_UNIT],
+							{},
+							{"texture": load("uid://dmi1b3su1mdfw"), "hframes": 4, "pixel_size": starSystemAPI.get_default_radius_solar_radii() * 16.0}, #* 16.0 -> 2x larger than entity_128x.png ('RAD' glint body)
+							{},
+							{},
+							load("uid://bp4kotll44otn")
+						)
 				
 			_ when body is mineUnitAPI:
 				

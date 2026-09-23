@@ -476,7 +476,7 @@ func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curv
 					interceptingUnitAPI.new(),
 					starSystemAPI.BODY_TYPES.SHIP,
 					identifier_count,
-					"%s's %s" % [base_name, suffixes.pick_random()],
+					"%s's %s %03d" % [base_name, suffixes.pick_random(), global_data.get_randi(0, 999)],
 					global_data.get_randi(3, int(game_data.SHIP_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index))) + 1,
 					get_default_radius_solar_radii(),
 					{"system": self},
@@ -1028,6 +1028,21 @@ func generateRandomWeightedSpecialAnomaly(special_anomaly_req_adj_curves: Dictio
 			)
 			get_body_from_identifier(new_body).rotation = deg_to_rad(global_data.get_randf(0,360))
 			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
+		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.LEVIATHAN:
+			var prefixes: Array[String] = ["Bronze", "Silver", "Gold", "Obsidian", "Space", "Star", "Shadow", "Angry", "Tempered", "Resentful", "Fevered", "Manic", "Delta", "Fast", "Swift"]
+			var new_unit := addUnitBody(
+				leviathanUnitAPI.new(),
+				starSystemAPI.BODY_TYPES.SHIP,
+				identifier_count,
+				"%s Leviathan" % prefixes.pick_random(),
+				50,
+				starSystemAPI.get_default_radius_solar_radii(),
+				{"system": self},
+				{"affiliation": game_data.UNIT_AFFILIATIONS.LEVIATHAN, "hostile": true}
+			)
+			var unit: AIUnitAPI = get_body_from_identifier(new_unit)
+			unit.set_action_type(unitBodyAPI.ACTION_TYPES.NONE, null)
+			unit.position = Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360))) * global_data.get_randf(0.0, get_max_body_orbit_distance())
 		game_data.SPECIAL_ANOMALY_CLASSIFICATIONS.NONE:
 			pass
 	pass

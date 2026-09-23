@@ -14,8 +14,6 @@ const task_schedule: Dictionary = {
 	TASKS.LOOK_FOR_GOAL: [TASKS.MOVE_TO_RALLY_POINT_A, TASKS.USE_LIDAR]
 }
 
-@export_storage var current_task: TASKS
-
 @export_storage var speed_clock: clock
 
 @export_storage var propensity_to_boost: float = 0.0 #has to be above 1.0 to boost
@@ -80,9 +78,7 @@ var rally_point: AIUnitAPI:
 @export var hostile_affiliations: Array = []
 
 func _init() -> void:
-	task_clock = clock.new()
-	cooldown_clock = clock.new()
-	stun_clock = clock.new()
+	super()
 	speed_clock = clock.new()
 	pass
 
@@ -212,7 +208,7 @@ func check_task_status() -> TASK_STATUSES:
 	
 	return TASK_STATUSES.FAILED
 
-func switch_task(override_task = null) -> void:
+func switch_task(override_task = null) -> int:
 	var new_task: TASKS = TASKS.values()[0]
 	if override_task != null:
 		new_task = override_task
@@ -262,7 +258,7 @@ func switch_task(override_task = null) -> void:
 	current_task = new_task
 	propensity_to_boost = 0.0
 	#metadata["_current_task"] = TASKS.find_key(current_task)
-	pass
+	return new_task
 
 
 #MISC FUNCTIONS
@@ -303,6 +299,11 @@ func stun(duration: float = 1.0, disable_sfx: bool = false) -> void:
 				emit_signal("play_sound", "res://sound/game/bodyAPIs/unitAPIs/stun.wav", -12.0, "SFX")
 	pass
 
+func get_tasks() -> Dictionary:
+	return TASKS
+
+func get_task_schedule() -> Dictionary:
+	return task_schedule
 
 
 
