@@ -10,15 +10,18 @@ const task_schedule: Dictionary = {
 }
 
 @export_storage var hunt_position: Vector2 = Vector2.ZERO
+@export_storage var within_player_profile: bool:
+	set(value):
+		if within_player_profile != value:
+			match value:
+				true:
+					_on_entered_player_scanner_profile()
+		within_player_profile = value
 
 func advance(delta) -> void:
 	super(delta)
 	
-	if target != null and system.bodies.has(target):
-		target.position = position
-		target.exclusion_radius_points = []
-	else:
-		regenerate_mine()
+	update_scanner_status()
 	
 	match current_task:
 		TASKS.HUNT_FOR_PLAYER when player != null:
@@ -29,6 +32,10 @@ func advance(delta) -> void:
 			else:
 				var dir = position.direction_to(player.position)
 				hunt_position = player.position + (dir * 100.0)
+			
+			if target != null:
+				target.position = position
+				target.exclusion_radius_points = []
 	pass
 
 func get_connection_pairs() -> Dictionary:
@@ -60,6 +67,9 @@ func switch_task(override_task = null) -> int:
 	var new_task = super(override_task)
 	
 	hunt_position = Vector2.ZERO
+	if target != null:
+		system.removeBody(target.get_identifier())
+		target = null
 	
 	match new_task:
 		TASKS.MOVE_TO_WAIT:
@@ -68,7 +78,8 @@ func switch_task(override_task = null) -> int:
 			task_clock.start(10.0)
 		TASKS.HUNT_FOR_PLAYER:
 			set_action_type(ACTION_TYPES.NONE_SLOWDOWN_OVERRIDE, null)
-			#continuously updated in advance
+			regenerate_mine()
+			#continuously updated in advance()
 		TASKS.COOL_OFF:
 			course_to_position(position)
 			task_clock.start(5.0)
@@ -76,7 +87,11 @@ func switch_task(override_task = null) -> int:
 	metadata["_current_task"] = TASKS.find_key(current_task)
 	return new_task
 
-
+func update_scanner_status() -> void:
+	if player != null:
+		var contacts = system.get_units_in_scanner_range(player.position, player.get_adjusted_scanner_profile())
+		within_player_profile = contacts.has(self)
+	pass
 
 
 
@@ -110,8 +125,16 @@ func regenerate_mine() -> void:
 		"Leviathan Exclusion Zone",
 		0,
 		starSystemAPI.get_default_radius_solar_radii(),
-		{"position": position, "max_detonation_time": 2.0, "hidden": true},
+		{"position": position, "max_detonation_time": 0.05, "hidden": true},
 		{"hostile": true, "exclusion_zone_radius": 10.0}
 	)
 	target = system.get_body_from_identifier(id)
+	pass
+
+func _on_entered_player_scanner_profile() -> void:
+	if not cooldown_clock.is_stopped():
+		await cooldown_clock.time_expired
+		switch_task(TASKS.HUNT_FOR_PLAYER)
+	else:
+		switch_task(TASKS.HUNT_FOR_PLAYER)
 	pass

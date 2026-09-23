@@ -137,8 +137,8 @@ func _ready():
 			leviathanUnitAPI.new(),
 			starSystemAPI.BODY_TYPES.SHIP,
 			world.player.current_star_system.identifier_count,
-			"Space Leviathan",
-			20,
+			"Leviathan",
+			50,
 			starSystemAPI.get_default_radius_solar_radii(),
 			{"current_action_type": unitBodyAPI.ACTION_TYPES.NONE, "system": world.player.current_star_system},
 			{"hostile": true}
