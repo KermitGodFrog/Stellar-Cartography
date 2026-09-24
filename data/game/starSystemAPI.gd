@@ -1408,7 +1408,10 @@ func get_max_body_orbit_distance() -> float:
 		if body is orbitBodyAPI:
 			distances.append(body.orbit_distance)
 	distances.sort()
-	return distances.back()
+	if distances.size() > 0:
+		return distances.back()
+	else:
+		return float()
 
 func is_civilized() -> bool:
 	for body in bodies:
@@ -1483,6 +1486,11 @@ func get_quick_post_gen_dict() -> Dictionary:
 	dict["orbit_angle_change"] = orbit_angle_change
 	
 	return dict
+
+func get_random_interior_position() -> Vector2:
+	var dir: Vector2 = Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360)))
+	var pos: Vector2 = Vector2.ZERO + (dir * global_data.get_randf(0.0, get_max_body_orbit_distance()))
+	return pos
 
 # unit stuff \/
 
