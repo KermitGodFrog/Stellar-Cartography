@@ -24,7 +24,7 @@ const task_schedule: Dictionary = {
 @export_storage var current_energy: float = max_energy:
 	set(value):
 		current_energy = value
-		if current_energy < max_energy / 2:
+		if current_energy < get_low_energy_theshold():
 			_on_energy_low()
 var current_energy_index: float:
 	get():
@@ -32,8 +32,8 @@ var current_energy_index: float:
 
 @export_storage var motion_points: Array[Vector2] = [] #when used by 'play' these are relative to player pos, but not when 'orbit'
 @export_storage var cached_target_position: Vector2
-@export_storage var sys_max_orbit_distance: float = 0.0 #REMINDER THAT THIS HAS TO BE SET WHEN THE BODY IS CREATED!!!
-
+@export_storage var sys_max_orbit_distance: float = 0.0
+@export_storage var name_locked: bool = false
 
 #resources \
 var energy_to_speed_curve: Curve = preload("uid://ddvq4bv6m1tpe")
@@ -42,14 +42,17 @@ enum PERSONALITIES {
 	BALANCED,
 	DAREDEVIL
 }
-var personality_data: Dictionary = {
-	PERSONALITIES.CAUTIOUS: {"min_distance": 10.0},
-	PERSONALITIES.BALANCED: {"min_distance": 5.0},
-	PERSONALITIES.DAREDEVIL: {"min_distance": 2.5}
-}
+
+func initialize() -> void:
+	sys_max_orbit_distance = system.get_max_body_orbit_distance()
+	pass
 
 func advance(delta) -> void:
 	super(delta)
+	
+	if (metadata.get("unit_available", true) == false) and not name_locked:
+		set_display_name("Light Gremlin %03d" % global_data.get_randi(0, 999))
+		name_locked = true
 	
 	var distance_to_star: float = system.get_first_star().position.distance_to(position)
 	var distance_index: float = remap(distance_to_star, 0.0, sys_max_orbit_distance, 0.0, 1.0)
@@ -63,6 +66,8 @@ func advance(delta) -> void:
 			return
 	
 	match current_task:
+		TASKS.MOVE_TO_PLAY, TASKS.PLAY_A, TASKS.PLAY_B, TASKS.PLAY_C, TASKS.PLAY_D, TASKS.PLAY_E when not silly:
+			switch_task(TASKS.MOVE_TO_ORBIT)
 		TASKS.RECHARGE:
 			cached_target_position = system.get_first_star().position.direction_to(position) * get_adj_recharge_distance()
 			target_position = cached_target_position
@@ -143,7 +148,7 @@ func switch_task(override_task = null) -> int:
 			var half_count: int = sample_count / 2
 			var m: float = global_data.get_randf(0.05, 1.0)
 			for x in range(-half_count, half_count + 1):
-				var y: float = m * pow(x, 2) - personality_data.get(personality).get("min_distance") #y = mx^2 + b
+				var y: float = m * pow(x, 2) - get_min_distance() #y = mx^2 + b
 				motion_points.append(Vector2(x, y).rotated(random_rotation))
 		TASKS.PLAY_B:
 			task_clock.start(10.0)
@@ -164,7 +169,7 @@ func switch_task(override_task = null) -> int:
 				if gain_samples.has(s-1):
 					if randf() > 0.05:
 						gain_samples.append(s)
-				elif randf() < 0.25:
+				elif randf() > 0.50:
 					gain_samples.append(s)
 			for i in spin_count:
 				for s in sample_count:
@@ -220,8 +225,7 @@ func switch_task(override_task = null) -> int:
 
 
 
-
-
+#misc 
 
 func get_tasks() -> Dictionary:
 	return TASKS
@@ -240,7 +244,20 @@ func get_adj_recharge_distance() -> float:
 	return adj_distance
 
 func get_min_distance() -> float:
-	return personality_data.get(personality).get("min_distance")
+	var data: Dictionary = {
+		PERSONALITIES.CAUTIOUS: 15.0,
+		PERSONALITIES.BALANCED: 7.5,
+		PERSONALITIES.DAREDEVIL: 5.0
+	}
+	return data.get(personality)
+
+func get_low_energy_theshold() -> float:
+	var data: Dictionary = {
+		PERSONALITIES.CAUTIOUS: max_energy * 0.6,
+		PERSONALITIES.BALANCED: max_energy * 0.5,
+		PERSONALITIES.DAREDEVIL: max_energy * 0.4
+	}
+	return data.get(personality)
 
 func _on_energy_low() -> void:
 	if current_task != TASKS.RECHARGE:

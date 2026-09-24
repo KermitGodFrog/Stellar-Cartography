@@ -427,7 +427,10 @@ func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = 
 			
 			for body in bodies:
 				body.known = true
+			
 			generateRandomWeightedShips()
+			if special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.LIGHT_GREMLIN_PRESENCE: #kinda a funny thing to do but whateva!!!
+				addRandomLightGremlin()
 	pass
 
 func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curves: Dictionary) -> void:
@@ -491,6 +494,12 @@ func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curv
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
 			generateRandomWeightedShips()
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.LIGHT_GREMLIN_PRESENCE:
+			generateWormholes()
+			generateRandomWeightedEntities()
+			generateRendezvousPoint()
+			for i in global_data.get_randi(1, 3):
+				addRandomLightGremlin()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE, _:
 			generateWormholes()
 			generateRandomWeightedEntities()
@@ -1201,6 +1210,20 @@ func generateRandomScreenJunk() -> void:
 			{"position": pos, "texture_path": junk_paths.pick_random(), "texture_scale": scale, "texture_modulate": modulate, "hidden": true},
 			{}
 		)
+	pass
+
+func addRandomLightGremlin() -> void:
+	var pos := get_random_interior_position()
+	addUnitBody(
+		lightGremlinUnitAPI.new(),
+		starSystemAPI.BODY_TYPES.SHIP,
+		identifier_count,
+		"Unknown %03d" % global_data.get_randi(0, 999),
+		79,
+		starSystemAPI.get_default_radius_solar_radii(),
+		{"system": self, "position": pos, "target_position": pos, "energy_loss_multiplier": global_data.get_randf(0.75, 1.25), "personality": lightGremlinUnitAPI.PERSONALITIES.values().pick_random()},
+		{"affiliation": game_data.UNIT_AFFILIATIONS.LIGHT_GREMLIN}
+	)
 	pass
 
 # generation related getters \/

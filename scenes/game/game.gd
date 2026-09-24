@@ -132,17 +132,6 @@ func _ready():
 		
 		allow_quick_pause = true
 		pause_menu.set("_installed_mutations", world.installed_mutations)
-		
-		world.player.current_star_system.addUnitBody(
-			lightGremlinUnitAPI.new(),
-			starSystemAPI.BODY_TYPES.SHIP,
-			world.player.current_star_system.identifier_count,
-			"Light Gremlin 029",
-			79,
-			starSystemAPI.get_default_radius_solar_radii(),
-			{"system": world.player.current_star_system, "sys_max_orbit_distance": world.player.current_star_system.get_max_body_orbit_distance(), "position": Vector2(0, 50), "target_position": Vector2(0, 50)},
-			{}
-		)
 	
 	elif init_type == global_data.GAME_INIT_TYPES.CONTINUE:
 		
