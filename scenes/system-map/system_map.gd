@@ -734,6 +734,13 @@ func _draw():
 	draw_text()
 	draw_CME()
 	draw_pulsar_beams()
+	
+	#DEBUG !!!! \/
+	#for body in system.bodies:
+	#	if body is lightGremlinUnitAPI:
+	#		if body.play_points.size() > 0:
+	#			for p in body.play_points:
+	#				draw_circle(player_position_matrix[0] + p, 2.5, Color.RED, false, 2.5)
 	pass
 
 func draw_sonar():
