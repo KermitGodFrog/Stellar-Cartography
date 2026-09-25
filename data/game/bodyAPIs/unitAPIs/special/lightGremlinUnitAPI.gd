@@ -50,7 +50,7 @@ func initialize() -> void:
 func advance(delta) -> void:
 	super(delta)
 	
-	if (metadata.get("unit_available", true) == false) and not name_locked:
+	if (metadata.get("ship_available", true) == false) and not name_locked:
 		set_display_name("Light Gremlin %03d" % global_data.get_randi(0, 999))
 		name_locked = true
 	
@@ -266,4 +266,8 @@ func _on_energy_low() -> void:
 			switch_task(TASKS.RECHARGE)
 		else:
 			switch_task(TASKS.RECHARGE)
+	pass
+
+func force_replenish_all_energy() -> void:
+	current_energy = max_energy
 	pass

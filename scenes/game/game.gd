@@ -474,6 +474,9 @@ func _on_player_following_body(following_body: bodyAPI):
 				new_query.add_tree_access("target_upgrade", playerAPI.UPGRADE_ID.find_key(unlocked_upgrades[global_data.get_randi(0, unlocked_upgrades.size() - 1, following_body.metadata.get("seed", 0))]))
 			else:
 				new_query.add_tree_access("target_upgrade", null)
+			if following_body.metadata.get("affiliation") == game_data.UNIT_AFFILIATIONS.LIGHT_GREMLIN:
+				new_query.add_tree_access("light_gremlin_current_energy_index", following_body.current_energy_index)
+				new_query.add_tree_access("light_gremlin_personality", str(lightGremlinUnitAPI.PERSONALITIES.find_key(following_body.personality)))
 	
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
@@ -566,6 +569,19 @@ func _on_player_following_body(following_body: bodyAPI):
 				"HARD_LEAVE_MAKE_PEACEFUL_OVERRIDE":
 					following_body.metadata["ship_available"] = false
 					following_body.metadata["hostile"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+				"LIGHT_GREMLIN_HARD_LEAVE":
+					following_body.metadata["ship_available"] = false
+					following_body.silly = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+				"LIGHT_GREMLIN_SOFT_LEAVE":
+					following_body.metadata["ship_available"] = true
+					following_body.silly = true
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+				"LIGHT_GREMLIN_HARD_LEAVE_REPLENISH_OVERRIDE":
+					following_body.metadata["ship_available"] = false
+					following_body.silly = true
+					following_body.force_replenish_all_energy()
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
