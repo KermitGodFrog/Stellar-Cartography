@@ -193,7 +193,7 @@ func save_then_apply_settings_list() -> void: #packs data into settingsHelper, s
 	
 	game_data.saveSettings(helper)
 	await get_tree().physics_frame
-	game_data.loadThenApplySettings() #this is necessary bc of the 'instance' mode for settings_menu, wherein main_menu is not available to call this
+	game_data.loadThenApplySettings(true) #this is necessary bc of the 'instance' mode for settings_menu, wherein main_menu is not available to call this
 	pass
 
 func reset_settings_list_to_defaults() -> void:

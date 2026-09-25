@@ -404,7 +404,7 @@ func loadSettings() -> settingsHelper:
 	print("GAME DATA: LOADING SETTINGS FAILED: FILE DOES NOT EXIST")
 	return null
 
-func loadThenApplySettings() -> void:
+func loadThenApplySettings(hard_apply: bool = false) -> void:
 	var helper = loadSettings()
 	if helper != null:
 		#loading audio
@@ -431,7 +431,8 @@ func loadThenApplySettings() -> void:
 		Engine.set_max_fps(helper.fps_limit)
 		var size_vector: Vector2i = Vector2i(helper.default_resolution.get_slice("x", 0).to_int(), helper.default_resolution.get_slice("x", 1).to_int())
 		get_window().content_scale_size = size_vector
-		get_window().size = size_vector
+		if hard_apply:
+			get_window().size = size_vector
 	else:
 		push_error("GAME DATA: CANNOT LOAD AND APPLY SETTINGS: HELPER DOES NOT EXIST")
 	pass
