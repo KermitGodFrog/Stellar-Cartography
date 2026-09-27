@@ -663,6 +663,8 @@ func _on_player_entering_system(system: starSystemAPI):
 	
 	if system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/insa.ogg")
+	elif system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
+		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/void.ogg")
 	elif system.is_civilized():
 		_on_play_civilized_system_leitmotif()
 	elif system.get_first_star().metadata.get("star_type") == "Pulsar":

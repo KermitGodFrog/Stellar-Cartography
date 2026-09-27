@@ -443,6 +443,8 @@ func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curv
 			post_gen_location_candidates.clear()
 			for i in star.metadata.get("iterations", 0):
 				post_gen_location_candidates.append([star.get_identifier(), i])
+			for junk in get_bodies_of_body_type(BODY_TYPES.SCREEN_JUNK):
+				removeBody(junk.get_identifier())
 			generateWormholes()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.DYSON_SPHERE:
 			system_hazard_classification = game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE
