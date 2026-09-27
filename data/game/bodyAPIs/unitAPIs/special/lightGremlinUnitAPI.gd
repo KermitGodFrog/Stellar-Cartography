@@ -54,12 +54,6 @@ func advance(delta) -> void:
 		set_display_name("Light Gremlin %03d" % global_data.get_randi(0, 999))
 		name_locked = true
 	
-	metadata["_current_energy"] = current_energy
-	metadata["_speed"] = speed
-	metadata["_energy_loss_multiplier"] = energy_loss_multiplier
-	metadata["_silly"] = silly
-	metadata["_personality"] = personality
-	
 	var distance_to_star: float = system.get_first_star().position.distance_to(position)
 	var distance_multiplier: float = clampf(remap(distance_to_star, 0.0, sys_max_orbit_distance, 0.0, 1.0), 0.3, 1.0) #further from the star, more towards 1.0
 	#the distance_multiplier ensures that the gremlin has a higher operating range in larger star systems.
