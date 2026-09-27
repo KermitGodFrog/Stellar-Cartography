@@ -305,7 +305,11 @@ func _physics_process(delta):
 					var parse: String
 					match entry:
 						"luminosity": parse = "%.2f" % (follow_body.metadata.get(entry))
-						"affiliation": parse = "%s" % game_data.UNIT_AFFILIATIONS.find_key(follow_body.metadata.get(entry))
+						"affiliation": 
+							if follow_body.metadata.get(entry) in [game_data.UNIT_AFFILIATIONS.LEVIATHAN, game_data.UNIT_AFFILIATIONS.LIGHT_GREMLIN]:
+								parse = "None"
+							else:
+								parse = "%s" % game_data.UNIT_AFFILIATIONS.find_key(follow_body.metadata.get(entry)).capitalize()
 						_: parse = str(follow_body.metadata.get(entry))
 					body_attributes_list.add_item("%s : %s" % [entry, parse], null, false)
 	
@@ -734,13 +738,6 @@ func _draw():
 	draw_text()
 	draw_CME()
 	draw_pulsar_beams()
-	
-	#DEBUG !!!! \/
-	#for body in system.bodies:
-	#	if body is lightGremlinUnitAPI:
-	#		if body.motion_points.size() > 0:
-	#			for p in body.motion_points:
-	#				draw_circle(player_position_matrix[0] + p, 0.5, Color.RED, false, 0.5)
 	pass
 
 func draw_sonar():
