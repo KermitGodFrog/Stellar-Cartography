@@ -70,7 +70,7 @@ func check_task_status() -> TASK_STATUSES:
 				else:
 					return TASK_STATUSES.ONGOING
 			return TASK_STATUSES.FAILED
-	return TASK_STATUSES.ONGOING
+	return TASK_STATUSES.FAILED
 
 func switch_task(override_task = null) -> int:
 	var new_task = super(override_task)

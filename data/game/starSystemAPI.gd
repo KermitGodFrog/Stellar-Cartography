@@ -427,7 +427,10 @@ func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = 
 			
 			for body in bodies:
 				body.known = true
+			
 			generateRandomWeightedShips()
+			if special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.LIGHT_GREMLIN_PRESENCE: #kinda a funny thing to do but whateva!!!
+				addRandomLightGremlin()
 	pass
 
 func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curves: Dictionary) -> void:
@@ -491,6 +494,12 @@ func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curv
 			generateRandomWeightedEntities()
 			generateRendezvousPoint()
 			generateRandomWeightedShips()
+		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.LIGHT_GREMLIN_PRESENCE:
+			generateWormholes()
+			generateRandomWeightedEntities()
+			generateRendezvousPoint()
+			for i in global_data.get_randi(1, 3):
+				addRandomLightGremlin()
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE, _:
 			generateWormholes()
 			generateRandomWeightedEntities()
@@ -1203,6 +1212,20 @@ func generateRandomScreenJunk() -> void:
 		)
 	pass
 
+func addRandomLightGremlin() -> void:
+	var pos := get_random_interior_position()
+	addUnitBody(
+		lightGremlinUnitAPI.new(),
+		starSystemAPI.BODY_TYPES.SHIP,
+		identifier_count,
+		"Unknown %03d" % global_data.get_randi(0, 999),
+		79,
+		starSystemAPI.get_default_radius_solar_radii(),
+		{"system": self, "position": pos, "target_position": pos, "energy_loss_multiplier": global_data.get_randf(0.75, 1.25), "personality": lightGremlinUnitAPI.PERSONALITIES.values().pick_random()},
+		{"affiliation": game_data.UNIT_AFFILIATIONS.LIGHT_GREMLIN, "seed": randi()}
+	)
+	pass
+
 # generation related getters \/
 
 func get_orbit_angle_change(hook: bodyAPI, _orbit_distance: float) -> float: #(per unit of time) 
@@ -1408,7 +1431,10 @@ func get_max_body_orbit_distance() -> float:
 		if body is orbitBodyAPI:
 			distances.append(body.orbit_distance)
 	distances.sort()
-	return distances.back()
+	if distances.size() > 0:
+		return distances.back()
+	else:
+		return float()
 
 func is_civilized() -> bool:
 	for body in bodies:
@@ -1483,6 +1509,11 @@ func get_quick_post_gen_dict() -> Dictionary:
 	dict["orbit_angle_change"] = orbit_angle_change
 	
 	return dict
+
+func get_random_interior_position() -> Vector2:
+	var dir: Vector2 = Vector2.UP.rotated(deg_to_rad(global_data.get_randf(0,360)))
+	var pos: Vector2 = Vector2.ZERO + (dir * global_data.get_randf(0.0, get_max_body_orbit_distance()))
+	return pos
 
 # unit stuff \/
 

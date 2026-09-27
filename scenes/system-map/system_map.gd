@@ -305,7 +305,11 @@ func _physics_process(delta):
 					var parse: String
 					match entry:
 						"luminosity": parse = "%.2f" % (follow_body.metadata.get(entry))
-						"affiliation": parse = "%s" % game_data.UNIT_AFFILIATIONS.find_key(follow_body.metadata.get(entry))
+						"affiliation": 
+							if follow_body.metadata.get(entry) in [game_data.UNIT_AFFILIATIONS.LEVIATHAN, game_data.UNIT_AFFILIATIONS.LIGHT_GREMLIN]:
+								parse = "None"
+							else:
+								parse = "%s" % game_data.UNIT_AFFILIATIONS.find_key(follow_body.metadata.get(entry)).capitalize()
 						_: parse = str(follow_body.metadata.get(entry))
 					body_attributes_list.add_item("%s : %s" % [entry, parse], null, false)
 	
