@@ -570,15 +570,15 @@ func _on_player_following_body(following_body: bodyAPI):
 					following_body.metadata["ship_available"] = false
 					following_body.metadata["hostile"] = false
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
-				"LIGHT_GREMLIN_HARD_LEAVE":
+				"LIGHT_GREMLIN_SILLY_LEAVE":
+					following_body.metadata["ship_available"] = false
+					following_body.silly = true
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
+				"LIGHT_GREMLIN_SERIOUS_LEAVE":
 					following_body.metadata["ship_available"] = false
 					following_body.silly = false
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
-				"LIGHT_GREMLIN_SOFT_LEAVE":
-					following_body.metadata["ship_available"] = true
-					following_body.silly = true
-					_on_update_player_action_type(playerAPI.ACTION_TYPES.NONE, null)
-				"LIGHT_GREMLIN_HARD_LEAVE_REPLENISH_OVERRIDE":
+				"LIGHT_GREMLIN_SILLY_LEAVE_REPLENISH_OVERRIDE":
 					following_body.metadata["ship_available"] = false
 					following_body.silly = true
 					following_body.force_replenish_all_energy()

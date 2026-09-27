@@ -1222,7 +1222,7 @@ func addRandomLightGremlin() -> void:
 		79,
 		starSystemAPI.get_default_radius_solar_radii(),
 		{"system": self, "position": pos, "target_position": pos, "energy_loss_multiplier": global_data.get_randf(0.75, 1.25), "personality": lightGremlinUnitAPI.PERSONALITIES.values().pick_random()},
-		{"affiliation": game_data.UNIT_AFFILIATIONS.LIGHT_GREMLIN}
+		{"affiliation": game_data.UNIT_AFFILIATIONS.LIGHT_GREMLIN, "seed": randi()}
 	)
 	pass
 
