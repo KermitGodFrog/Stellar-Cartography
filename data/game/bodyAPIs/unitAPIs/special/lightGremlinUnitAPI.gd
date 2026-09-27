@@ -54,9 +54,16 @@ func advance(delta) -> void:
 		set_display_name("Light Gremlin %03d" % global_data.get_randi(0, 999))
 		name_locked = true
 	
+	metadata["_current_energy"] = current_energy
+	metadata["_speed"] = speed
+	metadata["_energy_loss_multiplier"] = energy_loss_multiplier
+	metadata["_silly"] = silly
+	metadata["_personality"] = personality
+	
 	var distance_to_star: float = system.get_first_star().position.distance_to(position)
-	var distance_index: float = remap(distance_to_star, 0.0, sys_max_orbit_distance, 0.0, 1.0)
-	current_energy = maxf(0.0, current_energy - (distance_index * energy_loss_multiplier * delta))
+	var distance_multiplier: float = clampf(remap(distance_to_star, 0.0, sys_max_orbit_distance, 0.0, 1.0), 0.3, 1.0) #further from the star, more towards 1.0
+	#the distance_multiplier ensures that the gremlin has a higher operating range in larger star systems.
+	current_energy = maxf(0.0, current_energy - (distance_multiplier * energy_loss_multiplier * delta))
 	speed = roundi(energy_to_speed_curve.sample(remap(current_energy, 0.0, max_energy, 0.0, 1.0)))
 	
 	if current_task in [TASKS.RECHARGE, TASKS.MOVE_TO_ORBIT, TASKS.ORBIT] and player != null:
@@ -72,7 +79,7 @@ func advance(delta) -> void:
 			cached_target_position = system.get_first_star().position.direction_to(position) * get_adj_recharge_distance()
 			target_position = cached_target_position
 			if position.distance_to(cached_target_position) < (starSystemAPI.get_default_radius_solar_radii() + 5.0):
-				current_energy = minf(max_energy, current_energy + (distance_index * 5.0 * delta))
+				current_energy = minf(max_energy, current_energy + (1.25 * 2.0 * delta)) # * 1.25 in case energy loss multiplier is 1.25x
 		TASKS.MOVE_TO_PLAY:
 			target_position = player.position + (player.position.direction_to(position) * get_min_distance())
 		TASKS.PLAY_A, TASKS.PLAY_B, TASKS.PLAY_C, TASKS.PLAY_D, TASKS.PLAY_E:
