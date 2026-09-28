@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://du4n84moqkybt"
-path="res://.godot/imported/inhabited_frame.png-bce44946959334776b8034af09554349.ctex"
+uid="uid://dshqkut10f7ar"
+path="res://.godot/imported/rare_inhabited_frame.png-9334509e760020350c92eefacfa215d2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/system-map/system-list/frames/inhabited_frame.png"
-dest_files=["res://.godot/imported/inhabited_frame.png-bce44946959334776b8034af09554349.ctex"]
+source_file="res://graphics/system-map/system-list/frames/rare_inhabited_frame.png"
+dest_files=["res://.godot/imported/rare_inhabited_frame.png-9334509e760020350c92eefacfa215d2.ctex"]
 
 [params]
 

@@ -450,6 +450,7 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add_tree_access("planet_rare", following_body.is_rare())
 			new_query.add_tree_access("planet_classification", following_body.metadata.get("planet_classification"))
 			new_query.add_tree_access("planet_type", following_body.metadata.get("planet_type"))
+			new_query.add_tree_access("planet_inhabited", following_body.metadata.get("planet_inhabited", false))
 			new_query.add_tree_access("missing_AO", following_body.metadata.get("missing_AO", false))
 			new_query.add_tree_access("missing_GL", following_body.metadata.get("missing_GL", false))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))

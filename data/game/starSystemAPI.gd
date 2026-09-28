@@ -428,10 +428,10 @@ func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = 
 			for planet in get_bodies_of_body_type(BODY_TYPES.PLANET):
 				if planet.metadata.get("planet_classification") == "Terran":
 					if planet_type_data.get(planet.metadata.get("planet_type")).get("conditions").has("habitable"):
-						if randf() <= clampf(game_data.CIVILIZED_INHABITED_PLANET_CHANCE_CURVE.sample(game_data.player_weirdness_index) + 0.25, 0.0, 1.0):
-							planet.inhabited = true
-					elif randf() <= game_data.CIVILIZED_INHABITED_PLANET_CHANCE_CURVE.sample(game_data.player_weirdness_index):
-						planet.inhabited = true
+						if randf() <= clampf(game_data.CIV_SYS_INHABITED_PLANET_CHANCE_CURVE.sample(game_data.player_weirdness_index) * 2.0, 0.0, 1.0):
+							planet.metadata["inhabited"] = true
+					elif randf() <= game_data.CIV_SYS_INHABITED_PLANET_CHANCE_CURVE.sample(game_data.player_weirdness_index):
+						planet.metadata["inhabited"] = true
 			
 			for body in bodies:
 				body.known = true
@@ -720,26 +720,23 @@ func addRandomWeightedPlanetAtIteration(hook_identifier: int, i: int, remaining:
 	var avg_value = planet_type_data.get(planet_type).get("avg_value")
 	var value = round(global_data.get_randf(avg_value * 0.5, avg_value * 1.5))
 	
-	var inhabited: bool = false
-	if planet_classification == "Terran":
-		if planet_type_data.get(planet_type).get("conditions").has("habitable"):
-			if randf() <= clampf(game_data.INHABITED_PLANET_CHANCE_CURVE.sample(game_data.player_weirdness_index) * 100.0, 0.0, 1.0):
-				inhabited = true
-		elif randf() <= game_data.INHABITED_PLANET_CHANCE_CURVE.sample(game_data.player_weirdness_index):
-			inhabited = true
-	
 	#SETTING WHETHER THE BODY HAS A PLANETARY ANOMALY
 	var has_planetary_anomaly: bool = false
 	var is_planetary_anomaly_available: bool = false
 	if randf() >= (1 - PA_chance_per_planet):
 		has_planetary_anomaly = true
 		is_planetary_anomaly_available = true
-	elif inhabited:
-		has_planetary_anomaly = true
-		is_planetary_anomaly_available = true
 	elif planet_type_data.get(planet_type).get("conditions").has("habitable"):
 		has_planetary_anomaly = true
 		is_planetary_anomaly_available = true
+	
+	var inhabited: bool = false
+	if has_planetary_anomaly and planet_classification == "Terran":
+		if planet_type_data.get(planet_type).get("conditions").has("habitable"):
+			if randf() <= clampf(game_data.INHABITED_PLANET_CHANCE_CURVE.sample(game_data.player_weirdness_index) * 2.0, 0.0, 1.0):
+				inhabited = true
+		elif randf() <= game_data.INHABITED_PLANET_CHANCE_CURVE.sample(game_data.player_weirdness_index):
+			inhabited = true
 	
 	var has_missing_AO: bool = false
 	if randf() >= (1 - missing_AO_chance_per_planet):
@@ -767,8 +764,8 @@ func addRandomWeightedPlanetAtIteration(hook_identifier: int, i: int, remaining:
 		orbit_distance,
 		orbit_angle_change,
 		(radius / 109.1),
-		{"mass": (mass / 333000), "surface_color": color, "current_variation": planetBodyAPI.VARIATIONS.values().pick_random(), "layers": gas_layers_sum, "inhabited": inhabited},
-		{"planet_classification": planet_classification, "planet_type": planet_type, "value": value, "iterations": int(hook.metadata.get("iterations") / 2), "planetary_anomaly": has_planetary_anomaly, "planetary_anomaly_available": is_planetary_anomaly_available, "seed": randi(), "missing_AO": has_missing_AO, "missing_GL": has_missing_GL}
+		{"mass": (mass / 333000), "surface_color": color, "current_variation": planetBodyAPI.VARIATIONS.values().pick_random(), "layers": gas_layers_sum},
+		{"planet_classification": planet_classification, "planet_type": planet_type, "value": value, "iterations": int(hook.metadata.get("iterations") / 2), "planetary_anomaly": has_planetary_anomaly, "planetary_anomaly_available": is_planetary_anomaly_available, "seed": randi(), "missing_AO": has_missing_AO, "missing_GL": has_missing_GL, "inhabited": inhabited}
 	)
 	var new_planet: planetBodyAPI = get_body_from_identifier(new_planet_id)
 	new_planet.rotation = deg_to_rad(global_data.get_randf(0,360))
