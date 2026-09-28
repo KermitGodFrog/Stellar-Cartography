@@ -5,6 +5,7 @@ signal returnButtonPressed
 @onready var achievement_item = preload("uid://b34lxvbuquaso")
 @onready var item_locked_stylebox = preload("uid://cnaci0fj8gv3d")
 @onready var item_unlocked_stylebox = preload("uid://hami5xfvw4k0")
+@onready var exploration_trophy = preload("uid://id0eoqh6iql4")
 
 @onready var spawn_scroll = $panel/margin/actions_items_split/scroll/spawn_scroll
 
@@ -19,13 +20,20 @@ func receive_updated_achievements(updated_achievements: Dictionary):
 		spawn_scroll.add_child(new)
 	pass
 
-func _on_achievement_item_ready(new, updated_achievements, a) -> void:
-	new.initialize(a.name, a.description) # need icon supoort here eventually
+func _on_achievement_item_ready(new, updated_achievements, a: responseAchievement) -> void:
+	var display_hidden: bool = false
+	var trophy = null
 	match updated_achievements.get(a):
 		true:
 			new["theme_override_styles/panel"] = item_unlocked_stylebox
 		false:
 			new["theme_override_styles/panel"] = item_locked_stylebox
+			if a.hidden_until_unlocked:
+				display_hidden = true
+	match a.trophy_type:
+		responseAchievement.TROPHY_TYPES.EXPLORATION:
+			trophy = exploration_trophy
+	new.initialize(a.name, a.description, display_hidden, trophy) # need icon supoort here eventually
 	pass
 
 func _on_achievements_return_button_pressed():

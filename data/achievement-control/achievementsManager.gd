@@ -24,8 +24,6 @@ const default_achievements: Dictionary = {
 	preload("uid://dnqtbuyyvp4rp"): false,
 	preload("uid://bmt6d3hv7bcuw"): false,
 	preload("uid://dp84a2qtdaaas"): false
-	#preload("res://Data/Achievement/Achievements/anyIsWarCriminal.tres"): false
-	#preload("res://Data/Achievement/Achievements/anyLRSAndAVUnlockedDEBUG.tres"): false
 }
 
 #/\/\/\/\/\
@@ -34,10 +32,10 @@ const default_achievements: Dictionary = {
 
 @onready var achievement_control = $achievement_display/achievement_control #might be depreciated soon
 
-func _process(_delta):
-	#if Input.is_action_just_pressed("SC_DEBUG_MISC"):
-		#achievements = default_achievements
-	pass
+#func _process(_delta):
+#	if Input.is_action_just_pressed("SC_LOAD_CONFIRMATION"):
+#		achievements = default_achievements
+#	pass
 
 func _notification(what):
 	match what:

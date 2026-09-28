@@ -14,7 +14,7 @@ script = ExtResource("2_74jvj")
 [node name="achievement_scroll" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="icon" type="TextureRect" parent="achievement_scroll"]
+[node name="trophy" type="TextureRect" parent="achievement_scroll"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 texture = ExtResource("3_rp7wn")
