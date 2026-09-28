@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://du4n84moqkybt"
+path="res://.godot/imported/inhabited_frame.png-bce44946959334776b8034af09554349.image"
+
+[deps]
+
+source_file="res://graphics/system-map/system-list/frames/inhabited_frame.png"
+dest_files=["res://.godot/imported/inhabited_frame.png-bce44946959334776b8034af09554349.image"]
+
+[params]
+

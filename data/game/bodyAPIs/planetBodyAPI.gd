@@ -48,3 +48,9 @@ func is_rare() -> bool:
 		if conditions.has("rare"):
 			return true
 	return false
+
+#Misc
+@export var inhabited: bool = false:
+	get = is_inhabited
+func is_inhabited() -> bool:
+	return inhabited

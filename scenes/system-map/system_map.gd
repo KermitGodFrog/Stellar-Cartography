@@ -500,8 +500,15 @@ func create_item_for_body(body: bodyAPI, parent: TreeItem) -> TreeItem:
 						item.set_icon(0, get_darker_icon.call(item))
 						item.set_icon_overlay(0, load("uid://pbgoomdkkj6h"))
 						item.set_icon_modulate(0, Color.GREEN.darkened(0.4))
+					elif body.is_inhabited() and body.is_rare():
+						var primary := load("uid://du4n84moqkybt")
+						var secondary := load("uid://6b8g2de5g7qo")
+						primary.blit_rect(secondary, Rect2i(0, 0, 32, 32), Vector2i.ZERO)
+						item.set_icon_overlay(0, ImageTexture.create_from_image(primary))
+					elif body.is_inhabited():
+						item.set_icon_overlay(0, ImageTexture.create_from_image(load("uid://du4n84moqkybt")))
 					elif body.is_rare():
-						item.set_icon_overlay(0, load("uid://6b8g2de5g7qo"))
+						item.set_icon_overlay(0, ImageTexture.create_from_image(load("uid://6b8g2de5g7qo")))
 					
 					#if body.is_habitable():
 					#	item.set_custom_color(0, Color.GREEN)
