@@ -755,6 +755,17 @@ func addRandomWeightedPlanetAtIteration(hook_identifier: int, i: int, remaining:
 				has_missing_GL = true
 				gas_layers_sum = global_data.get_randi(4, 9)
 	
+	var optional_metadata : Dictionary = {
+		"planetary_anomaly": has_planetary_anomaly,
+		"planetary_anomaly_available": is_planetary_anomaly_available,
+		"missing_AO": has_missing_AO,
+		"missing_GL": has_missing_GL,
+		"inhabited": inhabited
+	} 
+	for key in optional_metadata.keys():
+		if optional_metadata.get(key) == false:
+			optional_metadata.erase(key)
+	
 	var new_planet_id := addOrbitBody(
 		planetBodyAPI.new(),
 		BODY_TYPES.PLANET,
@@ -765,7 +776,7 @@ func addRandomWeightedPlanetAtIteration(hook_identifier: int, i: int, remaining:
 		orbit_angle_change,
 		(radius / 109.1),
 		{"mass": (mass / 333000), "surface_color": color, "current_variation": planetBodyAPI.VARIATIONS.values().pick_random(), "layers": gas_layers_sum},
-		{"planet_classification": planet_classification, "planet_type": planet_type, "value": value, "iterations": int(hook.metadata.get("iterations") / 2), "planetary_anomaly": has_planetary_anomaly, "planetary_anomaly_available": is_planetary_anomaly_available, "seed": randi(), "missing_AO": has_missing_AO, "missing_GL": has_missing_GL, "inhabited": inhabited}
+		{"planet_classification": planet_classification, "planet_type": planet_type, "value": value, "iterations": int(hook.metadata.get("iterations") / 2), "seed": randi()}.merged(optional_metadata)
 	)
 	var new_planet: planetBodyAPI = get_body_from_identifier(new_planet_id)
 	new_planet.rotation = deg_to_rad(global_data.get_randf(0,360))
