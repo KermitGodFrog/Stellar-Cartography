@@ -501,7 +501,7 @@ func replace_fact_references(text: String, query: responseQuery) -> String:
 	return text
 
 
-func _on_add_dialogue_memory_pair(key,value) -> void: #im connecitng this signal to its own script because im not sure if it does anything else / is important
+func _on_add_dialogue_memory_pair(key,value) -> void: #im connecitng this signal to its own script because im not sure if it does anything else / is important # <<< the fuck does this mean? what script?? (28/9/26)
 	dialogue_memory[key] = value
 	pass
 
@@ -864,6 +864,15 @@ func getCSSOutcomeWithFlair(star_type: String) -> void:
 func treeAccessMemoryPlus1(memory: String) -> void: #this is stupid and should instead be implemented by making the 'Apply Facts' column have support for operations >:(
 	tree_access_memory[memory] = tree_access_memory.get(memory, 0) + 1
 	pass
+
+func dialogueMemoryPlus1(memory: String) -> void: #this is stupid and should instead be implemented by making the 'Apply Facts' column have support for operations >:(
+	emit_signal("addDialogueMemoryPair", memory, dialogue_memory.get(memory, 0) + 1)
+	pass
+
+func dialogueMemoryMinus1(memory: String) -> void: #this is stupid and should instead be implemented by making the 'Apply Facts' column have support for operations >:(
+	emit_signal("addDialogueMemoryPair", memory, dialogue_memory.get(memory, 0) - 1)
+	pass
+
 
 func addTradeXPOptions_RP(rp_seed: String) -> void:
 	var pairs: Dictionary = {}
