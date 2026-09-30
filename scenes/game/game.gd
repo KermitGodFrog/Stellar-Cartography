@@ -450,6 +450,7 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add_tree_access("planet_rare", following_body.is_rare())
 			new_query.add_tree_access("planet_classification", following_body.metadata.get("planet_classification"))
 			new_query.add_tree_access("planet_type", following_body.metadata.get("planet_type"))
+			new_query.add_tree_access("planet_inhabited", following_body.metadata.get("inhabited", false))
 			new_query.add_tree_access("missing_AO", following_body.metadata.get("missing_AO", false))
 			new_query.add_tree_access("missing_GL", following_body.metadata.get("missing_GL", false))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
@@ -524,6 +525,10 @@ func _on_player_following_body(following_body: bodyAPI):
 					following_body.metadata["planetary_anomaly_available"] = false
 					var temp_station := starSystemAPI.get_temporary_station(following_body)
 					dock_with_station(temp_station)
+				"HARD_LEAVE_INHABITED_OVERRIDE":
+					following_body.metadata["inhabited"] = true
+					following_body.metadata["planetary_anomaly_available"] = false
+					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 		starSystemAPI.BODY_TYPES.SPACE_ANOMALY:

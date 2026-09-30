@@ -34,6 +34,8 @@ func set_gas_layers_sum(value) -> void:
 	layers = value
 	pass
 
+
+#Misc
 func is_habitable() -> bool:
 	var type_data = starSystemAPI.planet_type_data.get(metadata.get("planet_type"))
 	if type_data != null:
@@ -48,3 +50,12 @@ func is_rare() -> bool:
 		if conditions.has("rare"):
 			return true
 	return false
+func is_inhabited() -> bool:
+	if metadata.get("inhabited", false) == true: 
+		return true
+	return false
+
+#@export var inhabited: bool = false:
+#	get = is_inhabited
+#func is_inhabited() -> bool:
+#	return inhabited
