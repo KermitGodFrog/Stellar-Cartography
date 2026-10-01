@@ -454,6 +454,7 @@ func _on_player_following_body(following_body: bodyAPI):
 			new_query.add_tree_access("missing_AO", following_body.metadata.get("missing_AO", false))
 			new_query.add_tree_access("missing_GL", following_body.metadata.get("missing_GL", false))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
+			new_query.add_tree_access("seed_randf", global_data.get_rng(hash(following_body.metadata.get("seed", 0))).randf())
 		starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
 			new_query.add("space_anomaly_available", following_body.metadata.get("space_anomaly_available", true))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))

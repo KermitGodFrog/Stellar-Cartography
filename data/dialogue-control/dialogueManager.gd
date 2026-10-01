@@ -677,7 +677,7 @@ func getStarDescriptionWithFlair(star_type: String) -> void:
 const reward_types = {
 	"STRESS": {"LOW": 5, "MEDIUM": 15, "HIGH": 25},
 	"VALUE": {"LOW": 2500, "MEDIUM": 5000, "HIGH": 25000},
-	"DISCOVERY": {"LOW": 1, "MEDIUM": 2, "HIGH": 3}
+	"DISCOVERY_OR_SUPERCHARGE": {"LOW": 1, "MEDIUM": 2, "HIGH": 3}
 }
 func addRandomRewardWithFlair(rarity: String = "LOW") -> void:
 	var anomaly_seed = tree_access_memory.get("seed", randi()) #this goes against all of the rules for this class... DO NOT DO THIS ANYWHERE ELSE!!! I AM CUTTING CORNERS BY DOING THIS AND ITS *BAD* - ONLY DOING BC CAN ONLY HAVE ONE ARGUMENT FOR DIALOGUE METHODS
@@ -691,10 +691,27 @@ func addRandomRewardWithFlair(rarity: String = "LOW") -> void:
 			removeHullStressWithFlair(reward_types.get(reward).get(rarity))
 		"VALUE":
 			addValueWithFlair(reward_types.get(reward).get(rarity))
-		"DISCOVERY":
+		"DISCOVERY_OR_SUPERCHARGE":
 			for i in reward_types.get(reward).get(rarity) - 1:
 				discoverRandomBodyWithFlair()
 	pass
+
+func addRandomAlternateRewardWithFlair(rarity: String = "LOW") -> void: #SUPERCHARGE INSTEAD OF DISCOVERY!!!
+	var anomaly_seed = tree_access_memory.get("seed", randi()) #this goes against all of the rules for this class... DO NOT DO THIS ANYWHERE ELSE!!! I AM CUTTING CORNERS BY DOING THIS AND ITS *BAD* - ONLY DOING BC CAN ONLY HAVE ONE ARGUMENT FOR DIALOGUE METHODS
+	var random = RandomNumberGenerator.new()
+	random.set_seed(hash(int(anomaly_seed) - rules_triggered))
+	
+	var random_index: int = random.randi_range(0, reward_types.keys().size() - 1)
+	var reward = reward_types.keys()[random_index]
+	match reward:
+		"STRESS":
+			removeHullStressWithFlair(reward_types.get(reward).get(rarity))
+		"VALUE":
+			addValueWithFlair(reward_types.get(reward).get(rarity))
+		"DISCOVERY_OR_SUPERCHARGE":
+			superchargeForJumpsWithFlair(reward_types.get(reward).get(rarity))
+	pass
+
 
 func unlockRandomUpgradeWithFlair(anomaly_seed: String = String()) -> void:
 	var random = RandomNumberGenerator.new()

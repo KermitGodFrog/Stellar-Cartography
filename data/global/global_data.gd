@@ -280,3 +280,8 @@ func get_mutation_item(for_idx: worldAPI.MUTATION_ID, ready_callable: Callable) 
 
 func get_random_rotation() -> float:
 	return deg_to_rad(get_randf(0.0, 360.0))
+
+func get_rng(rng_seed: int) -> RandomNumberGenerator:
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+	rng.set_seed(rng_seed)
+	return rng
