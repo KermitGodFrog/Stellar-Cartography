@@ -1,0 +1,213 @@
+[gd_scene load_steps=11 format=3 uid="uid://df2orcpyblm3i"]
+
+[ext_resource type="Script" uid="uid://3a5kg8dcbhfc" path="res://scenes/title-screen/title_screen.gd" id="1_ckev6"]
+[ext_resource type="Script" uid="uid://bhw533c1y02l8" path="res://scenes/create-menu/noise_bg.gd" id="1_ir78n"]
+[ext_resource type="FontFile" uid="uid://n0hwhfbdcomy" path="res://graphics/fonts/Tomorrow-Regular.ttf" id="2_ckev6"]
+[ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="4_7b7la"]
+[ext_resource type="Script" uid="uid://bfpo21p7onrtl" path="res://scenes/loading-screen/continue_label.gd" id="5_kovq1"]
+[ext_resource type="StyleBox" uid="uid://t53tmp88dts0" path="res://theme-gen/default_focus.tres" id="6_kovq1"]
+
+[sub_resource type="Gradient" id="Gradient_2mho6"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.65)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2mho6"]
+noise_type = 2
+frequency = 0.1
+fractal_type = 3
+fractal_octaves = 1
+cellular_distance_function = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_r6myx"]
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_2mho6")
+color_ramp = SubResource("Gradient_2mho6")
+seamless = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ytrci"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.15686275, 0.29411766, 0.3882353, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="title_screen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ckev6")
+
+[node name="noise_bg" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.039215688)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("NoiseTexture2D_r6myx")
+stretch_mode = 6
+script = ExtResource("1_ir78n")
+
+[node name="scroll" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 350)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_constants/separation = 0
+
+[node name="title" type="Label" parent="scroll"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.156863, 0.294118, 0.388235, 1)
+theme_override_colors/font_outline_color = Color(0.0588235, 0.0784314, 0.14902, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 6
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_ckev6")
+theme_override_font_sizes/font_size = 60
+text = "STELLAR CARTOGRAPHER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="created_by_label" type="Label" parent="scroll"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "A GAME CREATED BY KERMIGODFROG"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="continue_label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -111.5
+offset_top = -125.0
+offset_right = 111.5
+offset_bottom = -102.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("4_7b7la")
+theme_override_font_sizes/font_size = 16
+text = "PRESS [UNSET] TO CONTINUE"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("5_kovq1")
+
+[node name="margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="split" type="HBoxContainer" parent="margin"]
+layout_mode = 2
+alignment = 2
+
+[node name="right_scroll" type="VBoxContainer" parent="margin/split"]
+layout_mode = 2
+alignment = 1
+
+[node name="changelog_panel" type="PanelContainer" parent="margin/split/right_scroll"]
+custom_minimum_size = Vector2(300, 400)
+layout_mode = 2
+size_flags_horizontal = 2
+theme_type_variation = &"PanelDullTransparentB"
+
+[node name="changelog_margin" type="MarginContainer" parent="margin/split/right_scroll/changelog_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="changelog_scroll" type="VBoxContainer" parent="margin/split/right_scroll/changelog_panel/changelog_margin"]
+layout_mode = 2
+
+[node name="title" type="Label" parent="margin/split/right_scroll/changelog_panel/changelog_margin/changelog_scroll"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ytrci")
+theme_override_styles/focus = ExtResource("6_kovq1")
+text = "CHANGELOG (v0.8)"
+
+[node name="description_scroll" type="ScrollContainer" parent="margin/split/right_scroll/changelog_panel/changelog_margin/changelog_scroll"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="description_vbox" type="VBoxContainer" parent="margin/split/right_scroll/changelog_panel/changelog_margin/changelog_scroll/description_scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="description" type="Label" parent="margin/split/right_scroll/changelog_panel/changelog_margin/changelog_scroll/description_scroll/description_vbox"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+text = "- Overhauled Long Range Scopes (LRS) module controls, HUD, mechanics and visuals.
+- Duplicate photos in LRS now decrease rewards.
+- Implemented info popups into the tutorial that show necessary information without the player having to view the objectives list.
+- Implemented the main menu history popup which shows information about the player’s previous runs.
+- Updated the final challenge theme song with an improved version.
+- The tutorial now explains how to respond to hostile units.
+- The game can now be ‘quick paused’, which pauses the game while still showing the system map.
+- References to keybinds throughout the game are now replaced with a written version of their respective key, rather than assuming that all keybinds are set to default.
+- Overhauled Gas Layer Surveyor (GLS) module mechanics, sounds and visuals.
+- The player can now draw on the GLS screen during a dive.
+- Added a fun facts section (about gas giants) to GLS entries.
+- Implemented descriptions for status modifiers.
+- Added a ‘proximity blinker’ to the status panel that warns the player about nearby threats.
+- Implemented an alarm sound for when the player is in danger of being intercepted by a hostile unit.
+- Overhauled the appearance of the status panel.
+- The actions panel no longer disappears when the ‘INFO’ tab is selected.
+- Fixed zooming on the system map - bodies are now rendered at the same size regardless of zoom level.
+- Implemented text pings (text that appears on the system map to provide additional feedback).
+- Balance improvements.
+- - Base wormhole traversal minigame speed 2.5 -> 10.0.
+- - Implemented system survey efficiency bonus.
+- - Station sell percentage of market price is now normally distributed around 100%.
+- - Player speed 3 -> 5.
+- - Base marauder speed 3 -> 4.
+- - LIDAR cooldown 5s -> 3s.
+- - Marauder stun time -25%.
+- - Nanite Controller (NC) module repair cost multiplier 1.0x to 2.0x -> 1.0x to 3.0x.
+- - Implemented character XP system - XP is gained through anomalies and is required to enact special initiatives at Rendezvous Points.
+- - Created the framework for Entering System Danger (ESD) functionality and added 5 new ESDs.
+- Updated the dialogue that is shown when the player begins a new campaign.
+- All press-able UI elements now have the ‘pointing hand’ default cursor shape.
+- Huge changes to how the system list handles icons - frames and icons are now separate images and are combined at runtime.
+- Added new system list frames for GLS and LRS valid bodies.
+- Greatly improved the visuals and clarity of barycenter visualizer.
+- Revamped the main menu credits popup.
+- Revamped the main menu new game popup.
+- Added starscape backgrounds to the system map that are randomised for each star system.
+- Implemented ‘screen junk’ (randomised textures in the background of a star system that increase variety).
+- Theorised, but not known, orbit bodies on the system map now have a question mark texture (rather than being invisible).
+- Added window mode and FPS limit options to settings.
+- The Scan Prediction upgrade is now unlocked at the beginning of a run.
+- Completely overhauled the tutorial through iterative changes from multiple playtests.
+- Added descriptions for all options in settings.
+- Implemented the ‘Nebula’ system hazard.
+- Improved the feedback and perception of multiple small UI elements.
+- Added two new ship encounters.
+- Added one new dialogue illustration."
+autowrap_mode = 3
