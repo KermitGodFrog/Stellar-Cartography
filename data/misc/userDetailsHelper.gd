@@ -9,4 +9,6 @@ class_name userDetailsHelper
 
 @export var unlocked_mutations: Array[worldAPI.MUTATION_ID] = []
 
+@export var create_menu_this_session: bool = false #whether to play the mission briefing theme on create_menu open!
+
 @export var metadata: Dictionary #any required data in the future should be put here so this class doesnt have to be modified in the future, as doing so could cause all user details to be cleared for the player, which wouldnt be a fun experience for them

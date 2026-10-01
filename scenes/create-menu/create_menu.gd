@@ -12,20 +12,35 @@ var init_type: global_data.GAME_INIT_TYPES = global_data.GAME_INIT_TYPES.NEW
 
 @onready var audio_handler = $audioHandler
 
+var blur_music: bool = false
+
 func _ready() -> void:
+	#panels
 	mutations_panel.connect("mutation_items_changed", _on_mutation_items_changed)
 	inquiry_panel.connect("game_type_edit_changed", _on_game_type_edit_changed)
 	inquiry_panel.connect("difficulty_updated", _on_difficulty_updated)
 	inquiry_panel.initialize(init_type)
 	
-	#this tricks it into not playing any music! \/
-	audio_handler._pause_mode = game_data.PAUSE_MODES.PAUSE_MENU
+	#audio handler
+	audio_handler.ambience_type = audio_handler.AMBIENCE_TYPES.CREATE_MENU
+	
+	var details_helper := game_data.loadUserDetails()
+	if not details_helper.create_menu_this_session:
+		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/mission_briefing.ogg")
+		details_helper.create_menu_this_session = true
+	game_data.saveUserDetails(details_helper)
 	
 	#background
 	var animations = ["starship_in_alt", "starship_in2", "starship_in3"]
 	if background_animation.current_animation: animations.erase(background_animation.current_animation)
 	background_animation.play("RESET")
 	background_animation.play(animations.pick_random())
+	pass
+
+func _process(_delta: float) -> void:
+	var mouse_in_inquiry_panel : bool = inquiry_panel.get_global_rect().has_point(get_global_mouse_position())
+	var mouse_in_mutations_panel : bool = mutations_panel.get_global_rect().has_point(get_global_mouse_position())
+	audio_handler.blur_music_criteria["mouse_in_blur_panels"] = mouse_in_inquiry_panel or mouse_in_mutations_panel
 	pass
 
 func _on_launch_button_pressed() -> void:
