@@ -151,7 +151,7 @@ const planet_type_data = {
 	"Helium Giant": {"color": Color.ORANGE_RED, "avg_value": 4500, "variation_class": "noble_gas_content", "conditions": []},
 	# rare
 	"Breathable Dwarf": {"color": Color.LIGHT_SKY_BLUE, "avg_value": 15000, "variation_class": "water_content", "conditions": ["rare"]},
-	"Massive Solid": {"color": Color.SLATE_GRAY, "avg_value": 15000, "variation_class": "terrain_amplitude", "conditions": ["rare", "planet_only"]},
+	"Massive Solid": {"color": Color.SLATE_GRAY, "avg_value": 15000, "variation_class": "terrain_amplitude", "conditions": ["rare", "planet_only", "uninhabitable"]},
 	"Borderline Giant": {"color": Color.WEB_MAROON, "avg_value": 15000, "variation_class": "helium_content", "conditions": ["rare", "planet_only"]},
 	"Ammonia": {"color": Color(0.29, 0.2, 0.125, 1.0), "avg_value": 15000, "variation_class": "cloud_cover", "conditions": ["rare"]},
 	"Tundra": {"color": Color.LIGHT_STEEL_BLUE, "avg_value": 15000, "variation_class": "cloud_cover", "conditions": ["rare", "habitable"]},
@@ -426,7 +426,7 @@ func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = 
 				post_gen_location_candidates.remove_at(post_gen_location_candidates.find(dict.get("location")))
 			
 			for planet in get_bodies_of_body_type(BODY_TYPES.PLANET):
-				if planet.metadata.get("planet_classification") == "Terran":
+				if planet.metadata.get("planet_classification") == "Terran" and not planet_type_data.get(planet.metadata.get("planet_type")).get("conditions").has("uninhabitable"):
 					if planet_type_data.get(planet.metadata.get("planet_type")).get("conditions").has("habitable"):
 						if randf() <= clampf(game_data.CIV_SYS_INHABITED_PLANET_CHANCE_CURVE.sample(game_data.player_weirdness_index) * 2.0, 0.0, 1.0):
 							planet.metadata["inhabited"] = true
@@ -731,7 +731,7 @@ func addRandomWeightedPlanetAtIteration(hook_identifier: int, i: int, remaining:
 		is_planetary_anomaly_available = true
 	
 	var inhabited: bool = false
-	if has_planetary_anomaly and planet_classification == "Terran":
+	if has_planetary_anomaly and planet_classification == "Terran" and not planet_type_data.get(planet_type).get("conditions").has("uninhabitable"):
 		if planet_type_data.get(planet_type).get("conditions").has("habitable"):
 			if randf() <= clampf(game_data.INHABITED_PLANET_CHANCE_CURVE.sample(game_data.player_weirdness_index) * 2.0, 0.0, 1.0):
 				inhabited = true
