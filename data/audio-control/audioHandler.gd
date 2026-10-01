@@ -40,15 +40,15 @@ func _process(delta):
 			music_linear_volume_target = 0.0
 	
 	var music_bus_idx := AudioServer.get_bus_index("Music")
-	var low_pass_effect := AudioServer.get_bus_effect(music_bus_idx, 0)
+	var eq_effect := AudioServer.get_bus_effect(music_bus_idx, 0)
 	var blur_music: bool = blur_music_criteria.values().all(equal_to_true) and not blur_music_criteria.is_empty()
 	match blur_music:
 		true:
-			AudioServer.set_bus_effect_enabled(music_bus_idx, 0, true)
-			low_pass_effect.set_cutoff(lerpf(low_pass_effect.get_cutoff(), 1000, 5.0 * delta))
+			for idx in range(3, 6):
+				eq_effect.set_band_gain_db(idx, lerpf(eq_effect.get_band_gain_db(idx), -60, 5.0 * delta))
 		false:
-			AudioServer.set_bus_effect_enabled(music_bus_idx, 0, false)
-			low_pass_effect.set_cutoff(20500)
+			for idx in range(3, 6):
+				eq_effect.set_band_gain_db(idx, lerpf(eq_effect.get_band_gain_db(idx), 0.0, 5.0 * delta))
 	
 	#print("MUSIC LINEAR VOLUME TARGET: ", music_linear_volume_target)
 	#print("MUSIC REAL VOLUME (DB): ", music.volume_db)
@@ -72,6 +72,11 @@ func equal_to_true(element: bool) -> bool:
 func _ready():
 	intermission.connect("timeout", _on_intermission_timeout)
 	restart_intermission()
+	
+	var music_bus_idx := AudioServer.get_bus_index("Music")
+	var eq_effect := AudioServer.get_bus_effect(music_bus_idx, 0)
+	for idx in range(0, 6):
+		eq_effect.set_band_gain_db(idx, 0.0)
 	
 	for node in get_tree().get_nodes_in_group("playUIClickSFX"):
 		if node is Button:
