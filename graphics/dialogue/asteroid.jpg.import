@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://b4vhmrasmcdvc"
+path="res://.godot/imported/asteroid.jpg-a7db0be50f06b517c40b6d0d7f109bef.image"
+
+[deps]
+
+source_file="res://graphics/dialogue/asteroid.jpg"
+dest_files=["res://.godot/imported/asteroid.jpg-a7db0be50f06b517c40b6d0d7f109bef.image"]
+
+[params]
+

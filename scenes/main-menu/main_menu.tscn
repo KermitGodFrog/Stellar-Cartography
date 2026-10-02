@@ -227,13 +227,16 @@ layout_mode = 2
 [node name="images" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2
 title = "images"
-text = "white satellite by Galen Crout -- https://commons.wikimedia.org/wiki/File:Satellite_Antenna_Skyward_(Unsplash).jpg -- License: CC0 1.0 Universal -- Changes: background removed, composited with other images
+text = "white satellite by Galen Crout -- https://commons.wikimedia.org/wiki/File:Satellite_Antenna_Skyward_(Unsplash).jpg -- License: Creative Commons 0 -- Changes: background removed, composited with other images
 (Retrieved 23rd August 2026)
 
 ISS074-E-393 by NASA -- https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?mission=ISS074&roll=E&frame=393 -- License: none -- Changes: composited with other images, cropped
 (Retrieved 23rd August 2026)
 	Image courtesy of the Earth Science and Remote Sensing Unit, NASA Johnson Space Center
-	https://eol.jsc.nasa.gov"
+	https://eol.jsc.nasa.gov
+
+Asteroid and it's Pile of Rubble by Kevin M. Gill -- https://commons.wikimedia.org/wiki/File:Asteroid_and_it%27s_Pile_of_Rubble_(15148296739).jpg -- License: Attribution 2.0 -- Changes: cropped, resized
+(Retrieved 2nd October 2026)"
 
 [node name="sound_effects" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2
@@ -286,17 +289,23 @@ People Screaming by Mike Koenig -- https://soundbible.com/1082-People-Screaming.
 [node name="packs" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2
 title = "sound #2 - packs"
-text = "Core Wavetables for Vital by David Dumais Audio (A$0.00+ version) -- https://daviddumaisaudio.gumroad.com/l/core-wavetables -- License: none (Retrieved 24th June 2026)
+text = "Core Wavetables for Vital by David Dumais Audio (A$0.00+ version) -- https://daviddumaisaudio.gumroad.com/l/core-wavetables -- License: none
+(Retrieved 24th June 2026)
 
-Densine's Orchestral by clarkristaino -- https://www.mediafire.com/file/6slz9kw2zy7u6i1/Densine%27sOrchestral.zip -- License: none, \"free sample pack\" (Retrieved 24th June 2026 via https://www.reddit.com/r/edmproduction/comments/2bs0he/hey_guys_here_is_a_free_sample_pack_of_orchestral/)
+Densine's Orchestral by clarkristaino -- https://www.mediafire.com/file/6slz9kw2zy7u6i1/Densine%27sOrchestral.zip -- License: none, \"free sample pack\"
+(Retrieved 24th June 2026 via https://www.reddit.com/r/edmproduction/comments/2bs0he/hey_guys_here_is_a_free_sample_pack_of_orchestral/)
 
-Ultimate Boom Bap Drum Kit by Beatsmith -- https://soundpacks.com/free-sound-packs/ultimate-boom-bap-drum-kit/ -- License: none, \"FREE SOUND PACKS\" (Retrieved 24th June 2026)
+Ultimate Boom Bap Drum Kit by Beatsmith -- https://soundpacks.com/free-sound-packs/ultimate-boom-bap-drum-kit/ -- License: none, \"FREE SOUND PACKS\"
+(Retrieved 24th June 2026)
 
-Utopia by Cymatics -- https://cymatics.fm/products/utopia -- License: Royalty Free (Retrieved 24th June 2026)
+Utopia by Cymatics -- https://cymatics.fm/products/utopia -- License: Royalty Free
+(Retrieved 24th June 2026)
 
-Free Riser Sound Effects Sample Pack by Abletunes -- https://abletunes.com/blog/free-riser-sound-effects-sample-pack/ -- License: Royalty Free (Retrieved 24th June 2026)
+Free Riser Sound Effects Sample Pack by Abletunes -- https://abletunes.com/blog/free-riser-sound-effects-sample-pack/ -- License: Royalty Free
+(Retrieved 24th June 2026)
 
-Free Tribal Drum Kit by Producer Spot -- https://www.producerspot.com/download-free-tribal-drum-kit-samples-by-producer-spot/ -- License: Royalty Free (Retrieved 24th June 2026 via https://www.mediafire.com/download/03br7rc101f0ur3/ProducerSpot-Tribal-Drums.zip via https://web.archive.org/web/20190306202704/http://www.producerspot.com/download-free-tribal-drum-kit-samples-by-producer-spot)"
+Free Tribal Drum Kit by Producer Spot -- https://www.producerspot.com/download-free-tribal-drum-kit-samples-by-producer-spot/ -- License: Royalty Free
+(Retrieved 24th June 2026 via https://www.mediafire.com/download/03br7rc101f0ur3/ProducerSpot-Tribal-Drums.zip via https://web.archive.org/web/20190306202704/http://www.producerspot.com/download-free-tribal-drum-kit-samples-by-producer-spot)"
 
 [node name="title_label" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox/packs/scroll" index="0"]
 text = "sound #2 - packs"
@@ -455,6 +464,15 @@ External plugins used in FL Studio:
 * Vital [VST] -- https://vital.audio/ (Retrieved 24th June 2026)
 * Valhalla Supermassive [Plugin] -- https://valhalladsp.com/shop/reverb/valhalla-supermassive/ (Retrieved 24th June 2026)
 * LABS [VST] -- https://www.spitfireaudio.com/ (Retrieved 24th June 2026)"
+
+[node name="licenses" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
+layout_mode = 2
+title = "licenses"
+text = "Below are the links to the licenses which have been referred to:
+'Attribution 2.0': https://creativecommons.org/licenses/by/2.0/
+'Attribution 3.0': https://creativecommons.org/licenses/by/3.0/
+'Attribution 4.0': https://creativecommons.org/licenses/by/4.0/
+'Creative Commons 0': https://creativecommons.org/publicdomain/zero/1.0/"
 
 [node name="achievements_list_popup" parent="." instance=ExtResource("5_7l6aj")]
 layout_mode = 1

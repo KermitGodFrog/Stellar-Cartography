@@ -1,4 +1,4 @@
-white satellite by Galen Crout -- https://commons.wikimedia.org/wiki/File:Satellite_Antenna_Skyward_(Unsplash).jpg -- License: CC0 1.0 Universal -- Changes: background removed, composited with other images
+white satellite by Galen Crout -- https://commons.wikimedia.org/wiki/File:Satellite_Antenna_Skyward_(Unsplash).jpg -- License: Creative Commons 0 -- Changes: background removed, composited with other images
 (Retrieved 23rd August 2026)
 
 ISS074-E-393 by NASA -- https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?mission=ISS074&roll=E&frame=393 -- License: none -- Changes: composited with other images, cropped
@@ -6,3 +6,5 @@ ISS074-E-393 by NASA -- https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?mission=I
 	Image courtesy of the Earth Science and Remote Sensing Unit, NASA Johnson Space Center
 	https://eol.jsc.nasa.gov
 
+Asteroid and it's Pile of Rubble by Kevin M. Gill -- https://commons.wikimedia.org/wiki/File:Asteroid_and_it%27s_Pile_of_Rubble_(15148296739).jpg -- License: Attribution 2.0 -- Changes: cropped, resized
+(Retrieved 2nd October 2026)

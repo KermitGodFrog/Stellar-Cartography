@@ -458,6 +458,7 @@ func _on_player_following_body(following_body: bodyAPI):
 		starSystemAPI.BODY_TYPES.SPACE_ANOMALY:
 			new_query.add("space_anomaly_available", following_body.metadata.get("space_anomaly_available", true))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
+			new_query.add_tree_access("seed_randf", global_data.get_rng(hash(following_body.metadata.get("seed", 0))).randf())
 		starSystemAPI.BODY_TYPES.SPACE_ENTITY:
 			new_query.add("migration_analysis_available", following_body.metadata.get("migration_analysis_available", true))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
