@@ -236,7 +236,10 @@ ISS074-E-393 by NASA -- https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?mission=I
 	https://eol.jsc.nasa.gov
 
 Asteroid and it's Pile of Rubble by Kevin M. Gill -- https://commons.wikimedia.org/wiki/File:Asteroid_and_it%27s_Pile_of_Rubble_(15148296739).jpg -- License: Attribution 2.0 -- Changes: cropped, resized
-(Retrieved 2nd October 2026)"
+(Retrieved 2nd October 2026)
+
+Model of Galileo navigation satellite, 2014 by Paragon Creative -- https://commons.wikimedia.org/wiki/File:Galileo_satellite_model.jpg -- License: Attribution 4.0 -- Changes: cropped, resized
+(Retrieved 3rd October 2026)"
 
 [node name="sound_effects" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2
