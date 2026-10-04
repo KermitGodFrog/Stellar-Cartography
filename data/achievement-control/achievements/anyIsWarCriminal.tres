@@ -9,4 +9,3 @@ description = "Break the Codex Ethica."
 dialogue_criteria = {
 "player_war_criminal": true
 }
-index = 0

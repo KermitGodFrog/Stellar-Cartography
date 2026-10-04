@@ -7,3 +7,7 @@ class_name responseAchievement
 @export_multiline var description = ""
 @export var dialogue_criteria: Dictionary = {}
 @export var index: int #i dont think this does anything??
+@export var hidden_until_unlocked: bool = false
+
+enum TROPHY_TYPES {NORMAL, EXPLORATION}
+@export var trophy_type: TROPHY_TYPES = TROPHY_TYPES.NORMAL
