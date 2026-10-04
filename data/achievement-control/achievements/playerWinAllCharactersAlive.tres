@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_lo7m6")
 name = "Decisive Leadership"
-description = "Win the game without loosing any of your senior staff."
+description = "Win the game without losing any of your senior staff."
 dialogue_criteria = {
 "concept": "playerWin",
 "player_CHIEF_ENGINEER_alive": true,

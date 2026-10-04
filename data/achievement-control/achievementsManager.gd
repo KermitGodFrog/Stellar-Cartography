@@ -23,7 +23,8 @@ const default_achievements: Dictionary = {
 	preload("uid://b1p5pjreb7qtb"): false,
 	preload("uid://dnqtbuyyvp4rp"): false,
 	preload("uid://bmt6d3hv7bcuw"): false,
-	preload("uid://dp84a2qtdaaas"): false
+	preload("uid://ogjbkpajm27q"): false,
+	preload("uid://2wykrp5tgsaf"): false
 }
 
 #/\/\/\/\/\

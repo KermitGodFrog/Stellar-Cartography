@@ -389,6 +389,9 @@ func _on_player_discovered_body(discovered_body: bodyAPI) -> void:
 		starSystemAPI.BODY_TYPES.CUSTOM:
 			if not discovered_body.get_dialogue_tag().is_empty():
 				body_query_add_custom_type_shared(new_query, discovered_body)
+		starSystemAPI.BODY_TYPES.PLANET:
+			new_query.add_tree_access("planet_habitable", discovered_body.is_habitable())
+			new_query.add_tree_access("planet_rare", discovered_body.is_rare())
 	
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
