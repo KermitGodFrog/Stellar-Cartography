@@ -2,7 +2,7 @@ extends Node
 
 const game_path = "res://scenes/game/game.tscn" #not used to load the game, thankfully, just to set whether tips should be shown!
 const main_menu_path = "res://scenes/main-menu/main_menu.tscn"
-const create_menu_path = "res://scenes/create-menu/create_menu.tscn"
+const title_screen_path = "res://scenes/title-screen/title_screen.tscn"
 const loading_screen_path = "res://scenes/loading-screen/loading_screen.tscn"
 const exclude = ["achievementManager"]
 
@@ -18,14 +18,16 @@ func _ready():
 	game_data.storeDefaultSettings() #<- this needs to only be triggered ONCE.
 	
 	var details_helper := game_data.loadUserDetails()
+	details_helper.create_menu_this_session = false
 	if not details_helper.played_previously:
 		details_helper.played_previously = true
-		global_data.change_scene.emit(create_menu_path, {
-			"init_type": global_data.GAME_INIT_TYPES.TUTORIAL
+		global_data.change_scene.emit(title_screen_path, {
+			"init_type": global_data.TITLE_SCREEN_INIT_TYPES.NEW_PLAYER
 		})
 		game_data.saveUserDetails(details_helper)
-		return
-	global_data.change_scene.emit(main_menu_path)
+	else:
+		global_data.change_scene.emit(title_screen_path)
+		game_data.saveUserDetails(details_helper)
 	pass
 
 func _change_scene(path_to_scene, init_args: Dictionary = {}): #init args: {"init_type": thing, "init_data": [thing, thing]}

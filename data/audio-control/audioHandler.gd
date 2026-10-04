@@ -18,16 +18,37 @@ func _on_pause_mode_changed(_value):
 
 var music_linear_volume_target: float = 1.0
 var enable_music_criteria: Dictionary = {}
+var blur_music_criteria: Dictionary = {}
 var music_queue: Array[String] = []
+
+enum AMBIENCE_TYPES {GAME, CREATE_MENU}
+var ambience_type: AMBIENCE_TYPES = AMBIENCE_TYPES.GAME
+var intermission_mean: float = 120.0
+var intermission_stdev: float = 30.0
+
+
 
 func _process(delta):
 	radio_handler.enable_radio = _pause_mode == game_data.PAUSE_MODES.NONE
 	enable_music_criteria["pause_mode_none"] = _pause_mode == game_data.PAUSE_MODES.NONE
 	
-	var enable_music: bool = enable_music_criteria.values().all(equal_to_true)
+	var enable_music: bool = enable_music_criteria.values().all(equal_to_true) and not enable_music_criteria.is_empty()
 	match enable_music:
-		true: music_linear_volume_target = 1.0
-		false: music_linear_volume_target = 0.0
+		true:
+			music_linear_volume_target = 1.0
+		false:
+			music_linear_volume_target = 0.0
+	
+	var music_bus_idx := AudioServer.get_bus_index("Music")
+	var eq_effect := AudioServer.get_bus_effect(music_bus_idx, 0)
+	var blur_music: bool = blur_music_criteria.values().all(equal_to_true) and not blur_music_criteria.is_empty()
+	match blur_music:
+		true:
+			for idx in range(3, 6):
+				eq_effect.set_band_gain_db(idx, lerpf(eq_effect.get_band_gain_db(idx), -60, 5.0 * delta))
+		false:
+			for idx in range(3, 6):
+				eq_effect.set_band_gain_db(idx, lerpf(eq_effect.get_band_gain_db(idx), 0.0, 5.0 * delta))
 	
 	#print("MUSIC LINEAR VOLUME TARGET: ", music_linear_volume_target)
 	#print("MUSIC REAL VOLUME (DB): ", music.volume_db)
@@ -52,6 +73,11 @@ func _ready():
 	intermission.connect("timeout", _on_intermission_timeout)
 	restart_intermission()
 	
+	var music_bus_idx := AudioServer.get_bus_index("Music")
+	var eq_effect := AudioServer.get_bus_effect(music_bus_idx, 0)
+	for idx in range(0, 6):
+		eq_effect.set_band_gain_db(idx, 0.0)
+	
 	for node in get_tree().get_nodes_in_group("playUIClickSFX"):
 		if node is Button:
 			node.connect("pressed", _on_play_once_UI_click_SFX)
@@ -70,14 +96,18 @@ func _ready():
 
 func restart_intermission() -> void:
 	intermission.set_wait_time(
-		maxi(0, randfn(120.0, 30.0))
+		maxi(0, randfn(intermission_mean, intermission_stdev))
 		)
 	intermission.start()
 	pass
 
 func _on_intermission_timeout() -> void:
 	if _pause_mode == game_data.PAUSE_MODES.NONE:
-		music_queue.append("res://sound/music/ambience.tres")
+		match ambience_type:
+			AMBIENCE_TYPES.GAME:
+				music_queue.append("res://sound/music/ambience.tres")
+			AMBIENCE_TYPES.CREATE_MENU:
+				music_queue.append("res://sound/music/create_menu_ambience.tres")
 	restart_intermission()
 	pass
 
