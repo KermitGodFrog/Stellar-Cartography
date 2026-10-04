@@ -360,7 +360,7 @@ func _physics_process(delta):
 	pass
 
 
-func _on_player_theorised_body(theorised_body: bodyAPI):
+func _on_player_theorised_body(theorised_body: bodyAPI) -> void:
 	var new_query = responseQuery.new()
 	new_query.add("concept", "theorisedBody")
 	body_query_add_shared(new_query, theorised_body)
@@ -379,7 +379,26 @@ func _on_player_theorised_body(theorised_body: bodyAPI):
 			pass
 	pass
 
-func _on_player_orbiting_body(orbiting_body: bodyAPI):
+func _on_player_discovered_body(discovered_body: bodyAPI) -> void:
+	var new_query = responseQuery.new()
+	new_query.add("concept", "discoveredBody")
+	body_query_add_shared(new_query, discovered_body)
+	
+	#type construction >>>>>>>
+	match discovered_body.get_type():
+		starSystemAPI.BODY_TYPES.CUSTOM:
+			if not discovered_body.get_dialogue_tag().is_empty():
+				body_query_add_custom_type_shared(new_query, discovered_body)
+	
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
+	
+	#type response >>>>>>>
+	match discovered_body.get_type():
+		_:
+			pass
+	pass
+
+func _on_player_orbiting_body(orbiting_body: bodyAPI) -> void:
 	var new_query = responseQuery.new()
 	new_query.add("concept", "orbitingBody")
 	body_query_add_shared(new_query, orbiting_body)
@@ -404,7 +423,7 @@ func _on_player_orbiting_body(orbiting_body: bodyAPI):
 					orbiting_body.metadata["custom_orbit_available"] = false
 	pass
 
-func _on_player_following_body(following_body: bodyAPI):
+func _on_player_following_body(following_body: bodyAPI) -> void:
 	var new_query = responseQuery.new()
 	if following_body.is_known():
 		new_query.add("concept", "followingBody")
@@ -977,6 +996,8 @@ func _on_found_body(id: int):
 					return
 				
 				_on_sys_survey_efficiency_bonus()
+			
+			_on_player_discovered_body(body) #dialogue
 	pass
 
 func _on_add_console_entry(entry_text: String, text_color: Color = Color.WHITE): #called via systtem 3d
