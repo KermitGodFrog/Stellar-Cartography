@@ -8,6 +8,7 @@ signal returnButtonPressed
 @onready var exploration_trophy = preload("uid://id0eoqh6iql4")
 
 @onready var spawn_scroll = $panel/margin/actions_items_split/scroll/spawn_scroll
+@onready var total_progress = $panel/margin/actions_items_split/total_progress
 
 func receive_updated_achievements(updated_achievements: Dictionary):
 	for i in spawn_scroll.get_children():
@@ -18,7 +19,21 @@ func receive_updated_achievements(updated_achievements: Dictionary):
 		var new = achievement_item.instantiate()
 		new.connect("ready", _on_achievement_item_ready.bind(new, updated_achievements, a))
 		spawn_scroll.add_child(new)
+	
+	var achievements_count = updated_achievements.values().size()
+	var u_achievements_count = updated_achievements.values().reduce(iterate_if_unlocked, 0)
+	total_progress.set_max(achievements_count)
+	
+	await visibility_changed
+	var tween: Tween = create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(total_progress, "value", u_achievements_count, 2)
 	pass
+func iterate_if_unlocked(accum: int, unlocked: bool) -> int:
+	if unlocked:
+		return accum + 1
+	else:
+		return accum
 
 func _on_achievement_item_ready(new, updated_achievements, a: responseAchievement) -> void:
 	var display_hidden: bool = false

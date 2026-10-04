@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://njcr66sajfan"]
+[gd_scene load_steps=8 format=3 uid="uid://njcr66sajfan"]
 
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_m7f4p"]
 [ext_resource type="Script" uid="uid://bv27csckftll2" path="res://scenes/main-menu/achievements-list/achievements_list_popup.gd" id="1_xapbp"]
@@ -7,6 +7,20 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t5pok"]
 content_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8fni0"]
+bg_color = Color(0.09411765, 0.09411765, 0.09411765, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_55she"]
+bg_color = Color(0.23529412, 0.5764706, 0.44313726, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [node name="achievements_list_popup" type="Control" groups=["FOLLOW_ACHIEVEMENTS_UPDATE"]]
 visible = false
@@ -91,5 +105,12 @@ vertical_scroll_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="total_progress" type="ProgressBar" parent="panel/margin/actions_items_split"]
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_8fni0")
+theme_override_styles/fill = SubResource("StyleBoxFlat_55she")
 
 [connection signal="pressed" from="panel/margin/actions_items_split/actions_panel/actions_hbox/achievements_return_button" to="." method="_on_achievements_return_button_pressed"]
