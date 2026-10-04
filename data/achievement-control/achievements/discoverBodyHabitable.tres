@@ -4,10 +4,11 @@
 
 [resource]
 script = ExtResource("1_psooo")
-name = "Home"
-description = "Discover a habitable body during a run."
+name = "Human Approved"
+description = "Discover a rare habitable planet."
 dialogue_criteria = {
 "concept": "discoverBody",
-"planet_habitable": true
+"planet_habitable": true,
+"tutorial": false
 }
 metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

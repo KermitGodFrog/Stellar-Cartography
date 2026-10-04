@@ -4,11 +4,12 @@
 
 [resource]
 script = ExtResource("1_71t8w")
-name = "Shiny"
-description = "Discover a rare body during a run (that isn't habitable)."
+name = "Shiny!"
+description = "Discover a rare, non-habitable planet."
 dialogue_criteria = {
 "concept": "discoverBody",
 "planet_habitable": false,
-"planet_rare": true
+"planet_rare": true,
+"tutorial": false
 }
 metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

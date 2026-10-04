@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_yhpkd")
-name = "Destination: Pirate Haven"
-description = "Go-to a wormhole in the treacherous Frontier region during a run."
+name = "Destination: Marauder Haven"
+description = "Go-to a wormhole in the treacherous Frontier region."
 dialogue_criteria = {
 "concept": "followingBody",
 "player_in_FRONTIER_region": true,

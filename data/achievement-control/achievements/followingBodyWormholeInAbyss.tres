@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_882v0")
 name = "Destination: The Unknown"
-description = "Go-to a wormhole in the Abyss region during a run. Some things are better left unknown."
+description = "Go-to a wormhole in the Abyss region. Some things are better left unknown."
 dialogue_criteria = {
 "concept": "followingBody",
 "player_in_ABYSS_region": true,
