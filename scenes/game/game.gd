@@ -482,6 +482,8 @@ func _on_player_following_body(following_body: bodyAPI) -> void:
 			new_query.add("migration_analysis_available", following_body.metadata.get("migration_analysis_available", true))
 			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 			new_query.add_tree_access("space_entity_type", str(game_data.ENTITY_CLASSIFICATIONS.find_key(following_body.entity_classification)))
+		starSystemAPI.BODY_TYPES.RENDEZVOUS_POINT:
+			new_query.add_tree_access("seed", following_body.metadata.get("seed", 0))
 		starSystemAPI.BODY_TYPES.STAR:
 			new_query.add("cram_cell_synthesis_available", following_body.metadata.get("cram_cell_synthesis_available", true))
 			new_query.add("star_available", following_body.metadata.get("star_available", true))
