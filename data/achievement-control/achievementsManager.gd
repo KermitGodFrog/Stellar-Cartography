@@ -1,9 +1,6 @@
 extends Node
 
-var achievements: Dictionary = {}:
-	set(value):
-		achievements = value
-		#print("ACHIEVEMENTS UPDATED ", value)
+var achievements: Dictionary = {}
 const default_achievements: Dictionary = {
 	preload("uid://diwwcd4u152wj"): false,
 	preload("uid://hwxe6ko2un15"): false,
@@ -21,27 +18,14 @@ const default_achievements: Dictionary = {
 	preload("uid://2wykrp5tgsaf"): false
 }
 
-
-var achievements_array: Array[responseAchievement] = []:
-	get:
-		return achievements.keys()
-var default_achievement_wIDs_lookup: Dictionary = {}:
-	get:
-		var lookup: Dictionary = {}
-		for a in default_achievements:
-			lookup[a] = global_data.get_resource_name(a)
-		return lookup
-
-
-#/\/\/\/\/\
-#The export version of the game MUST have a different QUANTITY of achievements than the previous version if it has been tampered with.
-#If this doesnt happen, players with achievement data from previous versions will not see the changes.
-
-@onready var achievement_control = $achievement_display/achievement_control #might be depreciated soon
+@onready var achievement_control = $achievement_display/achievement_control 
 
 #func _process(_delta):
-#	if Input.is_action_just_pressed("SC_LOAD_CONFIRMATION"):
-#		achievements = default_achievements
+#	if Input.is_action_just_pressed("SC_DEBUG_OPEN_DEBUG_MENU"):
+#		var unlock = achievements.keys().pick_random()
+#		var _achievements = achievements.duplicate() # in case achievements is in a read-only state (like usual)
+#		_achievements.set(unlock, true)
+#		achievements = _achievements
 #	pass
 
 func _notification(what):
@@ -49,58 +33,42 @@ func _notification(what):
 		NOTIFICATION_PARENTED:
 			#load achievements
 			
-			var base: Dictionary = default_achievements
-			
 			var helper: achievementsHelper = game_data.loadAchievements()
 			if helper != null:
 				print("HELPER EXISTS, LOADING")
-				achievements = achievement_wIDs_to_achievements(helper.achievement_wIDs)
+				#convert written achievements to real achievements \/
+				var _achievements: Dictionary = {}
+				for a in default_achievements:
+					var w_a = global_data.get_resource_name(a)
+					if helper.written_achievements.has(w_a):
+						_achievements[a] = helper.written_achievements.get(w_a)
+				achievements = default_achievements.merged(_achievements, true)
 			else:
 				print("HELPER DOES NOT EXIST, RESETTING")
 				achievements = default_achievements
-			
-			#if achievements.size() != default_achievements.size():
-			#	print("SIZE DIFFERENCE, ASSUMING GAME UPDATE, RESETTING (", achievements.size(), " VS ", default_achievements.size(), ")")
-			#	achievements = default_achievements.duplicate(true)
 			
 			print("LOADING DONE")
 		NOTIFICATION_WM_CLOSE_REQUEST:
 			#save achievements
 			
-			var helper = achievementsHelper.new()
-			helper.achievement_wIDs = achievementsHelper.achievements_to_wIDs(achievements)
+			var helper := achievementsHelper.new()
+			var _written_achievements: Dictionary = {}
+			for a in achievements:
+				_written_achievements[global_data.get_resource_name(a)] = achievements.get(a)
+			helper.written_achievements = _written_achievements
 			game_data.saveAchievements(helper)
 			
 			print("SAVING DONE")
 	pass
 
-func achievement_wIDs_to_achievements(_achievement_wIDs: Dictionary) -> Dictionary:
-	var _achievements: Dictionary = {}
-	var lookup: Dictionary = default_achievement_wIDs_lookup
-	for a_wID in _achievement_wIDs:
-		if lookup.values().has(a_wID):
-			if 
-			
-			
-			
-		
-		
-		
-	
-	
-	
-	
-	
-	return 
-
-
-
 func _ready():
-	global_data.scene_changed.connect(_on_scene_changed.unbind(1)) #i think this class is high enough level to be granted access to this
-	#unbind(1) = unbind 'path_to_scene'
+	global_data.scene_changed.connect(_on_scene_changed.unbind(1)) #>> unbind(1) = unbind 'path_to_scene'
 	pass
 
 func _on_scene_changed():
+	var achievements_array: Array[responseAchievement] = []
+	for a in achievements:
+		achievements_array.append(a)
 	get_tree().call_deferred("call_group", "FOLLOW_ACHIEVEMENTS_ARRAY_UPDATE", "receive_updated_achievements_array", achievements_array) #this calls too early/late and doesnt work for some reason when/if achievementsHelper 'achievements' variable is inferred to be an array rather than an Array[achievement]
 	get_tree().call_deferred("call_group", "FOLLOW_ACHIEVEMENTS_UPDATE", "receive_updated_achievements", achievements)
 	pass
@@ -113,10 +81,11 @@ func receive_ranked_achievements(ranked_achievements: Dictionary):
 	for a: responseAchievement in ranked_achievements:
 		if ranked_achievements.get(a) == a.dialogue_criteria.size(): #e.g, if number of matches == size of criteria:
 			if achievements.get(a) == false:
-				achievements[a] = true
+				var _achievements: Dictionary = achievements.duplicate() # in case achievements is in a read-only state (like usual)
+				_achievements.set(a, true)
+				achievements = _achievements
 				print("UNLOCKED ACHIEVEMENT: ", a.name)
 				achievement_control.queue_achievement(a)
-				#needs to queue unlocked achievements
 			#else:
 				#print("ACHIEVEMENT ALREADY UNLOCKED: ", a.name)
 	pass
