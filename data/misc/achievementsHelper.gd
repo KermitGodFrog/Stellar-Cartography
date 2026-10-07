@@ -2,7 +2,7 @@ extends Resource
 class_name achievementsHelper
 #such a high tech and complex class.. wow.. amazing :3
 
-@export var achievements: Dictionary
+@export var achievement_wIDs: Dictionary
 
 static func achievements_to_wIDs(_achievements: Dictionary) -> Dictionary:
 	var wIDs: Dictionary = {}

@@ -4,12 +4,6 @@ var achievements: Dictionary = {}:
 	set(value):
 		achievements = value
 		#print("ACHIEVEMENTS UPDATED ", value)
-var achievements_array: Array[responseAchievement] = []:
-	get:
-		var array: Array[responseAchievement] = []
-		for a in achievements:
-			array.append(a)
-		return array
 const default_achievements: Dictionary = {
 	preload("uid://diwwcd4u152wj"): false,
 	preload("uid://hwxe6ko2un15"): false,
@@ -27,6 +21,18 @@ const default_achievements: Dictionary = {
 	preload("uid://2wykrp5tgsaf"): false
 }
 
+
+var achievements_array: Array[responseAchievement] = []:
+	get:
+		return achievements.keys()
+var default_achievement_wIDs_lookup: Dictionary = {}:
+	get:
+		var lookup: Dictionary = {}
+		for a in default_achievements:
+			lookup[a] = global_data.get_resource_name(a)
+		return lookup
+
+
 #/\/\/\/\/\
 #The export version of the game MUST have a different QUANTITY of achievements than the previous version if it has been tampered with.
 #If this doesnt happen, players with achievement data from previous versions will not see the changes.
@@ -42,28 +48,52 @@ func _notification(what):
 	match what:
 		NOTIFICATION_PARENTED:
 			#load achievements
+			
+			var base: Dictionary = default_achievements
+			
 			var helper: achievementsHelper = game_data.loadAchievements()
 			if helper != null:
 				print("HELPER EXISTS, LOADING")
-				achievements = helper.achievements.duplicate(true)
+				achievements = achievement_wIDs_to_achievements(helper.achievement_wIDs)
 			else:
 				print("HELPER DOES NOT EXIST, RESETTING")
-				achievements = default_achievements.duplicate(true)
+				achievements = default_achievements
 			
-			if achievements.size() != default_achievements.size():
-				print("SIZE DIFFERENCE, ASSUMING GAME UPDATE, RESETTING (", achievements.size(), " VS ", default_achievements.size(), ")")
-				achievements = default_achievements.duplicate(true)
+			#if achievements.size() != default_achievements.size():
+			#	print("SIZE DIFFERENCE, ASSUMING GAME UPDATE, RESETTING (", achievements.size(), " VS ", default_achievements.size(), ")")
+			#	achievements = default_achievements.duplicate(true)
 			
 			print("LOADING DONE")
 		NOTIFICATION_WM_CLOSE_REQUEST:
 			#save achievements
 			
 			var helper = achievementsHelper.new()
-			helper.achievements = achievements
+			helper.achievement_wIDs = achievementsHelper.achievements_to_wIDs(achievements)
 			game_data.saveAchievements(helper)
 			
 			print("SAVING DONE")
 	pass
+
+func achievement_wIDs_to_achievements(_achievement_wIDs: Dictionary) -> Dictionary:
+	var _achievements: Dictionary = {}
+	var lookup: Dictionary = default_achievement_wIDs_lookup
+	for a_wID in _achievement_wIDs:
+		if lookup.values().has(a_wID):
+			if 
+			
+			
+			
+		
+		
+		
+	
+	
+	
+	
+	
+	return 
+
+
 
 func _ready():
 	global_data.scene_changed.connect(_on_scene_changed.unbind(1)) #i think this class is high enough level to be granted access to this
