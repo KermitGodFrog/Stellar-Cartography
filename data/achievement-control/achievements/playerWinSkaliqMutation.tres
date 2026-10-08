@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://k8xj0lsowpoo"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_uk05n"]
+
+[resource]
+script = ExtResource("1_uk05n")
+name = "Alien Assisted Victory"
+description = "Win the game on any difficulty with the 'Content: Skaliq' mutation installed."
+dialogue_criteria = {
+"concept": "playerWin",
+"mutations_CONTENT_SKALIQ_installed": true
+}
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

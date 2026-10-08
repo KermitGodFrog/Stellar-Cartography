@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://c8x2n2hebnqal"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_0fhiw"]
+
+[resource]
+script = ExtResource("1_0fhiw")
+name = "Probe Graveyard"
+description = "Find an ancient spaceship, and several human probes, dancing through the clouds of a gas giant."
+dialogue_criteria = {
+"PA_01ProbeGraveyardInvestigated_PREV": true,
+"concept": "optionSelected",
+"option": "CAHardLeave"
+}
+hidden_until_unlocked = true
+trophy_type = 1
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

@@ -94,6 +94,7 @@ func populateWithWorldData(world: worldAPI) -> void:
 	for id in worldAPI.MUTATION_ID:
 		if world.installed_mutations.has(worldAPI.MUTATION_ID.get(id)):
 			add("mutations_%s_installed" % id, true)
+	add("difficulty", str(game_data.DIFFICULTY.find_key(world.difficulty)))
 	pass
 
 func populateWithDialogueMemoryData(dialogue_memory: Dictionary) -> void:

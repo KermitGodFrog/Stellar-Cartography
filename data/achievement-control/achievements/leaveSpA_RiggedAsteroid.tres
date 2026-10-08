@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://i42nquvmroqd"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_2uh1s"]
+
+[resource]
+script = ExtResource("1_2uh1s")
+name = "Rigged Asteroid"
+description = "Investigate an asteroid with an engine strapped onto it that flies around for no discernible reason."
+dialogue_criteria = {
+"SpA_RiggedAsteroidInvestigated_PREV": true,
+"concept": "optionSelected",
+"option": "defaultHardLeave"
+}
+hidden_until_unlocked = true
+trophy_type = 1
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

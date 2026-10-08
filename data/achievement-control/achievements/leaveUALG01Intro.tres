@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://by1vqmnaujv3q"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_bv84k"]
+
+[resource]
+script = ExtResource("1_bv84k")
+name = "Gremlin Translation"
+description = "Establish communication with a light gremlin."
+dialogue_criteria = {
+"UALG01Intro_PREV": true,
+"concept": "lightGremlinLeave"
+}
+hidden_until_unlocked = true
+trophy_type = 1
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

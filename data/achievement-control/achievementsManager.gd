@@ -1,75 +1,103 @@
 extends Node
 
-var achievements: Dictionary = {}:
-	set(value):
-		achievements = value
-		#print("ACHIEVEMENTS UPDATED ", value)
-var achievements_array: Array[responseAchievement] = []:
-	get:
-		var array: Array[responseAchievement] = []
-		for a in achievements:
-			array.append(a)
-		return array
+var achievements: Dictionary = {}
 const default_achievements: Dictionary = {
-	preload("uid://diwwcd4u152wj"): false,
-	preload("uid://hwxe6ko2un15"): false,
-	preload("uid://c1jawjdur6vwj"): false,
-	preload("uid://b0njvlvfd51jw"): false,
-	preload("uid://h11jp6ylt5p4"): false,
-	preload("uid://bnnk3hpl5vyv5"): false,
-	preload("uid://bs3s26w3bcouo"): false,
-	preload("uid://cw60jj5x3nom5"): false,
-	preload("uid://dtkpc2w8p3rlp"): false,
-	preload("uid://b1p5pjreb7qtb"): false,
-	preload("uid://dnqtbuyyvp4rp"): false,
-	preload("uid://bmt6d3hv7bcuw"): false,
-	preload("uid://dp84a2qtdaaas"): false
+	#win stuff (main)
+	preload("uid://dinaldqt5csly"): false, #playerWinVanilla
+	preload("uid://cvyy37gdykhgt"): false, #playerWinExtremeDifficulty
+	preload("uid://c1jawjdur6vwj"): false, #playerWinTenMillionScore
+	preload("uid://b0njvlvfd51jw"): false, #playerWinFifteenMillionScore
+	preload("uid://h11jp6ylt5p4"): false, #playerWinTwentyMillionScore
+	#win stuff (weird)
+	preload("uid://bnnk3hpl5vyv5"): false, #playerWinAllCharactersAlive
+	preload("uid://42ts8a1cul2l"): false, #playerWinSpeedrun
+	preload("uid://drc1rnxa2mi1"): false, #playerWinExtremeDifficultyMutations
+	preload("uid://k8xj0lsowpoo"): false, #playerWinSkaliqMutation
+	preload("uid://ceye5fnstopvs"): false,
+	preload("uid://dfw8m67n2kyno"): false,
+	#tutorial stuff
+	preload("uid://diwwcd4u152wj"): false, #playerWinTutorial
+	preload("uid://hwxe6ko2un15"): false, #discoverBodyOmissionTutorial
+	#during run stuff
+	preload("uid://bs3s26w3bcouo"): false, #anyAudioVisualizerUnlocked
+	preload("uid://cw60jj5x3nom5"): false, #anyLongRangeScopesUnlocked
+	preload("uid://dtkpc2w8p3rlp"): false, #anyGasLayerSurveyorUnlocked
+	preload("uid://b1p5pjreb7qtb"): false, #followingBodyWormholeInFrontier
+	preload("uid://dnqtbuyyvp4rp"): false, #followingBodyWormholeInAbyss
+	preload("uid://bmt6d3hv7bcuw"): false, #anyHullDeteriorationFifty
+	preload("uid://ogjbkpajm27q"): false, #discoverBodyHabitable
+	preload("uid://2wykrp5tgsaf"): false, #discoverBodyRare
+	#---discoveries \/
+	#PA discoveries
+	preload("uid://c8x2n2hebnqal"): false, #leavePA_01ProbeGraveyard
+	preload("uid://cpi2bf0gx3dcj"): false, #leavePA_02PlanetRCS
+	preload("uid://kn8twq88whqh"): false, #leavePA_03TheResearcher
+	preload("uid://c6fa0xs3lc5ok"): false, #leavePA04HollowGiant
+	preload("uid://dtgmxo7nnbivy"): false, #leavePA05PurpleMonkey
+	#SA discoveries
+	preload("uid://dm1i2fpsrtuym"): false, #leaveSA_01StarRing
+	preload("uid://cofgukrb7x78m"): false, #leaveSA03SeederShip
+	#SpA discoveries
+	preload("uid://i42nquvmroqd"): false, #leaveSpA_RiggedAsteroid
+	preload("uid://bdgm0bw5kbx71"): false, #leaveSpA_RiftDriver
+	preload("uid://dalg40bs45ejl"): false, #leaveSpA_DysonSphere
+	preload("uid://c86txnxnvyyh6"): false, #leaveSpA_NRP
+	#UA discoveries
+	preload("uid://dsx3b2hl7wsii"): false, #leaveUA01Politics
+	preload("uid://by1vqmnaujv3q"): false, #leaveUALG01Intro
 }
 
-#/\/\/\/\/\
-#The export version of the game MUST have a different QUANTITY of achievements than the previous version if it has been tampered with.
-#If this doesnt happen, players with achievement data from previous versions will not see the changes.
-
-@onready var achievement_control = $achievement_display/achievement_control #might be depreciated soon
+@onready var achievement_control = $achievement_display/achievement_control 
 
 #func _process(_delta):
-#	if Input.is_action_just_pressed("SC_LOAD_CONFIRMATION"):
-#		achievements = default_achievements
+#	if Input.is_action_just_pressed("SC_DEBUG_OPEN_DEBUG_MENU"):
+#		var unlock = achievements.keys().pick_random()
+#		var _achievements = achievements.duplicate() # in case achievements is in a read-only state (like usual)
+#		_achievements.set(unlock, true)
+#		achievements = _achievements
 #	pass
 
 func _notification(what):
 	match what:
 		NOTIFICATION_PARENTED:
 			#load achievements
+			
 			var helper: achievementsHelper = game_data.loadAchievements()
 			if helper != null:
 				print("HELPER EXISTS, LOADING")
-				achievements = helper.achievements.duplicate(true)
+				#convert written achievements to real achievements \/
+				var _achievements: Dictionary = {}
+				for a in default_achievements:
+					var w_a = global_data.get_resource_name(a)
+					if helper.written_achievements.has(w_a):
+						_achievements[a] = helper.written_achievements.get(w_a)
+				achievements = default_achievements.merged(_achievements, true)
 			else:
 				print("HELPER DOES NOT EXIST, RESETTING")
-				achievements = default_achievements.duplicate(true)
-			
-			if achievements.size() != default_achievements.size():
-				print("SIZE DIFFERENCE, ASSUMING GAME UPDATE, RESETTING (", achievements.size(), " VS ", default_achievements.size(), ")")
-				achievements = default_achievements.duplicate(true)
+				achievements = default_achievements
 			
 			print("LOADING DONE")
 		NOTIFICATION_WM_CLOSE_REQUEST:
 			#save achievements
 			
-			var helper = achievementsHelper.new()
-			helper.achievements = achievements
+			var helper := achievementsHelper.new()
+			var _written_achievements: Dictionary = {}
+			for a in achievements:
+				_written_achievements[global_data.get_resource_name(a)] = achievements.get(a)
+			helper.written_achievements = _written_achievements
 			game_data.saveAchievements(helper)
 			
 			print("SAVING DONE")
 	pass
 
 func _ready():
-	global_data.scene_changed.connect(_on_scene_changed.unbind(1)) #i think this class is high enough level to be granted access to this
-	#unbind(1) = unbind 'path_to_scene'
+	global_data.scene_changed.connect(_on_scene_changed.unbind(1)) #>> unbind(1) = unbind 'path_to_scene'
 	pass
 
 func _on_scene_changed():
+	var achievements_array: Array[responseAchievement] = []
+	for a in achievements:
+		achievements_array.append(a)
 	get_tree().call_deferred("call_group", "FOLLOW_ACHIEVEMENTS_ARRAY_UPDATE", "receive_updated_achievements_array", achievements_array) #this calls too early/late and doesnt work for some reason when/if achievementsHelper 'achievements' variable is inferred to be an array rather than an Array[achievement]
 	get_tree().call_deferred("call_group", "FOLLOW_ACHIEVEMENTS_UPDATE", "receive_updated_achievements", achievements)
 	pass
@@ -82,10 +110,11 @@ func receive_ranked_achievements(ranked_achievements: Dictionary):
 	for a: responseAchievement in ranked_achievements:
 		if ranked_achievements.get(a) == a.dialogue_criteria.size(): #e.g, if number of matches == size of criteria:
 			if achievements.get(a) == false:
-				achievements[a] = true
+				var _achievements: Dictionary = achievements.duplicate() # in case achievements is in a read-only state (like usual)
+				_achievements.set(a, true)
+				achievements = _achievements
 				print("UNLOCKED ACHIEVEMENT: ", a.name)
 				achievement_control.queue_achievement(a)
-				#needs to queue unlocked achievements
 			#else:
 				#print("ACHIEVEMENT ALREADY UNLOCKED: ", a.name)
 	pass

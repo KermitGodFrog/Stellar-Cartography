@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://cofgukrb7x78m"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_egic3"]
+
+[resource]
+script = ExtResource("1_egic3")
+name = "Seeder Ship Civilization"
+description = "Talk to the leader of a civilization living in the Commons of an old seeder ship."
+dialogue_criteria = {
+"SA03SeederShipInvestigated_PREV": true,
+"concept": "optionSelected",
+"option": "SA03SeederShipHardLeave"
+}
+hidden_until_unlocked = true
+trophy_type = 1
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

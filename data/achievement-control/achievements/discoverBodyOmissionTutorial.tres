@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://hwxe6ko2un15"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_2kmja"]
+
+[resource]
+script = ExtResource("1_2kmja")
+name = "Omission"
+description = "Discover a secret in the tutorial."
+dialogue_criteria = {
+"concept": "discoveredBody",
+"name": "Omission",
+"tutorial": true,
+"type": "PLANET"
+}
+index = 1

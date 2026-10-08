@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://kn8twq88whqh"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_020eo"]
+
+[resource]
+script = ExtResource("1_020eo")
+name = "The Researcher"
+description = "Investigate a claim of life on a dead planet from an old man with dubious intentions."
+dialogue_criteria = {
+"PA_03TheResearcherInvestigated_PREV": true,
+"concept": "optionSelected",
+"option": "PA_03TheResearcherLeaveCarry"
+}
+hidden_until_unlocked = true
+trophy_type = 1
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

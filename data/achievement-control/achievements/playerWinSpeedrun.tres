@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://42ts8a1cul2l"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_0tbfd"]
+
+[resource]
+script = ExtResource("1_0tbfd")
+name = "Speedrun"
+description = "Win the game in one hour and thirty minutes or faster."
+dialogue_criteria = {
+"concept": "playerWin",
+"play_time": "<=5400"
+}
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

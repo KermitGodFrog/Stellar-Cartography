@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://dfw8m67n2kyno"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_va0i6"]
+
+[resource]
+script = ExtResource("1_va0i6")
+name = "Rift Driver Adopter"
+description = "Use rift drivers to leave Insa."
+dialogue_criteria = {
+"concept": "playerWin",
+"win_context": "RIFT_DRIVER"
+}
+hidden_until_unlocked = true
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

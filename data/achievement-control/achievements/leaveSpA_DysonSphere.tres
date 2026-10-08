@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://dalg40bs45ejl"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_ar635"]
+
+[resource]
+script = ExtResource("1_ar635")
+name = "Dyson Sphere"
+description = "Investigate an inactive alien megastructure."
+dialogue_criteria = {
+"SpA_DysonSphereInvestigated_PREV": true,
+"concept": "optionSelected",
+"option": "defaultHardLeave"
+}
+hidden_until_unlocked = true
+trophy_type = 1
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://ogjbkpajm27q"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_psooo"]
+
+[resource]
+script = ExtResource("1_psooo")
+name = "Human Approved"
+description = "Discover a rare habitable planet."
+dialogue_criteria = {
+"concept": "discoverBody",
+"planet_habitable": true,
+"tutorial": false
+}
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

@@ -389,6 +389,9 @@ func _on_player_discovered_body(discovered_body: bodyAPI) -> void:
 		starSystemAPI.BODY_TYPES.CUSTOM:
 			if not discovered_body.get_dialogue_tag().is_empty():
 				body_query_add_custom_type_shared(new_query, discovered_body)
+		starSystemAPI.BODY_TYPES.PLANET:
+			new_query.add_tree_access("planet_habitable", discovered_body.is_habitable())
+			new_query.add_tree_access("planet_rare", discovered_body.is_rare())
 	
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
@@ -669,6 +672,13 @@ func _on_player_win():
 	
 	var new_query = responseQuery.new()
 	new_query.add("concept", "playerWin")
+	
+	
+	new_query.add_tree_access("installed_mutations_count", world.installed_mutations.size())
+	new_query.add_tree_access("play_time", world.play_time)
+	new_query.add("tutorial", init_type == global_data.GAME_INIT_TYPES.TUTORIAL)
+	
+	
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
 	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
@@ -1250,6 +1260,9 @@ func _on_tutorial_set_omission_override(value: bool):
 	pass
 
 func _on_tutorial_player_win():
+	var new_query = responseQuery.new()
+	new_query.add("concept", "tutorialPlayerWin")
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	_on_open_stats_menu(stats_menu.INIT_TYPES.TUTORIAL)
 	pass
 
