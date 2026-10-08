@@ -128,7 +128,7 @@ func _ready():
 		
 		game_data.saveWorld(world) #so if the player leaves before saving, the save file does not go back to a previous game!
 		
-		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.wav")
+		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/intro.ogg")
 		
 		allow_quick_pause = true
 		pause_menu.set("_installed_mutations", world.installed_mutations)
