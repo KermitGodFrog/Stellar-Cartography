@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://ceye5fnstopvs"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_c73pt"]
+
+[resource]
+script = ExtResource("1_c73pt")
+name = "Wormhole Enthusiast "
+description = "Use wormholes to leave Insa."
+dialogue_criteria = {
+"concept": "playerWin",
+"win_context": "WORMHOLE"
+}
+hidden_until_unlocked = true
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

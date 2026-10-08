@@ -42,7 +42,7 @@ signal lockUpgrade(upgrade_idx: playerAPI.UPGRADE_ID)
 signal addCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int)
 signal removeCharacterXP(occupation: characterAPI.OCCUPATIONS, amount: int)
 signal removeCharacterInitiativeXP(occupation: characterAPI.OCCUPATIONS)
-signal playerWin()
+signal playerWin(_open_stats_menu: bool)
 signal playStrangeDiscoveryThemeOrMotif()
 signal insaMakeAllWormholesRevealable()
 signal insaMakeRiftDriverUnavailable()
@@ -789,7 +789,7 @@ func lockUpgradeWithFlair(upgrade) -> void:
 	pass
 
 func forcePlayerWin() -> void: # only used for insa Rift Driver launch
-	emit_signal("playerWin")
+	emit_signal("playerWin", true)
 	pass
 
 func addXP_LOW(written_occupation: String) -> void:
@@ -978,6 +978,7 @@ func _TUTORIALSetOmissionOverride(value: bool):
 	pass
 
 func _TUTORIALPlayerWin():
+	emit_signal("playerWin", false)
 	emit_signal("TUTORIALPlayerWin")
 	pass
 

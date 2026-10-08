@@ -2,20 +2,33 @@ extends Node
 
 var achievements: Dictionary = {}
 const default_achievements: Dictionary = {
-	preload("uid://diwwcd4u152wj"): false,
-	preload("uid://hwxe6ko2un15"): false,
-	preload("uid://c1jawjdur6vwj"): false,
-	preload("uid://b0njvlvfd51jw"): false,
-	preload("uid://h11jp6ylt5p4"): false,
-	preload("uid://bnnk3hpl5vyv5"): false,
-	preload("uid://bs3s26w3bcouo"): false,
-	preload("uid://cw60jj5x3nom5"): false,
-	preload("uid://dtkpc2w8p3rlp"): false,
-	preload("uid://b1p5pjreb7qtb"): false,
-	preload("uid://dnqtbuyyvp4rp"): false,
-	preload("uid://bmt6d3hv7bcuw"): false,
-	preload("uid://ogjbkpajm27q"): false,
-	preload("uid://2wykrp5tgsaf"): false
+	#win stuff (main)
+	preload("uid://dinaldqt5csly"): false, #playerWinVanilla
+	preload("uid://cvyy37gdykhgt"): false, #playerWinExtremeDifficulty
+	preload("uid://c1jawjdur6vwj"): false, #playerWinTenMillionScore
+	preload("uid://b0njvlvfd51jw"): false, #playerWinFifteenMillionScore
+	preload("uid://h11jp6ylt5p4"): false, #playerWinTwentyMillionScore
+	#win stuff (weird)
+	preload("uid://bnnk3hpl5vyv5"): false, #playerWinAllCharactersAlive
+	preload("uid://42ts8a1cul2l"): false, #playerWinSpeedrun
+	preload("uid://drc1rnxa2mi1"): false, #playerWinExtremeDifficultyMutations
+	preload("uid://k8xj0lsowpoo"): false, #playerWinSkaliqMutation
+	preload("uid://ceye5fnstopvs"): false,
+	preload("uid://dfw8m67n2kyno"): false,
+	#during run stuff
+	preload("uid://bs3s26w3bcouo"): false, #anyAudioVisualizerUnlocked
+	preload("uid://cw60jj5x3nom5"): false, #anyLongRangeScopesUnlocked
+	preload("uid://dtkpc2w8p3rlp"): false, #anyGasLayerSurveyorUnlocked
+	preload("uid://b1p5pjreb7qtb"): false, #followingBodyWormholeInFrontier
+	preload("uid://dnqtbuyyvp4rp"): false, #followingBodyWormholeInAbyss
+	preload("uid://bmt6d3hv7bcuw"): false, #anyHullDeteriorationFifty
+	preload("uid://ogjbkpajm27q"): false, #discoverBodyHabitable
+	preload("uid://2wykrp5tgsaf"): false, #discoverBodyRare
+	#tutorial stuff
+	preload("uid://diwwcd4u152wj"): false, #playerWinTutorial
+	preload("uid://hwxe6ko2un15"): false, #discoverBodyOmissionTutorial
+	
+	
 }
 
 @onready var achievement_control = $achievement_display/achievement_control 

@@ -665,16 +665,23 @@ func _on_player_death():
 	_on_open_stats_menu(stats_menu.INIT_TYPES.DEATH)
 	pass
 
-func _on_player_win():
+func _on_player_win(open_stats_menu: bool = true):
 	print("GAME: PLAYER WON")
 	
 	var new_query = responseQuery.new()
 	new_query.add("concept", "playerWin")
+	
+	
+	new_query.add_tree_access("installed_mutations_count", world.installed_mutations.size())
+	new_query.add_tree_access("play_time", world.play_time)
+	new_query.add("tutorial", init_type == global_data.GAME_INIT_TYPES.TUTORIAL)
+	
+	
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
-	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
-	
-	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN)
+	if open_stats_menu:
+		await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+		_on_open_stats_menu(stats_menu.INIT_TYPES.WIN)
 	pass
 
 func _on_player_entering_system(system: starSystemAPI):

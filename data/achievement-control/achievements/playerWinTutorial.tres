@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://diwwcd4u152wj"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_k1dk5"]
+
+[resource]
+script = ExtResource("1_k1dk5")
+name = "Graduation"
+description = "Complete the tutorial."
+dialogue_criteria = {
+"concept": "playerWin",
+"tutorial": true
+}

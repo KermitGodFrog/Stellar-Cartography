@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://drc1rnxa2mi1"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_gt7n6"]
+
+[resource]
+script = ExtResource("1_gt7n6")
+name = "Impossible Hazards"
+description = "Win on EXTREME difficulty w/ 'Second Generation Starship', 'Deadly Hazards', and 'PUSH' mutations INSTL."
+dialogue_criteria = {
+"concept": "playerWin",
+"difficulty": "EXTREME",
+"mutations_DEADLY_HAZARDS_installed": true,
+"mutations_PUSH_installed": true,
+"mutations_SECOND_GENERATION_STARSHIP_installed": true
+}
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

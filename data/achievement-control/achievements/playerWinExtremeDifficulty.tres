@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://cvyy37gdykhgt"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_dcs4n"]
+
+[resource]
+script = ExtResource("1_dcs4n")
+name = "Extremely Difficult"
+description = "Win the game on EXTREME difficulty."
+dialogue_criteria = {
+"concept": "playerWin",
+"difficulty": "EXTREME"
+}
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"
