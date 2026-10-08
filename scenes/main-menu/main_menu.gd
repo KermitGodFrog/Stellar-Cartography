@@ -31,7 +31,10 @@ var SHOW_HISTORY_POPUP: bool = false:
 
 const background_images: Array = [
 	preload("uid://y2kguswkl4v4"),
-	preload("uid://p0yhaer28ulk")
+	preload("uid://p0yhaer28ulk"),
+	preload("uid://b8fq5a7xway7g"),
+	preload("uid://bern4dpew85do"),
+	preload("uid://24rddkg2q85o")
 ]
 
 func _ready():
