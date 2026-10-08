@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_5cxo7")
-name = "Purple Monkey"
-description = "Investigate a ..."
+name = "© Kalendae Hyperconsortium"
+description = "Investigate an entrepreneurial sleeper's unethical genetic engineering project."
 dialogue_criteria = {
 "PA05PurpleMonkeyInvestigated_PREV": true,
 "concept": "optionSelected",

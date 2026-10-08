@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_7qlvx")
 name = "Rift Driver"
-description = "Investigate a ..."
+description = "Investigate an installation that has the capacity to create rifts in space-time."
 dialogue_criteria = {
 "SpA_RiftDriverInvestigated_PREV": true,
 "concept": "optionSelected",

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_xpdvd")
-name = "Netspace Retrieval Point"
+name = "One Way Communication"
 description = "Divert power at a Netspace retrieval point."
 dialogue_criteria = {
 "SpA_NRP_DivertPower_PREV": true,

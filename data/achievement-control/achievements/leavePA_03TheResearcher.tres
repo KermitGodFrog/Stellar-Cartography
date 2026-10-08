@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_020eo")
 name = "The Researcher"
-description = "Investigate a ..."
+description = "Investigate a claim of life on a dead planet from an old man with dubious intentions."
 dialogue_criteria = {
 "PA_03TheResearcherInvestigated_PREV": true,
 "concept": "optionSelected",

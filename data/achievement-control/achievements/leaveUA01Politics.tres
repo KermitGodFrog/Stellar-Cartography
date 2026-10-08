@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_0yg3r")
 name = "Sister Ship"
-description = "Investigate a ..."
+description = "Talk to the captain of an Executive starship on an assignment in the Abyss."
 dialogue_criteria = {
 "UA01Politics_PREV": true,
 "concept": "optionSelected",

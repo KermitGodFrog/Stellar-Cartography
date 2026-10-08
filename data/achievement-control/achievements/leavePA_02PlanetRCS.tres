@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_wrym5")
-name = "Planet RCS"
-description = "Investigate a ..."
+name = "Planetary RCS"
+description = "Investigate a planet covered in behemoth engines."
 dialogue_criteria = {
 "PA_02PlanetRCSInvestigated_PREV": true,
 "concept": "optionSelected",

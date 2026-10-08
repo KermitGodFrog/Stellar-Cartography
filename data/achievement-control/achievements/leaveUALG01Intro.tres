@@ -4,12 +4,11 @@
 
 [resource]
 script = ExtResource("1_bv84k")
-name = "Light Gremlin"
-description = "Establish communication with a very tired light gremlin."
+name = "Gremlin Translation"
+description = "Establish communication with a light gremlin."
 dialogue_criteria = {
 "UALG01Intro_PREV": true,
-"concept": "optionSelected",
-"option": "lightGremlinSeriousLeave"
+"concept": "lightGremlinLeave"
 }
 hidden_until_unlocked = true
 trophy_type = 1

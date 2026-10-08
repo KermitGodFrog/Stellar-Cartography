@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_0fhiw")
 name = "Probe Graveyard"
-description = "Investigate a ..."
+description = "Find an ancient spaceship, and several human probes, dancing through the clouds of a gas giant."
 dialogue_criteria = {
 "PA_01ProbeGraveyardInvestigated_PREV": true,
 "concept": "optionSelected",

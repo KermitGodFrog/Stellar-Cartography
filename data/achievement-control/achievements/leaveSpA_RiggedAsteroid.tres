@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_2uh1s")
 name = "Rigged Asteroid"
-description = "Investigate a ..."
+description = "Investigate an asteroid with an engine strapped onto it that flies around for no discernible reason."
 dialogue_criteria = {
 "SpA_RiggedAsteroidInvestigated_PREV": true,
 "concept": "optionSelected",

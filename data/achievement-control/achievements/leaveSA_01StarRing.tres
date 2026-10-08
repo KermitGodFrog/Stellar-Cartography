@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_nrvw3")
 name = "Star Ring"
-description = "Investigate a ..."
+description = "Investigate a strange anomaly in the starscape."
 dialogue_criteria = {
 "SA_01StarRingInvestigated_PREV": true,
 "concept": "optionSelected",

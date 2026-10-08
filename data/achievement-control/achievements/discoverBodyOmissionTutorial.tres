@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_2kmja")
 name = "Omission"
-description = "Fail to follow objectives during the tutorial."
+description = "Discover a secret in the tutorial."
 dialogue_criteria = {
 "concept": "discoveredBody",
 "name": "Omission",

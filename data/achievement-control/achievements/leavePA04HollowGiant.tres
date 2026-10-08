@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_f10fm")
-name = "Hollow Giant"
-description = "Investigate a ..."
+name = "Hollow Gas Giant"
+description = "Investigate an alien structure creating a cavity in the centre of a gas giant."
 dialogue_criteria = {
 "PA04HollowGiantInvestigated_PREV": true,
 "concept": "optionSelected",

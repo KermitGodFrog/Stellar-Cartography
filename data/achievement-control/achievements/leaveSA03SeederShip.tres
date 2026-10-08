@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_egic3")
 name = "Seeder Ship Civilization"
-description = "Investigate a ..."
+description = "Talk to the leader of a civilization living in the Commons of an old seeder ship."
 dialogue_criteria = {
 "SA03SeederShipInvestigated_PREV": true,
 "concept": "optionSelected",
