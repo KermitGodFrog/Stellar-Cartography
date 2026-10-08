@@ -665,7 +665,7 @@ func _on_player_death():
 	_on_open_stats_menu(stats_menu.INIT_TYPES.DEATH)
 	pass
 
-func _on_player_win(open_stats_menu: bool = true):
+func _on_player_win():
 	print("GAME: PLAYER WON")
 	
 	var new_query = responseQuery.new()
@@ -679,9 +679,9 @@ func _on_player_win(open_stats_menu: bool = true):
 	
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	
-	if open_stats_menu:
-		await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
-		_on_open_stats_menu(stats_menu.INIT_TYPES.WIN)
+	await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+	
+	_on_open_stats_menu(stats_menu.INIT_TYPES.WIN)
 	pass
 
 func _on_player_entering_system(system: starSystemAPI):
@@ -1258,6 +1258,9 @@ func _on_tutorial_set_omission_override(value: bool):
 	pass
 
 func _on_tutorial_player_win():
+	var new_query = responseQuery.new()
+	new_query.add("concept", "tutorialPlayerWin")
+	get_tree().call_group("dialogueManager", "speak", self, new_query)
 	_on_open_stats_menu(stats_menu.INIT_TYPES.TUTORIAL)
 	pass
 
