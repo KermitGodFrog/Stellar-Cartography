@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="responseAchievement" load_steps=2 format=3 uid="uid://c86txnxnvyyh6"]
+
+[ext_resource type="Script" uid="uid://bxbrnec4pt2l0" path="res://data/achievement-control/achievement.gd" id="1_xpdvd"]
+
+[resource]
+script = ExtResource("1_xpdvd")
+name = "Netspace Retrieval Point"
+description = "Divert power at a Netspace retrieval point."
+dialogue_criteria = {
+"SpA_NRP_DivertPower_PREV": true,
+"concept": "optionSelected",
+"option": "defaultHardLeave"
+}
+hidden_until_unlocked = true
+trophy_type = 1
+metadata/_custom_type_script = "uid://bxbrnec4pt2l0"

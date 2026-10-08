@@ -15,6 +15,9 @@ const default_achievements: Dictionary = {
 	preload("uid://k8xj0lsowpoo"): false, #playerWinSkaliqMutation
 	preload("uid://ceye5fnstopvs"): false,
 	preload("uid://dfw8m67n2kyno"): false,
+	#tutorial stuff
+	preload("uid://diwwcd4u152wj"): false, #playerWinTutorial
+	preload("uid://hwxe6ko2un15"): false, #discoverBodyOmissionTutorial
 	#during run stuff
 	preload("uid://bs3s26w3bcouo"): false, #anyAudioVisualizerUnlocked
 	preload("uid://cw60jj5x3nom5"): false, #anyLongRangeScopesUnlocked
@@ -24,11 +27,24 @@ const default_achievements: Dictionary = {
 	preload("uid://bmt6d3hv7bcuw"): false, #anyHullDeteriorationFifty
 	preload("uid://ogjbkpajm27q"): false, #discoverBodyHabitable
 	preload("uid://2wykrp5tgsaf"): false, #discoverBodyRare
-	#tutorial stuff
-	preload("uid://diwwcd4u152wj"): false, #playerWinTutorial
-	preload("uid://hwxe6ko2un15"): false, #discoverBodyOmissionTutorial
-	
-	
+	#---discoveries \/
+	#PA discoveries
+	preload("uid://c8x2n2hebnqal"): false, #leavePA_01ProbeGraveyard
+	preload("uid://cpi2bf0gx3dcj"): false, #leavePA_02PlanetRCS
+	preload("uid://kn8twq88whqh"): false, #leavePA_03TheResearcher
+	preload("uid://c6fa0xs3lc5ok"): false, #leavePA04HollowGiant
+	preload("uid://dtgmxo7nnbivy"): false, #leavePA05PurpleMonkey
+	#SA discoveries
+	preload("uid://dm1i2fpsrtuym"): false, #leaveSA_01StarRing
+	preload("uid://cofgukrb7x78m"): false, #leaveSA03SeederShip
+	#SpA discoveries
+	preload("uid://i42nquvmroqd"): false, #leaveSpA_RiggedAsteroid
+	preload("uid://bdgm0bw5kbx71"): false, #leaveSpA_RiftDriver
+	preload("uid://dalg40bs45ejl"): false, #leaveSpA_DysonSphere
+	preload("uid://c86txnxnvyyh6"): false, #leaveSpA_NRP
+	#UA discoveries
+	preload("uid://dsx3b2hl7wsii"): false, #leaveUA01Politics
+	preload("uid://by1vqmnaujv3q"): false, #leaveUALG01Intro
 }
 
 @onready var achievement_control = $achievement_display/achievement_control 
