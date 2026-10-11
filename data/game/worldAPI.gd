@@ -37,7 +37,7 @@ class_name worldAPI
 
 
 #mutations exclusion zone \/
-enum MUTATION_ID {BASE, CONTENT_SKALIQ, OLD_NANITES, BETTER_ENGINES, BETTER_DATABANKS} #not related to the player but needs to be saved, thus worldAPI territory!
+enum MUTATION_ID {BASE, CONTENT_SKALIQ, OLD_NANITES, BETTER_ENGINES, BETTER_DATABANKS, AV_SPECIALIST, SIGHTSEEING_TRIP, SECOND_GENERATION_STARSHIP, HIGH_TECH_COUNTERMEASURES, POCKET_CHANGE, DEADLY_HAZARDS, HARDCODED_SAFETY_LIMITS, DIPLOMACY_TEAM, SPECIALISTS, RISKY_INCENTIVE, JIYA_IS_GONE, PUSH} #not related to the player but needs to be saved, thus worldAPI territory!
 @export var installed_mutations: Array[MUTATION_ID] = []
 ##Returns false if the mutation was already installed.
 func installMutation(mutation_idx: MUTATION_ID) -> bool:
@@ -99,6 +99,102 @@ const mutation_data: Dictionary = {
 		"type": "POSITIVE",
 		"points_offset": -1
 	},
+	MUTATION_ID.AV_SPECIALIST: {
+		"title": "AV Specialist",
+		"headline": "",
+		"description": "",
+		"effect": "",
+		"type": "POSITIVE",
+		"points_offset": -2
+	},
+	MUTATION_ID.SIGHTSEEING_TRIP: {
+		"title": "Sightseeing Trip",
+		"headline": "",
+		"description": "",
+		"effect": "",
+		"type": "POSITIVE",
+		"points_offset": -2
+	},
+	MUTATION_ID.SECOND_GENERATION_STARSHIP: {
+		"title": "Second Generation Starship",
+		"headline": "",
+		"description": "",
+		"effect": "",
+		"type": "NEGATIVE",
+		"points_offset": +2
+	},
+	MUTATION_ID.HIGH_TECH_COUNTERMEASURES: {
+		"title": "High Tech Countermeasures",
+		"headline": "",
+		"description": "",
+		"effect": "",
+		"type": "POSITIVE",
+		"points_offset": -1
+	},
+	MUTATION_ID.POCKET_CHANGE: {
+		"title": "Pocket Change",
+		"headline": "",
+		"description": "",
+		"effect": "",
+		"type": "POSITIVE",
+		"points_offset": -1
+	},
+	MUTATION_ID.DEADLY_HAZARDS: {
+		"title": "Deadly Hazards",
+		"headline": "",
+		"description": "",
+		"effect": "",
+		"type": "NEGATIVE",
+		"points_offset": +1
+	},
+	MUTATION_ID.HARDCODED_SAFETY_LIMITS: {
+		"title": "Hardcoded Safety Limits",
+		"headline": "",
+		"description": "",
+		"effect": "",
+		"type": "NEGATIVE",
+		"points_offset": +1
+	},
+	MUTATION_ID.DIPLOMACY_TEAM: {
+		"title": "Diplomacy Team",
+		"headline": "",
+		"description": "",
+		"effect": "",
+		"type": "POSITIVE",
+		"points_offset": -1
+	},
+	MUTATION_ID.SPECIALISTS: {
+		"title": "Specialists",
+		"headline": "",
+		"description": "",
+		"effect": "",
+		"type": "NEGATIVE",
+		"points_offset": +1
+	},
+	MUTATION_ID.RISKY_INCENTIVE: {
+		"title": "Risky Incentive",
+		"headline": "",
+		"description": "",
+		"effect": "",
+		"type": "NEGATIVE",
+		"points_offset": +1
+	},
+	MUTATION_ID.JIYA_IS_GONE: {
+		"title": "Jiya is Gone",
+		"headline": "",
+		"description": "",
+		"effect": "",
+		"type": "NEGATIVE",
+		"points_offset": +1
+	},
+	MUTATION_ID.PUSH: {
+		"title": "PUSH",
+		"headline": "",
+		"description": "",
+		"effect": "",
+		"type": "NEGATIVE",
+		"points_offset": +2
+	}
 }
 #mutations exclusion zone /\
 
