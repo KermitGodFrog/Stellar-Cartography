@@ -95,7 +95,7 @@ const mutation_data: Dictionary = {
 		"title": "Better Databanks",
 		"headline": "More exploration data per discovery.",
 		"description": "Before leaving Suno, Tristan from Resolution 289 decided to have your starship's server room retrofitted with the latest in data storage technology.",
-		"effect": "Discovering bodies yields 1.25x exploration data value.",
+		"effect": "[color=lightblue][ +0.25 body discovery value multiplier ][/color]",
 		"type": "POSITIVE",
 		"points_offset": -1
 	},
@@ -117,9 +117,9 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.SECOND_GENERATION_STARSHIP: {
 		"title": "Second Generation Starship",
-		"headline": "",
-		"description": "",
-		"effect": "",
+		"headline": "An older, weakened starship model with less speed.",
+		"description": "These starships were commissioned by Executive councils between 20AAT to 40AAT. They were much safer and better oriented toward wormhole travel than their first generation predecessors. With technological advances making them obsolete by 55AAT, the Assembly voted to phase them out. Nowadays, they are seen as slow and unreliable.",
+		"effect": "[color=tomato][ -2 speed ][/color]\n[color=tomato][ +25% hull stress on game start ][/color]\n[color=tomato][ -0.2 body discovery value multiplier ][/color]",
 		"type": "NEGATIVE",
 		"points_offset": +2
 	},

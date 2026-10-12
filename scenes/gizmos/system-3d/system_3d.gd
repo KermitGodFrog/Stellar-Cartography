@@ -52,6 +52,7 @@ var max_FOV: int = 75: #playerAPI scopes_max_FOV
 		control.max_FOV = max_FOV
 		if target_fov > max_FOV:
 			target_fov = max_FOV
+var discovery_value_multiplier: float = 1.0
 
 
 var scope_mode: playerAPI.SCOPE_MODES = playerAPI.SCOPE_MODES.VIS:
@@ -62,8 +63,6 @@ func get_scope_mode() -> playerAPI.SCOPE_MODES:
 	return scope_mode
 
 var initial_beam_rotation: float = 0.0 #REQUIRED FOR PULSARS TO WORK. BARELY KNEW WHAT I WAS DOING WHEN I MADE IT WORK SO DONT TOUCH!
-
-var mutations_better_databanks_installed: bool = false
 
 var actors: Array[actor3D] = []
 
@@ -178,7 +177,7 @@ func try_discover_orbit_bodies() -> void:
 								
 								var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
 								if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name()), Color.DARK_GREEN)
-								elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", roundi(associated_body.metadata.get("value") * star_rarity_multiplier * (1 + (int(mutations_better_databanks_installed) * 0.25))), "n) [%.2fx]") % star_rarity_multiplier, Color.DARK_GREEN)
+								elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", roundi(associated_body.metadata.get("value") * star_rarity_multiplier * discovery_value_multiplier), "n) [%.2fx]") % (star_rarity_multiplier * discovery_value_multiplier), Color.DARK_GREEN)
 								emit_signal("foundBody", actor.get_identifier())
 	pass
 
@@ -634,9 +633,4 @@ func toggle_mode_switch_button_to_mode(_new_mode: playerAPI.SCOPE_MODES) -> void
 			_on_mode_switch_button_toggled(false)
 		playerAPI.SCOPE_MODES.RAD:
 			_on_mode_switch_button_toggled(true)
-	pass
-
-func _on_mutation_state_change(mutation_idx: worldAPI.MUTATION_ID, state: bool) -> void:
-	if mutation_idx == worldAPI.MUTATION_ID.BETTER_DATABANKS:
-		mutations_better_databanks_installed = state
 	pass

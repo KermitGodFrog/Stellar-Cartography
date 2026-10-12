@@ -1145,6 +1145,11 @@ func _on_update_player_v_change_upgrade_variables() -> void:
 	system_map.set("bg_processing_radius", world.player.bg_processing_radius)
 	pass
 
+func _on_update_player_v_change_mutation_variables() -> void:
+	#updating playerAPI variables (THAT ARE ONLY USED FOR VALUE CHANGE MUTATIONS) throughout the game 
+	system_3d.set("discovery_value_multiplier", world.player.discovery_value_multiplier)
+	pass
+
 func _on_remove_saved_audio_profile(helper: audioProfileHelper):
 	world.player.removeAudioProfile(helper)
 	pass
@@ -1638,6 +1643,12 @@ func _on_install_mutation(mutation_idx: worldAPI.MUTATION_ID) -> void:
 		match mutation_idx:
 			worldAPI.MUTATION_ID.BETTER_ENGINES:
 				world.player.speed += 1
+			worldAPI.MUTATION_ID.BETTER_DATABANKS:
+				world.player.discovery_value_multiplier += 0.25
+			worldAPI.MUTATION_ID.SECOND_GENERATION_STARSHIP:
+				world.player.speed -= 2
+				_on_add_player_hull_stress(25)
+				world.player.discovery_value_multiplier -= 0.2
 		
 		_on_mutation_state_change(mutation_idx, true)
 	pass
@@ -1645,6 +1656,8 @@ func _on_install_mutation(mutation_idx: worldAPI.MUTATION_ID) -> void:
 func _on_mutation_state_change(mutation_idx: worldAPI.MUTATION_ID, state: bool) -> void:
 	get_tree().call_group("FOLLOW_MUTATION_STATE", "_on_mutation_state_change", mutation_idx, state)
 	print_debug("GAME: MUTATION STATE CHANGED: ", mutation_idx, " ", state)
+	
+	_on_update_player_v_change_mutation_variables()
 	pass
 
 func _on_insa_make_all_wormholes_revealable() -> void:
