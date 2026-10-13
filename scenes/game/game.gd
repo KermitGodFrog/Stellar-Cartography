@@ -1648,7 +1648,7 @@ func _on_install_mutation(mutation_idx: worldAPI.MUTATION_ID) -> void:
 			worldAPI.MUTATION_ID.BETTER_ENGINES:
 				world.player.speed += 1
 			worldAPI.MUTATION_ID.BETTER_DATABANKS:
-				world.player.discovery_value_multiplier += 0.25
+				world.player.discovery_value_multiplier += 0.2
 			worldAPI.MUTATION_ID.AV_SPECIALIST:
 				_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 				world.player.max_saved_audio_profiles += 20
@@ -1659,6 +1659,14 @@ func _on_install_mutation(mutation_idx: worldAPI.MUTATION_ID) -> void:
 				world.player.speed -= 2
 				_on_add_player_hull_stress(25)
 				world.player.discovery_value_multiplier -= 0.2
+			worldAPI.MUTATION_ID.POCKET_CHANGE:
+				_on_increase_player_balance(15000)
+			worldAPI.MUTATION_ID.DEADLY_HAZARDS:
+				world.player.hull_stress_CME += 10
+				world.player.hull_stress_pulsar_beam += 10
+				world.player.hull_stress_mine += 10
+			worldAPI.MUTATION_ID.JIYA_IS_GONE:
+				_on_kill_character_with_occupation(characterAPI.OCCUPATIONS.CHIEF_ENGINEER)
 		
 		_on_mutation_state_change(mutation_idx, true)
 	pass

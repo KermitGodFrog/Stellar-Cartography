@@ -95,7 +95,7 @@ const mutation_data: Dictionary = {
 		"title": "Better Databanks",
 		"headline": "More exploration data per discovery.",
 		"description": "Before leaving Suno, Tristan from Resolution 289 decided to have your starship's server room retrofitted with the latest in data storage technology.",
-		"effect": "[color=lightblue][ +0.25 body discovery value multiplier ][/color]",
+		"effect": "[color=lightblue][ +0.2 body discovery value multiplier ][/color]",
 		"type": "POSITIVE",
 		"points_offset": -1
 	},
@@ -133,17 +133,17 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.POCKET_CHANGE: {
 		"title": "Pocket Change",
-		"headline": "",
-		"description": "",
-		"effect": "",
+		"headline": "Extra nanites at the beginning of a run.",
+		"description": "Before leaving Suno, Tristan from Resolution 289 decided to provide your starship with a tiny stash of nanites.",
+		"effect": "[color=lightblue][ +15000n ][/color]",
 		"type": "POSITIVE",
 		"points_offset": -1
 	},
 	MUTATION_ID.DEADLY_HAZARDS: {
 		"title": "Deadly Hazards",
-		"headline": "",
-		"description": "",
-		"effect": "",
+		"headline": "System hazards do more damage.",
+		"description": "(UNFINISHED)",
+		"effect": "CMEs, pulsar beams and mine detonations incur 10% extra hull stress.",
 		"type": "NEGATIVE",
 		"points_offset": +1
 	},
@@ -181,9 +181,9 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.JIYA_IS_GONE: {
 		"title": "Jiya is Gone",
-		"headline": "",
-		"description": "",
-		"effect": "",
+		"headline": "Chief Engineer Jiya died just before the assignment.",
+		"description": "(UNFINISHED)",
+		"effect": "Chief Engineer Jiya is dead by default.",
 		"type": "NEGATIVE",
 		"points_offset": +1
 	},
