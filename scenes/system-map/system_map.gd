@@ -184,6 +184,8 @@ var player_supercharged: bool = false:
 
 var junk_textures: Dictionary = {}
 
+var mutations_sightseeing_trip_installed: bool = false
+
 func _ready():
 	status_control.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	status_control.connect("updateScannerDisplayTimes", _on_update_scanner_display_times)
@@ -298,7 +300,7 @@ func _physics_process(delta):
 				body_attributes_list.add_item("mass : %.2f (earth masses)" % (follow_body.mass * 333000))
 			
 		#metadata
-		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "missing_GL", "seed", "custom_available", "custom_follow_available", "custom_orbit_available", "ship_available", "cram_cell_synthesis_available", "migration_analysis_available"]
+		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "missing_GL", "seed", "custom_available", "custom_follow_available", "custom_orbit_available", "ship_available", "cram_cell_synthesis_available", "migration_analysis_available", "ghost_theorised"]
 		if follow_body.is_known():
 			for entry in follow_body.metadata:
 				if excluding.find(entry) == -1:
@@ -1089,9 +1091,12 @@ func async_add_ping(body: orbitBodyAPI) -> void:
 	
 	body.pings_to_be_theorised = maxi(0, body.pings_to_be_theorised - 1)
 	if body.pings_to_be_theorised == 0:
-		if not body.theorised:
+		if not body.theorised and not body.metadata.has("ghost_theorised"):
 			emit_signal("theorisedBody", body.get_identifier())
-		body.theorised = true #so it says '???' on the overview
+		if not mutations_sightseeing_trip_installed:
+			body.theorised = true #so it says '???' on the overview
+		else:
+			body.metadata["ghost_theorised"] = true
 	var pings = ["res://data/system-map/ping-display-helpers/normal.tres"]
 	var ping = load(pings.pick_random()).duplicate(true)
 	ping.position = body.position
@@ -1354,4 +1359,9 @@ func _on_tabs_tab_changed(tab: int) -> void:
 
 func _on_settings_button_pressed() -> void:
 	emit_signal("openPauseMenu")
+	pass
+
+func _on_mutation_state_change(mutation_idx: worldAPI.MUTATION_ID, state: bool) -> void:
+	if mutation_idx == worldAPI.MUTATION_ID.SIGHTSEEING_TRIP:
+		mutations_sightseeing_trip_installed = state
 	pass

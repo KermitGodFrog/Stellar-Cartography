@@ -68,6 +68,7 @@ func _ready():
 		pause_menu.disableSaving() # so savefile cannto be overwriten
 		
 		_on_update_player_v_change_upgrade_variables()
+		_on_update_player_v_change_mutation_variables()
 		
 		objectives_manager.start_receive_init_type(init_type)
 		
@@ -115,6 +116,7 @@ func _ready():
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 		
 		_on_update_player_v_change_upgrade_variables()
+		_on_update_player_v_change_mutation_variables()
 		
 		objectives_manager.start_receive_init_type(init_type)
 		
@@ -149,6 +151,7 @@ func _ready():
 			_on_mutation_state_change(mutation, true)
 		
 		_on_update_player_v_change_upgrade_variables()
+		_on_update_player_v_change_mutation_variables()
 		
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
@@ -1148,6 +1151,7 @@ func _on_update_player_v_change_upgrade_variables() -> void:
 func _on_update_player_v_change_mutation_variables() -> void:
 	#updating playerAPI variables (THAT ARE ONLY USED FOR VALUE CHANGE MUTATIONS) throughout the game 
 	system_3d.set("discovery_value_multiplier", world.player.discovery_value_multiplier)
+	system_3d.set("max_body_detection_scalar", world.player.max_body_detection_scalar)
 	pass
 
 func _on_remove_saved_audio_profile(helper: audioProfileHelper):
@@ -1649,6 +1653,8 @@ func _on_install_mutation(mutation_idx: worldAPI.MUTATION_ID) -> void:
 				_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
 				world.player.max_saved_audio_profiles += 20
 				world.missing_AO_chance_per_planet += 0.2
+			worldAPI.MUTATION_ID.SIGHTSEEING_TRIP:
+				world.player.max_body_detection_scalar += 2000
 			worldAPI.MUTATION_ID.SECOND_GENERATION_STARSHIP:
 				world.player.speed -= 2
 				_on_add_player_hull_stress(25)

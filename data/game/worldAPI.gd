@@ -109,9 +109,9 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.SIGHTSEEING_TRIP: {
 		"title": "Sightseeing Trip",
-		"headline": "",
-		"description": "",
-		"effect": "",
+		"headline": "Discover bodies from further away (but no marking).",
+		"description": "(UNFINISHED)",
+		"effect": "* Bodies can be discovered from much further away.\n* The ability to mark bodies is disabled.",
 		"type": "POSITIVE",
 		"points_offset": -2
 	},

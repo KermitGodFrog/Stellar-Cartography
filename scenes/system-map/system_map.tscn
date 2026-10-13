@@ -113,7 +113,7 @@ shader = ExtResource("52_gtym1")
 
 [node name="system_window" type="Node"]
 
-[node name="system" type="Node2D" parent="."]
+[node name="system" type="Node2D" parent="." groups=["FOLLOW_MUTATION_STATE"]]
 script = ExtResource("1_nhsfb")
 
 [node name="camera" type="Camera2D" parent="system"]

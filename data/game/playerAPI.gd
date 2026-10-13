@@ -109,6 +109,7 @@ const upgrade_requirements: Dictionary = {
 @export_storage var bg_processing_cooldown: float = 60.0
 @export_storage var bg_processing_radius: float = 125.0
 @export_storage var discovery_value_multiplier: float = 1.0
+@export_storage var max_body_detection_scalar: int = 1000
 
 @export var characters: Array[characterAPI] = []
 func get_character_with_occupation(occupation: characterAPI.OCCUPATIONS) -> characterAPI:

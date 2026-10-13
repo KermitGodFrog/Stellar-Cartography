@@ -38,7 +38,7 @@ var locked_body_identifier: int
 var label_locked_body_identifier: int
 
 var system_scalar: float = 10.0
-var body_detection_range: int = 1000
+var max_body_detection_scalar: int = 1000
 var target_fov: float = 75
 var min_FOV: int = 10: #playerAPI scopes_min_FOV
 	set(value):
@@ -171,7 +171,7 @@ func try_discover_orbit_bodies() -> void:
 					if associated_body is orbitBodyAPI:
 						if associated_body.get_required_scope_mode() == get_scope_mode():
 							var detection_scalar = camera_offset.position.distance_to(actor.position) * camera.fov
-							if detection_scalar < body_detection_range and associated_body.is_known() == false:
+							if detection_scalar < max_body_detection_scalar and associated_body.is_known() == false:
 								if associated_body.is_hidden():
 									continue
 								
