@@ -31,7 +31,7 @@ func _ready():
 	
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.20, 0.10)
 		world.difficulty = init_data.get("difficulty", game_data.DIFFICULTY.NORMAL)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
@@ -84,7 +84,7 @@ func _ready():
 		pause_menu.set("_installed_mutations", world.installed_mutations)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.20, 0.10)
 		world.difficulty = init_data.get("difficulty", game_data.DIFFICULTY.NORMAL)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
@@ -1645,6 +1645,10 @@ func _on_install_mutation(mutation_idx: worldAPI.MUTATION_ID) -> void:
 				world.player.speed += 1
 			worldAPI.MUTATION_ID.BETTER_DATABANKS:
 				world.player.discovery_value_multiplier += 0.25
+			worldAPI.MUTATION_ID.AV_SPECIALIST:
+				_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+				world.player.max_saved_audio_profiles += 20
+				world.missing_AO_chance_per_planet += 0.2
 			worldAPI.MUTATION_ID.SECOND_GENERATION_STARSHIP:
 				world.player.speed -= 2
 				_on_add_player_hull_stress(25)

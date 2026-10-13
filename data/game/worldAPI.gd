@@ -79,7 +79,7 @@ const mutation_data: Dictionary = {
 		"title": "Old Nanites",
 		"headline": "An alternate universe where an outdated nanite design is universal.",
 		"description": "In this alternate universe, the Provisional Executive never developed the Modern Era nanite in 14AAT. Reliance on the outdated 'universal nanite' carried by seeder ships during the latter half of the Late Proliferation Period continued instead.",
-		"effect": "Repairing at space stations and settlements costs +50% more.",
+		"effect": "Repairing at space stations, outposts and settlements costs +50% more.",
 		"type": "NEGATIVE",
 		"points_offset": +1
 	},
@@ -101,9 +101,9 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.AV_SPECIALIST: {
 		"title": "AV Specialist",
-		"headline": "",
-		"description": "",
-		"effect": "",
+		"headline": "Focus on planetary audio analysis.",
+		"description": "Your starship was uniquely designed around analysing and storing planetary audio data.",
+		"effect": "* Audio Visualizer is unlocked by default.\n* Audio Visualizer can save +20 audio profiles.\n* Planets are +20% more likely to have missing audio data.\n* Special upgrades cost 100000n (excl. Audio Visualizer).",
 		"type": "POSITIVE",
 		"points_offset": -2
 	},
