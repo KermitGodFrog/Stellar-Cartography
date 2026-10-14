@@ -165,9 +165,9 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.SPECIALISTS: {
 		"title": "Specialists",
-		"headline": "",
-		"description": "",
-		"effect": "",
+		"headline": "Specialized senior staff can't share information.",
+		"description": "(UNFINISHED)",
+		"effect": "XP can't be exchanged between departments at Rendezvous Points.",
 		"type": "NEGATIVE",
 		"points_offset": +1
 	},
@@ -181,7 +181,7 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.JIYA_IS_GONE: {
 		"title": "Jiya is Gone",
-		"headline": "Chief Engineer Jiya died just before the assignment.",
+		"headline": "Chief Engineer Jiya died in the King system.",
 		"description": "(UNFINISHED)",
 		"effect": "Chief Engineer Jiya is dead by default.",
 		"type": "NEGATIVE",

@@ -247,6 +247,7 @@ RP_Fallback,"concept: optionSelected, option: RP_Fallback",,,You consider what t
 RP_Summon,"concept: optionSelected, option: RP_Summon",,,"If you wish to, you can summon senior staff to your ready room for conversation or to enact special initatives.",Go back: RP_Fallback,populateRP_SummonOptions,,,,
 RP_SummonFallback,"concept: optionSelected, option: RP_SummonFallback",,,There is still time to summon additional senior staff to your ready room.,Go back: RP_Fallback,populateRP_SummonOptions,,,,
 RP_TradeXPMessage,concept: RP_TradeXPMessage,,,[color=darkgray]You may only exchange 50 XP between two randomized departments that have non-acting senior officers [b]per star system[/b].[/color],,,,,,
+RP_TradeXPMutationOverride,"concept: optionSelected, option: RP_TradeXP, mutations_SPECIALISTS_installed: true",,,"All of your senior officers are specialists, so XP can't be exchanged between their departments.",Go back: RP_Fallback,,tryRP_Ambience,,,
 RP_TradeXPValid,"concept: optionSelected, option: RP_TradeXP, RP_TradeXP_PREVTS: false",addTradeXPOptions_RP: $seed,RP_TradeXPMessage,"If you wish to, you can exchange XP between the different departments of your starship.",Go back: RP_Fallback,,tryRP_Ambience,,,
 RP_TradeXPInvalid,"concept: optionSelected, option: RP_TradeXP, RP_TradeXP_PREVTS: true",,RP_TradeXPMessage,[color=yellow]You have already exchanged XP in this star system.[/color],Go back: RP_Fallback,,tryRP_Ambience,,,
 # RP_Summon,,,,,,,,,,
