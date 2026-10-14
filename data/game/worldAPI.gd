@@ -157,9 +157,9 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.DIPLOMACY_TEAM: {
 		"title": "Diplomacy Team",
-		"headline": "",
-		"description": "",
-		"effect": "",
+		"headline": "Better trade deals at outposts and settlements.",
+		"description": "(UNFINISHED)",
+		"effect": "For outposts and settlements, +20 sell percentage mean and +25 sell percentage max (defaults: 50 and 100, respectively).",
 		"type": "POSITIVE",
 		"points_offset": -1
 	},

@@ -552,7 +552,12 @@ func _on_player_following_body(following_body: bodyAPI) -> void:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				"HARD_LEAVE_STATION_OVERRIDE": #for planetary settlements
 					following_body.metadata["planetary_anomaly_available"] = false
-					var temp_station := starSystemAPI.get_temporary_station(following_body)
+					var sell_mean: float = 50.0
+					var sell_max: int = 100
+					if world.is_mutation_installed(worldAPI.MUTATION_ID.DIPLOMACY_TEAM):
+						sell_mean += 20.0
+						sell_max += 25
+					var temp_station := starSystemAPI.get_temporary_station(following_body, sell_mean, 10.0, sell_max)
 					dock_with_station(temp_station)
 				"HARD_LEAVE_INHABITED_OVERRIDE":
 					following_body.metadata["inhabited"] = true
@@ -570,7 +575,12 @@ func _on_player_following_body(following_body: bodyAPI) -> void:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				"HARD_LEAVE_STATION_OVERRIDE": #for outposts
 					following_body.metadata["space_anomaly_available"] = false
-					var temp_station := starSystemAPI.get_temporary_station(following_body)
+					var sell_mean: float = 50.0
+					var sell_max: int = 100
+					if world.is_mutation_installed(worldAPI.MUTATION_ID.DIPLOMACY_TEAM):
+						sell_mean += 20.0
+						sell_max += 25
+					var temp_station := starSystemAPI.get_temporary_station(following_body, sell_mean, 10.0, sell_max)
 					dock_with_station(temp_station)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)

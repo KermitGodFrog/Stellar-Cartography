@@ -1471,14 +1471,14 @@ func is_civilized() -> bool:
 			return true
 	return false
 
-static func get_temporary_station(hook: bodyAPI) -> stationBodyAPI: # for anomalies!
+static func get_temporary_station(hook: bodyAPI, sell_mean: float = 50.0, sell_stdev: float = 10.0, sell_max: int = 100) -> stationBodyAPI: # for anomalies!
 	var temp_station: stationBodyAPI = stationBodyAPI.new()
 	temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
 	temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
 	temp_station.repair_price_multiplier = 1.0
 	var random = RandomNumberGenerator.new()
 	random.set_seed(hook.metadata.get("seed", randi()))
-	temp_station.sell_percentage_of_market_price = clampi(roundi(random.randfn(50.0, 10.0)), 15, 100)
+	temp_station.sell_percentage_of_market_price = clampi(roundi(random.randfn(sell_mean, sell_stdev)), 15, sell_max)
 	var num_upgrades: int = clampi(roundi(random.randfn(2, 1)), 1, 6)
 	var _available_upgrades: Array[playerAPI.UPGRADE_ID] = []
 	var no_req_upgrades: Array[playerAPI.UPGRADE_ID] = playerAPI.get_all_upgrades_with_no_requirements()
