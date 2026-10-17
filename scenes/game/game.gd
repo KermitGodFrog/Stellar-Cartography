@@ -277,6 +277,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("addCharacterXP", _on_add_character_xp)
 	debug_interface.connect("updateCameraZoom", _on_DEBUG_update_camera_zoom)
 	
+	pause_mode_handler.connect("riskyIncentiveThresholdReached", _on_risky_incentive_threshold_reached)
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
 	pause_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -1689,6 +1690,11 @@ func _on_mutation_state_change(mutation_idx: worldAPI.MUTATION_ID, state: bool) 
 	print_debug("GAME: MUTATION STATE CHANGED: ", mutation_idx, " ", state)
 	
 	_on_update_player_v_change_mutation_variables()
+	pass
+
+func _on_risky_incentive_threshold_reached() -> void:
+	if world.is_mutation_installed(worldAPI.MUTATION_ID.RISKY_INCENTIVE):
+		_on_add_player_hull_stress(5)
 	pass
 
 func _on_insa_make_all_wormholes_revealable() -> void:

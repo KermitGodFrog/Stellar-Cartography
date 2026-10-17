@@ -33,8 +33,7 @@ class_name worldAPI
 @export_storage var played_strange_discovery_theme: bool = false #used exclusively in game.gd _on_play_strange_discovery_theme_or_motif()
 @export_storage var played_pulsar_theme: bool = false #used exclusively in game.gd _on_player_entering_system()
 @export var difficulty: game_data.DIFFICULTY = game_data.DIFFICULTY.NORMAL
-
-
+@export_storage var next_risky_incentive_threshold: int = (10 * 60) #used by 'Risky Incentive' mutation, managed by pauseModeHandler
 
 #mutations exclusion zone \/
 enum MUTATION_ID {BASE, CONTENT_SKALIQ, OLD_NANITES, BETTER_ENGINES, BETTER_DATABANKS, AV_SPECIALIST, SIGHTSEEING_TRIP, SECOND_GENERATION_STARSHIP, HIGH_TECH_COUNTERMEASURES, POCKET_CHANGE, DEADLY_HAZARDS, HARDCODED_SAFETY_LIMITS, DIPLOMACY_TEAM, SPECIALISTS, RISKY_INCENTIVE, JIYA_IS_GONE, PUSH} #not related to the player but needs to be saved, thus worldAPI territory!
@@ -173,9 +172,9 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.RISKY_INCENTIVE: {
 		"title": "Risky Incentive",
-		"headline": "",
-		"description": "",
-		"effect": "",
+		"headline": "Focus on completing a run quickly.",
+		"description": "(UNFINISHED)",
+		"effect": "For every 10 minutes of play time, suddenly gain +5% hull stress.",
 		"type": "NEGATIVE",
 		"points_offset": +1
 	},
