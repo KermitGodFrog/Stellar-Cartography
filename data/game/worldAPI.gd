@@ -149,9 +149,9 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.HARDCODED_SAFETY_LIMITS: {
 		"title": "Hardcoded Safety Limits",
-		"headline": "",
-		"description": "",
-		"effect": "",
+		"headline": "A starship that can't supercharge.",
+		"description": "(UNFINISHED)",
+		"effect": "* Supercharging is disabled.\n* ((W * 1000) / 2) nanites in data value are gained on supercharge, where W is the number of wormhole traversals that supercharge would otherwise take effect for.",
 		"type": "NEGATIVE",
 		"points_offset": +1
 	},

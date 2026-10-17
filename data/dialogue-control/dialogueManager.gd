@@ -755,9 +755,14 @@ func _on_receive_nav_buoy_roll(roll: Array) -> void:
 	pass
 
 func superchargeForJumpsWithFlair(jumps: int) -> void:
-	emit_signal("superchargePlayerForJumps", jumps)
-	dialogue.add_text("[color=green](Supercharged for plus %.f wormhole traversals) [/color]" % jumps)
-	playSoundEffect("success.wav")
+	if not world.is_mutation_installed(worldAPI.MUTATION_ID.HARDCODED_SAFETY_LIMITS):
+		emit_signal("superchargePlayerForJumps", jumps)
+		dialogue.add_text("[color=green](Supercharged for plus %.f wormhole traversals) [/color]" % jumps)
+		playSoundEffect("success.wav")
+	else:
+		dialogue.add_text("[color=yellow]([i][s]Supercharged for plus %.f wormhole traversals[/s][/i]) [/color]" % jumps)
+		addValueWithFlair(int((jumps * 1000) / 2))
+		playSoundEffect("strange.wav")
 	pass
 
 func increaseCharacterStandingBy25(written_occupation: String) -> void:
