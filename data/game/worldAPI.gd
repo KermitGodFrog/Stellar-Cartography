@@ -125,9 +125,9 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.HIGH_TECH_COUNTERMEASURES: {
 		"title": "High Tech Countermeasures",
-		"headline": "",
-		"description": "",
-		"effect": "",
+		"headline": "Avoid damage from hostile ships half of the time.",
+		"description": "(UNFINISHED)",
+		"effect": "The 'Make an escape' option in hostile ship dialogue doesn't result in hull stress gain 50% of the time.",
 		"type": "POSITIVE",
 		"points_offset": -1
 	},
