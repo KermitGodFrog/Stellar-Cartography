@@ -50,12 +50,13 @@ const SPECIAL_SYSTEM_CLASSIFICATION_CURVES = {
 	SPECIAL_SYSTEM_CLASSIFICATIONS.LIGHT_GREMLIN_PRESENCE: preload("uid://kqr14juee3pn")
 }
 
-enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE, CORONAL_MASS_EJECTION, MINE_FIELD, NEBULA}
+enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE, CORONAL_MASS_EJECTION, MINE_FIELD, NEBULA, PUSH_COMBO}
 const SYSTEM_HAZARD_CLASSIFICATION_CURVES = {
 	SYSTEM_HAZARD_CLASSIFICATIONS.NONE: preload("uid://oua44qc1agpd"),
 	SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION: preload("uid://ceicfkufoj2g2"),
 	SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD: preload("uid://cgf1r33t2b51"),
-	SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA: preload("uid://xhum3g6hgsa")
+	SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA: preload("uid://xhum3g6hgsa"),
+	SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO: preload("uid://buelam622utk")
 }
 
 enum SYSTEM_SCENARIO_CLASSIFICATIONS {NONE, UNKNOWN_DANGER}
@@ -292,8 +293,8 @@ func get_weighted_special_anomaly_classifications(classification_curves: Diction
 func get_weighted_special_system_classifications(classification_curves: Dictionary = SPECIAL_SYSTEM_CLASSIFICATION_CURVES, weirdness_index: float = player_weirdness_index) -> Dictionary:
 	return get_weighted_classifications(classification_curves, weirdness_index)
 
-func get_weighted_system_hazard_classifications(weirdness_index: float = player_weirdness_index) -> Dictionary:
-	return get_weighted_classifications(SYSTEM_HAZARD_CLASSIFICATION_CURVES, weirdness_index)
+func get_weighted_system_hazard_classifications(classification_curves: Dictionary = SYSTEM_HAZARD_CLASSIFICATION_CURVES, weirdness_index: float = player_weirdness_index) -> Dictionary:
+	return get_weighted_classifications(classification_curves, weirdness_index)
 
 func get_weighted_system_scenario_classifications(weirdness_index: float = player_weirdness_index) -> Dictionary:
 	return get_weighted_classifications(SYSTEM_SCENARIO_CLASSIFICATION_CURVES, weirdness_index)

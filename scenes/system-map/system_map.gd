@@ -223,7 +223,7 @@ func _physics_process(delta):
 	#If camera moves, follow body is removed for camera.
 	
 	#nebual sprite stuff
-	nebula_sprite.visible = system.system_hazard_classification == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA
+	nebula_sprite.visible = system.system_hazard_classification in [game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA, game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO]
 	nebula_sprite.set_position(player_position_matrix[0])
 	
 	#camera_target_position is position for system3d to look at
@@ -402,7 +402,7 @@ func calculate_nebula_slowdown() -> void:
 	
 	var hazard = system.system_hazard_classification
 	var metadata = system.system_hazard_metadata
-	if hazard == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA:
+	if hazard in [game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA, game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO]:
 		var noise: FastNoiseLite = metadata.get("nebula_noise", FastNoiseLite.new())
 		if temp_nebula_texture != null:
 			pos_value = noise.get_noise_2d(temp_nebula_texture.get_width() / 2.0, temp_nebula_texture.get_height() / 2.0) # its (0.0, 0.0) bc its already offset by the player pos!
@@ -847,7 +847,7 @@ func draw_map():
 	
 	var hazard = system.system_hazard_classification
 	var hazard_metadata = system.system_hazard_metadata
-	if hazard == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA:
+	if hazard in [game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA, game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO]:
 		var noise: FastNoiseLite = hazard_metadata.get("nebula_noise", FastNoiseLite.new())
 		var reset_nebula_texture = func() -> void:
 			temp_nebula_texture = NoiseTexture2D.new()

@@ -189,9 +189,9 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.PUSH: {
 		"title": "PUSH",
-		"headline": "",
-		"description": "",
-		"effect": "",
+		"headline": "Multiple hazards in one system.",
+		"description": "Stands for Persistently Unfair System Hazards. (UNFINISHED)",
+		"effect": "Adds a new system hazard - 'COMBO' - which combines the effects of CMEs, mine fields and nebulae. The 'COMBO' hazard has a set 25% chance to generate per system.",
 		"type": "NEGATIVE",
 		"points_offset": +2
 	}

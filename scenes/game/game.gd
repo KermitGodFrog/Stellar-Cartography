@@ -899,7 +899,11 @@ func _on_create_new_star_system(for_system: starSystemAPI = null, for_weirdness_
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.SKALIQ_CIVILIZED: [world.is_mutation_installed(worldAPI.MUTATION_ID.CONTENT_SKALIQ)]
 	}
 	
-	system.createBase(world.get_adjusted_PA_chance(_advanced_analysis_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_analysis_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index, game_data.get_req_adj_classification_curves(game_data.SPECIAL_SYSTEM_CLASSIFICATION_CURVES, special_system_requirements))
+	var system_hazard_requirements: Dictionary = {
+		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO: [world.is_mutation_installed(worldAPI.MUTATION_ID.PUSH)]
+	}
+	
+	system.createBase(world.get_adjusted_PA_chance(_advanced_analysis_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_analysis_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index, game_data.get_req_adj_classification_curves(game_data.SPECIAL_SYSTEM_CLASSIFICATION_CURVES, special_system_requirements), game_data.get_req_adj_classification_curves(game_data.SYSTEM_HAZARD_CLASSIFICATION_CURVES, system_hazard_requirements))
 	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
@@ -965,8 +969,7 @@ func _on_process_system_hazard(system: starSystemAPI):
 	var hazard = system.system_hazard_classification
 	var metadata = system.system_hazard_metadata
 	match hazard:
-		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION:
-			
+		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION, game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO:
 			var time_random = clamp(randfn(120, 30) - (game_data.player_weirdness_index * 30.0), 30.0, 240.0)
 			var time_total = metadata.get_or_add("CME_time_total", time_random)
 			var time_current = metadata.get_or_add("CME_time_current", time_total)
