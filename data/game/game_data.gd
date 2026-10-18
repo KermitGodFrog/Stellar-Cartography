@@ -50,12 +50,13 @@ const SPECIAL_SYSTEM_CLASSIFICATION_CURVES = {
 	SPECIAL_SYSTEM_CLASSIFICATIONS.LIGHT_GREMLIN_PRESENCE: preload("uid://kqr14juee3pn")
 }
 
-enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE, CORONAL_MASS_EJECTION, MINE_FIELD, NEBULA}
+enum SYSTEM_HAZARD_CLASSIFICATIONS {NONE, CORONAL_MASS_EJECTION, MINE_FIELD, NEBULA, PUSH_COMBO}
 const SYSTEM_HAZARD_CLASSIFICATION_CURVES = {
 	SYSTEM_HAZARD_CLASSIFICATIONS.NONE: preload("uid://oua44qc1agpd"),
 	SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION: preload("uid://ceicfkufoj2g2"),
 	SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD: preload("uid://cgf1r33t2b51"),
-	SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA: preload("uid://xhum3g6hgsa")
+	SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA: preload("uid://xhum3g6hgsa"),
+	SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO: preload("uid://buelam622utk")
 }
 
 enum SYSTEM_SCENARIO_CLASSIFICATIONS {NONE, UNKNOWN_DANGER}
@@ -126,12 +127,23 @@ const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"
 var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
 
 const MUTATION_UNLOCK_WIN_SCHEDULE: Dictionary = { #focus on negative and neutral mutations
-	1: [worldAPI.MUTATION_ID.CONTENT_SKALIQ]
+	1: [worldAPI.MUTATION_ID.CONTENT_SKALIQ],
+	2: [worldAPI.MUTATION_ID.AV_SPECIALIST],
+	3: [worldAPI.MUTATION_ID.DEADLY_HAZARDS],
+	5: [worldAPI.MUTATION_ID.RISKY_INCENTIVE],
+	10: [worldAPI.MUTATION_ID.PUSH]
 }
 
 const MUTATION_UNLOCK_LOSE_SCHEDULE: Dictionary = { #focus on positive mutations
 	1: [worldAPI.MUTATION_ID.BETTER_DATABANKS, worldAPI.MUTATION_ID.OLD_NANITES],
-	3: [worldAPI.MUTATION_ID.BETTER_ENGINES]
+	2: [worldAPI.MUTATION_ID.BETTER_ENGINES],
+	3: [worldAPI.MUTATION_ID.HIGH_TECH_COUNTERMEASURES],
+	5: [worldAPI.MUTATION_ID.SECOND_GENERATION_STARSHIP],
+	7: [worldAPI.MUTATION_ID.POCKET_CHANGE],
+	9: [worldAPI.MUTATION_ID.SIGHTSEEING_TRIP],
+	12: [worldAPI.MUTATION_ID.HARDCODED_SAFETY_LIMITS],
+	15: [worldAPI.MUTATION_ID.JIYA_IS_GONE],
+	20: [worldAPI.MUTATION_ID.SPECIALISTS, worldAPI.MUTATION_ID.DIPLOMACY_TEAM]
 }
 
 func get_random_character_name() -> String:
@@ -281,8 +293,8 @@ func get_weighted_special_anomaly_classifications(classification_curves: Diction
 func get_weighted_special_system_classifications(classification_curves: Dictionary = SPECIAL_SYSTEM_CLASSIFICATION_CURVES, weirdness_index: float = player_weirdness_index) -> Dictionary:
 	return get_weighted_classifications(classification_curves, weirdness_index)
 
-func get_weighted_system_hazard_classifications(weirdness_index: float = player_weirdness_index) -> Dictionary:
-	return get_weighted_classifications(SYSTEM_HAZARD_CLASSIFICATION_CURVES, weirdness_index)
+func get_weighted_system_hazard_classifications(classification_curves: Dictionary = SYSTEM_HAZARD_CLASSIFICATION_CURVES, weirdness_index: float = player_weirdness_index) -> Dictionary:
+	return get_weighted_classifications(classification_curves, weirdness_index)
 
 func get_weighted_system_scenario_classifications(weirdness_index: float = player_weirdness_index) -> Dictionary:
 	return get_weighted_classifications(SYSTEM_SCENARIO_CLASSIFICATION_CURVES, weirdness_index)

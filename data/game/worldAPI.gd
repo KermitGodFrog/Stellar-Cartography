@@ -33,11 +33,10 @@ class_name worldAPI
 @export_storage var played_strange_discovery_theme: bool = false #used exclusively in game.gd _on_play_strange_discovery_theme_or_motif()
 @export_storage var played_pulsar_theme: bool = false #used exclusively in game.gd _on_player_entering_system()
 @export var difficulty: game_data.DIFFICULTY = game_data.DIFFICULTY.NORMAL
-
-
+@export_storage var next_risky_incentive_threshold: int = (10 * 60) #used by 'Risky Incentive' mutation, managed by pauseModeHandler
 
 #mutations exclusion zone \/
-enum MUTATION_ID {BASE, CONTENT_SKALIQ, OLD_NANITES, BETTER_ENGINES, BETTER_DATABANKS} #not related to the player but needs to be saved, thus worldAPI territory!
+enum MUTATION_ID {BASE, CONTENT_SKALIQ, OLD_NANITES, BETTER_ENGINES, BETTER_DATABANKS, AV_SPECIALIST, SIGHTSEEING_TRIP, SECOND_GENERATION_STARSHIP, HIGH_TECH_COUNTERMEASURES, POCKET_CHANGE, DEADLY_HAZARDS, HARDCODED_SAFETY_LIMITS, DIPLOMACY_TEAM, SPECIALISTS, RISKY_INCENTIVE, JIYA_IS_GONE, PUSH} #not related to the player but needs to be saved, thus worldAPI territory!
 @export var installed_mutations: Array[MUTATION_ID] = []
 ##Returns false if the mutation was already installed.
 func installMutation(mutation_idx: MUTATION_ID) -> bool:
@@ -77,9 +76,9 @@ const mutation_data: Dictionary = {
 	},
 	MUTATION_ID.OLD_NANITES: {
 		"title": "Old Nanites",
-		"headline": "An alternate universe where an outdated nanite design is universal.",
+		"headline": "Repairs are more costly.",
 		"description": "In this alternate universe, the Provisional Executive never developed the Modern Era nanite in 14AAT. Reliance on the outdated 'universal nanite' carried by seeder ships during the latter half of the Late Proliferation Period continued instead.",
-		"effect": "Repairing at space stations and settlements costs +50% more.",
+		"effect": "Repairing at space stations, outposts and settlements costs +50% more.",
 		"type": "NEGATIVE",
 		"points_offset": +1
 	},
@@ -95,10 +94,106 @@ const mutation_data: Dictionary = {
 		"title": "Better Databanks",
 		"headline": "More exploration data per discovery.",
 		"description": "Before leaving Suno, Tristan from Resolution 289 decided to have your starship's server room retrofitted with the latest in data storage technology.",
-		"effect": "Discovering bodies yields 1.25x exploration data value.",
+		"effect": "[color=lightblue][ +0.2 body discovery value multiplier ][/color]",
 		"type": "POSITIVE",
 		"points_offset": -1
 	},
+	MUTATION_ID.AV_SPECIALIST: {
+		"title": "AV Specialist",
+		"headline": "Focus on planetary audio analysis.",
+		"description": "Your starship was uniquely designed around analysing and storing planetary audio data.",
+		"effect": "* Audio Visualizer is unlocked by default.\n* Audio Visualizer can save +20 audio profiles.\n* Planets are +20% more likely to have missing audio data.\n* Special upgrades cost 100000n (excl. Audio Visualizer).",
+		"type": "POSITIVE",
+		"points_offset": -2
+	},
+	MUTATION_ID.SIGHTSEEING_TRIP: {
+		"title": "Sightseeing Trip",
+		"headline": "Discover bodies from further away (but no marking).",
+		"description": "Some starships, like yours, are built to test new technologies and exploration strategies. You have access to an experimental scopes system, and a computer lobotomized to make space for advanced pattern recognition algorithms. Every tiny dot visible on scopes will be endlessly scrutinized by the computer until deciphered.",
+		"effect": "* Bodies can be discovered from much further away.\n* The ability to mark bodies is disabled.",
+		"type": "POSITIVE",
+		"points_offset": -2
+	},
+	MUTATION_ID.SECOND_GENERATION_STARSHIP: {
+		"title": "Second Generation Starship",
+		"headline": "An older, weakened starship model with less speed.",
+		"description": "These starships were commissioned by Executive councils between 20AAT to 40AAT. They were much safer and better oriented toward wormhole travel than their first generation predecessors. With technological advances making them obsolete by 55AAT, the Assembly voted to phase them out. Nowadays, they are seen as slow and unreliable.",
+		"effect": "[color=tomato][ -2 speed ][/color]\n[color=tomato][ +25% hull stress on game start ][/color]\n[color=tomato][ -0.2 body discovery value multiplier ][/color]",
+		"type": "NEGATIVE",
+		"points_offset": +2
+	},
+	MUTATION_ID.HIGH_TECH_COUNTERMEASURES: {
+		"title": "High Tech Countermeasures",
+		"headline": "Avoid damage from hostile ships half of the time.",
+		"description": "A little goes a long way when it comes to escaping from warring groups. A few high-power lasers, ECM packages, and extra point defence cannons, drastically reduces the chance of your starship being damaged. On the contrary, a lot of 'defence' ventures too far from the Exploration Council's goal of peaceful discovery, and so these loadouts are rarely utilized.",
+		"effect": "The 'Make an escape' option in hostile ship dialogue doesn't result in hull stress gain 50% of the time.",
+		"type": "POSITIVE",
+		"points_offset": -1
+	},
+	MUTATION_ID.POCKET_CHANGE: {
+		"title": "Pocket Change",
+		"headline": "Extra nanites at the beginning of a run.",
+		"description": "Before leaving Suno, Tristan from Resolution 289 decided to provide your starship with a tiny stash of nanites.",
+		"effect": "[color=lightblue][ +15000n ][/color]",
+		"type": "POSITIVE",
+		"points_offset": -1
+	},
+	MUTATION_ID.DEADLY_HAZARDS: {
+		"title": "Deadly Hazards",
+		"headline": "System hazards do more damage.",
+		"description": "The universe will never be completely predictable. There are endless factors at play for every situation. Perhaps, despite every prediction, your starship won't respond to the hazards you face as well as it 'should' throughout your assignment.",
+		"effect": "CMEs, pulsar beams and mine detonations incur 10% extra hull stress.",
+		"type": "NEGATIVE",
+		"points_offset": +1
+	},
+	MUTATION_ID.HARDCODED_SAFETY_LIMITS: {
+		"title": "Hardcoded Safety Limits",
+		"headline": "Supercharging isn't allowed.",
+		"description": "In this highly unlikely alternate universe, you have enough sense to listen to the chief when they tell you to 'not mess with the drive', and to not tear out the inbuilt safety limits which prevent the drive from being messed with.",
+		"effect": "* Supercharging is disabled.\n* ((W * 1000) / 2) nanites in data value are gained on supercharge, where W is the number of wormhole traversals that supercharge would otherwise take effect for.",
+		"type": "NEGATIVE",
+		"points_offset": +1
+	},
+	MUTATION_ID.DIPLOMACY_TEAM: {
+		"title": "Diplomacy Team",
+		"headline": "Better trade deals at outposts and settlements.",
+		"description": "This collection of diplomats from Tomo Sewi Locus should be able to convince the occasional pre-wormhole civilization of your peaceful intentions.",
+		"effect": "For outposts and settlements, +20 sell percentage mean and +25 sell percentage max (defaults: 50 and 100, respectively).",
+		"type": "POSITIVE",
+		"points_offset": -1
+	},
+	MUTATION_ID.SPECIALISTS: {
+		"title": "Specialists",
+		"headline": "Specialized senior staff can't share information.",
+		"description": "Starkly different roles usually don't have enough shared knowledge to exchange technical information.",
+		"effect": "XP can't be exchanged between departments at Rendezvous Points.",
+		"type": "NEGATIVE",
+		"points_offset": +1
+	},
+	MUTATION_ID.RISKY_INCENTIVE: {
+		"title": "Risky Incentive",
+		"headline": "Focus on completing a run quickly.",
+		"description": "Your starship suffers from a reactor with a tiny leak, which is only repairable by certain Executive shipyard nanites. It's unclear how you were cleared for your assignment with such a major issue. In order to minimize the damage, you'll have to get home as fast as possible.",
+		"effect": "For every 10 minutes of play time, suddenly gain +5% hull stress.",
+		"type": "NEGATIVE",
+		"points_offset": +1
+	},
+	MUTATION_ID.JIYA_IS_GONE: {
+		"title": "Jiya is Gone",
+		"headline": "Chief Engineer Jiya died in the King system.",
+		"description": "\"At 1380 hours, an explosion propagated from the science branch. As the chief was unable to be located, Lt Jiahao directed the rescue effort. Five crewmen, and the body of Chief Engineer Jiya - the only fatality, were retrieved from the wreckage. The settlement's blueprints and project charter fail to offer any reason behind the incident. It is speculated that the explosion was rigged...\"\n- 10th Pluviose 60AAT incident report",
+		"effect": "Chief Engineer Jiya is dead by default.",
+		"type": "NEGATIVE",
+		"points_offset": +1
+	},
+	MUTATION_ID.PUSH: {
+		"title": "PUSH",
+		"headline": "Multiple hazards in one system.",
+		"description": "Stands for 'Persistently Unfair System Hazards'. Why be lucky and only encounter one hazard per system, when you could encounter all hazards per system? The latter is sure to make your crew ecstatic!",
+		"effect": "Adds a new system hazard - 'COMBO' - which combines the effects of CMEs, mine fields and nebulae. The 'COMBO' hazard has a set generation weight of 0.25 throughout the entire run.",
+		"type": "NEGATIVE",
+		"points_offset": +2
+	}
 }
 #mutations exclusion zone /\
 

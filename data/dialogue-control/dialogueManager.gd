@@ -755,9 +755,14 @@ func _on_receive_nav_buoy_roll(roll: Array) -> void:
 	pass
 
 func superchargeForJumpsWithFlair(jumps: int) -> void:
-	emit_signal("superchargePlayerForJumps", jumps)
-	dialogue.add_text("[color=green](Supercharged for plus %.f wormhole traversals) [/color]" % jumps)
-	playSoundEffect("success.wav")
+	if not world.is_mutation_installed(worldAPI.MUTATION_ID.HARDCODED_SAFETY_LIMITS):
+		emit_signal("superchargePlayerForJumps", jumps)
+		dialogue.add_text("[color=green](Supercharged for plus %.f wormhole traversals) [/color]" % jumps)
+		playSoundEffect("success.wav")
+	else:
+		dialogue.add_text("[color=yellow]([i][s]Supercharged for plus %.f wormhole traversals[/s][/i]) [/color]" % jumps)
+		addValueWithFlair(int((jumps * 1000) / 2))
+		playSoundEffect("strange.wav")
 	pass
 
 func increaseCharacterStandingBy25(written_occupation: String) -> void:
@@ -920,35 +925,27 @@ func addTradeXPOptions_RP(rp_seed: String) -> void:
 func categoryActive(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.NONE)
 	pass
-
 func categorySuccess(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.SUCCESS)
 	pass
-
 func categoryFailure(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_category", wID, objectiveAPI.STATES.FAILURE)
 	pass
-
 func categoryClear(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "clear_category", wID)
 	pass
-
 func objectiveActive(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.NONE)
 	pass
-
 func objectiveSuccess(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.SUCCESS)
 	pass
-
 func objectiveFailure(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "mark_objective", wID, objectiveAPI.STATES.FAILURE)
 	pass
-
 func objectiveClear(wID: String) -> void:
 	get_tree().call_group("objectivesManager", "clear_objective", wID)
 	pass
-
 func cycleAll(written_state: String) -> void: #dont use ts
 	var change_state = objectiveAPI.STATES.get(written_state)
 	get_tree().call_group("objectivesManager", "cycle_all", change_state)

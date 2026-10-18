@@ -85,7 +85,7 @@ const upgrade_data = {
 	playerAPI.UPGRADE_ID.HEAT_SINK: {
 		"cost": 15000, 
 		"description": "A device that stores the heat produced by a starship rather than radiating it away. When full, the heat sink is ejected into space and replaced. This reduces the thermal signature of the ship, but it can't move as much heat as external radiators for long.", 
-		"effect": "[color=lightblue][ -6.25 scanner profile ][/color][color=tomato][ -1 speed ][/color]"
+		"effect": "[color=lightblue][ -6.25 scanner profile ]\n[/color][color=tomato][ -1 speed ][/color]"
 	},
 	playerAPI.UPGRADE_ID.OPTIMIZED_LIDAR: {
 		"cost": 25000, 
@@ -112,7 +112,6 @@ const upgrade_data = {
 		"description": "The gasses required to synthesize compressed fuel cells ('cram cells') are not found in standard MMA or proteins. Stars have these gasses in high quantities - especially the larger ones. This collection unit can enable the synthesis of cram cells by collecting various gasses from stars.", 
 		"effect": "Upon interacting with any star for the first time, your starship might be supercharged for +1 wormhole traversal - the chance of success is greatly increased for larger star types."
 	}
-	#playerAPI.UPGRADE_ID.ENVOY_PROGRAM: {"cost": 9000, "description": "(UNFINISHED)"},
 }
 
 var station: stationBodyAPI
@@ -131,6 +130,7 @@ var pending_audio_profiles: Array = []:
 var player_saved_audio_profiles_size_matrix: Array = [] #current, max
 
 var mutations_old_nanites_installed: bool = false
+var mutations_av_specialist_installed: bool = false
 
 signal sellExplorationData(sell_percentage_of_market_price: int)
 signal upgradeShip(upgrade_idx: playerAPI.UPGRADE_ID, cost: int)
@@ -287,6 +287,10 @@ func add_upgrade_button(upgrade: playerAPI.UPGRADE_ID, unlocked: bool) -> void:
 	instance.cost = data.get("cost")
 	instance.description = data.get("description")
 	instance.effect = data.get("effect")
+	
+	if mutations_av_specialist_installed and playerAPI.is_upgrade_SPL(upgrade) and upgrade != playerAPI.UPGRADE_ID.AUDIO_VISUALIZER:
+		instance.cost = 100000
+	
 	instance.connect("pressed", _on_upgrade_pressed.bind(instance.upgrade, instance.cost, instance.unlocked))
 	instance.connect("mouse_entered", _on_upgrade_mouse_entered.bind(instance.upgrade, instance.description))
 	
@@ -364,6 +368,9 @@ func get_readable_upgrade_name(upgrade: playerAPI.UPGRADE_ID) -> String:
 
 
 func _on_mutation_state_change(mutation_idx: worldAPI.MUTATION_ID, state: bool) -> void:
-	if mutation_idx == worldAPI.MUTATION_ID.OLD_NANITES:
-		mutations_old_nanites_installed = state
+	match mutation_idx:
+		worldAPI.MUTATION_ID.OLD_NANITES:
+			mutations_old_nanites_installed = state
+		worldAPI.MUTATION_ID.AV_SPECIALIST:
+			mutations_av_specialist_installed = state
 	pass

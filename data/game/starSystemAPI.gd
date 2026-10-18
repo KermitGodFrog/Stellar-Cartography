@@ -246,12 +246,12 @@ const asteroid_belt_classifications = {
 
 # core gen methods \/
 
-func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0, _missing_GL_chance_per_relevant_planet: float = 0.0, weirdness_index: float = 0.0, special_system_req_adj_curves: Dictionary = {}) -> void:
+func createBase(_PA_chance_per_planet: float = 0.0, _missing_AO_chance_per_planet: float = 0.0, _SA_chance_per_candidate: float = 0.0, _missing_GL_chance_per_relevant_planet: float = 0.0, weirdness_index: float = 0.0, special_system_req_adj_curves: Dictionary = {}, system_hazard_req_adj_curves: Dictionary = {}) -> void:
 	if special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.NONE:
 		special_system_classification = global_data.weighted_pick(game_data.get_weighted_special_system_classifications(special_system_req_adj_curves, weirdness_index), "weight")
 	
 	if system_hazard_classification == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NONE:
-		system_hazard_classification = global_data.weighted_pick(game_data.get_weighted_system_hazard_classifications(weirdness_index), "weight")
+		system_hazard_classification = global_data.weighted_pick(game_data.get_weighted_system_hazard_classifications(system_hazard_req_adj_curves, weirdness_index), "weight")
 	
 	if system_scenario_classification == game_data.SYSTEM_SCENARIO_CLASSIFICATIONS.NONE:
 		system_scenario_classification = global_data.weighted_pick(game_data.get_weighted_system_scenario_classifications(weirdness_index), "weight")
@@ -517,29 +517,34 @@ func createAuxiliaryUnexplored(_player_speed: int, _special_anomaly_req_adj_curv
 			generateRandomWeightedSpecialAnomaly(_special_anomaly_req_adj_curves)
 			generateRandomWeightedShips()
 	
+	var generate_nebula := func():
+		const valid_nebula_colors := [
+			Color.CHARTREUSE,
+			Color.CORAL,
+			Color.CRIMSON,
+			Color.DARK_GREEN,
+			Color.DEEP_SKY_BLUE,
+			Color.DEEP_PINK,
+			Color.MIDNIGHT_BLUE,
+			Color.INDIGO
+		]
+		var noise: FastNoiseLite = FastNoiseLite.new()
+		noise.set_seed(randi())
+		noise.set_fractal_octaves(3)
+		noise.set_fractal_weighted_strength(1.0)
+		noise.set_noise_type(FastNoiseLite.TYPE_SIMPLEX)
+		noise.set_fractal_type([FastNoiseLite.FRACTAL_NONE, FastNoiseLite.FRACTAL_PING_PONG, FastNoiseLite.FRACTAL_RIDGED].pick_random())
+		noise.set_frequency(global_data.get_randf(0.001, 0.0075))
+		system_hazard_metadata["nebula_noise"] = noise
+		system_hazard_metadata["nebula_color"] = valid_nebula_colors.pick_random()
 	match system_hazard_classification:
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.MINE_FIELD:
 			generateRandomMines(_player_speed)
 		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA:
-			const valid_nebula_colors := [
-				Color.CHARTREUSE,
-				Color.CORAL,
-				Color.CRIMSON,
-				Color.DARK_GREEN,
-				Color.DEEP_SKY_BLUE,
-				Color.DEEP_PINK,
-				Color.MIDNIGHT_BLUE,
-				Color.INDIGO
-			]
-			var noise: FastNoiseLite = FastNoiseLite.new()
-			noise.set_seed(randi())
-			noise.set_fractal_octaves(3)
-			noise.set_fractal_weighted_strength(1.0)
-			noise.set_noise_type(FastNoiseLite.TYPE_SIMPLEX)
-			noise.set_fractal_type([FastNoiseLite.FRACTAL_NONE, FastNoiseLite.FRACTAL_PING_PONG, FastNoiseLite.FRACTAL_RIDGED].pick_random())
-			noise.set_frequency(global_data.get_randf(0.001, 0.0075))
-			system_hazard_metadata["nebula_noise"] = noise
-			system_hazard_metadata["nebula_color"] = valid_nebula_colors.pick_random()
+			generate_nebula.call()
+		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO:
+			generateRandomMines(_player_speed)
+			generate_nebula.call()
 	pass
 
 # gen methods \/
@@ -1471,14 +1476,14 @@ func is_civilized() -> bool:
 			return true
 	return false
 
-static func get_temporary_station(hook: bodyAPI) -> stationBodyAPI: # for anomalies!
+static func get_temporary_station(hook: bodyAPI, sell_mean: float = 50.0, sell_stdev: float = 10.0, sell_max: int = 100) -> stationBodyAPI: # for anomalies!
 	var temp_station: stationBodyAPI = stationBodyAPI.new()
 	temp_station.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.STATION, game_data.NAME_SCHEMES.STANDARD))
 	temp_station.station_classification = game_data.STATION_CLASSIFICATIONS.PIRATE
 	temp_station.repair_price_multiplier = 1.0
 	var random = RandomNumberGenerator.new()
 	random.set_seed(hook.metadata.get("seed", randi()))
-	temp_station.sell_percentage_of_market_price = clampi(roundi(random.randfn(50.0, 10.0)), 15, 100)
+	temp_station.sell_percentage_of_market_price = clampi(roundi(random.randfn(sell_mean, sell_stdev)), 15, sell_max)
 	var num_upgrades: int = clampi(roundi(random.randfn(2, 1)), 1, 6)
 	var _available_upgrades: Array[playerAPI.UPGRADE_ID] = []
 	var no_req_upgrades: Array[playerAPI.UPGRADE_ID] = playerAPI.get_all_upgrades_with_no_requirements()

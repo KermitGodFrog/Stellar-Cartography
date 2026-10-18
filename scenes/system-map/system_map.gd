@@ -184,6 +184,8 @@ var player_supercharged: bool = false:
 
 var junk_textures: Dictionary = {}
 
+var mutations_sightseeing_trip_installed: bool = false
+
 func _ready():
 	status_control.connect("removeHullStressForNanites", _on_remove_hull_stress_for_nanites)
 	status_control.connect("updateScannerDisplayTimes", _on_update_scanner_display_times)
@@ -221,7 +223,7 @@ func _physics_process(delta):
 	#If camera moves, follow body is removed for camera.
 	
 	#nebual sprite stuff
-	nebula_sprite.visible = system.system_hazard_classification == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA
+	nebula_sprite.visible = system.system_hazard_classification in [game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA, game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO]
 	nebula_sprite.set_position(player_position_matrix[0])
 	
 	#camera_target_position is position for system3d to look at
@@ -298,7 +300,7 @@ func _physics_process(delta):
 				body_attributes_list.add_item("mass : %.2f (earth masses)" % (follow_body.mass * 333000))
 			
 		#metadata
-		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "missing_GL", "seed", "custom_available", "custom_follow_available", "custom_orbit_available", "ship_available", "cram_cell_synthesis_available", "migration_analysis_available", "has_valid_audio_profile"]
+		var excluding = ["iterations", "color", "value", "planetary_anomaly", "planetary_anomaly_available", "space_anomaly_available", "missing_AO", "missing_GL", "seed", "custom_available", "custom_follow_available", "custom_orbit_available", "ship_available", "cram_cell_synthesis_available", "migration_analysis_available", "ghost_theorised", "has_valid_audio_profile"]
 		if follow_body.is_known():
 			for entry in follow_body.metadata:
 				if excluding.find(entry) == -1:
@@ -400,7 +402,7 @@ func calculate_nebula_slowdown() -> void:
 	
 	var hazard = system.system_hazard_classification
 	var metadata = system.system_hazard_metadata
-	if hazard == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA:
+	if hazard in [game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA, game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO]:
 		var noise: FastNoiseLite = metadata.get("nebula_noise", FastNoiseLite.new())
 		if temp_nebula_texture != null:
 			pos_value = noise.get_noise_2d(temp_nebula_texture.get_width() / 2.0, temp_nebula_texture.get_height() / 2.0) # its (0.0, 0.0) bc its already offset by the player pos!
@@ -845,7 +847,7 @@ func draw_map():
 	
 	var hazard = system.system_hazard_classification
 	var hazard_metadata = system.system_hazard_metadata
-	if hazard == game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA:
+	if hazard in [game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA, game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO]:
 		var noise: FastNoiseLite = hazard_metadata.get("nebula_noise", FastNoiseLite.new())
 		var reset_nebula_texture = func() -> void:
 			temp_nebula_texture = NoiseTexture2D.new()
@@ -1089,9 +1091,12 @@ func async_add_ping(body: orbitBodyAPI) -> void:
 	
 	body.pings_to_be_theorised = maxi(0, body.pings_to_be_theorised - 1)
 	if body.pings_to_be_theorised == 0:
-		if not body.theorised:
+		if not body.theorised and not body.metadata.has("ghost_theorised"):
 			emit_signal("theorisedBody", body.get_identifier())
-		body.theorised = true #so it says '???' on the overview
+		if not mutations_sightseeing_trip_installed:
+			body.theorised = true #so it says '???' on the overview
+		else:
+			body.metadata["ghost_theorised"] = true
 	var pings = ["res://data/system-map/ping-display-helpers/normal.tres"]
 	var ping = load(pings.pick_random()).duplicate(true)
 	ping.position = body.position
@@ -1354,4 +1359,9 @@ func _on_tabs_tab_changed(tab: int) -> void:
 
 func _on_settings_button_pressed() -> void:
 	emit_signal("openPauseMenu")
+	pass
+
+func _on_mutation_state_change(mutation_idx: worldAPI.MUTATION_ID, state: bool) -> void:
+	if mutation_idx == worldAPI.MUTATION_ID.SIGHTSEEING_TRIP:
+		mutations_sightseeing_trip_installed = state
 	pass

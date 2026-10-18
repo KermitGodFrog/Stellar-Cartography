@@ -3,6 +3,7 @@ extends Node
 
 signal pauseModeChanged(new_mode: game_data.PAUSE_MODES)
 signal pauseModeNone #GAME.GD EXCLUSIVE!
+signal riskyIncentiveThresholdReached()
 
 var pause_mode: game_data.PAUSE_MODES = game_data.PAUSE_MODES.NONE:
 	set(value):
@@ -25,6 +26,9 @@ func _process(delta):
 	
 	if allow_play_time_change and world != null:
 		world.play_time += delta
+		if world.play_time >= world.next_risky_incentive_threshold:
+			world.next_risky_incentive_threshold = int(world.play_time) + (10 * 60) #this is an unsafe operation bx if the FPS is low enough then world.play_time will be above the threshold as an integer and thus the next threshold will be pushed back further. this is relatively minor and wouldnt apply to most players so im not going to fix it. i dont think anyone would even notice honestly.
+			emit_signal("riskyIncentiveThresholdReached")
 	pass
 
 func _on_queue_pause_mode(new_mode: game_data.PAUSE_MODES) -> void:

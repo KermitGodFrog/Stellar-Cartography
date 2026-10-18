@@ -31,7 +31,7 @@ func _ready():
 	
 	world = game_data.loadWorld()
 	if init_type == global_data.GAME_INIT_TYPES.TUTORIAL:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.20, 0.10)
 		world.difficulty = init_data.get("difficulty", game_data.DIFFICULTY.NORMAL)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
@@ -68,6 +68,7 @@ func _ready():
 		pause_menu.disableSaving() # so savefile cannto be overwriten
 		
 		_on_update_player_v_change_upgrade_variables()
+		_on_update_player_v_change_mutation_variables()
 		
 		objectives_manager.start_receive_init_type(init_type)
 		
@@ -84,7 +85,7 @@ func _ready():
 		pause_menu.set("_installed_mutations", world.installed_mutations)
 	
 	elif world == null or init_type == global_data.GAME_INIT_TYPES.NEW:
-		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.25, 0.10)
+		world = game_data.createWorld(25, 5, 25, 15, 5, 10, 25.0, 50.0, 0.005, 0.05, 0.20, 0.10)
 		world.difficulty = init_data.get("difficulty", game_data.DIFFICULTY.NORMAL)
 		
 		dialogue_manager.dialogue_memory = world.dialogue_memory
@@ -115,6 +116,7 @@ func _ready():
 		_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, new.get_first_star())
 		
 		_on_update_player_v_change_upgrade_variables()
+		_on_update_player_v_change_mutation_variables()
 		
 		objectives_manager.start_receive_init_type(init_type)
 		
@@ -149,6 +151,7 @@ func _ready():
 			_on_mutation_state_change(mutation, true)
 		
 		_on_update_player_v_change_upgrade_variables()
+		_on_update_player_v_change_mutation_variables()
 		
 		journey_map.generate_up_to_system(world.player.systems_traversed)
 		
@@ -274,6 +277,7 @@ func connect_all_signals() -> void:
 	debug_interface.connect("addCharacterXP", _on_add_character_xp)
 	debug_interface.connect("updateCameraZoom", _on_DEBUG_update_camera_zoom)
 	
+	pause_mode_handler.connect("riskyIncentiveThresholdReached", _on_risky_incentive_threshold_reached)
 	pause_mode_handler.connect("pauseModeChanged", _on_pause_mode_changed)
 	stats_menu.connect("queuePauseMode", _on_queue_pause_mode)
 	pause_menu.connect("queuePauseMode", _on_queue_pause_mode)
@@ -549,7 +553,12 @@ func _on_player_following_body(following_body: bodyAPI) -> void:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				"HARD_LEAVE_STATION_OVERRIDE": #for planetary settlements
 					following_body.metadata["planetary_anomaly_available"] = false
-					var temp_station := starSystemAPI.get_temporary_station(following_body)
+					var sell_mean: float = 50.0
+					var sell_max: int = 100
+					if world.is_mutation_installed(worldAPI.MUTATION_ID.DIPLOMACY_TEAM):
+						sell_mean += 20.0
+						sell_max += 25
+					var temp_station := starSystemAPI.get_temporary_station(following_body, sell_mean, 10.0, sell_max)
 					dock_with_station(temp_station)
 				"HARD_LEAVE_INHABITED_OVERRIDE":
 					following_body.metadata["inhabited"] = true
@@ -567,7 +576,12 @@ func _on_player_following_body(following_body: bodyAPI) -> void:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
 				"HARD_LEAVE_STATION_OVERRIDE": #for outposts
 					following_body.metadata["space_anomaly_available"] = false
-					var temp_station := starSystemAPI.get_temporary_station(following_body)
+					var sell_mean: float = 50.0
+					var sell_max: int = 100
+					if world.is_mutation_installed(worldAPI.MUTATION_ID.DIPLOMACY_TEAM):
+						sell_mean += 20.0
+						sell_max += 25
+					var temp_station := starSystemAPI.get_temporary_station(following_body, sell_mean, 10.0, sell_max)
 					dock_with_station(temp_station)
 				_:
 					_on_update_player_action_type(playerAPI.ACTION_TYPES.ORBIT, following_body)
@@ -886,7 +900,11 @@ func _on_create_new_star_system(for_system: starSystemAPI = null, for_weirdness_
 		game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.SKALIQ_CIVILIZED: [world.is_mutation_installed(worldAPI.MUTATION_ID.CONTENT_SKALIQ)]
 	}
 	
-	system.createBase(world.get_adjusted_PA_chance(_advanced_analysis_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_analysis_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index, game_data.get_req_adj_classification_curves(game_data.SPECIAL_SYSTEM_CLASSIFICATION_CURVES, special_system_requirements))
+	var system_hazard_requirements: Dictionary = {
+		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO: [world.is_mutation_installed(worldAPI.MUTATION_ID.PUSH)]
+	}
+	
+	system.createBase(world.get_adjusted_PA_chance(_advanced_analysis_unlocked), world.missing_AO_chance_per_planet, world.get_adjusted_SA_chance(_advanced_analysis_unlocked), world.missing_GL_chance_per_relevant_planet, for_weirdness_index, game_data.get_req_adj_classification_curves(game_data.SPECIAL_SYSTEM_CLASSIFICATION_CURVES, special_system_requirements), game_data.get_req_adj_classification_curves(game_data.SYSTEM_HAZARD_CLASSIFICATION_CURVES, system_hazard_requirements))
 	if for_system != null:
 		for_system.destination_systems.append(system)
 		system.previous_system = for_system
@@ -952,8 +970,7 @@ func _on_process_system_hazard(system: starSystemAPI):
 	var hazard = system.system_hazard_classification
 	var metadata = system.system_hazard_metadata
 	match hazard:
-		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION:
-			
+		game_data.SYSTEM_HAZARD_CLASSIFICATIONS.CORONAL_MASS_EJECTION, game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO:
 			var time_random = clamp(randfn(120, 30) - (game_data.player_weirdness_index * 30.0), 30.0, 240.0)
 			var time_total = metadata.get_or_add("CME_time_total", time_random)
 			var time_current = metadata.get_or_add("CME_time_current", time_total)
@@ -1143,6 +1160,12 @@ func _on_update_player_v_change_upgrade_variables() -> void:
 	sonar.set("cooldown", world.player.LIDAR_cooldown)
 	system_map.set("bg_processing_cooldown", world.player.bg_processing_cooldown)
 	system_map.set("bg_processing_radius", world.player.bg_processing_radius)
+	pass
+
+func _on_update_player_v_change_mutation_variables() -> void:
+	#updating playerAPI variables (THAT ARE ONLY USED FOR VALUE CHANGE MUTATIONS) throughout the game 
+	system_3d.set("discovery_value_multiplier", world.player.discovery_value_multiplier)
+	system_3d.set("max_body_detection_scalar", world.player.max_body_detection_scalar)
 	pass
 
 func _on_remove_saved_audio_profile(helper: audioProfileHelper):
@@ -1638,6 +1661,26 @@ func _on_install_mutation(mutation_idx: worldAPI.MUTATION_ID) -> void:
 		match mutation_idx:
 			worldAPI.MUTATION_ID.BETTER_ENGINES:
 				world.player.speed += 1
+			worldAPI.MUTATION_ID.BETTER_DATABANKS:
+				world.player.discovery_value_multiplier += 0.2
+			worldAPI.MUTATION_ID.AV_SPECIALIST:
+				_on_unlock_upgrade(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)
+				world.player.max_saved_audio_profiles += 20
+				world.missing_AO_chance_per_planet += 0.2
+			worldAPI.MUTATION_ID.SIGHTSEEING_TRIP:
+				world.player.max_body_detection_scalar += 2000
+			worldAPI.MUTATION_ID.SECOND_GENERATION_STARSHIP:
+				world.player.speed -= 2
+				_on_add_player_hull_stress(25)
+				world.player.discovery_value_multiplier -= 0.2
+			worldAPI.MUTATION_ID.POCKET_CHANGE:
+				_on_increase_player_balance(15000)
+			worldAPI.MUTATION_ID.DEADLY_HAZARDS:
+				world.player.hull_stress_CME += 10
+				world.player.hull_stress_pulsar_beam += 10
+				world.player.hull_stress_mine += 10
+			worldAPI.MUTATION_ID.JIYA_IS_GONE:
+				_on_kill_character_with_occupation(characterAPI.OCCUPATIONS.CHIEF_ENGINEER)
 		
 		_on_mutation_state_change(mutation_idx, true)
 	pass
@@ -1645,6 +1688,13 @@ func _on_install_mutation(mutation_idx: worldAPI.MUTATION_ID) -> void:
 func _on_mutation_state_change(mutation_idx: worldAPI.MUTATION_ID, state: bool) -> void:
 	get_tree().call_group("FOLLOW_MUTATION_STATE", "_on_mutation_state_change", mutation_idx, state)
 	print_debug("GAME: MUTATION STATE CHANGED: ", mutation_idx, " ", state)
+	
+	_on_update_player_v_change_mutation_variables()
+	pass
+
+func _on_risky_incentive_threshold_reached() -> void:
+	if world.is_mutation_installed(worldAPI.MUTATION_ID.RISKY_INCENTIVE):
+		_on_add_player_hull_stress(5)
 	pass
 
 func _on_insa_make_all_wormholes_revealable() -> void:
