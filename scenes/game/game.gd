@@ -710,7 +710,6 @@ func _on_player_entering_system(system: starSystemAPI):
 	new_query.add_tree_access("system_civilized", system.is_civilized())
 	new_query.add_tree_access("seed", system.non_gen_seed)
 	get_tree().call_group("dialogueManager", "speak", self, new_query)
-	
 	#not awaiting onCloseDialog because wacky shtuff happens!!!!!!! audioHandler should only play it when pause_mode is NONE anyway
 	
 	if system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.INSA:
@@ -723,6 +722,21 @@ func _on_player_entering_system(system: starSystemAPI):
 		if not world.played_pulsar_theme:
 			get_tree().call_group("audioHandler", "queue_music", "res://sound/music/pulsar.ogg")
 			world.played_pulsar_theme = true
+	
+	var RETURN_STATE = await get_tree().get_first_node_in_group("dialogueManager").onCloseDialog
+	match RETURN_STATE:
+		"LEAVE_ADD_MARAUDER_OVERRIDE":
+			system.addUnitBody(
+				interceptingUnitAPI.new(),
+				starSystemAPI.BODY_TYPES.SHIP,
+				system.identifier_count,
+				game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.MARAUDER),
+				global_data.get_randi(3, int(game_data.SHIP_HOSTILE_MAX_SPEED_CURVE.sample(game_data.player_weirdness_index))),
+				starSystemAPI.get_default_radius_solar_radii(),
+				{"system": system, "player": world.player, "position": world.player.position},
+				{"affiliation": game_data.UNIT_AFFILIATIONS.MARAUDER, "hostile": true, "seed": randi()}
+			)
+			_on_reconnect_system_signals(system)
 	pass
 
 func _on_player_mutiny() -> void:
