@@ -21,6 +21,7 @@ signal statsMenuQuit(_init_type: INIT_TYPES)
 @onready var init_type_label = $stats_canvas/stats_control/main_scroll/init_type_label
 @onready var stats_body_scroll = $stats_canvas/stats_control/main_scroll/stats_rewards_scroll/stats_panel/stats_scroll/body_margin/body_scroll
 @onready var rewards_body_scroll = $stats_canvas/stats_control/main_scroll/stats_rewards_scroll/rewards_panel/rewards_scroll/body_margin/body_scroll
+@onready var music_player = $music_player
 enum INIT_TYPES {DEATH, WIN, TUTORIAL}
 var init_type: INIT_TYPES = INIT_TYPES.DEATH
 var player_stats: Dictionary = {}
@@ -29,6 +30,9 @@ var player_stats: Dictionary = {}
 @onready var mutation_item_scene = preload("uid://dte1ssronei0")
 @onready var rnu_item_scene = preload("uid://b568o8s45lksu")
 @onready var station_upgrade = preload("uid://crt73kp6x2bbe")
+
+@onready var death_music = preload("uid://bgo8whee6fglx")
+@onready var win_music = preload("uid://g1tm4gjdw7jb")
 
 func _on_exit_to_main_menu_button_pressed():
 	emit_signal("statsMenuQuit", init_type)
@@ -41,16 +45,21 @@ func _on_open() -> void:
 			init_type_label.set_text("YOU ARE DEAD")
 			init_type_label.set("theme_override_colors/font_shadow_color", Color.WEB_MAROON)
 			init_type_label.set("theme_override_colors/font_outline_color", Color.BLACK)
+			music_player.set_stream(death_music)
 		INIT_TYPES.WIN:
 			init_type_label.set_text("YOU HAVE REACHED THE NORMA OUTSKIRTS")
 			init_type_label.set("theme_override_colors/font_shadow_color", Color.WEB_GREEN)
 			init_type_label.set("theme_override_colors/font_outline_color", Color.BLACK)
+			music_player.set_stream(win_music)
 		INIT_TYPES.TUTORIAL:
 			init_type_label.set_text("YOU HAVE COMPLETED THE TUTORIAL")
+			music_player.set_stream(win_music)
 	for title in player_stats:
 		var new = statistic_scene.instantiate()
 		new.connect("ready", _on_statistic_instance_ready.bind(new, title))
 		stats_body_scroll.add_child(new)
+	
+	music_player.play()
 	
 	if init_type != INIT_TYPES.TUTORIAL:
 		var details_helper := game_data.loadUserDetails()

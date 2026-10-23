@@ -130,4 +130,9 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDull"
 text = "EXIT TO MAIN MENU"
 
+[node name="music_player" type="AudioStreamPlayer" parent="."]
+volume_db = -6.0
+mix_target = 1
+bus = &"Music"
+
 [connection signal="pressed" from="stats_canvas/stats_control/main_scroll/exit_to_main_menu_button" to="." method="_on_exit_to_main_menu_button_pressed"]
