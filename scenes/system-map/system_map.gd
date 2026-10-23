@@ -1268,6 +1268,12 @@ func _on_proximity_blinker_condition_changed(_active: bool, _last_condition_time
 	emit_signal("proximityBlinkerConditionChanged", _active, _last_condition_time)
 	pass
 
+func _on_force_camera_to_player() -> void:
+	reset_camera_follow_body()
+	await get_tree().process_frame
+	camera.position = player_position_matrix[0]
+	pass
+
 
 
 func setup_tutorial_processor() -> void:

@@ -333,11 +333,11 @@ func _physics_process(delta):
 	system_map.set("_player_status_matrix", [world.player.balance, world.player.hull_stress, world.player.hull_deterioration, world.player.morale])
 	system_map.set("player_adj_scanner_matrix", [world.player.get_adjusted_scanner_profile(), world.player.get_adjusted_scanner_power()])
 	system_map.set("player_adj_speed", world.player.get_adjusted_speed())
-	system_map.set("player_audio_visualizer_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER))
-	system_map.set("player_gas_layer_surveyor_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR))
-	system_map.set("player_long_range_scopes_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES))
-	system_map.set("player_migration_analysis_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.MIGRATION_ANALYSIS))
-	system_map.set("player_cram_cell_synthesis_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.CRAM_CELL_SYNTHESIS))
+	system_map.set("player_audio_visualizer_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.AUDIO_VISUALIZER)) #why not use FOLLOW_UPGRADE_STATE group?
+	system_map.set("player_gas_layer_surveyor_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.GAS_LAYER_SURVEYOR)) #why not use FOLLOW_UPGRADE_STATE group?
+	system_map.set("player_long_range_scopes_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.LONG_RANGE_SCOPES)) #why not use FOLLOW_UPGRADE_STATE group?
+	system_map.set("player_migration_analysis_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.MIGRATION_ANALYSIS)) #why not use FOLLOW_UPGRADE_STATE group?
+	system_map.set("player_cram_cell_synthesis_unlocked", world.player.is_upgrade_unlocked(playerAPI.UPGRADE_ID.CRAM_CELL_SYNTHESIS)) #why not use FOLLOW_UPGRADE_STATE group?
 	system_map.set("player_action_lock", world.player.action_lock)
 	system_3d.set("player_position", world.player.position)
 	long_range_scopes.set("player_position", world.player.position)
@@ -854,6 +854,8 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	system_map.follow_body = null
 	system_map.locked_body = null
 	system_map.action_body = null
+	
+	system_map._on_force_camera_to_player()
 	
 	wormhole_minigame.initialize(world.player.weirdness_index, world.player.hull_stress_wormhole)
 	if not skip_minigame:
