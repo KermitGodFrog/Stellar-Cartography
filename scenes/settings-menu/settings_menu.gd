@@ -14,7 +14,7 @@ signal exiting()
 @onready var options: Array[Node] = []
 @onready var keybind_options: Array[Node] = []
 @onready var audio_slider_options: Array[Node] = []
-@onready var dropdown_options: Array[Node] = [$panel/margin/panel_scroll/list_description_split/list_container/settings_list/window_mode, $panel/margin/panel_scroll/list_description_split/list_container/settings_list/fps_limit, $panel/margin/panel_scroll/list_description_split/list_container/settings_list/default_resolution]
+@onready var dropdown_options: Array[Node] = [$panel/margin/panel_scroll/list_description_split/list_container/settings_list/window_mode, $panel/margin/panel_scroll/list_description_split/list_container/settings_list/fps_limit, $panel/margin/panel_scroll/list_description_split/list_container/settings_list/default_resolution, $panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_text_size, $panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_line_spacing]
 
 var exit_type: global_data.SETTINGS_EXIT_TYPES = global_data.SETTINGS_EXIT_TYPES.INSTANCE
 var exit_path: String = String() #only relevant for exit type SCENE
@@ -66,6 +66,10 @@ func _on_option_hovered(wID: String) -> void:
 			text = "The maximum FPS (frames per second) that the game can run at.\n\n'OFF' means that there isn't a maximum FPS."
 		"DEFAULT_RESOLUTION":
 			text = "The game's default rendering resolution on startup. When the game window is resized, the UI is stretched in relation to the default resolution. As UI elements have set sizes, higher resolutions will result in the UI being spaced further apart. If you want larger UI, you can set this to a lower resolution than your monitor and then resize the game window to fit. Otherwise, consider keeping this as close as possible to your monitor's resolution.\n\nStellar Cartographer was developed at a 1600x900 default resolution (but don't let that stop you from changing it).\n\nYou MIGHT have to restart the game after pressing the 'SAVE' button for the change to take effect."
+		"DIALOGUE_TEXT_SIZE":
+			text = "The font size (in pixels) for dialogue text and dialogue option text."
+		"DIALOGUE_LINE_SPACING":
+			text = "The additional spacing (in pixels) between lines of dialogue text."
 		"AUDIO_SLIDER_MASTER":
 			text = "The volume of all game audio."
 		"AUDIO_SLIDER_PLANETARY_SFX":
@@ -190,6 +194,10 @@ func save_then_apply_settings_list() -> void: #packs data into settingsHelper, s
 						helper.fps_limit = dropdown.get_item_text(dropdown.get_selected_id()).to_int()
 			"DEFAULT_RESOLUTION":
 				helper.default_resolution = dropdown.get_item_text(dropdown.get_selected_id())
+			"DIALOGUE_TEXT_SIZE":
+				helper.dialogue_text_size = dropdown.get_selected_id()
+			"DIALOGUE_LINE_SPACING":
+				helper.dialogue_line_spacing = dropdown.get_selected_id()
 	
 	game_data.saveSettings(helper)
 	await get_tree().physics_frame

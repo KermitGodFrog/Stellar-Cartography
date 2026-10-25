@@ -55,6 +55,7 @@ func add_options(new_options: Dictionary):
 		
 		var rule = new_options.get(option_text, "defaultLeave")
 		option_instance.initialize(rule, adjusted_option_text, options_added)
+		option_instance.ready.connect(_on_option_ready.bind(option_instance))
 		option_instance.pressed.connect(_on_option_selected.bind(rule, option_text))
 		option_instance.mouse_entered.connect(_on_option_mouse_entered)
 		options_scroll.add_child(option_instance)
@@ -112,6 +113,10 @@ func clear_music() -> void:
 	music.set_stream(null)
 	pass
 
+func _on_option_ready(option_instance: Node) -> void:
+	option_instance.option_text.set("theme_override_font_sizes/normal_font_size", maxi(16, game_data.dialogue_text_size))
+	pass
+
 func _on_option_selected(option_rule: String, option_text: String):
 	text.push_paragraph(HORIZONTAL_ALIGNMENT_LEFT)
 	text.push_color(Color.DARK_SLATE_BLUE)
@@ -145,4 +150,13 @@ func _input(event: InputEvent) -> void:
 							return
 					
 					get_tree().call_group("audioHandler", "play_once", dialogue_click_cancel, -6.0, "SFX")
+	pass
+
+func apply_visual_settings() -> void: #called on pause mode change in dialogueManager
+	text.set("theme_override_font_sizes/normal_font_size", game_data.dialogue_text_size)
+	text.set("theme_override_font_sizes/bold_font_size", game_data.dialogue_text_size)
+	text.set("theme_override_font_sizes/bold_italics_font_size", game_data.dialogue_text_size)
+	text.set("theme_override_font_sizes/italics_font_size", game_data.dialogue_text_size)
+	text.set("theme_override_font_sizes/mono_font_size", game_data.dialogue_text_size)
+	text.set("theme_override_constants/line_separation", game_data.dialogue_line_spacing)
 	pass

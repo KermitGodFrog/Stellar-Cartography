@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://crmqo7ul62wqx" path="res://scenes/settings-menu/settings-list/dropdown_option.gd" id="1_24d1m"]
 
 [node name="dropdown_option" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 30)
 size_flags_horizontal = 3
 theme_type_variation = &"PanelTopDullTransparent"
 script = ExtResource("1_24d1m")

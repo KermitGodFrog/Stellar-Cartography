@@ -12,6 +12,7 @@ func _on_pause_mode_changed(value):
 			rules_triggered = 0
 			dialogue.hide()
 		game_data.PAUSE_MODES.DIALOGUE:
+			dialogue.apply_visual_settings()
 			dialogue.show()
 	dialogue.pause_mode = value
 	pass
@@ -523,7 +524,7 @@ func get_send_ranked_achievements(incoming_query) -> void:
 
 func openDialog():
 	clearAll()
-	dialogue.clear_image()
+	clearImage()
 	emit_signal("queuePauseMode", game_data.PAUSE_MODES.DIALOGUE)
 	pass
 

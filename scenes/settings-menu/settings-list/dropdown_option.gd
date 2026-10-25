@@ -26,6 +26,10 @@ func reset_display_to_applied() -> void: #reset to current applied settings
 					dropdown.select(idx)
 					return
 			dropdown.select(-1)
+		"DIALOGUE_TEXT_SIZE":
+			dropdown.select(dropdown.get_item_index(game_data.dialogue_text_size))
+		"DIALOGUE_LINE_SPACING":
+			dropdown.select(dropdown.get_item_index(game_data.dialogue_line_spacing))
 	pass
 
 func reset_display_to_default() -> void: #reset to default settings
@@ -36,6 +40,10 @@ func reset_display_to_default() -> void: #reset to default settings
 			dropdown.select(0)
 		"DEFAULT_RESOLUTION":
 			dropdown.select(0)
+		"DIALOGUE_TEXT_SIZE":
+			dropdown.select(dropdown.get_item_index(16))
+		"DIALOGUE_LINE_SPACING":
+			dropdown.select(dropdown.get_item_index(0))
 	pass
 
 

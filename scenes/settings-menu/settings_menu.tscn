@@ -137,6 +137,70 @@ popup/item_3/id = 3
 popup/item_4/text = "120"
 popup/item_4/id = 4
 
+[node name="dialogue_text_size" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list" instance=ExtResource("3_peeu5")]
+layout_mode = 2
+wID = "DIALOGUE_TEXT_SIZE"
+
+[node name="title" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_text_size/scroll" index="0"]
+text = "DIALOGUE TEXT SIZE"
+
+[node name="dropdown" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_text_size/scroll" index="1"]
+item_count = 7
+popup/item_0/text = "8px"
+popup/item_0/id = 8
+popup/item_1/text = "10px"
+popup/item_1/id = 10
+popup/item_2/text = "13px"
+popup/item_2/id = 13
+popup/item_3/text = "16px"
+popup/item_3/id = 16
+popup/item_4/text = "20px"
+popup/item_4/id = 20
+popup/item_5/text = "26px"
+popup/item_5/id = 26
+popup/item_6/text = "32px"
+popup/item_6/id = 32
+
+[node name="dialogue_line_spacing" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list" instance=ExtResource("3_peeu5")]
+layout_mode = 2
+wID = "DIALOGUE_LINE_SPACING"
+
+[node name="title" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_line_spacing/scroll" index="0"]
+text = "DIALOGUE LINE SPACING"
+
+[node name="dropdown" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_line_spacing/scroll" index="1"]
+item_count = 6
+popup/item_0/text = "0px"
+popup/item_0/id = 0
+popup/item_1/text = "4px"
+popup/item_1/id = 4
+popup/item_2/text = "8px"
+popup/item_2/id = 8
+popup/item_3/text = "12px"
+popup/item_3/id = 12
+popup/item_4/text = "16px"
+popup/item_4/id = 16
+popup/item_5/text = "24px"
+popup/item_5/id = 24
+
+[node name="dialogue_bg_color" type="PanelContainer" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_type_variation = &"PanelTopDullTransparent"
+
+[node name="scroll" type="HBoxContainer" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_bg_color"]
+layout_mode = 2
+
+[node name="title" type="Label" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_bg_color/scroll"]
+layout_mode = 2
+text = "DIALOGUE BACKGROUND COLOR"
+vertical_alignment = 1
+
+[node name="color_picker" type="ColorPickerButton" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_bg_color/scroll"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+color = Color(0.23529412, 0.23529412, 0.23529412, 0.3137255)
+
 [node name="description" type="RichTextLabel" parent="panel/margin/panel_scroll/list_description_split"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -192,3 +256,5 @@ cancel_button_text = "Keep editing"
 [editable path="panel/margin/panel_scroll/list_description_split/list_container/settings_list/default_resolution"]
 [editable path="panel/margin/panel_scroll/list_description_split/list_container/settings_list/window_mode"]
 [editable path="panel/margin/panel_scroll/list_description_split/list_container/settings_list/fps_limit"]
+[editable path="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_text_size"]
+[editable path="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_line_spacing"]

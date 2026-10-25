@@ -396,6 +396,10 @@ func deleteWorld() -> void:
 	pass
 
 
+# settings that aren't applied to global classes e.g. DisplayServer, InputMap, AudioServer, Engine, and thus can't be retrieved without storing here!
+var dialogue_text_size: int = 16
+var dialogue_line_spacing: int = 0
+var dialogue_bg_color: Color = Color("3c3c3c50")
 
 func storeDefaultSettings() -> void: #has to be done FIRST by gameMaster when the game is loaded, regardless of whether settingsHelper exists! defaults are handled by settings_menu, NOT game_data
 	#storing default inputs
@@ -448,6 +452,9 @@ func loadThenApplySettings(hard_apply: bool = false) -> void:
 		get_window().content_scale_size = size_vector
 		if hard_apply:
 			get_window().size = size_vector
+		dialogue_text_size = helper.dialogue_text_size
+		dialogue_line_spacing = helper.dialogue_line_spacing
+		dialogue_bg_color = helper.dialogue_bg_color
 	else:
 		push_error("GAME DATA: CANNOT LOAD AND APPLY SETTINGS: HELPER DOES NOT EXIST")
 	pass
