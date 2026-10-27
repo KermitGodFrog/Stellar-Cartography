@@ -4,6 +4,7 @@ extends Control
 @onready var text = $margin/panel/main_scroll/interaction/interaction_scroll/text
 @onready var options_scroll = $margin/panel/main_scroll/interaction/interaction_scroll/scroll/options_scroll
 @onready var music = $music
+@onready var background = $background
 @onready var option = preload("uid://rxjmiaa4kdop")
 
 @onready var dialogue_click_light = preload("uid://fsqkr5ytugp1")
@@ -159,4 +160,5 @@ func apply_visual_settings() -> void: #called on pause mode change in dialogueMa
 	text.set("theme_override_font_sizes/italics_font_size", game_data.dialogue_text_size)
 	text.set("theme_override_font_sizes/mono_font_size", game_data.dialogue_text_size)
 	text.set("theme_override_constants/line_separation", game_data.dialogue_line_spacing)
+	background.set("color", game_data.dialogue_bg_color)
 	pass

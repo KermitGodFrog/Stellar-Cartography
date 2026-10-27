@@ -15,6 +15,7 @@ signal exiting()
 @onready var keybind_options: Array[Node] = []
 @onready var audio_slider_options: Array[Node] = []
 @onready var dropdown_options: Array[Node] = [$panel/margin/panel_scroll/list_description_split/list_container/settings_list/window_mode, $panel/margin/panel_scroll/list_description_split/list_container/settings_list/fps_limit, $panel/margin/panel_scroll/list_description_split/list_container/settings_list/default_resolution, $panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_text_size, $panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_line_spacing]
+@onready var color_picker_options: Array[Node] = [$panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_bg_color]
 
 var exit_type: global_data.SETTINGS_EXIT_TYPES = global_data.SETTINGS_EXIT_TYPES.INSTANCE
 var exit_path: String = String() #only relevant for exit type SCENE
@@ -70,6 +71,8 @@ func _on_option_hovered(wID: String) -> void:
 			text = "The font size (in pixels) for dialogue text and dialogue option text."
 		"DIALOGUE_LINE_SPACING":
 			text = "The additional spacing (in pixels) between lines of dialogue text."
+		"DIALOGUE_BG_COLOR":
+			text = "WIP"
 		"AUDIO_SLIDER_MASTER":
 			text = "The volume of all game audio."
 		"AUDIO_SLIDER_PLANETARY_SFX":
@@ -155,7 +158,7 @@ func create_settings_list() -> void:
 		keybind_options.append(new)
 	
 	#adding all items to the 'options' array for ease of use
-	for options_array in [keybind_options, audio_slider_options, dropdown_options]:
+	for options_array in [keybind_options, audio_slider_options, dropdown_options, color_picker_options]:
 		options.append_array(options_array)
 	
 	#connecting signals etc for all items in the 'options' array
@@ -198,6 +201,12 @@ func save_then_apply_settings_list() -> void: #packs data into settingsHelper, s
 				helper.dialogue_text_size = dropdown.get_selected_id()
 			"DIALOGUE_LINE_SPACING":
 				helper.dialogue_line_spacing = dropdown.get_selected_id()
+	
+	for option in color_picker_options:
+		var picker_button : ColorPickerButton = option.picker_button
+		match option.get_wID():
+			"DIALOGUE_BG_COLOR":
+				helper.dialogue_bg_color = picker_button.get_pick_color()
 	
 	game_data.saveSettings(helper)
 	await get_tree().physics_frame

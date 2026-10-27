@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8wet2acqdadu"]
+
+[ext_resource type="Script" uid="uid://vq04pmfn8dty" path="res://scenes/settings-menu/settings-list/color_picker_option.gd" id="1_x8w4q"]
+
+[node name="color_picker_option" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 30)
+theme_type_variation = &"PanelTopDullTransparent"
+script = ExtResource("1_x8w4q")
+
+[node name="scroll" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="title" type="Label" parent="scroll"]
+layout_mode = 2
+vertical_alignment = 1
+
+[node name="picker_button" type="ColorPickerButton" parent="scroll"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2

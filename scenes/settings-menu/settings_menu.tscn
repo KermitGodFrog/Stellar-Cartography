@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://df1xq5fo2rlje"]
+[gd_scene load_steps=7 format=3 uid="uid://df1xq5fo2rlje"]
 
 [ext_resource type="Theme" uid="uid://isea3lf5tnwr" path="res://theme-gen/master_theme.tres" id="1_ksgtm"]
 [ext_resource type="Script" uid="uid://b53cc3i80umc7" path="res://scenes/settings-menu/settings_menu.gd" id="2_fub1k"]
 [ext_resource type="PackedScene" uid="uid://c3rf4ecjcjqwr" path="res://scenes/settings-menu/settings-list/dropdown_option.tscn" id="3_peeu5"]
+[ext_resource type="PackedScene" uid="uid://c8wet2acqdadu" path="res://scenes/settings-menu/settings-list/color_picker_option.tscn" id="4_hv5nm"]
 [ext_resource type="Theme" uid="uid://bxsxiysg4ln2k" path="res://theme-gen/window_theme.tres" id="4_peeu5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fub1k"]
@@ -183,23 +184,12 @@ popup/item_4/id = 16
 popup/item_5/text = "24px"
 popup/item_5/id = 24
 
-[node name="dialogue_bg_color" type="PanelContainer" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list"]
-custom_minimum_size = Vector2(0, 30)
+[node name="dialogue_bg_color" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list" instance=ExtResource("4_hv5nm")]
 layout_mode = 2
-theme_type_variation = &"PanelTopDullTransparent"
+wID = "DIALOGUE_BG_COLOR"
 
-[node name="scroll" type="HBoxContainer" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_bg_color"]
-layout_mode = 2
-
-[node name="title" type="Label" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_bg_color/scroll"]
-layout_mode = 2
+[node name="title" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_bg_color/scroll" index="0"]
 text = "DIALOGUE BACKGROUND COLOR"
-vertical_alignment = 1
-
-[node name="color_picker" type="ColorPickerButton" parent="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_bg_color/scroll"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-color = Color(0.23529412, 0.23529412, 0.23529412, 0.3137255)
 
 [node name="description" type="RichTextLabel" parent="panel/margin/panel_scroll/list_description_split"]
 layout_mode = 2
@@ -258,3 +248,4 @@ cancel_button_text = "Keep editing"
 [editable path="panel/margin/panel_scroll/list_description_split/list_container/settings_list/fps_limit"]
 [editable path="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_text_size"]
 [editable path="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_line_spacing"]
+[editable path="panel/margin/panel_scroll/list_description_split/list_container/settings_list/dialogue_bg_color"]
