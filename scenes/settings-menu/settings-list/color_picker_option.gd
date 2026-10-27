@@ -3,7 +3,10 @@ extends "res://scenes/settings-menu/settings-list/option.gd"
 @onready var picker_button = $scroll/picker_button
 
 func _ready() -> void:
-	picker_button.get_picker().connect("color_changed", _on_picker_color_changed)
+	var internal_picker = picker_button.get_picker()
+	internal_picker.connect("color_changed", _on_picker_color_changed)
+	internal_picker.set_presets_visible(false)
+	internal_picker.set_sampler_visible(false)
 	super()
 
 func reset_display_to_applied() -> void: #reset to current applied settings
