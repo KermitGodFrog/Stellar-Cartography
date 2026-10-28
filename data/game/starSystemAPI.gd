@@ -326,7 +326,7 @@ func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = 
 				target_orbit_angle_change,
 				pow(pow(10, 0.22), 0.28) / 109.1,
 				{"mass": pow(10, 0.22) / 333000, "surface_color": planet_type_data.get("Lava").get("color"), "current_variation": 1},
-				{"planet_classification": "Terran", "planet_type": "Lava", "value": 3005, "iterations": 12}
+				{"planet_classification": "Terran", "planet_type": "Lava", "inhabited": true, "value": 3005, "iterations": 12}
 			)
 			get_body_from_identifier(target).rotation = deg_to_rad(global_data.get_randf(0,360))
 			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(target_location))
