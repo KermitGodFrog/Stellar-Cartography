@@ -326,7 +326,7 @@ func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = 
 				target_orbit_angle_change,
 				pow(pow(10, 0.22), 0.28) / 109.1,
 				{"mass": pow(10, 0.22) / 333000, "surface_color": planet_type_data.get("Lava").get("color"), "current_variation": 1},
-				{"planet_classification": "Terran", "planet_type": "Lava", "value": 3005, "iterations": 12}
+				{"planet_classification": "Terran", "planet_type": "Lava", "inhabited": true, "value": 3005, "iterations": 12}
 			)
 			get_body_from_identifier(target).rotation = deg_to_rad(global_data.get_randf(0,360))
 			post_gen_location_candidates.remove_at(post_gen_location_candidates.find(target_location))
@@ -337,6 +337,13 @@ func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = 
 				if randf() >= 0.75:
 					addRandomWeightedPlanetAtIteration(location.front(), location.back(), [])
 					post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
+			
+			for p: bodyAPI in get_bodies_of_body_type(BODY_TYPES.PLANET):
+				if p.get_display_name() != "Kalama":
+					p.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.PLANET, game_data.NAME_SCHEMES.INSA))
+					if p.metadata.get("planet_classification") == "Terran" and not planet_type_data.get(p.metadata.get("planet_type")).get("conditions").has("uninhabitable"):
+						if randf() >= 0.5:
+							p.metadata["inhabited"] = true
 			
 			var new_rally_point = addUnitBody(
 				load("uid://jqe7kwgdyuxe").new(),

@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://dmfm2goujif6u"
+path="res://.godot/imported/kalama.jpg-f3e183421b02177a659a1324306bb174.image"
+
+[deps]
+
+source_file="res://graphics/dialogue/kalama.jpg"
+dest_files=["res://.godot/imported/kalama.jpg-f3e183421b02177a659a1324306bb174.image"]
+
+[params]
+

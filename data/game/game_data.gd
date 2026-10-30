@@ -83,7 +83,7 @@ const NETSPACE_TRANSMITTER_CHANCE_CURVE = preload("uid://dwvmf840xq6rp")
 const INHABITED_PLANET_CHANCE_CURVE = preload("uid://dl82ik10yvu4c")
 const CIV_SYS_INHABITED_PLANET_CHANCE_CURVE = preload("uid://c1fl0pkdumihg")
 
-enum NAME_SCHEMES {STANDARD, SCIENTIFIC, TREK}
+enum NAME_SCHEMES {STANDARD, SCIENTIFIC, TREK, INSA}
 enum NAME_VARIETIES {STAR, PLANET, GENERIC_FLAIR, ASTEROID_BELT, WORMHOLE, WORMHOLE_FLAIR, STATION, STATION_FLAIR, SPACE_ANOMALY, SPACE_ANOMALY_FLAIR, SPACE_ENTITY_DEFAULT, RENDEZVOUS_POINT_DEFAULT} #SPACE_ENTITY_DEFAULT exists because SCIENTIFIC name scheme will give a space entity something like "SF-1058" while STANDARD name scheme will give a space entity "stellar_phenomena"
 var NAME_DATA: Dictionary = {
 	NAME_VARIETIES.STAR: [],
@@ -122,6 +122,8 @@ const STARSHIP_NAME_FILE_PATHS: Dictionary = {
 }
 
 const CHARACTER_NAMES_FILE_PATH: String = "res://data/game/gen/names/character_names.txt"
+
+const INSA_PLANET_NAMES_FILE_PATH: String = "res://data/game/gen/names/insa_planet_names.txt"
 
 const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"]
 var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
@@ -172,6 +174,8 @@ func get_random_name_from_variety_for_scheme(variety: NAME_VARIETIES, scheme: NA
 			return SCIENTIFIC_get_random_name_from_variety(variety, _hook_display_name, _iteration, _remaining_size)
 		NAME_SCHEMES.TREK:
 			return TREK_get_random_name_from_variety(variety, _hook_display_name, _iteration, _remaining_size)
+		NAME_SCHEMES.INSA:
+			return INSA_get_random_name_from_variety(variety)
 	pass
 
 func TREK_get_random_name_from_variety(variety: NAME_VARIETIES, hook_display_name: String, iteration: int = -1, remaining_size: int = -1):
@@ -257,9 +261,28 @@ func STANDARD_dual_name_selection(variety1: NAME_VARIETIES, variety2: NAME_VARIE
 func STANDARD_get_data_or_file_candidates(variety: NAME_VARIETIES):
 	var data: Array = NAME_DATA.get(variety)
 	if data.is_empty():
-		return get_lines_from_file(NAME_FILE_PATHS.get(variety))
+		var lines := get_lines_from_file(NAME_FILE_PATHS.get(variety))
+		NAME_DATA.set(variety, lines)
+		return lines
 	else:
 		return data
+
+func INSA_get_random_name_from_variety(variety: NAME_VARIETIES) -> String:
+	match variety:
+		NAME_VARIETIES.PLANET:
+			var candidates := get_lines_from_file(INSA_PLANET_NAMES_FILE_PATH)
+			var base = candidates.pick_random()
+			if randf() >= 0.5:
+				return base
+			var prefix: int = 0
+			var prefix_length = global_data.get_randi(1, 3)
+			match prefix_length:
+				1: prefix = global_data.get_randi(0, 9)
+				2: prefix = global_data.get_randi(10, 99)
+				3: prefix = global_data.get_randi(100, 999)
+			return "%d %s" % [prefix, base]
+		_:
+			return STANDARD_get_random_name_from_variety(variety)
 
 func get_lines_from_file(file_path: String) -> Array:
 	var lines: Array = []

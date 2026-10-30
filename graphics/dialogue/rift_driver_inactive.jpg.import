@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://b2gfsa13keshj"
+path="res://.godot/imported/rift_driver_inactive.jpg-06d77393db93a00aa0ddc5f8cffd7913.image"
+
+[deps]
+
+source_file="res://graphics/dialogue/rift_driver_inactive.jpg"
+dest_files=["res://.godot/imported/rift_driver_inactive.jpg-06d77393db93a00aa0ddc5f8cffd7913.image"]
+
+[params]
+
