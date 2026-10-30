@@ -338,6 +338,13 @@ func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = 
 					addRandomWeightedPlanetAtIteration(location.front(), location.back(), [])
 					post_gen_location_candidates.remove_at(post_gen_location_candidates.find(location))
 			
+			for p: bodyAPI in get_bodies_of_body_type(BODY_TYPES.PLANET):
+				if p.get_display_name() != "Kalama":
+					p.set_display_name(game_data.get_random_name_from_variety_for_scheme(game_data.NAME_VARIETIES.PLANET, game_data.NAME_SCHEMES.INSA))
+					if p.metadata.get("planet_classification") == "Terran" and not planet_type_data.get(p.metadata.get("planet_type")).get("conditions").has("uninhabitable"):
+						if randf() >= 0.5:
+							p.metadata["inhabited"] = true
+			
 			var new_rally_point = addUnitBody(
 				load("uid://jqe7kwgdyuxe").new(),
 				starSystemAPI.BODY_TYPES.SHIP,
