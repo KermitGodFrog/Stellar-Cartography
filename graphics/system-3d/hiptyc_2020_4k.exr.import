@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://byp6pykkhwnpf"
-path.s3tc="res://.godot/imported/star_backdrop.jpeg-13f2dec81c7d94e93ee315a29b0cfe54.s3tc.ctex"
-path.etc2="res://.godot/imported/star_backdrop.jpeg-13f2dec81c7d94e93ee315a29b0cfe54.etc2.ctex"
+uid="uid://bik1xhp0bx8wi"
+path.bptc="res://.godot/imported/hiptyc_2020_4k.exr-3a6d3512cf2e2802c893a118b143c529.bptc.ctex"
+path.astc="res://.godot/imported/hiptyc_2020_4k.exr-3a6d3512cf2e2802c893a118b143c529.astc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://graphics/system-3d/star_backdrop.jpeg"
-dest_files=["res://.godot/imported/star_backdrop.jpeg-13f2dec81c7d94e93ee315a29b0cfe54.s3tc.ctex", "res://.godot/imported/star_backdrop.jpeg-13f2dec81c7d94e93ee315a29b0cfe54.etc2.ctex"]
+source_file="res://graphics/system-3d/hiptyc_2020_4k.exr"
+dest_files=["res://.godot/imported/hiptyc_2020_4k.exr-3a6d3512cf2e2802c893a118b143c529.bptc.ctex", "res://.godot/imported/hiptyc_2020_4k.exr-3a6d3512cf2e2802c893a118b143c529.astc.ctex"]
 
 [params]
 

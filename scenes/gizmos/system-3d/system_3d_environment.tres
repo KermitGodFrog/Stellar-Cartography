@@ -1,11 +1,9 @@
-[gd_resource type="Environment" load_steps=5 format=3 uid="uid://b1yq54jdcwnuc"]
+[gd_resource type="Environment" load_steps=4 format=3 uid="uid://b1yq54jdcwnuc"]
 
 [ext_resource type="Shader" uid="uid://i105jey58ell" path="res://shader-gen/sky_shader.tres" id="1_tuodv"]
-[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/system-3d/star_backdrop.jpeg" id="2_4frer"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ch2h2"]
 shader = ExtResource("1_tuodv")
-shader_parameter/source_panorama = ExtResource("2_4frer")
 
 [sub_resource type="Sky" id="Sky_4kfpl"]
 sky_material = SubResource("ShaderMaterial_ch2h2")
@@ -14,7 +12,7 @@ sky_material = SubResource("ShaderMaterial_ch2h2")
 background_mode = 2
 background_energy_multiplier = 0.25
 sky = SubResource("Sky_4kfpl")
-ambient_light_source = 2
+ambient_light_source = 1
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.0
 ambient_light_energy = 0.1

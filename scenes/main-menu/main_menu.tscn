@@ -242,7 +242,15 @@ Model of Galileo navigation satellite, 2014 by Paragon Creative -- https://commo
 (Retrieved 3rd October 2026)
 
 Mauna Loa Lava and Light Pillar Caught on Camera from Gemini North by National Optical-Infrared Astronomy Research Laboratory (NOIRLab) -- https://commons.wikimedia.org/wiki/File:Iotw2248a_-_Mauna_Loa_Lava_and_Light_Pillar_Caught_on_Camera_from_Gemini_North.jpg -- License: Attribution 4.0 -- Changes: cropped, resized
-(Retrieved 27th October 2026)"
+(Retrieved 27th October 2026)
+
+hiptyc_2020_4k by NASA -- https://svs.gsfc.nasa.gov/4851/ -- License: none -- Changes: none
+(Retrieved 31st October 2026)
+	NASA/Goddard Space Flight Center Scientific Visualization Studio. Gaia DR2: ESA/Gaia/DPAC. Constellation figures based on those developed for the IAU by Alan MacRobert of Sky and Telescope magazine (Roger Sinnott and Rick Fienberg).
+
+hiptyc_2020_8k by NASA -- https://svs.gsfc.nasa.gov/4851/ -- License: none -- Changes: none
+(Retrieved 31st October 2026)
+	NASA/Goddard Space Flight Center Scientific Visualization Studio. Gaia DR2: ESA/Gaia/DPAC. Constellation figures based on those developed for the IAU by Alan MacRobert of Sky and Telescope magazine (Roger Sinnott and Rick Fienberg)."
 
 [node name="sound_effects" parent="credits_popup/margin/panel/panel_margin/scroll/content_scroll/content_vbox" instance=ExtResource("7_f371p")]
 layout_mode = 2

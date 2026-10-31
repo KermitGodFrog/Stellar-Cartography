@@ -1,17 +1,18 @@
 [gd_resource type="Environment" load_steps=5 format=3 uid="uid://ktbbdqasxhbr"]
 
 [ext_resource type="Shader" uid="uid://bsj7ob65dqjfo" path="res://shader-gen/wormhole-minigame/sky_shader_local.tres" id="1_f47yt"]
-[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/system-3d/star_backdrop.jpeg" id="2_rkxyt"]
+[ext_resource type="Texture2D" uid="uid://bik1xhp0bx8wi" path="res://graphics/system-3d/hiptyc_2020_4k.exr" id="2_f47yt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7x8tp"]
 shader = ExtResource("1_f47yt")
-shader_parameter/source_panorama = ExtResource("2_rkxyt")
+shader_parameter/source_panorama = ExtResource("2_f47yt")
 
 [sub_resource type="Sky" id="Sky_3kq4p"]
 sky_material = SubResource("ShaderMaterial_7x8tp")
 
 [resource]
 background_mode = 2
+background_energy_multiplier = 0.25
 sky = SubResource("Sky_3kq4p")
 ambient_light_source = 1
 reflected_light_source = 1

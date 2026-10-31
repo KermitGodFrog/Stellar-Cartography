@@ -1,9 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b7dvufojm35ny"]
-
-[ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://shader-gen/system-3d/sky_shader.tres" id="1_dndbf"]
-[ext_resource type="Texture2D" path="res://graphics/misc/2k_jupiter.jpg" id="1_so0ix"]
-[ext_resource type="Texture2D" path="res://graphics/misc/2k_earth_specular_map.png" id="1_ujx1s"]
-[ext_resource type="Texture2D" uid="uid://byp6pykkhwnpf" path="res://graphics/system-3d/star_backdrop.jpeg" id="2_cjve6"]
+[gd_scene load_steps=16 format=3 uid="uid://b7dvufojm35ny"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_xmlf5"]
 radius = 1.0
@@ -23,27 +18,12 @@ albedo_color = Color(1, 0, 0, 1)
 emission_enabled = true
 emission = Color(0, 0.592157, 1, 1)
 emission_energy_multiplier = 0.25
-emission_texture = ExtResource("1_so0ix")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mq7j3"]
 albedo_color = Color(1, 0, 0, 1)
 emission_enabled = true
 emission = Color(0, 1, 0, 1)
 emission_energy_multiplier = 0.25
-emission_texture = ExtResource("1_ujx1s")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ch2h2"]
-shader = ExtResource("1_dndbf")
-shader_parameter/source_panorama = ExtResource("2_cjve6")
-
-[sub_resource type="Sky" id="Sky_4kfpl"]
-sky_material = SubResource("ShaderMaterial_ch2h2")
-
-[sub_resource type="Environment" id="Environment_ukshl"]
-background_mode = 2
-sky = SubResource("Sky_4kfpl")
-ambient_light_source = 1
-tonemap_mode = 2
 
 [sub_resource type="SphereMesh" id="SphereMesh_s0pj5"]
 
@@ -115,7 +95,6 @@ light_size = 1.0
 omni_range = 4096.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_ukshl")
 
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
 multimesh = SubResource("MultiMesh_avt7b")

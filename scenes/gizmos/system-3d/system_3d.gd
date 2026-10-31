@@ -21,7 +21,7 @@ var actor_3d = preload("uid://drrmba8quj4mu")
 var wormhole_shader = preload("uid://bkngs6wdkye6n")
 var pulsar_beam_material = preload("uid://dtpqpy1b1rnxv")
 
-var vis_panorama = preload("uid://byp6pykkhwnpf")
+var vis_panorama = preload("uid://daa1rd3d0ffqb")
 var rad_panorama = preload("uid://c7u31smqi45er")
 
 var glint_large_texture = preload("uid://c236x4bwtcifq")
