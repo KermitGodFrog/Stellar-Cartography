@@ -148,7 +148,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_ytrci")
 theme_override_styles/focus = ExtResource("6_kovq1")
-text = "CHANGELOG (v0.8)"
+text = "CHANGELOG (v0.9)"
 
 [node name="description_scroll" type="ScrollContainer" parent="margin/split/right_scroll/changelog_panel/changelog_margin/changelog_scroll"]
 layout_mode = 2
@@ -163,51 +163,50 @@ size_flags_horizontal = 3
 [node name="description" type="Label" parent="margin/split/right_scroll/changelog_panel/changelog_margin/changelog_scroll/description_scroll/description_vbox"]
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
-text = "- Overhauled Long Range Scopes (LRS) module controls, HUD, mechanics and visuals.
-- Duplicate photos in LRS now decrease rewards.
-- Implemented info popups into the tutorial that show necessary information without the player having to view the objectives list.
-- Implemented the main menu history popup which shows information about the player’s previous runs.
-- Updated the final challenge theme song with an improved version.
-- The tutorial now explains how to respond to hostile units.
-- The game can now be ‘quick paused’, which pauses the game while still showing the system map.
-- References to keybinds throughout the game are now replaced with a written version of their respective key, rather than assuming that all keybinds are set to default.
-- Overhauled Gas Layer Surveyor (GLS) module mechanics, sounds and visuals.
-- The player can now draw on the GLS screen during a dive.
-- Added a fun facts section (about gas giants) to GLS entries.
-- Implemented descriptions for status modifiers.
-- Added a ‘proximity blinker’ to the status panel that warns the player about nearby threats.
-- Implemented an alarm sound for when the player is in danger of being intercepted by a hostile unit.
-- Overhauled the appearance of the status panel.
-- The actions panel no longer disappears when the ‘INFO’ tab is selected.
-- Fixed zooming on the system map - bodies are now rendered at the same size regardless of zoom level.
-- Implemented text pings (text that appears on the system map to provide additional feedback).
-- Balance improvements.
-- - Base wormhole traversal minigame speed 2.5 -> 10.0.
-- - Implemented system survey efficiency bonus.
-- - Station sell percentage of market price is now normally distributed around 100%.
-- - Player speed 3 -> 5.
-- - Base marauder speed 3 -> 4.
-- - LIDAR cooldown 5s -> 3s.
-- - Marauder stun time -25%.
-- - Nanite Controller (NC) module repair cost multiplier 1.0x to 2.0x -> 1.0x to 3.0x.
-- - Implemented character XP system - XP is gained through anomalies and is required to enact special initiatives at Rendezvous Points.
-- - Created the framework for Entering System Danger (ESD) functionality and added 5 new ESDs.
-- Updated the dialogue that is shown when the player begins a new campaign.
-- All press-able UI elements now have the ‘pointing hand’ default cursor shape.
-- Huge changes to how the system list handles icons - frames and icons are now separate images and are combined at runtime.
-- Added new system list frames for GLS and LRS valid bodies.
-- Greatly improved the visuals and clarity of barycenter visualizer.
-- Revamped the main menu credits popup.
-- Revamped the main menu new game popup.
-- Added starscape backgrounds to the system map that are randomised for each star system.
-- Implemented ‘screen junk’ (randomised textures in the background of a star system that increase variety).
-- Theorised, but not known, orbit bodies on the system map now have a question mark texture (rather than being invisible).
-- Added window mode and FPS limit options to settings.
-- The Scan Prediction upgrade is now unlocked at the beginning of a run.
-- Completely overhauled the tutorial through iterative changes from multiple playtests.
-- Added descriptions for all options in settings.
-- Implemented the ‘Nebula’ system hazard.
-- Improved the feedback and perception of multiple small UI elements.
+text = "- Added new music: three themes, one ambience track, three dialogue tracks, and two short tracks played on player death/win. 
+- Added three new special anomalies; finished implementing one existing special anomaly.
+- Made planets without moons still considered for 'secondary' satellite generation, e.g. wormholes, rendezvous points, etc.
+- Added 12 new upgrades.
+- Implemented a requirements and incompatibilities system for upgrades - some upgrades now require others to be unlocked before themselves, or can't be unlocked when others are unlocked.
+- Updated upgrade generation - upgrades that require others which are already unlocked are prioritised.
+- Upgrade descriptions are now viewed via tooltip, instead of being integrated into station UI.
+- Minor fixes to the Gas Layer Surveyor (GLS) module.
+- Gave rare planets a special frame on the system list.
+- All habitable planets are now guaranteed to have a planetary anomaly.
+- Added seven new rare planets to the generation pool.
+- Stars and certain planet types now visibly glow on scopes.
+- Added five new planetary anomalies (two complex); added three new space anomalies.
+- Added special interactions for three station classifications.
+- The scopes zoom level is now shown via a progress bar.
+- Updated the journey map app: added scroll extents, automatic scrolling to current star system on popup, a progress bar to show scroll proportion, and a parallax star background.
+- A 'star infographic panel' is now shown on the system list 'INFO' tab when viewing a star or wormhole.
+- Rendezvous point overhaul.
+- - Implemented the ability to exchange XP between characters.
+- - The player can now talk to their senior staff (can only ask four questions at the moment).
+- - Added a few extra flairs for senior staff entering the player's ready room, which are randomly selected from.
+- - Added descriptions for each character's appearance when they are called to the player's ready room for the first time.
+- Most UI elements now use the same theme.
+- Overhauled the appearance of the stats menu.
+- Creating a new game is now facilitated by a 'create menu', which allows for the selection of mutations and difficulty customisation.
+- Added 15 new mutations.
+- Installed mutations are now displayed when the game is paused.
+- In the history popup, the item for a run now displays the mutations installed for that run.
+- Special systems, special anomalies and system hazards are now subject to requirements before being added to the generation pool for each star system.
+- Added three new special systems.
+- Made all fonts use MSDF rendering.
+- Implemented the ability to change resolution, window mode, dialogue text size, dialogue line spacing and dialogue BG color in settings.
+- Overhauled the achievements system: added hidden-before-unlock achievements, support for multiple trophy textures, a progress bar, and graceful handling of achievements being updated, removed or added in future updates, without any data loss.
+- Some planets are inhabited by humankind, which is shown via a new frame on the system list. If these planets are not in a civilized system, they are guaranteed to have a planetary anomaly which ends up being a settlement.
 - Added two new ship encounters.
-- Added one new dialogue illustration."
+- Added a title screen.
+- Updated the credits popup on the main menu.
+- Overhauled three planetary and three space anomalies with branching paths depending on what upgrades the player has unlocked.
+- Added 22 new achievements.
+- Improved the player death dialogue message.
+- Added three new entering system dangers (ESDs). 
+- The system map camera position is now reset to the player's position on wormhole traversal.
+- Improvements to the final challenge: dialogue changes and additions, new illustrations, and a custom naming scheme for the entire star system.
+- Implemented new star panoramas into scopes, long range scopes and the wormhole traversal minigame.
+- Improved the outpost/settlement dialogue messages.
+- Updated the intro theme song with an improved version."
 autowrap_mode = 3
