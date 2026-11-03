@@ -297,15 +297,19 @@ RP_ScienceEngineeringTradeXP,"concept: optionSelected, option: RP_ScienceEnginee
 RP_RuiSummonMessageA,concept: RP_RuiSummonMessage,,,Rui enters your ready room and warily takes a seat.,,,,,,
 RP_RuiSummonMessageB,concept: RP_RuiSummonMessage,,,"Rui strolls into your ready room and sits down. ""All systems nominal, $player_prefix_lower,"" he says. ""What can I help you with?""",,,,,,
 RP_RuiSummonMessageC,concept: RP_RuiSummonMessage,,,Rui comes into your ready room and takes a seat opposite your desk.,,,,,,
+RP_RuiSummonMessageD,"concept: RP_RuiSummonMessage, RP_RuiAppearanceIntro_PREV: false",,,"Luam Rui enters your ready room and warily takes a seat. He is of average height and fit, perfect uniform, and his long black hair is bordering a dress code violation. ""What can I help you with, $player_prefix_lower?"" he asks.",,,,,,RP_RuiAppearanceIntro_PREV: true
 RP_JiyaSummonMessageA,concept: RP_JiyaSummonMessage,,,Jiya enters your ready room and sits down.,,,,,,
 RP_JiyaSummonMessageB,concept: RP_JiyaSummonMessage,,,"Jiya bursts into your ready room and abruptly re-positions a chair opposite your desk to sit on, all under the whir of exoskeleton pistons.",,,,,,
 RP_JiyaSummonMessageC,concept: RP_JiyaSummonMessage,,,"Jiya admits herself into your ready room and sits down. She quickly fixes her uniform. ""Whaddya need, cap'n?"" she asks.",,,,,,
+RP_JiyaSummonMessageD,"concept: RP_JiyaSummonMessage, RP_JiyaAppearanceIntro_PREV: false",,,"Elektra Jiya~Hefferan admits herself into your ready room and sits down. She is old and time-worn, with thin grey hair whose existence may only be described as 'stubborn'. She is flanked and infused with a rugged exoskeleton, most pronounced as it terminates above her shoulders and wraps around her forearms. ""Whaddya need, cap'n?"" she asks.",,,,,,RP_JiyaAppearanceIntro_PREV: true
 RP_FebrisSummonMessageA,concept: RP_FebrisSummonMessage,,,Febris enters your ready room and quickly takes a seat. ,,,,,,
 RP_FebrisSummonMessageB,concept: RP_FebrisSummonMessage,,,"Febris strolls into your room with a scowl. The scowl is masked with a light smile by the time shes seated. ""$player_prefix,"" she greets.",,,,,,
 RP_FebrisSummonMessageC,concept: RP_FebrisSummonMessage,,,"Febris sets foot in your ready room and seats herself. ""$player_prefix,"" she greets. ""What can I help you with?""",,,,,,
+RP_FebrisSummonMessageD,"concept: RP_FebrisSummonMessage, RP_FebrisAppearanceIntro_PREV: false",,,"Jane Febris sets foot in your ready room and seats herself. She has a rough ponytail, dark skin, a perfectly tailored uniform and a lab coat. ""$player_prefix,"" she greets.",,,,,,RP_FebrisAppearanceIntro_PREV: true
 RP_WalkerSummonMessageA,concept: RP_WalkerSummonMessage,,,"Walker enters your ready room, salutes, asks for permission to sit and does so when given.",,,,,,
 RP_WalkerSummonMessageB,concept: RP_WalkerSummonMessage,,,"Walker's imposing bulk treads into your ready room. He gestures at a seat, and you nod. ""Good day, $player_prefix_lower,"" he declares while seating himself.",,,,,,
 RP_WalkerSummonMessageC,concept: RP_WalkerSummonMessage,,,"Walker comes into your ready room and sits down after you tell him to. After adjusting to the seat for a few seconds, he becomes a statue. ""No outstanding security issues, $player_prefix_lower,"" he states. ",,,,,,
+RP_WalkerSummonMessageD,"concept: RP_WalkerSummonMessage, RP_WalkerAppearanceIntro_PREV: false",,,"Cairo Walker comes into your ready room and sits down after you tell him to. He has a muscular build, slick brown hair and an aristocratic moustache. ""No outstanding security issues, $player_prefix_lower,"" he states. ",,,,,,RP_WalkerAppearanceIntro_PREV: true
 ,,,,,,,,,,
 # RP Summon Ask Options,,,,,,,,,,
 RP_RuiAsk,"concept: optionSelected, option: RP_RuiAsk",,,You consider what to talk about.,Go back: RP_RuiFallback,populateRP_RuiAskOptions,,,,
