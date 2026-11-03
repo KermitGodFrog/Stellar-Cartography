@@ -165,7 +165,7 @@ custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 text = "- Added new music: three themes, one ambience track, three dialogue tracks, and two short tracks played on player death/win. 
 - Added three new special anomalies; finished implementing one existing special anomaly.
-- Made planets without moons still considered for 'secondary' satellite generation, e.g. wormholes, rendezvous points, etc.
+- Made planets without moons still be considered for 'secondary' satellite generation, e.g. wormholes, rendezvous points, etc.
 - Added 12 new upgrades.
 - Implemented a requirements and incompatibilities system for upgrades - some upgrades now require others to be unlocked before themselves, or can't be unlocked when others are unlocked.
 - Updated upgrade generation - upgrades that require others which are already unlocked are prioritised.
@@ -177,8 +177,8 @@ text = "- Added new music: three themes, one ambience track, three dialogue trac
 - Stars and certain planet types now visibly glow on scopes.
 - Added five new planetary anomalies (two complex); added three new space anomalies.
 - Added special interactions for three station classifications.
-- The scopes zoom level is now shown via a progress bar.
-- Updated the journey map app: added scroll extents, automatic scrolling to current star system on popup, a progress bar to show scroll proportion, and a parallax star background.
+- The scopes zoom level is now shown with a progress bar.
+- Updated the journey map app: added scroll extents, automatic scrolling to current star system on popup, a progress bar to show scroll amount, and a parallax star background.
 - A 'star infographic panel' is now shown on the system list 'INFO' tab when viewing a star or wormhole.
 - Rendezvous point overhaul.
 - - Implemented the ability to exchange XP between characters.
@@ -195,8 +195,8 @@ text = "- Added new music: three themes, one ambience track, three dialogue trac
 - Added three new special systems.
 - Made all fonts use MSDF rendering.
 - Implemented the ability to change resolution, window mode, dialogue text size, dialogue line spacing and dialogue BG color in settings.
-- Overhauled the achievements system: added hidden-before-unlock achievements, support for multiple trophy textures, a progress bar, and graceful handling of achievements being updated, removed or added in future updates, without any data loss.
-- Some planets are inhabited by humankind, which is shown via a new frame on the system list. If these planets are not in a civilized system, they are guaranteed to have a planetary anomaly which ends up being a settlement.
+- Overhauled the achievements system: added hidden-before-unlock achievements, support for multiple trophy textures, a progress bar, and graceful handling of achievements being updated, removed or added in future updates.
+- Some planets are now 'inhabited by humankind'. If not in a civilized system, they are guaranteed to have a planetary anomaly which ends up being a settlement.
 - Added two new ship encounters.
 - Added a title screen.
 - Updated the credits popup on the main menu.
