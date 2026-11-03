@@ -129,11 +129,11 @@ const SETTINGS_RELEVANT_AUDIO_BUSES = ["Master", "Planetary SFX", "SFX", "Music"
 var DEFAULT_SETTINGS_RELEVANT_ACTION_EVENTS: Array[InputEvent] = []
 
 const MUTATION_UNLOCK_WIN_SCHEDULE: Dictionary = { #focus on negative and neutral mutations
-	1: [worldAPI.MUTATION_ID.CONTENT_SKALIQ],
+	1: [worldAPI.MUTATION_ID.PUSH], # 1: [worldAPI.MUTATION_ID.CONTENT_SKALIQ],
 	2: [worldAPI.MUTATION_ID.AV_SPECIALIST],
 	3: [worldAPI.MUTATION_ID.DEADLY_HAZARDS],
 	5: [worldAPI.MUTATION_ID.RISKY_INCENTIVE],
-	10: [worldAPI.MUTATION_ID.PUSH]
+	#10: [worldAPI.MUTATION_ID.PUSH]
 }
 
 const MUTATION_UNLOCK_LOSE_SCHEDULE: Dictionary = { #focus on positive mutations

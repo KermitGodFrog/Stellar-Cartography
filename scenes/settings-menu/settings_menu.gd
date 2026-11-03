@@ -72,7 +72,7 @@ func _on_option_hovered(wID: String) -> void:
 		"DIALOGUE_LINE_SPACING":
 			text = "The additional spacing (in pixels) between lines of dialogue text."
 		"DIALOGUE_BG_COLOR":
-			text = "WIP"
+			text = "The color of the panel behind open dialogue."
 		"AUDIO_SLIDER_MASTER":
 			text = "The volume of all game audio."
 		"AUDIO_SLIDER_PLANETARY_SFX":
