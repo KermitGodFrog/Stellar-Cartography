@@ -363,7 +363,7 @@ func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = 
 					starSystemAPI.BODY_TYPES.SHIP,
 					identifier_count,
 					game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A),
-					4,
+					6,
 					get_default_radius_solar_radii(),
 					{"system": self, "rally_point": get_body_from_identifier(new_rally_point), "hostile_affiliations": [game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B, game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE]},
 					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A, "hostile": true, "seed": randi()}
@@ -376,7 +376,7 @@ func createAuxiliaryCivilized(_unlocked_upgrades: Array[playerAPI.UPGRADE_ID] = 
 					starSystemAPI.BODY_TYPES.SHIP,
 					identifier_count,
 					game_data.get_random_starship_name(game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B),
-					4,
+					6,
 					get_default_radius_solar_radii(),
 					{"system": self, "rally_point": get_body_from_identifier(new_rally_point), "hostile_affiliations": [game_data.UNIT_AFFILIATIONS.INSA_MILITARY_A, game_data.UNIT_AFFILIATIONS.PROVISIONAL_EXECUTIVE]},
 					{"affiliation": game_data.UNIT_AFFILIATIONS.INSA_MILITARY_B, "hostile": true, "seed": randi()}
