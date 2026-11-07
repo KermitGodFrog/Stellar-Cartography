@@ -7,3 +7,5 @@ Calabi
 Yau
 Einstein
 Sentinel
+Copernicus
+Mastodon
