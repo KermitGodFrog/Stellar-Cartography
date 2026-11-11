@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bv784we5sv56s"
-path="res://.godot/imported/collapse_window_icon_unclicked.png-fdb485ea877c6c4ae2ea0a67f95d3e09.ctex"
+uid="uid://dqyu3vjqkf0ic"
+path="res://.godot/imported/tree_arrow_collapsed.png-a0414a5af8d4c43d196095f0be076de3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/misc/collapse_window_icon_unclicked.png"
-dest_files=["res://.godot/imported/collapse_window_icon_unclicked.png-fdb485ea877c6c4ae2ea0a67f95d3e09.ctex"]
+source_file="res://graphics/shared/tree_arrow_collapsed.png"
+dest_files=["res://.godot/imported/tree_arrow_collapsed.png-a0414a5af8d4c43d196095f0be076de3.ctex"]
 
 [params]
 

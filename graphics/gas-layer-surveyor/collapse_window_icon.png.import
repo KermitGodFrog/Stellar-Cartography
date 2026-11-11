@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhf6dvjgve085"
-path="res://.godot/imported/mouse_pointer_hold.png-114c3d3fa6e0043be1e19749d194bc0f.ctex"
+uid="uid://byd0djjhrxoug"
+path="res://.godot/imported/collapse_window_icon.png-26522728dc451e29909cdbbe8cf82306.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/misc/mouse_pointer_hold.png"
-dest_files=["res://.godot/imported/mouse_pointer_hold.png-114c3d3fa6e0043be1e19749d194bc0f.ctex"]
+source_file="res://graphics/gas-layer-surveyor/collapse_window_icon.png"
+dest_files=["res://.godot/imported/collapse_window_icon.png-26522728dc451e29909cdbbe8cf82306.ctex"]
 
 [params]
 

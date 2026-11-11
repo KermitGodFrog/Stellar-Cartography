@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wj8xwuug1m0o"
-path="res://.godot/imported/tree_arrow.png-6c422adba77a88160ce759cbe36bb030.ctex"
+uid="uid://ckms0lt6w3rsx"
+path="res://.godot/imported/action_bg_2.png-54768a609cafff622deef64a9c845848.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/misc/tree_arrow.png"
-dest_files=["res://.godot/imported/tree_arrow.png-6c422adba77a88160ce759cbe36bb030.ctex"]
+source_file="res://graphics/system-map/action_bg_2.png"
+dest_files=["res://.godot/imported/action_bg_2.png-54768a609cafff622deef64a9c845848.ctex"]
 
 [params]
 

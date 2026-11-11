@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://18k8ik7q5tcn"
-path="res://.godot/imported/sonar_button2.png-fd7ddb1c32f7e8aa6e361033276b42b0.ctex"
+uid="uid://bgmcm7g47id5b"
+path="res://.godot/imported/action_bg_1.png-4674683544ed2a3a7e0181897808f92e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/misc/sonar_button2.png"
-dest_files=["res://.godot/imported/sonar_button2.png-fd7ddb1c32f7e8aa6e361033276b42b0.ctex"]
+source_file="res://graphics/system-map/action_bg_1.png"
+dest_files=["res://.godot/imported/action_bg_1.png-4674683544ed2a3a7e0181897808f92e.ctex"]
 
 [params]
 

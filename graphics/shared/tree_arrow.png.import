@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1tq12bf2pt22"
-path="res://.godot/imported/mouse_pointer_move.png-9330ff843a75654ea7a359c30e892798.ctex"
+uid="uid://wj8xwuug1m0o"
+path="res://.godot/imported/tree_arrow.png-b8eaea7eb8130705b3d19e17251dc3c2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/misc/mouse_pointer_move.png"
-dest_files=["res://.godot/imported/mouse_pointer_move.png-9330ff843a75654ea7a359c30e892798.ctex"]
+source_file="res://graphics/shared/tree_arrow.png"
+dest_files=["res://.godot/imported/tree_arrow.png-b8eaea7eb8130705b3d19e17251dc3c2.ctex"]
 
 [params]
 
