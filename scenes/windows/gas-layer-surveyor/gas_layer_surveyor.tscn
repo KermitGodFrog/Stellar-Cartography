@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://byd0djjhrxoug" path="res://graphics/misc/collapse_window_icon.png" id="11_2upog"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="11_24t8i"]
 [ext_resource type="Script" uid="uid://rkkrtk68rjva" path="res://scenes/windows/gas-layer-surveyor/fun_fact_label.gd" id="11_luw0u"]
-[ext_resource type="AudioStream" uid="uid://cq2a1gsmblou1" path="res://sound/wormhole-minigame/wormhole_interference.wav" id="18_wketm"]
+[ext_resource type="AudioStream" uid="uid://c84yt2wl1w7tj" path="res://sound/wormhole-minigame/wormhole_interference.ogg" id="19_3ntqu"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_isjh6"]
 
@@ -491,7 +491,7 @@ emission_ring_cone_angle = 90.0
 gravity = Vector3(0, 10, 0)
 
 [node name="atmospheric_interference" type="AudioStreamPlayer" parent="gas_layer_surveyor"]
-stream = ExtResource("18_wketm")
+stream = ExtResource("19_3ntqu")
 volume_db = -6.0
 pitch_scale = 2.0
 bus = &"SFX"
