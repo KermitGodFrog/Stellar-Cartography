@@ -10,8 +10,8 @@
 [ext_resource type="Theme" uid="uid://du8q1tlwo1jt1" path="res://theme-gen/wormhole-minigame/wormhole_minigame_HUD_theme.tres" id="7_y6ir1"]
 [ext_resource type="Texture2D" uid="uid://dq25m1n2y5upl" path="res://graphics/system-map/status-panel/hull_stress_icon.png" id="8_41qj7"]
 [ext_resource type="Texture2D" uid="uid://cn654nq4ukfk1" path="res://graphics/wormhole-minigame/arrow.png" id="8_272fy"]
-[ext_resource type="AudioStream" uid="uid://cq2a1gsmblou1" path="res://sound/wormhole-minigame/wormhole_interference.wav" id="9_w5evm"]
-[ext_resource type="AudioStream" uid="uid://dvlokj0bsucd1" path="res://sound/wormhole-minigame/deceleration.wav" id="10_7mbe0"]
+[ext_resource type="AudioStream" uid="uid://c84yt2wl1w7tj" path="res://sound/wormhole-minigame/wormhole_interference.ogg" id="11_kbm0y"]
+[ext_resource type="AudioStream" uid="uid://xcaqjyfijbwv" path="res://sound/wormhole-minigame/deceleration.ogg" id="12_fyp0n"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_whf3l"]
 
@@ -309,13 +309,13 @@ text = "INFORMATION:
 autowrap_mode = 3
 
 [node name="wormhole_interference" type="AudioStreamPlayer" parent="minigame_container/minigame_viewport/wormhole_minigame"]
-stream = ExtResource("9_w5evm")
+stream = ExtResource("11_kbm0y")
 volume_db = -6.0
 autoplay = true
 bus = &"SFX"
 
 [node name="deceleration" type="AudioStreamPlayer" parent="minigame_container/minigame_viewport/wormhole_minigame"]
-stream = ExtResource("10_7mbe0")
+stream = ExtResource("12_fyp0n")
 volume_db = -24.0
 autoplay = true
 bus = &"SFX"
