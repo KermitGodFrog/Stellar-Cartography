@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/combat_high.ogg-5b60cd3c0df4fb02cc101f78a5da9
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

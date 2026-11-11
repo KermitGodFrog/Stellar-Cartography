@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/birds.ogg-5559fa62ece8bf86a557e459650c1cc3.og
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

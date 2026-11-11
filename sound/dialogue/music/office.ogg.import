@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/office.ogg-2c66935e63140647e50817a0b150e514.o
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

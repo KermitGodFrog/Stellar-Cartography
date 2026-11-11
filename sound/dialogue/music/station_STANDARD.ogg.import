@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/station_STANDARD.ogg-e010528ba44b5d1180b02894
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

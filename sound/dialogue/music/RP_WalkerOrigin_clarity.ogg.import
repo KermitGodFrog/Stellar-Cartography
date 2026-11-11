@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/RP_WalkerOrigin_clarity.ogg-194d11b62e98536f1
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

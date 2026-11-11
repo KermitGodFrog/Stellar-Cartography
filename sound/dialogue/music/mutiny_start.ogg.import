@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/mutiny_start.ogg-0f4baf0c0128260b2fa2c1bf6ca5
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

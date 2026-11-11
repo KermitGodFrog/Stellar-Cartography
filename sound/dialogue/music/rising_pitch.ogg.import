@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/rising_pitch.ogg-a7265330392527f6f956d6aeb1a4
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

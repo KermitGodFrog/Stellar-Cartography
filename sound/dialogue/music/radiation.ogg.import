@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/radiation.ogg-52d83e7194c547ddb39dc49aca31c55
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0
