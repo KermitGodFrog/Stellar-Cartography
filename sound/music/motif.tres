@@ -1,9 +1,0 @@
-[gd_resource type="AudioStreamRandomizer" load_steps=3 format=3 uid="uid://ic5u75lx8poc"]
-
-[ext_resource type="AudioStream" uid="uid://ba7ehohf3peqo" path="res://sound/music/leitmotif1.ogg" id="1_03j4q"]
-[ext_resource type="AudioStream" uid="uid://dglgkonrry2oo" path="res://sound/music/leitmotif3.ogg" id="2_3svqx"]
-
-[resource]
-streams_count = 2
-stream_0/stream = ExtResource("1_03j4q")
-stream_1/stream = ExtResource("2_3svqx")

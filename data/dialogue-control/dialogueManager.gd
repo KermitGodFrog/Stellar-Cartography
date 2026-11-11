@@ -959,7 +959,7 @@ func _insaMakeAllWormholesRevealable() -> void:
 	pass
 
 func _insaPostKalamaSuite() -> void:
-	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/voyage_leitmotif.ogg")
+	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/voyage_motif.ogg")
 	emit_signal("insaMakeRiftDriverUnavailable")
 	emit_signal("insaMakeMilitaryShipsNeutral")
 	emit_signal("removePlayerHullStress", 100)
@@ -987,8 +987,8 @@ func _TUTORIALSetWindowTutorials(value: bool):
 	emit_signal("TUTORIALSetWindowTutorials", value)
 	pass
 
-func _TUTORIALQueueVoyageLeitmotif():
-	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/voyage_leitmotif.ogg")
+func _TUTORIALQueueVoyageMotif():
+	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/voyage_motif.ogg")
 	pass
 
 func _TUTORIALSetPlayerActionLock(value: bool) -> void:
