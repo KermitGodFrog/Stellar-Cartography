@@ -717,7 +717,7 @@ func _on_player_entering_system(system: starSystemAPI):
 	elif system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.VOID:
 		get_tree().call_group("audioHandler", "queue_music", "res://sound/music/void.ogg")
 	elif system.is_civilized():
-		_on_play_civilized_system_leitmotif()
+		_on_play_civilized_system_theme_or_motif()
 	elif system.get_first_star().metadata.get("star_type") == "Pulsar":
 		if not world.played_pulsar_theme:
 			get_tree().call_group("audioHandler", "queue_music", "res://sound/music/pulsar.ogg")
@@ -1532,20 +1532,25 @@ func _on_modify_character_standing(occupation: characterAPI.OCCUPATIONS, amount:
 	world.player.modifyCharacterStanding(occupation, amount, _increase)
 	pass
 
-func _on_play_civilized_system_leitmotif() -> void:
+func _on_play_civilized_system_theme_or_motif() -> void:
 	if world.player.weirdness_index >= 0.2 and world.player.weirdness_index < 0.6: #in frontier
 		if not world.played_frontier_leitmotif:
-			get_tree().call_group("audioHandler", "queue_music", "res://sound/music/frontier_leitmotif.wav")
+			get_tree().call_group("audioHandler", "queue_music", "res://sound/music/frontier_theme.ogg")
 			world.played_frontier_leitmotif = true
+			return
+		if randf() >= 0.75:
+			get_tree().call_group("audioHandler", "queue_music", "res://sound/music/frontier_motif.ogg")
 			return
 	elif world.player.weirdness_index >= 0.6: #in abyss
 		if not world.played_abyss_leitmotif:
-			get_tree().call_group("audioHandler", "queue_music", "res://sound/music/abyss_leitmotif.wav")
+			get_tree().call_group("audioHandler", "queue_music", "res://sound/music/abyss_theme.ogg")
 			world.played_abyss_leitmotif = true
 			return
-	#world.player.weirdness_index updates faster than game_data.player_weirdness index, and should thus be used all throughout game.gd
+		if randf() >= 0.75:
+			get_tree().call_group("audioHandler", "queue_music", "res://sound/music/abyss_motif.ogg")
+			return
 	
-	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/motif.tres")
+	get_tree().call_group("audioHandler", "queue_music", "res://sound/music/civilization_motif.tres")
 	return
 
 func _on_play_strange_discovery_theme_or_motif() -> void:

@@ -1,9 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://c7mmitfihh8pe"]
 
-[ext_resource type="AudioStream" uid="uid://b0o4on2y11tpn" path="res://sound/system-3d/body_flyby.wav" id="1_y6m4x"]
+[ext_resource type="AudioStream" uid="uid://dje3i5hl1t7s7" path="res://sound/system-3d/body_flyby.ogg" id="1_bnply"]
 
 [node name="flyby" type="AudioStreamPlayer3D"]
-stream = ExtResource("1_y6m4x")
+stream = ExtResource("1_bnply")
 attenuation_model = 1
 max_distance = 30.0
 bus = &"SFX"

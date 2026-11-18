@@ -30,7 +30,7 @@
 [ext_resource type="Script" uid="uid://dc2hvx6y80gv7" path="res://scenes/system-map/value_increase_label.gd" id="13_6i2x8"]
 [ext_resource type="Texture2D" uid="uid://ce1et15cnh5ao" path="res://graphics/system-map/status-panel/morale_icon.png" id="13_vaatn"]
 [ext_resource type="Script" uid="uid://g0rvlwk6v2fa" path="res://scenes/system-map/status-panel/hull_stress_button.gd" id="14_u08qu"]
-[ext_resource type="Texture2D" uid="uid://m857xad6154v" path="res://graphics/misc/double_tall_arrow.png" id="15_4xoy6"]
+[ext_resource type="Texture2D" uid="uid://m857xad6154v" path="res://graphics/system-map/double_tall_arrow.png" id="15_4xoy6"]
 [ext_resource type="Theme" uid="uid://b48jsacdlk7jt" path="res://theme-gen/custom-tooltip/custom_tooltip_host.tres" id="15_534fl"]
 [ext_resource type="FontFile" uid="uid://cebi6a4vshcjg" path="res://graphics/fonts/RobotoMono Medium Italic.ttf" id="15_y0hnn"]
 [ext_resource type="Script" uid="uid://dk17fp0f0cm0" path="res://scenes/system-map/current-action-panel/current_action_label.gd" id="16_vo58t"]
