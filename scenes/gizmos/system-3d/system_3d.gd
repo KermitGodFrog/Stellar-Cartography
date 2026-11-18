@@ -18,7 +18,7 @@ signal addConsoleEntry(entry_text: String, text_color: Color)
 var actor_3d = preload("uid://drrmba8quj4mu")
 
 #for wormholes obv      <- past me who put this comment, stop being such a fucking smartass istg
-var wormhole_shader = preload("uid://bkngs6wdkye6n")
+#var wormhole_shader = preload("uid://bkngs6wdkye6n") #removed 18/11/26
 var pulsar_beam_material = preload("uid://dtpqpy1b1rnxv")
 
 var vis_panorama = preload("uid://daa1rd3d0ffqb")
@@ -227,7 +227,7 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 						if not system.special_system_classification == game_data.SPECIAL_SYSTEM_CLASSIFICATIONS.DYSON_SPHERE:
 							add_glow = true
 					starSystemAPI.BODY_TYPES.WORMHOLE:
-						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, wormhole_shader)
+						mesh = generate_circular_body_sphere_mesh(body.radius * system_scalar, system.get_first_star().surface_color, body.surface_color, 0.75, null)
 				
 				var new_actor: actor3D
 				if add_glow:
