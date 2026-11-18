@@ -865,6 +865,8 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	world.player.sys_survey_time_start = world.play_time
 	
 	_on_player_entering_system(destination) #this dialogue is overwritten if the player dies during traversal!
+	
+	_on_save_world()
 	pass
 
 func dock_with_station(following_station):
@@ -1269,6 +1271,7 @@ func _on_open_stats_menu(_init_type: int): #init type is from statsMenu INIT_TYP
 
 func _on_save_world():
 	game_data.saveWorld(world)
+	system_map._on_world_saved()
 	pass
 
 func _on_save_and_quit():

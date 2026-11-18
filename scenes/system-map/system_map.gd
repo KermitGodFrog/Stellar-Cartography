@@ -103,6 +103,7 @@ var bg_processing_radius: float
 @onready var status_control = $camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/status_control
 @onready var scopes_bg = $camera/canvas/control/scopes_snap_scroll/scopes_bg
 @onready var star_infographic_panel = $camera/canvas/control/tabs_and_ca_scroll/tabs_actions_scroll/tabs/INFO/star_infographic_panel
+@onready var saving_label = $camera/canvas/control/settings_button_etc_scroll/saving_label
 
 @onready var LIDAR_ping = preload("uid://bk3mdgissdw10")
 @onready var LIDAR_bounceback = preload("uid://l48jfwebkea")
@@ -1272,6 +1273,10 @@ func _on_force_camera_to_player() -> void:
 	reset_camera_follow_body()
 	await get_tree().process_frame
 	camera.position = player_position_matrix[0]
+	pass
+
+func _on_world_saved() -> void:
+	saving_label._on_world_saved()
 	pass
 
 

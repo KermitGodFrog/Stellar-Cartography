@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://bhroagne3v4wq"]
+[gd_scene load_steps=73 format=3 uid="uid://bhroagne3v4wq"]
 
 [ext_resource type="Script" uid="uid://drpebl7v5rtku" path="res://scenes/system-map/system_map.gd" id="1_nhsfb"]
 [ext_resource type="Script" uid="uid://cvkf6lrdgavet" path="res://scenes/system-map/camera.gd" id="2_miyro"]
@@ -55,6 +55,7 @@
 [ext_resource type="Texture2D" uid="uid://dxiksctsg7w41" path="res://graphics/system-map/cog_normal.svg" id="38_ji0h2"]
 [ext_resource type="BitMap" uid="uid://vsyxkeka6b8c" path="res://graphics/system-map/cog_click_mask.png" id="40_ji0h2"]
 [ext_resource type="AudioStream" uid="uid://oyrc4tfk4fl8" path="res://sound/system-map/alarm.wav" id="47_da46s"]
+[ext_resource type="Script" uid="uid://bkjaijevy2lxm" path="res://scenes/system-map/saving_label.gd" id="50_d83lu"]
 [ext_resource type="Shader" uid="uid://bbiw6ixis7u4a" path="res://shader-gen/system-map/nebula.gdshader" id="52_gtym1"]
 [ext_resource type="Script" uid="uid://cpgaxjiulbawr" path="res://scenes/system-map/bg_processing_upgrade.gd" id="54_dsgv3"]
 
@@ -107,6 +108,18 @@ color = Color(0.207843, 0.207843, 0.207843, 1)
 grow_begin = 11.0
 grow_end = 11.0
 vertical = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ujtkq"]
+bg_color = Color(0.17923622, 0.17923622, 0.17923622, 0.5)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+anti_aliasing_size = 10.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dsgv3"]
 shader = ExtResource("52_gtym1")
@@ -1028,15 +1041,29 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("35_1xeuo")
 
-[node name="settings_button" type="TextureButton" parent="system/camera/canvas/control"]
-custom_minimum_size = Vector2(32, 32)
+[node name="settings_button_etc_scroll" type="HBoxContainer" parent="system/camera/canvas/control"]
+custom_minimum_size = Vector2(64, 32)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 40.0
+offset_left = -64.0
+offset_bottom = 32.0
 grow_horizontal = 0
+alignment = 2
+
+[node name="saving_label" type="Label" parent="system/camera/canvas/control/settings_button_etc_scroll"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_ujtkq")
+script = ExtResource("50_d83lu")
+
+[node name="settings_button" type="TextureButton" parent="system/camera/canvas/control/settings_button_etc_scroll"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 10
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("38_ji0h2")
 texture_pressed = ExtResource("38_ji0h2")
@@ -1174,5 +1201,5 @@ bus = &"SFX"
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll/audio_visualizer_button" to="system" method="_on_audio_visualizer_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll/long_range_scopes_button" to="system" method="_on_long_range_scopes_button_pressed"]
 [connection signal="pressed" from="system/camera/canvas/control/scopes_snap_scroll/core_and_value_scroll/core/core_scroll/apps_panel/apps_margin/apps_scroll/gas_layer_surveyor_button" to="system" method="_on_gas_layer_surveyor_button_pressed"]
-[connection signal="pressed" from="system/camera/canvas/control/settings_button" to="system" method="_on_settings_button_pressed"]
+[connection signal="pressed" from="system/camera/canvas/control/settings_button_etc_scroll/settings_button" to="system" method="_on_settings_button_pressed"]
 [connection signal="timeout" from="system/bg_processing_upgrade/cooldown" to="system/bg_processing_upgrade" method="_on_cooldown_timeout"]
