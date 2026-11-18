@@ -1,0 +1,76 @@
+[gd_scene load_steps=9 format=3 uid="uid://cqdg726xkyne2"]
+
+[ext_resource type="Texture2D" uid="uid://dy67ww82a2kor" path="res://graphics/system-3d/belt_texture.png" id="1_1tea2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cf3vq"]
+transparency = 4
+disable_fog = true
+disable_specular_occlusion = true
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_1tea2")
+metallic = 1.0
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 0.1
+backlight = Color(1, 1, 1, 1)
+disable_receive_shadows = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+proximity_fade_distance = 1091.56
+stencil_flags = 2
+
+[sub_resource type="Curve" id="Curve_ecxvh"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.7523364, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_cf3vq"]
+curve = SubResource("Curve_ecxvh")
+
+[sub_resource type="Gradient" id="Gradient_1tea2"]
+colors = PackedColorArray(0.1484375, 0.1484375, 0.1484375, 1, 0.48046875, 0.48046875, 0.48046875, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vnjlb"]
+gradient = SubResource("Gradient_1tea2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uol33"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 20.0
+emission_ring_radius = 40.0
+emission_ring_inner_radius = 30.0
+emission_ring_cone_angle = 90.0
+angle_min = -720.0
+angle_max = 720.0
+velocity_pivot = Vector3(0, 1, 0)
+direction = Vector3(0, 1, 0)
+angular_velocity_min = -45.000015
+angular_velocity_max = 44.999985
+orbit_velocity_min = 1.0000001
+orbit_velocity_max = 2.0000002
+gravity = Vector3(0, 0, 0)
+tangential_accel_min = -4.0000024
+tangential_accel_max = -0.10000224
+damping_max = 0.1
+scale_min = 0.049999997
+scale_max = 5.0
+scale_over_velocity_max = 20.0
+color = Color(0.3046875, 0.3046875, 0.3046875, 1)
+color_initial_ramp = SubResource("GradientTexture1D_vnjlb")
+alpha_curve = SubResource("CurveTexture_cf3vq")
+
+[sub_resource type="QuadMesh" id="QuadMesh_sayo2"]
+
+[node name="belt_particles" type="GPUParticles3D"]
+material_override = SubResource("StandardMaterial3D_cf3vq")
+cast_shadow = 0
+amount = 100
+lifetime = 2.0
+visibility_aabb = AABB(-100, -100, -100, 200, 200, 200)
+local_coords = true
+transform_align = 1
+trail_lifetime = 6.1899999999999995
+process_material = SubResource("ParticleProcessMaterial_uol33")
+draw_pass_1 = SubResource("QuadMesh_sayo2")

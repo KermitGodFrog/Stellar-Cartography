@@ -16,6 +16,7 @@ signal addConsoleEntry(entry_text: String, text_color: Color)
 
 #resources
 var actor_3d = preload("uid://drrmba8quj4mu")
+var belt_particles = preload("uid://cqdg726xkyne2")
 
 #for wormholes obv      <- past me who put this comment, stop being such a fucking smartass istg
 #var wormhole_shader = preload("uid://bkngs6wdkye6n") #removed 18/11/26
@@ -330,6 +331,26 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					{},
 					{"stream": load("uid://b7vu4bpvxlu6n"), "attenuation_model": 3, "volume_db": -12.0, "max_db": -12.0} #attenuation model 3 -> ATTENUATION_DISABLED
 				)
+			_ when body.get_type() == starSystemAPI.BODY_TYPES.ASTEROID_BELT:
+				
+				var new_actor: actor3D = await add_actor(
+					system.get_body_from_identifier(body.hook_identifier).get_identifier(),
+					[actor3D.COHORTS.ASTEROID_BELT]
+				)
+				print(body.metadata.get("belt_width"))
+				var belt_width: float = body.metadata.get("belt_width")
+				var half_belt_width: float = belt_width / 2
+				var inner_radius: float = (body.orbit_distance - half_belt_width) * system_scalar
+				var outer_radius: float = (body.orbit_distance + half_belt_width) * system_scalar
+				var half_outer_radius: float = outer_radius / 2
+				var particles_instance = belt_particles.instantiate()
+				particles_instance.set_visibility_aabb(AABB(Vector3(-half_outer_radius, -half_outer_radius, -half_outer_radius), Vector3(outer_radius, outer_radius, outer_radius)))
+				particles_instance.set_amount(int(belt_width * 2.0))
+				var material: ParticleProcessMaterial = particles_instance.get_process_material()
+				material.set_emission_ring_inner_radius(inner_radius)
+				material.set_emission_ring_radius(outer_radius)
+				material.set_emission_ring_height(inner_radius / 2)
+				new_actor.add_child(particles_instance)
 	
 	#some quick nebula stuff \/
 	if system.system_hazard_classification in [game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA, game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO]:
