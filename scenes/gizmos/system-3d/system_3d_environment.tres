@@ -1,9 +1,10 @@
 [gd_resource type="Environment" load_steps=4 format=3 uid="uid://b1yq54jdcwnuc"]
 
-[ext_resource type="Shader" uid="uid://i105jey58ell" path="res://shader-gen/sky_shader.tres" id="1_tuodv"]
+[ext_resource type="Shader" uid="uid://bqci5ex5ef2a6" path="res://shader-gen/system-3d/sky_shader.tres" id="1_48qqm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ch2h2"]
-shader = ExtResource("1_tuodv")
+shader = ExtResource("1_48qqm")
+shader_parameter/nebula_mix_scalar = 0.5000000074506
 
 [sub_resource type="Sky" id="Sky_4kfpl"]
 sky_material = SubResource("ShaderMaterial_ch2h2")

@@ -23,6 +23,7 @@ var pulsar_beam_material = preload("uid://dtpqpy1b1rnxv")
 
 var vis_panorama = preload("uid://daa1rd3d0ffqb")
 var rad_panorama = preload("uid://c7u31smqi45er")
+var nebula_panorama = preload("uid://clgltvmcshvpq")
 
 var glint_large_texture = preload("uid://c236x4bwtcifq")
 var glint_small_texture = preload("uid://kxo1pkvmhml4")
@@ -330,6 +331,14 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					{"stream": load("uid://b7vu4bpvxlu6n"), "attenuation_model": 3, "volume_db": -12.0, "max_db": -12.0} #attenuation model 3 -> ATTENUATION_DISABLED
 				)
 	
+	#some quick nebula stuff \/
+	if system.system_hazard_classification in [game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA, game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO]:
+		nebula_panorama.noise = system.system_hazard_metadata.get("nebula_noise", FastNoiseLite.new()).duplicate()
+		nebula_panorama.color_ramp.colors[0] = system.system_hazard_metadata.get("nebula_color", Color.WHITE)
+		environment.get_environment().get_sky().get_material().set_shader_parameter("optional_nebula_panorama", nebula_panorama)
+	else:
+		environment.get_environment().get_sky().get_material().set_shader_parameter("optional_nebula_panorama", null)
+	
 	_on_scope_mode_changed(get_scope_mode()) #to refresh all cohorts which change on scope mode change! dont want to assume we r in VIS mode >:)
 	
 	exit_tex_gen_thread = false
@@ -446,9 +455,11 @@ func _on_scope_mode_changed(new_mode: playerAPI.SCOPE_MODES) -> void:
 		playerAPI.SCOPE_MODES.VIS:
 			rad_post_process.hide()
 			environment.get_environment().get_sky().get_material().set_shader_parameter("source_panorama", vis_panorama)
+			environment.get_environment().get_sky().get_material().set_shader_parameter("nebula_mix_scalar", 0.5)
 		playerAPI.SCOPE_MODES.RAD:
 			rad_post_process.show()
 			environment.get_environment().get_sky().get_material().set_shader_parameter("source_panorama", rad_panorama)
+			environment.get_environment().get_sky().get_material().set_shader_parameter("nebula_mix_scalar", 0.1)
 	
 	for actor in actors:
 		if actor.is_in_cohort(actor3D.COHORTS.CIRCULAR_BODY):
