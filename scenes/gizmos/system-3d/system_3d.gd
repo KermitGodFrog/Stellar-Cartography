@@ -16,11 +16,13 @@ signal addConsoleEntry(entry_text: String, text_color: Color)
 
 #resources
 var actor_3d = preload("uid://drrmba8quj4mu")
-var belt_particles = preload("uid://cqdg726xkyne2")
+var inner_belt_mesh = preload("uid://cpsprl1kd5ktl")
+var outer_belt_mesh = preload("uid://c0sddf6jvwl0w")
 
 #for wormholes obv      <- past me who put this comment, stop being such a fucking smartass istg
 #var wormhole_shader = preload("uid://bkngs6wdkye6n") #removed 18/11/26
 var pulsar_beam_material = preload("uid://dtpqpy1b1rnxv")
+var belt_material = preload("uid://cncxt0msnjcx3")
 
 var vis_panorama = preload("uid://daa1rd3d0ffqb")
 var rad_panorama = preload("uid://c7u31smqi45er")
@@ -55,6 +57,11 @@ var max_FOV: int = 75: #playerAPI scopes_max_FOV
 		if target_fov > max_FOV:
 			target_fov = max_FOV
 var discovery_value_multiplier: float = 1.0
+var player_in_asteroid_belt: bool = false: #set by game.gd!
+	set(value):
+		if value != player_in_asteroid_belt:
+			_on_player_in_asteroid_belt_changed(value)
+		player_in_asteroid_belt = value
 
 
 var scope_mode: playerAPI.SCOPE_MODES = playerAPI.SCOPE_MODES.VIS:
@@ -143,8 +150,8 @@ func update_camera_basis() -> void:
 
 func update_miscellaneous() -> void:
 	#setting post process
-	var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)
-	post_process.material.set("shader_parameter/pixel_size", round(fov_to_pixel_size))
+	#var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)
+	#post_process.material.set("shader_parameter/pixel_size", round(fov_to_pixel_size))
 	
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
 	control.current_fov = camera.fov
@@ -333,24 +340,23 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 				)
 			_ when body.get_type() == starSystemAPI.BODY_TYPES.ASTEROID_BELT:
 				
-				var new_actor: actor3D = await add_actor(
-					system.get_body_from_identifier(body.hook_identifier).get_identifier(),
-					[actor3D.COHORTS.ASTEROID_BELT]
-				)
 				print(body.metadata.get("belt_width"))
 				var belt_width: float = body.metadata.get("belt_width")
 				var half_belt_width: float = belt_width / 2
 				var inner_radius: float = (body.orbit_distance - half_belt_width) * system_scalar
 				var outer_radius: float = (body.orbit_distance + half_belt_width) * system_scalar
-				var half_outer_radius: float = outer_radius / 2
-				var particles_instance = belt_particles.instantiate()
-				particles_instance.set_visibility_aabb(AABB(Vector3(-half_outer_radius, -half_outer_radius, -half_outer_radius), Vector3(outer_radius, outer_radius, outer_radius)))
-				particles_instance.set_amount(int(belt_width * 2.0))
-				var material: ParticleProcessMaterial = particles_instance.get_process_material()
-				material.set_emission_ring_inner_radius(inner_radius)
-				material.set_emission_ring_radius(outer_radius)
-				material.set_emission_ring_height(inner_radius / 2)
-				new_actor.add_child(particles_instance)
+				
+				add_actor(
+					system.get_body_from_identifier(body.hook_identifier).get_identifier(),
+					[actor3D.COHORTS.ASTEROID_BELT],
+					{"mesh": inner_belt_mesh, "material_override": belt_material, "scale": Vector3(inner_radius, inner_radius, inner_radius), "transparency": 0.5}
+				)
+				add_actor(
+					system.get_body_from_identifier(body.hook_identifier).get_identifier(),
+					[actor3D.COHORTS.ASTEROID_BELT],
+					{"mesh": outer_belt_mesh, "material_override": belt_material, "scale": Vector3(outer_radius, outer_radius, outer_radius), "transparency": 0.5}
+				)
+				
 	
 	#some quick nebula stuff \/
 	if system.system_hazard_classification in [game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA, game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO]:
@@ -637,7 +643,12 @@ func _exit_tree() -> void: #thread stuff
 			tex_gen_thread.wait_to_finish()
 	pass
 
-
+func _on_player_in_asteroid_belt_changed(in_belt: bool) -> void:
+	if in_belt:
+		post_process.color = Color("1d1d1d", 0.75)
+	else:
+		post_process.color = Color(Color.WHITE, 0.0)
+	pass
 
 
 

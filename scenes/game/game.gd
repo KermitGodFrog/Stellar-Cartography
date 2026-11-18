@@ -1497,6 +1497,7 @@ func _on_update_countdown_overlay_shown(_shown: bool):
 
 func _on_update_player_in_asteroid_belt(player_in_asteroid_belt: bool):
 	world.player.in_asteroid_belt = player_in_asteroid_belt
+	system_3d.player_in_asteroid_belt = player_in_asteroid_belt
 	pass
 
 func _on_update_player_in_pulsar_beam(player_in_pulsar_beam: bool):

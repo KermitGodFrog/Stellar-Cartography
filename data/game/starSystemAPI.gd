@@ -820,7 +820,7 @@ func addRandomWeightedAsteroidBeltAtIteration(hook_identifier: int, i: int) -> i
 			0.0,
 			0.0, #cant be interacted with so who cares
 			{"hidden": true},
-			{"asteroid_belt_classification": belt_classification, "belt_width": belt_width, "belt_color": Color(0.111765, 0.111765, 0.111765, 0.9), "belt_mass": belt_mass}
+			{"asteroid_belt_classification": belt_classification, "belt_width": belt_width, "belt_color": Color("1d1d1de6"), "belt_mass": belt_mass}
 		)
 		
 		if hook.get_type() == BODY_TYPES.STAR:

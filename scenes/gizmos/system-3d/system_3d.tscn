@@ -1,7 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://co52u63cyk220"]
+[gd_scene load_steps=11 format=3 uid="uid://co52u63cyk220"]
 
 [ext_resource type="Script" uid="uid://ofbjt6pmvy3y" path="res://scenes/gizmos/system-3d/system_3d.gd" id="1_a351o"]
-[ext_resource type="Shader" uid="uid://c8yxk67y2u80y" path="res://shader-gen/pixelate_shader.gdshader" id="2_ra6gs"]
 [ext_resource type="FontFile" uid="uid://xrcqj2080elm" path="res://graphics/fonts/RobotoMono Medium.ttf" id="3_wi6mv"]
 [ext_resource type="Script" uid="uid://b7f1548xygxbm" path="res://scenes/gizmos/system-3d/control.gd" id="4_d6r1b"]
 [ext_resource type="FontFile" uid="uid://csqtov83ore1p" path="res://graphics/fonts/RobotoMono Bold.ttf" id="5_u5io5"]
@@ -9,10 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://d02k71150k6kn" path="res://graphics/system-3d/unchecked.svg" id="6_tx8l4"]
 [ext_resource type="Texture2D" uid="uid://oypq0umnahdk" path="res://graphics/shared/slide_indicator_texture.tres" id="8_588xm"]
 [ext_resource type="Environment" uid="uid://b1yq54jdcwnuc" path="res://scenes/gizmos/system-3d/system_3d_environment.tres" id="9_a5f52"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_e7fqt"]
-shader = ExtResource("2_ra6gs")
-shader_parameter/pixel_size = 16.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ajtlq"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -43,14 +38,13 @@ far = 100000.0
 [node name="canvas_layer" type="CanvasLayer" parent="system_3d/camera_offset/camera"]
 
 [node name="post_process" type="ColorRect" parent="system_3d/camera_offset/camera/canvas_layer"]
-visible = false
 texture_filter = 1
-material = SubResource("ShaderMaterial_e7fqt")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(1, 1, 1, 0)
 
 [node name="rad_post_process" type="ColorRect" parent="system_3d/camera_offset/camera/canvas_layer"]
 visible = false
