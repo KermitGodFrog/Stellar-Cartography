@@ -97,7 +97,7 @@ current_type = 2
 identifier = 7
 display_name = "asteroid belt 1"
 metadata = {
-"asteroid_belt_classification": "Carbonaceous",
+"belt_classification": "Metal-rich",
 "belt_color": Color(0.111765, 0.111765, 0.111765, 0.9),
 "belt_mass": 0.0,
 "belt_width": 450.0
@@ -114,7 +114,7 @@ current_type = 2
 identifier = 8
 display_name = "asteroid belt 2"
 metadata = {
-"asteroid_belt_classification": "Carbonaceous",
+"belt_classification": "Metal-rich",
 "belt_color": Color(0.111765, 0.111765, 0.111765, 0.9),
 "belt_mass": 0.0,
 "belt_width": 450.0
@@ -131,7 +131,7 @@ current_type = 2
 identifier = 9
 display_name = "asteroid belt 3"
 metadata = {
-"asteroid_belt_classification": "Carbonaceous",
+"belt_classification": "Metal-rich",
 "belt_color": Color(0.111765, 0.111765, 0.111765, 0.9),
 "belt_mass": 0.0,
 "belt_width": 450.0

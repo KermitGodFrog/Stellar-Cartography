@@ -343,6 +343,7 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					{"stream": load("uid://b7vu4bpvxlu6n"), "attenuation_model": 3, "volume_db": -12.0, "max_db": -12.0} #attenuation model 3 -> ATTENUATION_DISABLED
 				)
 			_ when body.get_type() == starSystemAPI.BODY_TYPES.ASTEROID_BELT:
+				print(body.metadata.get("belt_classification"))
 				var belt_width: float = body.metadata.get("belt_width")
 				var inner_radius: float = (body.orbit_distance - belt_width / 2) * system_scalar
 				var outer_radius: float = (body.orbit_distance + belt_width / 2) * system_scalar
@@ -359,6 +360,10 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					inner_mesh = inner_ring_mesh
 					outer_mesh = outer_ring_mesh
 					mesh_material = ring_material
+				
+				mesh_material = mesh_material.duplicate()
+				mesh_material.albedo_color = Color(body.metadata.get("belt_color"), 1.0)
+				mesh_material.emission = Color(body.metadata.get("belt_color"), 1.0)
 				
 				add_actor(
 					body.get_identifier(),
