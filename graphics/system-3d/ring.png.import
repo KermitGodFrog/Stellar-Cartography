@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dy67ww82a2kor"
-path.s3tc="res://.godot/imported/belt_texture.png-1053b3868dfdaf3e114015f3a4413d01.s3tc.ctex"
-path.etc2="res://.godot/imported/belt_texture.png-1053b3868dfdaf3e114015f3a4413d01.etc2.ctex"
+uid="uid://db37d5qw48uf8"
+path.s3tc="res://.godot/imported/ring.png-8f0704720577bbf678c1aabfb5531f78.s3tc.ctex"
+path.etc2="res://.godot/imported/ring.png-8f0704720577bbf678c1aabfb5531f78.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://graphics/system-3d/belt_texture.png"
-dest_files=["res://.godot/imported/belt_texture.png-1053b3868dfdaf3e114015f3a4413d01.s3tc.ctex", "res://.godot/imported/belt_texture.png-1053b3868dfdaf3e114015f3a4413d01.etc2.ctex"]
+source_file="res://graphics/system-3d/ring.png"
+dest_files=["res://.godot/imported/ring.png-8f0704720577bbf678c1aabfb5531f78.s3tc.ctex", "res://.godot/imported/ring.png-8f0704720577bbf678c1aabfb5531f78.etc2.ctex"]
 
 [params]
 

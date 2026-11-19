@@ -16,13 +16,20 @@ func get_identifier() -> int:
 func set_identifier(value) -> void:
 	identifier = value
 	pass
+var secondary_identifier: int: # currently only used by asteroid belts
+	get = get_secondary_identifier, set = set_secondary_identifier
+func get_secondary_identifier() -> int:
+	return secondary_identifier
+func set_secondary_identifier(value) -> void:
+	secondary_identifier = value
+	pass
 
 #used for RUNTIME CHANGES TO ACTORS - NOT the initial setup, which is managed entirely by system_3d!!
 enum COHORTS {
 	ORBIT_BODY, UNIT_BODY,
 	CIRCULAR_BODY, GLINT_BODY, CUSTOM_BODY,
 	AI_UNIT, MINE_UNIT,
-	ASTEROID_BELT, PULSAR_BEAM, #UTILITY
+	ASTEROID_BELT, INNER_BELT, OUTER_BELT, PULSAR_BEAM, #UTILITY
 	AUDIO, MINE_SFX, PULSAR_BEAM_SFX #UTILITY
 }
 var cohorts: Array[COHORTS] = []

@@ -16,13 +16,12 @@ signal addConsoleEntry(entry_text: String, text_color: Color)
 
 #resources
 var actor_3d = preload("uid://drrmba8quj4mu")
-var inner_belt_mesh = preload("uid://cpsprl1kd5ktl")
-var outer_belt_mesh = preload("uid://c0sddf6jvwl0w")
 
 #for wormholes obv      <- past me who put this comment, stop being such a fucking smartass istg
 #var wormhole_shader = preload("uid://bkngs6wdkye6n") #removed 18/11/26
 var pulsar_beam_material = preload("uid://dtpqpy1b1rnxv")
 var belt_material = preload("uid://cncxt0msnjcx3")
+var ring_material = preload("uid://dv5mqk57bt1sa")
 
 var vis_panorama = preload("uid://daa1rd3d0ffqb")
 var rad_panorama = preload("uid://c7u31smqi45er")
@@ -34,6 +33,11 @@ var glint_small_texture = preload("uid://kxo1pkvmhml4")
 var circular_body_texture = preload("uid://dmcaf8av01hwx")
 
 var glow_texture = preload("uid://ca75qrccehwx3")
+
+var inner_belt_mesh = preload("uid://cpsprl1kd5ktl")
+var outer_belt_mesh = preload("uid://c0sddf6jvwl0w")
+var inner_ring_mesh = preload("uid://rt2twfqmuuue")
+var outer_ring_mesh = preload("uid://xpyw46qruw7")
 
 var system: starSystemAPI
 var player_position: Vector2
@@ -339,24 +343,33 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					{"stream": load("uid://b7vu4bpvxlu6n"), "attenuation_model": 3, "volume_db": -12.0, "max_db": -12.0} #attenuation model 3 -> ATTENUATION_DISABLED
 				)
 			_ when body.get_type() == starSystemAPI.BODY_TYPES.ASTEROID_BELT:
-				
-				print(body.metadata.get("belt_width"))
 				var belt_width: float = body.metadata.get("belt_width")
-				var half_belt_width: float = belt_width / 2
-				var inner_radius: float = (body.orbit_distance - half_belt_width) * system_scalar
-				var outer_radius: float = (body.orbit_distance + half_belt_width) * system_scalar
+				var inner_radius: float = (body.orbit_distance - belt_width / 2) * system_scalar
+				var outer_radius: float = (body.orbit_distance + belt_width / 2) * system_scalar
+				
+				var inner_mesh: Mesh
+				var outer_mesh: Mesh
+				var mesh_material: Material
+				
+				if system.get_body_from_identifier(body.hook_identifier).get_type() == starSystemAPI.BODY_TYPES.STAR:
+					inner_mesh = inner_belt_mesh
+					outer_mesh = outer_belt_mesh
+					mesh_material = belt_material
+				else:
+					inner_mesh = inner_ring_mesh
+					outer_mesh = outer_ring_mesh
+					mesh_material = ring_material
 				
 				add_actor(
-					system.get_body_from_identifier(body.hook_identifier).get_identifier(),
-					[actor3D.COHORTS.ASTEROID_BELT],
-					{"mesh": inner_belt_mesh, "material_override": belt_material, "scale": Vector3(inner_radius, inner_radius, inner_radius), "transparency": 0.5}
+					body.get_identifier(),
+					[actor3D.COHORTS.ASTEROID_BELT, actor3D.COHORTS.INNER_BELT],
+					{"mesh": inner_mesh, "material_override": mesh_material, "scale": Vector3(inner_radius, inner_radius, inner_radius), "transparency": 0.5}
 				)
 				add_actor(
-					system.get_body_from_identifier(body.hook_identifier).get_identifier(),
-					[actor3D.COHORTS.ASTEROID_BELT],
-					{"mesh": outer_belt_mesh, "material_override": belt_material, "scale": Vector3(outer_radius, outer_radius, outer_radius), "transparency": 0.5}
+					body.get_identifier(),
+					[actor3D.COHORTS.ASTEROID_BELT, actor3D.COHORTS.OUTER_BELT],
+					{"mesh": outer_mesh, "material_override": mesh_material, "scale": Vector3(outer_radius, outer_radius, outer_radius), "transparency": 0.5}
 				)
-				
 	
 	#some quick nebula stuff \/
 	if system.system_hazard_classification in [game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA, game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO]:
@@ -367,6 +380,7 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 		environment.get_environment().get_sky().get_material().set_shader_parameter("optional_nebula_panorama", null)
 	
 	_on_scope_mode_changed(get_scope_mode()) #to refresh all cohorts which change on scope mode change! dont want to assume we r in VIS mode >:)
+	_on_player_in_asteroid_belt_changed(player_in_asteroid_belt) #to ensure that the screen is no longer tinted / inner belts aren't visible on game load!
 	
 	exit_tex_gen_thread = false
 	tex_gen_thread = Thread.new()
@@ -648,6 +662,15 @@ func _on_player_in_asteroid_belt_changed(in_belt: bool) -> void:
 		post_process.color = Color("1d1d1d", 0.75)
 	else:
 		post_process.color = Color(Color.WHITE, 0.0)
+	for actor in actors:
+		if actor.is_in_cohort(actor3D.COHORTS.INNER_BELT):
+			var belt: bodyAPI = system.get_body_from_identifier(actor.get_identifier())
+			var inner_radius = belt.orbit_distance - belt.metadata.get("belt_width") / 2
+			var distance = player_position.distance_to(belt.position)
+			if distance < inner_radius:
+				actor.show()
+			elif distance > inner_radius:
+				actor.hide()
 	pass
 
 
