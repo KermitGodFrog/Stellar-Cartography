@@ -242,7 +242,7 @@ const asteroid_belt_classifications = {
 	"Silicate": {"name": "Silicate", "weight": 0.3},
 	"Metal-rich": {"name": "Metal-rich", "weight": 0.3},
 	"Carbonaceous": {"name": "Carbonaceous", "weight": 0.3},
-	"Stellar": {"name": "Stellar", "weight": 0.000125}
+	"Stellar": {"name": "Stellar", "weight": 0.00125}
 }
 
 const asteroid_belt_data = {
