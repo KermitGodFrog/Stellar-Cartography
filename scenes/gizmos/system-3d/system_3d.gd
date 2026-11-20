@@ -179,7 +179,7 @@ func try_discover_orbit_bodies() -> void:
 			var a = camera.global_transform.basis.z
 			var b = (camera.global_transform.origin - actor.global_transform.origin).normalized() 
 			if acos(a.dot(b)) <= deg_to_rad(camera.fov):
-				var associated_body = system.get_body_from_identifier(actor.get_identifier()) #repeat code ?!?!?!?!?!?!?!??!?!?!?!?!??!!
+				var associated_body = system.get_body_from_identifier(actor.get_identifier())
 				if associated_body:
 					if associated_body is orbitBodyAPI:
 						if associated_body.get_required_scope_mode() == get_scope_mode():
@@ -189,8 +189,10 @@ func try_discover_orbit_bodies() -> void:
 									continue
 								
 								var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
-								if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name()), Color.DARK_GREEN)
-								elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", roundi(associated_body.metadata.get("value") * star_rarity_multiplier * discovery_value_multiplier), "n) [%.2fx]") % (star_rarity_multiplier * discovery_value_multiplier), Color.DARK_GREEN)
+								if not associated_body.metadata.has("value"): 
+									emit_signal("addConsoleEntry", "DISCOVERED: %s" % associated_body.get_display_name(), Color.DARK_GREEN)
+								elif associated_body.metadata.has("value"): 
+									emit_signal("addConsoleEntry", "DISCOVERED: %s (est. value %dn) [%.2fx]" % [associated_body.get_display_name(), roundi(associated_body.metadata.get("value") * star_rarity_multiplier * discovery_value_multiplier), star_rarity_multiplier * discovery_value_multiplier], Color.DARK_GREEN)
 								emit_signal("foundBody", actor.get_identifier())
 	pass
 
@@ -343,7 +345,6 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					{"stream": load("uid://b7vu4bpvxlu6n"), "attenuation_model": 3, "volume_db": -12.0, "max_db": -12.0} #attenuation model 3 -> ATTENUATION_DISABLED
 				)
 			_ when body.get_type() == starSystemAPI.BODY_TYPES.ASTEROID_BELT:
-				print(body.metadata.get("belt_classification"))
 				var belt_width: float = body.metadata.get("belt_width")
 				var inner_radius: float = (body.orbit_distance - belt_width / 2) * system_scalar
 				var outer_radius: float = (body.orbit_distance + belt_width / 2) * system_scalar
