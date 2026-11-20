@@ -242,14 +242,16 @@ const asteroid_belt_classifications = {
 	"Silicate": {"name": "Silicate", "weight": 0.3},
 	"Metal-rich": {"name": "Metal-rich", "weight": 0.3},
 	"Carbonaceous": {"name": "Carbonaceous", "weight": 0.3},
-	"Stellar": {"name": "Stellar", "weight": 0.00125}
+	"Stellar": {"name": "Stellar", "weight": 0.00125},
+	"Green": {"name": "Green", "weight": 0.00001}
 }
 
 const asteroid_belt_data = {
 	"Silicate": {"color": Color("333333e6")},
 	"Metal-rich": {"color": Color("1d1d1de6")},
 	"Carbonaceous": {"color": Color("0f0f0fe6")},
-	"Stellar": {"color": Color("4e2600e6")}
+	"Stellar": {"color": Color("4e2600e6")},
+	"Green": {"color": Color("004e07e6")}
 }
 
 # core gen methods \/
