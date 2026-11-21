@@ -13,6 +13,8 @@ func _on_pause_mode_changed(value):
 			canvas.show()
 		game_data.PAUSE_MODES.DIALOGUE:
 			canvas.hide()
+		game_data.PAUSE_MODES.STATION_UI:
+			canvas.hide()
 	pass
 
 
