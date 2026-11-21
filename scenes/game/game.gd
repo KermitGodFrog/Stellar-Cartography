@@ -1477,7 +1477,7 @@ func _on_player_below_CME_ring_radius():
 		
 		if not world.player.is_invulnerable():
 			_on_add_player_hull_stress(world.player.hull_stress_CME)
-		get_tree().call_group("audioHandler", "play_once", load("uid://c7baaje1ffxh6"), 0.0, "SFX")
+		get_tree().call_group("audioHandler", "play_once", load("uid://bxsx7pxs882sk"), 0.0, "SFX")
 		get_tree().call_group("audioHandler", "plot_radio", load("uid://ddi2c1haas55w"))
 		system_map._on_countdown_overlay_CME_flash()
 	pass
