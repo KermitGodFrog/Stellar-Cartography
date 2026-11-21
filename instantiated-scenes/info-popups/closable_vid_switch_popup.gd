@@ -12,6 +12,10 @@ func set_popup_state(_state: objectiveAPI.STATES) -> void:
 			
 			if flash_switch_button_until_pressed:
 				switch_button_flash.oscillate_property(self, "current_color", Color.WHITE, Color.YELLOW, 20, 10, true)
+			
+			if flash_play_button_until_pressed:
+				switch_button_flash.oscillate_property(play_button, "self_modulate", Color.WHITE, Color.YELLOW, 20, 10, true)
+			
 		_:
 			pass
 	pass

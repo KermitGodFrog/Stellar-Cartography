@@ -13,6 +13,7 @@ extends "res://instantiated-scenes/info-popups/info_popup.gd"
 @export_range(0.001, 10.0, 0.001) var video_aspect_ratio: float = 1.0
 @export var start_on_video: bool = false
 @export var flash_switch_button_until_pressed: bool = false
+@export var flash_play_button_until_pressed: bool = true
 
 var current_color: Color = Color.WHITE
 
@@ -67,6 +68,10 @@ func set_popup_state(_state: objectiveAPI.STATES) -> void:
 			
 			if flash_switch_button_until_pressed:
 				switch_button_flash.oscillate_property(self, "current_color", Color.WHITE, Color.YELLOW, 20, 10, true)
+			
+			if flash_play_button_until_pressed:
+				switch_button_flash.oscillate_property(play_button, "self_modulate", Color.WHITE, Color.YELLOW, 20, 10, true)
+			
 		_:
 			hide()
 	pass
@@ -80,4 +85,5 @@ func reset_vid_container_and_title_sizes() -> void:
 
 func _on_play_button_pressed() -> void:
 	video.play()
+	switch_button_flash.clear_active()
 	pass
