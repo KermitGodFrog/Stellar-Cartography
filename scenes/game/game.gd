@@ -814,7 +814,6 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	var destination_wormhole: wormholeBodyAPI = destination.get_wormhole_with_destination_system(world.player.current_star_system)
 	destination_wormhole.known = true
 	
-	
 	#removing other possible systems to traverse from previous system
 	for w in wormholes:
 		if w != following_wormhole: #if the wormhole is not the current wormhole being traversed
@@ -830,7 +829,7 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	
 	world.player.previous_star_system = world.player.current_star_system
 	
-	if world.player.systems_traversed == world.player.total_systems + 1: # will need a global variable for how many ssystems until win at some point, customizability would be sick
+	if world.player.systems_traversed == world.player.total_systems + 1: # will need a global variable for how many ssystems until win at some point, customizability would be cool
 		_on_player_win()
 	
 	#setting position to wormhole??? actually works??????
@@ -863,6 +862,11 @@ func enter_wormhole(following_wormhole, wormholes, destination: starSystemAPI, s
 	
 	world.player.reset_all_sys_survey_data() #for sys survey efficiency bonus
 	world.player.sys_survey_time_start = world.play_time
+	
+	if destination.is_civilized():
+		_on_add_console_entry("Entered the %s star system (civilized). All bodies discovered. Sell exploration data, repair and upgrade at space stations, outposts and settlements." % destination.get_first_star().get_display_name(), Color("353535"))
+	else:
+		_on_add_console_entry("Entered the %s star system." % destination.get_first_star().get_display_name(), Color("353535"))
 	
 	_on_player_entering_system(destination) #this dialogue is overwritten if the player dies during traversal!
 	
@@ -1033,6 +1037,7 @@ func _on_found_body(id: int):
 				for sub_body in sub_bodies:
 					if sub_body.get_type() == starSystemAPI.BODY_TYPES.ASTEROID_BELT:
 						sub_body.known = true
+						#_on_add_console_entry("DISCOVERED ASTEROID BELT: %s (%s)" % [sub_body.get_display_name(), sub_body.metadata.get("belt_classification")], Color("353535"))
 			
 			if barycenter_visualizer.locked_body_identifier == id:
 				barycenter_visualizer.set("locked_body_identifier", id)
@@ -1497,6 +1502,7 @@ func _on_update_countdown_overlay_shown(_shown: bool):
 
 func _on_update_player_in_asteroid_belt(player_in_asteroid_belt: bool):
 	world.player.in_asteroid_belt = player_in_asteroid_belt
+	system_3d.player_in_asteroid_belt = player_in_asteroid_belt
 	pass
 
 func _on_update_player_in_pulsar_beam(player_in_pulsar_beam: bool):

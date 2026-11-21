@@ -5,9 +5,13 @@ code = "shader_type sky;
 render_mode use_half_res_pass;
 
 uniform sampler2D source_panorama : filter_linear, source_color, hint_default_black;
+uniform sampler2D optional_nebula_panorama : filter_linear, source_color, hint_default_transparent;
+uniform float nebula_mix_scalar : hint_range(0.0, 1.0, 0.1) = 1.0;
 
 void sky() {
 	vec3 stars = texture(source_panorama, vec2(SKY_COORDS.x, SKY_COORDS.y)).rgb;
 	COLOR += stars;
+	vec3 nebula = texture(optional_nebula_panorama, vec2(SKY_COORDS.x, SKY_COORDS.y)).rgb;
+	COLOR += (nebula * nebula_mix_scalar);
 }
 "

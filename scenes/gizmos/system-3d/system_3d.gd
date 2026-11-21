@@ -20,9 +20,12 @@ var actor_3d = preload("uid://drrmba8quj4mu")
 #for wormholes obv      <- past me who put this comment, stop being such a fucking smartass istg
 #var wormhole_shader = preload("uid://bkngs6wdkye6n") #removed 18/11/26
 var pulsar_beam_material = preload("uid://dtpqpy1b1rnxv")
+var belt_material = preload("uid://cncxt0msnjcx3")
+var ring_material = preload("uid://dv5mqk57bt1sa")
 
 var vis_panorama = preload("uid://daa1rd3d0ffqb")
 var rad_panorama = preload("uid://c7u31smqi45er")
+var nebula_panorama = preload("uid://clgltvmcshvpq")
 
 var glint_large_texture = preload("uid://c236x4bwtcifq")
 var glint_small_texture = preload("uid://kxo1pkvmhml4")
@@ -30,6 +33,11 @@ var glint_small_texture = preload("uid://kxo1pkvmhml4")
 var circular_body_texture = preload("uid://dmcaf8av01hwx")
 
 var glow_texture = preload("uid://ca75qrccehwx3")
+
+var inner_belt_mesh = preload("uid://cpsprl1kd5ktl")
+var outer_belt_mesh = preload("uid://c0sddf6jvwl0w")
+var inner_ring_mesh = preload("uid://rt2twfqmuuue")
+var outer_ring_mesh = preload("uid://xpyw46qruw7")
 
 var system: starSystemAPI
 var player_position: Vector2
@@ -53,6 +61,11 @@ var max_FOV: int = 75: #playerAPI scopes_max_FOV
 		if target_fov > max_FOV:
 			target_fov = max_FOV
 var discovery_value_multiplier: float = 1.0
+var player_in_asteroid_belt: bool = false: #set by game.gd!
+	set(value):
+		if value != player_in_asteroid_belt:
+			_on_player_in_asteroid_belt_changed(value)
+		player_in_asteroid_belt = value
 
 
 var scope_mode: playerAPI.SCOPE_MODES = playerAPI.SCOPE_MODES.VIS:
@@ -141,8 +154,8 @@ func update_camera_basis() -> void:
 
 func update_miscellaneous() -> void:
 	#setting post process
-	var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)
-	post_process.material.set("shader_parameter/pixel_size", round(fov_to_pixel_size))
+	#var fov_to_pixel_size = remap(camera.fov, 10, 75, 8, 2)
+	#post_process.material.set("shader_parameter/pixel_size", round(fov_to_pixel_size))
 	
 	camera.fov = lerp(camera.fov, target_fov, 0.05)
 	control.current_fov = camera.fov
@@ -166,7 +179,7 @@ func try_discover_orbit_bodies() -> void:
 			var a = camera.global_transform.basis.z
 			var b = (camera.global_transform.origin - actor.global_transform.origin).normalized() 
 			if acos(a.dot(b)) <= deg_to_rad(camera.fov):
-				var associated_body = system.get_body_from_identifier(actor.get_identifier()) #repeat code ?!?!?!?!?!?!?!??!?!?!?!?!??!!
+				var associated_body = system.get_body_from_identifier(actor.get_identifier())
 				if associated_body:
 					if associated_body is orbitBodyAPI:
 						if associated_body.get_required_scope_mode() == get_scope_mode():
@@ -176,8 +189,10 @@ func try_discover_orbit_bodies() -> void:
 									continue
 								
 								var star_rarity_multiplier = system.get_first_star_discovery_multiplier()
-								if not associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name()), Color.DARK_GREEN)
-								elif associated_body.metadata.has("value"): emit_signal("addConsoleEntry", str("DISCOVERED: ", associated_body.get_display_name(), " (est. value ", roundi(associated_body.metadata.get("value") * star_rarity_multiplier * discovery_value_multiplier), "n) [%.2fx]") % (star_rarity_multiplier * discovery_value_multiplier), Color.DARK_GREEN)
+								if not associated_body.metadata.has("value"): 
+									emit_signal("addConsoleEntry", "DISCOVERED: %s" % associated_body.get_display_name(), Color.DARK_GREEN)
+								elif associated_body.metadata.has("value"): 
+									emit_signal("addConsoleEntry", "DISCOVERED: %s (est. value %dn) [%.2fx]" % [associated_body.get_display_name(), roundi(associated_body.metadata.get("value") * star_rarity_multiplier * discovery_value_multiplier), star_rarity_multiplier * discovery_value_multiplier], Color.DARK_GREEN)
 								emit_signal("foundBody", actor.get_identifier())
 	pass
 
@@ -329,8 +344,49 @@ func regenerate_system() -> void: #assumes that 'system' is set by game.gd befor
 					{},
 					{"stream": load("uid://b7vu4bpvxlu6n"), "attenuation_model": 3, "volume_db": -12.0, "max_db": -12.0} #attenuation model 3 -> ATTENUATION_DISABLED
 				)
+			_ when body.get_type() == starSystemAPI.BODY_TYPES.ASTEROID_BELT:
+				var belt_width: float = body.metadata.get("belt_width")
+				var inner_radius: float = (body.orbit_distance - belt_width / 2) * system_scalar
+				var outer_radius: float = (body.orbit_distance + belt_width / 2) * system_scalar
+				
+				var inner_mesh: Mesh
+				var outer_mesh: Mesh
+				var mesh_material: Material
+				
+				if system.get_body_from_identifier(body.hook_identifier).get_type() == starSystemAPI.BODY_TYPES.STAR:
+					inner_mesh = inner_belt_mesh
+					outer_mesh = outer_belt_mesh
+					mesh_material = belt_material
+				else:
+					inner_mesh = inner_ring_mesh
+					outer_mesh = outer_ring_mesh
+					mesh_material = ring_material
+				
+				mesh_material = mesh_material.duplicate()
+				mesh_material.albedo_color = Color(body.metadata.get("belt_color"), 1.0)
+				mesh_material.emission = Color(body.metadata.get("belt_color"), 1.0)
+				
+				add_actor(
+					body.get_identifier(),
+					[actor3D.COHORTS.ASTEROID_BELT, actor3D.COHORTS.INNER_BELT],
+					{"mesh": inner_mesh, "material_override": mesh_material, "scale": Vector3(inner_radius, inner_radius, inner_radius), "transparency": 0.5}
+				)
+				add_actor(
+					body.get_identifier(),
+					[actor3D.COHORTS.ASTEROID_BELT, actor3D.COHORTS.OUTER_BELT],
+					{"mesh": outer_mesh, "material_override": mesh_material, "scale": Vector3(outer_radius, outer_radius, outer_radius), "transparency": 0.5}
+				)
+	
+	#some quick nebula stuff \/
+	if system.system_hazard_classification in [game_data.SYSTEM_HAZARD_CLASSIFICATIONS.NEBULA, game_data.SYSTEM_HAZARD_CLASSIFICATIONS.PUSH_COMBO]:
+		nebula_panorama.noise = system.system_hazard_metadata.get("nebula_noise", FastNoiseLite.new()).duplicate()
+		nebula_panorama.color_ramp.colors[0] = system.system_hazard_metadata.get("nebula_color", Color.WHITE)
+		environment.get_environment().get_sky().get_material().set_shader_parameter("optional_nebula_panorama", nebula_panorama)
+	else:
+		environment.get_environment().get_sky().get_material().set_shader_parameter("optional_nebula_panorama", null)
 	
 	_on_scope_mode_changed(get_scope_mode()) #to refresh all cohorts which change on scope mode change! dont want to assume we r in VIS mode >:)
+	_on_player_in_asteroid_belt_changed(player_in_asteroid_belt) #to ensure that the screen is no longer tinted / inner belts aren't visible on game load!
 	
 	exit_tex_gen_thread = false
 	tex_gen_thread = Thread.new()
@@ -446,9 +502,11 @@ func _on_scope_mode_changed(new_mode: playerAPI.SCOPE_MODES) -> void:
 		playerAPI.SCOPE_MODES.VIS:
 			rad_post_process.hide()
 			environment.get_environment().get_sky().get_material().set_shader_parameter("source_panorama", vis_panorama)
+			environment.get_environment().get_sky().get_material().set_shader_parameter("nebula_mix_scalar", 0.5)
 		playerAPI.SCOPE_MODES.RAD:
 			rad_post_process.show()
 			environment.get_environment().get_sky().get_material().set_shader_parameter("source_panorama", rad_panorama)
+			environment.get_environment().get_sky().get_material().set_shader_parameter("nebula_mix_scalar", 0.1)
 	
 	for actor in actors:
 		if actor.is_in_cohort(actor3D.COHORTS.CIRCULAR_BODY):
@@ -605,7 +663,21 @@ func _exit_tree() -> void: #thread stuff
 			tex_gen_thread.wait_to_finish()
 	pass
 
-
+func _on_player_in_asteroid_belt_changed(in_belt: bool) -> void:
+	if in_belt:
+		post_process.color = Color("1d1d1d", 0.75)
+	else:
+		post_process.color = Color(Color.WHITE, 0.0)
+	for actor in actors:
+		if actor.is_in_cohort(actor3D.COHORTS.INNER_BELT):
+			var belt: bodyAPI = system.get_body_from_identifier(actor.get_identifier())
+			var inner_radius = belt.orbit_distance - belt.metadata.get("belt_width") / 2
+			var distance = player_position.distance_to(belt.position)
+			if distance < inner_radius:
+				actor.show()
+			elif distance > inner_radius:
+				actor.hide()
+	pass
 
 
 

@@ -241,7 +241,17 @@ var planet_type_audio_data = {
 const asteroid_belt_classifications = {
 	"Silicate": {"name": "Silicate", "weight": 0.3},
 	"Metal-rich": {"name": "Metal-rich", "weight": 0.3},
-	"Carbonaceous": {"name": "Carbonaceous", "weight": 0.3}
+	"Carbonaceous": {"name": "Carbonaceous", "weight": 0.3},
+	"Stellar": {"name": "Stellar", "weight": 0.00125},
+	"Green": {"name": "Green", "weight": 0.00001}
+}
+
+const asteroid_belt_data = {
+	"Silicate": {"color": Color("333333e6")},
+	"Metal-rich": {"color": Color("1d1d1de6")},
+	"Carbonaceous": {"color": Color("0f0f0fe6")},
+	"Stellar": {"color": Color("4e2600e6")},
+	"Green": {"color": Color("004e07e6")}
 }
 
 # core gen methods \/
@@ -820,7 +830,7 @@ func addRandomWeightedAsteroidBeltAtIteration(hook_identifier: int, i: int) -> i
 			0.0,
 			0.0, #cant be interacted with so who cares
 			{"hidden": true},
-			{"asteroid_belt_classification": belt_classification, "belt_width": belt_width, "belt_color": Color(0.111765, 0.111765, 0.111765, 0.9), "belt_mass": belt_mass}
+			{"belt_classification": belt_classification, "belt_width": belt_width, "belt_color": asteroid_belt_data.get(belt_classification).get("color", Color("1d1d1de6")), "belt_mass": belt_mass}
 		)
 		
 		if hook.get_type() == BODY_TYPES.STAR:
